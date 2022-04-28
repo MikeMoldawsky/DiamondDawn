@@ -1,7 +1,7 @@
 import logo from "./tweezers_logo.png";
 import "./App.css";
-import {Button} from "@mui/material";
-import SendIcon from '@mui/icons-material/Send';
+import { Button } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 
 function App() {
   function sendTwitterMsg() {
@@ -21,10 +21,13 @@ function App() {
         Are you in The Vanguard List?
         <br />
         <br />
-        <Button variant="contained" onClick={sendTwitterMsg} endIcon={<SendIcon />}>
+        <Button
+          variant="contained"
+          onClick={sendTwitterMsg}
+          endIcon={<SendIcon />}
+        >
           Join
         </Button>
-
       </header>
     </div>
   );
