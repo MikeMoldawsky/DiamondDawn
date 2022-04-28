@@ -10,6 +10,9 @@ function App() {
           Tweezers 2022.
         </p>
         Coming Soon...
+          <p>
+              Are you in the Vanguard List?
+          </p>
       </header>
     </div>
   );
