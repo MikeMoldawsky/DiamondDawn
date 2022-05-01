@@ -29,9 +29,6 @@ module.exports = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
-    hardhat: {
-      chainId: 31337,
-    },
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
