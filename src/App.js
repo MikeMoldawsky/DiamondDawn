@@ -1,6 +1,6 @@
 import logo from "./tweezers_logo.png";
 import "./App.css";
-import { Button, Grid } from "@mui/material";
+import { Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { ethers } from "ethers";
 import { useState } from "react";
@@ -38,23 +38,23 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Grid container justifyContent="flex-end">
-          <Button variant="contained" onClick={connectWallet}>
-            Connect
-          </Button>
-        </Grid>
+        {/*<Grid container justifyContent="flex-end">*/}
+        {/*  <Button variant="contained" onClick={connectWallet}>*/}
+        {/*    Connect*/}
+        {/*  </Button>*/}
+        {/*</Grid>*/}
         <h1>Tweezers 2022.</h1>
         <br />
         <img src={logo} className="App-logo" alt="logo" />
         <br />
         <h2>Coming Soon...</h2>
-        <div>
-          {ensName
-            ? ensName
-            : currentAccount
-            ? `0x...${currentAccount.substring(currentAccount.length - 4)}`
-            : undefined}
-        </div>
+        {/*<div>*/}
+        {/*  {ensName*/}
+        {/*    ? ensName*/}
+        {/*    : currentAccount*/}
+        {/*    ? `0x...${currentAccount.substring(currentAccount.length - 4)}`*/}
+        {/*    : undefined}*/}
+        {/*</div>*/}
         Are you in The Vanguard List?
         <br />
         <br />
