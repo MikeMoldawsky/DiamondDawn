@@ -1,70 +1,132 @@
-# Getting Started with Create React App
+# Advanced Sample Hardhat Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
 
-## Available Scripts
+The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
 
-In the project directory, you can run:
+Try running some of the following tasks:
 
-### `npm start`
+```shell
+npx hardhat accounts
+npx hardhat compile
+npx hardhat clean
+npx hardhat test
+npx hardhat node
+npx hardhat help
+REPORT_GAS=true npx hardhat test
+npx hardhat coverage
+npx hardhat run scripts/deploy.js
+node scripts/deploy.js
+npx eslint '**/*.js'
+npx eslint '**/*.js' --fix
+npx prettier '**/*.{json,sol,md}' --check
+npx prettier '**/*.{json,sol,md}' --write
+npx solhint 'contracts/**/*.sol'
+npx solhint 'contracts/**/*.sol' --fix
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Etherscan verification
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
 
-### `npm test`
+In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```shell
+hardhat run --network ropsten scripts/deploy.js
+```
 
-### `npm run build`
+Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```shell
+npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Hardhat Hackathon Boilerplate
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This repository contains a sample project that you can use as the starting point
+for your Ethereum project. It's also a great fit for learning the basics of
+smart contract development.
 
-### `npm run eject`
+This project is intended to be used with the
+[Hardhat Beginners Tutorial](https://hardhat.org/tutorial), but you should be
+able to follow it by yourself by reading the README and exploring its
+`contracts`, `tests`, `scripts` and `frontend` directories.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Quick start
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The first things you need to do are cloning this repository and installing its
+dependencies:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```sh
+git clone https://github.com/nomiclabs/hardhat-hackathon-boilerplate.git
+cd hardhat-hackathon-boilerplate
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Once installed, let's run Hardhat's testing network:
 
-## Learn More
+```sh
+npx hardhat node
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Then, on a new terminal, go to the repository's root folder and run this to
+deploy your contract:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```sh
+npx hardhat run scripts/deploy.js --network localhost
+```
 
-### Code Splitting
+Finally, we can run the frontend with:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```sh
+cd frontend
+npm install
+npm start
+```
 
-### Analyzing the Bundle Size
+> Note: There's [an issue in `ganache-core`](https://github.com/trufflesuite/ganache-core/issues/650) that can make the `npm install` step fail.
+>
+> If you see `npm ERR! code ENOLOCAL`, try running `npm ci` instead of `npm install`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Open [http://localhost:3000/](http://localhost:3000/) to see your HardHatDaapExample. You will
+need to have [Metamask](https://metamask.io) installed and listening to
+`localhost 8545`.
 
-### Making a Progressive Web App
+## User Guide
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+You can find detailed instructions on using this repository and many tips in [its documentation](https://hardhat.org/tutorial).
 
-### Advanced Configuration
+- [Writing and compiling contracts](https://hardhat.org/tutorial/writing-and-compiling-contracts/)
+- [Setting up the environment](https://hardhat.org/tutorial/setting-up-the-environment/)
+- [Testing Contracts](https://hardhat.org/tutorial/testing-contracts/)
+- [Setting up Metamask](https://hardhat.org/tutorial/hackathon-boilerplate-project.html#how-to-use-it)
+- [Hardhat's full documentation](https://hardhat.org/getting-started/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+For a complete introduction to Hardhat, refer to [this guide](https://hardhat.org/getting-started/#overview).
 
-### Deployment
+## What’s Included?
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Your environment will have everything you need to build a HardHatDaapExample powered by Hardhat and React.
 
-### `npm run build` fails to minify
+- [Hardhat](https://hardhat.org/): An Ethereum development task runner and testing network.
+- [Mocha](https://mochajs.org/): A JavaScript test runner.
+- [Chai](https://www.chaijs.com/): A JavaScript assertion library.
+- [ethers.js](https://docs.ethers.io/v5/): A JavaScript library for interacting with Ethereum.
+- [Waffle](https://github.com/EthWorks/Waffle/): To have Ethereum-specific Chai assertions/mathers.
+- [A sample frontend/HardHatDaapExample](./frontend): A HardHatDaapExample which uses [Create React App](https://github.com/facebook/create-react-app).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Troubleshooting
+
+- `Invalid nonce` errors: if you are seeing this error on the `npx hardhat node`
+  console, try resetting your Metamask account. This will reset the account's
+  transaction history and also the nonce. Open Metamask, click on your account
+  followed by `Settings > Advanced > Reset Account`.
+
+## Feedback, help and news
+
+We'd love to have your feedback on this tutorial. Feel free to reach us through
+this repository or [our Discord server](https://invite.gg/HardhatSupport).
+
+Also you can [follow us on Twitter](https://twitter.com/HardhatHQ).
+
+**Happy _building_!**
