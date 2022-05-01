@@ -48,13 +48,13 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <br />
         <h2>Coming Soon...</h2>
-        <div>
-          {ensName
-            ? ensName
-            : currentAccount
-            ? `0x...${currentAccount.substring(currentAccount.length - 4)}`
-            : undefined}
-        </div>
+        {/*<div>*/}
+        {/*  {ensName*/}
+        {/*    ? ensName*/}
+        {/*    : currentAccount*/}
+        {/*    ? `0x...${currentAccount.substring(currentAccount.length - 4)}`*/}
+        {/*    : undefined}*/}
+        {/*</div>*/}
         Are you in The Vanguard List?
         <br />
         <br />
