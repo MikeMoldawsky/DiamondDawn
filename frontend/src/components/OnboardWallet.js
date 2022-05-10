@@ -1,5 +1,6 @@
 import Onboard from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
+import walletConnectModule from '@web3-onboard/walletconnect'
 import tweezers_logo from "../tweezers_logo.png";
 
 // const ETH_MAINNET_RPC = process.env.REACT_APP_ETH_URL;
@@ -12,9 +13,10 @@ const ETH_ROPSTEN_RPC = "https://ropsten.infura.io/v3/dbe63b3bdfc84f3abdf38cdc8e
 
 
 const injected = injectedModule()
+const walletConnect = walletConnectModule()
 
 const onboard = Onboard({
-  wallets: [injected],
+  wallets: [injected, walletConnect],
   chains: [
     {
       id: '0x1',
