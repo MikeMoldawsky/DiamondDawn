@@ -2,9 +2,13 @@ import Onboard from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
 import tweezers_logo from "../tweezers_logo.png";
 
-const ETH_MAINNET_RPC = process.env.REACT_APP_ETH_URL
-const ETH_RINKEBY_RPC = process.env.REACT_APP_RINKEBY_URL
-const ETH_ROPSTEN_RPC = process.env.REACT_APP_ROPSTEN_URL
+// const ETH_MAINNET_RPC = process.env.REACT_APP_ETH_URL;
+// const ETH_RINKEBY_RPC = process.env.REACT_APP_RINKEBY_URL;
+// const ETH_ROPSTEN_RPC = process.env.REACT_APP_ROPSTEN_URL;
+
+const ETH_MAINNET_RPC = "https://mainnet.infura.io/v3/dbe63b3bdfc84f3abdf38cdc8e22f492";
+const ETH_RINKEBY_RPC = "https://rinkeby.infura.io/v3/dbe63b3bdfc84f3abdf38cdc8e22f492";
+const ETH_ROPSTEN_RPC = "https://ropsten.infura.io/v3/dbe63b3bdfc84f3abdf38cdc8e22f492";
 
 
 const injected = injectedModule()
