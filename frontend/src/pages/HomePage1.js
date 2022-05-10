@@ -2,8 +2,9 @@ import logo from "../tweezers_logo.png";
 import "../App.css";
 import { Button, Grid } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { ethers } from "ethers";
 import { useState } from "react";
+import onboard from "../components/OnboardWallet";
+const _ = require("lodash");
 
 function sendTwitterMsg() {
   const twitterMsgLink =
@@ -12,28 +13,26 @@ function sendTwitterMsg() {
 }
 
 function HomePage() {
-  const [currentAccount, setCurrentAccount] = useState();
   const [ensName, setEnsName] = useState();
 
-  const connectWallet = async () => {
-    const { ethereum } = window;
-    if (!ethereum) {
-      console.log(`ethereum is not configured`);
-      return;
+  async function connectWallet() {
+    try {
+
+      const wallets = await onboard.connectWallet()
+      console.log(wallets);
+      const ensName = _.get(wallets, '[0].accounts[0].ens.name');
+
+      if(!ensName) {
+        const address = _.get(wallets, '[0].accounts[0].address');
+        setEnsName(`0x...${address.substring(address.length - 4)}`);
+      } else {
+        setEnsName(ensName);
+      }
+    } catch (e){
+      console.log(`exception in connect wallet ${e}`);
+      alert(`exception in connect wallet ${e}`);
     }
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what MetaMask injects as window.ethereum into each page
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    // MetaMask requires requesting permission to connect users accounts
-    const accounts = await provider.send("eth_requestAccounts", []);
-    if (!accounts || accounts.length === 0) {
-      console.log(`Accounts are not configured or empty`, { accounts });
-      return;
-    }
-    const name = await provider.lookupAddress(accounts[0]);
-    setCurrentAccount(accounts[0]);
-    setEnsName(name);
-  };
+  }
 
   return (
     <div className="App">
@@ -49,11 +48,7 @@ function HomePage() {
         <br />
         <h2>Coming Soon...</h2>
         <div>
-          {ensName
-            ? ensName
-            : currentAccount
-            ? `0x...${currentAccount.substring(currentAccount.length - 4)}`
-            : undefined}
+          { ensName }
         </div>
         Are you in The Vanguard List?
         <br />
