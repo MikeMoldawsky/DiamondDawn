@@ -1,6 +1,7 @@
 import Onboard from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
 import walletConnectModule from '@web3-onboard/walletconnect'
+import trezorModule from '@web3-onboard/trezor'
 import tweezers_logo from "../tweezers_logo.png";
 
 // const ETH_MAINNET_RPC = process.env.REACT_APP_ETH_URL;
@@ -12,8 +13,15 @@ const ETH_RINKEBY_RPC = "https://rinkeby.infura.io/v3/dbe63b3bdfc84f3abdf38cdc8e
 const ETH_ROPSTEN_RPC = "https://ropsten.infura.io/v3/dbe63b3bdfc84f3abdf38cdc8e22f492";
 
 
+
+
+
 const injected = injectedModule()
 const walletConnect = walletConnectModule()
+const trezor = trezorModule({
+  email: '<EMAIL_CONTACT>',
+  appUrl: '<APP_URL>'
+})
 
 const onboard = Onboard({
   wallets: [injected, walletConnect],
