@@ -1,5 +1,4 @@
 import logo from "../tweezers_logo.png";
-import "../App.css";
 import { Button, Grid } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
