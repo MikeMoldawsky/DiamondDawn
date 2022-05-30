@@ -14,14 +14,11 @@ function App() {
   const [src, setSrc] = useState(videos[0])
   let player = useRef(null)
 
-  useEffect(() => {
-    setSrc(videos[step])
-  }, [step])
-
   const gotoNextStep = () => {
     if (step > 1) return
     handleHideContent()
     setTimeout(() => {
+      // player.current.seekTo(0)
       setStep(step + 1)
     }, 250)
   }
@@ -31,6 +28,7 @@ function App() {
       setTimeout(() => {
         setHideContent(false)
         onEnd && onEnd()
+        setIsPlaying(true)
       }, 500)
   }
 
@@ -38,26 +36,39 @@ function App() {
     handleHideContent(() => player.current.seekTo(0))
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+      // player.current.seekTo(8)
+      setIsPlaying(false)
+    }, 7000)
+  }, [step])
+
   // useEffect(() => {
   //   setTimeout(() => {
   //     player.current.seekTo(8)
   //   }, 500)
   // }, [])
 
+  console.log({step, isPlaying, hideContent})
+
   return (
     <div className={classNames("app", {"show-content": !isPlaying, "hide-content": hideContent})}>
       <header>
-        <div className="replay-btn">
-          <FontAwesomeIcon icon={faRefresh} onClick={replayVideo} />
-        </div>
+        {/*<div className="replay-btn">*/}
+        {/*  <FontAwesomeIcon icon={faRefresh} onClick={replayVideo} />*/}
+        {/*</div>*/}
         <FontAwesomeIcon icon={muted ? faVolumeXmark : faVolumeHigh} onClick={() => setMuted(!muted)} />
       </header>
-      <ReactPlayer ref={player} url={src} playing={true} controls={false} muted={muted}
+      <ReactPlayer ref={player} url="https://media.niftygateway.com/video/upload/v1638166907/Andrea/DavidAriew/DecVerified/SIRENSVERSE_yocjuq.mp4"
+                   playing={isPlaying}
+                   controls={false}
+                   muted={muted}
+                   volume={1}
                    className="react-player"
-                   width='unset'
-                   height='unset'
-                   onPlay={() => setIsPlaying(true)}
-                   onEnded={() => setIsPlaying(false)}
+                   // width='unset'
+                   // height='unset'
+                   // onPlay={() => setIsPlaying(true)}
+                   // onEnded={() => setIsPlaying(false)}
       />
       <div className="content" onClick={gotoNextStep}>Step {step}</div>
     </div>
