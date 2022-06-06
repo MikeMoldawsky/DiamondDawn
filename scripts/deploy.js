@@ -24,17 +24,17 @@ async function main() {
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const Token = await hre.ethers.getContractFactory("Token");
-  const token = await Token.deploy();
-  await token.deployed();
+  const PhysicalToDigital = await hre.ethers.getContractFactory("PhysicalToDigital");
+  const physicalToDigital = await PhysicalToDigital.deploy();
+  await physicalToDigital.deployed();
 
-  console.log("Token address:", token.address);
+  console.log("PhysicalToDigital contract address:", physicalToDigital.address);
 
   // We also save the contract's artifacts and address in the frontend directory
-  saveFrontendFiles(token);
+  saveFrontendFiles(physicalToDigital);
 }
 
-function saveFrontendFiles(token) {
+function saveFrontendFiles(physicalToDigital) {
   const fs = require("fs");
   const contractsDir = `${__dirname}/../frontend/src/contracts`;
 
@@ -44,14 +44,14 @@ function saveFrontendFiles(token) {
 
   fs.writeFileSync(
     contractsDir + "/contract-address.json",
-    JSON.stringify({ Token: token.address }, undefined, 2)
+    JSON.stringify({ Token: physicalToDigital.address }, undefined, 2)
   );
 
-  const TokenArtifact = hre.artifacts.readArtifactSync("Token");
+  const PhysicalToDigitalArtifact = hre.artifacts.readArtifactSync("PhysicalToDigital");
 
   fs.writeFileSync(
-    contractsDir + "/Token.json",
-    JSON.stringify(TokenArtifact, null, 2)
+    contractsDir + "/PhysicalToDigital.json",
+    JSON.stringify(PhysicalToDigitalArtifact, null, 2)
   );
 }
 
