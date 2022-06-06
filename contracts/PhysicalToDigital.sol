@@ -60,12 +60,16 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     }
 
     function tokenURI(uint256 tokenId) override public view returns (string memory) {
-        string memory json = Base64.encode(bytes(string(abi.encodePacked('{"name": "Physical To  Digital", "description": "This is the description of Physical To Digital Project", "animation_url": "', _getVideoUrl(tokenId), '"}'))));
+        string memory json = Base64.encode(bytes(string(abi.encodePacked('{"name": "Physical To  Digital", "description": "This is the description of Physical To Digital Project", "image_url": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.mp4" }'))));
         
         return string(abi.encodePacked('data:application/json;base64,', json));
     }
 
+    function _getImageUrl(uint256 tokenId) internal view returns (string memory) {
+        return "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png";
+    }
+
     function _getVideoUrl(uint256 tokenId) internal view returns (string memory) {
-        return "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+        return "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.mp4";
     }
 }
