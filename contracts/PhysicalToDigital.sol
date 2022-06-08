@@ -24,6 +24,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     uint8 private _currentStage = 0;
     Counters.Counter private _tokenIdCounter;
     mapping(uint256 => TokenMetadata) private _tokensMetadata;
+    string[MAX_LEVEL + 1] private _videoUrls;
 
     constructor() ERC721("PhysicalToDigital", "PTD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -83,20 +84,12 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     }
 
     function _getVideoUrl(uint256 tokenId) internal view returns (string memory) {
-        // TODO: change to tokenUri storage instead of multiple ifs? base uri + level
-        if (_tokensMetadata[tokenId].level == 0) {
-            return "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-        } else if (_tokensMetadata[tokenId].level == 1) {
-            return "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4";
-        } else if (_tokensMetadata[tokenId].level == 2) {
-            return "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
-        } else if (_tokensMetadata[tokenId].level == 3) {
-            return "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4";
-        }
+        return _videoUrls[_tokensMetadata[tokenId].level];
     }
 
-    function setStage(uint8 stage) public onlyRole(DEFAULT_ADMIN_ROLE) {
+    function setStage(uint8 stage, string memory videoUrl) public onlyRole(DEFAULT_ADMIN_ROLE) {
         _currentStage = stage;
+        _videoUrls[stage] = videoUrl;
     }
 
     function mine(uint8 enhancementsCount) 
