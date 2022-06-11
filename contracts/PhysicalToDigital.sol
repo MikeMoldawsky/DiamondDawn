@@ -24,8 +24,8 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     
     uint private constant MAX_LEVEL = 4;
     uint public stage;
-    uint public constant MINING_PRICE = 0.1 ether;
-    uint public constant PREPAID_PROCESSING_PRICE = 0.1 ether;
+    uint public constant MINING_PRICE = 0.01 ether;
+    uint public constant PREPAID_PROCESSING_PRICE = 0.01 ether;
     uint public processingPrice;
     bool public isStageActive;
     string[MAX_LEVEL + 1] private _videoUrls;
@@ -36,7 +36,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
 
-        processingPrice = 0.1 ether;
+        processingPrice = 0.01 ether;
         stage = 1;
         isStageActive = false;
         _pause();
@@ -96,7 +96,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         _;
     }
 
-    // Admin API
+    // Admin API - Write
 
     function setProcessingPrice(uint price) 
         public
@@ -121,7 +121,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         stage++;
     }
 
-    // Client API
+    // Client API - Write
 
     function mine(uint processesPurchased) 
         public
@@ -176,5 +176,25 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         whenStageIsActive(3)
     {
         _process(tokenId);
+    }
+
+    // Client API - Read
+
+    function tokenURI(uint256 tokenId) override public view returns (string memory) {
+        // _requireMinted(tokenId);
+
+        string memory json = Base64.encode(bytes(string(abi.encodePacked('{"name": "Physical To  Digital", "description": "This is the description of Physical To Digital Project", "image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "', _getVideoUrl(tokenId), '" }'))));
+        
+        return string(abi.encodePacked('data:application/json;base64,', json));
+    }
+
+    function _getImageUrl(uint256 tokenId) internal view returns (string memory) {
+        // _requireMinted(tokenId);
+
+        return "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png";
+    }
+
+    function _getVideoUrl(uint256 tokenId) internal view returns (string memory) {
+        return _videoUrls[_tokensMetadata[tokenId].level];
     }
 }
