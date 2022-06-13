@@ -14,7 +14,6 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     using Counters for Counters.Counter;
 
     enum Stage {
-        UNSPECIFIED,
         MINE,
         POLISH,
         CLEAN,
