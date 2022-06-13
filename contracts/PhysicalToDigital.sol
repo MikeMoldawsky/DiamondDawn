@@ -185,7 +185,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     {
         require(processesPurchased <= uint(MAX_STAGE) - 1, string.concat("P2D: Purchased processes should be less than or equal to ", Strings.toString(uint(MAX_STAGE) - 1)));
         
-        uint price = MINING_PRICE + processesPurchased * PREPAID_PROCESSING_PRICE;
+        uint price = MINING_PRICE + (processesPurchased * PREPAID_PROCESSING_PRICE);
         require(msg.value == price, string.concat("P2D: Wrong payment - payment should be: ", Strings.toString(price)));
 
         // Regular mint logics
