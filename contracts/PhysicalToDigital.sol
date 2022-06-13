@@ -35,7 +35,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     uint public constant PREPAID_PROCESSING_PRICE = 0.01 ether;
     uint public processingPrice;
     bool public isStageActive;
-    mapping(uint => string) private _videoUrls;
+    mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
 
     constructor() ERC721("PhysicalToDigital", "PTD") {
@@ -146,7 +146,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         internal
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        _videoUrls[uint(stage)] = videoUrl;
+        _videoUrls[stage] = videoUrl;
     }
 
     // Public
@@ -245,6 +245,6 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     }
 
     function _getVideoUrl(uint256 tokenId) internal view returns (string memory) {
-        return _videoUrls[uint(_tokensMetadata[tokenId].stage)];
+        return _videoUrls[_tokensMetadata[tokenId].stage];
     }
 }
