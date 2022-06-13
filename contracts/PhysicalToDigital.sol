@@ -18,7 +18,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         MINE,
         POLISH,
         CLEAN,
-        DIGITAL
+        PHYSICAL
     }
 
     struct Metadata {
@@ -30,13 +30,13 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     Counters.Counter private _tokenIdCounter;
     
-    uint private constant MAX_STAGE = 4;
+    Stage private constant MAX_STAGE = Stage.PHYSICAL;
     Stage public stage;
     uint public constant MINING_PRICE = 0.01 ether;
     uint public constant PREPAID_PROCESSING_PRICE = 0.01 ether;
     uint public processingPrice;
     bool public isStageActive;
-    string[MAX_STAGE + 1] private _videoUrls;
+    mapping(uint => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
 
     constructor() ERC721("PhysicalToDigital", "PTD") {
@@ -182,7 +182,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         payable
         whenStageIsActive(Stage.MINE)
     {
-        require(processesPurchased <= MAX_STAGE - 1, string.concat("P2D: Purchased processes should be less than or equal to ", Strings.toString(MAX_STAGE - 1)));
+        require(processesPurchased <= uint(MAX_STAGE) - 1, string.concat("P2D: Purchased processes should be less than or equal to ", Strings.toString(uint(MAX_STAGE) - 1)));
         
         uint price = MINING_PRICE + processesPurchased * PREPAID_PROCESSING_PRICE;
         require(msg.value == price, string.concat("P2D: Wrong payment - payment should be: ", Strings.toString(price)));
