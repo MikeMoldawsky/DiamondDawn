@@ -114,6 +114,8 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         pure
         returns (Stage)
     {
+        require(uint(_stage) < uint(MAX_STAGE), string.concat("P2D: The stage should be less than ", Strings.toString(uint(MAX_STAGE))));
+        
         return Stage(uint(_stage) + 1);
     }
 
