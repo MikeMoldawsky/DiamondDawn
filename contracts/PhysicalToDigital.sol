@@ -13,8 +13,16 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     using Counters for Counters.Counter;
 
-    struct TokenMetadata {
-        uint level;
+    enum Stage {
+        UNSPECIFIED,
+        MINE,
+        POLISH,
+        CLEAN,
+        DIGITAL
+    }
+
+    struct Metadata {
+        Stage stage;
         uint processesLeft;
     }
 
@@ -22,14 +30,14 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     Counters.Counter private _tokenIdCounter;
     
-    uint private constant MAX_LEVEL = 4;
-    uint public stage;
+    uint private constant MAX_STAGE = 4;
+    Stage public stage;
     uint public constant MINING_PRICE = 0.01 ether;
     uint public constant PREPAID_PROCESSING_PRICE = 0.01 ether;
     uint public processingPrice;
     bool public isStageActive;
-    string[MAX_LEVEL + 1] private _videoUrls;
-    mapping(uint256 => TokenMetadata) private _tokensMetadata;
+    string[MAX_STAGE + 1] private _videoUrls;
+    mapping(uint256 => Metadata) private _tokensMetadata;
 
     constructor() ERC721("PhysicalToDigital", "PTD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -37,7 +45,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         _grantRole(MINTER_ROLE, msg.sender);
 
         processingPrice = 0.01 ether;
-        stage = 1;
+        stage = Stage.MINE;
         isStageActive = false;
         _pause();
     }
@@ -82,21 +90,67 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
 
     // Custom logics
 
-    function _requireActiveStage() internal view {
+    function _requireActiveStage() 
+        internal 
+        view 
+    {
         require(isStageActive, "P2D: A stage should be active to perform this action");
     }
 
-    function _requireSpecificStage(uint _stage) internal view  {
-        require(stage == _stage, string.concat("P2D: The stage should be ", Strings.toString(_stage), " to perform this action"));
+    function _requireSpecificStage(Stage _stage) 
+        internal 
+        view  
+    {
+        require(stage == _stage, string.concat("P2D: The stage should be ", Strings.toString(uint(_stage)), " to perform this action"));
     }
 
-    modifier whenStageIsActive(uint _stage) {
+    modifier whenStageIsActive(Stage _stage) {
         _requireActiveStage();
         _requireSpecificStage(_stage);
         _;
     }
 
+    function _getNextStage(Stage _stage) 
+        internal
+        pure
+        returns (Stage)
+    {
+        return Stage(uint(_stage) + 1);
+    }
+
     // Admin API - Write
+
+    // Internal
+    
+    function _activateStage() 
+        internal
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        isStageActive = true;
+    }
+
+    function _nextStage() 
+        internal
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        stage = _getNextStage(stage);
+    }
+
+    function _deactivateStage() 
+        internal
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        isStageActive = false;
+    }
+
+    function _assignCurrentStageVideo(string memory videoUrl) 
+        internal
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _videoUrls[uint(stage)] = videoUrl;
+    }
+
+    // Public
 
     function setProcessingPrice(uint price) 
         public
@@ -109,16 +163,16 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        isStageActive = true;
-        _videoUrls[stage] = videoUrl;
+        _activateStage();
+        _assignCurrentStageVideo(videoUrl);
     }
 
-    function completeStage()
+    function completeCurrentStage()
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        isStageActive = false;
-        stage++;
+        _deactivateStage();
+        _nextStage();
     }
 
     // Client API - Write
@@ -126,9 +180,9 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     function mine(uint processesPurchased) 
         public
         payable
-        whenStageIsActive(1)
+        whenStageIsActive(Stage.MINE)
     {
-        require(processesPurchased <= MAX_LEVEL - 1, string.concat("P2D: Purchased processes should be less than or equal to ", Strings.toString(MAX_LEVEL - 1)));
+        require(processesPurchased <= MAX_STAGE - 1, string.concat("P2D: Purchased processes should be less than or equal to ", Strings.toString(MAX_STAGE - 1)));
         
         uint price = MINING_PRICE + processesPurchased * PREPAID_PROCESSING_PRICE;
         require(msg.value == price, string.concat("P2D: Wrong payment - payment should be: ", Strings.toString(price)));
@@ -139,8 +193,8 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         _safeMint(msg.sender, tokenId);
         
         // Store token metadata
-        _tokensMetadata[tokenId] = TokenMetadata({
-            level: 1,
+        _tokensMetadata[tokenId] = Metadata({
+            stage: Stage.MINE,
             processesLeft: processesPurchased
         });
     }
@@ -149,20 +203,20 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         internal
     {
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not token owner nor approved");
-        require(_tokensMetadata[tokenId].level == stage - 1, string.concat("P2D: The level of the diamond should be ",  Strings.toString(stage - 1), " to perform this action"));
+        require(uint(_tokensMetadata[tokenId].stage) == uint(stage) - 1, string.concat("P2D: The level of the diamond should be ",  Strings.toString(uint(stage) - 1), " to perform this action"));
 
         if (_tokensMetadata[tokenId].processesLeft == 0) {
             require(msg.value == processingPrice, string.concat("P2D: Wrong payment - payment should be: ", Strings.toString(processingPrice)));
         }
 
-        _tokensMetadata[tokenId].level++;
+        _tokensMetadata[tokenId].stage = _getNextStage(_tokensMetadata[tokenId].stage);
         _tokensMetadata[tokenId].processesLeft--;
     }
 
     function polish(uint256 tokenId) 
         public
         payable
-        whenStageIsActive(2)
+        whenStageIsActive(Stage.POLISH)
     {
         _process(tokenId);
     }
@@ -170,7 +224,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     function clean(uint256 tokenId) 
         public
         payable
-        whenStageIsActive(3)
+        whenStageIsActive(Stage.CLEAN)
     {
         _process(tokenId);
     }
@@ -192,6 +246,6 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     }
 
     function _getVideoUrl(uint256 tokenId) internal view returns (string memory) {
-        return _videoUrls[_tokensMetadata[tokenId].level];
+        return _videoUrls[uint(_tokensMetadata[tokenId].stage)];
     }
 }
