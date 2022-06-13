@@ -43,7 +43,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
 
-        processingPrice = 0.01 ether;
+        processingPrice = PREPAID_PROCESSING_PRICE;
         stage = Stage.MINE;
         isStageActive = false;
         _pause();
