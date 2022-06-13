@@ -126,7 +126,6 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     function mine(uint processesPurchased) 
         public
         payable
-        whenNotPaused
         whenStageIsActive(1)
     {
         require(processesPurchased <= MAX_LEVEL - 1, string.concat("P2D: Purchased processes should be less than or equal to ", Strings.toString(MAX_LEVEL - 1)));
@@ -163,7 +162,6 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     function polish(uint256 tokenId) 
         public
         payable
-        whenNotPaused
         whenStageIsActive(2)
     {
         _process(tokenId);
@@ -172,7 +170,6 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     function clean(uint256 tokenId) 
         public
         payable
-        whenNotPaused
         whenStageIsActive(3)
     {
         _process(tokenId);
