@@ -8,6 +8,12 @@ import './LandingPage.scss'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
+function sendTwitterMsg() {
+  const twitterMsgLink =
+      "https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20💎";
+  window.open(twitterMsgLink, "_blank");
+}
+
 const LandingPage = () => {
   const [animate, setAnimate] = useState(false)
 
@@ -36,7 +42,7 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="bottom-text">
-          <div>Request Vanguard Approval <FontAwesomeIcon icon={faPaperPlane} /></div>
+          <div onClick={sendTwitterMsg} >Request Vanguard Approval <FontAwesomeIcon icon={faPaperPlane} /></div>
         </div>
       </div>
     </div>
