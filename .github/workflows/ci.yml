@@ -21,7 +21,10 @@ jobs:
         run: npm ci
       - name: Compile code
         run: npm run compile
-      - uses: ziishaned/jest-reporter-action@v0.0.1
+      - name: Run test coverage
+        run: npm run coverage
+      - uses: 5monkeys/cobertura-action@master
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          test-command: "npm run coverage"
+          path: coverage/cobertura-coverage.xml
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          minimum_coverage: 75
