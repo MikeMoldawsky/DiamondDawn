@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.14;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
@@ -13,23 +13,40 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     using Counters for Counters.Counter;
 
-    struct TokenMetadata {
-        uint8 level;
-        uint8 enhancementsLeft;
+    enum Stage {
+        MINE,
+        POLISH,
+        CLEAN,
+        PHYSICAL
+    }
+
+    struct Metadata {
+        Stage stage;
+        uint processesLeft;
     }
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    uint8 private constant MAX_LEVEL = 3;
-    uint8 private _currentStage = 0;
     Counters.Counter private _tokenIdCounter;
-    mapping(uint256 => TokenMetadata) private _tokensMetadata;
-    string[MAX_LEVEL + 1] private _videoUrls;
+    
+    Stage private constant MAX_STAGE = Stage.PHYSICAL;
+    Stage public stage;
+    uint public constant MINING_PRICE = 0.01 ether;
+    uint public constant PREPAID_PROCESSING_PRICE = 0.01 ether;
+    uint public processingPrice;
+    bool public isStageActive;
+    mapping(Stage => string) private _videoUrls;
+    mapping(uint256 => Metadata) private _tokensMetadata;
 
     constructor() ERC721("PhysicalToDigital", "PTD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
+
+        processingPrice = PREPAID_PROCESSING_PRICE;
+        stage = Stage.MINE;
+        isStageActive = false;
+        _pause();
     }
 
     function _baseURI() internal pure override returns (string memory) {
@@ -69,6 +86,152 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         return super.supportsInterface(interfaceId);
     }
 
+
+    // Custom logics
+
+    function _requireActiveStage() 
+        internal 
+        view 
+    {
+        require(isStageActive, "P2D: A stage should be active to perform this action");
+    }
+
+    function _requireSpecificStage(Stage _stage) 
+        internal 
+        view  
+    {
+        require(stage == _stage, string.concat("P2D: The stage should be ", Strings.toString(uint(_stage)), " to perform this action"));
+    }
+
+    modifier whenStageIsActive(Stage _stage) {
+        _requireActiveStage();
+        _requireSpecificStage(_stage);
+        _;
+    }
+
+    function _getNextStage(Stage _stage) 
+        internal
+        pure
+        returns (Stage)
+    {
+        require(uint(_stage) < uint(MAX_STAGE), string.concat("P2D: The stage should be less than ", Strings.toString(uint(MAX_STAGE))));
+        
+        return Stage(uint(_stage) + 1);
+    }
+
+    // Admin API - Write
+
+    // Internal
+    
+    function _activateStage() 
+        internal
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        isStageActive = true;
+    }
+
+    function _nextStage() 
+        internal
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        stage = _getNextStage(stage);
+    }
+
+    function _deactivateStage() 
+        internal
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        isStageActive = false;
+    }
+
+    function _assignCurrentStageVideo(string memory videoUrl) 
+        internal
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _videoUrls[stage] = videoUrl;
+    }
+
+    // Public
+
+    function setProcessingPrice(uint price) 
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        processingPrice = price;
+    }
+
+    function revealStage(string memory videoUrl)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _activateStage();
+        _assignCurrentStageVideo(videoUrl);
+    }
+
+    function completeCurrentStage()
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _deactivateStage();
+        _nextStage();
+    }
+
+    // Client API - Write
+
+    function mine(uint processesPurchased) 
+        public
+        payable
+        whenStageIsActive(Stage.MINE)
+    {
+        require(processesPurchased <= uint(MAX_STAGE) - 1, string.concat("P2D: Purchased processes should be less than or equal to ", Strings.toString(uint(MAX_STAGE) - 1)));
+        
+        uint price = MINING_PRICE + (processesPurchased * PREPAID_PROCESSING_PRICE);
+        require(msg.value == price, string.concat("P2D: Wrong payment - payment should be: ", Strings.toString(price)));
+
+        // Regular mint logics
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
+        _safeMint(msg.sender, tokenId);
+        
+        // Store token metadata
+        _tokensMetadata[tokenId] = Metadata({
+            stage: Stage.MINE,
+            processesLeft: processesPurchased
+        });
+    }
+
+    function _process(uint256 tokenId)
+        internal
+    {
+        require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not token owner nor approved");
+        require(uint(_tokensMetadata[tokenId].stage) == uint(stage) - 1, string.concat("P2D: The level of the diamond should be ",  Strings.toString(uint(stage) - 1), " to perform this action"));
+
+        if (_tokensMetadata[tokenId].processesLeft == 0) {
+            require(msg.value == processingPrice, string.concat("P2D: Wrong payment - payment should be: ", Strings.toString(processingPrice)));
+        }
+
+        _tokensMetadata[tokenId].stage = _getNextStage(_tokensMetadata[tokenId].stage);
+        _tokensMetadata[tokenId].processesLeft--;
+    }
+
+    function polish(uint256 tokenId) 
+        public
+        payable
+        whenStageIsActive(Stage.POLISH)
+    {
+        _process(tokenId);
+    }
+
+    function clean(uint256 tokenId) 
+        public
+        payable
+        whenStageIsActive(Stage.CLEAN)
+    {
+        _process(tokenId);
+    }
+
+    // Client API - Read
+
     function tokenURI(uint256 tokenId) override public view returns (string memory) {
         // _requireMinted(tokenId);
 
@@ -84,45 +247,6 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     }
 
     function _getVideoUrl(uint256 tokenId) internal view returns (string memory) {
-        return _videoUrls[_tokensMetadata[tokenId].level];
-    }
-
-    function setStage(uint8 stage, string memory videoUrl) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        _currentStage = stage;
-        _videoUrls[stage] = videoUrl;
-    }
-
-    function mine(uint8 enhancementsCount) 
-        public
-        whenNotPaused
-    {
-        // TODO: replace magic number with constant
-        require(enhancementsCount <= MAX_LEVEL, "Enhancements count must be less than or equal to 3");
-
-        // Regular mint logics
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
-        _safeMint(msg.sender, tokenId);
-        
-        // Store token metadata
-        _tokensMetadata[tokenId] = TokenMetadata({
-            level: 0,
-            enhancementsLeft: enhancementsCount
-        });
-    }
-
-    function _enhance(uint256 tokenId)
-        // TODO: change to internal after testing 
-        public 
-        whenNotPaused
-    {
-        // _requireMinted(tokenId);
-        require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not token owner nor approved");
-        require(_tokensMetadata[tokenId].enhancementsLeft > 0, "Insufficient enhancements");
-        // TODO: decide whether it should be _tokensMetadata[tokenId].level = _currentStage - 1
-        require(_tokensMetadata[tokenId].level < _currentStage, "The diamond was already enhanced in this stage");
-
-        _tokensMetadata[tokenId].level++;
-        _tokensMetadata[tokenId].enhancementsLeft--;
+        return _videoUrls[_tokensMetadata[tokenId].stage];
     }
 }

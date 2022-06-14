@@ -44,7 +44,7 @@ function saveFrontendFiles(physicalToDigital) {
 
   fs.writeFileSync(
     contractsDir + "/contract-address.json",
-    JSON.stringify({ Token: physicalToDigital.address }, undefined, 2)
+    JSON.stringify({ PhysicalToDigital: physicalToDigital.address }, undefined, 2)
   );
 
   const PhysicalToDigitalArtifact = hre.artifacts.readArtifactSync("PhysicalToDigital");
