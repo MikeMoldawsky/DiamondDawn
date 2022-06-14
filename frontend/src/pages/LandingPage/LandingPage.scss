@@ -1,63 +1,123 @@
+$gray: #636262;
 
 .landing-page {
   height: 100%;
-  background-color: black;
+  background: black url("../../assets/images/diamond art.png") no-repeat center 100px;
+  background-size: cover;
+  //background-color: black;
   color: white;
   font-family: monospace;
 
+  header {
+    height: 80px;
+    display: flex;
+    align-items: flex-start;
+    padding: 30px;
+
+    .logo-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .by-text {
+        margin-bottom: -25px;
+        color: $gray;
+      }
+
+      img {
+        height: 80px;
+        width: unset;
+      }
+    }
+  }
+
   .centered-content {
-    height: 100%;
+    //height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    //justify-content: center;
     flex-direction: column;
-    width: 70%;
-    max-width: 1000px;
-    margin: 0 auto;
+    //width: 70%;
+    //max-width: 1000px;
+    //margin: 0 auto;
 
     h1 {
-      font-size: 4em;
-      letter-spacing: .1em;
-      opacity: 0;
+      margin: 50px 0 80px;
+      font-size: 3em;
+      font-weight: normal;
+      //letter-spacing: .1em;
+      opacity: 1;
 
       span {
         font-size: 1.2em;
       }
     }
 
-    .logo-box {
-      display: flex;
-      align-items: flex-start;
-      align-self: flex-end;
-
-      .by-text {
-        margin-top: 33px;
-        opacity: 0;
-        font-style: italic;
-      }
-
-      img {
-        width: 220px;
-        opacity: 0;
-      }
-    }
-
-    .bottom-text {
-      font-size: 1.5em;
-      position: absolute;
-      bottom: 50px;
+    .password-box {
+      color: $gray;
       text-align: center;
-      cursor: pointer;
+      margin-top: 40px;
       opacity: 0;
+      //font-size: 1.2em;
 
-      &>div {
-        animation: scale 1.5s ease-in-out infinite;
+      input {
+        color: $gray;
+        background-color: transparent;
+        /* border-bottom: solid 1px gray; */
+        outline: none;
+        border: none;
+        //border-bottom: solid 1px $gray;
+        font-size: 3.6em;
+        letter-spacing: .3em;
+        width: 230px;
+        margin-left: 18px;
+
+        &.filled {
+          border-bottom: none;
+        }
       }
     }
+
+    //.logo-box {
+    //  display: flex;
+    //  align-items: flex-start;
+    //  align-self: flex-end;
+    //
+    //  .by-text {
+    //    margin-top: 33px;
+    //    opacity: 0;
+    //    font-style: italic;
+    //  }
+    //
+    //  img {
+    //    width: 220px;
+    //    opacity: 0;
+    //  }
+    //}
+    //
+    //.bottom-text {
+    //  font-size: 1.5em;
+    //  position: absolute;
+    //  bottom: 50px;
+    //  text-align: center;
+    //  cursor: pointer;
+    //  opacity: 0;
+    //
+    //  &>div {
+    //    animation: scale 1.5s ease-in-out infinite;
+    //  }
+    //}
   }
 
   &.animate {
     .centered-content {
+      .password-box {
+        transition: opacity .5s ease-out;
+        transition-delay: 5s;
+        opacity: 1;
+      }
+
       h1 {
         transition: opacity .5s ease-out;
         transition-delay: 2s;
