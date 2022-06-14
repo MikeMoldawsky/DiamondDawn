@@ -23,10 +23,16 @@ jobs:
         run: npm run compile
       - name: Run test coverage
         run: npm run coverage
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
       - uses: 5monkeys/cobertura-action@master
         with:
           path: coverage/cobertura-coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           minimum_coverage: 75
+          fail_below_threshold: True
+          show_line: True
+          show_branch: True
+          show_missing: True
+          link_missing_lines: True
+          only_changed_files: True
+
+
