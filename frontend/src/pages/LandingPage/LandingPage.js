@@ -42,7 +42,7 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="bottom-text">
-          <div>Request Vanguard Approval <FontAwesomeIcon icon={faPaperPlane} onClick={sendTwitterMsg} /></div>
+          <div onClick={sendTwitterMsg} >Request Vanguard Approval <FontAwesomeIcon icon={faPaperPlane} /></div>
         </div>
       </div>
     </div>
