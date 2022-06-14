@@ -21,5 +21,7 @@ jobs:
         run: npm ci
       - name: Compile code
         run: npm run compile
-      - name: Run test coverage
-        run: npm run coverage
+      - uses: ziishaned/jest-reporter-action@v0.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          test-command: "npm run coverage"
