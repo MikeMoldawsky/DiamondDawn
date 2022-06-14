@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
@@ -25,6 +23,8 @@ jobs:
         run: npm run compile
       - name: Run test coverage
         run: npm run coverage
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
       - uses: 5monkeys/cobertura-action@master
         with:
           path: ./coverage/cobertura-coverage.xml
