@@ -42,6 +42,7 @@ const LandingPage = () => {
 
   return (
     <div className={classNames("page landing-page", { animate })} onClick={onViewClick}>
+      <div className="bg"/>
       <header>
         <div className="logo-box">
           <div className="by-text">BY</div>

@@ -9,14 +9,22 @@ a {
 
 .landing-page {
   height: 100%;
-  background: black url("../../assets/images/diamond art.png") no-repeat center top;
-  background-size: auto 120%;
   color: white;
   font-family: monospace;
   display: flex;
   flex-direction: column;
 
+  .bg {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: black url("../../assets/images/diamond art.png") no-repeat center top;
+    background-size: auto 120%;
+    z-index: 0;
+  }
+
   header {
+    z-index: 1;
     height: 50px;
     display: flex;
     align-items: flex-start;
@@ -40,6 +48,7 @@ a {
   }
 
   .centered-content {
+    z-index: 1;
     height: 38%;
     display: flex;
     align-items: center;
@@ -121,8 +130,11 @@ a {
 
 @media only screen and (max-width: 767px) {
   .landing-page {
-    background-size: cover;
-    background-position-y: calc(100% + 140px);
+
+    .bg {
+      background-size: cover;
+      background-position-y: calc(100% + 140px);
+    }
     //background-size: contain;
     //background-size: 160% auto;
     //background-position-y: bottom;
