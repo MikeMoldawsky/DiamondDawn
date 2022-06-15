@@ -71,7 +71,7 @@ const LandingPage = () => {
           </div>
         ) : (
           <div className="password-error">
-            <div className="error-message">Invalid Password</div>
+            <div className="error-message">Wrong Password</div>
             <div className="request-join">
               <a target="_blank" rel="noreferrer" href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20">
                 <div>Request Vanguard Approval <FontAwesomeIcon icon={faPaperPlane} /></div>
