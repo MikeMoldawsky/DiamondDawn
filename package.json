@@ -4,7 +4,11 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "scripts": {
-    "test": "npx hardhat test"
+    "hardhat": "hardhat",
+    "compile": "SKIP_LOAD=true hardhat clean && SKIP_LOAD=true hardhat compile",
+    "test": "npm run compile && REPORT_GAS=true hardhat test",
+    "quick-test": "hardhat test",
+    "coverage": "npm run compile && hardhat coverage"
   },
   "repository": {
     "type": "git",
@@ -35,7 +39,8 @@
     "hardhat-gas-reporter": "^1.0.8",
     "prettier": "^2.6.2",
     "prettier-plugin-solidity": "^1.0.0-beta.13",
-    "solhint": "^3.3.7"
+    "solhint": "^3.3.7",
+    "solidity-coverage": "^0.7.21"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.6.0"
