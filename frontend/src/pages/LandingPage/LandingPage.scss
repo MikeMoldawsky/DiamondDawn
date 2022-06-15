@@ -1,4 +1,5 @@
 $gray: #636262;
+$light-gray: #7e7d7d;
 
 .landing-page {
   height: 100%;
@@ -6,9 +7,11 @@ $gray: #636262;
   background-size: auto 120%;
   color: white;
   font-family: monospace;
+  display: flex;
+  flex-direction: column;
 
   header {
-    height: 80px;
+    height: 50px;
     display: flex;
     align-items: flex-start;
     padding: 30px;
@@ -31,22 +34,23 @@ $gray: #636262;
   }
 
   .centered-content {
+    height: 38%;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     flex-direction: column;
 
     h1 {
-      margin: 20px 0 80px;
+      margin: 20px 0 0;
       font-size: 3em;
       font-weight: normal;
       opacity: 1;
     }
 
     .coming-soon {
-      margin-top: 70px;
+      margin-top: 0;
       font-size: 2.4em;
-      color: $gray;
+      color: $light-gray;
       opacity: 0;
       animation: scale 1.5s ease-in-out infinite;
     }
