@@ -79,6 +79,7 @@ const LandingPage = () => {
           </div>
         )}
       </div>
+      <div className="remainder"/>
     </div>
   )
 }

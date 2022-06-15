@@ -104,6 +104,10 @@ a {
     }
   }
 
+  .remainder {
+    flex-grow: 2;
+  }
+
   &.animate {
     .centered-content {
       .password-box {
