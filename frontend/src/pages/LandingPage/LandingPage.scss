@@ -140,15 +140,13 @@ a {
       height: 25px;
       justify-content: center;
       padding: 20px 0;
-    }
-
-    .logo-box {
-      .by-text {
-        margin-bottom: -20px;
-        color: $gray;
-      }
 
       .logo-box {
+        .by-text {
+          margin-bottom: -20px;
+          color: $gray;
+        }
+
         img {
           height: 50px;
         }
