@@ -117,7 +117,8 @@ a {
 
 @media only screen and (max-width: 767px) {
   .landing-page {
-    background-size: 160% auto;
+    background-size: contain;
+    //background-size: 160% auto;
     background-position-y: bottom;
 
     header {
