@@ -1,87 +1,163 @@
+$gray: #636262;
+$light-gray: #7e7d7d;
 
 .landing-page {
   height: 100%;
-  background-color: black;
+  background: black url("../../assets/images/diamond art.png") no-repeat center top;
+  background-size: auto 120%;
   color: white;
   font-family: monospace;
+  display: flex;
+  flex-direction: column;
 
-  .centered-content {
-    height: 100%;
+  header {
+    height: 50px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 70%;
-    max-width: 1000px;
-    margin: 0 auto;
-
-    h1 {
-      font-size: 4em;
-      letter-spacing: .1em;
-      opacity: 0;
-
-      span {
-        font-size: 1.2em;
-      }
-    }
+    align-items: flex-start;
+    padding: 30px;
 
     .logo-box {
       display: flex;
-      align-items: flex-start;
-      align-self: flex-end;
+      flex-direction: column;
+      align-items: center;
 
       .by-text {
-        margin-top: 33px;
-        opacity: 0;
-        font-style: italic;
+        margin-bottom: -25px;
+        color: $gray;
       }
 
       img {
-        width: 220px;
-        opacity: 0;
-      }
-    }
-
-    .bottom-text {
-      font-size: 1.5em;
-      position: absolute;
-      bottom: 50px;
-      text-align: center;
-      cursor: pointer;
-      opacity: 0;
-
-      &>div {
-        animation: scale 1.5s ease-in-out infinite;
+        height: 80px;
+        width: unset;
       }
     }
   }
 
+  .centered-content {
+    height: 38%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+
+    h1 {
+      margin: 20px 0 0;
+      font-size: 3em;
+      font-weight: normal;
+      opacity: 1;
+    }
+
+    .coming-soon {
+      margin-top: 0;
+      font-size: 2.4em;
+      color: $light-gray;
+      opacity: 0;
+      animation: scale 1.5s ease-in-out infinite;
+    }
+
+    .password-box {
+      color: $gray;
+      text-align: center;
+      margin-top: 40px;
+      opacity: 0;
+      //font-size: 1.2em;
+
+      input {
+        color: $gray;
+        text-align: center;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: 3.6em;
+        letter-spacing: .3em;
+        width: 230px;
+        margin-left: 18px;
+
+        &.filled {
+          border-bottom: none;
+        }
+      }
+    }
+
+    //.logo-box {
+    //  display: flex;
+    //  align-items: flex-start;
+    //  align-self: flex-end;
+    //
+    //  .by-text {
+    //    margin-top: 33px;
+    //    opacity: 0;
+    //    font-style: italic;
+    //  }
+    //
+    //  img {
+    //    width: 220px;
+    //    opacity: 0;
+    //  }
+    //}
+    //
+    //.bottom-text {
+    //  font-size: 1.5em;
+    //  position: absolute;
+    //  bottom: 50px;
+    //  text-align: center;
+    //  cursor: pointer;
+    //  opacity: 0;
+    //
+    //  &>div {
+    //    animation: scale 1.5s ease-in-out infinite;
+    //  }
+    //}
+  }
+
   &.animate {
     .centered-content {
-      h1 {
-        transition: opacity .5s ease-out;
-        transition-delay: 2s;
+      .coming-soon {
+        transition: opacity 1s ease-out;
+        transition-delay: 6s;
         opacity: 1;
       }
+
+      .password-box {
+        transition: opacity 1s ease-out;
+        transition-delay: 6s;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .landing-page {
+    background-size: 160% auto;
+    background-position-y: bottom;
+    header {
+      height: 35px;
+      justify-content: center;
+      padding: 20px 0;
 
       .logo-box {
-        .by-text {
-          transition: opacity .25s ease-out;
-          transition-delay: 4.75s;
-          opacity: 1;
-        }
-
         img {
-          transition: opacity .25s ease-out;
-          transition-delay: 5s;
-          opacity: 1;
+          height: 60px;
         }
       }
+    }
 
-      .bottom-text {
-        transition: opacity .25s ease-out;
-        transition-delay: 6.75s;
-        opacity: 1;
+    .centered-content {
+      h1 {
+        width: 320px;
+        text-align: center;
+        margin: 20px 0 30px;
+        font-size: 2.5em;
+      }
+
+      .react-player {
+        width: 220px !important;
+      }
+
+      .coming-soon {
+        margin-top: 30px;
+        font-size: 2em;
       }
     }
   }
@@ -92,7 +168,7 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.03);
+    transform: scale(1.05);
   }
   100% {
     transform: scale(1);
