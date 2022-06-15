@@ -60,6 +60,7 @@ $light-gray: #7e7d7d;
       text-align: center;
       margin-top: 40px;
       opacity: 0;
+      //font-size: 1.2em;
 
       input {
         color: $gray;
@@ -77,6 +78,36 @@ $light-gray: #7e7d7d;
         }
       }
     }
+
+    //.logo-box {
+    //  display: flex;
+    //  align-items: flex-start;
+    //  align-self: flex-end;
+    //
+    //  .by-text {
+    //    margin-top: 33px;
+    //    opacity: 0;
+    //    font-style: italic;
+    //  }
+    //
+    //  img {
+    //    width: 220px;
+    //    opacity: 0;
+    //  }
+    //}
+    //
+    //.bottom-text {
+    //  font-size: 1.5em;
+    //  position: absolute;
+    //  bottom: 50px;
+    //  text-align: center;
+    //  cursor: pointer;
+    //  opacity: 0;
+    //
+    //  &>div {
+    //    animation: scale 1.5s ease-in-out infinite;
+    //  }
+    //}
   }
 
   &.animate {
