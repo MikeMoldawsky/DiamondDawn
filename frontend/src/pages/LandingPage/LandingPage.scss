@@ -1,16 +1,30 @@
 $gray: #636262;
 $light-gray: #7e7d7d;
+$red: #b63c45;
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
 .landing-page {
   height: 100%;
-  background: black url("../../assets/images/diamond art.png") no-repeat center top;
-  background-size: auto 120%;
   color: white;
   font-family: monospace;
   display: flex;
   flex-direction: column;
 
+  .bg {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: black url("../../assets/images/diamond art.png") no-repeat center top;
+    background-size: auto 120%;
+    z-index: 0;
+  }
+
   header {
+    z-index: 1;
     height: 50px;
     display: flex;
     align-items: flex-start;
@@ -34,6 +48,7 @@ $light-gray: #7e7d7d;
   }
 
   .centered-content {
+    z-index: 1;
     height: 38%;
     display: flex;
     align-items: center;
@@ -47,20 +62,15 @@ $light-gray: #7e7d7d;
       opacity: 1;
     }
 
-    .coming-soon {
-      margin-top: 0;
-      font-size: 2.4em;
-      color: $light-gray;
-      opacity: 0;
-      animation: scale 1.5s ease-in-out infinite;
-    }
-
     .password-box {
       color: $gray;
       text-align: center;
-      margin-top: 40px;
+      height: 108px;
       opacity: 0;
-      //font-size: 1.2em;
+
+      h2 {
+        margin-top: 0;
+      }
 
       input {
         color: $gray;
@@ -76,48 +86,39 @@ $light-gray: #7e7d7d;
         &.filled {
           border-bottom: none;
         }
+
+        &.loading {
+          animation: scale 1s ease-in-out infinite;
+        }
       }
     }
 
-    //.logo-box {
-    //  display: flex;
-    //  align-items: flex-start;
-    //  align-self: flex-end;
-    //
-    //  .by-text {
-    //    margin-top: 33px;
-    //    opacity: 0;
-    //    font-style: italic;
-    //  }
-    //
-    //  img {
-    //    width: 220px;
-    //    opacity: 0;
-    //  }
-    //}
-    //
-    //.bottom-text {
-    //  font-size: 1.5em;
-    //  position: absolute;
-    //  bottom: 50px;
-    //  text-align: center;
-    //  cursor: pointer;
-    //  opacity: 0;
-    //
-    //  &>div {
-    //    animation: scale 1.5s ease-in-out infinite;
-    //  }
-    //}
+    .password-error {
+      height: 108px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+
+      .error-message {
+        font-size: 1.5em;
+        color: $red;
+      }
+
+      .request-join {
+        font-size: 1.3em;
+        padding-bottom: 24px;
+        color: $light-gray;
+      }
+    }
+  }
+
+  .remainder {
+    flex-grow: 2;
   }
 
   &.animate {
     .centered-content {
-      .coming-soon {
-        transition: opacity 1s ease-out;
-        transition-delay: 6s;
-        opacity: 1;
-      }
-
       .password-box {
         transition: opacity 1s ease-out;
         transition-delay: 6s;
@@ -129,35 +130,51 @@ $light-gray: #7e7d7d;
 
 @media only screen and (max-width: 767px) {
   .landing-page {
-    background-size: 160% auto;
-    background-position-y: bottom;
+
+    .bg {
+      background-size: cover;
+      background-position-y: calc(100% + 140px);
+    }
+
     header {
-      height: 35px;
+      height: 25px;
       justify-content: center;
       padding: 20px 0;
 
       .logo-box {
+        .by-text {
+          margin-bottom: -20px;
+          color: $gray;
+        }
+
         img {
-          height: 60px;
+          height: 50px;
         }
       }
     }
 
     .centered-content {
+      height: 60%;
+
       h1 {
-        width: 320px;
+        width: 275px;
         text-align: center;
-        margin: 20px 0 30px;
-        font-size: 2.5em;
+        margin: 20px 0 0;
+        font-size: 2em;
       }
 
       .react-player {
         width: 220px !important;
       }
 
-      .coming-soon {
-        margin-top: 30px;
-        font-size: 2em;
+      .password-error, .password-box {
+        height: 90px;
+      }
+
+      .password-box {
+        input {
+          font-size: 2.5em;
+        }
       }
     }
   }

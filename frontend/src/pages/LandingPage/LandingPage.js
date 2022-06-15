@@ -8,16 +8,12 @@ import './LandingPage.scss'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
-function sendTwitterMsg() {
-  const twitterMsgLink =
-      "https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20💎";
-  window.open(twitterMsgLink, "_blank");
-}
-
 const LandingPage = () => {
   const [animate, setAnimate] = useState(false)
   const [password, setPassword] = useState('')
   const pwdInput = useRef(null)
+  const [checkingPassword, setCheckingPassword] = useState(false)
+  const [passwordError, setPasswordError] = useState(false)
 
   useEffect(() => {
     setAnimate(true)
@@ -29,11 +25,24 @@ const LandingPage = () => {
     setPassword(pwd)
     if (pwd.length === 6) {
       pwdInput.current.blur()
+      setCheckingPassword(true)
+      setTimeout(() => {
+        setCheckingPassword(false)
+        setPasswordError(true)
+        setPassword('')
+      }, 1750)
+    }
+  }
+
+  const onViewClick = () => {
+    if (pwdInput && pwdInput.current && !checkingPassword && !passwordError) {
+      pwdInput.current.focus()
     }
   }
 
   return (
-    <div className={classNames("page landing-page", { animate })}>
+    <div className={classNames("page landing-page", { animate })} onClick={onViewClick}>
+      <div className="bg"/>
       <header>
         <div className="logo-box">
           <div className="by-text">BY</div>
@@ -53,15 +62,25 @@ const LandingPage = () => {
           width='300px'
           height='auto'
         />
-        <div className="coming-soon">COMING SOON</div>
-        {/*<div className="password-box">*/}
-        {/*  <h2>Enter Password</h2>*/}
-        {/*  <input ref={pwdInput} type="password" autoFocus className={classNames({filled: password.length > 0})} value={password} onChange={onPasswordChange} maxLength={6} />*/}
-        {/*</div>*/}
-        {/*<div className="bottom-text">*/}
-        {/*  <div>Request Vanguard Approval <FontAwesomeIcon icon={faPaperPlane} /></div>*/}
-        {/*</div>*/}
+        {!passwordError ? (
+          <div className="password-box">
+            <h2>Enter Password</h2>
+            <input ref={pwdInput} type="password" autoFocus
+                   className={classNames({filled: password.length > 0, loading: checkingPassword})}
+                   value={password} onChange={onPasswordChange} maxLength={6} />
+          </div>
+        ) : (
+          <div className="password-error">
+            <div className="error-message">Wrong Password</div>
+            <div className="request-join">
+              <a target="_blank" rel="noreferrer" href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20">
+                <div>Request Vanguard Approval <FontAwesomeIcon icon={faPaperPlane} /></div>
+              </a>
+            </div>
+          </div>
+        )}
       </div>
+      <div className="remainder"/>
     </div>
   )
 }
