@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import animation from 'assets/video/animation.mp4'
-// import animation from 'assets/video/tweezers-animation.mp4'
 import tweezersLogo from 'assets/images/logo-with-text.png'
 import ReactPlayer from "react-player";
 import 'css/app.scss'
@@ -53,15 +52,10 @@ const LandingPage = () => {
           width='300px'
           height='auto'
         />
-        <div className="password-box">
-          <h2>Enter Password</h2>
-          <input ref={pwdInput} type="password" autoFocus className={classNames({filled: password.length > 0})} value={password} onChange={onPasswordChange} maxLength={6} />
-        </div>
-        {/*<div className="logo-box">*/}
-        {/*  <div className="by-text">BY</div>*/}
-        {/*  <div>*/}
-        {/*    <img src={tweezersLogo} alt="TWEEZERS" />*/}
-        {/*  </div>*/}
+        <div className="coming-soon">COMING SOON</div>
+        {/*<div className="password-box">*/}
+        {/*  <h2>Enter Password</h2>*/}
+        {/*  <input ref={pwdInput} type="password" autoFocus className={classNames({filled: password.length > 0})} value={password} onChange={onPasswordChange} maxLength={6} />*/}
         {/*</div>*/}
         {/*<div className="bottom-text">*/}
         {/*  <div>Request Vanguard Approval <FontAwesomeIcon icon={faPaperPlane} /></div>*/}
