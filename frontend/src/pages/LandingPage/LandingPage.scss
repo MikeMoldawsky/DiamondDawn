@@ -1,5 +1,11 @@
 $gray: #636262;
 $light-gray: #7e7d7d;
+$red: #b63c45;
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
 .landing-page {
   height: 100%;
@@ -47,20 +53,15 @@ $light-gray: #7e7d7d;
       opacity: 1;
     }
 
-    .coming-soon {
-      margin-top: 0;
-      font-size: 2.4em;
-      color: $light-gray;
-      opacity: 0;
-      animation: scale 1.5s ease-in-out infinite;
-    }
-
     .password-box {
       color: $gray;
       text-align: center;
-      margin-top: 40px;
+      height: 108px;
       opacity: 0;
-      //font-size: 1.2em;
+
+      h2 {
+        margin-top: 0;
+      }
 
       input {
         color: $gray;
@@ -76,48 +77,35 @@ $light-gray: #7e7d7d;
         &.filled {
           border-bottom: none;
         }
+
+        &.loading {
+          animation: scale 1s ease-in-out infinite;
+        }
       }
     }
 
-    //.logo-box {
-    //  display: flex;
-    //  align-items: flex-start;
-    //  align-self: flex-end;
-    //
-    //  .by-text {
-    //    margin-top: 33px;
-    //    opacity: 0;
-    //    font-style: italic;
-    //  }
-    //
-    //  img {
-    //    width: 220px;
-    //    opacity: 0;
-    //  }
-    //}
-    //
-    //.bottom-text {
-    //  font-size: 1.5em;
-    //  position: absolute;
-    //  bottom: 50px;
-    //  text-align: center;
-    //  cursor: pointer;
-    //  opacity: 0;
-    //
-    //  &>div {
-    //    animation: scale 1.5s ease-in-out infinite;
-    //  }
-    //}
+    .password-error {
+      height: 108px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+
+      .error-message {
+        font-size: 1.5em;
+        color: $red;
+      }
+
+      .request-join {
+        font-size: 1.3em;
+        padding-bottom: 24px;
+        color: $light-gray;
+      }
+    }
   }
 
   &.animate {
     .centered-content {
-      .coming-soon {
-        transition: opacity 1s ease-out;
-        transition-delay: 6s;
-        opacity: 1;
-      }
-
       .password-box {
         transition: opacity 1s ease-out;
         transition-delay: 6s;
@@ -131,6 +119,7 @@ $light-gray: #7e7d7d;
   .landing-page {
     background-size: 160% auto;
     background-position-y: bottom;
+
     header {
       height: 35px;
       justify-content: center;
@@ -144,6 +133,8 @@ $light-gray: #7e7d7d;
     }
 
     .centered-content {
+      height: 58%;
+
       h1 {
         width: 320px;
         text-align: center;
@@ -155,9 +146,14 @@ $light-gray: #7e7d7d;
         width: 220px !important;
       }
 
-      .coming-soon {
-        margin-top: 30px;
-        font-size: 2em;
+      .password-error, .password-box {
+        height: 90px;
+      }
+
+      .password-box {
+        input {
+          font-size: 2.5em;
+        }
       }
     }
   }
