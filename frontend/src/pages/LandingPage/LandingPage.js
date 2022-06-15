@@ -45,6 +45,7 @@ const LandingPage = () => {
         <ReactPlayer
           url={animation}
           playing
+          playsinline
           controls={false}
           muted
           loop

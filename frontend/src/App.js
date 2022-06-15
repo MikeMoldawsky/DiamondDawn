@@ -128,7 +128,6 @@ function App() {
             ref={player}
             url="https://media.niftygateway.com/video/upload/v1638166907/Andrea/DavidAriew/DecVerified/SIRENSVERSE_yocjuq.mp4"
             playing={isPlaying}
-            playsinline={true}
             controls={false}
             muted={muted}
             volume={1}
