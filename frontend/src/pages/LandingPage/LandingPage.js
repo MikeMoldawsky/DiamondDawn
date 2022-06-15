@@ -30,7 +30,7 @@ const LandingPage = () => {
         setCheckingPassword(false)
         setPasswordError(true)
         setPassword('')
-      }, 1500)
+      }, 1750)
     }
   }
 
