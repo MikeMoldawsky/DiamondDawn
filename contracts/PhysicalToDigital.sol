@@ -22,7 +22,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
 
     struct Metadata {
         Stage stage;
-        uint256 processesLeft;
+        uint processesLeft;
     }
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -31,9 +31,9 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
 
     Stage private constant MAX_STAGE = Stage.PHYSICAL;
     Stage public stage;
-    uint256 public constant MINING_PRICE = 0.01 ether;
-    uint256 public constant PREPAID_PROCESSING_PRICE = 0.01 ether;
-    uint256 public processingPrice;
+    uint public constant MINING_PRICE = 0.01 ether;
+    uint public constant PREPAID_PROCESSING_PRICE = 0.01 ether;
+    uint public processingPrice;
     bool public isStageActive;
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
@@ -100,7 +100,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
             stage == _stage,
             string.concat(
                 "P2D: The stage should be ",
-                Strings.toString(uint256(_stage)),
+                Strings.toString(uint(_stage)),
                 " to perform this action"
             )
         );
@@ -114,14 +114,14 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
 
     function _getNextStage(Stage _stage) internal pure returns (Stage) {
         require(
-            uint256(_stage) < uint256(MAX_STAGE),
+            uint(_stage) < uint(MAX_STAGE),
             string.concat(
                 "P2D: The stage should be less than ",
-                Strings.toString(uint256(MAX_STAGE))
+                Strings.toString(uint(MAX_STAGE))
             )
         );
 
-        return Stage(uint256(_stage) + 1);
+        return Stage(uint(_stage) + 1);
     }
 
     // Admin API - Write
@@ -149,7 +149,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
 
     // Public
 
-    function setProcessingPrice(uint256 price)
+    function setProcessingPrice(uint price)
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
@@ -171,20 +171,20 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
 
     // Client API - Write
 
-    function mine(uint256 processesPurchased)
+    function mine(uint processesPurchased)
         public
         payable
         whenStageIsActive(Stage.MINE)
     {
         require(
-            processesPurchased <= uint256(MAX_STAGE) - 1,
+            processesPurchased <= uint(MAX_STAGE) - 1,
             string.concat(
                 "P2D: Purchased processes should be less than or equal to ",
-                Strings.toString(uint256(MAX_STAGE) - 1)
+                Strings.toString(uint(MAX_STAGE) - 1)
             )
         );
 
-        uint256 price = MINING_PRICE +
+        uint price = MINING_PRICE +
             (processesPurchased * PREPAID_PROCESSING_PRICE);
         require(
             msg.value == price,
@@ -212,10 +212,10 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
             "ERC721: caller is not token owner nor approved"
         );
         require(
-            uint256(_tokensMetadata[tokenId].stage) == uint256(stage) - 1,
+            uint(_tokensMetadata[tokenId].stage) == uint(stage) - 1,
             string.concat(
                 "P2D: The level of the diamond should be ",
-                Strings.toString(uint256(stage) - 1),
+                Strings.toString(uint(stage) - 1),
                 " to perform this action"
             )
         );

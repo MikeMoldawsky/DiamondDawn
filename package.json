@@ -8,6 +8,7 @@
     "compile": "SKIP_LOAD=true hardhat clean && SKIP_LOAD=true hardhat compile",
     "test": "npm run compile && REPORT_GAS=true hardhat test",
     "lint": "prettier --list-different 'contracts/**/*.sol'",
+    "format": "prettier --write 'contracts/**/*.sol'",
     "prettier": "prettier --write 'contracts/**/*.sol'",
     "quick-test": "hardhat test",
     "coverage": "npm run compile && hardhat coverage"

@@ -53,7 +53,7 @@
     "lint:fix": "npm run lint -- --fix",
     "eslint": "eslint .",
     "prettier": "prettier .",
-    "format": "npm run prettier -- --write \"{,!(node_modules)/**/}*.js\""
+    "format": "prettier -- --write \"{,!(node_modules)/**/}*.js\""
   },
   "eslintConfig": {
     "extends": [
