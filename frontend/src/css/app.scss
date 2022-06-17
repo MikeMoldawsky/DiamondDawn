@@ -1,11 +1,12 @@
-@import "vars";
+@import 'vars';
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
 body {
-
 }
 
 #root {
@@ -28,11 +29,11 @@ body {
     align-items: center;
     justify-content: flex-end;
     font-size: 1.8em;
-    opacity: .9;
+    opacity: 0.9;
 
     .replay-btn {
       opacity: 0;
-      transition: opacity .25s linear;
+      transition: opacity 0.25s linear;
     }
 
     svg {
@@ -41,7 +42,7 @@ body {
 
       &.fa-arrows-rotate {
         transform: rotate(0);
-        transition: transform .25s linear;
+        transition: transform 0.25s linear;
 
         &:hover {
           transform: rotate(180deg);
@@ -75,31 +76,31 @@ body {
 
   &.show-content {
     .content {
-      transition: opacity .25s ease-in;
-      transition-delay: .25s;
+      transition: opacity 0.25s ease-in;
+      transition-delay: 0.25s;
       opacity: 1;
     }
 
     .react-player {
-      transition: opacity .25s ease-in;
-      opacity: .4;
+      transition: opacity 0.25s ease-in;
+      opacity: 0.4;
     }
 
     header .replay-btn {
       opacity: 1;
-      transition-delay: .25s;
+      transition-delay: 0.25s;
     }
   }
 
   &.hide-content {
     .content {
-      transition: opacity .25s ease-in;
+      transition: opacity 0.25s ease-in;
       opacity: 0;
     }
 
     .react-player {
-      transition: opacity .25s ease-in;
-      transition-delay: .25s;
+      transition: opacity 0.25s ease-in;
+      transition-delay: 0.25s;
       opacity: 1;
     }
 

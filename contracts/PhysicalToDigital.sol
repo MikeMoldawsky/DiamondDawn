@@ -28,7 +28,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     Counters.Counter private _tokenIdCounter;
-    
+
     Stage private constant MAX_STAGE = Stage.PHYSICAL;
     Stage public stage;
     uint public constant MINING_PRICE = 0.01 ether;
@@ -67,11 +67,11 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         _safeMint(to, tokenId);
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
-        internal
-        whenNotPaused
-        override
-    {
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal override whenNotPaused {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
@@ -86,21 +86,24 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         return super.supportsInterface(interfaceId);
     }
 
-
     // Custom logics
 
-    function _requireActiveStage() 
-        internal 
-        view 
-    {
-        require(isStageActive, "P2D: A stage should be active to perform this action");
+    function _requireActiveStage() internal view {
+        require(
+            isStageActive,
+            "P2D: A stage should be active to perform this action"
+        );
     }
 
-    function _requireSpecificStage(Stage _stage) 
-        internal 
-        view  
-    {
-        require(stage == _stage, string.concat("P2D: The stage should be ", Strings.toString(uint(_stage)), " to perform this action"));
+    function _requireSpecificStage(Stage _stage) internal view {
+        require(
+            stage == _stage,
+            string.concat(
+                "P2D: The stage should be ",
+                Strings.toString(uint(_stage)),
+                " to perform this action"
+            )
+        );
     }
 
     modifier whenStageIsActive(Stage _stage) {
@@ -109,42 +112,35 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         _;
     }
 
-    function _getNextStage(Stage _stage) 
-        internal
-        pure
-        returns (Stage)
-    {
-        require(uint(_stage) < uint(MAX_STAGE), string.concat("P2D: The stage should be less than ", Strings.toString(uint(MAX_STAGE))));
-        
+    function _getNextStage(Stage _stage) internal pure returns (Stage) {
+        require(
+            uint(_stage) < uint(MAX_STAGE),
+            string.concat(
+                "P2D: The stage should be less than ",
+                Strings.toString(uint(MAX_STAGE))
+            )
+        );
+
         return Stage(uint(_stage) + 1);
     }
 
     // Admin API - Write
 
     // Internal
-    
-    function _activateStage() 
-        internal
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+
+    function _activateStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
         isStageActive = true;
     }
 
-    function _nextStage() 
-        internal
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    function _nextStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
         stage = _getNextStage(stage);
     }
 
-    function _deactivateStage() 
-        internal
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    function _deactivateStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
         isStageActive = false;
     }
 
-    function _assignCurrentStageVideo(string memory videoUrl) 
+    function _assignCurrentStageVideo(string memory videoUrl)
         internal
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
@@ -153,7 +149,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
 
     // Public
 
-    function setProcessingPrice(uint price) 
+    function setProcessingPrice(uint price)
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
@@ -168,31 +164,41 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         _assignCurrentStageVideo(videoUrl);
     }
 
-    function completeCurrentStage()
-        public
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    function completeCurrentStage() public onlyRole(DEFAULT_ADMIN_ROLE) {
         _deactivateStage();
         _nextStage();
     }
 
     // Client API - Write
 
-    function mine(uint processesPurchased) 
+    function mine(uint processesPurchased)
         public
         payable
         whenStageIsActive(Stage.MINE)
     {
-        require(processesPurchased <= uint(MAX_STAGE) - 1, string.concat("P2D: Purchased processes should be less than or equal to ", Strings.toString(uint(MAX_STAGE) - 1)));
-        
-        uint price = MINING_PRICE + (processesPurchased * PREPAID_PROCESSING_PRICE);
-        require(msg.value == price, string.concat("P2D: Wrong payment - payment should be: ", Strings.toString(price)));
+        require(
+            processesPurchased <= uint(MAX_STAGE) - 1,
+            string.concat(
+                "P2D: Purchased processes should be less than or equal to ",
+                Strings.toString(uint(MAX_STAGE) - 1)
+            )
+        );
+
+        uint price = MINING_PRICE +
+            (processesPurchased * PREPAID_PROCESSING_PRICE);
+        require(
+            msg.value == price,
+            string.concat(
+                "P2D: Wrong payment - payment should be: ",
+                Strings.toString(price)
+            )
+        );
 
         // Regular mint logics
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
-        
+
         // Store token metadata
         _tokensMetadata[tokenId] = Metadata({
             stage: Stage.MINE,
@@ -200,21 +206,37 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         });
     }
 
-    function _process(uint256 tokenId)
-        internal
-    {
-        require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not token owner nor approved");
-        require(uint(_tokensMetadata[tokenId].stage) == uint(stage) - 1, string.concat("P2D: The level of the diamond should be ",  Strings.toString(uint(stage) - 1), " to perform this action"));
+    function _process(uint256 tokenId) internal {
+        require(
+            _isApprovedOrOwner(_msgSender(), tokenId),
+            "ERC721: caller is not token owner nor approved"
+        );
+        require(
+            uint(_tokensMetadata[tokenId].stage) == uint(stage) - 1,
+            string.concat(
+                "P2D: The level of the diamond should be ",
+                Strings.toString(uint(stage) - 1),
+                " to perform this action"
+            )
+        );
 
         if (_tokensMetadata[tokenId].processesLeft == 0) {
-            require(msg.value == processingPrice, string.concat("P2D: Wrong payment - payment should be: ", Strings.toString(processingPrice)));
+            require(
+                msg.value == processingPrice,
+                string.concat(
+                    "P2D: Wrong payment - payment should be: ",
+                    Strings.toString(processingPrice)
+                )
+            );
         }
 
-        _tokensMetadata[tokenId].stage = _getNextStage(_tokensMetadata[tokenId].stage);
+        _tokensMetadata[tokenId].stage = _getNextStage(
+            _tokensMetadata[tokenId].stage
+        );
         _tokensMetadata[tokenId].processesLeft--;
     }
 
-    function polish(uint256 tokenId) 
+    function polish(uint256 tokenId)
         public
         payable
         whenStageIsActive(Stage.POLISH)
@@ -222,7 +244,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         _process(tokenId);
     }
 
-    function clean(uint256 tokenId) 
+    function clean(uint256 tokenId)
         public
         payable
         whenStageIsActive(Stage.CLEAN)
@@ -232,21 +254,45 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
 
     // Client API - Read
 
-    function tokenURI(uint256 tokenId) override public view returns (string memory) {
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override
+        returns (string memory)
+    {
         // _requireMinted(tokenId);
 
-        string memory json = Base64.encode(bytes(string(abi.encodePacked('{"name": "Physical To  Digital", "description": "This is the description of Physical To Digital Project", "image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "', _getVideoUrl(tokenId), '" }'))));
-        
-        return string(abi.encodePacked('data:application/json;base64,', json));
+        string memory json = Base64.encode(
+            bytes(
+                string(
+                    abi.encodePacked(
+                        '{"name": "Physical To  Digital", "description": "This is the description of Physical To Digital Project", "image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "',
+                        _getVideoUrl(tokenId),
+                        '" }'
+                    )
+                )
+            )
+        );
+
+        return string(abi.encodePacked("data:application/json;base64,", json));
     }
 
-    function _getImageUrl(uint256 tokenId) internal view returns (string memory) {
+    function _getImageUrl(uint256 tokenId)
+        internal
+        view
+        returns (string memory)
+    {
         // _requireMinted(tokenId);
 
-        return "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png";
+        return
+            "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png";
     }
 
-    function _getVideoUrl(uint256 tokenId) internal view returns (string memory) {
+    function _getVideoUrl(uint256 tokenId)
+        internal
+        view
+        returns (string memory)
+    {
         return _videoUrls[_tokensMetadata[tokenId].stage];
     }
 }
