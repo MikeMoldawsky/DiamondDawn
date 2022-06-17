@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MikeMoldawsky/tweezers.git"
+    "url": "git+https://github.com/Tweezers0xffff/tweezers.git"
   },
   "author": "Tweezers",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MikeMoldawsky/tweezers/issues"
+    "url": "https://github.com/Tweezers0xffff/tweezers/issues"
   },
-  "homepage": "https://github.com/MikeMoldawsky/tweezers#readme",
+  "homepage": "https://github.com/Tweezers0xffff/tweezers#readme",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
