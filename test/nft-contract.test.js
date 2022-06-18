@@ -1,23 +1,23 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("PhysicalToDigital", () => {
-  let PhysicalToDigital;
-  let physicalToDigital;
+describe("DiamondDawn", () => {
+  let DiamondDawn;
+  let diamondDawn;
   let deployer;
 
   before(async () => {
     provider = ethers.provider;
     deployer = await (await ethers.getSigner()).address;
-    PhysicalToDigital = await ethers.getContractFactory("PhysicalToDigital");
+    DiamondDawn = await ethers.getContractFactory("DiamondDawn");
   });
 
   beforeEach(async () => {
-    physicalToDigital = await PhysicalToDigital.deploy();
-    await physicalToDigital.deployed();
+    diamondDawn = await DiamondDawn.deploy();
+    await diamondDawn.deployed();
   });
 
   it("Should deploy the contract", async () => {
-    expect(physicalToDigital).to.not.equal(null);
+    expect(diamondDawn).to.not.equal(null);
   })
 });
