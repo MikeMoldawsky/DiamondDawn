@@ -1,34 +1,34 @@
-import logo from '../tweezers_logo.png'
-import { Button, Grid } from '@mui/material'
-import SendIcon from '@mui/icons-material/Send'
-import { useState } from 'react'
-import onboard from '../components/OnboardWallet'
-const _ = require('lodash')
+import logo from "../tweezers_logo.png";
+import { Button, Grid } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import { useState } from "react";
+import onboard from "../components/OnboardWallet";
+const _ = require("lodash");
 
 function sendTwitterMsg() {
   const twitterMsgLink =
-    'https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20💎'
-  window.open(twitterMsgLink, '_blank')
+    "https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20💎";
+  window.open(twitterMsgLink, "_blank");
 }
 
 function HomePage() {
-  const [ensName, setEnsName] = useState()
+  const [ensName, setEnsName] = useState();
 
   async function connectWallet() {
     try {
-      const wallets = await onboard.connectWallet()
-      console.log(wallets)
-      const ensName = _.get(wallets, '[0].accounts[0].ens.name')
+      const wallets = await onboard.connectWallet();
+      console.log(wallets);
+      const ensName = _.get(wallets, "[0].accounts[0].ens.name");
 
       if (!ensName) {
-        const address = _.get(wallets, '[0].accounts[0].address')
-        setEnsName(`0x...${address.substring(address.length - 4)}`)
+        const address = _.get(wallets, "[0].accounts[0].address");
+        setEnsName(`0x...${address.substring(address.length - 4)}`);
       } else {
-        setEnsName(ensName)
+        setEnsName(ensName);
       }
     } catch (e) {
-      console.log(`exception in connect wallet ${e}`)
-      alert(`exception in connect wallet ${e}`)
+      console.log(`exception in connect wallet ${e}`);
+      alert(`exception in connect wallet ${e}`);
     }
   }
 
@@ -58,7 +58,7 @@ function HomePage() {
         </Button>
       </header>
     </div>
-  )
+  );
 }
 
-export default HomePage
+export default HomePage;

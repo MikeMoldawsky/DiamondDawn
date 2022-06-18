@@ -1,48 +1,48 @@
-import React, { useState, useEffect, useRef } from 'react'
-import classNames from 'classnames'
-import animation from 'assets/video/animation.mp4'
-import tweezersLogo from 'assets/images/logo-with-text.png'
-import ReactPlayer from 'react-player'
-import 'css/app.scss'
-import './LandingPage.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import React, { useState, useEffect, useRef } from "react";
+import classNames from "classnames";
+import animation from "assets/video/animation.mp4";
+import tweezersLogo from "assets/images/logo-with-text.png";
+import ReactPlayer from "react-player";
+import "css/app.scss";
+import "./LandingPage.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 const LandingPage = () => {
-  const [animate, setAnimate] = useState(false)
-  const [password, setPassword] = useState('')
-  const pwdInput = useRef(null)
-  const [checkingPassword, setCheckingPassword] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
+  const [animate, setAnimate] = useState(false);
+  const [password, setPassword] = useState("");
+  const pwdInput = useRef(null);
+  const [checkingPassword, setCheckingPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   useEffect(() => {
-    setAnimate(true)
-  }, [])
+    setAnimate(true);
+  }, []);
 
   const onPasswordChange = (e) => {
-    console.log({ e })
-    const pwd = e.target.value
-    setPassword(pwd)
+    console.log({ e });
+    const pwd = e.target.value;
+    setPassword(pwd);
     if (pwd.length === 6) {
-      pwdInput.current.blur()
-      setCheckingPassword(true)
+      pwdInput.current.blur();
+      setCheckingPassword(true);
       setTimeout(() => {
-        setCheckingPassword(false)
-        setPasswordError(true)
-        setPassword('')
-      }, 1750)
+        setCheckingPassword(false);
+        setPasswordError(true);
+        setPassword("");
+      }, 1750);
     }
-  }
+  };
 
   const onViewClick = () => {
     if (pwdInput && pwdInput.current && !checkingPassword && !passwordError) {
-      pwdInput.current.focus()
+      pwdInput.current.focus();
     }
-  }
+  };
 
   return (
     <div
-      className={classNames('page landing-page', { animate })}
+      className={classNames("page landing-page", { animate })}
       onClick={onViewClick}
     >
       <div className="bg" />
@@ -91,7 +91,7 @@ const LandingPage = () => {
                 href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20"
               >
                 <div>
-                  Request Vanguard Approval{' '}
+                  Request Vanguard Approval{" "}
                   <FontAwesomeIcon icon={faPaperPlane} />
                 </div>
               </a>
@@ -101,7 +101,7 @@ const LandingPage = () => {
       </div>
       <div className="remainder" />
     </div>
-  )
-}
+  );
+};
 
-export default LandingPage
+export default LandingPage;
