@@ -27,20 +27,9 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@imaginary-cloud/eslint-config-react": "^2.0.1",
-    "@imaginary-cloud/prettier-config": "^1.0.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jest": "^26.5.3",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.30.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.7.1"
   },
   "scripts": {
@@ -53,16 +42,14 @@
     "lint:fix": "npm run lint -- --fix",
     "eslint": "eslint .",
     "prettier": "prettier .",
-    "format": "prettier -- --write \"{,!(node_modules)/**/}*.js\""
+    "format": "npm run prettier -- --write"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest",
-      "@imaginary-cloud/react"
+      "react-app/jest"
     ]
   },
-  "prettier": "@imaginary-cloud/prettier-config",
   "browserslist": {
     "production": [
       ">0.2%",

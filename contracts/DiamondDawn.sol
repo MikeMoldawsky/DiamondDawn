@@ -10,13 +10,13 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 /// @custom:security-contact tweezers@gmail.com
-contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
+contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     using Counters for Counters.Counter;
 
     enum Stage {
         MINE,
+        CUT,
         POLISH,
-        CLEAN,
         PHYSICAL
     }
 
@@ -38,7 +38,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
 
-    constructor() ERC721("PhysicalToDigital", "PTD") {
+    constructor() ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
@@ -236,18 +236,18 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
         _tokensMetadata[tokenId].processesLeft--;
     }
 
-    function polish(uint256 tokenId)
+    function cut(uint256 tokenId)
         public
         payable
-        whenStageIsActive(Stage.POLISH)
+        whenStageIsActive(Stage.CUT)
     {
         _process(tokenId);
     }
 
-    function clean(uint256 tokenId)
+    function polish(uint256 tokenId)
         public
         payable
-        whenStageIsActive(Stage.CLEAN)
+        whenStageIsActive(Stage.POLISH)
     {
         _process(tokenId);
     }
@@ -266,7 +266,7 @@ contract PhysicalToDigital is ERC721, Pausable, AccessControl, ERC721Burnable {
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"name": "Physical To  Digital", "description": "This is the description of Physical To Digital Project", "image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "',
+                        '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "',
                         _getVideoUrl(tokenId),
                         '" }'
                     )
