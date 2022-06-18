@@ -53,7 +53,7 @@ const LandingPage = () => {
         </div>
       </header>
       <div className="centered-content">
-        <h1>A BILLION YEARS IN THE MAKING Mike</h1>
+        <h1>A BILLION YEARS IN THE MAKING Mike1</h1>
         <ReactPlayer
           url={animation}
           playing
