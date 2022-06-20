@@ -35,9 +35,9 @@ const LandingPage = () => {
     }
   };
 
-  const onResultClick = () => {
-    setPasswordError(false)
-  }
+  // const onResultClick = () => {
+  //   setPasswordError(false)
+  // }
 
   const onViewClick = () => {
     if (pwdInput && pwdInput.current && !checkingPassword && !passwordError) {
