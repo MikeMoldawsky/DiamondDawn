@@ -24,17 +24,17 @@ async function main() {
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const PhysicalToDigital = await hre.ethers.getContractFactory("PhysicalToDigital");
-  const physicalToDigital = await PhysicalToDigital.deploy();
-  await physicalToDigital.deployed();
+  const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
+  const diamondDawn = await DiamondDawn.deploy();
+  await diamondDawn.deployed();
 
-  console.log("PhysicalToDigital contract address:", physicalToDigital.address);
+  console.log("DiamondDawn contract address:", diamondDawn.address);
 
   // We also save the contract's artifacts and address in the frontend directory
-  saveFrontendFiles(physicalToDigital);
+  saveFrontendFiles(diamondDawn);
 }
 
-function saveFrontendFiles(physicalToDigital) {
+function saveFrontendFiles(diamondDawn) {
   const fs = require("fs");
   const contractsDir = `${__dirname}/../frontend/src/contracts`;
 
@@ -44,14 +44,14 @@ function saveFrontendFiles(physicalToDigital) {
 
   fs.writeFileSync(
     contractsDir + "/contract-address.json",
-    JSON.stringify({ PhysicalToDigital: physicalToDigital.address }, undefined, 2)
+    JSON.stringify({ DiamondDawn: diamondDawn.address }, undefined, 2)
   );
 
-  const PhysicalToDigitalArtifact = hre.artifacts.readArtifactSync("PhysicalToDigital");
+  const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
 
   fs.writeFileSync(
-    contractsDir + "/PhysicalToDigital.json",
-    JSON.stringify(PhysicalToDigitalArtifact, null, 2)
+    contractsDir + "/DiamondDawn.json",
+    JSON.stringify(DiamondDawnArtifact, null, 2)
   );
 }
 

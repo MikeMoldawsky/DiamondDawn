@@ -15,7 +15,8 @@ a {
     position: fixed;
     height: 100%;
     width: 100%;
-    background: black url("../../assets/images/diamond art.png") no-repeat center top;
+    background: black url("../../assets/images/diamond art.png") no-repeat
+      center top;
     background-size: auto 120%;
     z-index: 0;
   }
@@ -184,7 +185,6 @@ a {
 
 @media only screen and (max-width: 767px) {
   .landing-page {
-
     .bg {
       background-size: cover;
       background-position-y: calc(100% + 140px);

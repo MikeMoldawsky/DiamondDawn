@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
-import animation from 'assets/video/animation.mp4'
-import tweezersLogo from 'assets/images/logo-with-text.png'
+import animation from "assets/video/animation.mp4";
+import tweezersLogo from "assets/images/logo-with-text.png";
 import ReactPlayer from "react-player";
 import 'css/app.scss'
 import './LandingPage.scss'
@@ -10,15 +10,15 @@ const PASSWORD_LENGTH = 10
 const CHECK_TIME = 1750
 
 const LandingPage = () => {
-  const [animate, setAnimate] = useState(false)
-  const [password, setPassword] = useState('')
-  const pwdInput = useRef(null)
-  const [checkingPassword, setCheckingPassword] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
+  const [animate, setAnimate] = useState(false);
+  const [password, setPassword] = useState("");
+  const pwdInput = useRef(null);
+  const [checkingPassword, setCheckingPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   useEffect(() => {
-    setAnimate(true)
-  }, [])
+    setAnimate(true);
+  }, []);
 
   const onPasswordChange = e => {
     console.log({e})
@@ -33,7 +33,7 @@ const LandingPage = () => {
         setPassword('')
       }, CHECK_TIME)
     }
-  }
+  };
 
   const onResultClick = () => {
     setPasswordError(false)
@@ -41,13 +41,16 @@ const LandingPage = () => {
 
   const onViewClick = () => {
     if (pwdInput && pwdInput.current && !checkingPassword && !passwordError) {
-      pwdInput.current.focus()
+      pwdInput.current.focus();
     }
-  }
+  };
 
   return (
-    <div className={classNames("page landing-page", { animate })} onClick={onViewClick}>
-      <div className="bg"/>
+    <div
+      className={classNames("page landing-page", { animate })}
+      onClick={onViewClick}
+    >
+      <div className="bg" />
       <header>
         <div className="logo-box">
           <div className="by-text">BY</div>
@@ -90,9 +93,9 @@ const LandingPage = () => {
           </div>
         )}
       </div>
-      <div className="remainder"/>
+      <div className="remainder" />
     </div>
-  )
-}
+  );
+};
 
-export default LandingPage
+export default LandingPage;

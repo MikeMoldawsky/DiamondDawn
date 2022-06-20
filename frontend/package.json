@@ -30,7 +30,7 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
-    "prettier": "^2.5.0"
+    "prettier": "^2.7.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -38,6 +38,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev": "nodemon index.js",
+    "lint": "eslint ./ --ignore-path .gitignore",
+    "lint:fix": "npm run lint -- --fix",
     "eslint": "eslint .",
     "prettier": "prettier .",
     "format": "npm run prettier -- --write"

@@ -16,18 +16,17 @@ function HomePage() {
 
   async function connectWallet() {
     try {
-
-      const wallets = await onboard.connectWallet()
+      const wallets = await onboard.connectWallet();
       console.log(wallets);
-      const ensName = _.get(wallets, '[0].accounts[0].ens.name');
+      const ensName = _.get(wallets, "[0].accounts[0].ens.name");
 
-      if(!ensName) {
-        const address = _.get(wallets, '[0].accounts[0].address');
+      if (!ensName) {
+        const address = _.get(wallets, "[0].accounts[0].address");
         setEnsName(`0x...${address.substring(address.length - 4)}`);
       } else {
         setEnsName(ensName);
       }
-    } catch (e){
+    } catch (e) {
       console.log(`exception in connect wallet ${e}`);
       alert(`exception in connect wallet ${e}`);
     }
@@ -46,9 +45,7 @@ function HomePage() {
         <img src={logo} className="App-logo" alt="logo" />
         <br />
         <h2>Coming Soon...</h2>
-        <div>
-          { ensName }
-        </div>
+        <div>{ensName}</div>
         Are you in The Vanguard List?
         <br />
         <br />
