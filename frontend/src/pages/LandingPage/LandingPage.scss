@@ -1,6 +1,4 @@
-$gray: #636262;
-$light-gray: #7e7d7d;
-$red: #b63c45;
+@import "css/vars";
 
 a {
   color: inherit;
@@ -10,7 +8,6 @@ a {
 .landing-page {
   height: 100%;
   color: white;
-  font-family: monospace;
   display: flex;
   flex-direction: column;
 
@@ -49,39 +46,79 @@ a {
 
   .centered-content {
     z-index: 1;
-    height: 38%;
+    height: 44%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
+    letter-spacing: 0.1em;
+
+    .top-content {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 50px;
+    }
 
     h1 {
-      margin: 20px 0 0;
+      margin: 20px 0 10px;
       font-size: 3em;
-      font-weight: normal;
-      opacity: 1;
+      color: $gray;
+    }
+
+    .title {
+      font-size: 2.2em;
+      margin-top: -10px;
+    }
+
+    .coming-soon {
+
     }
 
     .password-box {
       color: $gray;
       text-align: center;
-      height: 108px;
+      height: 60px;
       opacity: 0;
+      border: solid 1px $white;
+      border-radius: 30px;
+      position: relative;
 
-      h2 {
-        margin-top: 0;
+      .pwd-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: $dark;
+        border-radius: 30px;
+        z-index: 0;
+      }
+
+      .password-title {
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+        background-color: $dark;
+        font-size: 1.2em;
+        padding: 0 10px;
+        border-radius: 10px;
       }
 
       input {
-        color: $gray;
+        position: relative;
+        z-index: 1;
         text-align: center;
         background-color: transparent;
         outline: none;
         border: none;
-        font-size: 3.6em;
+        font-size: 2.5em;
+        color: $white;
         letter-spacing: .3em;
-        width: 230px;
-        margin-left: 18px;
+        width: 320px;
+        caret-color: transparent;
+        margin-left: 16px;
 
         &.filled {
           border-bottom: none;
@@ -94,21 +131,38 @@ a {
     }
 
     .password-error {
-      height: 108px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
+      position: relative;
 
       .error-message {
-        font-size: 1.5em;
+        font-size: 1em;
         color: $red;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        transform: translateY(-32px);
       }
 
       .request-join {
-        font-size: 1.3em;
-        padding-bottom: 24px;
-        color: $light-gray;
+        font-size: 1.2em;
+        color: $dark;
+        background-color: $white;
+        height: 60px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        padding: 0 30px;
+        border: solid 1px transparent;
+        cursor: pointer;
+
+        &:hover {
+          color: $white;
+          background-color: $dark;
+          border: solid 1px $white;
+        }
       }
     }
   }
@@ -144,6 +198,7 @@ a {
       .logo-box {
         .by-text {
           margin-bottom: -20px;
+          font-size: .7em;
           color: $gray;
         }
 
@@ -154,26 +209,44 @@ a {
     }
 
     .centered-content {
-      height: 60%;
+      height: 62%;
 
       h1 {
         width: 275px;
         text-align: center;
         margin: 20px 0 0;
-        font-size: 2em;
+        font-size: 1.5em;
       }
 
       .react-player {
         width: 220px !important;
       }
 
+      .title {
+        font-size: 1.5em;
+      }
+
       .password-error, .password-box {
-        height: 90px;
+        height: 54px;
       }
 
       .password-box {
+        .password-title {
+          font-size: 1em;
+        }
+
         input {
-          font-size: 2.5em;
+          font-size: 2.2em;
+          width: 260px;
+          margin-left: 14px;
+        }
+      }
+
+      .password-error {
+        .request-join {
+          font-size: 1em;
+          padding: 0 24px;
+          height: 54px;
         }
       }
     }
