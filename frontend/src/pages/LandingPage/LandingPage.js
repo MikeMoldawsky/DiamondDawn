@@ -71,7 +71,7 @@ const LandingPage = () => {
         <ReactPlayer
           url={animation}
           playing
-          playsInline
+          playsnline
           controls={false}
           muted
           // loop
