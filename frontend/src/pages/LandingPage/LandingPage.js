@@ -6,7 +6,7 @@ import ReactPlayer from "react-player";
 import 'css/app.scss'
 import './LandingPage.scss'
 
-const PASSWORD_LENGTH = 10
+const PASSWORD_LENGTH = 8
 const CHECK_TIME = 1750
 
 const LandingPage = () => {
