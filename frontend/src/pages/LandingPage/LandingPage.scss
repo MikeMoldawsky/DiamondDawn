@@ -62,16 +62,16 @@ a {
     }
 
     .react-player {
-      min-height: 180px;
-      height: 15% !important;
-      width: auto !important;
+      //min-height: 180px;
+      //height: 15% !important;
+      //width: auto !important;
       //overflow: hidden;
 
-      video {
-        width: auto !important;
-        height: 100% !important;;
-        //transform: scale(2.5);
-      }
+      //video {
+      //  width: auto !important;
+      //  height: 100% !important;;
+      //  //transform: scale(2.5);
+      //}
     }
 
     .title {
@@ -232,7 +232,7 @@ a {
       }
 
       .react-player {
-        min-height: 140px;
+        //min-height: 140px;
 
         video {
           //transform: scale(2);
