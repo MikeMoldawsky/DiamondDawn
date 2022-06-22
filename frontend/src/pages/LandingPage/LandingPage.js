@@ -76,6 +76,8 @@ const LandingPage = () => {
           muted
           // loop
           className="react-player"
+          width="auto"
+          height="180px"
         />
         <div className="title">DIAMONDS DAWN</div>
         <div className="coming-soon">COMING SOON</div>
