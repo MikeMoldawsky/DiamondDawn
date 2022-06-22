@@ -5,6 +5,10 @@ a {
   text-decoration: none;
 }
 
+input[type="password"] {
+  font-family: caption;
+}
+
 .landing-page {
   height: 100%;
   color: white;
@@ -133,6 +137,7 @@ a {
         width: 320px;
         caret-color: transparent;
         margin-left: 16px;
+        padding-top: 10px;
 
         &.filled {
           border-bottom: none;
@@ -258,6 +263,7 @@ a {
           font-size: 2.2em;
           width: 260px;
           margin-left: 14px;
+          padding-top: 6px;
         }
       }
 
