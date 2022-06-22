@@ -7,9 +7,13 @@ body,
   height: 100%;
 }
 
+body {
+  margin: 0;
+}
+
 * {
   font-family: 'Saira', monospace;
-  font-weight: 600;
+  font-weight: 300;
 }
 
 #root {

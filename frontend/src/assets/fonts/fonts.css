@@ -1,18 +1,5 @@
 @font-face {
     font-family: 'Saira';
-    src: url('Saira-Thin.woff2') format('woff2'),
-        url('Saira-Thin.woff') format('woff');
-    font-weight: 100;
-    font-style: normal;
-    font-display: swap;
+    src: url('Saira-VariableFont_wdth,wght.ttf') format('truetype');
+    font-weight: 100 1000;
 }
-
-@font-face {
-    font-family: 'Saira';
-    src: url('Saira-ThinItalic.woff2') format('woff2'),
-        url('Saira-ThinItalic.woff') format('woff');
-    font-weight: 100;
-    font-style: italic;
-    font-display: swap;
-}
-
