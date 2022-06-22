@@ -14,6 +14,9 @@ input[type="password"] {
   color: white;
   display: flex;
   flex-direction: column;
+  --input-height: 50px;
+  --input-width: 260px;
+  --pwd-input-offset: 16px;
 
   .bg {
     position: fixed;
@@ -95,10 +98,10 @@ input[type="password"] {
 
     .password-box {
       text-align: center;
-      height: 60px;
+      height: var(--input-height);
       opacity: 0;
       border: solid 2px $white;
-      border-radius: 30px;
+      border-radius: calc(var(--input-height) / 2);
       position: relative;
 
       .pwd-bg {
@@ -106,7 +109,7 @@ input[type="password"] {
         width: 100%;
         height: 100%;
         background-color: $dark;
-        border-radius: 30px;
+        border-radius: calc(var(--input-height) / 2);
         z-index: 0;
       }
 
@@ -115,12 +118,10 @@ input[type="password"] {
         position: absolute;
         top: 0;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -51%);
         white-space: nowrap;
         background-color: $dark;
-        font-size: 1.2em;
-        padding: 0 10px;
-        border-radius: 10px;
+        padding: 0 8px;
         color: rgba(255, 255, 255, 0.5);
       }
 
@@ -134,10 +135,9 @@ input[type="password"] {
         font-size: 2.5em;
         color: $white;
         letter-spacing: .3em;
-        width: 320px;
+        width: var(--input-width);
         caret-color: transparent;
-        margin-left: 16px;
-        padding-top: 10px;
+        margin-left: var(--pwd-input-offset);
 
         &.filled {
           border-bottom: none;
@@ -170,23 +170,18 @@ input[type="password"] {
         font-size: 1.2em;
         color: $dark;
         background-color: $white;
-        height: 60px;
-        border-radius: 30px;
+        height: var(--input-height);
+        border-radius: calc(var(--input-height) / 2);
+        width: calc(var(--input-width) + var(--pwd-input-offset) + 4px);
         display: flex;
         align-items: center;
-        padding: 0 30px;
+        justify-content: center;
         border: solid 2px transparent;
         cursor: pointer;
 
         .request-join-text {
           font-weight: 500;
         }
-
-        //&:hover {
-        //  color: $white;
-        //  background-color: $dark;
-        //  border: solid 2px $white;
-        //}
       }
     }
   }
@@ -199,7 +194,7 @@ input[type="password"] {
     .centered-content {
       .password-box {
         transition: opacity 1s ease-out;
-        transition-delay: 6s;
+        //transition-delay: 6s;
         opacity: 1;
       }
     }
@@ -208,6 +203,10 @@ input[type="password"] {
 
 @media only screen and (max-width: 767px) {
   .landing-page {
+    --input-height: 40px;
+    --input-width: 220px;
+    --pwd-input-offset: 14px;
+
     .bg {
       background-size: 160%;
     }
@@ -253,25 +252,18 @@ input[type="password"] {
       }
 
       .password-box {
-        height: 54px;
-
         .password-title {
           font-size: 1em;
         }
 
         input {
           font-size: 2.2em;
-          width: 260px;
-          margin-left: 14px;
-          padding-top: 6px;
         }
       }
 
       .password-error {
         .request-join {
           font-size: 1em;
-          padding: 0 24px;
-          height: 54px;
         }
       }
     }
