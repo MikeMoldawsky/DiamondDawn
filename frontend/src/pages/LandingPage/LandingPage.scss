@@ -120,12 +120,12 @@ input[type="password"] {
       .pwd-input {
         justify-content: space-between;
         margin: 10px 30px 15px;
-        z-index: 1;
+        z-index: 10;
       }
 
       input {
-        position: relative;
-        z-index: 1;
+        //position: relative;
+        z-index: 100;
         background-color: transparent;
         outline: none;
         border: none;
