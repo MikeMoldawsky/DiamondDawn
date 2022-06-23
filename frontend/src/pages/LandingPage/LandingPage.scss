@@ -51,11 +51,11 @@ a {
       display: flex;
       align-items: center;
       flex-direction: column;
-      margin-bottom: 60px;
+      //margin-bottom: 60px;
     }
 
     h1 {
-      margin: 20px 0 10px;
+      margin: 0;
       font-size: 4em;
       opacity: .28;
       white-space: nowrap;
@@ -63,15 +63,8 @@ a {
 
     .react-player {
       min-height: 180px;
-      height: 15% !important;
+      height: 240px !important;
       width: auto !important;
-      overflow: hidden;
-
-      video {
-        width: auto !important;
-        height: 100% !important;;
-        transform: scale(2.5);
-      }
     }
 
     .title {
@@ -86,16 +79,17 @@ a {
     }
 
     .password-box, .password-error {
-      margin-top: 60px;
+      margin-top: 80px;
     }
 
     .password-box {
       text-align: center;
       height: 60px;
       opacity: 0;
-      border: solid 2px $white;
+      border: solid 1px $white;
       border-radius: 30px;
       position: relative;
+      //margin-top: 70px;
 
       .pwd-bg {
         position: absolute;
@@ -103,6 +97,7 @@ a {
         height: 100%;
         background-color: $dark;
         border-radius: 30px;
+        //border-radius: 30px;
         z-index: 0;
       }
 
@@ -114,7 +109,7 @@ a {
         transform: translate(-50%, -50%);
         white-space: nowrap;
         background-color: $dark;
-        font-size: 1.2em;
+        font-size: 1em;
         padding: 0 10px;
         border-radius: 10px;
         color: rgba(255, 255, 255, 0.5);
@@ -123,16 +118,15 @@ a {
       input {
         position: relative;
         z-index: 1;
-        text-align: center;
         background-color: transparent;
         outline: none;
         border: none;
         font-size: 2.5em;
         color: $white;
-        letter-spacing: .3em;
-        width: 320px;
+        letter-spacing: .6em;
+        width: 200px;
         caret-color: transparent;
-        margin-left: 16px;
+        margin: 0 6px 0 38px;
 
         &.filled {
           border-bottom: none;
@@ -150,6 +144,7 @@ a {
       justify-content: space-between;
       align-items: center;
       position: relative;
+      //margin-top: 70px;
 
       .error-message {
         font-size: 1em;
@@ -165,8 +160,8 @@ a {
         font-size: 1.2em;
         color: $dark;
         background-color: $white;
-        height: 60px;
-        border-radius: 30px;
+        height: 56px;
+        border-radius: 27px;
         display: flex;
         align-items: center;
         padding: 0 30px;
@@ -180,7 +175,7 @@ a {
         &:hover {
           color: $white;
           background-color: $dark;
-          border: solid 2px $white;
+          border: solid 1px $white;
         }
       }
     }
@@ -233,10 +228,7 @@ a {
 
       .react-player {
         min-height: 140px;
-
-        video {
-          transform: scale(2);
-        }
+        height: 140px !important;
       }
 
       .title {
@@ -248,16 +240,16 @@ a {
       }
 
       .password-box {
-        height: 54px;
+        height: 46px;
 
         .password-title {
-          font-size: 1em;
+          font-size: .8em;
         }
 
         input {
-          font-size: 2.2em;
-          width: 260px;
-          margin-left: 14px;
+          font-size: 1.8em;
+          width: 154px;
+          margin: 0 4px 0 34px;
         }
       }
 
@@ -265,7 +257,8 @@ a {
         .request-join {
           font-size: 1em;
           padding: 0 24px;
-          height: 54px;
+          height: 44px;
+          //height: 54px;
         }
       }
     }

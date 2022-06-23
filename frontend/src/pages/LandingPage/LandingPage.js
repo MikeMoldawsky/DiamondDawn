@@ -6,7 +6,8 @@ import ReactPlayer from "react-player";
 import 'css/app.scss'
 import './LandingPage.scss'
 
-const PASSWORD_LENGTH = 10
+const PASSWORD_LENGTH = 4
+// const CHECK_TIME = 0
 const CHECK_TIME = 1750
 
 const LandingPage = () => {
@@ -22,6 +23,7 @@ const LandingPage = () => {
 
   const submitPassword = () => {
     pwdInput.current.blur()
+    // return
     setCheckingPassword(true)
     setTimeout(() => {
       setCheckingPassword(false)
@@ -67,23 +69,25 @@ const LandingPage = () => {
         </div>
       </header>
       <div className="centered-content">
-        <h1>A BILLION YEARS IN THE MAKING</h1>
-        <ReactPlayer
-          url={animation}
-          playing
-          playsinline
-          controls={false}
-          muted
-          // loop
-          className="react-player"
-        />
-        <div className="title">DIAMONDS DAWN</div>
-        <div className="coming-soon">COMING SOON</div>
+        <div className="top-content">
+          <h1>A BILLION YEARS IN THE MAKING</h1>
+          <ReactPlayer
+            url={animation}
+            playing
+            playsinline
+            controls={false}
+            muted
+            // loop
+            className="react-player"
+          />
+          <div className="title">DIAMONDS DAWN</div>
+          <div className="coming-soon">COMING SOON</div>
+        </div>
         {!passwordError ? (
           <div className="password-box">
             <div className="pwd-bg"/>
             <div className="password-title">TRY PASSWORD</div>
-            <input ref={pwdInput} type="password" autoFocus
+            <input ref={pwdInput} type="text" autoFocus
                    className={classNames({filled: password.length > 0, loading: checkingPassword})}
                    value={password} onChange={onPasswordChange} onKeyPress={onPasswordEnter} maxLength={PASSWORD_LENGTH} />
           </div>
