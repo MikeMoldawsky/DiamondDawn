@@ -58,7 +58,6 @@ input[type="password"] {
       display: flex;
       align-items: center;
       flex-direction: column;
-      //margin-bottom: 60px;
     }
 
     h1 {
@@ -91,14 +90,11 @@ input[type="password"] {
 
     .password-box {
       text-align: center;
-      //height: var(--input-height);
-      //min-height: var(--input-height);
       opacity: 0;
       border: solid 1px $white;
       border-radius: 15px;
       position: relative;
       width: calc(var(--input-width) + 68px);
-      //padding: 0 20px;
 
       .pwd-bg {
         position: absolute;
@@ -123,7 +119,6 @@ input[type="password"] {
 
       .pwd-input {
         justify-content: space-between;
-        //width: var(--input-width);
         margin: 10px 30px 15px;
       }
 
@@ -135,48 +130,18 @@ input[type="password"] {
         border: none;
         font-size: 3em;
         color: $white;
-        //letter-spacing: .5em;
         border-bottom: solid 1px white;
-
-        //width: var(--input-width);
         caret-color: transparent;
 
         &::selection {
           background-color: transparent;
         }
-        //margin-left: var(--pwd-input-offset);
-
-        //&.filled {
-        //  border-bottom: none;
-        //}
-        //
-      }
-
-      .password-underscores {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        width: calc(var(--input-width) - 40px);
-        left: 50%;
-        top: -5px;
-        position: relative;
-        transform: translateX(-50%);
-
-        .underscore {
-          width: 36px;
-          border-bottom: solid 1px $white;
-        }
       }
 
       &.loading {
-        //animation: scale 1s ease-in-out infinite;
         .pwd-input {
           animation: loading 1s ease-in-out infinite;
-          //opacity: .5;
         }
-        //input {
-        //  border-bottom: none;
-        //}
       }
     }
 
@@ -284,20 +249,6 @@ input[type="password"] {
 
         input {
           font-size: 2.4em;
-          //letter-spacing: .6em;
-        }
-
-        .password-underscores {
-          width: calc(var(--input-width) - 40px);
-          left: 50%;
-          top: -5px;
-          position: relative;
-          transform: translateX(-50%);
-
-          .underscore {
-            width: 32px;
-            border-bottom: solid 1px $white;
-          }
         }
       }
 
