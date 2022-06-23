@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import animation from "assets/video/infinity_video_sm.mp4";
 import tweezersLogo from "assets/images/logo.png";
@@ -66,7 +66,7 @@ const LandingPage = () => {
         {!passwordError ? (
           <div className={classNames("password-box", { loading: checkingPassword })}>
             <div className="pwd-bg"/>
-            <div className="password-title">TRY PASSWORD</div>
+            <div className="password-title">ENTER PASSWORD</div>
             <OtpInput containerStyle={classNames("pwd-input")} value={password} onChange={onPasswordChange} numInputs={4} shouldAutoFocus isInputSecure isDisabled={checkingPassword} />
           </div>
         ) : (
