@@ -126,7 +126,7 @@ a {
       input {
         //position: relative;
         z-index: 100;
-        background-color: transparent;
+        //background-color: transparent;
         outline: none;
         border: none;
         font-size: 3em;
@@ -134,8 +134,7 @@ a {
         border-bottom: solid 1px white;
         caret-color: transparent;
         border-radius: unset !important;
-
-        font-family: caption !important;
+        //font-family: caption !important;
 
         &::selection {
           background-color: $gray;
