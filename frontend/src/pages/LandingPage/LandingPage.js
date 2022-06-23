@@ -72,7 +72,7 @@ const LandingPage = () => {
                       onChange={onPasswordChange}
                       numInputs={4}
                       shouldAutoFocus
-                      isInputSecure
+                      // isInputSecure
                       isDisabled={checkingPassword}
             />
           </div>
