@@ -7,6 +7,7 @@ import 'css/app.scss'
 import './LandingPage.scss'
 import OtpInput from 'react-otp-input';
 
+const JOIN_URL = "https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20"
 const PASSWORD_LENGTH = 4
 const CHECK_TIME = 1750
 
@@ -66,13 +67,13 @@ const LandingPage = () => {
           <div className={classNames("password-box", { loading: checkingPassword })}>
             <div className="pwd-bg"/>
             <div className="password-title">TRY PASSWORD</div>
-            <OtpInput containerStyle={classNames("pwd-input")} value={password} onChange={onPasswordChange} numInputs={4} shouldAutoFocus isInputSecure />
+            <OtpInput containerStyle={classNames("pwd-input")} value={password} onChange={onPasswordChange} numInputs={4} shouldAutoFocus isInputSecure isDisabled={checkingPassword} />
           </div>
         ) : (
           <div className="password-error">
             <div className="error-message">Wrong Password</div>
             <div className="request-join">
-              <a target="_blank" rel="noreferrer" href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20">
+              <a target="_blank" rel="noreferrer" href={JOIN_URL}>
                 <div className="request-join-text">Request Vanguards</div>
               </a>
             </div>
