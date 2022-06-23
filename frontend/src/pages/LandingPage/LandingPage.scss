@@ -14,9 +14,9 @@ input[type="password"] {
   color: white;
   display: flex;
   flex-direction: column;
-  --input-height: 50px;
-  --input-width: 260px;
-  --pwd-input-offset: 16px;
+  --input-height: 95px;
+  --input-width: 240px;
+  --pwd-input-offset: 50px;
 
   .bg {
     position: fixed;
@@ -47,7 +47,7 @@ input[type="password"] {
 
   .centered-content {
     z-index: 1;
-    height: 56%;
+    height: 55%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -58,27 +58,20 @@ input[type="password"] {
       display: flex;
       align-items: center;
       flex-direction: column;
-      margin-bottom: 60px;
+      //margin-bottom: 60px;
     }
 
     h1 {
-      margin: 20px 0 10px;
+      margin: 20px 0 0;
       font-size: 4em;
       opacity: .28;
       white-space: nowrap;
     }
 
     .react-player {
-      //min-height: 180px;
-      //height: 15% !important;
-      //width: auto !important;
-      //overflow: hidden;
-
-      //video {
-      //  width: auto !important;
-      //  height: 100% !important;;
-      //  //transform: scale(2.5);
-      //}
+      min-height: 180px;
+      height: 240px !important;
+      width: auto !important;
     }
 
     .title {
@@ -99,9 +92,10 @@ input[type="password"] {
     .password-box {
       text-align: center;
       height: var(--input-height);
+      min-height: var(--input-height);
       opacity: 0;
       border: solid 2px $white;
-      border-radius: calc(var(--input-height) / 2);
+      border-radius: 15px;
       position: relative;
 
       .pwd-bg {
@@ -109,7 +103,7 @@ input[type="password"] {
         width: 100%;
         height: 100%;
         background-color: $dark;
-        border-radius: calc(var(--input-height) / 2);
+        border-radius: 15px;
         z-index: 0;
       }
 
@@ -128,13 +122,12 @@ input[type="password"] {
       input {
         position: relative;
         z-index: 1;
-        text-align: center;
         background-color: transparent;
         outline: none;
         border: none;
-        font-size: 2.5em;
+        font-size: 4em;
         color: $white;
-        letter-spacing: .3em;
+        letter-spacing: .5em;
         width: var(--input-width);
         caret-color: transparent;
         margin-left: var(--pwd-input-offset);
@@ -147,6 +140,22 @@ input[type="password"] {
           animation: scale 1s ease-in-out infinite;
         }
       }
+
+      .password-underscores {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        width: calc(var(--input-width) - 40px);
+        left: 50%;
+        top: -5px;
+        position: relative;
+        transform: translateX(-50%);
+
+        .underscore {
+          width: 36px;
+          border-bottom: solid 1px $white;
+        }
+      }
     }
 
     .password-error {
@@ -155,14 +164,12 @@ input[type="password"] {
       justify-content: space-between;
       align-items: center;
       position: relative;
+      height: var(--input-height);
+      min-height: var(--input-height);
 
       .error-message {
         font-size: 1em;
         color: $red;
-        position: absolute;
-        width: 100%;
-        text-align: center;
-        transform: translateY(-32px);
         font-weight: 400;
       }
 
@@ -170,7 +177,7 @@ input[type="password"] {
         font-size: 1.2em;
         color: $dark;
         background-color: $white;
-        height: var(--input-height);
+        height: 54px;
         border-radius: calc(var(--input-height) / 2);
         width: calc(var(--input-width) + var(--pwd-input-offset) + 4px);
         display: flex;
@@ -203,9 +210,9 @@ input[type="password"] {
 
 @media only screen and (max-width: 767px) {
   .landing-page {
-    --input-height: 40px;
+    --input-height: 76px;
     --input-width: 220px;
-    --pwd-input-offset: 14px;
+    --pwd-input-offset: 48px;
 
     .bg {
       background-size: 160%;
@@ -236,11 +243,8 @@ input[type="password"] {
       }
 
       .react-player {
-        //min-height: 140px;
-
-        video {
-          //transform: scale(2);
-        }
+        min-height: 140px;
+        height: 140px !important;
       }
 
       .title {
@@ -257,11 +261,29 @@ input[type="password"] {
         }
 
         input {
-          font-size: 2.2em;
+          font-size: 3.2em;
+          letter-spacing: .6em;
+        }
+
+        .password-underscores {
+          width: calc(var(--input-width) - 40px);
+          left: 50%;
+          top: -5px;
+          position: relative;
+          transform: translateX(-50%);
+
+          .underscore {
+            width: 32px;
+            border-bottom: solid 1px $white;
+          }
         }
       }
 
       .password-error {
+        .error-message {
+          margin-top: -10px;
+        }
+
         .request-join {
           font-size: 1em;
         }

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
-import animation from "assets/video/infinity_video.mp4";
+import animation from "assets/video/infinity_video_sm.mp4";
 import tweezersLogo from "assets/images/logo.png";
 import ReactPlayer from "react-player";
 import 'css/app.scss'
 import './LandingPage.scss'
 
-const PASSWORD_LENGTH = 8
+const PASSWORD_LENGTH = 4
 const CHECK_TIME = 1750
 
 const LandingPage = () => {
@@ -45,9 +45,9 @@ const LandingPage = () => {
     }
   }
 
-  // const onResultClick = () => {
-  //   setPasswordError(false)
-  // }
+  const onResultClick = () => {
+    setPasswordError(false)
+  }
 
   const onViewClick = () => {
     if (pwdInput && pwdInput.current && !checkingPassword && !passwordError) {
@@ -67,20 +67,22 @@ const LandingPage = () => {
         </div>
       </header>
       <div className="centered-content">
-        <h1>A BILLION YEARS IN THE MAKING</h1>
-        <ReactPlayer
-          url={animation}
-          playing
-          playsinline
-          controls={false}
-          muted
-          // loop
-          className="react-player"
-          width="auto"
-          height="180px"
-        />
-        <div className="title">DIAMONDS DAWN</div>
-        <div className="coming-soon">COMING SOON</div>
+        <div className="top-content">
+          <h1>A BILLION YEARS IN THE MAKING</h1>
+          <ReactPlayer
+            url={animation}
+            playing
+            playsinline
+            controls={false}
+            muted
+            // loop
+            className="react-player"
+            // width="auto"
+            // height="180px"
+          />
+          <div className="title">DIAMONDS DAWN</div>
+          <div className="coming-soon">COMING SOON</div>
+        </div>
         {!passwordError ? (
           <div className="password-box">
             <div className="pwd-bg"/>
@@ -88,6 +90,12 @@ const LandingPage = () => {
             <input ref={pwdInput} type="password" autoFocus
                    className={classNames({filled: password.length > 0, loading: checkingPassword})}
                    value={password} onChange={onPasswordChange} onKeyPress={onPasswordEnter} maxLength={PASSWORD_LENGTH} />
+            <div className="password-underscores">
+              <div className="underscore" />
+              <div className="underscore" />
+              <div className="underscore" />
+              <div className="underscore" />
+            </div>
           </div>
         ) : (
           <div className="password-error">
