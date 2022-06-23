@@ -132,9 +132,10 @@ a {
         font-size: 2em;
         color: $white !important;
         border-bottom: solid 1px white;
-        //caret-color: transparent;
+        caret-color: transparent;
         border-radius: unset !important;
-        //font-family: caption !important;
+        font-family: 'Saira', monospace !important;
+        transform: translateZ(0);
 
         &::selection {
           background-color: $gray;
