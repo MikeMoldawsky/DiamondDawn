@@ -1,6 +1,4 @@
-$gray: #636262;
-$light-gray: #7e7d7d;
-$red: #b63c45;
+@import "css/vars";
 
 a {
   color: inherit;
@@ -10,7 +8,6 @@ a {
 .landing-page {
   height: 100%;
   color: white;
-  font-family: monospace;
   display: flex;
   flex-direction: column;
 
@@ -18,31 +15,24 @@ a {
     position: fixed;
     height: 100%;
     width: 100%;
-    background: black url("../../assets/images/diamond art.png") no-repeat
-      center top;
-    background-size: auto 120%;
+    background: black url("../../assets/images/BG.png") no-repeat center bottom;
+    background-size: 100%;
     z-index: 0;
   }
 
   header {
     z-index: 1;
-    height: 50px;
     display: flex;
     align-items: flex-start;
-    padding: 30px;
+    padding: 30px 40px;
 
     .logo-box {
       display: flex;
       flex-direction: column;
       align-items: center;
 
-      .by-text {
-        margin-bottom: -25px;
-        color: $gray;
-      }
-
       img {
-        height: 80px;
+        height: 32px;
         width: unset;
       }
     }
@@ -50,39 +40,93 @@ a {
 
   .centered-content {
     z-index: 1;
-    height: 38%;
+    height: 56%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
+    letter-spacing: 0.1em;
+
+    .top-content {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      //margin-bottom: 60px;
+    }
 
     h1 {
-      margin: 20px 0 0;
-      font-size: 3em;
-      font-weight: normal;
-      opacity: 1;
+      margin: 0;
+      font-size: 4em;
+      opacity: .28;
+      white-space: nowrap;
+    }
+
+    .react-player {
+      min-height: 180px;
+      height: 240px !important;
+      width: auto !important;
+    }
+
+    .title {
+      font-size: 3.2em;
+      letter-spacing: 0.05em;
+      line-height: 1.2em;
+    }
+
+    .coming-soon {
+      font-size: 1.25em;
+      font-weight: 700;
+    }
+
+    .password-box, .password-error {
+      margin-top: 80px;
     }
 
     .password-box {
-      color: $gray;
       text-align: center;
-      height: 108px;
+      height: 60px;
       opacity: 0;
+      border: solid 1px $white;
+      border-radius: 30px;
+      position: relative;
+      //margin-top: 70px;
 
-      h2 {
-        margin-top: 0;
+      .pwd-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: $dark;
+        border-radius: 30px;
+        //border-radius: 30px;
+        z-index: 0;
+      }
+
+      .password-title {
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+        background-color: $dark;
+        font-size: 1em;
+        padding: 0 10px;
+        border-radius: 10px;
+        color: rgba(255, 255, 255, 0.5);
       }
 
       input {
-        color: $gray;
-        text-align: center;
+        position: relative;
+        z-index: 1;
         background-color: transparent;
         outline: none;
         border: none;
-        font-size: 3.6em;
-        letter-spacing: 0.3em;
-        width: 230px;
-        margin-left: 18px;
+        font-size: 2.5em;
+        color: $white;
+        letter-spacing: .6em;
+        width: 200px;
+        caret-color: transparent;
+        margin: 0 6px 0 38px;
 
         &.filled {
           border-bottom: none;
@@ -95,21 +139,44 @@ a {
     }
 
     .password-error {
-      height: 108px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
+      position: relative;
+      //margin-top: 70px;
 
       .error-message {
-        font-size: 1.5em;
+        font-size: 1em;
         color: $red;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        transform: translateY(-32px);
+        font-weight: 400;
       }
 
       .request-join {
-        font-size: 1.3em;
-        padding-bottom: 24px;
-        color: $light-gray;
+        font-size: 1.2em;
+        color: $dark;
+        background-color: $white;
+        height: 56px;
+        border-radius: 27px;
+        display: flex;
+        align-items: center;
+        padding: 0 30px;
+        border: solid 2px transparent;
+        cursor: pointer;
+
+        .request-join-text {
+          font-weight: 500;
+        }
+
+        &:hover {
+          color: $white;
+          background-color: $dark;
+          border: solid 1px $white;
+        }
       }
     }
   }
@@ -132,49 +199,66 @@ a {
 @media only screen and (max-width: 767px) {
   .landing-page {
     .bg {
-      background-size: cover;
-      background-position-y: calc(100% + 140px);
+      background-size: 160%;
     }
 
     header {
-      height: 25px;
       justify-content: center;
       padding: 20px 0;
 
       .logo-box {
-        .by-text {
-          margin-bottom: -20px;
-          color: $gray;
-        }
-
         img {
-          height: 50px;
+          height: 26px;
         }
       }
     }
 
     .centered-content {
-      height: 60%;
+      height: 65%;
 
       h1 {
-        width: 275px;
+        width: 300px;
         text-align: center;
         margin: 20px 0 0;
         font-size: 2em;
+        white-space: unset;
+        opacity: .4;
+        line-height: 1.2em;
       }
 
       .react-player {
-        width: 220px !important;
+        min-height: 140px;
+        height: 140px !important;
       }
 
-      .password-error,
-      .password-box {
-        height: 90px;
+      .title {
+        font-size: 1.5em;
+      }
+
+      .coming-soon {
+        font-size: .8em;
       }
 
       .password-box {
+        height: 46px;
+
+        .password-title {
+          font-size: .8em;
+        }
+
         input {
-          font-size: 2.5em;
+          font-size: 1.8em;
+          width: 154px;
+          margin: 0 4px 0 34px;
+        }
+      }
+
+      .password-error {
+        .request-join {
+          font-size: 1em;
+          padding: 0 24px;
+          height: 44px;
+          //height: 54px;
         }
       }
     }

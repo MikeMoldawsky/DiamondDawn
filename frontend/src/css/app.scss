@@ -1,4 +1,5 @@
 @import "vars";
+@import 'assets/fonts/fonts.css';
 
 html,
 body,
@@ -7,6 +8,12 @@ body,
 }
 
 body {
+  margin: 0;
+}
+
+* {
+  font-family: 'Saira', monospace;
+  font-weight: 300;
 }
 
 #root {
