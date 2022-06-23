@@ -90,11 +90,11 @@ input[type="password"] {
 
     .password-box {
       text-align: center;
-      opacity: 0;
       border: solid 1px $white;
       border-radius: 15px;
       position: relative;
       width: calc(var(--input-width) + 68px);
+      animation: fadeIn 1s ease-out;
 
       .pwd-bg {
         position: absolute;
@@ -129,9 +129,10 @@ input[type="password"] {
         outline: none;
         border: none;
         font-size: 3em;
-        color: $white;
+        color: $white !important;
         border-bottom: solid 1px white;
         caret-color: transparent;
+        border-radius: unset !important;
 
         &::selection {
           background-color: transparent;
@@ -182,16 +183,6 @@ input[type="password"] {
 
   .remainder {
     flex-grow: 2;
-  }
-
-  &.animate {
-    .centered-content {
-      .password-box {
-        transition: opacity 1s ease-out;
-        transition-delay: 6s;
-        opacity: 1;
-      }
-    }
   }
 }
 
@@ -267,6 +258,11 @@ input[type="password"] {
       }
     }
   }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 @keyframes loading {

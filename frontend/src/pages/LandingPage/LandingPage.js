@@ -6,20 +6,18 @@ import ReactPlayer from "react-player";
 import 'css/app.scss'
 import './LandingPage.scss'
 import OtpInput from 'react-otp-input';
+import { useTimeout } from "hooks/useTimeout";
 
 const JOIN_URL = "https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20"
 const PASSWORD_LENGTH = 4
 const CHECK_TIME = 1750
+const SHOW_PASSWORD_DELAY = 5000
 
 const LandingPage = () => {
-  const [animate, setAnimate] = useState(false);
   const [password, setPassword] = useState("");
   const [checkingPassword, setCheckingPassword] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-
-  useEffect(() => {
-    setAnimate(true);
-  }, []);
+  const [showPassword, setShowPassword] = useState(false)
 
   const submitPassword = () => {
     setCheckingPassword(true)
@@ -37,12 +35,14 @@ const LandingPage = () => {
     }
   };
 
+  useTimeout(() => setShowPassword(true), SHOW_PASSWORD_DELAY)
+
   // const onResultClick = () => {
   //   setPasswordError(false)
   // }
 
   return (
-    <div className={classNames("page landing-page", { animate })}>
+    <div className={"page landing-page"}>
       <div className="bg" />
       <header>
         <div className="logo-box">
@@ -63,13 +63,21 @@ const LandingPage = () => {
           <div className="title">DIAMONDS DAWN</div>
           <div className="coming-soon">COMING SOON</div>
         </div>
-        {!passwordError ? (
+        {showPassword && !passwordError && (
           <div className={classNames("password-box", { loading: checkingPassword })}>
             <div className="pwd-bg"/>
             <div className="password-title">ENTER PASSWORD</div>
-            <OtpInput containerStyle={classNames("pwd-input")} value={password} onChange={onPasswordChange} numInputs={4} shouldAutoFocus isInputSecure isDisabled={checkingPassword} />
+            <OtpInput containerStyle={classNames("pwd-input")}
+                      value={password}
+                      onChange={onPasswordChange}
+                      numInputs={4}
+                      shouldAutoFocus
+                      isInputSecure
+                      isDisabled={checkingPassword}
+            />
           </div>
-        ) : (
+        )}
+        {passwordError && (
           <div className="password-error">
             <div className="error-message">Wrong Password</div>
             <div className="request-join">
