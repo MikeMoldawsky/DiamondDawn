@@ -198,7 +198,7 @@ input[type="password"] {
 @media only screen and (max-width: 767px) {
   .landing-page {
     --input-height: 76px;
-    --input-width: 200px;
+    --input-width: 160px;
     --pwd-input-offset: 48px;
 
     .bg {
@@ -244,11 +244,15 @@ input[type="password"] {
 
       .password-box {
         .password-title {
-          font-size: 1em;
+          font-size: .8em;
+        }
+
+        .pwd-input {
+          margin: 8px 20px 12px;
         }
 
         input {
-          font-size: 2.4em;
+          font-size: 1.8em;
         }
       }
 
