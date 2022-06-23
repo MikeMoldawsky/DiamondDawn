@@ -119,7 +119,7 @@ a {
 
       .pwd-input {
         justify-content: space-between;
-        //margin: 10px 30px 15px;
+        margin: 10px 30px 15px;
         z-index: 10;
       }
 
@@ -130,8 +130,8 @@ a {
         outline: none;
         border: none;
         font-size: 2em;
-        line-height: 2em;
-        color: $white !important;
+        line-height: 1em;
+        color: #ffffff !important;
         border-bottom: solid 1px white;
         caret-color: transparent;
         border-radius: unset !important;
