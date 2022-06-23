@@ -124,18 +124,19 @@ a {
       }
 
       input {
-        //position: relative;
+        position: relative;
         z-index: 100;
         background-color: transparent;
         outline: none;
         border: none;
         font-size: 2em;
+        line-height: 2em;
         color: $white !important;
         border-bottom: solid 1px white;
         caret-color: transparent;
         border-radius: unset !important;
         font-family: 'Saira', monospace !important;
-        transform: translateZ(0);
+        transform: translateZ(0px) !important;
 
         &::selection {
           background-color: $gray;
