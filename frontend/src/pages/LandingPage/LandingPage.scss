@@ -126,13 +126,13 @@ a {
       input {
         //position: relative;
         z-index: 100;
-        //background-color: transparent;
+        background-color: transparent;
         outline: none;
         border: none;
-        font-size: 3em;
+        font-size: 2em;
         color: $white !important;
         border-bottom: solid 1px white;
-        caret-color: transparent;
+        //caret-color: transparent;
         border-radius: unset !important;
         //font-family: caption !important;
 
