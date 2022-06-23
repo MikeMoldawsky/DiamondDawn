@@ -91,12 +91,14 @@ input[type="password"] {
 
     .password-box {
       text-align: center;
-      height: var(--input-height);
-      min-height: var(--input-height);
+      //height: var(--input-height);
+      //min-height: var(--input-height);
       opacity: 0;
-      border: solid 2px $white;
+      border: solid 1px $white;
       border-radius: 15px;
       position: relative;
+      width: calc(var(--input-width) + 68px);
+      //padding: 0 20px;
 
       .pwd-bg {
         position: absolute;
@@ -119,26 +121,35 @@ input[type="password"] {
         color: rgba(255, 255, 255, 0.5);
       }
 
+      .pwd-input {
+        justify-content: space-between;
+        //width: var(--input-width);
+        margin: 10px 30px 15px;
+      }
+
       input {
         position: relative;
         z-index: 1;
         background-color: transparent;
         outline: none;
         border: none;
-        font-size: 4em;
+        font-size: 3em;
         color: $white;
-        letter-spacing: .5em;
-        width: var(--input-width);
+        //letter-spacing: .5em;
+        border-bottom: solid 1px white;
+
+        //width: var(--input-width);
         caret-color: transparent;
-        margin-left: var(--pwd-input-offset);
 
-        &.filled {
-          border-bottom: none;
+        &::selection {
+          background-color: transparent;
         }
+        //margin-left: var(--pwd-input-offset);
 
-        &.loading {
-          animation: scale 1s ease-in-out infinite;
-        }
+        //&.filled {
+        //  border-bottom: none;
+        //}
+        //
       }
 
       .password-underscores {
@@ -155,6 +166,17 @@ input[type="password"] {
           width: 36px;
           border-bottom: solid 1px $white;
         }
+      }
+
+      &.loading {
+        //animation: scale 1s ease-in-out infinite;
+        .pwd-input {
+          animation: loading 1s ease-in-out infinite;
+          //opacity: .5;
+        }
+        //input {
+        //  border-bottom: none;
+        //}
       }
     }
 
@@ -211,7 +233,7 @@ input[type="password"] {
 @media only screen and (max-width: 767px) {
   .landing-page {
     --input-height: 76px;
-    --input-width: 220px;
+    --input-width: 200px;
     --pwd-input-offset: 48px;
 
     .bg {
@@ -230,7 +252,7 @@ input[type="password"] {
     }
 
     .centered-content {
-      height: 65%;
+      height: 68%;
 
       h1 {
         width: 300px;
@@ -261,8 +283,8 @@ input[type="password"] {
         }
 
         input {
-          font-size: 3.2em;
-          letter-spacing: .6em;
+          font-size: 2.4em;
+          //letter-spacing: .6em;
         }
 
         .password-underscores {
@@ -289,6 +311,18 @@ input[type="password"] {
         }
       }
     }
+  }
+}
+
+@keyframes loading {
+  0% {
+    opacity: .8;
+  }
+  50% {
+    opacity: .5;
+  }
+  100% {
+    opacity: .8;
   }
 }
 

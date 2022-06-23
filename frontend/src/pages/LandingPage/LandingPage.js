@@ -5,6 +5,7 @@ import tweezersLogo from "assets/images/logo.png";
 import ReactPlayer from "react-player";
 import 'css/app.scss'
 import './LandingPage.scss'
+import OtpInput from 'react-otp-input';
 
 const PASSWORD_LENGTH = 4
 const CHECK_TIME = 1750
@@ -21,7 +22,7 @@ const LandingPage = () => {
   }, []);
 
   const submitPassword = () => {
-    pwdInput.current.blur()
+    // pwdInput.current.blur()
     setCheckingPassword(true)
     setTimeout(() => {
       setCheckingPassword(false)
@@ -30,8 +31,8 @@ const LandingPage = () => {
     }, CHECK_TIME)
   }
 
-  const onPasswordChange = e => {
-    const pwd = e.target.value
+  const onPasswordChange = pwd => {
+    // const pwd = e.target.value
     setPassword(pwd)
     if (pwd.length === PASSWORD_LENGTH) {
       submitPassword()
@@ -84,22 +85,23 @@ const LandingPage = () => {
           <div className="coming-soon">COMING SOON</div>
         </div>
         {!passwordError ? (
-          <div className="password-box">
+          <div className={classNames("password-box", { loading: checkingPassword })}>
             <div className="pwd-bg"/>
             <div className="password-title">TRY PASSWORD</div>
-            <input ref={pwdInput} type="password" autoFocus
-                   className={classNames({filled: password.length > 0, loading: checkingPassword})}
-                   value={password} onChange={onPasswordChange} onKeyPress={onPasswordEnter} maxLength={PASSWORD_LENGTH} />
-            <div className="password-underscores">
-              <div className="underscore" />
-              <div className="underscore" />
-              <div className="underscore" />
-              <div className="underscore" />
-            </div>
+            <OtpInput containerStyle={classNames("pwd-input")} value={password} onChange={onPasswordChange} numInputs={4} shouldAutoFocus isInputSecure />
+            {/*<input ref={pwdInput} type="password" autoFocus*/}
+            {/*       className={classNames({filled: password.length > 0, loading: checkingPassword})}*/}
+            {/*       value={password} onChange={onPasswordChange} onKeyPress={onPasswordEnter} maxLength={PASSWORD_LENGTH} />*/}
+            {/*<div className="password-underscores">*/}
+            {/*  <div className="underscore" />*/}
+            {/*  <div className="underscore" />*/}
+            {/*  <div className="underscore" />*/}
+            {/*  <div className="underscore" />*/}
+            {/*</div>*/}
           </div>
         ) : (
           <div className="password-error">
-            <div className="error-message">Wrong Password</div>
+            <div className="error-message" onClick={onResultClick}>Wrong Password</div>
             <div className="request-join">
               <a target="_blank" rel="noreferrer" href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20">
                 <div className="request-join-text">Request Vanguards</div>
