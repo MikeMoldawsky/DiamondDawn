@@ -11,6 +11,17 @@ async function createInviteDocument() {
 	}
 }
 
+async function getInvites() {
+	try {
+		return await InviteModel.find();
+	} catch (e) {
+		console.log(`Failed to get all invites`, e);
+	}
+}
+
+
+
 module.exports = {
-	createInviteDocument
+	createInviteDocument,
+	getInvites
 };
