@@ -9,6 +9,8 @@ body,
 
 body {
   margin: 0;
+  background-color: black;
+  color: white;
 }
 
 * {
@@ -18,6 +20,26 @@ body {
 
 #root {
   z-index: 1;
+}
+
+.main-layout {
+  header {
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    padding: 30px 40px;
+
+    .logo-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      img {
+        height: 32px;
+        width: unset;
+      }
+    }
+  }
 }
 
 .app {
@@ -115,5 +137,43 @@ body {
       opacity: 0;
       transition-delay: unset;
     }
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.button {
+  font-size: 1.2em;
+  color: $dark;
+  background-color: $white;
+  height: 56px;
+  border-radius: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30px;
+  border: solid 2px transparent;
+  cursor: pointer;
+  font-weight: 500;
+  width: auto;
+
+  .button-text {
+    font-weight: 500;
+  }
+
+  &:hover {
+    color: $white;
+    background-color: $dark;
+    border: solid 1px $white;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .button {
+    font-size: 1em;
+    padding: 0 24px;
+    height: 44px;
   }
 }

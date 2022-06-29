@@ -15,27 +15,9 @@ a {
     position: fixed;
     height: 100%;
     width: 100%;
-    background: black url("../../assets/images/BG.png") no-repeat center bottom;
+    background: url("../../assets/images/BG.png") no-repeat center bottom;
     background-size: 100%;
     z-index: 0;
-  }
-
-  header {
-    z-index: 1;
-    display: flex;
-    align-items: flex-start;
-    padding: 30px 40px;
-
-    .logo-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      img {
-        height: 32px;
-        width: unset;
-      }
-    }
   }
 
   .centered-content {
@@ -51,7 +33,6 @@ a {
       display: flex;
       align-items: center;
       flex-direction: column;
-      //margin-bottom: 60px;
     }
 
     h1 {
@@ -89,7 +70,6 @@ a {
       border: solid 1px $white;
       border-radius: 30px;
       position: relative;
-      //margin-top: 70px;
 
       .pwd-bg {
         position: absolute;
@@ -97,7 +77,6 @@ a {
         height: 100%;
         background-color: $dark;
         border-radius: 30px;
-        //border-radius: 30px;
         z-index: 0;
       }
 
@@ -144,7 +123,6 @@ a {
       justify-content: space-between;
       align-items: center;
       position: relative;
-      //margin-top: 70px;
 
       .error-message {
         font-size: 1em;
@@ -154,29 +132,6 @@ a {
         text-align: center;
         transform: translateY(-32px);
         font-weight: 400;
-      }
-
-      .request-join {
-        font-size: 1.2em;
-        color: $dark;
-        background-color: $white;
-        height: 56px;
-        border-radius: 27px;
-        display: flex;
-        align-items: center;
-        padding: 0 30px;
-        border: solid 2px transparent;
-        cursor: pointer;
-
-        .request-join-text {
-          font-weight: 500;
-        }
-
-        &:hover {
-          color: $white;
-          background-color: $dark;
-          border: solid 1px $white;
-        }
       }
     }
   }
@@ -250,15 +205,6 @@ a {
           font-size: 1.8em;
           width: 154px;
           margin: 0 4px 0 34px;
-        }
-      }
-
-      .password-error {
-        .request-join {
-          font-size: 1em;
-          padding: 0 24px;
-          height: 44px;
-          //height: 54px;
         }
       }
     }
