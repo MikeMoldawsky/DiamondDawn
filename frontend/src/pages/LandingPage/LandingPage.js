@@ -3,7 +3,6 @@ import classNames from "classnames";
 import animation from "assets/video/infinity_video.mp4";
 import tweezersLogo from "assets/images/logo.png";
 import ReactPlayer from "react-player";
-import 'css/app.scss'
 import './LandingPage.scss'
 
 const PASSWORD_LENGTH = 4
@@ -63,11 +62,6 @@ const LandingPage = () => {
       onClick={onViewClick}
     >
       <div className="bg" />
-      <header>
-        <div className="logo-box">
-          <img src={tweezersLogo} alt="TWEEZERS" />
-        </div>
-      </header>
       <div className="centered-content">
         <div className="top-content">
           <h1>A BILLION YEARS IN THE MAKING</h1>
@@ -94,9 +88,9 @@ const LandingPage = () => {
         ) : (
           <div className="password-error">
             <div className="error-message">Wrong Password</div>
-            <div className="request-join">
+            <div className="button">
               <a target="_blank" rel="noreferrer" href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20">
-                <div className="request-join-text">Request Vanguards</div>
+                <div className="button-text">Request Vanguards</div>
               </a>
             </div>
           </div>
