@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import InvitePage from "pages/InvitePage";
 import LandingPage from "pages/LandingPage";
+import AdminPage from "pages/AdminPage";
 
 const MainLayout = () => {
   return (
@@ -22,6 +23,7 @@ const MainLayout = () => {
       <Router>
         <Routes>
           <Route path="/invite/:token" element={<InvitePage />} />
+          <Route path="admin" element={<AdminPage />} />
           <Route path="/" exact element={<LandingPage />} />
         </Routes>
       </Router>

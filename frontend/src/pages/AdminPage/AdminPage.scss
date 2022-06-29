@@ -1,0 +1,36 @@
+@import "css/vars";
+
+.page.admin-page {
+  max-width: 1000px;
+  margin: 0 auto;
+
+  table {
+    width: 100%;
+    text-align: left;
+
+    thead tr th {
+      font-weight: 700;
+      min-width: 30px;
+    }
+
+    tbody tr td {
+      padding: 10px 0;
+      min-width: 30px;
+
+      svg {
+        cursor: pointer;
+
+        &.copied {
+          path {
+            fill: green;
+          }
+        }
+      }
+    }
+  }
+
+  .button {
+    margin: 80px auto 40px;
+    width: 300px;
+  }
+}
