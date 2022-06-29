@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import _ from 'lodash'
 import classNames from "classnames";
 import './AdminPage.scss'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
-import { API_URL } from 'config'
 import axios from 'axios'
 
 const getAllInvites = async () => {
   try {
-    const res = await axios.get(`${API_URL}/get_invites`)
+    const res = await axios.get(`/api/get_invites`)
     return res.data
   } catch (e) {
     return []
@@ -19,7 +17,7 @@ const getAllInvites = async () => {
 
 const createInvitation = async () => {
   try {
-    const res = await axios.get(`${API_URL}/create_invite`)
+    const res = await axios.get(`/api/create_invite`)
     return res.data
   } catch (e) {
     return null
