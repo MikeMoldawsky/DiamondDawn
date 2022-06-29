@@ -1,3 +1,3 @@
 module.exports = function (req, res) {
-	res.send('Hello!');
+	res.send('You are invited!');
 };
