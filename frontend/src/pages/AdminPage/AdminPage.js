@@ -5,41 +5,29 @@ import './AdminPage.scss'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { API_URL } from 'config'
+import axios from 'axios'
 
 const getAllInvites = async () => {
-  return [
-    {
-      token: 'KJHDFSD8FO8AS6DF786ASDF',
-      revoked: false,
-      opened: new Date(),
-      password: '123456',
-    },
-    {
-      token: 'AL9A4T7B47TBAT7BA875TB8',
-      revoked: true,
-      opened: new Date(),
-      password: '234567',
-    },
-    {
-      token: 'DFKAHF49O4NF947NF9477NF',
-      revoked: false,
-      opened: null,
-      password: '345678',
-    }
-  ]
+  try {
+    const res = await axios.get(`${API_URL}/get_invites`)
+    return res.data
+  } catch (e) {
+    return []
+  }
 }
 
 const createInvitation = async () => {
-  return {
-    token: 'LAULW4F7L47F847T847T4',
-    revoked: false,
-    opened: null,
-    password: '456789',
+  try {
+    const res = await axios.get(`${API_URL}/create_invite`)
+    return res.data
+  } catch (e) {
+    return null
   }
 }
 
 const InvitationRow = ({ invitation }) => {
-  const { token, revoked, opened, password, account } = invitation
+  const { _id, revoked, opened, password, account } = invitation
   const [isCopied, setIsCopied] = useState(false)
 
   useEffect(() => {
@@ -49,7 +37,7 @@ const InvitationRow = ({ invitation }) => {
   }, [isCopied])
 
   const hostname = window.location.hostname
-  const link = `http://${hostname}${hostname === 'localhost' ? ':3000' : ''}/invite/${token}`
+  const link = `http://${hostname}${hostname === 'localhost' ? ':3000' : ''}/invite/${_id}`
 
   return (
     <tr>
@@ -58,7 +46,7 @@ const InvitationRow = ({ invitation }) => {
           <FontAwesomeIcon icon={faLink} className={classNames({copied: isCopied})} />
         </CopyToClipboard>
       </td>
-      <td>{token}</td>
+      <td>{_id}</td>
       <td>{revoked.toString()}</td>
       <td>{opened ? opened.toString() : '-'}</td>
       <td>{password}</td>
@@ -79,7 +67,9 @@ const AdminPage = () => {
 
   const generate = async () => {
     const invitation = await createInvitation()
-    setInvites([...invites, invitation])
+    if (invitation) {
+      setInvites([...invites, invitation])
+    }
   }
 
   return (
@@ -89,7 +79,7 @@ const AdminPage = () => {
         <thead>
           <tr>
             <th></th>
-            <th>Token</th>
+            <th>ID</th>
             <th>Revoked</th>
             <th>Opened</th>
             <th>Password</th>
