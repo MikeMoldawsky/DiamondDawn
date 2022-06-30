@@ -16,6 +16,7 @@
     "@web3-onboard/injected-wallets": "^2.0.6",
     "@web3-onboard/walletconnect": "^2.0.1",
     "axios": "^0.27.2",
+    "chance": "^1.1.8",
     "classnames": "^2.3.1",
     "ethers": "^5.6.8",
     "lodash": "^4.17.21",
