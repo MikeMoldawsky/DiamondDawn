@@ -5,17 +5,24 @@ import './InvitePage.scss'
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
-const getInvite = async (token) => {
-  return {
-    revoked: false,
-    opened: new Date(),
-    password: '123456',
+const openInvite = async (inviteId) => {
+  try {
+    const res = await axios.post(`/api/open_invite`, { inviteId })
+    return res.data
+  } catch (e) {
+    return null
   }
 }
 
-const openInvite = async (onOpen) => {
-  onOpen()
+const isInviteRevoked = async (inviteId) => {
+  try {
+    const res = await axios.post(`/api/is_invite_revoked`, { inviteId })
+    return res.data
+  } catch (e) {
+    return true
+  }
 }
 
 const InvitationNotFound = () => (
@@ -30,7 +37,7 @@ const InvitationNotFound = () => (
 
 const InvitationRevoked = () => (
   <>
-    <h1>Invitation expired</h1>
+    <h1>Invitation Revoked</h1>
     <div className="text-center">For another invitation please DM Diamonds Dawn on twitter</div>
     <a target="_blank" rel="noreferrer" href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20">
       <div className="button">Request Invitation</div>
@@ -38,7 +45,7 @@ const InvitationRevoked = () => (
   </>
 )
 
-const InviteIntro = ({ showInvitation }) => (
+const InviteIntro = ({ open }) => (
   <>
     <h1>You Are Invited to Diamonds Dawn!</h1>
     <div className="warning-message">
@@ -47,26 +54,34 @@ const InviteIntro = ({ showInvitation }) => (
         The invitation can be opened one time only and will be revoked once opened.<br />Please make sure you have the time before opening the invitation
       </div>
     </div>
-    <div className="button" onClick={() => openInvite(showInvitation)}>OPEN INVITATION</div>
+    <div className="button" onClick={open}>OPEN INVITATION</div>
   </>
 )
 
 const InvitePage = () => {
   const { token } = useParams()
   const [invite, setInvite] = useState(null)
-  const [showInvite, setShowInvite] = useState(false)
+  const [isRevoked, setIsRevoked] = useState(null)
 
   useEffect(() => {
     const fetch = async () => {
-      setInvite(await getInvite(token))
+      setIsRevoked(await isInviteRevoked(token))
     }
-    fetch()
+    if (token) {
+      fetch()
+    }
   }, [token])
 
+  const onOpenInviteClick = async () => {
+    setInvite(await openInvite(token))
+  }
+
   const renderInviteContent = () => {
-    if (_.isNil(invite)) return (<InvitationNotFound />)
-    if (invite.revoked) return (<InvitationRevoked />)
-    if (!showInvite) return (<InviteIntro showInvitation={() => setShowInvite(true)} />)
+    if (isRevoked === null) return null
+
+    if (isRevoked) return (<InvitationRevoked />)
+    // if (_.isNil(invite)) return (<InvitationNotFound />)
+    if (!invite) return (<InviteIntro open={onOpenInviteClick} />)
     return (
       <>
         <h1>You Are Invited to Diamonds Dawn!</h1>

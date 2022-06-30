@@ -1,6 +1,8 @@
-const chance = require('chance')
+const Chance = require('chance');
 const mongoose = require('mongoose')
 const db = require('../db')
+
+var chance = new Chance();
 
 const InviteSchema = new mongoose.Schema({
 	revoked: {type: Boolean, required: true, default: false},
