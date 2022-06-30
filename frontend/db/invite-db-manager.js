@@ -1,4 +1,5 @@
 const InviteModel = require("./models/InviteModel");
+const _ = require("lodash");
 
 
 async function createInvite() {
@@ -20,6 +21,15 @@ async function openInvite(inviteId) {
 	}
 }
 
+async function isInviteRevoked(inviteId) {
+	try {
+		const invite = await InviteModel.findById(inviteId).exec();
+		return invite.revoked;
+	} catch (e) {
+		console.log(`Failed to create invite`, e);
+	}
+}
+
 async function getInvites() {
 	try {
 		return await InviteModel.find();
@@ -29,9 +39,9 @@ async function getInvites() {
 }
 
 
-
 module.exports = {
 	createInvite,
 	openInvite,
-	getInvites
+	getInvites,
+	isInviteRevoked
 };
