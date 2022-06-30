@@ -1,9 +1,9 @@
 const InviteModel = require("./models/InviteModel");
 
 
-async function createInvite() {
+async function createInvite(reason) {
 	try {
-		const document = {};
+		const document = {reason};
 		const guildCommunityBotModel = new InviteModel(document);
 		return await guildCommunityBotModel.save();
 	} catch (e) {
