@@ -1,5 +1,4 @@
 const InviteModel = require("./models/InviteModel");
-const _ = require("lodash");
 
 
 async function createInvite() {
