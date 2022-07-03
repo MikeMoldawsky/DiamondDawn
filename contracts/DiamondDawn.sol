@@ -8,16 +8,19 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 /// @custom:security-contact tweezers@gmail.com
 contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     using Counters for Counters.Counter;
+    using EnumerableSet for EnumerableSet.UintSet;
 
     enum Stage {
         MINE,
         CUT,
         POLISH,
-        PHYSICAL
+        PHYSICAL,
+        REBIRTH
     }
 
     struct Metadata {
@@ -37,6 +40,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     bool public isStageActive;
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
+    mapping(address => EnumerableSet.UintSet) private _addressToBurnedTokens;
 
     constructor() ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -76,7 +80,6 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     }
 
     // The following functions are overrides required by Solidity.
-
     function supportsInterface(bytes4 interfaceId)
         public
         view
@@ -110,6 +113,10 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _requireActiveStage();
         _requireSpecificStage(_stage);
         _;
+    }
+
+    function _getNextStageForToken(uint tokenId) internal pure returns (Stage) {
+        return _getNextStage(_tokensMetadata[tokenId].stage);
     }
 
     function _getNextStage(Stage _stage) internal pure returns (Stage) {
@@ -230,10 +237,8 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
             );
         }
 
-        _tokensMetadata[tokenId].stage = _getNextStage(
-            _tokensMetadata[tokenId].stage
-        );
         _tokensMetadata[tokenId].processesLeft--;
+        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
     }
 
     function cut(uint256 tokenId)
@@ -252,8 +257,22 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _process(tokenId);
     }
 
-    // Client API - Read
+    function burn(uint256 tokenId) public override
+        whenStageIsActive(Stage.PHYSICAL) {
+        super.burn(tokenId);
+        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
+        _addressToBurnedTokens[_msgSender()].add(account);
+    }
 
+    function rebirth() public whenStageIsActive(Stage.PHYSICAL) {
+        while (_addressToBurnedTokens[_msgSender()].length() > 0) {
+            uint256 burnedTokenId = _addressToBurnedTokens[_msgSender()].at(0);
+            _addressToBurnedTokens[_msgSender()].remove(burnedTokenId);
+            _safeMint(_msgSender(), tokenId);
+        }
+    }
+
+    // Client API - Read
     function tokenURI(uint256 tokenId)
         public
         view
