@@ -8,12 +8,11 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+
 
 /// @custom:security-contact tweezers@gmail.com
 contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     using Counters for Counters.Counter;
-    using EnumerableSet for EnumerableSet.UintSet;
 
     enum Stage {
         MINE,
@@ -40,7 +39,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     bool public isStageActive;
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
-    mapping(address => EnumerableSet.UintSet) private _addressToBurnedTokens;
+    mapping(uint256 => address) private _burnedTokens;
 
     constructor() ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -261,15 +260,17 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         whenStageIsActive(Stage.PHYSICAL) {
         super.burn(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
-        _addressToBurnedTokens[_msgSender()].add(account);
+        _burnedTokens[tokenId] = _msgSender();
     }
 
-    function rebirth() public whenStageIsActive(Stage.PHYSICAL) {
-        while (_addressToBurnedTokens[_msgSender()].length() > 0) {
-            uint256 burnedTokenId = _addressToBurnedTokens[_msgSender()].at(0);
-            _addressToBurnedTokens[_msgSender()].remove(burnedTokenId);
-            _safeMint(_msgSender(), tokenId);
-        }
+    function rebirth(uint256 tokenId) public whenStageIsActive(Stage.PHYSICAL) {
+        address burner = _burnedTokens[tokenId];
+        require(
+            _msgSender() == burner,
+            string.concat("Rebirth failed - only burner is allowed to perform rebirth")
+        );
+        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
+        _safeMint(_msgSender(), tokenId);
     }
 
     // Client API - Read
