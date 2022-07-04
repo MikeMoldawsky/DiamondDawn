@@ -158,15 +158,23 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
 
     function revealStage(string memory videoUrl)
         public
-        onlyRole(DEFAULT_ADMIN_ROLE)
+//        onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _activateStage();
         _assignCurrentStageVideo(videoUrl);
     }
 
-    function completeCurrentStage() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    function completeCurrentStage()
+        public
+//    onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         _deactivateStage();
         _nextStage();
+    }
+
+    function dev__ResetStage() public {
+        stage = Stage(0);
+        isStageActive = false;
     }
 
     // Client API - Write
@@ -233,7 +241,10 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _tokensMetadata[tokenId].stage = _getNextStage(
             _tokensMetadata[tokenId].stage
         );
-        _tokensMetadata[tokenId].processesLeft--;
+
+        if (_tokensMetadata[tokenId].processesLeft > 0) {
+            _tokensMetadata[tokenId].processesLeft--;
+        }
     }
 
     function cut(uint256 tokenId)
