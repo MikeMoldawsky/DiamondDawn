@@ -114,7 +114,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _;
     }
 
-    function _getNextStageForToken(uint tokenId) internal pure returns (Stage) {
+    function _getNextStageForToken(uint tokenId) internal view returns (Stage) {
         return _getNextStage(_tokensMetadata[tokenId].stage);
     }
 
