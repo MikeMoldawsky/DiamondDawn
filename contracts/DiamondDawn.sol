@@ -8,9 +8,16 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/token/common/ERC2981.sol";
 
 /// @custom:security-contact tweezers@gmail.com
-contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
+contract DiamondDawn is
+    ERC721,
+    ERC2981,
+    Pausable,
+    AccessControl,
+    ERC721Burnable
+{
     using Counters for Counters.Counter;
 
     enum Stage {
@@ -38,7 +45,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
 
-    constructor() ERC721("DiamondDawn", "DD") {
+    constructor(uint96 _royaltyFeesInBips) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
@@ -46,7 +53,15 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         processingPrice = PREPAID_PROCESSING_PRICE;
         stage = Stage.MINE;
         isStageActive = false;
+        setRoyaltyInfo(msg.sender, _royaltyFeesInBips);
         _pause();
+    }
+
+    function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
     }
 
     function _baseURI() internal pure override returns (string memory) {
@@ -80,9 +95,10 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, AccessControl)
+        override(ERC721, AccessControl, ERC2981)
         returns (bool)
     {
+        // EIP2981 supported for royalities
         return super.supportsInterface(interfaceId);
     }
 
