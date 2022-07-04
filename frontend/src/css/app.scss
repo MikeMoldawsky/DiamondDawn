@@ -3,7 +3,9 @@
 
 html,
 body,
-#root {
+#root,
+.main-layout,
+.main-layout > div[data-rk] {
   height: 100%;
 }
 
@@ -54,6 +56,7 @@ body {
   flex-direction: column;
   background-color: $dark;
   color: $white;
+  position: relative;
 
   //header {
   //  position: fixed;
@@ -144,10 +147,25 @@ body {
       transition-delay: unset;
     }
   }
+
+  .admin-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 240px;
+    height: 300px;
+    border: solid 1px white;
+  }
 }
 
 .text-center {
   text-align: center;
+}
+
+.center-aligned-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -160,7 +178,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 0 30px;
-  border: solid 2px transparent;
+  border: solid 1px transparent;
   cursor: pointer;
   font-weight: 500;
   width: auto;

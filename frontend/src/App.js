@@ -4,6 +4,7 @@ import classNames from "classnames";
 import Wallet from "pages/Wallet";
 import Header from "components/Header";
 import WagmiWrapper from 'layout/WagmiWrapper'
+import AdminPanel from 'components/AdminPanel'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         <Header>
           <Wallet />
         </Header>
+        <AdminPanel />
       </div>
     </WagmiWrapper>
   );
