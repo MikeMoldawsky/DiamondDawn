@@ -19,5 +19,5 @@ describe("DiamondDawn", () => {
 
   it("Should deploy the contract", async () => {
     expect(diamondDawn).to.not.equal(null);
-  })
+  });
 });

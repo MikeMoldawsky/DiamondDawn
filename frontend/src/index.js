@@ -1,13 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
-import LandingPage from "./pages/LandingPage";
-// import App from "./App";
+import MainLayout from "layout/MainLayout";
+import { Provider } from 'react-redux'
+import { makeStore } from 'store/makeStore'
+
+let store = makeStore()
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <LandingPage />
+    <Provider store={store}>
+      <MainLayout />
+    </Provider>
   </React.StrictMode>
 );
 
