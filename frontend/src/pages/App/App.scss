@@ -1,9 +1,11 @@
-@import "vars";
-@import 'assets/fonts/fonts.css';
+@import "css/vars";
+@import '../../assets/fonts/fonts.css';
 
 html,
 body,
-#root {
+#root,
+.main-layout,
+.main-layout > div[data-rk] {
   height: 100%;
 }
 
@@ -24,10 +26,16 @@ body {
 
 .main-layout {
   header {
+    position: fixed;
     z-index: 1;
-    display: flex;
-    align-items: flex-start;
-    padding: 30px 40px;
+    width: 100%;
+
+    .header-internal {
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
     .logo-box {
       display: flex;
@@ -48,37 +56,62 @@ body {
   flex-direction: column;
   background-color: $dark;
   color: $white;
+  position: relative;
 
-  header {
-    position: fixed;
-    top: 25px;
-    right: 25px;
-    z-index: 1;
+  main {
+    width: 100%;
+    height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    font-size: 1.8em;
-    opacity: 0.9;
+    justify-content: center;
+  }
 
-    .replay-btn {
-      opacity: 0;
-      transition: opacity 0.25s linear;
+  .countdown-view {
+    text-align: center;
+
+    .leading-text {
+      font-size: 1.2em;
     }
 
-    svg {
-      cursor: pointer;
-      margin-left: 25px;
-
-      &.fa-arrows-rotate {
-        transform: rotate(0);
-        transition: transform 0.25s linear;
-
-        &:hover {
-          transform: rotate(180deg);
-        }
-      }
+    .countdown {
+      font-size: 2em;
     }
   }
+
+  .action-view {
+    text-align: center;
+  }
+  //header {
+  //  position: fixed;
+  //  top: 25px;
+  //  right: 25px;
+  //  z-index: 1;
+  //  display: flex;
+  //  align-items: center;
+  //  justify-content: space-between;
+  //  font-size: 1.8em;
+  //  opacity: 0.9;
+  //
+  //  .replay-btn {
+  //    opacity: 0;
+  //    transition: opacity 0.25s linear;
+  //  }
+  //
+  //  svg {
+  //    cursor: pointer;
+  //    margin-left: 25px;
+  //
+  //    &.fa-arrows-rotate {
+  //      transform: rotate(0);
+  //      transition: transform 0.25s linear;
+  //
+  //      &:hover {
+  //        transform: rotate(180deg);
+  //      }
+  //    }
+  //  }
+  //}
 
   .content {
     cursor: pointer;
@@ -138,10 +171,25 @@ body {
       transition-delay: unset;
     }
   }
+
+  .admin-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 240px;
+    height: 300px;
+    border: solid 1px white;
+  }
 }
 
 .text-center {
   text-align: center;
+}
+
+.center-aligned-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -154,7 +202,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 0 30px;
-  border: solid 2px transparent;
+  border: solid 1px transparent;
   cursor: pointer;
   font-weight: 500;
   width: auto;
