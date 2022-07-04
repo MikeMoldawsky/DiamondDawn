@@ -24,10 +24,16 @@ body {
 
 .main-layout {
   header {
+    position: fixed;
     z-index: 1;
-    display: flex;
-    align-items: flex-start;
-    padding: 30px 40px;
+    width: 100%;
+
+    .header-internal {
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
     .logo-box {
       display: flex;
@@ -49,36 +55,36 @@ body {
   background-color: $dark;
   color: $white;
 
-  header {
-    position: fixed;
-    top: 25px;
-    right: 25px;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    font-size: 1.8em;
-    opacity: 0.9;
-
-    .replay-btn {
-      opacity: 0;
-      transition: opacity 0.25s linear;
-    }
-
-    svg {
-      cursor: pointer;
-      margin-left: 25px;
-
-      &.fa-arrows-rotate {
-        transform: rotate(0);
-        transition: transform 0.25s linear;
-
-        &:hover {
-          transform: rotate(180deg);
-        }
-      }
-    }
-  }
+  //header {
+  //  position: fixed;
+  //  top: 25px;
+  //  right: 25px;
+  //  z-index: 1;
+  //  display: flex;
+  //  align-items: center;
+  //  justify-content: space-between;
+  //  font-size: 1.8em;
+  //  opacity: 0.9;
+  //
+  //  .replay-btn {
+  //    opacity: 0;
+  //    transition: opacity 0.25s linear;
+  //  }
+  //
+  //  svg {
+  //    cursor: pointer;
+  //    margin-left: 25px;
+  //
+  //    &.fa-arrows-rotate {
+  //      transform: rotate(0);
+  //      transition: transform 0.25s linear;
+  //
+  //      &:hover {
+  //        transform: rotate(180deg);
+  //      }
+  //    }
+  //  }
+  //}
 
   .content {
     cursor: pointer;
