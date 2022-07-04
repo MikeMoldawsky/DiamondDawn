@@ -107,11 +107,12 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         );
     }
 
-    function _requireAllowedMiner(address miner) internal view {
+    modifier _requireAllowedMiner() {
         require(
-            _mintAllowedAddresses[miner],
+            _mintAllowedAddresses[_msgSender()],
             "P2D: The miner is not allowed to mint tokens"
         );
+        _;
     }
 
     function _requireValidProcessesPurchased(uint processesPurchased) internal pure {
@@ -217,8 +218,8 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         public
         payable
         whenStageIsActive(Stage.MINE)
+        _requireAllowedMiner()
     {
-        _requireAllowedMiner(_msgSender());
         _requireValidProcessesPurchased(processesPurchased);
         _requireValidPayment(processesPurchased, msg.value);
 
