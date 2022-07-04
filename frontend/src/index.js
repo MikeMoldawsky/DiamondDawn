@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
-import MainLayout from "./MainLayout";
+import MainLayout from "layout/MainLayout";
 import { Provider } from 'react-redux'
 import { makeStore } from 'store/makeStore'
 

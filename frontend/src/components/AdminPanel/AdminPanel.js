@@ -23,8 +23,6 @@ const AdminPanel = () => {
   const provider = useProvider()
   const { data: signer } = useSigner()
 
-  console.log({ signer })
-
   const contractConfig = {
     addressOrName: contractAddress.DiamondDawn,
     contractInterface: ddContract.abi,
@@ -77,6 +75,28 @@ const AdminPanel = () => {
     }
   }
 
+  const pause = async () => {
+    try {
+      const tx = await contract.pause()
+      const receipt = await tx.wait()
+      console.log('pause', { receipt })
+    }
+    catch (e) {
+      console.error('pause', parseError(e))
+    }
+  }
+
+  const unpause = async () => {
+    try {
+      const tx = await contract.unpause()
+      const receipt = await tx.wait()
+      console.log('unpause', { receipt })
+    }
+    catch (e) {
+      console.error('unpause', parseError(e))
+    }
+  }
+
   useEffect(() => {
     loadData()
   }, [])
@@ -94,6 +114,8 @@ const AdminPanel = () => {
         <div className="button" onClick={revealStage}>Reveal Stage</div>
         <div className="button" onClick={completeStage}>Complete Stage</div>
         <div className="button" onClick={resetStage}>Reset Stage</div>
+        <div className="button" onClick={pause}>Pause</div>
+        <div className="button" onClick={unpause}>Unpause</div>
       </div>
     </div>
   );

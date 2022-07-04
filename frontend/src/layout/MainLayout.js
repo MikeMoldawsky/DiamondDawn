@@ -1,11 +1,12 @@
 import React from "react";
 import classNames from "classnames";
-import 'css/app.scss'
+import 'pages/App/App.scss'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import InvitePage from "pages/InvitePage";
 import LandingPage from "pages/LandingPage";
 import AdminPage from "pages/AdminPage";
-import App from "App";
+import App from "pages/App";
+import WagmiWrapper from "layout/WagmiWrapper";
 
 const MainLayout = () => {
   return (
@@ -15,7 +16,7 @@ const MainLayout = () => {
           <Route path="/invite/:token" element={<InvitePage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/landing" element={<LandingPage />} />
-          <Route path="/" exact element={<App />} />
+          <Route path="/" exact element={<WagmiWrapper><App /></WagmiWrapper>} />
         </Routes>
       </Router>
     </div>
