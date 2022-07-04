@@ -34,7 +34,7 @@ describe("DiamondDawn", () => {
     const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
 
     // deploying flava nft
-    diamondDawnContract = await DiamondDawn.deploy();
+    diamondDawnContract = await DiamondDawn.deploy("1000"); // royality as 10 %
 
     await diamondDawnContract.deployed();
 
