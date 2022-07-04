@@ -232,6 +232,9 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
             stage: Stage.MINE,
             processesLeft: processesPurchased
         });
+
+        // Restrict another mint by the same miner
+        _mintAllowedAddresses[_msgSender()] = false;
     }
 
     function _process(uint256 tokenId) internal {
