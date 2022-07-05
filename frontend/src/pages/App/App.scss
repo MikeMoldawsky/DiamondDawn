@@ -171,15 +171,6 @@ body {
       transition-delay: unset;
     }
   }
-
-  .admin-panel {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 240px;
-    height: 300px;
-    border: solid 1px white;
-  }
 }
 
 .text-center {
@@ -216,6 +207,10 @@ body {
     background-color: $dark;
     border: solid 1px $white;
   }
+}
+
+.Toastify__toast-container {
+  top: 65px !important;
 }
 
 @media only screen and (max-width: 767px) {

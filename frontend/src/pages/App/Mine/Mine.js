@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import _ from 'lodash'
-import classNames from "classnames";
 import Countdown from 'react-countdown';
-import { parseError } from 'utils'
+import { showError } from 'utils'
 import useDDContract from "hooks/useDDContract";
 import { BigNumber } from "ethers";
 
@@ -34,7 +33,7 @@ const Mine = () => {
       setActionTxId(receipt.transactionHash)
     }
     catch (e) {
-      console.error(`Mine failed`, parseError(e))
+      showError(e, 'Mine Failed')
     }
   }
 

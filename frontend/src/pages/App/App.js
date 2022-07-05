@@ -29,32 +29,32 @@ const CountdownView = ({ stage }) => {
   )
 }
 
-const renderStage = (stage, isStageActive) => {
-  if (!isStageActive) {
-    return (<CountdownView stage={stage} />)
-  }
-  switch (stage) {
-    case 0:
-      return <Mine />
-    case 1:
-      return <Cut />
-    case 2:
-      return <Polish />
-    default:
-      return null
-  }
-}
-
 function App() {
 
   const { stage, isStageActive } = useSelector(systemSelector)
+
+  const renderStage = () => {
+    if (!isStageActive) {
+      return (<CountdownView stage={stage} />)
+    }
+    switch (stage) {
+      case 0:
+        return <Mine />
+      case 1:
+        return <Cut />
+      case 2:
+        return <Polish />
+      default:
+        return null
+    }
+  }
 
   return (
     <div className={classNames("app")}>
       <Header>
         <Wallet />
       </Header>
-      <main>{renderStage(stage, isStageActive)}</main>
+      <main>{renderStage()}</main>
       <AdminPanel />
     </div>
   );

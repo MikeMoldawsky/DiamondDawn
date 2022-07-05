@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import _ from 'lodash'
 import Countdown from 'react-countdown';
-import { parseError } from 'utils'
+import { parseError, showError } from "utils";
 import useDDContract from "hooks/useDDContract";
 import { BigNumber } from "ethers";
+import { useSelector } from "react-redux";
+import { uiSelector } from "store/uiReducer";
 
 const Cut = () => {
   const [actionTxId, setActionTxId] = useState(false)
-
   const contract = useDDContract()
-
   const [prepaidProcessingPrice, setPrepaidProcessingPrice] = useState(BigNumber.from(0))
+  const { selectedTokenId } = useSelector(uiSelector)
 
   const loadPrices = async () => {
     setPrepaidProcessingPrice(await contract.PREPAID_PROCESSING_PRICE())
@@ -22,13 +23,13 @@ const Cut = () => {
 
   const cut = async () => {
     try {
-      const tx = await contract.cut(0, { value: prepaidProcessingPrice })
+      const tx = await contract.cut(selectedTokenId, { value: prepaidProcessingPrice })
       const receipt = await tx.wait()
 
       setActionTxId(receipt.transactionHash)
     }
     catch (e) {
-      console.error(`Cut failed`, parseError(e))
+      showError(e, 'Cut Failed')
     }
   }
 

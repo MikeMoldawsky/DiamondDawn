@@ -1,4 +1,4 @@
-import { makeReducer } from './reduxUtils'
+import { makeReducer, reduceUpdateFull } from './reduxUtils'
 
 const INITIAL_STATE = {
   stage: 0,
@@ -13,5 +13,5 @@ export const setStage = (stage, isStageActive) => ({
 export const systemSelector = state => state.system
 
 export const systemReducer = makeReducer({
-  'SYSTEM.SET_STAGE': (state, action) => ({ ...state, ...action.payload })
+  'SYSTEM.SET_STAGE': reduceUpdateFull,
 }, INITIAL_STATE)

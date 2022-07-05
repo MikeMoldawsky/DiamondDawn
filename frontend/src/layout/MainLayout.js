@@ -7,6 +7,8 @@ import LandingPage from "pages/LandingPage";
 import AdminPage from "pages/AdminPage";
 import App from "pages/App";
 import WagmiWrapper from "layout/WagmiWrapper";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MainLayout = () => {
   return (
@@ -19,6 +21,7 @@ const MainLayout = () => {
           <Route path="/" exact element={<WagmiWrapper><App /></WagmiWrapper>} />
         </Routes>
       </Router>
+      <ToastContainer />
     </div>
   );
 };
