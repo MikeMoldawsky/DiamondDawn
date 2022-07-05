@@ -4,6 +4,13 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 240px;
+  height: 380px;
+  border: solid 1px white;
+  text-align: center;
 
   .title {
     font-weight: 700;
@@ -11,11 +18,13 @@
     margin-bottom: 20px;
   }
 
-  .actions {
-    .button {
-      margin-top: 10px;
-      height: 32px;
-      font-size: 1em;
-    }
+  .button {
+    margin-top: 10px;
+    height: 32px;
+    font-size: 1em;
+  }
+
+  .token-section {
+    margin-top: 20px;
   }
 }

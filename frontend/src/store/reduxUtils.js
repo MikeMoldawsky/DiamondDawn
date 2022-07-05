@@ -9,3 +9,22 @@ export const makeReducer = (actionHandlers={}, initialState={}, globalReset = tr
   }
   return state
 }
+
+export const reduceSetFull = (state, action) => action.payload
+
+export const reduceUpdateFull = (state, action) => ({...state, ...action.payload})
+
+export const reduceDeleteKeys = () => (state, action) => _.omit(state, action.payload)
+
+export const reduceSetKey = key => (state, action) => ({
+  ...state,
+  [key]: action.payload,
+})
+
+export const reduceUpdateKey = key => (state, action) => ({
+  ...state,
+  [key]: {
+    ..._.get(state, key, {}),
+    ...action.payload,
+  }
+})

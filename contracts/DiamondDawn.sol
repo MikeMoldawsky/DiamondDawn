@@ -33,9 +33,11 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
 
     Stage private constant MAX_STAGE = Stage.PHYSICAL;
     Stage public stage;
-    uint public constant MINING_PRICE = 0.01 ether;
-    uint public constant PREPAID_PROCESSING_PRICE = 0.01 ether;
-    uint public processingPrice;
+    uint public constant MINING_PRICE = 0.2 ether;
+    uint public constant CUT_PRICE = 0.4 ether;
+    uint public constant POLISH_PRICE = 0.6 ether;
+    uint public constant PREPAID_CUT_PRICE = 0.2 ether;
+    uint public constant PREPAID_POLISH_PRICE = 0.4 ether;
     bool public isStageActive;
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
@@ -47,7 +49,8 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
 
-        processingPrice = PREPAID_PROCESSING_PRICE;
+        _mintAllowedAddresses[msg.sender] = true;
+
         stage = Stage.MINE;
         isStageActive = false;
         _pause();
@@ -128,7 +131,13 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     }
 
     function _requireValidPayment(uint processesPurchased, uint value) internal pure {
-        uint price = MINING_PRICE + (processesPurchased * PREPAID_PROCESSING_PRICE);
+        uint price = MINING_PRICE;
+        if (processesPurchased > 0) {
+            price += PREPAID_CUT_PRICE;
+        }
+        if (processesPurchased > 1) {
+            price += PREPAID_POLISH_PRICE;
+        }
     
         require(
             value == price,
@@ -190,7 +199,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        processingPrice = price;
+//        processingPrice = price;
     }
 
     function revealStage(string memory videoUrl)
@@ -249,7 +258,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _mintAllowedAddresses[_msgSender()] = false;
     }
 
-    function _process(uint256 tokenId) internal {
+    function _process(uint256 tokenId, uint processingPrice) internal {
         require(
             _isApprovedOrOwner(_msgSender(), tokenId),
             "ERC721: caller is not token owner nor approved"
@@ -284,7 +293,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         payable
         whenStageIsActive(Stage.CUT)
     {
-        _process(tokenId);
+        _process(tokenId, CUT_PRICE);
     }
 
     function polish(uint256 tokenId)
@@ -292,7 +301,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         payable
         whenStageIsActive(Stage.POLISH)
     {
-        _process(tokenId);
+        _process(tokenId, POLISH_PRICE);
     }
 
     function burn(uint256 tokenId) public override

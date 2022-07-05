@@ -4,21 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { setStage, systemSelector } from "store/systemReducer";
 import contractAddress from "contracts/contract-address.json";
 import ddContract from "contracts/DiamondDawn.json"
-import { formatUnits } from "ethers/lib/utils";
-import { BigNumber } from "ethers";
-import {
-  chain,
-  configureChains,
-  createClient,
-  infuraRpcUrls,
-  WagmiConfig,
-  defaultChains, useContract, useAccount, useBalance, useProvider, useContractWrite, useSigner
-} from "wagmi";
-import { parseError } from 'utils'
+import { useContract, useProvider, useSigner } from "wagmi";
+import { parseError, showError } from "utils";
+import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 
 const AdminPanel = () => {
 
   const { stage, isStageActive } = useSelector(systemSelector)
+  const { selectedTokenId } = useSelector(uiSelector)
 
   const provider = useProvider()
   const { data: signer } = useSigner()
@@ -47,7 +40,7 @@ const AdminPanel = () => {
       loadData()
     }
     catch (e) {
-      console.error('revealStage', parseError(e))
+      showError(e, 'Reveal Stage Failed')
     }
   }
 
@@ -59,7 +52,7 @@ const AdminPanel = () => {
       loadData()
     }
     catch (e) {
-      console.error('completeStage', parseError(e))
+      showError(e, 'Complete Stage Failed')
     }
   }
 
@@ -71,7 +64,7 @@ const AdminPanel = () => {
       loadData()
     }
     catch (e) {
-      console.error('resetStage', parseError(e))
+      showError(e, 'Reset Stage Failed')
     }
   }
 
@@ -82,7 +75,7 @@ const AdminPanel = () => {
       console.log('pause', { receipt })
     }
     catch (e) {
-      console.error('pause', parseError(e))
+      showError(e, 'Pause Failed')
     }
   }
 
@@ -93,8 +86,12 @@ const AdminPanel = () => {
       console.log('unpause', { receipt })
     }
     catch (e) {
-      console.error('unpause', parseError(e))
+      showError(e, 'Unpause Failed')
     }
+  }
+
+  const nextTokenId = () => {
+    dispatch(setSelectedTokenId(selectedTokenId + 1))
   }
 
   useEffect(() => {
@@ -116,6 +113,10 @@ const AdminPanel = () => {
         <div className="button" onClick={resetStage}>Reset Stage</div>
         <div className="button" onClick={pause}>Pause</div>
         <div className="button" onClick={unpause}>Unpause</div>
+      </div>
+      <div className="token-section">
+        <div className="stage">TOKEN ID: {selectedTokenId}</div>
+        <div className="button" onClick={nextTokenId}>Next Token ID</div>
       </div>
     </div>
   );

@@ -1,34 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import _ from 'lodash'
 import Countdown from 'react-countdown';
-import { parseError } from 'utils'
+import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
-import { BigNumber } from "ethers";
+import { BigNumber, utils as ethersUtils } from "ethers";
+import { useSelector } from "react-redux";
+import { uiSelector } from "store/uiReducer";
+import { tokenByIdSelector } from "store/tokensReducer";
+import { systemSelector } from "store/systemReducer";
 
 const Cut = () => {
   const [actionTxId, setActionTxId] = useState(false)
-
   const contract = useDDContract()
+  const { selectedTokenId } = useSelector(uiSelector)
+  const token = useSelector(tokenByIdSelector(selectedTokenId))
+  const { cutPrice } = useSelector(systemSelector)
 
-  const [prepaidProcessingPrice, setPrepaidProcessingPrice] = useState(BigNumber.from(0))
-
-  const loadPrices = async () => {
-    setPrepaidProcessingPrice(await contract.PREPAID_PROCESSING_PRICE())
-  }
-
-  useEffect(() => {
-    loadPrices()
-  }, [])
+  if (!token) return null
 
   const cut = async () => {
     try {
-      const tx = await contract.cut(0, { value: prepaidProcessingPrice })
+      const tx = await contract.cut(selectedTokenId, { value: token.cutable ? BigNumber.from(0) : cutPrice })
       const receipt = await tx.wait()
 
       setActionTxId(receipt.transactionHash)
     }
     catch (e) {
-      console.error(`Cut failed`, parseError(e))
+      showError(e, 'Cut Failed')
     }
   }
 
@@ -39,7 +37,7 @@ const Cut = () => {
         {_.isEmpty(actionTxId)
           ? (
             <>
-              <div className="button" onClick={cut}>CUT</div>
+              <div className="button action-button" onClick={cut}>CUT{token.cutable ? '' : ` (${ethersUtils.formatUnits(cutPrice)} ETH)`}</div>
               <div className="leading-text">Cut ends in in:</div>
             </>
           )

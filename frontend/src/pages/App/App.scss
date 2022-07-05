@@ -50,6 +50,42 @@ body {
   }
 }
 
+.text-center {
+  text-align: center;
+}
+
+.center-aligned-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button {
+  font-size: 1.2em;
+  color: $dark;
+  background-color: $white;
+  height: 56px;
+  border-radius: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30px;
+  border: solid 1px transparent;
+  cursor: pointer;
+  font-weight: 500;
+  width: auto;
+
+  .button-text {
+    font-weight: 500;
+  }
+
+  &:hover {
+    color: $white;
+    background-color: $dark;
+    border: solid 1px $white;
+  }
+}
+
 .app {
   height: 100%;
   display: flex;
@@ -113,6 +149,11 @@ body {
   //  }
   //}
 
+  .action-button {
+    width: 200px;
+    margin: 0 auto 40px;
+  }
+
   .content {
     cursor: pointer;
     z-index: 1;
@@ -171,51 +212,10 @@ body {
       transition-delay: unset;
     }
   }
-
-  .admin-panel {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 240px;
-    height: 300px;
-    border: solid 1px white;
-  }
 }
 
-.text-center {
-  text-align: center;
-}
-
-.center-aligned-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.button {
-  font-size: 1.2em;
-  color: $dark;
-  background-color: $white;
-  height: 56px;
-  border-radius: 27px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 30px;
-  border: solid 1px transparent;
-  cursor: pointer;
-  font-weight: 500;
-  width: auto;
-
-  .button-text {
-    font-weight: 500;
-  }
-
-  &:hover {
-    color: $white;
-    background-color: $dark;
-    border: solid 1px $white;
-  }
+.Toastify__toast-container {
+  top: 65px !important;
 }
 
 @media only screen and (max-width: 767px) {
