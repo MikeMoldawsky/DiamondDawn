@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.scss";
 import classNames from "classnames";
 import Wallet from "pages/Wallet";
 import Header from "components/Header";
 import AdminPanel from 'components/AdminPanel'
-import { useSelector } from "react-redux";
-import { systemSelector } from "store/systemReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPricing, systemSelector } from "store/systemReducer";
 import Countdown from 'react-countdown';
 import Mine from "./Mine";
 import Cut from "./Cut";
 import Polish from "./Polish";
+import useDDContract from "hooks/useDDContract";
 
 const stageByName = {
   0: 'Mine',
@@ -32,6 +33,13 @@ const CountdownView = ({ stage }) => {
 function App() {
 
   const { stage, isStageActive } = useSelector(systemSelector)
+
+  const contract = useDDContract()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchPricing(contract))
+  }, [])
 
   const renderStage = () => {
     if (!isStageActive) {
