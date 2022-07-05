@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import videos from "./video";
-import "./css/app.scss";
+import "pages/App/App.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faVolumeHigh,

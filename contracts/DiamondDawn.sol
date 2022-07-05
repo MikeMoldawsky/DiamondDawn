@@ -24,7 +24,8 @@ contract DiamondDawn is
         MINE,
         CUT,
         POLISH,
-        PHYSICAL
+        PHYSICAL,
+        REBIRTH
     }
 
     struct Metadata {
@@ -38,21 +39,25 @@ contract DiamondDawn is
 
     Stage private constant MAX_STAGE = Stage.PHYSICAL;
     Stage public stage;
-
-    uint public constant MINING_PRICE = 0.01 ether;
-    uint public constant PREPAID_PROCESSING_PRICE = 0.01 ether;
-    uint public processingPrice;
+    uint public constant MINING_PRICE = 0.2 ether;
+    uint public constant CUT_PRICE = 0.4 ether;
+    uint public constant POLISH_PRICE = 0.6 ether;
+    uint public constant PREPAID_CUT_PRICE = 0.2 ether;
+    uint public constant PREPAID_POLISH_PRICE = 0.4 ether;
     bool public isStageActive;
 
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
+    mapping(address => bool) private _mintAllowedAddresses;
+    mapping(uint256 => address) private _burnedTokens;
 
     constructor(uint96 _royaltyFeesInBips) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
 
-        processingPrice = PREPAID_PROCESSING_PRICE;
+        _mintAllowedAddresses[msg.sender] = true;
+
         stage = Stage.MINE;
         isStageActive = false;
         setRoyaltyInfo(msg.sender, _royaltyFeesInBips);
@@ -93,7 +98,6 @@ contract DiamondDawn is
     }
 
     // The following functions are overrides required by Solidity.
-
     function supportsInterface(bytes4 interfaceId)
         public
         view
@@ -124,10 +128,56 @@ contract DiamondDawn is
         );
     }
 
+    modifier _requireAllowedMiner() {
+        require(
+            _mintAllowedAddresses[_msgSender()],
+            "P2D: The miner is not allowed to mint tokens"
+        );
+        _;
+    }
+
+    function _requireValidProcessesPurchased(uint processesPurchased)
+        internal
+        pure
+    {
+        require(
+            processesPurchased <= uint(MAX_STAGE) - 1,
+            string.concat(
+                "P2D: Purchased processes should be less than or equal to ",
+                Strings.toString(uint(MAX_STAGE) - 1)
+            )
+        );
+    }
+
+    function _requireValidPayment(uint processesPurchased, uint value)
+        internal
+        pure
+    {
+        uint price = MINING_PRICE;
+        if (processesPurchased > 0) {
+            price += PREPAID_CUT_PRICE;
+        }
+        if (processesPurchased > 1) {
+            price += PREPAID_POLISH_PRICE;
+        }
+
+        require(
+            value == price,
+            string.concat(
+                "P2D: Wrong payment - payment should be: ",
+                Strings.toString(price)
+            )
+        );
+    }
+
     modifier whenStageIsActive(Stage _stage) {
         _requireActiveStage();
         _requireSpecificStage(_stage);
         _;
+    }
+
+    function _getNextStageForToken(uint tokenId) internal view returns (Stage) {
+        return _getNextStage(_tokensMetadata[tokenId].stage);
     }
 
     function _getNextStage(Stage _stage) internal pure returns (Stage) {
@@ -171,20 +221,35 @@ contract DiamondDawn is
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        processingPrice = price;
+        //        processingPrice = price;
     }
 
     function revealStage(string memory videoUrl)
         public
-        onlyRole(DEFAULT_ADMIN_ROLE)
+    //        onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _activateStage();
         _assignCurrentStageVideo(videoUrl);
     }
 
-    function completeCurrentStage() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    function completeCurrentStage() public //    onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         _deactivateStage();
         _nextStage();
+    }
+
+    function addToAllowList(address[] memory addresses)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        for (uint i = 0; i < addresses.length; i++) {
+            _mintAllowedAddresses[addresses[i]] = true;
+        }
+    }
+
+    function dev__ResetStage() public {
+        stage = Stage(0);
+        isStageActive = false;
     }
 
     // Client API - Write
@@ -193,24 +258,10 @@ contract DiamondDawn is
         public
         payable
         whenStageIsActive(Stage.MINE)
+        _requireAllowedMiner
     {
-        require(
-            processesPurchased <= uint(MAX_STAGE) - 1,
-            string.concat(
-                "P2D: Purchased processes should be less than or equal to ",
-                Strings.toString(uint(MAX_STAGE) - 1)
-            )
-        );
-
-        uint price = MINING_PRICE +
-            (processesPurchased * PREPAID_PROCESSING_PRICE);
-        require(
-            msg.value == price,
-            string.concat(
-                "P2D: Wrong payment - payment should be: ",
-                Strings.toString(price)
-            )
-        );
+        _requireValidProcessesPurchased(processesPurchased);
+        _requireValidPayment(processesPurchased, msg.value);
 
         // Regular mint logics
         uint256 tokenId = _tokenIdCounter.current();
@@ -222,9 +273,12 @@ contract DiamondDawn is
             stage: Stage.MINE,
             processesLeft: processesPurchased
         });
+
+        // Restrict another mint by the same miner
+        _mintAllowedAddresses[_msgSender()] = false;
     }
 
-    function _process(uint256 tokenId) internal {
+    function _process(uint256 tokenId, uint processingPrice) internal {
         require(
             _isApprovedOrOwner(_msgSender(), tokenId),
             "ERC721: caller is not token owner nor approved"
@@ -248,14 +302,14 @@ contract DiamondDawn is
             );
         }
 
-        _tokensMetadata[tokenId].stage = _getNextStage(
-            _tokensMetadata[tokenId].stage
-        );
-        _tokensMetadata[tokenId].processesLeft--;
+        if (_tokensMetadata[tokenId].processesLeft > 0) {
+            _tokensMetadata[tokenId].processesLeft--;
+        }
+        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
     }
 
     function cut(uint256 tokenId) public payable whenStageIsActive(Stage.CUT) {
-        _process(tokenId);
+        _process(tokenId, CUT_PRICE);
     }
 
     function polish(uint256 tokenId)
@@ -263,11 +317,32 @@ contract DiamondDawn is
         payable
         whenStageIsActive(Stage.POLISH)
     {
-        _process(tokenId);
+        _process(tokenId, POLISH_PRICE);
+    }
+
+    function burn(uint256 tokenId)
+        public
+        override
+        whenStageIsActive(Stage.PHYSICAL)
+    {
+        super.burn(tokenId);
+        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
+        _burnedTokens[tokenId] = _msgSender();
+    }
+
+    function rebirth(uint256 tokenId) public whenStageIsActive(Stage.PHYSICAL) {
+        address burner = _burnedTokens[tokenId];
+        require(
+            _msgSender() == burner,
+            string.concat(
+                "Rebirth failed - only burner is allowed to perform rebirth"
+            )
+        );
+        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
+        _safeMint(_msgSender(), tokenId);
     }
 
     // Client API - Read
-
     function tokenURI(uint256 tokenId)
         public
         view
