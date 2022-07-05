@@ -195,12 +195,12 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
 
     // Public
 
-    function setProcessingPrice(uint price)
-        public
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-//        processingPrice = price;
-    }
+//    function setProcessingPrice(uint price)
+//        public
+//        onlyRole(DEFAULT_ADMIN_ROLE)
+//    {
+////        processingPrice = price;
+//    }
 
     function revealStage(string memory videoUrl)
         public
