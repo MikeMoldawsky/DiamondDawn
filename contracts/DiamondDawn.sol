@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+
 /// @custom:security-contact tweezers@gmail.com
 contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     using Counters for Counters.Counter;
@@ -17,7 +18,8 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         MINE,
         CUT,
         POLISH,
-        PHYSICAL
+        PHYSICAL,
+        REBIRTH
     }
 
     struct Metadata {
@@ -37,6 +39,8 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     bool public isStageActive;
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
+    mapping(address => bool) private _mintAllowedAddresses;
+    mapping(uint256 => address) private _burnedTokens;
 
     constructor() ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -76,7 +80,6 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     }
 
     // The following functions are overrides required by Solidity.
-
     function supportsInterface(bytes4 interfaceId)
         public
         view
@@ -106,10 +109,44 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         );
     }
 
+    modifier _requireAllowedMiner() {
+        require(
+            _mintAllowedAddresses[_msgSender()],
+            "P2D: The miner is not allowed to mint tokens"
+        );
+        _;
+    }
+
+    function _requireValidProcessesPurchased(uint processesPurchased) internal pure {
+        require(
+            processesPurchased <= uint(MAX_STAGE) - 1,
+            string.concat(
+                "P2D: Purchased processes should be less than or equal to ",
+                Strings.toString(uint(MAX_STAGE) - 1)
+            )
+        );
+    }
+
+    function _requireValidPayment(uint processesPurchased, uint value) internal pure {
+        uint price = MINING_PRICE + (processesPurchased * PREPAID_PROCESSING_PRICE);
+    
+        require(
+            value == price,
+            string.concat(
+                "P2D: Wrong payment - payment should be: ",
+                Strings.toString(price)
+            )
+        );
+    }
+
     modifier whenStageIsActive(Stage _stage) {
         _requireActiveStage();
         _requireSpecificStage(_stage);
         _;
+    }
+
+    function _getNextStageForToken(uint tokenId) internal view returns (Stage) {
+        return _getNextStage(_tokensMetadata[tokenId].stage);
     }
 
     function _getNextStage(Stage _stage) internal pure returns (Stage) {
@@ -172,6 +209,15 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _nextStage();
     }
 
+    function addToAllowList(address[] memory addresses) 
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE) 
+    {
+        for (uint i = 0; i < addresses.length; i++) {
+            _mintAllowedAddresses[addresses[i]] = true;
+        }
+    }
+        
     function dev__ResetStage() public {
         stage = Stage(0);
         isStageActive = false;
@@ -183,24 +229,10 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         public
         payable
         whenStageIsActive(Stage.MINE)
+        _requireAllowedMiner()
     {
-        require(
-            processesPurchased <= uint(MAX_STAGE) - 1,
-            string.concat(
-                "P2D: Purchased processes should be less than or equal to ",
-                Strings.toString(uint(MAX_STAGE) - 1)
-            )
-        );
-
-        uint price = MINING_PRICE +
-            (processesPurchased * PREPAID_PROCESSING_PRICE);
-        require(
-            msg.value == price,
-            string.concat(
-                "P2D: Wrong payment - payment should be: ",
-                Strings.toString(price)
-            )
-        );
+        _requireValidProcessesPurchased(processesPurchased);
+        _requireValidPayment(processesPurchased, msg.value);
 
         // Regular mint logics
         uint256 tokenId = _tokenIdCounter.current();
@@ -212,6 +244,9 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
             stage: Stage.MINE,
             processesLeft: processesPurchased
         });
+
+        // Restrict another mint by the same miner
+        _mintAllowedAddresses[_msgSender()] = false;
     }
 
     function _process(uint256 tokenId) internal {
@@ -238,13 +273,10 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
             );
         }
 
-        _tokensMetadata[tokenId].stage = _getNextStage(
-            _tokensMetadata[tokenId].stage
-        );
-
         if (_tokensMetadata[tokenId].processesLeft > 0) {
             _tokensMetadata[tokenId].processesLeft--;
         }
+        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
     }
 
     function cut(uint256 tokenId)
@@ -263,8 +295,24 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _process(tokenId);
     }
 
-    // Client API - Read
+    function burn(uint256 tokenId) public override
+        whenStageIsActive(Stage.PHYSICAL) {
+        super.burn(tokenId);
+        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
+        _burnedTokens[tokenId] = _msgSender();
+    }
 
+    function rebirth(uint256 tokenId) public whenStageIsActive(Stage.PHYSICAL) {
+        address burner = _burnedTokens[tokenId];
+        require(
+            _msgSender() == burner,
+            string.concat("Rebirth failed - only burner is allowed to perform rebirth")
+        );
+        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
+        _safeMint(_msgSender(), tokenId);
+    }
+
+    // Client API - Read
     function tokenURI(uint256 tokenId)
         public
         view
