@@ -38,10 +38,12 @@ contract DiamondDawn is
 
     Stage private constant MAX_STAGE = Stage.PHYSICAL;
     Stage public stage;
+
     uint public constant MINING_PRICE = 0.01 ether;
     uint public constant PREPAID_PROCESSING_PRICE = 0.01 ether;
     uint public processingPrice;
     bool public isStageActive;
+
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
 
