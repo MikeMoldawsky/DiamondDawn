@@ -38,7 +38,7 @@ const Cut = () => {
           ? (
             <>
               <div className="button action-button" onClick={cut}>CUT{token.cutable ? '' : ` (${ethersUtils.formatUnits(cutPrice)} ETH)`}</div>
-              <div className="leading-text">Cut ends in in:</div>
+              <div className="leading-text">Cut ends in:</div>
             </>
           )
           : (<div className="result">

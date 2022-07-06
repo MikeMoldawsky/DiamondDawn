@@ -36,7 +36,7 @@ const Polish = () => {
           ? (
             <>
               <div className="button action-button" onClick={polish}>POLISH{token.polishable ? '' : ` (${ethersUtils.formatUnits(polishPrice)} ETH)`}</div>
-              <div className="leading-text">Polish ends in in:</div>
+              <div className="leading-text">Polish ends in:</div>
             </>
           )
           : (<div className="result">
