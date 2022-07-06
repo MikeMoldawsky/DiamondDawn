@@ -60,7 +60,7 @@ const Mine = () => {
           ? (
             <>
               <div className="button action-button" onClick={mine}>MINE</div>
-              <div className="leading-text">Mine ends in in:</div>
+              <div className="leading-text">Mine ends in:</div>
             </>
           )
           : (<div className="result">

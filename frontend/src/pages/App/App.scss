@@ -117,37 +117,27 @@ body {
 
   .action-view {
     text-align: center;
+
+    .leading-text {
+      font-size: 2em;
+    }
+
+    .secondary-text {
+      font-size: 1.5em;
+    }
+
+    .countdown {
+      margin-top: 50px;
+
+      .countdown-text {
+        font-size: 1.5em;
+      }
+
+      span {
+        font-size: 1.8em
+      }
+    }
   }
-  //header {
-  //  position: fixed;
-  //  top: 25px;
-  //  right: 25px;
-  //  z-index: 1;
-  //  display: flex;
-  //  align-items: center;
-  //  justify-content: space-between;
-  //  font-size: 1.8em;
-  //  opacity: 0.9;
-  //
-  //  .replay-btn {
-  //    opacity: 0;
-  //    transition: opacity 0.25s linear;
-  //  }
-  //
-  //  svg {
-  //    cursor: pointer;
-  //    margin-left: 25px;
-  //
-  //    &.fa-arrows-rotate {
-  //      transform: rotate(0);
-  //      transition: transform 0.25s linear;
-  //
-  //      &:hover {
-  //        transform: rotate(180deg);
-  //      }
-  //    }
-  //  }
-  //}
 
   .action-button {
     width: 200px;

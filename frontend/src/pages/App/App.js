@@ -10,6 +10,7 @@ import Countdown from 'react-countdown';
 import Mine from "./Mine";
 import Cut from "./Cut";
 import Polish from "./Polish";
+import Burn from "./Burn";
 import useDDContract from "hooks/useDDContract";
 
 const stageByName = {
@@ -52,6 +53,8 @@ function App() {
         return <Cut />
       case 2:
         return <Polish />
+      case 3:
+        return <Burn />
       default:
         return null
     }
