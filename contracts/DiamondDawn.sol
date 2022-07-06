@@ -2,6 +2,7 @@
 pragma solidity ^0.8.14;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
@@ -16,7 +17,8 @@ contract DiamondDawn is
     ERC2981,
     Pausable,
     AccessControl,
-    ERC721Burnable
+    ERC721Burnable,
+    ERC721Enumerable
 {
     using Counters for Counters.Counter;
 
@@ -93,7 +95,7 @@ contract DiamondDawn is
         address from,
         address to,
         uint256 tokenId
-    ) internal override whenNotPaused {
+    ) internal override(ERC721, ERC721Enumerable) whenNotPaused {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
@@ -101,11 +103,24 @@ contract DiamondDawn is
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, AccessControl, ERC2981)
+        override(ERC721, ERC721Enumerable, AccessControl, ERC2981)
         returns (bool)
     {
         // EIP2981 supported for royalities
         return super.supportsInterface(interfaceId);
+    }
+
+    function walletOfOwner(address _owner)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        uint256 ownerTokenCount = balanceOf(_owner);
+        uint256[] memory tokenIds = new uint256[](ownerTokenCount);
+        for (uint256 i; i < ownerTokenCount; i++) {
+            tokenIds[i] = tokenOfOwnerByIndex(_owner, i);
+        }
+        return tokenIds;
     }
 
     // Custom logics
@@ -178,7 +193,8 @@ contract DiamondDawn is
 
     modifier whenRebirthIsActive() {
         require(
-            (stage == Stage.PHYSICAL && isStageActive) || stage == Stage.REBIRTH,
+            (stage == Stage.PHYSICAL && isStageActive) ||
+                stage == Stage.REBIRTH,
             "P2D: A stage should be active to perform this action"
         );
         _;
@@ -338,7 +354,7 @@ contract DiamondDawn is
         _burnedTokens[tokenId] = _msgSender();
     }
 
-    function rebirth(uint256 tokenId) public whenRebirthIsActive() {
+    function rebirth(uint256 tokenId) public whenRebirthIsActive {
         address burner = _burnedTokens[tokenId];
         require(
             _msgSender() == burner,
@@ -366,7 +382,7 @@ contract DiamondDawn is
                         '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "',
                         _getVideoUrl(tokenId),
                         '", "stage": "',
-                            Strings.toString(uint(_tokensMetadata[tokenId].stage)),
+                        Strings.toString(uint(_tokensMetadata[tokenId].stage)),
                         '" }'
                     )
                 )
