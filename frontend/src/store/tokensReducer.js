@@ -18,8 +18,8 @@ export const setTokens = (tokens) => ({
 export const tokensSelector = state => state.tokens
 export const tokenByIdSelector = tokenId => state => ({
   stage: 0,
-  cutable: true,
-  polishable: true,
+  cutable: false,
+  polishable: false,
 })
 // export const tokenByIdSelector = tokenId => state => _.get(state.tokens, tokenId)
 

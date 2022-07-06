@@ -31,7 +31,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     Counters.Counter private _tokenIdCounter;
 
-    Stage private constant MAX_STAGE = Stage.PHYSICAL;
+    Stage private constant MAX_STAGE = Stage.REBIRTH;
     Stage public stage;
     uint public constant MINING_PRICE = 0.2 ether;
     uint public constant CUT_PRICE = 0.4 ether;
@@ -151,6 +151,14 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     modifier whenStageIsActive(Stage _stage) {
         _requireActiveStage();
         _requireSpecificStage(_stage);
+        _;
+    }
+
+    modifier whenRebirthIsActive() {
+        require(
+            (stage == Stage.PHYSICAL && isStageActive) || stage == Stage.REBIRTH,
+            "P2D: A stage should be active to perform this action"
+        );
         _;
     }
 
@@ -311,7 +319,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _burnedTokens[tokenId] = _msgSender();
     }
 
-    function rebirth(uint256 tokenId) public whenStageIsActive(Stage.PHYSICAL) {
+    function rebirth(uint256 tokenId) public whenRebirthIsActive() {
         address burner = _burnedTokens[tokenId];
         require(
             _msgSender() == burner,
@@ -336,6 +344,8 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
                     abi.encodePacked(
                         '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "',
                         _getVideoUrl(tokenId),
+                        '", "stage": "',
+                            Strings.toString(uint(_tokensMetadata[tokenId].stage)),
                         '" }'
                     )
                 )
