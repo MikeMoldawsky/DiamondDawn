@@ -8,10 +8,16 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-
+import "@openzeppelin/contracts/token/common/ERC2981.sol";
 
 /// @custom:security-contact tweezers@gmail.com
-contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
+contract DiamondDawn is
+    ERC721,
+    ERC2981,
+    Pausable,
+    AccessControl,
+    ERC721Burnable
+{
     using Counters for Counters.Counter;
 
     enum Stage {
@@ -39,12 +45,13 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     uint public constant PREPAID_CUT_PRICE = 0.2 ether;
     uint public constant PREPAID_POLISH_PRICE = 0.4 ether;
     bool public isStageActive;
+
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
     mapping(address => bool) private _mintAllowedAddresses;
     mapping(uint256 => address) private _burnedTokens;
 
-    constructor() ERC721("DiamondDawn", "DD") {
+    constructor(uint96 _royaltyFeesInBips) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
@@ -53,7 +60,15 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
 
         stage = Stage.MINE;
         isStageActive = false;
+        setRoyaltyInfo(msg.sender, _royaltyFeesInBips);
         _pause();
+    }
+
+    function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
     }
 
     function _baseURI() internal pure override returns (string memory) {
@@ -86,9 +101,10 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, AccessControl)
+        override(ERC721, AccessControl, ERC2981)
         returns (bool)
     {
+        // EIP2981 supported for royalities
         return super.supportsInterface(interfaceId);
     }
 
@@ -120,7 +136,10 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _;
     }
 
-    function _requireValidProcessesPurchased(uint processesPurchased) internal pure {
+    function _requireValidProcessesPurchased(uint processesPurchased)
+        internal
+        pure
+    {
         require(
             processesPurchased <= uint(MAX_STAGE) - 1,
             string.concat(
@@ -130,7 +149,10 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         );
     }
 
-    function _requireValidPayment(uint processesPurchased, uint value) internal pure {
+    function _requireValidPayment(uint processesPurchased, uint value)
+        internal
+        pure
+    {
         uint price = MINING_PRICE;
         if (processesPurchased > 0) {
             price += PREPAID_CUT_PRICE;
@@ -138,7 +160,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         if (processesPurchased > 1) {
             price += PREPAID_POLISH_PRICE;
         }
-    
+
         require(
             value == price,
             string.concat(
@@ -207,34 +229,32 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-//        processingPrice = price;
+        //        processingPrice = price;
     }
 
     function revealStage(string memory videoUrl)
         public
-//        onlyRole(DEFAULT_ADMIN_ROLE)
+    //        onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _activateStage();
         _assignCurrentStageVideo(videoUrl);
     }
 
-    function completeCurrentStage()
-        public
-//    onlyRole(DEFAULT_ADMIN_ROLE)
+    function completeCurrentStage() public //    onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _deactivateStage();
         _nextStage();
     }
 
-    function addToAllowList(address[] memory addresses) 
+    function addToAllowList(address[] memory addresses)
         public
-        onlyRole(DEFAULT_ADMIN_ROLE) 
+        onlyRole(DEFAULT_ADMIN_ROLE)
     {
         for (uint i = 0; i < addresses.length; i++) {
             _mintAllowedAddresses[addresses[i]] = true;
         }
     }
-        
+
     function dev__ResetStage() public {
         stage = Stage(0);
         isStageActive = false;
@@ -246,7 +266,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         public
         payable
         whenStageIsActive(Stage.MINE)
-        _requireAllowedMiner()
+        _requireAllowedMiner
     {
         _requireValidProcessesPurchased(processesPurchased);
         _requireValidPayment(processesPurchased, msg.value);
@@ -296,11 +316,7 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
     }
 
-    function cut(uint256 tokenId)
-        public
-        payable
-        whenStageIsActive(Stage.CUT)
-    {
+    function cut(uint256 tokenId) public payable whenStageIsActive(Stage.CUT) {
         _process(tokenId, CUT_PRICE);
     }
 
@@ -312,8 +328,11 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _process(tokenId, POLISH_PRICE);
     }
 
-    function burn(uint256 tokenId) public override
-        whenStageIsActive(Stage.PHYSICAL) {
+    function burn(uint256 tokenId)
+        public
+        override
+        whenStageIsActive(Stage.PHYSICAL)
+    {
         super.burn(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
         _burnedTokens[tokenId] = _msgSender();
@@ -323,7 +342,9 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         address burner = _burnedTokens[tokenId];
         require(
             _msgSender() == burner,
-            string.concat("Rebirth failed - only burner is allowed to perform rebirth")
+            string.concat(
+                "Rebirth failed - only burner is allowed to perform rebirth"
+            )
         );
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
         _safeMint(_msgSender(), tokenId);
