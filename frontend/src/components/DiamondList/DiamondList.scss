@@ -1,0 +1,38 @@
+.diamond-list {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 40px;
+  border-right: solid 1px white;
+
+  .diamond-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 16px;
+    cursor: pointer;
+    border: solid 1px transparent;
+    border-radius: 4px;
+    padding: 7px 12px 3px;
+    opacity: .7;
+
+    svg {
+      width: 1.4em;
+      height: 1.4em;
+    }
+
+    .token-id {
+      font-size: .8em;
+      margin-top: 2px;
+    }
+
+    &.enabled {
+      opacity: 1;
+    }
+
+    &.selected {
+      border: solid 1px white;
+    }
+  }
+}

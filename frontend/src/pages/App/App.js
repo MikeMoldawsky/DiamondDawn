@@ -12,6 +12,7 @@ import Cut from "./Cut";
 import Polish from "./Polish";
 import Burn from "./Burn";
 import useDDContract from "hooks/useDDContract";
+import DiamondList from "components/DiamondList";
 
 const stageByName = {
   0: 'Mine',
@@ -63,6 +64,7 @@ function App() {
   return (
     <div className={classNames("app")}>
       <Header>
+        <DiamondList />
         <Wallet />
       </Header>
       <main>{renderStage()}</main>

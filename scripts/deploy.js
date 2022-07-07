@@ -25,7 +25,7 @@ async function main() {
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
   const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
-  const diamondDawn = await DiamondDawn.deploy();
+  const diamondDawn = await DiamondDawn.deploy(500);
   await diamondDawn.deployed();
 
   console.log("DiamondDawn contract address:", diamondDawn.address);
