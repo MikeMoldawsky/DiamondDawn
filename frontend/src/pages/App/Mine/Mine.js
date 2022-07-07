@@ -26,9 +26,9 @@ const PackageBox = ({ selected, select, index, text, cost }) => {
 const Mine = () => {
   const [actionTxId, setActionTxId] = useState(false)
   const [selectedPackage, setSelectedPackage] = useState(0)
-  const { minePrice, mineAndCutPrice, fullPrice } = useSelector(systemSelector)
+  const { minePrice, mineAndCutPrice, fullPrice, isStageActive } = useSelector(systemSelector)
   const [showVideo, setShowVideo] = useState(true)
-  const [showComplete, setShowComplete] = useState(false)
+  const [showCompleteVideo, setShowCompleteVideo] = useState(false)
 
   const contract = useDDContract()
 
@@ -45,7 +45,7 @@ const Mine = () => {
       const tx = await contract.mine(selectedPackage, { value: totalCost })
       const receipt = await tx.wait()
 
-      setShowComplete(true)
+      setShowCompleteVideo(true)
       setActionTxId(receipt.transactionHash)
     }
     catch (e) {
@@ -54,10 +54,14 @@ const Mine = () => {
   }
 
   const renderContent = () => {
+    if (!isStageActive) return (
+      <VideoPlayer>01 - COMING SOON VIDEO</VideoPlayer>
+    )
+
     const wasMined = !_.isEmpty(actionTxId)
 
-    if (showComplete) return (
-      <div onClick={() => setShowComplete(false)}>
+    if (showCompleteVideo) return (
+      <div onClick={() => setShowCompleteVideo(false)}>
         <VideoPlayer>03 - MINE VIDEO</VideoPlayer>
       </div>
     )
@@ -78,7 +82,7 @@ const Mine = () => {
         </div>
         <div className="leading-text">YOUR ROUGH DIAMOND NFT IS IN YOUR WALLET</div>
         <Countdown date={Date.now() + 10000} text={['You have', 'until cutting']} />
-        <div className="leading-text">But what lies beneath the surface</div>
+        <div className="secondary-text">But what lies beneath the surface</div>
       </>
     )
 
