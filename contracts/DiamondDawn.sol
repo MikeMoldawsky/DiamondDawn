@@ -28,8 +28,21 @@ contract DiamondDawn is
         REBIRTH
     }
 
+    enum Shape {
+        ONE_SHAPE,
+        TWO_SHAPE,
+        THREE_SHAPE,
+        UNDEFINED_SHAPE
+    }
+
+    struct ShapesData {
+        uint256 totalShapes;
+        uint256 totalShapesCut;
+    }
+
     struct Metadata {
         Stage stage;
+        Shape shape;
         uint processesLeft;
     }
 
@@ -45,6 +58,7 @@ contract DiamondDawn is
     uint public constant PREPAID_CUT_PRICE = 0.2 ether;
     uint public constant PREPAID_POLISH_PRICE = 0.4 ether;
     bool public isStageActive;
+    mapping(Shape => ShapesData) public shapesData;
 
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
@@ -61,6 +75,11 @@ contract DiamondDawn is
         stage = Stage.MINE;
         isStageActive = false;
         setRoyaltyInfo(msg.sender, _royaltyFeesInBips);
+
+        shapesData[Shape.ONE_SHAPE].totalShapes = 1100;
+        shapesData[Shape.TWO_SHAPE].totalShapes = 1100;
+        shapesData[Shape.THREE_SHAPE].totalShapes = 1100;
+
         _pause();
     }
 
@@ -178,7 +197,8 @@ contract DiamondDawn is
 
     modifier whenRebirthIsActive() {
         require(
-            (stage == Stage.PHYSICAL && isStageActive) || stage == Stage.REBIRTH,
+            (stage == Stage.PHYSICAL && isStageActive) ||
+                stage == Stage.REBIRTH,
             "P2D: A stage should be active to perform this action"
         );
         _;
@@ -279,6 +299,7 @@ contract DiamondDawn is
         // Store token metadata
         _tokensMetadata[tokenId] = Metadata({
             stage: Stage.MINE,
+            shape: Shape.UNDEFINED_SHAPE,
             processesLeft: processesPurchased
         });
 
@@ -313,11 +334,22 @@ contract DiamondDawn is
         if (_tokensMetadata[tokenId].processesLeft > 0) {
             _tokensMetadata[tokenId].processesLeft--;
         }
+
+        uint randomeNumber = getRandomNumber();
+        require(
+            randomeNumber != 3,
+            "P2D: Any Shape Not Available In The contract"
+        );
+        _tokensMetadata[tokenId].shape = Shape(randomeNumber);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
     }
 
     function cut(uint256 tokenId) public payable whenStageIsActive(Stage.CUT) {
         _process(tokenId, CUT_PRICE);
+    }
+
+    function getShapeForToken(uint tokenId) public view returns (Shape) {
+        return _tokensMetadata[tokenId].shape;
     }
 
     function polish(uint256 tokenId)
@@ -338,7 +370,7 @@ contract DiamondDawn is
         _burnedTokens[tokenId] = _msgSender();
     }
 
-    function rebirth(uint256 tokenId) public whenRebirthIsActive() {
+    function rebirth(uint256 tokenId) public whenRebirthIsActive {
         address burner = _burnedTokens[tokenId];
         require(
             _msgSender() == burner,
@@ -366,7 +398,7 @@ contract DiamondDawn is
                         '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "',
                         _getVideoUrl(tokenId),
                         '", "stage": "',
-                            Strings.toString(uint(_tokensMetadata[tokenId].stage)),
+                        Strings.toString(uint(_tokensMetadata[tokenId].stage)),
                         '" }'
                     )
                 )
@@ -393,5 +425,43 @@ contract DiamondDawn is
         returns (string memory)
     {
         return _videoUrls[_tokensMetadata[tokenId].stage];
+    }
+
+    function getRandomNumber() internal returns (uint) {
+        uint randomNumber = _randomModulo(3);
+        uint[2] memory isShapeMintable;
+        if (
+            shapesData[Shape(randomNumber)].totalShapesCut ==
+            shapesData[Shape(randomNumber)].totalShapes
+        ) {
+            uint localIndex;
+            uint localNumber = 3;
+            for (uint i = 0; i < 3 && i != randomNumber; i++) {
+                if (
+                    shapesData[Shape(i)].totalShapesCut !=
+                    shapesData[Shape(i)].totalShapes
+                ) {
+                    isShapeMintable[localIndex] = i;
+                    localIndex++;
+                }
+            }
+
+            if (localIndex == 2) {
+                localNumber = _randomModulo(localIndex);
+
+                randomNumber = isShapeMintable[localNumber];
+            } else if (localNumber == 1) {
+                randomNumber = isShapeMintable[0];
+            }
+        }
+
+        return randomNumber;
+    }
+
+    function _randomModulo(uint modulo) internal returns (uint) {
+        return
+            uint(
+                keccak256(abi.encodePacked(block.timestamp, block.difficulty))
+            ) % modulo;
     }
 }
