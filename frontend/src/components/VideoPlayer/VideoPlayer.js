@@ -1,9 +1,9 @@
 import React from 'react'
 
-const VideoPlayer = () => {
+const VideoPlayer = ({ children }) => {
   return (
     <div className="video-placeholder">
-      VIDEO
+      {children}
     </div>
   )
 }

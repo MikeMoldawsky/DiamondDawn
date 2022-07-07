@@ -86,6 +86,19 @@ body {
   }
 }
 
+.video-placeholder {
+  $videoHeight: 400px;
+  margin-top: 80px;
+  height: $videoHeight;
+  width: calc($videoHeight * 16 / 9);
+  background-color: rgba(255, 255, 255, .2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8em;
+  cursor: pointer;
+}
+
 .app {
   height: 100%;
   display: flex;
@@ -112,6 +125,26 @@ body {
 
     .countdown {
       font-size: 2em;
+    }
+  }
+
+  .diamond-art {
+    font-size: 10em;
+  }
+
+  .countdown-row {
+    width: 670px;
+    margin: 0 auto;
+
+    div {
+      font-size: 1.2em;
+    }
+
+    span {
+      width: 480px;
+      font-size: 5em;
+      //margin: 0 20px;
+      opacity: .4;
     }
   }
 
@@ -205,7 +238,7 @@ body {
 }
 
 .Toastify__toast-container {
-  top: 65px !important;
+  top: 80px !important;
 }
 
 @media only screen and (max-width: 767px) {

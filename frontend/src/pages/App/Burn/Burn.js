@@ -81,7 +81,7 @@ const Burn = () => {
           )
         }
         <div className="countdown">
-          <div className="countdown-text">Burn ends in:</div>
+          <div className="countdown-text">Burn ends in</div>
           <Countdown date={Date.now() + 10000} />
         </div>
       </div>
