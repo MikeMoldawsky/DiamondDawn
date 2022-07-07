@@ -5,7 +5,7 @@ import Wallet from "pages/Wallet";
 import Header from "components/Header";
 import AdminPanel from 'components/AdminPanel'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPricing, systemSelector } from "store/systemReducer";
+import { fetchPricing, fetchStage, systemSelector } from "store/systemReducer";
 import Mine from "./Mine";
 import Cut from "./Cut";
 import Polish from "./Polish";
@@ -22,6 +22,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchPricing(contract))
+    dispatch(fetchStage(contract))
   }, [])
 
   const renderStage = () => {
@@ -45,7 +46,7 @@ function App() {
         <DiamondList />
         <Wallet />
       </Header>
-      <main>{renderStage()}</main>
+      <main>{stage !== -1 && renderStage()}</main>
       <AdminPanel />
     </div>
   );

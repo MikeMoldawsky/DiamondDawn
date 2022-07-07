@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import './AdminPanel.scss'
 import { useDispatch, useSelector } from "react-redux";
-import { setStage, systemSelector } from "store/systemReducer";
+import { fetchStage, setStage, systemSelector } from "store/systemReducer";
 import contractAddress from "contracts/contract-address.json";
 import ddContract from "contracts/DiamondDawn.json"
 import { useContract, useProvider, useSigner } from "wagmi";
-import { parseError, showError } from "utils";
+import { showError } from "utils";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 
 const AdminPanel = () => {
@@ -26,18 +26,12 @@ const AdminPanel = () => {
 
   const dispatch = useDispatch()
 
-  const loadData = async () => {
-    const _stage = await contract.stage()
-    const _isStageActive = await contract.isStageActive()
-    dispatch(setStage(_stage, _isStageActive))
-  }
-
   const revealStage = async () => {
     try {
       const tx = await contract.revealStage('')
       const receipt = await tx.wait()
       console.log('revealStage', { receipt })
-      loadData()
+      dispatch(fetchStage(contract))
     }
     catch (e) {
       showError(e, 'Reveal Stage Failed')
@@ -49,7 +43,7 @@ const AdminPanel = () => {
       const tx = await contract.completeCurrentStage()
       const receipt = await tx.wait()
       console.log('completeStage', { receipt })
-      loadData()
+      dispatch(fetchStage(contract))
     }
     catch (e) {
       showError(e, 'Complete Stage Failed')
@@ -61,8 +55,7 @@ const AdminPanel = () => {
       const tx = await contract.dev__ResetStage()
       const receipt = await tx.wait()
       console.log('resetStage', { receipt })
-      loadData()
-    }
+      dispatch(fetchStage(contract))    }
     catch (e) {
       showError(e, 'Reset Stage Failed')
     }
@@ -93,10 +86,6 @@ const AdminPanel = () => {
   const nextTokenId = () => {
     dispatch(setSelectedTokenId(selectedTokenId + 1))
   }
-
-  useEffect(() => {
-    loadData()
-  }, [])
 
   return (
     <div className="admin-panel">
