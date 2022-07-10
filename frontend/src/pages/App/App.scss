@@ -87,10 +87,9 @@ body {
 }
 
 .video-placeholder {
-  $videoHeight: 400px;
   margin-top: 80px;
   height: $videoHeight;
-  width: calc($videoHeight * 16 / 9);
+  width: $videoWidth;
   background-color: rgba(255, 255, 255, .2);
   display: flex;
   align-items: center;
@@ -114,6 +113,16 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 30px;
   }
 
   .countdown-view {

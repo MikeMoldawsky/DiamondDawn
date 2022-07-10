@@ -12,6 +12,7 @@ import Polish from "./Polish";
 import Burn from "./Burn";
 import useDDContract from "hooks/useDDContract";
 import DiamondList from "components/DiamondList";
+import ProgressBar from "components/ProgressBar";
 
 function App() {
 
@@ -47,6 +48,9 @@ function App() {
         <Wallet />
       </Header>
       <main>{stage !== -1 && renderStage()}</main>
+      <footer>
+        <ProgressBar />
+      </footer>
       <AdminPanel />
     </div>
   );
