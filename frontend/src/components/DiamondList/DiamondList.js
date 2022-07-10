@@ -38,7 +38,7 @@ const DiamondList = () => {
   const accountTokens = useSelector(tokensSelector)
   return (
     <div className="diamond-list">
-      {_.map(accountTokens, diamond => (<DiamondItem diamond={diamond} />))}
+      {_.map(accountTokens, diamond => (<DiamondItem key={`diamond-list-item-${diamond.id}`} diamond={diamond} />))}
     </div>
   );
 }

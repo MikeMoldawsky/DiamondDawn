@@ -2,8 +2,8 @@ import { makeReducer } from './reduxUtils'
 import _ from 'lodash'
 
 const NFTS_MOCK = [
-  { id: 0, stage: 1, cutable: false, polishable: false, shape: 0 },
-  { id: 1, stage: 0, cutable: true, polishable: false, shape: 0 },
+  { id: 0, stage: 2, cutable: false, polishable: false, shape: 0 },
+  // { id: 1, stage: 0, cutable: true, polishable: false, shape: 0 },
   // { id: 2, stage: 0, cutable: true, polishable: true, shape: 0 },
   // { id: 3, stage: 1, cutable: true, polishable: false, shape: 0 },
   // { id: 4, stage: 2, cutable: true, polishable: true, shape: 1 },
