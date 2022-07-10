@@ -13,6 +13,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import { systemSelector } from "store/systemReducer";
 import VideoPlayer from "components/VideoPlayer";
+import NoDiamondView from "components/NoDiamondView";
+import useSelectAvailableToken from "hooks/useSelectAvailableToken";
+import { STAGE } from "consts";
 
 const Burn = () => {
   const contract = useDDContract()
@@ -29,7 +32,7 @@ const Burn = () => {
     formState: { errors },
   } = useForm();
 
-  if (!token) return null
+  useSelectAvailableToken(STAGE.PHYSICAL)
 
   const saveAddressAndBurn = async (formData) => {
     try {
@@ -55,6 +58,8 @@ const Burn = () => {
   }
 
   const renderContent = () => {
+    if (isStageActive && !token) return (<NoDiamondView stageName="burn" />)
+
     if (showCompleteVideo) return (
       <div onClick={() => setShowCompleteVideo(false)}>
         <VideoPlayer>05 - BURN VIDEO</VideoPlayer>

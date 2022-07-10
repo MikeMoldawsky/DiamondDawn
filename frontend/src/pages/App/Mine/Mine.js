@@ -11,6 +11,8 @@ import VideoPlayer from "components/VideoPlayer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import Countdown from 'components/Countdown';
+import { tokensSelector } from "store/tokensReducer";
+import NoDiamondView from "components/NoDiamondView";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -29,6 +31,7 @@ const Mine = () => {
   const { minePrice, mineAndCutPrice, fullPrice, isStageActive } = useSelector(systemSelector)
   const [showVideo, setShowVideo] = useState(true)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
+  const accountTokens = useSelector(tokensSelector)
 
   const contract = useDDContract()
 
@@ -58,12 +61,8 @@ const Mine = () => {
       <VideoPlayer>01 - COMING SOON VIDEO</VideoPlayer>
     )
 
-    const wasMined = !_.isEmpty(actionTxId)
-
-    if (showCompleteVideo) return (
-      <div onClick={() => setShowCompleteVideo(false)}>
-        <VideoPlayer>03 - MINE VIDEO</VideoPlayer>
-      </div>
+    if (_.size(accountTokens) > 0) return (
+      <NoDiamondView stageName="mine" secondaryText="Each account can mine only one diamond, you can buy more on OpenSea" />
     )
 
     if (showVideo) return (
@@ -75,6 +74,13 @@ const Mine = () => {
       </>
     )
 
+    if (showCompleteVideo) return (
+      <div onClick={() => setShowCompleteVideo(false)}>
+        <VideoPlayer>03 - MINE VIDEO</VideoPlayer>
+      </div>
+    )
+
+    const wasMined = !_.isEmpty(actionTxId)
     if (wasMined) return (
       <>
         <div className="diamond-art">

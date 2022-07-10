@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import './DiamondList.scss'
-import NFTS_MOCK from "assets/data/nft.mock";
 import { SHAPE } from "consts";
 import { systemSelector } from "store/systemReducer";
+import { tokensSelector } from "store/tokensReducer";
 
 const diamondIconByShape = {
   [SHAPE.ROUND]: faGem,
@@ -27,17 +27,20 @@ const DiamondItem = ({ diamond }) => {
   const enabled = isStageActive && (stage === systemStage - 1)
 
   return (
-    <div className={classNames("diamond-item", { selected, enabled })} onClick={() => dispatch(setSelectedTokenId(id))}>
+    <div className={classNames("diamond-item", { selected, enabled })} onClick={() => enabled && dispatch(setSelectedTokenId(id))}>
       <FontAwesomeIcon icon={diamondIconByShape[shape]} />
       <div className="token-id">#{id}</div>
     </div>
   )
 }
 
-const DiamondList = () => (
-  <div className="diamond-list">
-    {_.map(NFTS_MOCK, diamond => (<DiamondItem diamond={diamond} />))}
-  </div>
-);
+const DiamondList = () => {
+  const accountTokens = useSelector(tokensSelector)
+  return (
+    <div className="diamond-list">
+      {_.map(accountTokens, diamond => (<DiamondItem diamond={diamond} />))}
+    </div>
+  );
+}
 
 export default DiamondList;

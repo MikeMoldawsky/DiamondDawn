@@ -11,6 +11,9 @@ import { systemSelector } from "store/systemReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import VideoPlayer from "components/VideoPlayer";
+import useSelectAvailableToken from "hooks/useSelectAvailableToken";
+import { STAGE } from "consts";
+import NoDiamondView from "components/NoDiamondView";
 
 const Cut = () => {
   const [actionTxId, setActionTxId] = useState(false)
@@ -20,7 +23,7 @@ const Cut = () => {
   const { cutPrice, isStageActive } = useSelector(systemSelector)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
 
-  if (!token) return null
+  useSelectAvailableToken(STAGE.CUT)
 
   const cut = async () => {
     try {
@@ -36,6 +39,8 @@ const Cut = () => {
   }
 
   const renderContent = () => {
+    if (isStageActive && !token) return (<NoDiamondView stageName="cut" />)
+
     if (showCompleteVideo) return (
       <div onClick={() => setShowCompleteVideo(false)}>
         <VideoPlayer>04 - CUTTING VIDEO</VideoPlayer>
@@ -64,11 +69,10 @@ const Cut = () => {
           BUT VERY FEW ARE WILLING TO CUT
         </div>
         <div className="secondary-text">Will you take the risk?</div>
-        {isStageActive ? (
+        {isStageActive && (
           <div className="button action-button" onClick={cut}>CUT{token.cutable ? '' : ` (${ethersUtils.formatUnits(cutPrice)} ETH)`}</div>
-        ) : (
-          <Countdown date={Date.now() + 10000} text={['You have', 'until cut']} />
         )}
+        <Countdown date={Date.now() + 10000} text={['You have', `${isStageActive ? 'to' : 'until'} cut`]} />
       </>
     )
   }

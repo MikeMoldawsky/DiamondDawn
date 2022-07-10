@@ -15,17 +15,22 @@ import DiamondList from "components/DiamondList";
 import ProgressBar from "components/ProgressBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
+import { loadAccountTokens } from "store/tokensReducer";
+import { useAccount } from "wagmi";
 
 function App() {
 
   const { stage } = useSelector(systemSelector)
+  const { address } = useAccount()
 
   const contract = useDDContract()
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchPricing(contract))
+    console.log('App useEffect')
+    dispatch(loadAccountTokens(address))
     dispatch(fetchStage(contract))
+    dispatch(fetchPricing(contract))
   }, [])
 
   const renderStage = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import _ from 'lodash'
 import Countdown from 'components/Countdown';
 import { showError } from "utils";
@@ -11,6 +11,9 @@ import { tokenByIdSelector } from "store/tokensReducer";
 import VideoPlayer from "components/VideoPlayer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
+import useSelectAvailableToken from "hooks/useSelectAvailableToken";
+import { STAGE } from "consts";
+import NoDiamondView from "components/NoDiamondView";
 
 const Polish = () => {
   const [actionTxId, setActionTxId] = useState(false)
@@ -19,6 +22,8 @@ const Polish = () => {
   const token = useSelector(tokenByIdSelector(selectedTokenId))
   const { polishPrice, isStageActive } = useSelector(systemSelector)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
+
+  useSelectAvailableToken(STAGE.POLISH)
 
   const polish = async () => {
     try {
@@ -34,6 +39,8 @@ const Polish = () => {
   }
 
   const renderContent = () => {
+    if (isStageActive && !token) return (<NoDiamondView stageName="polish" />)
+
     if (showCompleteVideo) return (
       <div onClick={() => setShowCompleteVideo(false)}>
         <VideoPlayer>05 - POLISH VIDEO</VideoPlayer>
@@ -62,11 +69,10 @@ const Polish = () => {
           NOR MAN PERFECTED WITHOUT TRIALS
         </div>
         <div className="secondary-text">Discover the beauty, a billion years in the making</div>
-        {isStageActive ? (
+        {isStageActive && (
           <div className="button action-button" onClick={polish}>POLISH{token.polishable ? '' : ` (${ethersUtils.formatUnits(polishPrice)} ETH)`}</div>
-        ) : (
-          <Countdown date={Date.now() + 10000} text={['You have', 'until polish']} />
         )}
+        <Countdown date={Date.now() + 10000} text={['You have', `${isStageActive ? 'to' : 'until'} polish`]} />
       </>
     )
   }
