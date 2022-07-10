@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
+import _ from 'lodash'
 import "./OwnerNfts.scss";
 import { Network, initializeAlchemy, getNftsForOwner } from "@alch/alchemy-sdk";
-import { useDispatch, useSelector } from "react-redux";
-import { systemSelector } from "store/systemReducer";
 import contractAddress from "contracts/contract-address.json";
 import ddContract from "contracts/DiamondDawn.json";
 import { useAccount, useContract, useProvider, useSigner } from "wagmi";
-import axios from "axios";
 
 const OwnerNfts = () => {
   const provider = useProvider();
@@ -59,14 +57,13 @@ const OwnerNfts = () => {
         const nftsOwnedByOwner = await contract.walletOfOwner(
           addressData?.address
         );
-        let wallet = [];
-        nftsOwnedByOwner &&
-          nftsOwnedByOwner?.length > 0 &&
-          (await nftsOwnedByOwner.forEach(async (element) => {
+        if (nftsOwnedByOwner && nftsOwnedByOwner?.length > 0) {
+          const nfts = await Promise.all(nftsOwnedByOwner.map(async (element) => {
             const tokenUri = await contract.tokenURI(element.toNumber());
-            wallet.push({ nftId: element.toNumber(), tokenUri });
-          }));
-        SetwalletNfts(wallet);
+            return { nftId: element.toNumber(), tokenUri }
+          }))
+          SetwalletNfts(nfts);
+        }
       }
     }
   };
