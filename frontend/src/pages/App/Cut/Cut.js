@@ -36,14 +36,13 @@ const Cut = () => {
   }
 
   const renderContent = () => {
-    const wasCut = !_.isEmpty(actionTxId)
-
     if (showCompleteVideo) return (
       <div onClick={() => setShowCompleteVideo(false)}>
         <VideoPlayer>04 - CUTTING VIDEO</VideoPlayer>
       </div>
     )
 
+    const wasCut = !_.isEmpty(actionTxId)
     if (wasCut) return (
       <>
         <div className="diamond-art">

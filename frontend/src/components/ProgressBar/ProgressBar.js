@@ -15,7 +15,7 @@ const steps = {
 const ProgressBar = () => {
   const { stage: systemStage, isStageActive } = useSelector(systemSelector)
 
-  if (systemStage === 0 && !isStageActive) return null
+  if ((systemStage === 0 && !isStageActive) || systemStage === 4) return null
 
   return (
     <div className={classNames("progress-bar")}>

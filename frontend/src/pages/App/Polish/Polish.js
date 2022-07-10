@@ -34,14 +34,13 @@ const Polish = () => {
   }
 
   const renderContent = () => {
-    const wasPolished = !_.isEmpty(actionTxId)
-
     if (showCompleteVideo) return (
       <div onClick={() => setShowCompleteVideo(false)}>
         <VideoPlayer>05 - POLISH VIDEO</VideoPlayer>
       </div>
     )
 
+    const wasPolished = !_.isEmpty(actionTxId)
     if (wasPolished) return (
       <>
         <div className="diamond-art">

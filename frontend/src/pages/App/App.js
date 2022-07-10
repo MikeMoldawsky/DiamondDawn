@@ -13,6 +13,8 @@ import Burn from "./Burn";
 import useDDContract from "hooks/useDDContract";
 import DiamondList from "components/DiamondList";
 import ProgressBar from "components/ProgressBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGem } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
 
@@ -36,6 +38,15 @@ function App() {
         return <Polish />
       case 3:
         return <Burn />
+      case 4:
+        return (
+          <div className="action-view">
+            <div className="diamond-art">
+              <FontAwesomeIcon icon={faGem} />
+            </div>
+            <div className="leading-text">SYSTEM IS COMPLETE AND CLOSED</div>
+          </div>
+        )
       default:
         return null
     }
