@@ -8,7 +8,7 @@ const Header = ({ children }) => {
         <div className="logo-box">
           <img src={tweezersLogo} alt="TWEEZERS" />
         </div>
-        <div>{children}</div>
+        <div className="center-aligned-row">{children}</div>
       </div>
     </header>
   );
