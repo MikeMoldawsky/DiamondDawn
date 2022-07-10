@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import { loadAccountTokens } from "store/tokensReducer";
 import { useAccount } from "wagmi";
+import OwnerNfts from "components/OwnerNfts";
 
 function App() {
 
@@ -67,6 +68,7 @@ function App() {
       <footer>
         <ProgressBar />
       </footer>
+      <OwnerNfts/>
       <AdminPanel />
     </div>
   );

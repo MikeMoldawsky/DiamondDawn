@@ -22,10 +22,12 @@ async function main() {
     await deployer.getAddress()
   );
 
+  const royality = 1000; // 1000/10000 = 10/100 = 10 %
+
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
   const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
-  const diamondDawn = await DiamondDawn.deploy(500);
+  const diamondDawn = await DiamondDawn.deploy(royality);
   await diamondDawn.deployed();
 
   console.log("DiamondDawn contract address:", diamondDawn.address);
