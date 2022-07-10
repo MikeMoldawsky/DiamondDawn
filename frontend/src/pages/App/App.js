@@ -12,6 +12,7 @@ import Cut from "./Cut";
 import Polish from "./Polish";
 import Burn from "./Burn";
 import useDDContract from "hooks/useDDContract";
+import OwnerNfts from "components/OwnerNfts";
 
 const stageByName = {
   0: 'Mine',
@@ -34,7 +35,7 @@ const CountdownView = ({ stage }) => {
 function App() {
 
   const { stage, isStageActive } = useSelector(systemSelector)
-
+console.log("stage",stage,isStageActive)
   const contract = useDDContract()
   const dispatch = useDispatch()
 
@@ -66,6 +67,7 @@ function App() {
         <Wallet />
       </Header>
       <main>{renderStage()}</main>
+      <OwnerNfts/>
       <AdminPanel />
     </div>
   );
