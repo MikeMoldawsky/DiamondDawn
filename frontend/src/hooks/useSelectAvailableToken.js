@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import _ from 'lodash'
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
@@ -10,9 +10,12 @@ function useSelectAvailableToken(stage) {
   const tokens = useSelector(tokensSelector)
 
   useEffect(() => {
-    const availableToken = _.find(tokens, token => token.stage === stage - 1)
+    let availableToken = _.find(tokens, token => token.stage === stage - 1)
+    // if (!availableToken) {
+    //   availableToken = _.find(tokens, token => token.stage === stage)
+    // }
     dispatch(setSelectedTokenId(availableToken?.id))
-  }, [])
+  }, [tokens, stage])
 }
 
 export default useSelectAvailableToken;

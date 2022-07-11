@@ -30,9 +30,18 @@ contract DiamondDawn is
         REBIRTH
     }
 
+    enum Shape {
+        ROUGH,
+        OVAL,
+        RADIANT,
+        PEAR
+    }
+
     struct Metadata {
         Stage stage;
-        uint processesLeft;
+        bool cutable;
+        bool polishable;
+        Shape shape;
     }
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -295,7 +304,9 @@ contract DiamondDawn is
         // Store token metadata
         _tokensMetadata[tokenId] = Metadata({
             stage: Stage.MINE,
-            processesLeft: processesPurchased
+            cutable: processesPurchased >= 1,
+            polishable: processesPurchased == 2,
+            shape: Shape.ROUGH
         });
 
         // Restrict another mint by the same miner
@@ -316,7 +327,7 @@ contract DiamondDawn is
             )
         );
 
-        if (_tokensMetadata[tokenId].processesLeft == 0) {
+        if ((stage == Stage.CUT && !_tokensMetadata[tokenId].cutable) || (stage == Stage.POLISH && !_tokensMetadata[tokenId].polishable)) {
             require(
                 msg.value == processingPrice,
                 string.concat(
@@ -326,9 +337,6 @@ contract DiamondDawn is
             );
         }
 
-        if (_tokensMetadata[tokenId].processesLeft > 0) {
-            _tokensMetadata[tokenId].processesLeft--;
-        }
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
     }
 
@@ -379,11 +387,17 @@ contract DiamondDawn is
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "',
+                        '{"image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "',
                         _getVideoUrl(tokenId),
-                        '", "stage": "',
+                        '", "stage": ',
                         Strings.toString(uint(_tokensMetadata[tokenId].stage)),
-                        '" }'
+                        ', "shape": ',
+                        Strings.toString(uint(_tokensMetadata[tokenId].shape)),
+                        ', "cutable": ',
+                        _tokensMetadata[tokenId].cutable ? "true" : "false",
+                        ', "polishable": ',
+                        _tokensMetadata[tokenId].polishable ? "true" : "false",
+                        ' }'
                     )
                 )
             )

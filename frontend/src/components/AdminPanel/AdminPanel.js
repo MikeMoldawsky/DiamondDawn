@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import './AdminPanel.scss'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStage, setStage, systemSelector } from "store/systemReducer";
+import { fetchStage, systemSelector } from "store/systemReducer";
 import contractAddress from "contracts/contract-address.json";
 import ddContract from "contracts/DiamondDawn.json"
 import { useContract, useProvider, useSigner } from "wagmi";
