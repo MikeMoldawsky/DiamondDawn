@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { BigNumber } from 'ethers'
 
 const INITIAL_STATE = {
-  stage: 0,
+  stage: -1,
   isStageActive: false,
   minePrice: BigNumber.from(0),
   cutPrice: BigNumber.from(0),
@@ -12,7 +12,7 @@ const INITIAL_STATE = {
   fullPrice: BigNumber.from(0),
 }
 
-export const fetchPricing = (contract) => async (dispatch) => {
+export const fetchPricing = contract => async dispatch => {
   const [minePrice, cutPrice, polishPrice, prepaidCutPrice, prepaidPolishPrice] = await Promise.all([
     contract.MINING_PRICE(),
     contract.CUT_PRICE(),
@@ -30,6 +30,12 @@ export const fetchPricing = (contract) => async (dispatch) => {
     type: 'SYSTEM.SET_PRICE',
     payload: prices,
   })
+}
+
+export const fetchStage = contract => async dispatch => {
+  const _stage = await contract.stage()
+  const _isStageActive = await contract.isStageActive()
+  dispatch(setStage(_stage, _isStageActive))
 }
 
 export const setStage = (stage, isStageActive) => ({

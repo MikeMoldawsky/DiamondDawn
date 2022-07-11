@@ -5,46 +5,36 @@ import Wallet from "pages/Wallet";
 import Header from "components/Header";
 import AdminPanel from 'components/AdminPanel'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPricing, systemSelector } from "store/systemReducer";
-import Countdown from 'react-countdown';
+import { fetchPricing, fetchStage, systemSelector } from "store/systemReducer";
 import Mine from "./Mine";
 import Cut from "./Cut";
 import Polish from "./Polish";
+import Burn from "./Burn";
 import useDDContract from "hooks/useDDContract";
-
-const stageByName = {
-  0: 'Mine',
-  1: 'Cut',
-  2: 'Polish',
-  3: 'Burn',
-}
-
-const CountdownView = ({ stage }) => {
-  return (
-    <div className="countdown-view">
-      <div className="leading-text">{stageByName[stage]} opens in:</div>
-      <div className="countdown">
-        <Countdown date={Date.now() + 10000} />
-      </div>
-    </div>
-  )
-}
+import DiamondList from "components/DiamondList";
+import ProgressBar from "components/ProgressBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGem } from "@fortawesome/free-solid-svg-icons";
+import { loadAccountTokens } from "store/tokensReducer";
+import { useAccount } from "wagmi";
+import OwnerNfts from "components/OwnerNfts";
 
 function App() {
 
-  const { stage, isStageActive } = useSelector(systemSelector)
+  const { stage } = useSelector(systemSelector)
+  const { address } = useAccount()
 
   const contract = useDDContract()
   const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log('App useEffect')
+    dispatch(loadAccountTokens(address))
+    dispatch(fetchStage(contract))
     dispatch(fetchPricing(contract))
   }, [])
 
   const renderStage = () => {
-    if (!isStageActive) {
-      return (<CountdownView stage={stage} />)
-    }
     switch (stage) {
       case 0:
         return <Mine />
@@ -52,6 +42,17 @@ function App() {
         return <Cut />
       case 2:
         return <Polish />
+      case 3:
+        return <Burn />
+      case 4:
+        return (
+          <div className="action-view">
+            <div className="diamond-art">
+              <FontAwesomeIcon icon={faGem} />
+            </div>
+            <div className="leading-text">SYSTEM IS COMPLETE AND CLOSED</div>
+          </div>
+        )
       default:
         return null
     }
@@ -60,9 +61,14 @@ function App() {
   return (
     <div className={classNames("app")}>
       <Header>
+        <DiamondList />
         <Wallet />
       </Header>
-      <main>{renderStage()}</main>
+      <main>{stage !== -1 && renderStage()}</main>
+      <footer>
+        <ProgressBar />
+      </footer>
+      <OwnerNfts/>
       <AdminPanel />
     </div>
   );

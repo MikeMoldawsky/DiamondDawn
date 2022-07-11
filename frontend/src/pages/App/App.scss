@@ -86,6 +86,18 @@ body {
   }
 }
 
+.video-placeholder {
+  margin-top: 80px;
+  height: $videoHeight;
+  width: $videoWidth;
+  background-color: rgba(255, 255, 255, .2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8em;
+  cursor: pointer;
+}
+
 .app {
   height: 100%;
   display: flex;
@@ -103,6 +115,16 @@ body {
     justify-content: center;
   }
 
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 30px;
+  }
+
   .countdown-view {
     text-align: center;
 
@@ -115,39 +137,52 @@ body {
     }
   }
 
+  .diamond-art {
+    font-size: 10em;
+  }
+
+  .countdown-row {
+    width: 670px;
+    margin: 0 auto;
+
+    div {
+      font-size: 1.2em;
+    }
+
+    span {
+      width: 480px;
+      font-size: 5em;
+      opacity: .4;
+    }
+  }
+
   .action-view {
     text-align: center;
+
+    .leading-text {
+      font-size: 2em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .secondary-text {
+      font-size: 1.5em;
+      color: #7E7D7D;
+      margin-bottom: 40px;
+    }
+
+    .countdown {
+      margin-top: 50px;
+
+      .countdown-text {
+        font-size: 1.5em;
+      }
+
+      span {
+        font-size: 1.8em
+      }
+    }
   }
-  //header {
-  //  position: fixed;
-  //  top: 25px;
-  //  right: 25px;
-  //  z-index: 1;
-  //  display: flex;
-  //  align-items: center;
-  //  justify-content: space-between;
-  //  font-size: 1.8em;
-  //  opacity: 0.9;
-  //
-  //  .replay-btn {
-  //    opacity: 0;
-  //    transition: opacity 0.25s linear;
-  //  }
-  //
-  //  svg {
-  //    cursor: pointer;
-  //    margin-left: 25px;
-  //
-  //    &.fa-arrows-rotate {
-  //      transform: rotate(0);
-  //      transition: transform 0.25s linear;
-  //
-  //      &:hover {
-  //        transform: rotate(180deg);
-  //      }
-  //    }
-  //  }
-  //}
 
   .action-button {
     width: 200px;
@@ -215,7 +250,7 @@ body {
 }
 
 .Toastify__toast-container {
-  top: 65px !important;
+  top: 80px !important;
 }
 
 @media only screen and (max-width: 767px) {
