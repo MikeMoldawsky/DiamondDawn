@@ -23,13 +23,11 @@ export const loadAccountNfts = (contract, provider, address) => async dispatch =
         }
       ).then((result) => {
         let response = result?.ownedNfts;
-        response.map((object) => {
-          nfts.push({
-            tokenId: object?.tokenId,
-            tokenUri: object?.tokenUri?.gateway || object?.tokenUri?.raw,
-            metadata: object?.rawMetadata,
-          });
-        });
+        nfts = response.map((object) => ({
+          tokenId: object?.tokenId,
+          tokenUri: object?.tokenUri?.gateway || object?.tokenUri?.raw,
+          metadata: object?.rawMetadata,
+        }));
       });
     } else {
       const nftsOwnedByOwner = await contract.walletOfOwner(address);

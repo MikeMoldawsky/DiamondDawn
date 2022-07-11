@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import animation from "assets/video/infinity_video.mp4";
-import tweezersLogo from "assets/images/logo.png";
 import ReactPlayer from "react-player";
 import './LandingPage.scss'
 
 const PASSWORD_LENGTH = 4
-// const CHECK_TIME = 0
 const CHECK_TIME = 1750
 
 const LandingPage = () => {

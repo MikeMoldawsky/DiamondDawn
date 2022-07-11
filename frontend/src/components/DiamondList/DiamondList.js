@@ -24,8 +24,9 @@ const getDiamondIcon = ({ stage, shape }) => {
           return faGem
         case SHAPE.PEAR:
           return faGem
+        default:
+          return null
       }
-      break
     case STAGE.POLISH:
       // polished diamond by shape
       switch (shape) {
@@ -35,11 +36,12 @@ const getDiamondIcon = ({ stage, shape }) => {
           return faGem
         case SHAPE.PEAR:
           return faGem
+        default:
+          return null
       }
-      break
+    default:
+      return null
   }
-
-  return null
 }
 
 const DiamondItem = ({ diamond }) => {
@@ -47,7 +49,7 @@ const DiamondItem = ({ diamond }) => {
   const { stage: systemStage, isStageActive } = useSelector(systemSelector)
   const dispatch = useDispatch()
 
-  const { id, stage, shape } = diamond
+  const { id, stage } = diamond
 
   const selected = selectedTokenId === id
   const enabled = isStageActive && (stage === systemStage - 1)

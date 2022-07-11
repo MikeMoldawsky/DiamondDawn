@@ -1,19 +1,6 @@
 import React from "react";
-import {
-  connectorsForWallets,
-  getDefaultWallets,
-  RainbowKitProvider,
-  wallet,
-  darkTheme,
-} from "@rainbow-me/rainbowkit";
-import {
-  chain,
-  configureChains,
-  createClient,
-  infuraRpcUrls,
-  WagmiConfig,
-} from "wagmi";
-import { alchemyProvider } from "wagmi/providers/alchemy";
+import { getDefaultWallets, RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/dist/index.css";
