@@ -69,7 +69,6 @@ contract DiamondDawn is
         _videoUrls[Stage.POLISH] = 'QmZMgQtGFpTDA4iiog46ke1BwWMz9Ka4UWzFTf5XPdrKiq';
         _videoUrls[Stage.PHYSICAL] = 'QmSNAHgrM7oLiX1UBuyTES3mz2UADnoTCofiv3do6xGqQv';
         _videoUrls[Stage.REBIRTH] = 'Qmckbusa13kkApLrsprsiFqtRhDWdYrE8c5v8T4TcFzbrN';
-
     }
 
     function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
