@@ -379,7 +379,7 @@ contract DiamondDawn is
         returns (string memory)
     {
         // _requireMinted(tokenId);
-        string videoUrl = _getVideoUrl(tokenId);
+        string memory videoUrl = _getVideoUrl(tokenId);
         string memory json = Base64.encode(
             bytes(
                 string(
