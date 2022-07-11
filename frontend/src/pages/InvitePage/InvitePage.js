@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import _ from 'lodash'
 import classNames from "classnames";
 import './InvitePage.scss'
 import { useParams } from "react-router-dom";

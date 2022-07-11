@@ -4,9 +4,9 @@ import Countdown from 'components/Countdown';
 import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
 import { BigNumber, utils as ethersUtils } from "ethers";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import { tokenByIdSelector } from "store/tokensReducer";
+import { fetchTokenUri, tokenByIdSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +22,7 @@ const Cut = () => {
   const token = useSelector(tokenByIdSelector(selectedTokenId))
   const { cutPrice, isStageActive } = useSelector(systemSelector)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
+  const dispatch = useDispatch()
 
   useSelectAvailableToken(STAGE.CUT)
 
@@ -30,6 +31,7 @@ const Cut = () => {
       const tx = await contract.cut(selectedTokenId, { value: token.cutable ? BigNumber.from(0) : cutPrice })
       const receipt = await tx.wait()
 
+      dispatch(fetchTokenUri(contract, selectedTokenId))
       setShowCompleteVideo(true)
       setActionTxId(receipt.transactionHash)
     }
@@ -39,8 +41,6 @@ const Cut = () => {
   }
 
   const renderContent = () => {
-    if (isStageActive && !token) return (<NoDiamondView stageName="cut" />)
-
     if (showCompleteVideo) return (
       <div onClick={() => setShowCompleteVideo(false)}>
         <VideoPlayer>04 - CUTTING VIDEO</VideoPlayer>
@@ -58,6 +58,8 @@ const Cut = () => {
         <div className="secondary-text">Without darkness, nothing could be able to shine glamorously</div>
       </>
     )
+
+    if (isStageActive && !token) return (<NoDiamondView stageName="cut" />)
 
     return (
       <>

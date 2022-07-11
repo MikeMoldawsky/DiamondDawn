@@ -30,9 +30,18 @@ contract DiamondDawn is
         REBIRTH
     }
 
+    enum Shape {
+        ROUGH,
+        OVAL,
+        RADIANT,
+        PEAR
+    }
+
     struct Metadata {
         Stage stage;
-        uint processesLeft;
+        bool cutable;
+        bool polishable;
+        Shape shape;
     }
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -63,12 +72,6 @@ contract DiamondDawn is
         isStageActive = false;
         setRoyaltyInfo(msg.sender, _royaltyFeesInBips);
         _pause();
-        // TODO: move to reveal stage
-        _videoUrls[Stage.MINE] = 'QmaQjHAn7RhD89qxVpukgN1vspfbV6me8gbapU11cZcEH5';
-        _videoUrls[Stage.CUT] = 'QmYxgWcEwZaccSuHCToscRidk1ZnDPfctBQcec4oZee3N7';
-        _videoUrls[Stage.POLISH] = 'QmZMgQtGFpTDA4iiog46ke1BwWMz9Ka4UWzFTf5XPdrKiq';
-        _videoUrls[Stage.PHYSICAL] = 'QmSNAHgrM7oLiX1UBuyTES3mz2UADnoTCofiv3do6xGqQv';
-        _videoUrls[Stage.REBIRTH] = 'Qmckbusa13kkApLrsprsiFqtRhDWdYrE8c5v8T4TcFzbrN';
     }
 
     function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
@@ -300,7 +303,9 @@ contract DiamondDawn is
         // Store token metadata
         _tokensMetadata[tokenId] = Metadata({
             stage: Stage.MINE,
-            processesLeft: processesPurchased
+            cutable: processesPurchased >= 1,
+            polishable: processesPurchased == 2,
+            shape: Shape.ROUGH
         });
 
         // Restrict another mint by the same miner
@@ -321,7 +326,7 @@ contract DiamondDawn is
             )
         );
 
-        if (_tokensMetadata[tokenId].processesLeft == 0) {
+        if ((stage == Stage.CUT && !_tokensMetadata[tokenId].cutable) || (stage == Stage.POLISH && !_tokensMetadata[tokenId].polishable)) {
             require(
                 msg.value == processingPrice,
                 string.concat(
@@ -331,9 +336,6 @@ contract DiamondDawn is
             );
         }
 
-        if (_tokensMetadata[tokenId].processesLeft > 0) {
-            _tokensMetadata[tokenId].processesLeft--;
-        }
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
     }
 
@@ -386,9 +388,15 @@ contract DiamondDawn is
                     abi.encodePacked(
                         '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "', videoUrl, '", "animation_url": "',
                             videoUrl,
-                        '", "stage": "',
+                        '", "stage": ',
                         Strings.toString(uint(_tokensMetadata[tokenId].stage)),
-                        '" }'
+                        ', "shape": ',
+                        Strings.toString(uint(_tokensMetadata[tokenId].shape)),
+                        ', "cutable": ',
+                        _tokensMetadata[tokenId].cutable ? "true" : "false",
+                        ', "polishable": ',
+                        _tokensMetadata[tokenId].polishable ? "true" : "false",
+                        ' }'
                     )
                 )
             )

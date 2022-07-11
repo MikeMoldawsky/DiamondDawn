@@ -7,7 +7,7 @@ export const STAGE = {
 }
 
 export const SHAPE = {
-  ROUND: 0,
-  DROP: 1,
-  HEART: 2,
+  OVAL: 0,
+  RADIANT: 1,
+  PEAR: 2,
 }

@@ -1,4 +1,3 @@
-import React from "react";
 import { useContract, useProvider, useSigner } from "wagmi";
 import contractAddress from "contracts/contract-address.json";
 import ddContract from "contracts/DiamondDawn.json";

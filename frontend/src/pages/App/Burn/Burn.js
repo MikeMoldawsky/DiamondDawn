@@ -3,9 +3,9 @@ import _ from 'lodash'
 import Countdown from 'components/Countdown';
 import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import { tokenByIdSelector } from "store/tokensReducer";
+import { loadAccountNfts, tokenByIdSelector } from "store/tokensReducer";
 import { useForm } from 'react-hook-form';
 import './Burn.scss'
 import classNames from "classnames";
@@ -16,6 +16,7 @@ import VideoPlayer from "components/VideoPlayer";
 import NoDiamondView from "components/NoDiamondView";
 import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
+import { useAccount, useProvider } from "wagmi";
 
 const Burn = () => {
   const contract = useDDContract()
@@ -25,6 +26,9 @@ const Burn = () => {
   const [showShippingForm, setShowShippingForm] = useState(false)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const [actionTxId, setActionTxId] = useState(false)
+  const { data: account } = useAccount()
+  const provider = useProvider();
+  const dispatch = useDispatch()
 
   const {
     register,
@@ -41,6 +45,7 @@ const Burn = () => {
       const tx = await contract.burn(selectedTokenId)
       const receipt = await tx.wait()
 
+      dispatch(loadAccountNfts(contract, provider, account.address))
       setShowCompleteVideo(true)
       setActionTxId(receipt.transactionHash)
     }
@@ -58,7 +63,6 @@ const Burn = () => {
   }
 
   const renderContent = () => {
-    if (isStageActive && !token) return (<NoDiamondView stageName="burn" />)
 
     if (showCompleteVideo) return (
       <div onClick={() => setShowCompleteVideo(false)}>
@@ -97,6 +101,8 @@ const Burn = () => {
         </form>
       </>
     )
+
+    if (isStageActive && !token) return (<NoDiamondView stageName="burn" />)
 
     return (
       <>

@@ -6,14 +6,42 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import './DiamondList.scss'
-import { SHAPE } from "consts";
+import { STAGE, SHAPE } from "consts";
 import { systemSelector } from "store/systemReducer";
 import { tokensSelector } from "store/tokensReducer";
 
-const diamondIconByShape = {
-  [SHAPE.ROUND]: faGem,
-  [SHAPE.DROP]: faGem,
-  [SHAPE.HEART]: faGem,
+const getDiamondIcon = ({ stage, shape }) => {
+  switch (stage) {
+    case STAGE.MINE:
+      // rough diamond
+      return faGem
+    case STAGE.CUT:
+      // cut diamond by shape
+      switch (shape) {
+        case SHAPE.OVAL:
+          return faGem
+        case SHAPE.RADIANT:
+          return faGem
+        case SHAPE.PEAR:
+          return faGem
+        default:
+          return null
+      }
+    case STAGE.POLISH:
+      // polished diamond by shape
+      switch (shape) {
+        case SHAPE.OVAL:
+          return faGem
+        case SHAPE.RADIANT:
+          return faGem
+        case SHAPE.PEAR:
+          return faGem
+        default:
+          return null
+      }
+    default:
+      return null
+  }
 }
 
 const DiamondItem = ({ diamond }) => {
@@ -21,14 +49,14 @@ const DiamondItem = ({ diamond }) => {
   const { stage: systemStage, isStageActive } = useSelector(systemSelector)
   const dispatch = useDispatch()
 
-  const { id, stage, shape } = diamond
+  const { id, stage } = diamond
 
   const selected = selectedTokenId === id
   const enabled = isStageActive && (stage === systemStage - 1)
 
   return (
     <div className={classNames("diamond-item", { selected, enabled })} onClick={() => enabled && dispatch(setSelectedTokenId(id))}>
-      <FontAwesomeIcon icon={diamondIconByShape[shape]} />
+      <FontAwesomeIcon icon={getDiamondIcon(diamond)} />
       <div className="token-id">#{id}</div>
     </div>
   )
