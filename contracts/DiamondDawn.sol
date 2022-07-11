@@ -336,10 +336,6 @@ contract DiamondDawn is
         }
 
         uint randomeNumber = getRandomNumber();
-        require(
-            randomeNumber != 3,
-            "P2D: Any Shape Not Available In The contract"
-        );
         _tokensMetadata[tokenId].shape = Shape(randomeNumber);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
     }
@@ -428,34 +424,17 @@ contract DiamondDawn is
     }
 
     function getRandomNumber() internal returns (uint) {
-        uint randomNumber = _randomModulo(3);
-        uint[2] memory isShapeMintable;
-        if (
-            shapesData[Shape(randomNumber)].totalShapesCut ==
-            shapesData[Shape(randomNumber)].totalShapes
-        ) {
-            uint localIndex;
-            uint localNumber = 3;
-            for (uint i = 0; i < 3 && i != randomNumber; i++) {
-                if (
-                    shapesData[Shape(i)].totalShapesCut !=
-                    shapesData[Shape(i)].totalShapes
-                ) {
-                    isShapeMintable[localIndex] = i;
-                    localIndex++;
-                }
-            }
-
-            if (localIndex == 2) {
-                localNumber = _randomModulo(localIndex);
-
-                randomNumber = isShapeMintable[localNumber];
-            } else if (localNumber == 1) {
-                randomNumber = isShapeMintable[0];
-            }
+        uint randomNumber = _randomModulo(100);
+        // 0  - 34 it will be shape 1
+        // 35 - 70 it will be shape 2
+        // 70 - 99 it will be shape 3
+        if (randomNumber <= 34) {
+            return 0;
+        } else if (randomNumber >= 35 && randomNumber <= 70) {
+            return 1;
+        } else {
+            return 2;
         }
-
-        return randomNumber;
     }
 
     function _randomModulo(uint modulo) internal returns (uint) {
