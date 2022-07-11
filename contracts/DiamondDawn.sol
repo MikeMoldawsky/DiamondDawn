@@ -133,7 +133,7 @@ contract DiamondDawn is
     function _requireActiveStage() internal view {
         require(
             isStageActive,
-            "P2D: A stage should be active to perform this action"
+            "A stage should be active to perform this action"
         );
     }
 
@@ -141,7 +141,7 @@ contract DiamondDawn is
         require(
             stage == _stage,
             string.concat(
-                "P2D: The stage should be ",
+                "The stage should be ",
                 Strings.toString(uint(_stage)),
                 " to perform this action"
             )
@@ -151,7 +151,7 @@ contract DiamondDawn is
     modifier _requireAllowedMiner() {
         require(
             _mintAllowedAddresses[_msgSender()],
-            "P2D: The miner is not allowed to mint tokens"
+            "The miner is not allowed to mint tokens"
         );
         _;
     }
@@ -163,7 +163,7 @@ contract DiamondDawn is
         require(
             processesPurchased <= uint(MAX_STAGE) - 1,
             string.concat(
-                "P2D: Purchased processes should be less than or equal to ",
+                "Purchased processes should be less than or equal to ",
                 Strings.toString(uint(MAX_STAGE) - 1)
             )
         );
@@ -184,7 +184,7 @@ contract DiamondDawn is
         require(
             value == price,
             string.concat(
-                "P2D: Wrong payment - payment should be: ",
+                "Wrong payment - payment should be: ",
                 Strings.toString(price)
             )
         );
@@ -200,7 +200,7 @@ contract DiamondDawn is
         require(
             (stage == Stage.PHYSICAL && isStageActive) ||
                 stage == Stage.REBIRTH,
-            "P2D: A stage should be active to perform this action"
+            "A stage should be active to perform this action"
         );
         _;
     }
@@ -213,7 +213,7 @@ contract DiamondDawn is
         require(
             uint(_stage) < uint(MAX_STAGE),
             string.concat(
-                "P2D: The stage should be less than ",
+                "The stage should be less than ",
                 Strings.toString(uint(MAX_STAGE))
             )
         );
@@ -315,7 +315,7 @@ contract DiamondDawn is
         require(
             uint(_tokensMetadata[tokenId].stage) == uint(stage) - 1,
             string.concat(
-                "P2D: The level of the diamond should be ",
+                "The level of the diamond should be ",
                 Strings.toString(uint(stage) - 1),
                 " to perform this action"
             )
@@ -325,7 +325,7 @@ contract DiamondDawn is
             require(
                 msg.value == processingPrice,
                 string.concat(
-                    "P2D: Wrong payment - payment should be: ",
+                    "Wrong payment - payment should be: ",
                     Strings.toString(processingPrice)
                 )
             );
