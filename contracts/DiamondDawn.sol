@@ -68,7 +68,6 @@ contract DiamondDawn is
         _grantRole(MINTER_ROLE, msg.sender);
 
         _mintAllowedAddresses[msg.sender] = true;
-
         stage = Stage.MINE;
         isStageActive = false;
         setRoyaltyInfo(msg.sender, _royaltyFeesInBips);
@@ -83,7 +82,7 @@ contract DiamondDawn is
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "www.tweezers.com";
+        return "https://gateway.pinata.cloud/ipfs/";
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
@@ -115,7 +114,7 @@ contract DiamondDawn is
         override(ERC721, ERC721Enumerable, AccessControl, ERC2981)
         returns (bool)
     {
-        // EIP2981 supported for royalities
+        // EIP2981 supported for royalties
         return super.supportsInterface(interfaceId);
     }
 
@@ -137,7 +136,7 @@ contract DiamondDawn is
     function _requireActiveStage() internal view {
         require(
             isStageActive,
-            "P2D: A stage should be active to perform this action"
+            "A stage should be active to perform this action"
         );
     }
 
@@ -145,7 +144,7 @@ contract DiamondDawn is
         require(
             stage == _stage,
             string.concat(
-                "P2D: The stage should be ",
+                "The stage should be ",
                 Strings.toString(uint(_stage)),
                 " to perform this action"
             )
@@ -155,7 +154,7 @@ contract DiamondDawn is
     modifier _requireAllowedMiner() {
         require(
             _mintAllowedAddresses[_msgSender()],
-            "P2D: The miner is not allowed to mint tokens"
+            "The miner is not allowed to mint tokens"
         );
         _;
     }
@@ -167,7 +166,7 @@ contract DiamondDawn is
         require(
             processesPurchased <= uint(MAX_STAGE) - 1,
             string.concat(
-                "P2D: Purchased processes should be less than or equal to ",
+                "Purchased processes should be less than or equal to ",
                 Strings.toString(uint(MAX_STAGE) - 1)
             )
         );
@@ -188,7 +187,7 @@ contract DiamondDawn is
         require(
             value == price,
             string.concat(
-                "P2D: Wrong payment - payment should be: ",
+                "Wrong payment - payment should be: ",
                 Strings.toString(price)
             )
         );
@@ -204,7 +203,7 @@ contract DiamondDawn is
         require(
             (stage == Stage.PHYSICAL && isStageActive) ||
                 stage == Stage.REBIRTH,
-            "P2D: A stage should be active to perform this action"
+            "A stage should be active to perform this action"
         );
         _;
     }
@@ -217,7 +216,7 @@ contract DiamondDawn is
         require(
             uint(_stage) < uint(MAX_STAGE),
             string.concat(
-                "P2D: The stage should be less than ",
+                "The stage should be less than ",
                 Strings.toString(uint(MAX_STAGE))
             )
         );
@@ -321,7 +320,7 @@ contract DiamondDawn is
         require(
             uint(_tokensMetadata[tokenId].stage) == uint(stage) - 1,
             string.concat(
-                "P2D: The level of the diamond should be ",
+                "The level of the diamond should be ",
                 Strings.toString(uint(stage) - 1),
                 " to perform this action"
             )
@@ -331,7 +330,7 @@ contract DiamondDawn is
             require(
                 msg.value == processingPrice,
                 string.concat(
-                    "P2D: Wrong payment - payment should be: ",
+                    "Wrong payment - payment should be: ",
                     Strings.toString(processingPrice)
                 )
             );
@@ -382,13 +381,13 @@ contract DiamondDawn is
         returns (string memory)
     {
         // _requireMinted(tokenId);
-
+        string memory videoUrl = _getVideoUrl(tokenId);
         string memory json = Base64.encode(
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "',
-                        _getVideoUrl(tokenId),
+                        '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "', videoUrl, '", "animation_url": "',
+                            videoUrl,
                         '", "stage": ',
                         Strings.toString(uint(_tokensMetadata[tokenId].stage)),
                         ', "shape": ',
@@ -402,19 +401,7 @@ contract DiamondDawn is
                 )
             )
         );
-
         return string(abi.encodePacked("data:application/json;base64,", json));
-    }
-
-    function _getImageUrl(uint256 tokenId)
-        internal
-        view
-        returns (string memory)
-    {
-        // _requireMinted(tokenId);
-
-        return
-            "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png";
     }
 
     function _getVideoUrl(uint256 tokenId)
@@ -422,6 +409,6 @@ contract DiamondDawn is
         view
         returns (string memory)
     {
-        return _videoUrls[_tokensMetadata[tokenId].stage];
+        return string.concat(_baseURI(), _videoUrls[_tokensMetadata[tokenId].stage]);
     }
 }

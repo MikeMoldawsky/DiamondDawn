@@ -7,6 +7,15 @@ import ddContract from "contracts/DiamondDawn.json"
 import { useContract, useProvider, useSigner } from "wagmi";
 import { showError } from "utils";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
+import { STAGE } from "consts";
+
+const VIDEO_BY_STAGE = {
+  [STAGE.MINE]: 'QmaQjHAn7RhD89qxVpukgN1vspfbV6me8gbapU11cZcEH5',
+  [STAGE.CUT]: 'QmYxgWcEwZaccSuHCToscRidk1ZnDPfctBQcec4oZee3N7',
+  [STAGE.POLISH]: 'QmZMgQtGFpTDA4iiog46ke1BwWMz9Ka4UWzFTf5XPdrKiq',
+  [STAGE.PHYSICAL]: 'QmSNAHgrM7oLiX1UBuyTES3mz2UADnoTCofiv3do6xGqQv',
+  [STAGE.REBIRTH]: 'Qmckbusa13kkApLrsprsiFqtRhDWdYrE8c5v8T4TcFzbrN',
+}
 
 const AdminPanel = () => {
 
@@ -28,7 +37,7 @@ const AdminPanel = () => {
 
   const revealStage = async () => {
     try {
-      const tx = await contract.revealStage('')
+      const tx = await contract.revealStage(VIDEO_BY_STAGE[stage])
       const receipt = await tx.wait()
       console.log('revealStage', { receipt })
       dispatch(fetchStage(contract))
