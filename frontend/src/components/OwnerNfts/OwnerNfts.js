@@ -5,6 +5,7 @@ import { Network, initializeAlchemy, getNftsForOwner } from "@alch/alchemy-sdk";
 import contractAddress from "contracts/contract-address.json";
 import ddContract from "contracts/DiamondDawn.json";
 import { useAccount, useContract, useProvider, useSigner } from "wagmi";
+import { loadNfts } from "store/tokensReducer";
 
 const OwnerNfts = () => {
   const provider = useProvider();
@@ -31,6 +32,7 @@ const OwnerNfts = () => {
   const [walletNfts, SetwalletNfts] = useState([]);
 
   const loadData = async () => {
+    // const nfts = await loadNfts(contract, provider, addrress)
     if (addressData?.address) {
       if (provider?._network?.chainId === 1) {
         let finalNfts = [];

@@ -15,24 +15,28 @@ import DiamondList from "components/DiamondList";
 import ProgressBar from "components/ProgressBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
-import { loadAccountTokens } from "store/tokensReducer";
-import { useAccount } from "wagmi";
-import OwnerNfts from "components/OwnerNfts";
+import { loadAccountNfts } from "store/tokensReducer";
+import { useAccount, useProvider } from "wagmi";
 
 function App() {
 
   const { stage } = useSelector(systemSelector)
-  const { address } = useAccount()
+  const { data: account } = useAccount()
+  const provider = useProvider();
 
   const contract = useDDContract()
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('App useEffect')
-    dispatch(loadAccountTokens(address))
     dispatch(fetchStage(contract))
     dispatch(fetchPricing(contract))
   }, [])
+
+  useEffect(() => {
+    if (account?.address) {
+      dispatch(loadAccountNfts(contract, provider, account?.address))
+    }
+  }, [account?.address])
 
   const renderStage = () => {
     switch (stage) {
@@ -68,7 +72,6 @@ function App() {
       <footer>
         <ProgressBar />
       </footer>
-      <OwnerNfts/>
       <AdminPanel />
     </div>
   );
