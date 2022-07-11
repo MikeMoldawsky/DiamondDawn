@@ -34,7 +34,6 @@ export const loadAccountNfts = (contract, provider, address) => async dispatch =
       if (nftsOwnedByOwner && nftsOwnedByOwner?.length > 0) {
         nfts = await Promise.all(nftsOwnedByOwner.map(async (element) => {
           const tokenUri = await contract.tokenURI(element.toNumber());
-          console.log({ rawTokenUri: atob(tokenUri.split(",")[1]) })
           return { tokenId: element.toNumber(), tokenUri: JSON.parse(atob(tokenUri.split(",")[1])) }
         }))
       }
@@ -47,6 +46,14 @@ export const loadAccountNfts = (contract, provider, address) => async dispatch =
   })
 };
 
+export const fetchTokenUri = (contract, tokenId) => async dispatch => {
+  const tokenUri = await contract.tokenURI(tokenId);
+  dispatch({
+    type: 'TOKENS.SET_TOKEN',
+    payload: { tokenId, tokenUri: JSON.parse(atob(tokenUri.split(",")[1])) }
+  })
+}
+
 export const tokensSelector = state => state.tokens
 
 export const tokenByIdSelector = tokenId => state => _.get(state.tokens, tokenId)
@@ -55,5 +62,12 @@ export const tokensReducer = makeReducer({
   'TOKENS.SET': (state, action) => {
     const nfts = action.payload
     return _.zipObject(_.map(nfts, 'tokenId'), _.map(nfts, ({ tokenUri }, i) => ({ ...tokenUri, id: nfts[i].tokenId })))
+  },
+  'TOKENS.SET_TOKEN': (state, action) => {
+    const {  tokenId, tokenUri  } = action.payload
+    return {
+      ...state,
+      [tokenId]: { ...tokenUri, id: tokenId }
+    }
   },
 }, INITIAL_STATE)

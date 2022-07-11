@@ -5,14 +5,15 @@ import useDDContract from "hooks/useDDContract";
 import { utils as ethersUtils } from "ethers";
 import classNames from "classnames";
 import './Mine.scss'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import VideoPlayer from "components/VideoPlayer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import Countdown from 'components/Countdown';
-import { tokensSelector } from "store/tokensReducer";
+import { loadAccountNfts, tokensSelector } from "store/tokensReducer";
 import NoDiamondView from "components/NoDiamondView";
+import { useAccount, useProvider } from "wagmi";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -32,8 +33,10 @@ const Mine = () => {
   const [showVideo, setShowVideo] = useState(true)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const accountTokens = useSelector(tokensSelector)
-
+  const { data: account } = useAccount()
+  const provider = useProvider();
   const contract = useDDContract()
+  const dispatch = useDispatch()
 
   const mine = async () => {
     try {
@@ -48,6 +51,7 @@ const Mine = () => {
       const tx = await contract.mine(selectedPackage, { value: totalCost })
       const receipt = await tx.wait()
 
+      dispatch(loadAccountNfts(contract, provider, account.address))
       setShowCompleteVideo(true)
       setActionTxId(receipt.transactionHash)
     }
@@ -59,10 +63,6 @@ const Mine = () => {
   const renderContent = () => {
     if (!isStageActive) return (
       <VideoPlayer>01 - COMING SOON VIDEO</VideoPlayer>
-    )
-
-    if (_.size(accountTokens) > 0) return (
-      <NoDiamondView stageName="mine" secondaryText="Each account can mine only one diamond, you can buy more on OpenSea" />
     )
 
     if (showVideo) return (
@@ -90,6 +90,10 @@ const Mine = () => {
         <Countdown date={Date.now() + 10000} text={['You have', 'until cutting']} />
         <div className="secondary-text">But what lies beneath the surface</div>
       </>
+    )
+
+    if (_.size(accountTokens) > 0) return (
+      <NoDiamondView stageName="mine" secondaryText="Each account can mine only one diamond, you can buy more on OpenSea" />
     )
 
     return (

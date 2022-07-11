@@ -4,10 +4,10 @@ import Countdown from 'components/Countdown';
 import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
 import { BigNumber, utils as ethersUtils } from "ethers";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
-import { tokenByIdSelector } from "store/tokensReducer";
+import { fetchTokenUri, tokenByIdSelector } from "store/tokensReducer";
 import VideoPlayer from "components/VideoPlayer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +22,7 @@ const Polish = () => {
   const token = useSelector(tokenByIdSelector(selectedTokenId))
   const { polishPrice, isStageActive } = useSelector(systemSelector)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
+  const dispatch = useDispatch()
 
   useSelectAvailableToken(STAGE.POLISH)
 
@@ -30,6 +31,7 @@ const Polish = () => {
       const tx = await contract.polish(selectedTokenId, { value: token.polishable ? BigNumber.from(0) : polishPrice })
       const receipt = await tx.wait()
 
+      dispatch(fetchTokenUri(contract, selectedTokenId))
       setShowCompleteVideo(true)
       setActionTxId(receipt.transactionHash)
     }
@@ -39,7 +41,6 @@ const Polish = () => {
   }
 
   const renderContent = () => {
-    if (isStageActive && !token) return (<NoDiamondView stageName="polish" />)
 
     if (showCompleteVideo) return (
       <div onClick={() => setShowCompleteVideo(false)}>
@@ -58,6 +59,8 @@ const Polish = () => {
         <div className="secondary-text">Can it be real?</div>
       </>
     )
+
+    if (isStageActive && !token) return (<NoDiamondView stageName="polish" />)
 
     return (
       <>
