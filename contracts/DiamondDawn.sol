@@ -72,9 +72,7 @@ contract DiamondDawn is
         stage = Stage.MINE;
         isStageActive = false;
         setRoyaltyInfo(msg.sender, _royaltyFeesInBips);
-
-        // TODO - uncomment next line for production
-//        _pause();
+        _pause();
     }
 
     function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
