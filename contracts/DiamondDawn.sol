@@ -50,14 +50,20 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         _grantRole(MINTER_ROLE, msg.sender);
 
         _mintAllowedAddresses[msg.sender] = true;
-
         stage = Stage.MINE;
         isStageActive = false;
         _pause();
+        // TODO: move to reveal stage
+        _videoUrls[Stage.MINE] = 'QmaQjHAn7RhD89qxVpukgN1vspfbV6me8gbapU11cZcEH5';
+        _videoUrls[Stage.CUT] = 'QmYxgWcEwZaccSuHCToscRidk1ZnDPfctBQcec4oZee3N7';
+        _videoUrls[Stage.POLISH] = 'QmZMgQtGFpTDA4iiog46ke1BwWMz9Ka4UWzFTf5XPdrKiq';
+        _videoUrls[Stage.PHYSICAL] = 'QmSNAHgrM7oLiX1UBuyTES3mz2UADnoTCofiv3do6xGqQv';
+        _videoUrls[Stage.REBIRTH] = 'Qmckbusa13kkApLrsprsiFqtRhDWdYrE8c5v8T4TcFzbrN';
+
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "www.tweezers.com";
+        return "https://gateway.pinata.cloud/ipfs/";
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
@@ -329,31 +335,19 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         returns (string memory)
     {
         // _requireMinted(tokenId);
-
+        string videoUrl = _getVideoUrl(tokenId);
         string memory json = Base64.encode(
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png", "animation_url": "',
-                        _getVideoUrl(tokenId),
+                        '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "', videoUrl, '", "animation_url": "',
+                            videoUrl,
                         '" }'
                     )
                 )
             )
         );
-
         return string(abi.encodePacked("data:application/json;base64,", json));
-    }
-
-    function _getImageUrl(uint256 tokenId)
-        internal
-        view
-        returns (string memory)
-    {
-        // _requireMinted(tokenId);
-
-        return
-            "https://media.niftygateway.com/video/upload/v1639421141/Andrea/DavidAriew/DecCurated/Mystical_Cabaret_-_David_Ariew_1_wzdhuw.png";
     }
 
     function _getVideoUrl(uint256 tokenId)
@@ -361,6 +355,6 @@ contract DiamondDawn is ERC721, Pausable, AccessControl, ERC721Burnable {
         view
         returns (string memory)
     {
-        return _videoUrls[_tokensMetadata[tokenId].stage];
+        return string.concat(_baseURI(), _videoUrls[_tokensMetadata[tokenId].stage]);
     }
 }
