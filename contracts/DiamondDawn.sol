@@ -111,7 +111,7 @@ contract DiamondDawn is
         override(ERC721, ERC721Enumerable, AccessControl, ERC2981)
         returns (bool)
     {
-        // EIP2981 supported for royalities
+        // EIP2981 supported for royalties
         return super.supportsInterface(interfaceId);
     }
 
