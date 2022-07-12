@@ -31,10 +31,10 @@ contract DiamondDawn is
     }
 
     enum Shape {
-        ROUGH,
         OVAL,
         RADIANT,
-        PEAR
+        PEAR,
+        ROUGH
     }
 
     struct Metadata {

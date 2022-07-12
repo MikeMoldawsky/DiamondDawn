@@ -10,4 +10,5 @@ export const SHAPE = {
   OVAL: 0,
   RADIANT: 1,
   PEAR: 2,
+  ROUGH: 3,
 }
