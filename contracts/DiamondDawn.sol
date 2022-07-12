@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 
 /// @custom:security-contact tweezers@gmail.com
@@ -21,6 +22,7 @@ contract DiamondDawn is
     ERC721Enumerable
 {
     using Counters for Counters.Counter;
+    using EnumerableSet for EnumerableSet.UintSet;
 
     enum Stage {
         MINE,
@@ -56,21 +58,22 @@ contract DiamondDawn is
     uint public constant PREPAID_CUT_PRICE = 0.2 ether;
     uint public constant PREPAID_POLISH_PRICE = 0.4 ether;
     bool public isStageActive;
+    mapping(address => bool) public mintAllowedAddresses;
 
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
-    mapping(address => bool) private _mintAllowedAddresses;
-    mapping(uint256 => address) private _burnedTokens;
+    mapping(uint256 => address) private _burnedTokenToOwner;
+    mapping(address => EnumerableSet.UintSet) private _ownerToBurnedTokens;
 
     constructor(uint96 _royaltyFeesInBips) ERC721("DiamondDawn", "DD") {
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(PAUSER_ROLE, msg.sender);
-        _grantRole(MINTER_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
+        _grantRole(PAUSER_ROLE, _msgSender());
+        _grantRole(MINTER_ROLE, _msgSender());
 
-        _mintAllowedAddresses[msg.sender] = true;
+        mintAllowedAddresses[_msgSender()] = true;
         stage = Stage.MINE;
         isStageActive = false;
-        setRoyaltyInfo(msg.sender, _royaltyFeesInBips);
+        setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
         _pause();
     }
 
@@ -131,8 +134,15 @@ contract DiamondDawn is
         return tokenIds;
     }
 
-    // Custom logics
+    function getBurnedTokens(address owner)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return _ownerToBurnedTokens[owner].values();
+    }
 
+    // Custom logics
     function _requireActiveStage() internal view {
         require(
             isStageActive,
@@ -153,7 +163,7 @@ contract DiamondDawn is
 
     modifier _requireAllowedMiner() {
         require(
-            _mintAllowedAddresses[_msgSender()],
+            mintAllowedAddresses[_msgSender()],
             "The miner is not allowed to mint tokens"
         );
         _;
@@ -275,7 +285,7 @@ contract DiamondDawn is
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         for (uint i = 0; i < addresses.length; i++) {
-            _mintAllowedAddresses[addresses[i]] = true;
+            mintAllowedAddresses[addresses[i]] = true;
         }
     }
 
@@ -298,7 +308,7 @@ contract DiamondDawn is
         // Regular mint logics
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
-        _safeMint(msg.sender, tokenId);
+        _safeMint(_msgSender(), tokenId);
 
         // Store token metadata
         _tokensMetadata[tokenId] = Metadata({
@@ -309,7 +319,7 @@ contract DiamondDawn is
         });
 
         // Restrict another mint by the same miner
-        _mintAllowedAddresses[_msgSender()] = false;
+        delete mintAllowedAddresses[_msgSender()];
     }
 
     function _process(uint256 tokenId, uint processingPrice) internal {
@@ -361,17 +371,20 @@ contract DiamondDawn is
     {
         super.burn(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
-        _burnedTokens[tokenId] = _msgSender();
+        _burnedTokenToOwner[tokenId] = _msgSender();
+        _ownerToBurnedTokens[_msgSender()].add(tokenId);
     }
 
     function rebirth(uint256 tokenId) public whenRebirthIsActive {
-        address burner = _burnedTokens[tokenId];
+        address burner = _burnedTokenToOwner[tokenId];
         require(
             _msgSender() == burner,
             string.concat(
                 "Rebirth failed - only burner is allowed to perform rebirth"
             )
         );
+         delete _burnedTokenToOwner[tokenId];
+         _ownerToBurnedTokens[_msgSender()].remove(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
         _safeMint(_msgSender(), tokenId);
     }
