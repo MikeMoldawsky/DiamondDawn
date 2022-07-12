@@ -58,7 +58,7 @@ contract DiamondDawn is
     bool public isStageActive;
 
     mapping(Stage => string) private _videoUrls;
-    mapping(uint256 => Metadata) public _tokensMetadata;
+    mapping(uint256 => Metadata) private _tokensMetadata;
     mapping(address => bool) private _mintAllowedAddresses;
     mapping(uint256 => address) private _burnedTokens;
 
