@@ -22,7 +22,7 @@ contract DiamondDawn is
     ERC721Enumerable
 {
     using Counters for Counters.Counter;
-    using EnumerableSet for EnumerableSet.AddressSet;
+    using EnumerableSet for EnumerableSet.UintSet;
 
     enum Stage {
         MINE,
@@ -58,12 +58,12 @@ contract DiamondDawn is
     uint public constant PREPAID_CUT_PRICE = 0.2 ether;
     uint public constant PREPAID_POLISH_PRICE = 0.4 ether;
     bool public isStageActive;
-    mapping(address => EnumerableSet.AddressSet) public ownerToBurnedTokens;
     mapping(address => bool) public mintAllowedAddresses;
 
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
     mapping(uint256 => address) private _burnedTokenToOwner;
+    mapping(address => EnumerableSet.UintSet) private _ownerToBurnedTokens;
 
     constructor(uint96 _royaltyFeesInBips) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -132,6 +132,15 @@ contract DiamondDawn is
             tokenIds[i] = tokenOfOwnerByIndex(_owner, i);
         }
         return tokenIds;
+    }
+
+    // The following functions are overrides required by Solidity.
+    function getBurnedTokens(address owner)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return _ownerToBurnedTokens[owner]._inner._values;
     }
 
     // Custom logics
@@ -365,7 +374,7 @@ contract DiamondDawn is
         super.burn(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
         _burnedTokenToOwner[tokenId] = _msgSender();
-        ownerToBurnedTokens[_msgSender()].add(tokenId);
+        _ownerToBurnedTokens[_msgSender()].add(tokenId);
     }
 
     function rebirth(uint256 tokenId) public whenRebirthIsActive {
@@ -377,7 +386,7 @@ contract DiamondDawn is
             )
         );
          delete _burnedTokenToOwner[tokenId];
-         ownerToBurnedTokens[_msgSender()].remove(tokenId);
+         _ownerToBurnedTokens[_msgSender()].remove(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
         _safeMint(_msgSender(), tokenId);
     }
