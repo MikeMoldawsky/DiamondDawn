@@ -134,17 +134,15 @@ contract DiamondDawn is
         return tokenIds;
     }
 
-    // The following functions are overrides required by Solidity.
     function getBurnedTokens(address owner)
         public
         view
         returns (uint256[] memory)
     {
-        return _ownerToBurnedTokens[owner]._inner._values;
+        return _ownerToBurnedTokens[owner].values();
     }
 
     // Custom logics
-
     function _requireActiveStage() internal view {
         require(
             isStageActive,
