@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import { loadAccountNfts } from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
+import useEffectWithAccount from "hooks/useEffectWithAccount";
 
 function App() {
 
@@ -32,11 +33,9 @@ function App() {
     dispatch(fetchPricing(contract))
   }, [])
 
-  useEffect(() => {
-    if (account?.address) {
-      dispatch(loadAccountNfts(contract, provider, account?.address))
-    }
-  }, [account?.address])
+  useEffectWithAccount(() => {
+    dispatch(loadAccountNfts(contract, provider, account?.address))
+  })
 
   const renderStage = () => {
     switch (stage) {

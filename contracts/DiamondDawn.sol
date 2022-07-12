@@ -85,7 +85,7 @@ contract DiamondDawn is
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "https://gateway.pinata.cloud/ipfs/";
+        return "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {

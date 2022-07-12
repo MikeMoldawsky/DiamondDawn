@@ -10,11 +10,15 @@ function useSelectAvailableToken(stage) {
   const tokens = useSelector(tokensSelector)
 
   useEffect(() => {
-    let availableToken = _.find(tokens, token => token.stage === stage - 1)
-    // if (!availableToken) {
-    //   availableToken = _.find(tokens, token => token.stage === stage)
-    // }
-    dispatch(setSelectedTokenId(availableToken?.id))
+    if (_.size(tokens) > 0) {
+      // first look for a token that can be processed
+      let availableToken = _.find(tokens, token => token.stage === stage - 1)
+      if (!availableToken) {
+        // if no token can be processed look for a processed token for this stage
+        availableToken = _.find(tokens, token => token.stage === stage)
+      }
+      dispatch(setSelectedTokenId(availableToken?.id))
+    }
   }, [tokens, stage])
 }
 

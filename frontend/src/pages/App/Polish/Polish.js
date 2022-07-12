@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import _ from 'lodash'
 import Countdown from 'components/Countdown';
 import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
@@ -9,11 +8,10 @@ import { uiSelector } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import { fetchTokenUri, tokenByIdSelector } from "store/tokensReducer";
 import VideoPlayer from "components/VideoPlayer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGem } from "@fortawesome/free-solid-svg-icons";
 import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
 import NoDiamondView from "components/NoDiamondView";
+import Diamond from "components/Diamond";
 
 const Polish = () => {
   const [actionTxId, setActionTxId] = useState(false)
@@ -48,12 +46,10 @@ const Polish = () => {
       </div>
     )
 
-    const wasPolished = !_.isEmpty(actionTxId)
-    if (wasPolished) return (
+    const isTokenPolished = token?.stage === STAGE.POLISH
+    if (isTokenPolished) return (
       <>
-        <div className="diamond-art">
-          <FontAwesomeIcon icon={faGem} />
-        </div>
+        <Diamond diamond={token} />
         <div className="leading-text">YOUR PERFECT DIAMOND NFT IS IN YOUR WALLET</div>
         <Countdown date={Date.now() + 10000} text={['You have', 'until burn']} />
         <div className="secondary-text">Can it be real?</div>
@@ -64,9 +60,7 @@ const Polish = () => {
 
     return (
       <>
-        <div className="diamond-art">
-          <FontAwesomeIcon icon={faGem} />
-        </div>
+        <Diamond diamond={token} />
         <div className="leading-text">
           A GEM CANNOT BE POLISHED WITHOUT FRICTION,<br/>
           NOR MAN PERFECTED WITHOUT TRIALS

@@ -10,11 +10,11 @@ import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import { STAGE } from "consts";
 
 const VIDEO_BY_STAGE = {
-  [STAGE.MINE]: 'QmaQjHAn7RhD89qxVpukgN1vspfbV6me8gbapU11cZcEH5',
-  [STAGE.CUT]: 'QmYxgWcEwZaccSuHCToscRidk1ZnDPfctBQcec4oZee3N7',
-  [STAGE.POLISH]: 'QmZMgQtGFpTDA4iiog46ke1BwWMz9Ka4UWzFTf5XPdrKiq',
-  [STAGE.PHYSICAL]: 'QmSNAHgrM7oLiX1UBuyTES3mz2UADnoTCofiv3do6xGqQv',
-  [STAGE.REBIRTH]: 'Qmckbusa13kkApLrsprsiFqtRhDWdYrE8c5v8T4TcFzbrN',
+  [STAGE.MINE]: 'rough.jpeg',
+  [STAGE.CUT]: 'cut.mp4',
+  [STAGE.POLISH]: 'polish.mp4',
+  [STAGE.PHYSICAL]: 'burn.mp4',
+  [STAGE.REBIRTH]: 'final.mp4',
 }
 
 const AdminPanel = () => {
