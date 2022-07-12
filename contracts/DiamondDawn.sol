@@ -415,6 +415,10 @@ contract DiamondDawn is
         return string.concat(_baseURI(), _videoUrls[_tokensMetadata[tokenId].stage]);
     }
 
+    function getShapeForToken(uint tokenId) public view returns (Shape) {
+        return _tokensMetadata[tokenId].shape;
+    }
+
     function _getRandomNumber() internal view returns (uint) {
         uint randomNumber = _randomModulo(100);
         // 0  - 34 it will be shape 1
