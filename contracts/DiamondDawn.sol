@@ -377,7 +377,7 @@ contract DiamondDawn is
             )
         );
          delete _burnedTokenToOwner[tokenId];
-        ownerToBurnedTokens[_msgSender()].remove(tokenId);
+         ownerToBurnedTokens[_msgSender()].remove(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
         _safeMint(_msgSender(), tokenId);
     }
