@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 
 /// @custom:security-contact tweezers@gmail.com
@@ -21,6 +22,7 @@ contract DiamondDawn is
     ERC721Enumerable
 {
     using Counters for Counters.Counter;
+    using EnumerableSet for EnumerableSet.AddressSet;
 
     enum Stage {
         MINE,
@@ -56,18 +58,19 @@ contract DiamondDawn is
     uint public constant PREPAID_CUT_PRICE = 0.2 ether;
     uint public constant PREPAID_POLISH_PRICE = 0.4 ether;
     bool public isStageActive;
+    mapping(address => EnumerableSet.AddressSet) public ownerToBurnedTokens;
+    mapping(address => bool) public mintAllowedAddresses;
 
     mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
-    mapping(address => bool) private _mintAllowedAddresses;
-    mapping(uint256 => address) private _burnedTokens;
+    mapping(uint256 => address) private _burnedTokenToOwner;
 
     constructor(uint96 _royaltyFeesInBips) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
 
-        _mintAllowedAddresses[msg.sender] = true;
+        mintAllowedAddresses[msg.sender] = true;
         stage = Stage.MINE;
         isStageActive = false;
         setRoyaltyInfo(msg.sender, _royaltyFeesInBips);
@@ -153,7 +156,7 @@ contract DiamondDawn is
 
     modifier _requireAllowedMiner() {
         require(
-            _mintAllowedAddresses[_msgSender()],
+            mintAllowedAddresses[_msgSender()],
             "The miner is not allowed to mint tokens"
         );
         _;
@@ -275,7 +278,7 @@ contract DiamondDawn is
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         for (uint i = 0; i < addresses.length; i++) {
-            _mintAllowedAddresses[addresses[i]] = true;
+            mintAllowedAddresses[addresses[i]] = true;
         }
     }
 
@@ -309,7 +312,7 @@ contract DiamondDawn is
         });
 
         // Restrict another mint by the same miner
-        _mintAllowedAddresses[_msgSender()] = false;
+        mintAllowedAddresses[_msgSender()] = false;
     }
 
     function _process(uint256 tokenId, uint processingPrice) internal {
@@ -361,17 +364,20 @@ contract DiamondDawn is
     {
         super.burn(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
-        _burnedTokens[tokenId] = _msgSender();
+        _burnedTokenToOwner[tokenId] = _msgSender();
+        ownerToBurnedTokens[_msgSender()].add(tokenId);
     }
 
     function rebirth(uint256 tokenId) public whenRebirthIsActive {
-        address burner = _burnedTokens[tokenId];
+        address burner = _burnedTokenToOwner[tokenId];
         require(
             _msgSender() == burner,
             string.concat(
                 "Rebirth failed - only burner is allowed to perform rebirth"
             )
         );
+         delete _burnedTokenToOwner[tokenId];
+        ownerToBurnedTokens[_msgSender()].remove(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
         _safeMint(_msgSender(), tokenId);
     }
