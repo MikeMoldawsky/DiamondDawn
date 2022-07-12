@@ -386,8 +386,8 @@ contract DiamondDawn is
                 "Rebirth failed - only burner is allowed to perform rebirth"
             )
         );
-         delete _burnedTokenToOwner[tokenId];
-         _ownerToBurnedTokens[_msgSender()].remove(tokenId);
+        delete _burnedTokenToOwner[tokenId];
+        _ownerToBurnedTokens[_msgSender()].remove(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
         _safeMint(_msgSender(), tokenId);
     }
@@ -416,7 +416,6 @@ contract DiamondDawn is
                         Strings.toString(uint(_tokensMetadata[tokenId].stage)),
                         "},"
                         "{"
-                        '"display_type": "boost_percentage",'
                         '"trait_type": "physical",'
                         '"value":',
                         Strings.toString(
