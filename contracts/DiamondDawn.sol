@@ -58,7 +58,7 @@ contract DiamondDawn is
     bool public isStageActive;
 
     mapping(Stage => string) private _videoUrls;
-    mapping(uint256 => Metadata) private _tokensMetadata;
+    mapping(uint256 => Metadata) public _tokensMetadata;
     mapping(address => bool) private _mintAllowedAddresses;
     mapping(uint256 => address) private _burnedTokens;
 
@@ -326,7 +326,10 @@ contract DiamondDawn is
             )
         );
 
-        if ((stage == Stage.CUT && !_tokensMetadata[tokenId].cutable) || (stage == Stage.POLISH && !_tokensMetadata[tokenId].polishable)) {
+        if (
+            (stage == Stage.CUT && !_tokensMetadata[tokenId].cutable) ||
+            (stage == Stage.POLISH && !_tokensMetadata[tokenId].polishable)
+        ) {
             require(
                 msg.value == processingPrice,
                 string.concat(
@@ -389,17 +392,50 @@ contract DiamondDawn is
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "', videoUrl, '", "animation_url": "',
-                            videoUrl,
-                        '", "stage": ',
+                        '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "',
+                        '", "animation_url": "',
+                        '",'
+                        '"attributes" : ['
+                        "{"
+                        '"display_type": "number",'
+                        '"trait_type": "stage",'
+                        '"value":',
                         Strings.toString(uint(_tokensMetadata[tokenId].stage)),
-                        ', "shape": ',
+                        "},"
+                        "{"
+                        '"display_type": "boost_percentage",'
+                        '"trait_type": "physical",'
+                        '"value":',
+                        Strings.toString(
+                            _getStagePercentage(
+                                uint(_tokensMetadata[tokenId].stage)
+                            )
+                        ),
+                        "},"
+                        "{"
+                        '"display_type": "number",'
+                        '"trait_type": "shape", '
+                        '"value":',
                         Strings.toString(uint(_tokensMetadata[tokenId].shape)),
-                        ', "cutable": ',
-                        _tokensMetadata[tokenId].cutable ? "true" : "false",
-                        ', "polishable": ',
-                        _tokensMetadata[tokenId].polishable ? "true" : "false",
-                        ' }'
+                        "},"
+                        "{"
+                        '"trait_type": "type", '
+                        '"value": "Cape" '
+                        "},"
+                        "{"
+                        '"trait_type": "cutable",'
+                        '"value":',
+                        _tokensMetadata[tokenId].cutable
+                            ? '"Yes"'
+                            : '"No"'
+                            "},"
+                            "{"
+                            '"trait_type": "polishable", '
+                            '"value":',
+                        _tokensMetadata[tokenId].polishable ? '"Yes"' : '"No"',
+                        "}"
+                        "]"
+                        " }"
                     )
                 )
             )
@@ -407,12 +443,24 @@ contract DiamondDawn is
         return string(abi.encodePacked("data:application/json;base64,", json));
     }
 
+    function _getStagePercentage(uint256 _stage) internal view returns (uint) {
+        if (_stage == 0) {
+            return 20;
+        } else {
+            return _stage * 20 + 20;
+        }
+    }
+
     function _getVideoUrl(uint256 tokenId)
         internal
         view
         returns (string memory)
     {
-        return string.concat(_baseURI(), _videoUrls[_tokensMetadata[tokenId].stage]);
+        return
+            string.concat(
+                _baseURI(),
+                _videoUrls[_tokensMetadata[tokenId].stage]
+            );
     }
 
     function getShapeForToken(uint tokenId) public view returns (Shape) {
@@ -435,8 +483,8 @@ contract DiamondDawn is
 
     function _randomModulo(uint modulo) internal view returns (uint) {
         return
-        uint(
-            keccak256(abi.encodePacked(block.timestamp, block.difficulty))
-        ) % modulo;
+            uint(
+                keccak256(abi.encodePacked(block.timestamp, block.difficulty))
+            ) % modulo;
     }
 }
