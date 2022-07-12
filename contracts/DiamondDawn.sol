@@ -341,6 +341,9 @@ contract DiamondDawn is
 
     function cut(uint256 tokenId) public payable whenStageIsActive(Stage.CUT) {
         _process(tokenId, CUT_PRICE);
+
+        uint randomNumber = _getRandomNumber();
+        _tokensMetadata[tokenId].shape = Shape(randomNumber);
     }
 
     function polish(uint256 tokenId)
@@ -410,5 +413,30 @@ contract DiamondDawn is
         returns (string memory)
     {
         return string.concat(_baseURI(), _videoUrls[_tokensMetadata[tokenId].stage]);
+    }
+
+    function getShapeForToken(uint tokenId) public view returns (Shape) {
+        return _tokensMetadata[tokenId].shape;
+    }
+
+    function _getRandomNumber() internal view returns (uint) {
+        uint randomNumber = _randomModulo(100);
+        // 0  - 34 it will be shape 1
+        // 35 - 70 it will be shape 2
+        // 70 - 99 it will be shape 3
+        if (randomNumber <= 34) {
+            return 0;
+        } else if (randomNumber >= 35 && randomNumber <= 70) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
+    function _randomModulo(uint modulo) internal view returns (uint) {
+        return
+        uint(
+            keccak256(abi.encodePacked(block.timestamp, block.difficulty))
+        ) % modulo;
     }
 }
