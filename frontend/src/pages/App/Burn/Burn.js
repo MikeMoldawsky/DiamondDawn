@@ -5,7 +5,7 @@ import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import { fetchTokenUri, loadAccountNfts, tokenByIdSelector } from "store/tokensReducer";
+import { fetchTokenUri, fetchAccountBurnedTokens, tokenByIdSelector } from "store/tokensReducer";
 import { useForm } from 'react-hook-form';
 import './Burn.scss'
 import classNames from "classnames";
@@ -14,8 +14,9 @@ import VideoPlayer from "components/VideoPlayer";
 import NoDiamondView from "components/NoDiamondView";
 import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
-import { useAccount, useProvider } from "wagmi";
+import { useAccount } from "wagmi";
 import Diamond from "components/Diamond";
+import useEffectWithAccount from "hooks/useEffectWithAccount";
 
 const Burn = () => {
   const contract = useDDContract()
@@ -26,7 +27,6 @@ const Burn = () => {
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const [actionTxId, setActionTxId] = useState(false)
   const { data: account } = useAccount()
-  const provider = useProvider();
   const dispatch = useDispatch()
 
   const {
@@ -37,6 +37,10 @@ const Burn = () => {
 
   useSelectAvailableToken(STAGE.PHYSICAL)
 
+  useEffectWithAccount(() => {
+    dispatch(fetchAccountBurnedTokens(contract, account.address))
+  })
+
   const saveAddressAndBurn = async (formData) => {
     try {
       console.log('saveAddressAndBurn', { formData })
@@ -45,7 +49,6 @@ const Burn = () => {
       const receipt = await tx.wait()
 
       dispatch(fetchTokenUri(contract, selectedTokenId))
-      // dispatch(loadAccountNfts(contract, provider, account.address))
       setShowCompleteVideo(true)
       setActionTxId(receipt.transactionHash)
     }
@@ -70,7 +73,7 @@ const Burn = () => {
       </div>
     )
 
-    const isTokenBurned = !_.isEmpty(actionTxId)
+    const isTokenBurned = token?.stage === STAGE.PHYSICAL
     if (isTokenBurned) {
       return (
         <>

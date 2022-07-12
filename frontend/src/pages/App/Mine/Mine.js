@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import _ from 'lodash'
 import { showError } from 'utils'
 import useDDContract from "hooks/useDDContract";
 import { utils as ethersUtils } from "ethers";
@@ -9,14 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import VideoPlayer from "components/VideoPlayer";
 import Countdown from 'components/Countdown';
-import { loadAccountNfts, tokensSelector } from "store/tokensReducer";
-import NoDiamondView from "components/NoDiamondView";
+import { loadAccountNfts } from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
 import { uiSelector } from "store/uiReducer";
 import { tokenByIdSelector } from "store/tokensReducer";
 import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
 import Diamond from "components/Diamond";
+import useEffectWithAccount from "hooks/useEffectWithAccount";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -35,15 +34,20 @@ const Mine = () => {
   const { minePrice, mineAndCutPrice, fullPrice, isStageActive } = useSelector(systemSelector)
   const [showVideo, setShowVideo] = useState(true)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
-  const accountTokens = useSelector(tokensSelector)
   const { data: account } = useAccount()
   const provider = useProvider();
   const contract = useDDContract()
   const dispatch = useDispatch()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
+  const [canMine, setCanMine] = useState(true)
 
   useSelectAvailableToken(STAGE.MINE)
+
+  useEffectWithAccount(async () => {
+    const isWhitelisted = await contract.mintAllowedAddresses(account.address)
+    setCanMine(isWhitelisted)
+  })
 
   const mine = async () => {
     try {
@@ -97,8 +101,12 @@ const Mine = () => {
       </>
     )
 
-    if (_.size(accountTokens) > 0) return (
-      <NoDiamondView stageName="mine" secondaryText="Each account can mine only one diamond, you can buy more on OpenSea" />
+    if (!canMine) return (
+      <div className="">
+        <div className="leading-text">ADDRESS NOT ALLOWED TO MINE</div>
+        <div className="button action-button">REQUEST WHITELIST</div>
+        <Countdown date={Date.now() + 10000} text={['You have', 'to mine']} />
+      </div>
     )
 
     return (
