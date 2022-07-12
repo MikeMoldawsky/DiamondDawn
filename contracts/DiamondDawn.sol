@@ -66,14 +66,14 @@ contract DiamondDawn is
     mapping(address => EnumerableSet.UintSet) private _ownerToBurnedTokens;
 
     constructor(uint96 _royaltyFeesInBips) ERC721("DiamondDawn", "DD") {
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(PAUSER_ROLE, msg.sender);
-        _grantRole(MINTER_ROLE, msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
+        _grantRole(PAUSER_ROLE, _msgSender());
+        _grantRole(MINTER_ROLE, _msgSender());
 
-        mintAllowedAddresses[msg.sender] = true;
+        mintAllowedAddresses[_msgSender()] = true;
         stage = Stage.MINE;
         isStageActive = false;
-        setRoyaltyInfo(msg.sender, _royaltyFeesInBips);
+        setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
         _pause();
     }
 
@@ -308,7 +308,7 @@ contract DiamondDawn is
         // Regular mint logics
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
-        _safeMint(msg.sender, tokenId);
+        _safeMint(_msgSender(), tokenId);
 
         // Store token metadata
         _tokensMetadata[tokenId] = Metadata({
@@ -319,7 +319,7 @@ contract DiamondDawn is
         });
 
         // Restrict another mint by the same miner
-        mintAllowedAddresses[_msgSender()] = false;
+        delete mintAllowedAddresses[_msgSender()];
     }
 
     function _process(uint256 tokenId, uint processingPrice) internal {
