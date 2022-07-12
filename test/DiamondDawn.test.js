@@ -117,5 +117,33 @@ describe("DiamondDawn", () => {
       tx = await diamondDawnContract.safeMint(owner.address);
       await tx.wait();
     });
+
+    it("should have a random shape on mined then cut", async function () {
+      let allowlist = [user1.address, user2.address];
+      await diamondDawnContract.revealStage("");
+      await diamondDawnContract.addToAllowList(allowlist);
+      await diamondDawnContract
+        .connect(user1)
+        .mine(1, { value: parseEther("0.4") });
+
+      const balanceOfUser1 = await diamondDawnContract.balanceOf(user1.address);
+      console.log(balanceOfUser1.toNumber());
+
+      await diamondDawnContract.completeCurrentStage();
+
+      let stage = await diamondDawnContract.stage();
+      console.log(stage); // 1 equals to cut
+
+      let user1CurrentShape = await diamondDawnContract.getShapeForToken(0);
+      console.log(user1CurrentShape);
+      expect(user1CurrentShape).to.equals(3); // 3 shape is undefined
+
+      await diamondDawnContract.revealStage("");
+      await diamondDawnContract.connect(user1).cut(0);
+
+      user1CurrentShape = await diamondDawnContract.getShapeForToken(0);
+      console.log(user1CurrentShape);
+      expect(user1CurrentShape).to.not.equals(3); // 3 shape is undefined
+    });
   });
 });
