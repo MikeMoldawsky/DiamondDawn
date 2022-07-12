@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import _ from 'lodash'
 import Countdown from 'components/Countdown';
 import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
@@ -8,12 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { fetchTokenUri, tokenByIdSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGem } from "@fortawesome/free-solid-svg-icons";
 import VideoPlayer from "components/VideoPlayer";
 import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
 import NoDiamondView from "components/NoDiamondView";
+import Diamond from "components/Diamond";
 
 const Cut = () => {
   const [actionTxId, setActionTxId] = useState(false)
@@ -47,12 +45,10 @@ const Cut = () => {
       </div>
     )
 
-    const wasCut = !_.isEmpty(actionTxId)
-    if (wasCut) return (
+    const isTokenCut = token?.stage === STAGE.CUT
+    if (isTokenCut) return (
       <>
-        <div className="diamond-art">
-          <FontAwesomeIcon icon={faGem} />
-        </div>
+        <Diamond diamond={token} />
         <div className="leading-text">YOUR CUT DIAMOND NFT IS IN YOUR WALLET</div>
         <Countdown date={Date.now() + 10000} text={['You have', 'until polish']} />
         <div className="secondary-text">Without darkness, nothing could be able to shine glamorously</div>
@@ -63,9 +59,7 @@ const Cut = () => {
 
     return (
       <>
-        <div className="diamond-art">
-          <FontAwesomeIcon icon={faGem} />
-        </div>
+        <Diamond diamond={token} />
         <div className="leading-text">
           EVERYBODY WANT TO BE A DIAMOND,<br/>
           BUT VERY FEW ARE WILLING TO CUT

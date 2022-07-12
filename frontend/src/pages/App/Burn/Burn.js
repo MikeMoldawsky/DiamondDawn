@@ -5,18 +5,17 @@ import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import { loadAccountNfts, tokenByIdSelector } from "store/tokensReducer";
+import { fetchTokenUri, loadAccountNfts, tokenByIdSelector } from "store/tokensReducer";
 import { useForm } from 'react-hook-form';
 import './Burn.scss'
 import classNames from "classnames";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGem } from "@fortawesome/free-solid-svg-icons";
 import { systemSelector } from "store/systemReducer";
 import VideoPlayer from "components/VideoPlayer";
 import NoDiamondView from "components/NoDiamondView";
 import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
 import { useAccount, useProvider } from "wagmi";
+import Diamond from "components/Diamond";
 
 const Burn = () => {
   const contract = useDDContract()
@@ -45,7 +44,8 @@ const Burn = () => {
       const tx = await contract.burn(selectedTokenId)
       const receipt = await tx.wait()
 
-      dispatch(loadAccountNfts(contract, provider, account.address))
+      dispatch(fetchTokenUri(contract, selectedTokenId))
+      // dispatch(loadAccountNfts(contract, provider, account.address))
       setShowCompleteVideo(true)
       setActionTxId(receipt.transactionHash)
     }
@@ -70,13 +70,11 @@ const Burn = () => {
       </div>
     )
 
-    const wasBurnt = !_.isEmpty(actionTxId)
-    if (wasBurnt) {
+    const isTokenBurned = !_.isEmpty(actionTxId)
+    if (isTokenBurned) {
       return (
         <>
-          <div className="diamond-art">
-            <FontAwesomeIcon icon={faGem} />
-          </div>
+          <Diamond diamond={token} />
           <div className="leading-text">READY TO HOLD IT IN YOUR HAND?</div>
           <div className="secondary-text">A diamond's journey is eternal</div>
         </>
@@ -106,9 +104,7 @@ const Burn = () => {
 
     return (
       <>
-        <div className="diamond-art">
-          <FontAwesomeIcon icon={faGem} />
-        </div>
+        <Diamond diamond={token} />
         <div className="leading-text">BUT... IS THERE MORE?</div>
         <div className="secondary-text">Letting the perfect stone go can be a risk... but a diamond's journey is never over</div>
         {isStageActive && (

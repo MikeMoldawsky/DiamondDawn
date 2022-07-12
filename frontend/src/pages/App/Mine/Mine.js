@@ -8,12 +8,15 @@ import './Mine.scss'
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import VideoPlayer from "components/VideoPlayer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGem } from "@fortawesome/free-solid-svg-icons";
 import Countdown from 'components/Countdown';
 import { loadAccountNfts, tokensSelector } from "store/tokensReducer";
 import NoDiamondView from "components/NoDiamondView";
 import { useAccount, useProvider } from "wagmi";
+import { uiSelector } from "store/uiReducer";
+import { tokenByIdSelector } from "store/tokensReducer";
+import useSelectAvailableToken from "hooks/useSelectAvailableToken";
+import { STAGE } from "consts";
+import Diamond from "components/Diamond";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -37,6 +40,10 @@ const Mine = () => {
   const provider = useProvider();
   const contract = useDDContract()
   const dispatch = useDispatch()
+  const { selectedTokenId } = useSelector(uiSelector)
+  const token = useSelector(tokenByIdSelector(selectedTokenId))
+
+  useSelectAvailableToken(STAGE.MINE)
 
   const mine = async () => {
     try {
@@ -80,12 +87,10 @@ const Mine = () => {
       </div>
     )
 
-    const wasMined = !_.isEmpty(actionTxId)
-    if (wasMined) return (
+    const isTokenMined = token?.stage === STAGE.MINE
+    if (isTokenMined) return (
       <>
-        <div className="diamond-art">
-          <FontAwesomeIcon icon={faGem} />
-        </div>
+        <Diamond diamond={token} />
         <div className="leading-text">YOUR ROUGH DIAMOND NFT IS IN YOUR WALLET</div>
         <Countdown date={Date.now() + 10000} text={['You have', 'until cutting']} />
         <div className="secondary-text">But what lies beneath the surface</div>
