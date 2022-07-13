@@ -31,12 +31,7 @@ export const loadAccountNfts = (contract, provider, address) => async dispatch =
       });
     } else {
       const nftsOwnedByOwner = await contract.walletOfOwner(address);
-      if (nftsOwnedByOwner && nftsOwnedByOwner?.length > 0) {
-        nfts = await Promise.all(nftsOwnedByOwner.map(async (element) => {
-          const tokenUri = await contract.tokenURI(element.toNumber());
-          return { tokenId: element.toNumber(), tokenUri: JSON.parse(atob(tokenUri.split(",")[1])) }
-        }))
-      }
+      nfts = await tokenIdsToUris(contract, nftsOwnedByOwner)
     }
   }
 
@@ -45,6 +40,24 @@ export const loadAccountNfts = (contract, provider, address) => async dispatch =
     payload: nfts,
   })
 };
+
+export const fetchAccountBurnedTokens = (contract, address) => async dispatch => {
+  const burnedTokenIds = await contract.getBurnedTokens(address)
+  const burnedTokens = await tokenIdsToUris(contract, burnedTokenIds)
+  console.log({ burnedTokenIds, burnedTokens })
+
+  dispatch({
+    type: 'TOKENS.SET',
+    payload: burnedTokens,
+  })
+}
+
+const tokenIdsToUris = async (contract, tokenIds) => {
+  return Promise.all(tokenIds.map(async (element) => {
+    const tokenUri = await contract.tokenURI(element.toNumber());
+    return { tokenId: element.toNumber(), tokenUri: JSON.parse(atob(tokenUri.split(",")[1])) }
+  }))
+}
 
 export const fetchTokenUri = (contract, tokenId) => async dispatch => {
   const tokenUri = await contract.tokenURI(tokenId);
@@ -61,7 +74,10 @@ export const tokenByIdSelector = tokenId => state => _.get(state.tokens, tokenId
 export const tokensReducer = makeReducer({
   'TOKENS.SET': (state, action) => {
     const nfts = action.payload
-    return _.zipObject(_.map(nfts, 'tokenId'), _.map(nfts, ({ tokenUri }, i) => ({ ...tokenUri, id: nfts[i].tokenId })))
+    return {
+      ...state,
+      ..._.zipObject(_.map(nfts, 'tokenId'), _.map(nfts, ({ tokenUri }, i) => ({ ...tokenUri, id: nfts[i].tokenId })))
+    }
   },
   'TOKENS.SET_TOKEN': (state, action) => {
     const {  tokenId, tokenUri  } = action.payload

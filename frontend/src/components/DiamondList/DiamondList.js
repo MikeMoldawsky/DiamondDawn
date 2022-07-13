@@ -39,6 +39,10 @@ const getDiamondIcon = ({ stage, shape }) => {
         default:
           return null
       }
+    case STAGE.PHYSICAL:
+      return faGem
+    case STAGE.REBIRTH:
+      return faGem
     default:
       return null
   }
