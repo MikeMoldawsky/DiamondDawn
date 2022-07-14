@@ -56,7 +56,7 @@ const Polish = () => {
       </>
     )
 
-    if (isStageActive && !token) return (<NoDiamondView stageName="polish" />)
+    if (!token) return (<NoDiamondView stageName="polish" />)
 
     return (
       <>

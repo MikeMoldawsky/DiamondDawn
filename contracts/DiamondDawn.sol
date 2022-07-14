@@ -46,6 +46,8 @@ contract DiamondDawn is
         Shape shape;
     }
 
+    event StageChanged(Stage stage, bool isStageActive);
+
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     Counters.Counter private _tokenIdCounter;
@@ -272,12 +274,16 @@ contract DiamondDawn is
     {
         _activateStage();
         _assignCurrentStageVideo(videoUrl);
+
+        emit StageChanged(stage, isStageActive);
     }
 
     function completeCurrentStage() public //    onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _deactivateStage();
         _nextStage();
+
+        emit StageChanged(stage, isStageActive);
     }
 
     function addToAllowList(address[] memory addresses)
@@ -292,6 +298,8 @@ contract DiamondDawn is
     function dev__ResetStage() public {
         stage = Stage(0);
         isStageActive = false;
+
+        emit StageChanged(stage, isStageActive);
     }
 
     // Client API - Write

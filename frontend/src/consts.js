@@ -12,3 +12,7 @@ export const SHAPE = {
   PEAR: 2,
   ROUGH: 3,
 }
+
+export const EVENTS = {
+  StageChanged: 'StageChanged'
+}

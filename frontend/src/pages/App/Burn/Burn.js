@@ -103,7 +103,7 @@ const Burn = () => {
       </>
     )
 
-    if (isStageActive && !token) return (<NoDiamondView stageName="burn" />)
+    if (!token) return (<NoDiamondView stageName="burn" />)
 
     return (
       <>

@@ -55,7 +55,7 @@ const Cut = () => {
       </>
     )
 
-    if (isStageActive && !token) return (<NoDiamondView stageName="cut" />)
+    if (!token) return (<NoDiamondView stageName="cut" />)
 
     return (
       <>
