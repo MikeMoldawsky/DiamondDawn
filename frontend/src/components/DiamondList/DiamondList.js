@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import _ from 'lodash'
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
@@ -9,6 +9,7 @@ import './DiamondList.scss'
 import { STAGE, SHAPE } from "consts";
 import { systemSelector } from "store/systemReducer";
 import { tokensSelector } from "store/tokensReducer";
+import DiamondInfo from "components/DiamondInfo";
 
 const getDiamondIcon = ({ stage, shape }) => {
   switch (stage) {
@@ -51,6 +52,7 @@ const getDiamondIcon = ({ stage, shape }) => {
 const DiamondItem = ({ diamond }) => {
   const { selectedTokenId } = useSelector(uiSelector)
   const { stage: systemStage, isStageActive } = useSelector(systemSelector)
+  const [showInfo, setShowInfo] = useState(false)
   const dispatch = useDispatch()
 
   const { id, stage } = diamond
@@ -59,9 +61,17 @@ const DiamondItem = ({ diamond }) => {
   const enabled = isStageActive && (stage === systemStage - 1)
 
   return (
-    <div className={classNames("diamond-item", { selected, enabled })} onClick={() => enabled && dispatch(setSelectedTokenId(id))}>
-      <FontAwesomeIcon icon={getDiamondIcon(diamond)} />
-      <div className="token-id">#{id}</div>
+    <div className={classNames("diamond-item", { selected, enabled })}
+         onMouseEnter={() => setShowInfo(true)}
+         onMouseLeave={() => setShowInfo(false)}
+         onClick={() => enabled && dispatch(setSelectedTokenId(id))}>
+      <div className="token-icon">
+        <FontAwesomeIcon icon={getDiamondIcon(diamond)} />
+        <div className="token-id">#{id}</div>
+      </div>
+      {showInfo && (
+        <DiamondInfo diamond={diamond} />
+      )}
     </div>
   )
 }

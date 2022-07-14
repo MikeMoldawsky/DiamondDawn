@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { toast } from "react-toastify";
+import { SHAPE } from "consts";
 
 export const parseError = e => {
   let message = _.get(e, 'error.data.message', '')
@@ -30,4 +31,17 @@ export const showError = (e, prefix = 'Error') => {
   const errorMessage = `${prefix} - ${parseError(e)}`
   toast.error(errorMessage)
   console.error(errorMessage)
+}
+
+export const shapeName = shape => {
+  switch (shape) {
+    case SHAPE.OVAL:
+      return 'Oval'
+    case SHAPE.RADIANT:
+      return 'Radiant'
+    case SHAPE.PEAR:
+      return 'Pear'
+    default:
+      return 'Rough'
+  }
 }

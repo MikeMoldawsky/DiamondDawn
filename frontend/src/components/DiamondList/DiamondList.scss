@@ -6,33 +6,41 @@
   border-right: solid 1px white;
 
   .diamond-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    margin-right: 16px;
-    cursor: pointer;
-    border: solid 1px transparent;
-    border-radius: 4px;
-    padding: 7px 12px 3px;
-    opacity: .7;
+    position: relative;
 
-    svg {
-      width: 1.4em;
-      height: 1.4em;
-    }
+    .token-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      margin-right: 16px;
+      cursor: pointer;
+      border: solid 1px transparent;
+      border-radius: 4px;
+      padding: 7px 12px 3px;
+      opacity: .7;
 
-    .token-id {
-      font-size: .8em;
-      margin-top: 2px;
+      svg {
+        width: 1.4em;
+        height: 1.4em;
+      }
+
+      .token-id {
+        font-size: .8em;
+        margin-top: 2px;
+      }
     }
 
     &.enabled {
-      opacity: 1;
+      .token-icon {
+        opacity: 1;
+      }
     }
 
     &.selected {
-      border: solid 1px white;
+      .token-icon {
+        border: solid 1px white;
+      }
     }
   }
 }
