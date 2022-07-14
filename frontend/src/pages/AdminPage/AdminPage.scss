@@ -1,8 +1,41 @@
 @import "css/vars";
 
 .page.admin-page {
-  max-width: 1000px;
-  margin: 0 auto;
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-top: $headerHeight + 40px;
+  }
+
+  .button {
+    margin: 80px auto 40px;
+    width: 300px;
+  }
+
+  .admin-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    text-align: center;
+
+    .title {
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      margin-top: 10px;
+      height: 32px;
+      font-size: 1em;
+    }
+
+    .token-section {
+      margin-top: 20px;
+    }
+  }
 
   table {
     width: 100%;
@@ -27,10 +60,5 @@
         }
       }
     }
-  }
-
-  .button {
-    margin: 80px auto 40px;
-    width: 300px;
   }
 }

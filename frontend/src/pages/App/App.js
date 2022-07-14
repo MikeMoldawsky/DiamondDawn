@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
-import "./App.scss";
 import classNames from "classnames";
 import Wallet from "pages/Wallet";
 import Header from "components/Header";
-import AdminPanel from 'components/AdminPanel'
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPricing, fetchStage, systemSelector } from "store/systemReducer";
 import Mine from "./Mine";
@@ -71,7 +69,6 @@ function App() {
       <footer>
         <ProgressBar />
       </footer>
-      <AdminPanel />
     </div>
   );
 }

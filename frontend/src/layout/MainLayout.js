@@ -17,7 +17,7 @@ const MainLayout = () => {
       <Router>
         <Routes>
           <Route path="/invite/:token" element={<InvitePage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin" element={<WagmiWrapper><AdminPage /></WagmiWrapper>} />
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/rebirth/:token" element={<WagmiWrapper><RebirthPage /></WagmiWrapper>} />
           <Route path="/" exact element={<WagmiWrapper><App /></WagmiWrapper>} />
