@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import _ from 'lodash'
 import { showError } from 'utils'
 import useDDContract from "hooks/useDDContract";
 import { utils as ethersUtils } from "ethers";
@@ -31,7 +32,7 @@ const PackageBox = ({ selected, select, index, text, cost }) => {
 const Mine = () => {
   const [actionTxId, setActionTxId] = useState(false)
   const [selectedPackage, setSelectedPackage] = useState(0)
-  const { minePrice, mineAndCutPrice, fullPrice, isStageActive } = useSelector(systemSelector)
+  const { minePrice, mineAndCutPrice, fullPrice, isStageActive, stageStartTimes } = useSelector(systemSelector)
   const [showVideo, setShowVideo] = useState(true)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const { data: account } = useAccount()
@@ -72,9 +73,17 @@ const Mine = () => {
   }
 
   const renderContent = () => {
-    if (!isStageActive) return (
-      <VideoPlayer>01 - COMING SOON VIDEO</VideoPlayer>
-    )
+    if (!isStageActive) {
+      const startTime = _.get(stageStartTimes, 0)
+      return (
+        <>
+          <VideoPlayer>01 - COMING SOON VIDEO</VideoPlayer>
+          <Countdown date={startTime} text={['You have', 'until mining']} />
+        </>
+      )
+    }
+
+    const endTime = _.get(stageStartTimes, 1)
 
     if (showVideo) return (
       <>
@@ -96,7 +105,7 @@ const Mine = () => {
       <>
         <Diamond diamond={token} />
         <div className="leading-text">YOUR ROUGH DIAMOND NFT IS IN YOUR WALLET</div>
-        <Countdown date={Date.now() + 10000} text={['You have', 'until cutting']} />
+        <Countdown date={endTime} text={['You have', 'until cutting']} />
         <div className="secondary-text">But what lies beneath the surface</div>
       </>
     )
@@ -105,7 +114,7 @@ const Mine = () => {
       <div className="">
         <div className="leading-text">ADDRESS NOT ALLOWED TO MINE</div>
         <div className="button action-button">REQUEST WHITELIST</div>
-        <Countdown date={Date.now() + 10000} text={['You have', 'to mine']} />
+        <Countdown date={endTime} text={['You have', 'to mine']} />
       </div>
     )
 
@@ -121,7 +130,7 @@ const Mine = () => {
         <div className="action">
           <div className="button action-button" onClick={mine}>MINE</div>
         </div>
-        <Countdown date={Date.now() + 10000} text={['You have', 'to mine']} />
+        <Countdown date={endTime} text={['You have', 'to mine']} />
       </>
     )
   }

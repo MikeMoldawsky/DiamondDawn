@@ -22,7 +22,7 @@ const Burn = () => {
   const contract = useDDContract()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
-  const { isStageActive } = useSelector(systemSelector)
+  const { isStageActive, stageStartTimes } = useSelector(systemSelector)
   const [showShippingForm, setShowShippingForm] = useState(false)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const [actionTxId, setActionTxId] = useState(false)
@@ -73,6 +73,8 @@ const Burn = () => {
       </div>
     )
 
+    const endTime = _.get(stageStartTimes, 4)
+
     const isTokenBurned = token?.stage === STAGE.PHYSICAL
     if (isTokenBurned) {
       return (
@@ -113,7 +115,7 @@ const Burn = () => {
         {isStageActive && (
           <div className="button action-button" onClick={() => setShowShippingForm(true)}>Burn NFT</div>
         )}
-        <Countdown date={Date.now() + 10000} text={['You have', `${isStageActive ? 'to' : 'until'} burn`]} />
+        <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} burn`]} />
       </>
     )
   }

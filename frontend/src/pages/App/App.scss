@@ -245,6 +245,10 @@ input[type=text] {
   top: 80px !important;
 }
 
+.MuiTextField-root {
+  background-color: white !important;
+}
+
 @media only screen and (max-width: 767px) {
   .button {
     font-size: 1em;
