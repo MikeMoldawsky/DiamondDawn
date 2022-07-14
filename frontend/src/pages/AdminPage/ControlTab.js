@@ -1,38 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStage, systemSelector } from "store/systemReducer";
+import { fetchStage, fetchPaused, systemSelector } from "store/systemReducer";
 import { showError } from "utils";
-import { setSelectedTokenId, uiSelector } from "store/uiReducer";
-import { STAGE } from "consts";
 import useDDContract from "hooks/useDDContract";
-
-const VIDEO_BY_STAGE = {
-  [STAGE.MINE]: 'rough.jpeg',
-  [STAGE.CUT]: 'cut.mp4',
-  [STAGE.POLISH]: 'polish.mp4',
-  [STAGE.PHYSICAL]: 'burn.mp4',
-  [STAGE.REBIRTH]: 'final.mp4',
-}
+import classNames from "classnames";
 
 const ControlTab = () => {
 
-  const { stage, isStageActive } = useSelector(systemSelector)
-  const { selectedTokenId } = useSelector(uiSelector)
-
+  const { stage, isStageActive, paused } = useSelector(systemSelector)
+  const [artUrlInput, setArtUrlInput] = useState('')
+  const [artUrlError, setArtUrlError] = useState(false)
   const contract = useDDContract()
 
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchStage(contract))
+    dispatch(fetchPaused(contract))
   }, [])
 
   const revealStage = async () => {
     try {
-      const tx = await contract.revealStage(VIDEO_BY_STAGE[stage])
+      if (artUrlInput === '') {
+        setArtUrlError(true)
+        return
+      }
+      setArtUrlError(false)
+      const tx = await contract.revealStage(artUrlInput)
       const receipt = await tx.wait()
       console.log('revealStage', { receipt })
       dispatch(fetchStage(contract))
+      setArtUrlInput('')
     }
     catch (e) {
       showError(e, 'Reveal Stage Failed')
@@ -56,7 +54,8 @@ const ControlTab = () => {
       const tx = await contract.dev__ResetStage()
       const receipt = await tx.wait()
       console.log('resetStage', { receipt })
-      dispatch(fetchStage(contract))    }
+      dispatch(fetchStage(contract))
+    }
     catch (e) {
       showError(e, 'Reset Stage Failed')
     }
@@ -67,6 +66,7 @@ const ControlTab = () => {
       const tx = await contract.pause()
       const receipt = await tx.wait()
       console.log('pause', { receipt })
+      dispatch(fetchPaused(contract))
     }
     catch (e) {
       showError(e, 'Pause Failed')
@@ -78,35 +78,33 @@ const ControlTab = () => {
       const tx = await contract.unpause()
       const receipt = await tx.wait()
       console.log('unpause', { receipt })
+      dispatch(fetchPaused(contract))
     }
     catch (e) {
       showError(e, 'Unpause Failed')
     }
   }
 
-  const nextTokenId = () => {
-    dispatch(setSelectedTokenId(selectedTokenId + 1))
-  }
-
   return (
     <div className="admin-control">
       <h1>Control Panel</h1>
       <div>
-        <div className="center-aligned-row" style={{ width: 200 }}>
+        <div className="center-aligned-row" style={{ width: 360, marginBottom: 30 }}>
           <div className="stage">STAGE: {stage}</div>
           <div className="stage">ACTIVE: {isStageActive.toString()}</div>
+          <div className="stage">PAUSED: {paused.toString()}</div>
         </div>
       </div>
       <div className="actions">
+        <div className="input-container">
+          <input type="text" placeholder="Video Url" value={artUrlInput} onChange={e => setArtUrlInput(e.target.value)} className={classNames({ 'validation-error': artUrlError })} />
+        </div>
         <div className="button" onClick={revealStage}>Reveal Stage</div>
         <div className="button" onClick={completeStage}>Complete Stage</div>
         <div className="button" onClick={resetStage}>Reset Stage</div>
+        <div className="separator" />
         <div className="button" onClick={pause}>Pause</div>
         <div className="button" onClick={unpause}>Unpause</div>
-      </div>
-      <div className="token-section">
-        <div className="stage">TOKEN ID: {selectedTokenId}</div>
-        <div className="button" onClick={nextTokenId}>Next Token ID</div>
       </div>
     </div>
   );

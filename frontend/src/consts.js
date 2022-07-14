@@ -16,3 +16,11 @@ export const SHAPE = {
 export const EVENTS = {
   StageChanged: 'StageChanged'
 }
+
+const VIDEO_BY_STAGE = {
+  [STAGE.MINE]: 'rough.jpeg',
+  [STAGE.CUT]: 'cut.mp4',
+  [STAGE.POLISH]: 'polish.mp4',
+  [STAGE.PHYSICAL]: 'burn.mp4',
+  [STAGE.REBIRTH]: 'final.mp4',
+}
