@@ -7,7 +7,7 @@ function useDDContract() {
     throw new Error("Deployment network is NOT configured. Set env variable")
   }
   const diamondDawn = diamondDawnObject[network];
-  if(!network){
+  if(!diamondDawn){
     throw new Error("Diamond Dawn contract object does NOT exist.")
   }
 
