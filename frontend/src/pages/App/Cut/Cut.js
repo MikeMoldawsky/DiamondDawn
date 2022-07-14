@@ -12,13 +12,14 @@ import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
 import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
+import _ from "lodash";
 
 const Cut = () => {
   const [actionTxId, setActionTxId] = useState(false)
   const contract = useDDContract()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
-  const { cutPrice, isStageActive } = useSelector(systemSelector)
+  const { cutPrice, isStageActive, stageStartTimes } = useSelector(systemSelector)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const dispatch = useDispatch()
 
@@ -45,12 +46,14 @@ const Cut = () => {
       </div>
     )
 
+    const endTime = _.get(stageStartTimes, 2)
+
     const isTokenCut = token?.stage === STAGE.CUT
     if (isTokenCut) return (
       <>
         <Diamond diamond={token} />
         <div className="leading-text">YOUR CUT DIAMOND NFT IS IN YOUR WALLET</div>
-        <Countdown date={Date.now() + 10000} text={['You have', 'until polish']} />
+        <Countdown date={endTime} text={['You have', 'until polish']} />
         <div className="secondary-text">Without darkness, nothing could be able to shine glamorously</div>
       </>
     )
@@ -68,7 +71,7 @@ const Cut = () => {
         {isStageActive && (
           <div className="button action-button" onClick={cut}>CUT{token.cutable ? '' : ` (${ethersUtils.formatUnits(cutPrice)} ETH)`}</div>
         )}
-        <Countdown date={Date.now() + 10000} text={['You have', `${isStageActive ? 'to' : 'until'} cut`]} />
+        <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} cut`]} />
       </>
     )
   }

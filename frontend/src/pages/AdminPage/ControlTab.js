@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import _ from 'lodash'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStage, fetchPaused, systemSelector } from "store/systemReducer";
+import { fetchStage, fetchPaused, systemSelector, getStageConfigs } from "store/systemReducer";
 import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
 import classNames from "classnames";
@@ -11,15 +11,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import TextField from '@mui/material/TextField';
-
-const getAllStages = async () => {
-  try {
-    const res = await axios.get(`/api/get_stages`)
-    return res.data
-  } catch (e) {
-    return []
-  }
-}
 
 const updateStage = async (stage, startsAt) => {
   try {
@@ -43,16 +34,8 @@ const ControlTab = () => {
   const dispatch = useDispatch()
 
   const fetchStages = async () => {
-    const stagesConfig = await getAllStages()
-    setStageStartTimes(
-      _.zipObject(
-        _.values(STAGE),
-        _.map(_.values(STAGE), _stage => {
-          const dbConf = _.find(stagesConfig, { stage: _stage })
-          return dbConf ? dbConf.startsAt : null
-        })
-      )
-    )
+    const stagesConfig = await getStageConfigs()
+    setStageStartTimes(stagesConfig)
   }
 
   useEffect(() => {
@@ -166,7 +149,7 @@ const ControlTab = () => {
                 <div className="center-aligned-row inner-row">
                   <DateTimePicker
                     minDateTime={new Date()}
-                    value={stageStartTimes[_stage] || null}
+                    value={_.get(stageStartTimes, _stage, null)}
                     onChange={onStartTimeChange(_stage)}
                     renderInput={(params) => <TextField {...params} />}
                   />
