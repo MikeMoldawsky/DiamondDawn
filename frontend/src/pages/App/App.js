@@ -3,7 +3,7 @@ import classNames from "classnames";
 import Wallet from "pages/Wallet";
 import Header from "components/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPricing, fetchStage, setStage, systemSelector } from "store/systemReducer";
+import { fetchPricing, fetchStage, fetchStagesConfig, setStage, systemSelector } from "store/systemReducer";
 import Mine from "./Mine";
 import Cut from "./Cut";
 import Polish from "./Polish";
@@ -29,6 +29,7 @@ function App() {
   useEffect(() => {
     dispatch(fetchStage(contract))
     dispatch(fetchPricing(contract))
+    dispatch(fetchStagesConfig())
 
     provider.once('block', () => {
       contract.on(EVENTS.StageChanged, (_stage, _isStageActive) => {

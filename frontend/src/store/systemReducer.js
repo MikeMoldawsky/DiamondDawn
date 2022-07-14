@@ -1,11 +1,14 @@
 import { makeReducer, reduceUpdateFull } from './reduxUtils'
 import _ from 'lodash'
 import { BigNumber } from 'ethers'
+import axios from "axios";
+import { STAGE } from "consts";
 
 const INITIAL_STATE = {
   stage: -1,
   isStageActive: false,
   paused: false,
+  stageStartTimes: {},
   minePrice: BigNumber.from(0),
   cutPrice: BigNumber.from(0),
   polishPrice: BigNumber.from(0),
@@ -47,6 +50,30 @@ export const fetchPaused = contract => async dispatch => {
   })
 }
 
+export const getStageConfigs = async () => {
+  try {
+    const res = await axios.get(`/api/get_stages`)
+    return _.zipObject(
+      _.values(STAGE),
+      _.map(_.values(STAGE), stage => {
+        const dbConf = _.find(res.data, { stage })
+        return dbConf ? dbConf.startsAt : null
+      })
+    )
+  }
+  catch (e) {
+    return []
+  }
+}
+
+export const fetchStagesConfig = () => async dispatch => {
+  const stageStartTimes = await getStageConfigs()
+  dispatch({
+    type: 'SYSTEM.SET_STAGES_CONFIG',
+    payload: { stageStartTimes }
+  })
+}
+
 export const setStage = (stage, isStageActive) => ({
   type: 'SYSTEM.SET_STAGE',
   payload: { stage, isStageActive },
@@ -58,4 +85,5 @@ export const systemReducer = makeReducer({
   'SYSTEM.SET_STAGE': reduceUpdateFull,
   'SYSTEM.SET_PRICE': reduceUpdateFull,
   'SYSTEM.SET_PAUSED': reduceUpdateFull,
+  'SYSTEM.SET_STAGES_CONFIG': reduceUpdateFull,
 }, INITIAL_STATE)
