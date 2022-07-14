@@ -286,6 +286,12 @@ contract DiamondDawn is
         emit StageChanged(stage, isStageActive);
     }
 
+    function completeCurrentStageAndRevealNextStage(string memory videoUrl) public //    onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        completeCurrentStage();
+        revealStage(videoUrl);
+    }
+
     function addToAllowList(address[] memory addresses)
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
