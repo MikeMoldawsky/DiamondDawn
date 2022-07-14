@@ -51,6 +51,28 @@
     }
   }
 
+  .stages {
+    width: 520px;
+
+    .stage-row {
+      margin-bottom: 40px;
+    }
+
+    .inner-row {
+      justify-content: flex-end;
+    }
+
+    input {
+      width: 180px;
+    }
+
+    .btn-save {
+      width: 60px;
+      margin: 0;
+      margin-left: 40px;
+    }
+  }
+
   table {
     width: 100%;
     text-align: left;
