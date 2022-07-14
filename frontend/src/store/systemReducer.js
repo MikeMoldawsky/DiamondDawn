@@ -5,6 +5,7 @@ import { BigNumber } from 'ethers'
 const INITIAL_STATE = {
   stage: -1,
   isStageActive: false,
+  paused: false,
   minePrice: BigNumber.from(0),
   cutPrice: BigNumber.from(0),
   polishPrice: BigNumber.from(0),
@@ -38,6 +39,14 @@ export const fetchStage = contract => async dispatch => {
   dispatch(setStage(_stage, _isStageActive))
 }
 
+export const fetchPaused = contract => async dispatch => {
+  const paused = await contract.paused()
+  dispatch({
+    type: 'SYSTEM.SET_PAUSED',
+    payload: { paused },
+  })
+}
+
 export const setStage = (stage, isStageActive) => ({
   type: 'SYSTEM.SET_STAGE',
   payload: { stage, isStageActive },
@@ -48,4 +57,5 @@ export const systemSelector = state => state.system
 export const systemReducer = makeReducer({
   'SYSTEM.SET_STAGE': reduceUpdateFull,
   'SYSTEM.SET_PRICE': reduceUpdateFull,
+  'SYSTEM.SET_PAUSED': reduceUpdateFull,
 }, INITIAL_STATE)

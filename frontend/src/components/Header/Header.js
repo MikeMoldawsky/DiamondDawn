@@ -1,5 +1,6 @@
 import React from "react";
 import tweezersLogo from "assets/images/logo.png";
+import './Header.scss'
 
 const Header = ({ children }) => {
   return (
