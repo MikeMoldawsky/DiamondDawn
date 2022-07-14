@@ -6,6 +6,14 @@
 const hre = require("hardhat");
 
 async function main() {
+  hre.network.name = process.env.NETWORK;
+  if (!hre.network.name) {
+    console.error(
+      "network name is NOT defined. It should be passed as an environment variable"
+    );
+    return;
+  }
+
   // This is just a convenience check
   if (hre.network.name === "hardhat") {
     console.warn(
@@ -33,27 +41,27 @@ async function main() {
   console.log("DiamondDawn contract address:", diamondDawn.address);
 
   // We also save the contract's artifacts and address in the frontend directory
-  saveFrontendFiles(diamondDawn);
+  const contractsDir = `${__dirname}/../frontend/src/contracts`;
+  saveFrontendFiles(diamondDawn, contractsDir, hre.network.name);
 }
 
-function saveFrontendFiles(diamondDawn) {
+function saveFrontendFiles(diamondDawn, contractsDir, network) {
   const fs = require("fs");
-  const contractsDir = `${__dirname}/../frontend/src/contracts`;
 
   if (!fs.existsSync(contractsDir)) {
     fs.mkdirSync(contractsDir);
   }
-
-  fs.writeFileSync(
-    contractsDir + "/contract-address.json",
-    JSON.stringify({ DiamondDawn: diamondDawn.address }, undefined, 2)
-  );
-
   const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
+
+  const contractObject = {};
+  contractObject[network] = {
+    address: diamondDawn.address,
+    artifact: DiamondDawnArtifact,
+  };
 
   fs.writeFileSync(
     contractsDir + "/DiamondDawn.json",
-    JSON.stringify(DiamondDawnArtifact, null, 2)
+    JSON.stringify(contractObject, null, 2)
   );
 }
 
