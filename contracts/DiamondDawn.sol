@@ -87,7 +87,8 @@ contract DiamondDawn is
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
+        return
+            "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
@@ -286,8 +287,9 @@ contract DiamondDawn is
         emit StageChanged(stage, isStageActive);
     }
 
-    function completeCurrentStageAndRevealNextStage(string memory videoUrl) public //    onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    function completeCurrentStageAndRevealNextStage(
+        string memory videoUrl //    onlyRole(DEFAULT_ADMIN_ROLE)
+    ) public {
         completeCurrentStage();
         revealStage(videoUrl);
     }
@@ -350,7 +352,10 @@ contract DiamondDawn is
             )
         );
 
-        if ((stage == Stage.CUT && !_tokensMetadata[tokenId].cutable) || (stage == Stage.POLISH && !_tokensMetadata[tokenId].polishable)) {
+        if (
+            (stage == Stage.CUT && !_tokensMetadata[tokenId].cutable) ||
+            (stage == Stage.POLISH && !_tokensMetadata[tokenId].polishable)
+        ) {
             require(
                 msg.value == processingPrice,
                 string.concat(
@@ -397,8 +402,8 @@ contract DiamondDawn is
                 "Rebirth failed - only burner is allowed to perform rebirth"
             )
         );
-         delete _burnedTokenToOwner[tokenId];
-         _ownerToBurnedTokens[_msgSender()].remove(tokenId);
+        delete _burnedTokenToOwner[tokenId];
+        _ownerToBurnedTokens[_msgSender()].remove(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
         _safeMint(_msgSender(), tokenId);
     }
@@ -416,8 +421,10 @@ contract DiamondDawn is
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "', videoUrl, '", "animation_url": "',
-                            videoUrl,
+                        '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "',
+                        videoUrl,
+                        '", "animation_url": "',
+                        videoUrl,
                         '", "stage": ',
                         Strings.toString(uint(_tokensMetadata[tokenId].stage)),
                         ', "shape": ',
@@ -426,7 +433,7 @@ contract DiamondDawn is
                         _tokensMetadata[tokenId].cutable ? "true" : "false",
                         ', "polishable": ',
                         _tokensMetadata[tokenId].polishable ? "true" : "false",
-                        ' }'
+                        " }"
                     )
                 )
             )
@@ -439,7 +446,11 @@ contract DiamondDawn is
         view
         returns (string memory)
     {
-        return string.concat(_baseURI(), _videoUrls[_tokensMetadata[tokenId].stage]);
+        return
+            string.concat(
+                _baseURI(),
+                _videoUrls[_tokensMetadata[tokenId].stage]
+            );
     }
 
     function getShapeForToken(uint tokenId) public view returns (Shape) {
@@ -462,8 +473,8 @@ contract DiamondDawn is
 
     function _randomModulo(uint modulo) internal view returns (uint) {
         return
-        uint(
-            keccak256(abi.encodePacked(block.timestamp, block.difficulty))
-        ) % modulo;
+            uint(
+                keccak256(abi.encodePacked(block.timestamp, block.difficulty))
+            ) % modulo;
     }
 }
