@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import './DiamondInfo.scss'
 import Diamond from "components/Diamond";
 import { shapeName } from "utils";

@@ -43,4 +43,19 @@
       }
     }
   }
+
+  .diamond-info-container {
+    width: 260px;
+    position: absolute;
+    right: 0;
+    top: 58px;
+    z-index: 1;
+    padding-top: 12px;
+
+    .diamond-info {
+      width: 260px;
+      background-color: black;
+      border: solid 1px white;
+    }
+  }
 }
