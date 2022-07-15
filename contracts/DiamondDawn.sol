@@ -101,6 +101,15 @@ contract DiamondDawn is
         return super.supportsInterface(interfaceId);
     }
 
+    /** 
+    * @notice Returns the next stage enum value given a stage enum value.
+    *
+    * @dev throws an error if the next stage is out of bounds (greater than MAX_STAGE).
+    *
+    * @param _stage a Stage enum value.
+    *
+    * @return a Stage enum value containing the next stage of _stage param.
+    */
     function _getNextStage(Stage _stage) internal pure returns (Stage) {
         require(
             uint(_stage) < uint(MAX_STAGE),
@@ -226,12 +235,10 @@ contract DiamondDawn is
     }
 
     /** 
-    * @notice Activating the currently assigned stage and setting its video URL.
+    * @notice Completing the current stage by setting the next stage as the current stage in an inactive mode.
     *
     * @dev This function is only available to the admin role.
     * @dev Emitting StageChanged event triggering frontend to update the UI.
-    *
-    * @param videoUrl a string containing the video url of the current stage.
     */
     function completeCurrentStage() public 
         onlyRole(DEFAULT_ADMIN_ROLE)
