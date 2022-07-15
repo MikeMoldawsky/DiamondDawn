@@ -22,6 +22,7 @@ const PAUSER_ROLE =
 const MINTER_ROLE =
   "0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6";
 const ROYALTY_FEE_IN_BIPS = "1000"; // 10% royalty fee
+const addressZero = "0x0000000000000000000000000000000000000000";
 
 beforeEach(async function () {
   const signers = await ethers.getSigners();
@@ -43,59 +44,59 @@ beforeEach(async function () {
 });
 
 describe("When contract is deployed", async () => {
-  describe("State", async () => {
+  // describe("State", async () => {
 
-      it("Should have a zero balance", async () => {
-          // TODO: discover how to get contract balance
-          // expect(await diamondDawnContract.getBalance()).to.be.bignumber.that.is.zero;
-      });
+  //     it("Should have a zero balance", async () => {
+  //         // TODO: discover how to get contract balance
+  //         // expect(await diamondDawnContract.getBalance()).to.be.bignumber.that.is.zero;
+  //     });
 
-      it("Should be paused", async () => {
-          expect(await diamondDawnContract.paused()).to.equal(true);
-      });
+  //     it("Should be paused", async () => {
+  //         expect(await diamondDawnContract.paused()).to.equal(true);
+  //     });
 
-      it("Should not be with an active stage", async () => {
-          expect(await diamondDawnContract.isStageActive()).to.equal(false);
-      });
+  //     it("Should not be with an active stage", async () => {
+  //         expect(await diamondDawnContract.isStageActive()).to.equal(false);
+  //     });
 
-      it("Should not have stage set to mine", async () => {
-          expect(await diamondDawnContract.stage()).to.equal(0);
-      });
+  //     it("Should not have stage set to mine", async () => {
+  //         expect(await diamondDawnContract.stage()).to.equal(0);
+  //     });
 
-      it("Should have royalty fee set", async () => {
-          // expect(diamondDawnContract.stage()).to.equal(0);
-      });
+  //     it("Should have royalty fee set", async () => {
+  //         // expect(diamondDawnContract.stage()).to.equal(0);
+  //     });
 
-      it("Should set the deployer as an admin", async () => {
+  //     it("Should set the deployer as an admin", async () => {
 
-          const isAdmin = await diamondDawnContract.hasRole(
-              ADMIN_ROLE,
-              owner.address
-            );
+  //         const isAdmin = await diamondDawnContract.hasRole(
+  //             ADMIN_ROLE,
+  //             owner.address
+  //           );
 
-          expect(isAdmin).to.equal(true);
-      });
+  //         expect(isAdmin).to.equal(true);
+  //     });
 
-      it("Should have MINING_PRICE set to 0.002 eth", async () => {
-          expect(await diamondDawnContract.MINING_PRICE()).equal(Web3.utils.toWei('0.002'));
-      });
+  //     it("Should have MINING_PRICE set to 0.002 eth", async () => {
+  //         expect(await diamondDawnContract.MINING_PRICE()).equal(Web3.utils.toWei('0.002'));
+  //     });
 
-      it("Should have CUT_PRICE set to 0.004 eth", async () => {
-          expect(await diamondDawnContract.CUT_PRICE()).equal(Web3.utils.toWei('0.004'));
-      });
+  //     it("Should have CUT_PRICE set to 0.004 eth", async () => {
+  //         expect(await diamondDawnContract.CUT_PRICE()).equal(Web3.utils.toWei('0.004'));
+  //     });
 
-      it("Should have POLISH_PRICE set to 0.006 eth", async () => {
-          expect(await diamondDawnContract.POLISH_PRICE()).equal(Web3.utils.toWei('0.006'));
-      });
+  //     it("Should have POLISH_PRICE set to 0.006 eth", async () => {
+  //         expect(await diamondDawnContract.POLISH_PRICE()).equal(Web3.utils.toWei('0.006'));
+  //     });
 
-      it("Should have PREPAID_CUT_PRICE set to 0.002 eth", async () => {
-          expect(await diamondDawnContract.PREPAID_CUT_PRICE()).equal(Web3.utils.toWei('0.002'))
-      });
+  //     it("Should have PREPAID_CUT_PRICE set to 0.002 eth", async () => {
+  //         expect(await diamondDawnContract.PREPAID_CUT_PRICE()).equal(Web3.utils.toWei('0.002'))
+  //     });
 
-      it("Should have PREPAID_POLISH_PRICE set to 0.004 eth", async () => {
-          expect(await diamondDawnContract.PREPAID_POLISH_PRICE()).equal(Web3.utils.toWei('0.004'));
-      });
-  });
+  //     it("Should have PREPAID_POLISH_PRICE set to 0.004 eth", async () => {
+  //         expect(await diamondDawnContract.PREPAID_POLISH_PRICE()).equal(Web3.utils.toWei('0.004'));
+  //     });
+  // });
 
   describe("Admin API", async () => {
     it("setRoyaltyInfo", async () => {
@@ -144,108 +145,322 @@ describe("When contract is deployed", async () => {
 
       // user should get a revert from contract if he is minting again
       await expect(
-        diamondDawnContract.connect(user1).mine(1, { value: parseEther("0.004") })
+        diamondDawnContract
+          .connect(user1)
+          .mine(1, { value: parseEther("0.004") })
       ).to.be.reverted;
 
       // user not in the whitelist cant mint nft
       await expect(
-        diamondDawnContract.connect(user3).mine(1, { value: parseEther("0.004") })
+        diamondDawnContract
+          .connect(user3)
+          .mine(1, { value: parseEther("0.004") })
       ).to.be.reverted;
     });
 
-    it("completeCurrentStage", async () => {});
+    it("completeCurrentStage", async () => {
+      const currentStage = await diamondDawnContract.stage();
+
+      await expect(diamondDawnContract.connect(owner).completeCurrentStage()).to
+        .not.to.be.reverted;
+
+      expect(await diamondDawnContract.stage()).to.not.equal(currentStage);
+
+      expect(await diamondDawnContract.stage()).to.equal(
+        parseInt(currentStage) + 1
+      );
+    });
   });
 
-  describe("Client API", async() => {
+  describe("Client API", async () => {
+    beforeEach(async function () {
+      const allowlist = [user1.address, user2.address];
+      // unpausing the contract
+      await diamondDawnContract.connect(owner).unpause();
+      await diamondDawnContract.connect(owner).addToAllowList(allowlist);
+      // activating a stage for users to mine
+      await diamondDawnContract.revealStage("");
+    });
+    it("mine", async () => {
+      await diamondDawnContract
+        .connect(user1)
+        .mine(1, { value: parseEther("0.004") });
 
-      it("mine", async() => {
+      const balanceOfUser1 = await diamondDawnContract.balanceOf(user1.address);
+      expect(balanceOfUser1).to.equal(1);
+    });
 
-      });
+    it("cut", async () => {
+      // token id 0 is minted
+      await diamondDawnContract
+        .connect(user1)
+        .mine(1, { value: parseEther("0.004") });
 
-      it("cut", async() => {
+      // current stage is mine but running cut
+      await expect(
+        diamondDawnContract
+          .connect(user1)
+          .cut(0, { value: parseEther("0.004") })
+      ).to.be.reverted;
+      await expect(
+        diamondDawnContract
+          .connect(user1)
+          .cut(0, { value: parseEther("0.003") })
+      ).to.be.reverted;
 
-      });
+      await expect(
+        diamondDawnContract.connect(user1).cut({ value: parseEther("0.004") })
+      ).to.be.reverted;
 
-      it("polish", async() => {
+      await diamondDawnContract.connect(owner).completeCurrentStage();
+      await diamondDawnContract.connect(owner).revealStage("");
 
-      });
+      const isStageActive = await diamondDawnContract.isStageActive();
 
-      it("burn", async() => {
+      expect(isStageActive).to.equal(true);
 
-      });
+      await diamondDawnContract
+        .connect(user1)
+        .cut(0, { value: parseEther("0.004") });
+    });
 
-      it("rebirth", async() => {
+    it("polish", async () => {
+      // token id 0 is minted
+      await diamondDawnContract
+        .connect(user1)
+        .mine(1, { value: parseEther("0.004") });
 
-      });
+      await diamondDawnContract
+        .connect(user2)
+        .mine(1, { value: parseEther("0.004") });
 
-      it("tokenURI", async() => {
+      // current stage is mine but running cut
+      await expect(
+        diamondDawnContract
+          .connect(user1)
+          .cut(0, { value: parseEther("0.004") })
+      ).to.be.reverted;
+      await expect(
+        diamondDawnContract
+          .connect(user1)
+          .cut(0, { value: parseEther("0.003") })
+      ).to.be.reverted;
 
-      });
+      await expect(
+        diamondDawnContract.connect(user1).cut({ value: parseEther("0.004") })
+      ).to.be.reverted;
 
-      it("addToAllowList", async() => {
+      await diamondDawnContract.connect(owner).completeCurrentStage();
+      await diamondDawnContract.connect(owner).revealStage("");
 
-      });
+      const isStageActive = await diamondDawnContract.isStageActive();
 
-      describe("When stage is not active", async() => {
+      expect(isStageActive).to.equal(true);
 
-          it("mine", async() => {
+      await diamondDawnContract
+        .connect(user1)
+        .cut(0, { value: parseEther("0.004") });
 
-          });
+      await diamondDawnContract.connect(owner).completeCurrentStage();
+      await diamondDawnContract.connect(owner).revealStage("");
 
-          it("cut", async() => {
+      await expect(
+        diamondDawnContract
+          .connect(user2)
+          .cut(0, { value: parseEther("0.004") })
+      ).to.be.reverted;
 
-          });
+      await diamondDawnContract
+        .connect(user1)
+        .polish(0, { value: parseEther("0.006") });
 
-          it("polish", async() => {
+      // user 2 has not performed cut so he cant perform polish
+      await expect(
+        diamondDawnContract
+          .connect(user2)
+          .polish(1, { value: parseEther("0.006") })
+      ).to.be.reverted;
+    });
 
-          });
+    it("burn", async () => {
+      // token id 0 is minted
+      await diamondDawnContract
+        .connect(user1)
+        .mine(1, { value: parseEther("0.004") });
 
-          it("burn", async() => {
+      await diamondDawnContract
+        .connect(user2)
+        .mine(1, { value: parseEther("0.004") });
 
-          });
+      // current stage is mine but running cut
+      await expect(
+        diamondDawnContract
+          .connect(user1)
+          .cut(0, { value: parseEther("0.004") })
+      ).to.be.reverted;
+      await expect(
+        diamondDawnContract
+          .connect(user1)
+          .cut(0, { value: parseEther("0.003") })
+      ).to.be.reverted;
 
-          it("rebirth", async() => {
+      await expect(
+        diamondDawnContract.connect(user1).cut({ value: parseEther("0.004") })
+      ).to.be.reverted;
 
-          });
+      await diamondDawnContract.connect(owner).completeCurrentStage();
+      await diamondDawnContract.connect(owner).revealStage("");
 
-          it("tokenURI", async() => {
+      const isStageActive = await diamondDawnContract.isStageActive();
 
-          });
+      expect(isStageActive).to.equal(true);
 
-          it("addToAllowList", async() => {
+      await diamondDawnContract
+        .connect(user1)
+        .cut(0, { value: parseEther("0.004") });
 
-          });
-      });
+      await diamondDawnContract.connect(owner).completeCurrentStage();
+      await diamondDawnContract.connect(owner).revealStage("");
 
-      describe("When stage is active", async() => {
+      await diamondDawnContract
+        .connect(user1)
+        .polish(0, { value: parseEther("0.006") });
 
-          it("mine", async() => {
+      await diamondDawnContract.connect(owner).completeCurrentStage();
+      await diamondDawnContract.connect(owner).revealStage("");
 
-          });
+      await diamondDawnContract.connect(user1).burn(0);
+    });
 
-          it("cut", async() => {
+    it("rebirth", async () => {
+      // token id 0 is minted
+      await diamondDawnContract
+        .connect(user1)
+        .mine(1, { value: parseEther("0.004") });
 
-          });
+      await diamondDawnContract
+        .connect(user2)
+        .mine(1, { value: parseEther("0.004") });
 
-          it("polish", async() => {
+      // current stage is mine but running cut
+      await expect(
+        diamondDawnContract
+          .connect(user1)
+          .cut(0, { value: parseEther("0.004") })
+      ).to.be.reverted;
+      await expect(
+        diamondDawnContract
+          .connect(user1)
+          .cut(0, { value: parseEther("0.003") })
+      ).to.be.reverted;
 
-          });
+      await expect(
+        diamondDawnContract.connect(user1).cut({ value: parseEther("0.004") })
+      ).to.be.reverted;
 
-          it("burn", async() => {
+      await diamondDawnContract.connect(owner).completeCurrentStage();
+      await diamondDawnContract.connect(owner).revealStage("");
 
-          });
+      const isStageActive = await diamondDawnContract.isStageActive();
 
-          it("rebirth", async() => {
+      expect(isStageActive).to.equal(true);
 
-          });
+      await diamondDawnContract
+        .connect(user1)
+        .cut(0, { value: parseEther("0.004") });
 
-          it("tokenURI", async() => {
+      await diamondDawnContract.connect(owner).completeCurrentStage();
+      await diamondDawnContract.connect(owner).revealStage("");
 
-          });
+      await diamondDawnContract
+        .connect(user1)
+        .polish(0, { value: parseEther("0.006") });
 
-          it("addToAllowList", async() => {
+      await expect(diamondDawnContract.connect(user1).rebirth(0)).to.be
+        .reverted;
 
-          });
-      });
+      await diamondDawnContract.connect(owner).completeCurrentStage();
+      await diamondDawnContract.connect(owner).revealStage("");
+
+      await diamondDawnContract.connect(user1).burn(0);
+
+      let balanceOfUser1 = await diamondDawnContract.balanceOf(user1.address);
+
+      expect(balanceOfUser1).to.equal(0);
+
+      await diamondDawnContract.connect(user1).rebirth(0);
+
+      balanceOfUser1 = await diamondDawnContract.balanceOf(user1.address);
+
+      expect(balanceOfUser1).to.equal(1);
+
+      ownerOfTokenId0 = await diamondDawnContract.ownerOf(0);
+
+      expect(ownerOfTokenId0).to.equal(user1.address);
+    });
+
+    it("tokenURI", async () => {});
+
+    // describe("When stage is not active", async() => {
+
+    //     it("mine", async() => {
+
+    //     });
+
+    //     it("cut", async() => {
+
+    //     });
+
+    //     it("polish", async() => {
+
+    //     });
+
+    //     it("burn", async() => {
+
+    //     });
+
+    //     it("rebirth", async() => {
+
+    //     });
+
+    //     it("tokenURI", async() => {
+
+    //     });
+
+    //     it("addToAllowList", async() => {
+
+    //     });
+    // });
+
+    // describe("When stage is active", async() => {
+
+    //     it("mine", async() => {
+
+    //     });
+
+    //     it("cut", async() => {
+
+    //     });
+
+    //     it("polish", async() => {
+
+    //     });
+
+    //     it("burn", async() => {
+
+    //     });
+
+    //     it("rebirth", async() => {
+
+    //     });
+
+    //     it("tokenURI", async() => {
+
+    //     });
+
+    //     it("addToAllowList", async() => {
+
+    //     });
+    // });
   });
 });
