@@ -108,7 +108,7 @@ contract DiamondDawn is
     *
     * @param _stage a Stage enum value.
     *
-    * @return a Stage enum value containing the next stage of _stage param.
+    * @return Stage Stage enum value containing the next stage of _stage param.
     */
     function _getNextStage(Stage _stage) internal pure returns (Stage) {
         require(
@@ -129,7 +129,6 @@ contract DiamondDawn is
      **************************************************************************/
 
     /**********************     Internal & Helpers     ************************/
-
 
     /** 
     * @notice Sets the flow in an active stage mode.
