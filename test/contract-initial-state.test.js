@@ -76,44 +76,24 @@ describe("When contract is deployed", async () => {
           expect(isAdmin).to.equal(true);
       });
 
-      it("Should set the deployer as an minter", async () => {
-
-          const isMinter = await diamondDawnContract.hasRole(
-              MINTER_ROLE,
-              owner.address
-            );
-
-          expect(isMinter).to.equal(true);
+      it("Should have MINING_PRICE set to 0.002 eth", async () => {
+          expect(await diamondDawnContract.MINING_PRICE()).equal(Web3.utils.toWei('0.002'));
       });
 
-      it("Should set the deployer as an pauser", async () => {
-
-          const isPauser = await diamondDawnContract.hasRole(
-              PAUSER_ROLE,
-              owner.address
-            );
-
-          expect(isPauser).to.equal(true);
+      it("Should have CUT_PRICE set to 0.004 eth", async () => {
+          expect(await diamondDawnContract.CUT_PRICE()).equal(Web3.utils.toWei('0.004'));
       });
 
-      it("Should have MINING_PRICE set to 0.2 eth", async () => {
-          expect(await diamondDawnContract.MINING_PRICE()).equal(Web3.utils.toWei('0.2'));
+      it("Should have POLISH_PRICE set to 0.006 eth", async () => {
+          expect(await diamondDawnContract.POLISH_PRICE()).equal(Web3.utils.toWei('0.006'));
       });
 
-      it("Should have CUT_PRICE set to 0.4 eth", async () => {
-          expect(await diamondDawnContract.CUT_PRICE()).equal(Web3.utils.toWei('0.4'));
+      it("Should have PREPAID_CUT_PRICE set to 0.002 eth", async () => {
+          expect(await diamondDawnContract.PREPAID_CUT_PRICE()).equal(Web3.utils.toWei('0.002'))
       });
 
-      it("Should have POLISH_PRICE set to 0.6 eth", async () => {
-          expect(await diamondDawnContract.POLISH_PRICE()).equal(Web3.utils.toWei('0.6'));
-      });
-
-      it("Should have PREPAID_CUT_PRICE set to 0.2 eth", async () => {
-          expect(await diamondDawnContract.PREPAID_CUT_PRICE()).equal(Web3.utils.toWei('0.2'))
-      });
-
-      it("Should have PREPAID_POLISH_PRICE set to 0.4 eth", async () => {
-          expect(await diamondDawnContract.PREPAID_POLISH_PRICE()).equal(Web3.utils.toWei('0.4'));
+      it("Should have PREPAID_POLISH_PRICE set to 0.004 eth", async () => {
+          expect(await diamondDawnContract.PREPAID_POLISH_PRICE()).equal(Web3.utils.toWei('0.004'));
       });
   });
 
@@ -157,19 +137,19 @@ describe("When contract is deployed", async () => {
 
       await diamondDawnContract
         .connect(user1)
-        .mine(1, { value: parseEther("0.4") });
+        .mine(1, { value: parseEther("0.004") });
 
       const balanceOfUser1 = await diamondDawnContract.balanceOf(user1.address);
       expect(balanceOfUser1).to.equal(1);
 
       // user should get a revert from contract if he is minting again
       await expect(
-        diamondDawnContract.connect(user1).mine(1, { value: parseEther("0.4") })
+        diamondDawnContract.connect(user1).mine(1, { value: parseEther("0.004") })
       ).to.be.reverted;
 
       // user not in the whitelist cant mint nft
       await expect(
-        diamondDawnContract.connect(user3).mine(1, { value: parseEther("0.4") })
+        diamondDawnContract.connect(user3).mine(1, { value: parseEther("0.004") })
       ).to.be.reverted;
     });
 
