@@ -86,7 +86,9 @@ contract DiamondDawn is
         address from,
         address to,
         uint256 tokenId
-    ) internal override(ERC721, ERC721Enumerable) whenNotPaused {
+    ) internal override(ERC721, ERC721Enumerable) 
+        whenNotPaused 
+    {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
@@ -119,24 +121,47 @@ contract DiamondDawn is
 
     /**********************     Internal & Helpers     ************************/
 
+
+    /** 
+    * @notice Sets the flow in an active stage mode.
+    *
+    * @dev This function is only available to the admin role.
+    */
     function _activateStage() internal
         onlyRole(DEFAULT_ADMIN_ROLE) 
     {
         isStageActive = true;
     }
 
-    function _nextStage() internal 
-        onlyRole(DEFAULT_ADMIN_ROLE) 
-    {
-        stage = _getNextStage(stage);
-    }
-
+    /** 
+    * @notice Sets the flow in an inactive stage mode.
+    *
+    * @dev This function is only available to the admin role.
+    */
     function _deactivateStage() internal 
         onlyRole(DEFAULT_ADMIN_ROLE) 
     {
         isStageActive = false;
     }
 
+    /** 
+    * @notice Sets the flow stage to the next stage of the currenly assigned stage.
+    *
+    * @dev This function is only available to the admin role.
+    */
+    function _nextStage() internal 
+        onlyRole(DEFAULT_ADMIN_ROLE) 
+    {
+        stage = _getNextStage(stage);
+    }
+
+    /** 
+    * @notice Sets the video URL for the given stage.
+    *
+    * @dev This function is only available to the admin role.
+    *
+    * @param videoUrl a string containing the video url of the current stage.
+    */
     function _assignCurrentStageVideo(string memory videoUrl) internal
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
@@ -145,26 +170,52 @@ contract DiamondDawn is
 
     /**********************        Transactions        ************************/
 
-    function safeMint(address to) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
-        _safeMint(to, tokenId);
-    }
-
+    /** 
+    * @notice Sets the royalty percentage and the royalties reciever address.
+    *
+    * @dev This function is only available to the admin role.
+    * @dev Using inherited ERC2981 functionality. 
+    *
+    * @param _receiver an address of the receiver of the royalties.
+    * @param _royaltyFeesInBips the numerator of the percentage of the royalties where denominator is 10000.
+    */
     function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips) public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
     }
 
-    function pause() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    /** 
+    * @notice Sets the contract into a paused mode.
+    *
+    * @dev This function is only available to the admin role.
+    * @dev No transactions other than admin API can be executed while the contract is in the paused mode.
+    */
+    function pause() public
+        onlyRole(DEFAULT_ADMIN_ROLE) 
+    {
         _pause();
     }
 
-    function unpause() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    /** 
+    * @notice Sets the contract into an unpaused mode.
+    *
+    * @dev This function is only available to the admin role.
+    */
+    function unpause() public 
+        onlyRole(DEFAULT_ADMIN_ROLE) 
+    {
         _unpause();
     }
 
+    /** 
+    * @notice Activating the currently assigned stage and setting its video URL.
+    *
+    * @dev This function is only available to the admin role.
+    * @dev Emitting StageChanged event triggering frontend to update the UI.
+    *
+    * @param videoUrl a string containing the video url of the current stage.
+    */
     function revealStage(string memory videoUrl) public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
@@ -174,11 +225,43 @@ contract DiamondDawn is
         emit StageChanged(stage, isStageActive);
     }
 
+    /** 
+    * @notice Activating the currently assigned stage and setting its video URL.
+    *
+    * @dev This function is only available to the admin role.
+    * @dev Emitting StageChanged event triggering frontend to update the UI.
+    *
+    * @param videoUrl a string containing the video url of the current stage.
+    */
     function completeCurrentStage() public 
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _deactivateStage();
         _nextStage();
+
+        emit StageChanged(stage, isStageActive);
+    }
+
+    /** 
+    * @notice Adding a list of addresses to the list of allowed addresses to mint tokens.
+    *
+    * @dev This function is only available to the admin role.
+    *
+    * @param addresses a list of addresses to be added to the list of allowed addresses.
+    */
+    function addToAllowList(address[] memory addresses) public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        for (uint i = 0; i < addresses.length; i++) {
+            mintAllowedAddresses[addresses[i]] = true;
+        }
+    }
+
+    /***********  TODO: Remove before production - Dev Tooling  **************/
+
+    function dev__ResetStage() public {
+        stage = Stage(0);
+        isStageActive = false;
 
         emit StageChanged(stage, isStageActive);
     }
@@ -189,24 +272,6 @@ contract DiamondDawn is
         completeCurrentStage();
         revealStage(videoUrl);
     }
-
-    function addToAllowList(address[] memory addresses) public
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        for (uint i = 0; i < addresses.length; i++) {
-            mintAllowedAddresses[addresses[i]] = true;
-        }
-    }
-
-    // TODO: Remove this method before production
-    function dev__ResetStage() public {
-        stage = Stage(0);
-        isStageActive = false;
-
-        emit StageChanged(stage, isStageActive);
-    }
-
-    /**********************            Read            ************************/
 
     /**************************************************************************
      *                                                                        *
