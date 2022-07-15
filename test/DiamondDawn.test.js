@@ -38,31 +38,19 @@ describe("DiamondDawn", () => {
       expect(await diamondDawn.symbol()).to.equals("DD");
     });
 
-    it("Should set the right admin / maintainer / minter", async function () {
+    it("Should set the right admin", async function () {
       const { owner, diamondDawn } = await loadFixture(deployDiamondDawnFixture);
       const isAdmin = await diamondDawn.hasRole(
         ADMIN_ROLE,
         owner.address
       );
       expect(isAdmin).to.equal(true);
-
-      const isPauser = await diamondDawn.hasRole(
-        PAUSER_ROLE,
-        owner.address
-      );
-      expect(isPauser).to.equal(true);
-
-      const isMinter = await diamondDawn.hasRole(
-        MINTER_ROLE,
-        owner.address
-      );
-      expect(isMinter).to.equal(true);
     });
   });
 
   describe("Transactions", function () {
 
-    it("Should mint correctly", async function () {
+    xit("Should mint correctly", async function () {
       const { owner, diamondDawn } = await loadFixture(deployDiamondDawnFixture);
       await diamondDawn.unpause();
       const tx = await diamondDawn.safeMint(owner.address);
@@ -71,14 +59,14 @@ describe("DiamondDawn", () => {
       expect(_balance).to.equal(1);
     });
 
-    it("Should be minted by MINTER ROLE only with safemint function", async function () {
+    xit("Should be minted by MINTER ROLE only with safemint function", async function () {
       const { owner, user1, diamondDawn } = await loadFixture(deployDiamondDawnFixture);
       await diamondDawn.unpause();
       await expect(diamondDawn.connect(user1).safeMint(owner.address))
           .to.be.reverted;
     });
 
-    it("Should not able to transfer when paused", async function () {
+    xit("Should not able to transfer when paused", async function () {
       const { owner, user1, diamondDawn } = await loadFixture(deployDiamondDawnFixture);
       await diamondDawn.unpause();
       let tx, rc, event;
