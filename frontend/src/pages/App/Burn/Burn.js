@@ -5,29 +5,28 @@ import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import { loadAccountNfts, tokenByIdSelector } from "store/tokensReducer";
+import { fetchTokenUri, fetchAccountBurnedTokens, tokenByIdSelector } from "store/tokensReducer";
 import { useForm } from 'react-hook-form';
 import './Burn.scss'
 import classNames from "classnames";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGem } from "@fortawesome/free-solid-svg-icons";
 import { systemSelector } from "store/systemReducer";
 import VideoPlayer from "components/VideoPlayer";
 import NoDiamondView from "components/NoDiamondView";
 import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
-import { useAccount, useProvider } from "wagmi";
+import { useAccount } from "wagmi";
+import Diamond from "components/Diamond";
+import useEffectWithAccount from "hooks/useEffectWithAccount";
 
 const Burn = () => {
   const contract = useDDContract()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
-  const { isStageActive } = useSelector(systemSelector)
+  const { isStageActive, stageStartTimes } = useSelector(systemSelector)
   const [showShippingForm, setShowShippingForm] = useState(false)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const [actionTxId, setActionTxId] = useState(false)
   const { data: account } = useAccount()
-  const provider = useProvider();
   const dispatch = useDispatch()
 
   const {
@@ -38,6 +37,10 @@ const Burn = () => {
 
   useSelectAvailableToken(STAGE.PHYSICAL)
 
+  useEffectWithAccount(() => {
+    dispatch(fetchAccountBurnedTokens(contract, account.address))
+  })
+
   const saveAddressAndBurn = async (formData) => {
     try {
       console.log('saveAddressAndBurn', { formData })
@@ -45,7 +48,7 @@ const Burn = () => {
       const tx = await contract.burn(selectedTokenId)
       const receipt = await tx.wait()
 
-      dispatch(loadAccountNfts(contract, provider, account.address))
+      dispatch(fetchTokenUri(contract, selectedTokenId))
       setShowCompleteVideo(true)
       setActionTxId(receipt.transactionHash)
     }
@@ -70,13 +73,13 @@ const Burn = () => {
       </div>
     )
 
-    const wasBurnt = !_.isEmpty(actionTxId)
-    if (wasBurnt) {
+    const endTime = _.get(stageStartTimes, 4)
+
+    const isTokenBurned = token?.stage === STAGE.PHYSICAL
+    if (isTokenBurned) {
       return (
         <>
-          <div className="diamond-art">
-            <FontAwesomeIcon icon={faGem} />
-          </div>
+          <Diamond diamond={token} />
           <div className="leading-text">READY TO HOLD IT IN YOUR HAND?</div>
           <div className="secondary-text">A diamond's journey is eternal</div>
         </>
@@ -102,19 +105,17 @@ const Burn = () => {
       </>
     )
 
-    if (isStageActive && !token) return (<NoDiamondView stageName="burn" />)
+    if (!token) return (<NoDiamondView stageName="burn" />)
 
     return (
       <>
-        <div className="diamond-art">
-          <FontAwesomeIcon icon={faGem} />
-        </div>
+        <Diamond diamond={token} />
         <div className="leading-text">BUT... IS THERE MORE?</div>
         <div className="secondary-text">Letting the perfect stone go can be a risk... but a diamond's journey is never over</div>
         {isStageActive && (
           <div className="button action-button" onClick={() => setShowShippingForm(true)}>Burn NFT</div>
         )}
-        <Countdown date={Date.now() + 10000} text={['You have', `${isStageActive ? 'to' : 'until'} burn`]} />
+        <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} burn`]} />
       </>
     )
   }

@@ -10,7 +10,6 @@ const InviteSchema = new mongoose.Schema({
 	reason: {type: String, required: true},
 	password: {type: Number, required: true, default: () => chance.integer({ min: 100000, max: 999999 })},
 	opened: {type: Date},
-
 })
 
 const InviteModel = db.model('Invite', InviteSchema)

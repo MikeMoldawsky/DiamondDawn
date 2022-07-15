@@ -24,32 +24,6 @@ body {
   z-index: 1;
 }
 
-.main-layout {
-  header {
-    position: fixed;
-    z-index: 1;
-    width: 100%;
-
-    .header-internal {
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      img {
-        height: 32px;
-        width: unset;
-      }
-    }
-  }
-}
-
 .text-center {
   text-align: center;
 }
@@ -83,6 +57,22 @@ body {
     color: $white;
     background-color: $dark;
     border: solid 1px $white;
+  }
+}
+
+input[type=text] {
+  width: 100%;
+  height: 48px;
+  padding: 0 10px;
+  border: none;
+  border-left: solid 6px white;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.validation-error {
+    border-color: $light-red;
   }
 }
 
@@ -135,10 +125,6 @@ body {
     .countdown {
       font-size: 2em;
     }
-  }
-
-  .diamond-art {
-    font-size: 10em;
   }
 
   .countdown-row {
@@ -203,14 +189,14 @@ body {
     border-radius: 10px;
   }
 
-  .react-player {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    opacity: 1;
-  }
+  //.react-player {
+  //  position: fixed;
+  //  right: 0;
+  //  bottom: 0;
+  //  min-width: 100%;
+  //  min-height: 100%;
+  //  opacity: 1;
+  //}
 
   &.show-content {
     .content {
@@ -249,8 +235,18 @@ body {
   }
 }
 
+.tabs {
+  .tabs-header {
+    justify-content: center;
+  }
+}
+
 .Toastify__toast-container {
   top: 80px !important;
+}
+
+.MuiTextField-root {
+  background-color: white !important;
 }
 
 @media only screen and (max-width: 767px) {

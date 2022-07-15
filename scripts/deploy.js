@@ -4,8 +4,17 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
+const path = require("path");
+const { ethers } = require("ethers");
 
 async function main() {
+  if (!hre.network.name) {
+    console.error(
+      "network name is NOT defined. It should be passed as an environment variable"
+    );
+    return;
+  }
+
   // This is just a convenience check
   if (hre.network.name === "hardhat") {
     console.warn(
@@ -17,43 +26,53 @@ async function main() {
 
   // ethers is available in the global scope
   const [deployer] = await hre.ethers.getSigners();
-  console.log(
-    "Deploying the contracts with the account:",
-    await deployer.getAddress()
-  );
+  const deployerAddress = await deployer.getAddress();
+  const deployerBalance = await deployer.getBalance();
+  console.log("Deploying DiamondDawn contract", {
+    deployerAddress,
+    deployerBalance: deployerBalance.toString(),
+    deployerEthBalance: ethers.utils.formatEther(deployerBalance),
+    network: hre.network.name,
+  });
 
-  const royality = 1000; // 1000/10000 = 10/100 = 10 %
-
-  console.log("Account balance:", (await deployer.getBalance()).toString());
-
+  const royalty = 1000; // 1000/10000 = 10/100 = 10 %
   const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
-  const diamondDawn = await DiamondDawn.deploy(royality);
+  const diamondDawn = await DiamondDawn.deploy(royalty);
   await diamondDawn.deployed();
+  const deployerNewBalance = await deployer.getBalance();
 
-  console.log("DiamondDawn contract address:", diamondDawn.address);
+  console.log("DiamondDawn contract successfully deployed", {
+    address: diamondDawn.address,
+    deployerBalance: deployerNewBalance.toString(),
+    deployerEthBalance: ethers.utils.formatEther(deployerNewBalance),
+    deploymentEthCost: ethers.utils.formatEther(
+      deployerBalance - deployerNewBalance
+    ),
+    royalty,
+  });
 
   // We also save the contract's artifacts and address in the frontend directory
-  saveFrontendFiles(diamondDawn);
+  const contractsDir = path.resolve(__dirname, "../frontend/src/contracts");
+  saveFrontendFiles(diamondDawn, contractsDir, hre.network.name);
 }
 
-function saveFrontendFiles(diamondDawn) {
+function saveFrontendFiles(diamondDawn, contractsDir, network) {
   const fs = require("fs");
-  const contractsDir = `${__dirname}/../frontend/src/contracts`;
 
   if (!fs.existsSync(contractsDir)) {
     fs.mkdirSync(contractsDir);
   }
-
-  fs.writeFileSync(
-    contractsDir + "/contract-address.json",
-    JSON.stringify({ DiamondDawn: diamondDawn.address }, undefined, 2)
-  );
-
   const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
+
+  const contractObject = {};
+  contractObject[network] = {
+    address: diamondDawn.address,
+    artifact: DiamondDawnArtifact,
+  };
 
   fs.writeFileSync(
     contractsDir + "/DiamondDawn.json",
-    JSON.stringify(DiamondDawnArtifact, null, 2)
+    JSON.stringify(contractObject, null, 2)
   );
 }
 

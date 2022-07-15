@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
-import "./App.scss";
 import classNames from "classnames";
 import Wallet from "pages/Wallet";
 import Header from "components/Header";
-import AdminPanel from 'components/AdminPanel'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPricing, fetchStage, systemSelector } from "store/systemReducer";
+import { fetchPricing, fetchStage, fetchStagesConfig, setStage, systemSelector } from "store/systemReducer";
 import Mine from "./Mine";
 import Cut from "./Cut";
 import Polish from "./Polish";
@@ -17,9 +15,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import { loadAccountNfts } from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
+import useEffectWithAccount from "hooks/useEffectWithAccount";
+import { EVENTS } from 'consts'
 
 function App() {
-
   const { stage } = useSelector(systemSelector)
   const { data: account } = useAccount()
   const provider = useProvider();
@@ -30,13 +29,22 @@ function App() {
   useEffect(() => {
     dispatch(fetchStage(contract))
     dispatch(fetchPricing(contract))
+    dispatch(fetchStagesConfig())
+
+    provider.once('block', () => {
+      contract.on(EVENTS.StageChanged, (_stage, _isStageActive) => {
+        dispatch(setStage(_stage, _isStageActive))
+      })
+    })
+
+    return () => {
+      contract .removeAllListeners()
+    }
   }, [])
 
-  useEffect(() => {
-    if (account?.address) {
-      dispatch(loadAccountNfts(contract, provider, account?.address))
-    }
-  }, [account?.address])
+  useEffectWithAccount(() => {
+    dispatch(loadAccountNfts(contract, provider, account?.address))
+  })
 
   const renderStage = () => {
     switch (stage) {
@@ -72,7 +80,6 @@ function App() {
       <footer>
         <ProgressBar />
       </footer>
-      <AdminPanel />
     </div>
   );
 }

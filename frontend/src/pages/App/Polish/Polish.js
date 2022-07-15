@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import _ from 'lodash'
 import Countdown from 'components/Countdown';
 import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
@@ -9,18 +8,18 @@ import { uiSelector } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import { fetchTokenUri, tokenByIdSelector } from "store/tokensReducer";
 import VideoPlayer from "components/VideoPlayer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGem } from "@fortawesome/free-solid-svg-icons";
 import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
 import NoDiamondView from "components/NoDiamondView";
+import Diamond from "components/Diamond";
+import _ from "lodash";
 
 const Polish = () => {
   const [actionTxId, setActionTxId] = useState(false)
   const contract = useDDContract()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
-  const { polishPrice, isStageActive } = useSelector(systemSelector)
+  const { polishPrice, isStageActive, stageStartTimes } = useSelector(systemSelector)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const dispatch = useDispatch()
 
@@ -48,25 +47,23 @@ const Polish = () => {
       </div>
     )
 
-    const wasPolished = !_.isEmpty(actionTxId)
-    if (wasPolished) return (
+    const endTime = _.get(stageStartTimes, 3)
+
+    const isTokenPolished = token?.stage === STAGE.POLISH
+    if (isTokenPolished) return (
       <>
-        <div className="diamond-art">
-          <FontAwesomeIcon icon={faGem} />
-        </div>
+        <Diamond diamond={token} />
         <div className="leading-text">YOUR PERFECT DIAMOND NFT IS IN YOUR WALLET</div>
-        <Countdown date={Date.now() + 10000} text={['You have', 'until burn']} />
+        <Countdown date={endTime} text={['You have', 'until burn']} />
         <div className="secondary-text">Can it be real?</div>
       </>
     )
 
-    if (isStageActive && !token) return (<NoDiamondView stageName="polish" />)
+    if (!token) return (<NoDiamondView stageName="polish" />)
 
     return (
       <>
-        <div className="diamond-art">
-          <FontAwesomeIcon icon={faGem} />
-        </div>
+        <Diamond diamond={token} />
         <div className="leading-text">
           A GEM CANNOT BE POLISHED WITHOUT FRICTION,<br/>
           NOR MAN PERFECTED WITHOUT TRIALS
@@ -75,7 +72,7 @@ const Polish = () => {
         {isStageActive && (
           <div className="button action-button" onClick={polish}>POLISH{token.polishable ? '' : ` (${ethersUtils.formatUnits(polishPrice)} ETH)`}</div>
         )}
-        <Countdown date={Date.now() + 10000} text={['You have', `${isStageActive ? 'to' : 'until'} polish`]} />
+        <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} polish`]} />
       </>
     )
   }
