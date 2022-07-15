@@ -8,7 +8,6 @@ const path = require("path");
 const { ethers } = require("ethers");
 
 async function main() {
-  // hre.network.name = process.env.NETWORK;
   if (!hre.network.name) {
     console.error(
       "network name is NOT defined. It should be passed as an environment variable"
