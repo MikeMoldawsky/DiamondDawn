@@ -54,11 +54,11 @@ contract DiamondDawn is
     Counters.Counter private _tokenIdCounter;
     Stage private constant MAX_STAGE = Stage.REBIRTH;
     Stage public stage;
-    uint public constant MINING_PRICE = 0.2 ether;
-    uint public constant CUT_PRICE = 0.4 ether;
-    uint public constant POLISH_PRICE = 0.6 ether;
-    uint public constant PREPAID_CUT_PRICE = 0.2 ether;
-    uint public constant PREPAID_POLISH_PRICE = 0.4 ether;
+    uint public constant MINING_PRICE = 0.002 ether;
+    uint public constant CUT_PRICE = 0.004 ether;
+    uint public constant POLISH_PRICE = 0.006 ether;
+    uint public constant PREPAID_CUT_PRICE = 0.002 ether;
+    uint public constant PREPAID_POLISH_PRICE = 0.004 ether;
     bool public isStageActive;
     mapping(address => bool) public mintAllowedAddresses;
     mapping(Stage => string) private _videoUrls;
