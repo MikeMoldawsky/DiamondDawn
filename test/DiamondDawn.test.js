@@ -38,25 +38,13 @@ describe("DiamondDawn", () => {
       expect(await diamondDawn.symbol()).to.equals("DD");
     });
 
-    it("Should set the right admin / maintainer / minter", async function () {
+    it("Should set the right admin", async function () {
       const { owner, diamondDawn } = await loadFixture(deployDiamondDawnFixture);
       const isAdmin = await diamondDawn.hasRole(
         ADMIN_ROLE,
         owner.address
       );
       expect(isAdmin).to.equal(true);
-
-      const isPauser = await diamondDawn.hasRole(
-        PAUSER_ROLE,
-        owner.address
-      );
-      expect(isPauser).to.equal(true);
-
-      const isMinter = await diamondDawn.hasRole(
-        MINTER_ROLE,
-        owner.address
-      );
-      expect(isMinter).to.equal(true);
     });
   });
 
