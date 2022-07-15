@@ -1,6 +1,6 @@
 import React from "react";
 import { getDefaultWallets, RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/dist/index.css";
@@ -23,7 +23,7 @@ const localChain = {
 function WagmiWrapper({ children }) {
 
   const { chains, provider } = configureChains(
-    [localChain],
+    [chain.goerli, chain.ropsten, localChain],
     [
       infuraProvider({ infuraId: "dbe63b3bdfc84f3abdf38cdc8e22f492" }),
       publicProvider(),
