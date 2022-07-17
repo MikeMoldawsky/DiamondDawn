@@ -6,7 +6,8 @@
 const hre = require("hardhat");
 const path = require("path");
 const { ethers } = require("ethers");
-// const { updateDiamondDawnContract } = require("../db/contract-db-manager");
+const mongoose = require("mongoose");
+const { updateDiamondDawnContract } = require("../db/contract-db-manager");
 
 async function main() {
   if (!hre.network.name) {
@@ -54,21 +55,23 @@ async function main() {
   });
 
   if (hre.network.name === "goerli") {
-    // try {
-    //   console.log("Verifying contract");
-    //   await hre.run("verify:verify", {
-    //     address: diamondDawn.address,
-    //     constructorArguments: [royalty, admins],
-    //   });
-    //   console.log("Successfully verified the contract");
-    // } catch (e) {
-    //   console.log("Failed to verify contract", e);
-    // }
+    try {
+      console.log("Verifying contract");
+      await hre.run("verify:verify", {
+        address: diamondDawn.address,
+        constructorArguments: [royalty, admins],
+      });
+      console.log("Successfully verified the contract");
+    } catch (e) {
+      console.log("Failed to verify contract", e);
+    }
   }
 
   const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
   console.log("Updating db with DiamondDawn artifacts");
-  // await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
+  await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
+  // TODO(mike): check what's the best way to create & close a connection with mongoose
+  await mongoose.disconnect(); // build doesn't finish without disconnect
   // We also save the contract's artifacts and address in the frontend directory
   console.log("Successfully updated db with DiamondDawn artifacts");
   console.log("Writing DiamondDawn artifacts to frontend");
