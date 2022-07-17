@@ -6,6 +6,7 @@
 const hre = require("hardhat");
 const path = require("path");
 const { ethers } = require("ethers");
+const { updateDiamondDawnContract } = require("../db/contract-db-manager");
 
 async function main() {
   if (!hre.network.name) {
@@ -53,30 +54,31 @@ async function main() {
   });
 
   if (hre.network.name === "goerli") {
-    await hre.run("verify:verify", {
-      address: diamondDawn.address,
-      constructorArguments: [royalty, admins],
-    });
+    try {
+      console.log("Verifying contract");
+      await hre.run("verify:verify", {
+        address: diamondDawn.address,
+        constructorArguments: [royalty, admins],
+      });
+    } catch (e) {
+      console.log("Failed to verify contract", e);
+    }
   }
 
+  const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
+  await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
   // We also save the contract's artifacts and address in the frontend directory
-  const contractsDir = path.resolve(__dirname, "../frontend/src/contracts");
-  saveFrontendFiles(diamondDawn, contractsDir, hre.network.name);
+  saveFrontendFiles(diamondDawn.address, DiamondDawnArtifact);
 }
 
-function saveFrontendFiles(diamondDawn, contractsDir, network) {
+function saveFrontendFiles(address, artifact) {
+  const contractObject = { address, artifact };
+  const contractsDir = path.resolve(__dirname, "../frontend/src/contracts");
   const fs = require("fs");
 
   if (!fs.existsSync(contractsDir)) {
     fs.mkdirSync(contractsDir);
   }
-  const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
-
-  const contractObject = {};
-  contractObject[network] = {
-    address: diamondDawn.address,
-    artifact: DiamondDawnArtifact,
-  };
 
   fs.writeFileSync(
     contractsDir + "/DiamondDawn.json",
