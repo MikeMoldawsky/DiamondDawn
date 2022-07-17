@@ -52,10 +52,12 @@ async function main() {
     ),
   });
 
-  await hre.run("verify:verify", {
-    address: diamondDawn.address,
-    constructorArguments: [royalty, admins],
-  });
+  if (hre.network.name === "goerli") {
+    await hre.run("verify:verify", {
+      address: diamondDawn.address,
+      constructorArguments: [royalty, admins],
+    });
+  }
 
   // We also save the contract's artifacts and address in the frontend directory
   const contractsDir = path.resolve(__dirname, "../frontend/src/contracts");
