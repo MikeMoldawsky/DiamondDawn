@@ -7,7 +7,7 @@ async function useDDContract() {
     throw new Error("Diamond Dawn contract object does NOT exist.")
   }
   axios.get(`/api/get_contract`)
-      .then(res => console.log("Successfully got contract", res))
+      .then(res => console.log("Successfully got contract", res.data))
       .catch(e => console.log("Failed to get contract!!!!", e))
 
   const provider = useProvider()
