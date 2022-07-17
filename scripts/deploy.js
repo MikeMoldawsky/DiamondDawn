@@ -54,16 +54,16 @@ async function main() {
   });
 
   if (hre.network.name === "goerli") {
-    try {
-      console.log("Verifying contract");
-      await hre.run("verify:verify", {
-        address: diamondDawn.address,
-        constructorArguments: [royalty, admins],
-      });
-      console.log("Successfully verified the contract");
-    } catch (e) {
-      console.log("Failed to verify contract", e);
-    }
+    // try {
+    //   console.log("Verifying contract");
+    //   await hre.run("verify:verify", {
+    //     address: diamondDawn.address,
+    //     constructorArguments: [royalty, admins],
+    //   });
+    //   console.log("Successfully verified the contract");
+    // } catch (e) {
+    //   console.log("Failed to verify contract", e);
+    // }
   }
 
   const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
@@ -93,7 +93,9 @@ function saveFrontendFiles(address, artifact) {
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => console.log("Successfully run of deploy Diamond Dawn"))
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
