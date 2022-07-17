@@ -60,15 +60,20 @@ async function main() {
         address: diamondDawn.address,
         constructorArguments: [royalty, admins],
       });
+      console.log("Successfully verified the contract");
     } catch (e) {
       console.log("Failed to verify contract", e);
     }
   }
 
   const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
+  console.log("Updating db with DiamondDawn artifacts");
   await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
   // We also save the contract's artifacts and address in the frontend directory
+  console.log("Successfully updated db with DiamondDawn artifacts");
+  console.log("Writing DiamondDawn artifacts to frontend");
   saveFrontendFiles(diamondDawn.address, DiamondDawnArtifact);
+  console.log("Successfully updated frontend with DiamondDawn artifacts");
 }
 
 function saveFrontendFiles(address, artifact) {
