@@ -53,7 +53,16 @@ async function main() {
       deployerBalance.sub(deployerNewBalance)
     ),
   });
-
+  const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
+  console.log("Updating db with DiamondDawn artifacts");
+  await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
+  // TODO(mike): check what's the best way to create & close a connection with mongoose
+  await mongoose.disconnect(); // build doesn't finish without disconnect
+  // We also save the contract's artifacts and address in the frontend directory
+  console.log("Successfully updated db with DiamondDawn artifacts");
+  console.log("Writing DiamondDawn artifacts to frontend");
+  saveFrontendFiles(diamondDawn.address, DiamondDawnArtifact);
+  console.log("Successfully updated frontend with DiamondDawn artifacts");
   if (hre.network.name === "goerli") {
     try {
       console.log("Verifying contract");
@@ -66,17 +75,6 @@ async function main() {
       console.log("Failed to verify contract", e);
     }
   }
-
-  const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
-  console.log("Updating db with DiamondDawn artifacts");
-  await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
-  // TODO(mike): check what's the best way to create & close a connection with mongoose
-  await mongoose.disconnect(); // build doesn't finish without disconnect
-  // We also save the contract's artifacts and address in the frontend directory
-  console.log("Successfully updated db with DiamondDawn artifacts");
-  console.log("Writing DiamondDawn artifacts to frontend");
-  saveFrontendFiles(diamondDawn.address, DiamondDawnArtifact);
-  console.log("Successfully updated frontend with DiamondDawn artifacts");
 }
 
 function saveFrontendFiles(address, artifact) {
