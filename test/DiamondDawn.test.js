@@ -23,7 +23,7 @@ describe("DiamondDawn", () => {
 
   async function deployDiamondDawnFixture() {
     const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
-    const diamondDawn = await DiamondDawn.deploy("1000"); // royality as 10 %
+    const diamondDawn = await DiamondDawn.deploy("1000", []); // royality as 10 %
     const [owner, user1, user2, user3, user4, user5, user6, user7, user8] = await ethers.getSigners();
     const provider = waffle.provider;
     await diamondDawn.deployed();
@@ -101,7 +101,7 @@ describe("DiamondDawn", () => {
       await diamondDawn.addToAllowList(allowlist);
       await diamondDawn
         .connect(user1)
-        .mine(1, { value: parseEther("0.4") });
+        .mine(1, { value: parseEther("0.004") });
 
       const balanceOfUser1 = await diamondDawn.balanceOf(user1.address);
       console.log(balanceOfUser1.toNumber());
