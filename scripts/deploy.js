@@ -48,7 +48,7 @@ async function main() {
     deployerBalance: deployerNewBalance.toString(),
     deployerEthBalance: ethers.utils.formatEther(deployerNewBalance),
     deploymentEthCost: ethers.utils.formatEther(
-      deployerBalance - deployerNewBalance
+      deployerBalance.sub(deployerNewBalance)
     ),
   });
 
