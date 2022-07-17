@@ -50,7 +50,6 @@
     "solidity-coverage": "^0.7.21"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.6.0",
-    "lodash": "^4.17.21"
+    "@openzeppelin/contracts": "^4.6.0"
   }
 }
