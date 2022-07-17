@@ -28,16 +28,18 @@ async function main() {
   const [deployer] = await hre.ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
   const deployerBalance = await deployer.getBalance();
+  const admins = process.env.ADMINS?.split(" ") || [];
+  const royalty = 1000; // 1000/10000 = 10/100 = 10 %
   console.log("Deploying DiamondDawn contract", {
     deployerAddress,
+    admins,
+    royalty,
     deployerBalance: deployerBalance.toString(),
     deployerEthBalance: ethers.utils.formatEther(deployerBalance),
     network: hre.network.name,
   });
-
-  const royalty = 1000; // 1000/10000 = 10/100 = 10 %
   const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
-  const diamondDawn = await DiamondDawn.deploy(royalty);
+  const diamondDawn = await DiamondDawn.deploy(royalty, admins);
   await diamondDawn.deployed();
   const deployerNewBalance = await deployer.getBalance();
 
@@ -48,7 +50,6 @@ async function main() {
     deploymentEthCost: ethers.utils.formatEther(
       deployerBalance - deployerNewBalance
     ),
-    royalty,
   });
 
   // We also save the contract's artifacts and address in the frontend directory

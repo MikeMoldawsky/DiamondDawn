@@ -72,10 +72,12 @@ contract DiamondDawn is
      *                                                                        *
      **************************************************************************/
 
-    constructor(uint96 _royaltyFeesInBips) ERC721("DiamondDawn", "DD") {
-        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-
+    constructor(uint96 _royaltyFeesInBips, address[] memory adminAddresses) ERC721("DiamondDawn", "DD") {
+        // TODO: remove allow-list + admin from production and use grant role
+        _setAdminAndAddToAllowList(adminAddresses);
         mintAllowedAddresses[_msgSender()] = true;
+        // Production starts from here
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         stage = Stage.MINE;
         isStageActive = false;
         setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
@@ -277,6 +279,14 @@ contract DiamondDawn is
     {
         completeCurrentStage();
         revealStage(videoUrl);
+    }
+
+    function _setAdminAndAddToAllowList(address[] memory addresses) internal
+    {
+        for (uint i = 0; i < addresses.length; i++) {
+            mintAllowedAddresses[addresses[i]] = true;
+            _grantRole(DEFAULT_ADMIN_ROLE, addresses[i]);
+        }
     }
 
     /**************************************************************************
