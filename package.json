@@ -13,8 +13,10 @@
     "quick-test": "hardhat test",
     "coverage": "npm run compile && hardhat coverage",
     "build": "npx hardhat run scripts/deploy.js",
+    "build-dev": "npx hardhat run scripts/deploy.js",
     "postbuild": "cd frontend && npm run build",
-    "postinstall": "cd frontend && npm install"
+    "postinstall": "cd frontend && npm install",
+    "dev": "npm run build-dev && cd frontend && npm start"
   },
   "repository": {
     "type": "git",
@@ -50,6 +52,8 @@
     "solidity-coverage": "^0.7.21"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.6.0"
+    "@openzeppelin/contracts": "^4.6.0",
+    "chance": "^1.1.8",
+    "mongoose": "^6.4.4"
   }
 }
