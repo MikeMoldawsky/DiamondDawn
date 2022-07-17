@@ -6,7 +6,7 @@
 const hre = require("hardhat");
 const path = require("path");
 const { ethers } = require("ethers");
-const { updateDiamondDawnContract } = require("../db/contract-db-manager");
+// const { updateDiamondDawnContract } = require("../db/contract-db-manager");
 
 async function main() {
   if (!hre.network.name) {
@@ -68,7 +68,7 @@ async function main() {
 
   const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
   console.log("Updating db with DiamondDawn artifacts");
-  await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
+  // await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
   // We also save the contract's artifacts and address in the frontend directory
   console.log("Successfully updated db with DiamondDawn artifacts");
   console.log("Writing DiamondDawn artifacts to frontend");
