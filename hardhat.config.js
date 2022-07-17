@@ -44,6 +44,19 @@ module.exports = {
     currency: "USD",
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: {
+      mainnet: process.env.ETHERSCAN_API_KEY,
+      goerli: process.env.ETHERSCAN_API_KEY,
+    },
+    customChains: [
+      {
+        network: "goerli",
+        chainId: 5,
+        urls: {
+          apiURL: "https://api-goerli.etherscan.io/api",
+          browserURL: "https://goerli.etherscan.io",
+        },
+      },
+    ],
   },
 };
