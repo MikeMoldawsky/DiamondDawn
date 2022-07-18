@@ -475,7 +475,7 @@ contract DiamondDawn is
     {
         _process(tokenId, CUT_PRICE);
 
-        _tokensMetadata[tokenId].shape = Shape(uint(_getRandomShape()));
+        _tokensMetadata[tokenId].shape = _getRandomShape();
     }
 
     function polish(uint256 tokenId) public payable
