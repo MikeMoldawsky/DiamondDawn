@@ -344,14 +344,14 @@ contract DiamondDawn is
             );
     }
 
-    function _getRandomNumber() internal view returns (uint) {
+    function _getRandomShape() internal view returns (uint) {
         uint randomNumber = _randomModulo(100);
         // 0  - 34 it will be shape 1
         // 35 - 70 it will be shape 2
         // 70 - 99 it will be shape 3
         if (randomNumber <= 34) {
             return 0;
-        } else if (randomNumber >= 35 && randomNumber <= 70) {
+        } else if (randomNumber > 34 && randomNumber <= 70) {
             return 1;
         } else {
             return 2;
@@ -475,7 +475,7 @@ contract DiamondDawn is
     {
         _process(tokenId, CUT_PRICE);
 
-        uint randomNumber = _getRandomNumber();
+        uint randomNumber = _getRandomShape();
         _tokensMetadata[tokenId].shape = Shape(randomNumber);
     }
 
@@ -590,7 +590,6 @@ contract DiamondDawn is
         
         return string(abi.encodePacked("data:application/json;base64,", json));
     }
-<<<<<<< HEAD
 
     function _getStagePercentage(uint256 _stage) internal view returns (uint) {
         if (_stage == 0) {
@@ -599,43 +598,4 @@ contract DiamondDawn is
             return _stage * 20 + 20;
         }
     }
-
-    function _getVideoUrl(uint256 tokenId)
-        internal
-        view
-        returns (string memory)
-    {
-        return
-            string.concat(
-                _baseURI(),
-                _videoUrls[_tokensMetadata[tokenId].stage]
-            );
-    }
-
-    function getShapeForToken(uint tokenId) public view returns (Shape) {
-        return _tokensMetadata[tokenId].shape;
-    }
-
-    function _getRandomNumber() internal view returns (uint) {
-        uint randomNumber = _randomModulo(100);
-        // 0  - 34 it will be shape 1
-        // 35 - 70 it will be shape 2
-        // 70 - 99 it will be shape 3
-        if (randomNumber <= 34) {
-            return 0;
-        } else if (randomNumber >= 35 && randomNumber <= 70) {
-            return 1;
-        } else {
-            return 2;
-        }
-    }
-
-    function _randomModulo(uint modulo) internal view returns (uint) {
-        return
-            uint(
-                keccak256(abi.encodePacked(block.timestamp, block.difficulty))
-            ) % modulo;
-    }
-=======
->>>>>>> 62ae7aee2ff2cd6e73a2da2fb3ce4528a18638f5
 }
