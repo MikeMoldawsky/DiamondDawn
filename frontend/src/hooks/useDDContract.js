@@ -1,15 +1,14 @@
 import { useContract, useProvider, useSigner } from "wagmi";
-import diamondDawnObject from "contracts/DiamondDawn.json";
+import diamondDawn from "contracts/DiamondDawn.json";
+import axios from "axios";
 
-function useDDContract() {
-  const network = process.env.REACT_APP_NETWORK;
-  if(!network){
-    throw new Error("Deployment network is NOT configured. Set env variable")
-  }
-  const diamondDawn = diamondDawnObject[network];
+async function useDDContract() {
   if(!diamondDawn){
     throw new Error("Diamond Dawn contract object does NOT exist.")
   }
+  axios.get(`/api/get_contract`)
+      .then(res => console.log("Successfully got contract", res.data))
+      .catch(e => console.log("Failed to get contract!!!!", e))
 
   const provider = useProvider()
   const { data: signer } = useSigner()
