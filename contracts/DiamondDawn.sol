@@ -543,45 +543,7 @@ contract DiamondDawn is
                         '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "',
                         '", "animation_url": "',
                         '",'
-                        '"attributes" : ['
-                        "{"
-                        '"display_type": "number",'
-                        '"trait_type": "stage",'
-                        '"value":',
-                        Strings.toString(uint(_tokensMetadata[tokenId].stage)),
-                        "},"
-                        "{"
-                        '"trait_type": "physical",'
-                        '"value":',
-                        Strings.toString(
-                            _getPhysicalAttributeFromStage(
-                                _tokensMetadata[tokenId].stage
-                            )
-                        ),
-                        "},"
-                        "{"
-                        '"display_type": "number",'
-                        '"trait_type": "shape", '
-                        '"value":',
-                        Strings.toString(uint(_tokensMetadata[tokenId].shape)),
-                        "},"
-                        "{"
-                        '"trait_type": "type", '
-                        '"value": "Cape" '
-                        "},"
-                        "{"
-                        '"trait_type": "cutable",'
-                        '"value":',
-                        _tokensMetadata[tokenId].cutable
-                            ? '"Yes"'
-                            : '"No"'
-                            "},"
-                            "{"
-                            '"trait_type": "polishable", '
-                            '"value":',
-                        _tokensMetadata[tokenId].polishable ? '"Yes"' : '"No"',
-                        "}"
-                        "]"
+                        '"attributes" :', getDiamondAttributes(tokenId),
                         " }"
                     )
                 )
@@ -589,6 +551,42 @@ contract DiamondDawn is
         );
         
         return string(abi.encodePacked("data:application/json;base64,", json));
+    }
+
+    function getDiamondAttributes(uint256 tokenId) internal view returns(string memory) {
+         return(
+            string(
+            abi.encodePacked(
+                    "["
+                        "{"
+                           '"display_type": "number",'
+                           '"trait_type": "stage",'
+                           '"value":', Strings.toString(uint(_tokensMetadata[tokenId].stage)),
+                        "},"
+                        "{"
+                           '"trait_type": "physical",'
+                           '"value":',Strings.toString(_getPhysicalAttributeFromStage(_tokensMetadata[tokenId].stage)),
+                        "},"
+                        "{"
+                           '"display_type": "number",'
+                           '"trait_type": "shape", '
+                           '"value":', Strings.toString(uint(_tokensMetadata[tokenId].shape)),
+                        "},"
+                        "{"
+                           '"trait_type": "type", '
+                           '"value": "Cape" '
+                        "},"
+                        "{"
+                           '"trait_type": "cutable",'
+                           '"value":', _tokensMetadata[tokenId].cutable ? '"Yes"' : '"No"'
+                        "},"
+                        "{"
+                            '"trait_type": "polishable", '
+                            '"value":', _tokensMetadata[tokenId].polishable ? '"Yes"' : '"No"',
+                        "}"
+                    "]"
+            ))
+         );
     }
 
     function _getPhysicalAttributeFromStage(Stage _stage) internal view returns (uint) {
