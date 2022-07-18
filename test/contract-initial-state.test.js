@@ -38,7 +38,7 @@ beforeEach(async function () {
   user8 = signers[8];
 
   const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
-  diamondDawnContract = await DiamondDawn.deploy(ROYALTY_FEE_IN_BIPS);
+  diamondDawnContract = await DiamondDawn.deploy(ROYALTY_FEE_IN_BIPS,[owner.address]);
 
   await diamondDawnContract.deployed();
 });
@@ -401,66 +401,66 @@ describe("When contract is deployed", async () => {
 
     it("tokenURI", async () => {});
 
-    // describe("When stage is not active", async() => {
+    describe("When stage is not active", async() => {
 
-    //     it("mine", async() => {
+        it("mine", async() => {
 
-    //     });
+        });
 
-    //     it("cut", async() => {
+        it("cut", async() => {
 
-    //     });
+        });
 
-    //     it("polish", async() => {
+        it("polish", async() => {
 
-    //     });
+        });
 
-    //     it("burn", async() => {
+        it("burn", async() => {
 
-    //     });
+        });
 
-    //     it("rebirth", async() => {
+        it("rebirth", async() => {
 
-    //     });
+        });
 
-    //     it("tokenURI", async() => {
+        it("tokenURI", async() => {
 
-    //     });
+        });
 
-    //     it("addToAllowList", async() => {
+        it("addToAllowList", async() => {
 
-    //     });
-    // });
+        });
+    });
 
-    // describe("When stage is active", async() => {
+    describe("When stage is active", async() => {
 
-    //     it("mine", async() => {
+        it("mine", async() => {
 
-    //     });
+        });
 
-    //     it("cut", async() => {
+        it("cut", async() => {
 
-    //     });
+        });
 
-    //     it("polish", async() => {
+        it("polish", async() => {
 
-    //     });
+        });
 
-    //     it("burn", async() => {
+        it("burn", async() => {
 
-    //     });
+        });
 
-    //     it("rebirth", async() => {
+        it("rebirth", async() => {
 
-    //     });
+        });
 
-    //     it("tokenURI", async() => {
+        it("tokenURI", async() => {
 
-    //     });
+        });
 
-    //     it("addToAllowList", async() => {
+        it("addToAllowList", async() => {
 
-    //     });
-    // });
+        });
+    });
   });
 });
