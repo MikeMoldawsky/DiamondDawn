@@ -590,7 +590,7 @@ contract DiamondDawn is
     }
 
     function _getPhysicalAttributeFromStage(Stage _stage) internal view returns (uint) {
-        if (uint(_stage) == 0) {
+        if (_stage == Stage.MINE) {
             return 20;
         } else {
             return uint(_stage) * 20 + 20;
