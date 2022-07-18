@@ -13,7 +13,7 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 
 /**
- * @title DiamondDawn NFT Contract
+ * @title DiamondDawn NFT Contract 
  * @author Diamond Dawn
  */
 contract DiamondDawn is
@@ -72,10 +72,12 @@ contract DiamondDawn is
      *                                                                        *
      **************************************************************************/
 
-    constructor(uint96 _royaltyFeesInBips) ERC721("DiamondDawn", "DD") {
-        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-
+    constructor(uint96 _royaltyFeesInBips, address[] memory adminAddresses) ERC721("DiamondDawn", "DD") {
+        // TODO: remove allow-list + admin from production and use grant role
+        _setAdminAndAddToAllowList(adminAddresses);
         mintAllowedAddresses[_msgSender()] = true;
+        // Production starts from here
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         stage = Stage.MINE;
         isStageActive = false;
         setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
@@ -86,14 +88,14 @@ contract DiamondDawn is
         address from,
         address to,
         uint256 tokenId
-    ) internal override(ERC721, ERC721Enumerable) whenNotPaused {
+    ) internal override(ERC721, ERC721Enumerable) 
+        whenNotPaused 
+    {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
     // The following functions are overrides required by Solidity.
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
+    function supportsInterface(bytes4 interfaceId) public view
         override(ERC721, ERC721Enumerable, AccessControl, ERC2981)
         returns (bool)
     {
@@ -101,15 +103,15 @@ contract DiamondDawn is
         return super.supportsInterface(interfaceId);
     }
 
-    /**
-     * @notice Returns the next stage enum value given a stage enum value.
-     *
-     * @dev throws an error if the next stage is out of bounds (greater than MAX_STAGE).
-     *
-     * @param _stage a Stage enum value.
-     *
-     * @return Stage Stage enum value containing the next stage of _stage param.
-     */
+    /** 
+    * @notice Returns the next stage enum value given a stage enum value.
+    *
+    * @dev throws an error if the next stage is out of bounds (greater than MAX_STAGE).
+    *
+    * @param _stage a Stage enum value.
+    *
+    * @return Stage Stage enum value containing the next stage of _stage param.
+    */
     function _getNextStage(Stage _stage) internal pure returns (Stage) {
         require(
             uint(_stage) < uint(MAX_STAGE),
@@ -130,42 +132,47 @@ contract DiamondDawn is
 
     /**********************     Internal & Helpers     ************************/
 
-    /**
-     * @notice Sets the flow in an active stage mode.
-     *
-     * @dev This function is only available to the admin role.
-     */
-    function _activateStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
+    /** 
+    * @notice Sets the flow in an active stage mode.
+    *
+    * @dev This function is only available to the admin role.
+    */
+    function _activateStage() internal
+        onlyRole(DEFAULT_ADMIN_ROLE) 
+    {
         isStageActive = true;
     }
 
-    /**
-     * @notice Sets the flow in an inactive stage mode.
-     *
-     * @dev This function is only available to the admin role.
-     */
-    function _deactivateStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
+    /** 
+    * @notice Sets the flow in an inactive stage mode.
+    *
+    * @dev This function is only available to the admin role.
+    */
+    function _deactivateStage() internal 
+        onlyRole(DEFAULT_ADMIN_ROLE) 
+    {
         isStageActive = false;
     }
 
-    /**
-     * @notice Sets the flow stage to the next stage of the currenly assigned stage.
-     *
-     * @dev This function is only available to the admin role.
-     */
-    function _nextStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
+    /** 
+    * @notice Sets the flow stage to the next stage of the currenly assigned stage.
+    *
+    * @dev This function is only available to the admin role.
+    */
+    function _nextStage() internal 
+        onlyRole(DEFAULT_ADMIN_ROLE) 
+    {
         stage = _getNextStage(stage);
     }
 
-    /**
-     * @notice Sets the video URL for the given stage.
-     *
-     * @dev This function is only available to the admin role.
-     *
-     * @param videoUrl a string containing the video url of the current stage.
-     */
-    function _assignCurrentStageVideo(string memory videoUrl)
-        internal
+    /** 
+    * @notice Sets the video URL for the given stage.
+    *
+    * @dev This function is only available to the admin role.
+    *
+    * @param videoUrl a string containing the video url of the current stage.
+    */
+    function _assignCurrentStageVideo(string memory videoUrl) internal
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _videoUrls[stage] = videoUrl;
@@ -173,51 +180,53 @@ contract DiamondDawn is
 
     /**********************        Transactions        ************************/
 
-    /**
-     * @notice Sets the royalty percentage and the royalties reciever address.
-     *
-     * @dev This function is only available to the admin role.
-     * @dev Using inherited ERC2981 functionality.
-     *
-     * @param _receiver an address of the receiver of the royalties.
-     * @param _royaltyFeesInBips the numerator of the percentage of the royalties where denominator is 10000.
-     */
-    function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
-        public
+    /** 
+    * @notice Sets the royalty percentage and the royalties reciever address.
+    *
+    * @dev This function is only available to the admin role.
+    * @dev Using inherited ERC2981 functionality. 
+    *
+    * @param _receiver an address of the receiver of the royalties.
+    * @param _royaltyFeesInBips the numerator of the percentage of the royalties where denominator is 10000.
+    */
+    function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips) public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
     }
 
-    /**
-     * @notice Sets the contract into a paused mode.
-     *
-     * @dev This function is only available to the admin role.
-     * @dev No transactions other than admin API can be executed while the contract is in the paused mode.
-     */
-    function pause() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    /** 
+    * @notice Sets the contract into a paused mode.
+    *
+    * @dev This function is only available to the admin role.
+    * @dev No transactions other than admin API can be executed while the contract is in the paused mode.
+    */
+    function pause() public
+        onlyRole(DEFAULT_ADMIN_ROLE) 
+    {
         _pause();
     }
 
-    /**
-     * @notice Sets the contract into an unpaused mode.
-     *
-     * @dev This function is only available to the admin role.
-     */
-    function unpause() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    /** 
+    * @notice Sets the contract into an unpaused mode.
+    *
+    * @dev This function is only available to the admin role.
+    */
+    function unpause() public 
+        onlyRole(DEFAULT_ADMIN_ROLE) 
+    {
         _unpause();
     }
 
-    /**
-     * @notice Activating the currently assigned stage and setting its video URL.
-     *
-     * @dev This function is only available to the admin role.
-     * @dev Emitting StageChanged event triggering frontend to update the UI.
-     *
-     * @param videoUrl a string containing the video url of the current stage.
-     */
-    function revealStage(string memory videoUrl)
-        public
+    /** 
+    * @notice Activating the currently assigned stage and setting its video URL.
+    *
+    * @dev This function is only available to the admin role.
+    * @dev Emitting StageChanged event triggering frontend to update the UI.
+    *
+    * @param videoUrl a string containing the video url of the current stage.
+    */
+    function revealStage(string memory videoUrl) public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _activateStage();
@@ -226,28 +235,29 @@ contract DiamondDawn is
         emit StageChanged(stage, isStageActive);
     }
 
-    /**
-     * @notice Completing the current stage by setting the next stage as the current stage in an inactive mode.
-     *
-     * @dev This function is only available to the admin role.
-     * @dev Emitting StageChanged event triggering frontend to update the UI.
-     */
-    function completeCurrentStage() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    /** 
+    * @notice Completing the current stage by setting the next stage as the current stage in an inactive mode.
+    *
+    * @dev This function is only available to the admin role.
+    * @dev Emitting StageChanged event triggering frontend to update the UI.
+    */
+    function completeCurrentStage() public 
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         _deactivateStage();
         _nextStage();
 
         emit StageChanged(stage, isStageActive);
     }
 
-    /**
-     * @notice Adding a list of addresses to the list of allowed addresses to mint tokens.
-     *
-     * @dev This function is only available to the admin role.
-     *
-     * @param addresses a list of addresses to be added to the list of allowed addresses.
-     */
-    function addToAllowList(address[] memory addresses)
-        public
+    /** 
+    * @notice Adding a list of addresses to the list of allowed addresses to mint tokens.
+    *
+    * @dev This function is only available to the admin role.
+    *
+    * @param addresses a list of addresses to be added to the list of allowed addresses.
+    */
+    function addToAllowList(address[] memory addresses) public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         for (uint i = 0; i < addresses.length; i++) {
@@ -264,12 +274,19 @@ contract DiamondDawn is
         emit StageChanged(stage, isStageActive);
     }
 
-    function completeCurrentStageAndRevealNextStage(string memory videoUrl)
-        public
-        onlyRole(DEFAULT_ADMIN_ROLE)
+    function completeCurrentStageAndRevealNextStage(string memory videoUrl ) public 
+        onlyRole(DEFAULT_ADMIN_ROLE) 
     {
         completeCurrentStage();
         revealStage(videoUrl);
+    }
+
+    function _setAdminAndAddToAllowList(address[] memory addresses) internal
+    {
+        for (uint i = 0; i < addresses.length; i++) {
+            mintAllowedAddresses[addresses[i]] = true;
+            _grantRole(DEFAULT_ADMIN_ROLE, addresses[i]);
+        }
     }
 
     /**************************************************************************
@@ -281,8 +298,7 @@ contract DiamondDawn is
     /**********************     Internal & Helpers     ************************/
 
     function _baseURI() internal pure override returns (string memory) {
-        return
-            "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
+        return "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
     }
 
     function _getNextStageForToken(uint tokenId) internal view returns (Stage) {
@@ -319,10 +335,7 @@ contract DiamondDawn is
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
     }
 
-    function _getVideoUrl(uint256 tokenId)
-        internal
-        view
-        returns (string memory)
+    function _getVideoUrl(uint256 tokenId) internal view returns (string memory)
     {
         return
             string.concat(
@@ -433,9 +446,7 @@ contract DiamondDawn is
 
     /**********************        Transactions        ************************/
 
-    function mine(uint processesPurchased)
-        public
-        payable
+    function mine(uint processesPurchased) public payable
         whenStageIsActive(Stage.MINE)
         _requireAllowedMiner
     {
@@ -459,24 +470,22 @@ contract DiamondDawn is
         delete mintAllowedAddresses[_msgSender()];
     }
 
-    function cut(uint256 tokenId) public payable whenStageIsActive(Stage.CUT) {
+    function cut(uint256 tokenId) public payable 
+        whenStageIsActive(Stage.CUT) 
+    {
         _process(tokenId, CUT_PRICE);
 
         uint randomNumber = _getRandomNumber();
         _tokensMetadata[tokenId].shape = Shape(randomNumber);
     }
 
-    function polish(uint256 tokenId)
-        public
-        payable
+    function polish(uint256 tokenId) public payable
         whenStageIsActive(Stage.POLISH)
     {
         _process(tokenId, POLISH_PRICE);
     }
 
-    function burn(uint256 tokenId)
-        public
-        override
+    function burn(uint256 tokenId) public override
         whenStageIsActive(Stage.PHYSICAL)
     {
         super.burn(tokenId);
@@ -501,10 +510,7 @@ contract DiamondDawn is
 
     /**********************            Read            ************************/
 
-    function walletOfOwner(address _owner)
-        public
-        view
-        returns (uint256[] memory)
+    function walletOfOwner(address _owner) public view returns (uint256[] memory)
     {
         uint256 ownerTokenCount = balanceOf(_owner);
         uint256[] memory tokenIds = new uint256[](ownerTokenCount);
@@ -514,10 +520,7 @@ contract DiamondDawn is
         return tokenIds;
     }
 
-    function getBurnedTokens(address owner)
-        public
-        view
-        returns (uint256[] memory)
+    function getBurnedTokens(address owner) public view returns (uint256[] memory)
     {
         return _ownerToBurnedTokens[owner].values();
     }
@@ -554,7 +557,7 @@ contract DiamondDawn is
                 )
             )
         );
-
+        
         return string(abi.encodePacked("data:application/json;base64,", json));
     }
 }
