@@ -44,59 +44,59 @@ beforeEach(async function () {
 });
 
 describe("When contract is deployed", async () => {
-  // describe("State", async () => {
+  describe("State", async () => {
 
-  //     it("Should have a zero balance", async () => {
-  //         // TODO: discover how to get contract balance
-  //         // expect(await diamondDawnContract.getBalance()).to.be.bignumber.that.is.zero;
-  //     });
+      it("Should have a zero balance", async () => {
+          // TODO: discover how to get contract balance
+          // expect(await diamondDawnContract.getBalance()).to.be.bignumber.that.is.zero;
+      });
 
-  //     it("Should be paused", async () => {
-  //         expect(await diamondDawnContract.paused()).to.equal(true);
-  //     });
+      it("Should be paused", async () => {
+          expect(await diamondDawnContract.paused()).to.equal(true);
+      });
 
-  //     it("Should not be with an active stage", async () => {
-  //         expect(await diamondDawnContract.isStageActive()).to.equal(false);
-  //     });
+      it("Should not be with an active stage", async () => {
+          expect(await diamondDawnContract.isStageActive()).to.equal(false);
+      });
 
-  //     it("Should not have stage set to mine", async () => {
-  //         expect(await diamondDawnContract.stage()).to.equal(0);
-  //     });
+      it("Should not have stage set to mine", async () => {
+          expect(await diamondDawnContract.stage()).to.equal(0);
+      });
 
-  //     it("Should have royalty fee set", async () => {
-  //         // expect(diamondDawnContract.stage()).to.equal(0);
-  //     });
+      it("Should have royalty fee set", async () => {
+          // expect(diamondDawnContract.stage()).to.equal(0);
+      });
 
-  //     it("Should set the deployer as an admin", async () => {
+      it("Should set the deployer as an admin", async () => {
 
-  //         const isAdmin = await diamondDawnContract.hasRole(
-  //             ADMIN_ROLE,
-  //             owner.address
-  //           );
+          const isAdmin = await diamondDawnContract.hasRole(
+              ADMIN_ROLE,
+              owner.address
+            );
 
-  //         expect(isAdmin).to.equal(true);
-  //     });
+          expect(isAdmin).to.equal(true);
+      });
 
-  //     it("Should have MINING_PRICE set to 0.002 eth", async () => {
-  //         expect(await diamondDawnContract.MINING_PRICE()).equal(Web3.utils.toWei('0.002'));
-  //     });
+      it("Should have MINING_PRICE set to 0.002 eth", async () => {
+          expect(await diamondDawnContract.MINING_PRICE()).equal(Web3.utils.toWei('0.002'));
+      });
 
-  //     it("Should have CUT_PRICE set to 0.004 eth", async () => {
-  //         expect(await diamondDawnContract.CUT_PRICE()).equal(Web3.utils.toWei('0.004'));
-  //     });
+      it("Should have CUT_PRICE set to 0.004 eth", async () => {
+          expect(await diamondDawnContract.CUT_PRICE()).equal(Web3.utils.toWei('0.004'));
+      });
 
-  //     it("Should have POLISH_PRICE set to 0.006 eth", async () => {
-  //         expect(await diamondDawnContract.POLISH_PRICE()).equal(Web3.utils.toWei('0.006'));
-  //     });
+      it("Should have POLISH_PRICE set to 0.006 eth", async () => {
+          expect(await diamondDawnContract.POLISH_PRICE()).equal(Web3.utils.toWei('0.006'));
+      });
 
-  //     it("Should have PREPAID_CUT_PRICE set to 0.002 eth", async () => {
-  //         expect(await diamondDawnContract.PREPAID_CUT_PRICE()).equal(Web3.utils.toWei('0.002'))
-  //     });
+      it("Should have PREPAID_CUT_PRICE set to 0.002 eth", async () => {
+          expect(await diamondDawnContract.PREPAID_CUT_PRICE()).equal(Web3.utils.toWei('0.002'))
+      });
 
-  //     it("Should have PREPAID_POLISH_PRICE set to 0.004 eth", async () => {
-  //         expect(await diamondDawnContract.PREPAID_POLISH_PRICE()).equal(Web3.utils.toWei('0.004'));
-  //     });
-  // });
+      it("Should have PREPAID_POLISH_PRICE set to 0.004 eth", async () => {
+          expect(await diamondDawnContract.PREPAID_POLISH_PRICE()).equal(Web3.utils.toWei('0.004'));
+      });
+  });
 
   describe("Admin API", async () => {
     it("setRoyaltyInfo", async () => {
