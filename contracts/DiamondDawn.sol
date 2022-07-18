@@ -344,17 +344,17 @@ contract DiamondDawn is
             );
     }
 
-    function _getRandomShape() internal view returns (uint) {
+    function _getRandomShape() internal view returns (Shape) {
         uint randomNumber = _randomModulo(100);
         // 0  - 34 it will be shape 1
         // 35 - 70 it will be shape 2
         // 70 - 99 it will be shape 3
         if (randomNumber <= 34) {
-            return 0;
+            return Shape.OVAL;
         } else if (randomNumber > 34 && randomNumber <= 70) {
-            return 1;
+            return Shape.PEAR;
         } else {
-            return 2;
+            return Shape.RADIANT;
         }
     }
 
@@ -475,8 +475,7 @@ contract DiamondDawn is
     {
         _process(tokenId, CUT_PRICE);
 
-        uint randomNumber = _getRandomShape();
-        _tokensMetadata[tokenId].shape = Shape(randomNumber);
+        _tokensMetadata[tokenId].shape = Shape(uint(_getRandomShape()));
     }
 
     function polish(uint256 tokenId) public payable
