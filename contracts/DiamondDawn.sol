@@ -554,8 +554,8 @@ contract DiamondDawn is
                         '"trait_type": "physical",'
                         '"value":',
                         Strings.toString(
-                            _getStagePercentage(
-                                uint(_tokensMetadata[tokenId].stage)
+                            _getPhysicalAttributeFromStage(
+                                _tokensMetadata[tokenId].stage
                             )
                         ),
                         "},"
@@ -591,11 +591,11 @@ contract DiamondDawn is
         return string(abi.encodePacked("data:application/json;base64,", json));
     }
 
-    function _getStagePercentage(uint256 _stage) internal view returns (uint) {
-        if (_stage == 0) {
+    function _getPhysicalAttributeFromStage(Stage _stage) internal view returns (uint) {
+        if (uint(_stage) == 0) {
             return 20;
         } else {
-            return _stage * 20 + 20;
+            return uint(_stage) * 20 + 20;
         }
     }
 }
