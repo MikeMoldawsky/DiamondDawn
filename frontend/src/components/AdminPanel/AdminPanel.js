@@ -2,12 +2,10 @@ import React from "react";
 import './AdminPanel.scss'
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStage, systemSelector } from "store/systemReducer";
-import contractAddress from "contracts/contract-address.json";
-import ddContract from "contracts/DiamondDawn.json"
-import { useContract, useProvider, useSigner } from "wagmi";
 import { showError } from "utils";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import { STAGE } from "consts";
+import useDDContract from "../../hooks/useDDContract";
 
 const VIDEO_BY_STAGE = {
   [STAGE.MINE]: 'rough.jpeg',
@@ -21,17 +19,8 @@ const AdminPanel = () => {
 
   const { stage, isStageActive } = useSelector(systemSelector)
   const { selectedTokenId } = useSelector(uiSelector)
+  const contract = useDDContract();
 
-  const provider = useProvider()
-  const { data: signer } = useSigner()
-
-  const contractConfig = {
-    addressOrName: contractAddress.DiamondDawn,
-    contractInterface: ddContract.abi,
-    signerOrProvider: signer || provider,
-  }
-
-  const contract = useContract(contractConfig)
 
   const dispatch = useDispatch()
 
