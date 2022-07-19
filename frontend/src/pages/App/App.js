@@ -22,9 +22,8 @@ function App() {
   const { stage } = useSelector(systemSelector)
   const { data: account } = useAccount()
   const provider = useProvider();
-
-  const contract = useDDContract()
   const dispatch = useDispatch()
+  const contract = useDDContract()
 
   useEffect(() => {
     dispatch(fetchStage(contract))

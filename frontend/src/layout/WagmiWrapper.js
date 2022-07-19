@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { getDefaultWallets, RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/dist/index.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setDDContractData, systemSelector } from "store/systemReducer";
+import axios from "axios";
 
 const localChain = {
   id: 31337,
@@ -18,6 +21,30 @@ const localChain = {
     default: 'http://localhost:8545',
   },
   testnet: true,
+}
+
+const ContractProvider = ({ children }) => {
+
+  const { ddContractData } = useSelector(systemSelector)
+  const dispatch = useDispatch()
+
+  const getContractData = async () => {
+    try {
+      const { data } = await axios.get(`/api/get_contract`)
+      dispatch(setDDContractData(data))
+    }
+    catch (e) {
+      console.log("Failed to get contract!!!!", e)
+    }
+  }
+
+  useEffect(() => {
+    if (!ddContractData) {
+      getContractData()
+    }
+  }, [ddContractData])
+
+  return ddContractData ? children : null
 }
 
 function WagmiWrapper({ children }) {
@@ -44,7 +71,7 @@ function WagmiWrapper({ children }) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} theme={darkTheme()}>
-        {children}
+        <ContractProvider>{children}</ContractProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

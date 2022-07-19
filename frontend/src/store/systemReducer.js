@@ -5,6 +5,7 @@ import axios from "axios";
 import { STAGE } from "consts";
 
 const INITIAL_STATE = {
+  ddContractData: null,
   stage: -1,
   isStageActive: false,
   paused: false,
@@ -79,6 +80,11 @@ export const setStage = (stage, isStageActive) => ({
   payload: { stage, isStageActive },
 })
 
+export const setDDContractData = (ddContractData) => ({
+  type: 'SYSTEM.SET_DD_CONTRACT_DATA',
+  payload: { ddContractData },
+})
+
 export const systemSelector = state => state.system
 
 export const systemReducer = makeReducer({
@@ -86,4 +92,5 @@ export const systemReducer = makeReducer({
   'SYSTEM.SET_PRICE': reduceUpdateFull,
   'SYSTEM.SET_PAUSED': reduceUpdateFull,
   'SYSTEM.SET_STAGES_CONFIG': reduceUpdateFull,
+  'SYSTEM.SET_DD_CONTRACT_DATA': reduceUpdateFull,
 }, INITIAL_STATE)
