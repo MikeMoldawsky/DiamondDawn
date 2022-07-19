@@ -44,23 +44,16 @@ const ControlTab = () => {
     fetchStages()
   }, [])
 
-  const revealStage = async () => {
+  const completeAndRevealStage = async () => {
     if (artUrlInput === '') {
       setArtUrlError(true)
       return
     }
     setArtUrlError(false)
-    const tx = await contract.revealStage(artUrlInput)
+    const tx = await contract.completeCurrentStageAndRevealNextStage(artUrlInput)
     const receipt = await tx.wait()
-    console.log('revealStage', { receipt })
     dispatch(fetchStage(contract))
     setArtUrlInput('')
-  }
-
-  const completeStage = async () => {
-    const tx = await contract.completeCurrentStage()
-    const receipt = await tx.wait()
-    dispatch(fetchStage(contract))
   }
 
   const resetStage = async () => {
@@ -103,8 +96,7 @@ const ControlTab = () => {
         <div className="input-container">
           <input type="text" placeholder="Video Url" value={artUrlInput} onChange={e => setArtUrlInput(e.target.value)} className={classNames({ 'validation-error': artUrlError })} />
         </div>
-        <ActionButton actionKey="Reveal Stage" onClick={revealStage}>Reveal Stage</ActionButton>
-        <ActionButton actionKey="Complete Stage" onClick={completeStage}>Complete Stage</ActionButton>
+        <ActionButton actionKey="Complete and Reveal Stage" onClick={completeAndRevealStage}>Complete and Reveal Stage</ActionButton>
         <ActionButton actionKey="Reset Stage" onClick={resetStage}>Reset Stage</ActionButton>
         <div className="separator" />
         <ActionButton actionKey="Pause" onClick={pause}>Pause</ActionButton>
