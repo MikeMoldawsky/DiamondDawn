@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 function getDbConnection() {
-  console.log("MIKE PARAMSSSS", {
-    vercelenv: process.env.VERCEL_ENV,
-    ref: process.env.VERCEL_GIT_COMMIT_REF,
-    author: process.env.VERCEL_GIT_COMMIT_AUTHOR_LOGIN,
-  });
   if (
     process.env.VERCEL_ENV === "preview" &&
     process.env.VERCEL_GIT_COMMIT_REF !== "develop"
@@ -14,7 +9,7 @@ function getDbConnection() {
       case "MikeMoldawsky":
         return mongoose.createConnection(process.env.MONGODB_URI_MIKE);
       case "sniir":
-        return mongoose.createConnection(process.env.MONGODB_URI_ASAF);
+        return mongoose.createConnection(process.env.MONGODB_URI_ASSAF);
       case "galkleinman":
         throw Error("Gal send to Mike a mongo url for development");
       case "smarth30":
