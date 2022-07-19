@@ -11,10 +11,14 @@ function getDbConnection() {
     process.env.VERCEL_GIT_COMMIT_REF !== "develop"
   ) {
     switch (process.env.VERCEL_GIT_COMMIT_AUTHOR_LOGIN) {
-      case "mike":
-        return mongoose.createConnection(process.env.MONGODB_URI);
-      case "asaf":
-        return mongoose.createConnection(process.env.MONGODB_URI);
+      case "MikeMoldawsky":
+        return mongoose.createConnection(process.env.MONGODB_URI_MIKE);
+      case "sniir":
+        return mongoose.createConnection(process.env.MONGODB_URI_ASAF);
+      case "galkleinman":
+        throw Error("Gal send to Mike a mongo url for development");
+      case "smarth30":
+        throw Error("Samarth send to Mike a mongo url for development");
       default:
         throw Error(
           "MongoDB url is required for preview mode that is not on develop"
