@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 
-const CRUDTable = ({ CRUD, columns, getNewItem, renderButtons, actions = [], buttons = [] }) => {
+const CRUDTable = ({ CRUD, columns, getNewItem, renderButtons, actions = [] }) => {
   const [rows, setRows] = useState([])
   const [rowModesModel, setRowModesModel] = useState({});
 
