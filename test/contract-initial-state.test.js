@@ -35,10 +35,10 @@ beforeEach(async function () {
   user5 = signers[5];
   user6 = signers[6];
   user7 = signers[7];
-  user8 = signers[8];
+  user8 = signers[8]; // second admin account
 
   const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
-  diamondDawnContract = await DiamondDawn.deploy(ROYALTY_FEE_IN_BIPS,[owner.address]);
+  diamondDawnContract = await DiamondDawn.deploy(ROYALTY_FEE_IN_BIPS,[owner.address,user8.address]);
 
   await diamondDawnContract.deployed();
 });
@@ -75,6 +75,11 @@ describe("When contract is deployed", async () => {
             );
 
           expect(isAdmin).to.equal(true);
+
+          // checking user 8 that is also admin
+          const isUser8Admin = await diamondDawnContract.hasRole(ADMIN_ROLE,user8.address);
+
+          expect(isUser8Admin).to.equal(true);
       });
 
       it("Should have MINING_PRICE set to 0.002 eth", async () => {
@@ -182,6 +187,11 @@ describe("When contract is deployed", async () => {
       await diamondDawnContract.revealStage("");
     });
     it("mine", async () => {
+
+        await expect(diamondDawnContract
+        .connect(user1)
+        .mine(1, { value: parseEther("0.004") })).to.be.reverted;
+
       await diamondDawnContract
         .connect(user1)
         .mine(1, { value: parseEther("0.004") });
