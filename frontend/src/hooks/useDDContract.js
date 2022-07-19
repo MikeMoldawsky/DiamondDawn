@@ -1,20 +1,15 @@
 import { useContract, useProvider, useSigner } from "wagmi";
-import diamondDawn from "contracts/DiamondDawn.json";
-import axios from "axios";
+import { useSelector } from "react-redux";
+import { systemSelector } from "store/systemReducer";
 
-async function useDDContract() {
-  if(!diamondDawn){
-    throw new Error("Diamond Dawn contract object does NOT exist.")
-  }
-  axios.get(`/api/get_contract`)
-      .then(res => console.log("Successfully got contract", res.data))
-      .catch(e => console.log("Failed to get contract!!!!", e))
-
+function useDDContract() {
+  const { ddContractData } = useSelector(systemSelector)
   const provider = useProvider()
   const { data: signer } = useSigner()
+
   const contractConfig = {
-    addressOrName: diamondDawn.address,
-    contractInterface: diamondDawn.artifact.abi,
+    addressOrName: ddContractData.address,
+    contractInterface: ddContractData.artifact.abi,
     signerOrProvider: signer || provider,
   }
 
