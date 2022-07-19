@@ -56,6 +56,10 @@ body {
   span > span {
     background-color: $dark !important;
   }
+
+  svg {
+    margin-right: 10px;
+  }
   
   &.disabled {
     cursor: not-allowed;
@@ -64,7 +68,13 @@ body {
   &:hover:not(.disabled) {
     color: $white;
     background-color: $dark;
-    border: solid 1px $white;
+    border-color: $white;
+  }
+
+  &.link {
+    color: $white;
+    background-color: $dark;
+    border-color: transparent !important;
   }
 }
 

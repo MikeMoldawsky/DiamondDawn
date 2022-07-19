@@ -6,10 +6,12 @@ import ControlTab from "./ControlTab";
 import Tabs from "components/Tabs";
 import Header from "components/Header/Header";
 import Wallet from "pages/Wallet";
+import DiamondsTab from "./DiamondsTab";
 
 const TABS = [
   { title: 'Control', component: () => <ControlTab /> },
   { title: 'Invitations', component: () => <InvitationsTab /> },
+  { title: 'Diamonds', component: () => <DiamondsTab /> },
 ]
 
 const AdminPage = () => {
@@ -19,7 +21,7 @@ const AdminPage = () => {
         <Wallet />
       </Header>
       <main>
-        <Tabs tabs={TABS} />
+        <Tabs tabs={TABS} activeTab={2} />
       </main>
     </div>
   );
