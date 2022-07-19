@@ -5,25 +5,36 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-/**
- * @title DiamondDawn NFT Contract
- * @author Diamond Dawn
- */
-contract Diamond is AccessControl {
-    address public DiamondDawnNft;
-
-    constructor() {
-        grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-    }
-
-    function tokenURI(
+interface IDiamondMetaData {
+    function tokenMetadata(
         uint256 tokenId,
         string calldata _videoUrl,
         uint256 _stage,
         uint256 _shape,
         string calldata _cutable,
         string calldata _polishable
-    ) public view returns (string memory) {
+    ) external view returns (string memory);
+}
+
+/**
+ * @title DiamondDawn NFT Contract
+ * @author Diamond Dawn
+ */
+contract DiamondMetaData is AccessControl {
+    address public DiamondDawnNft;
+
+    constructor() {
+        grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+    }
+
+    function tokenMetadata(
+        uint256 tokenId,
+        string calldata _videoUrl,
+        uint256 _stage,
+        uint256 _shape,
+        string calldata _cutable,
+        string calldata _polishable
+    ) external view returns (string memory) {
         string memory json = Base64.encode(
             bytes(
                 string(
