@@ -4,7 +4,7 @@ import Wallet from "pages/Wallet";
 import Header from "components/Header";
 import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
-import { showError } from "utils";
+import ActionButton from "components/ActionButton";
 
 function RebirthPage() {
 
@@ -30,15 +30,10 @@ function RebirthPage() {
   if (!token) navigate('/')
 
   const rebirth = async () => {
-    try {
-      const tx = await contract.rebirth(token)
-      const receipt = await tx.wait()
+    const tx = await contract.rebirth(token)
+    const receipt = await tx.wait()
 
-      setShowComplete(true)
-    }
-    catch (e) {
-      showError(e, 'Burn Failed')
-    }
+    setShowComplete(true)
   }
 
   return (
@@ -51,7 +46,7 @@ function RebirthPage() {
           <div className="leading-text">DIAMOND REBIRTH</div>
           {showComplete
             ? (<div className="secondary-text">Complete</div>)
-            : (<div className="button" onClick={rebirth}>Rebirth</div>)
+            : (<ActionButton actionKey="Rebirth" onClick={rebirth}>Rebirth</ActionButton>)
           }
         </div>
       </main>

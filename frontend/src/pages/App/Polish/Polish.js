@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Countdown from 'components/Countdown';
-import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
 import { BigNumber, utils as ethersUtils } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +12,7 @@ import { STAGE } from "consts";
 import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
 import _ from "lodash";
+import ActionButton from "components/ActionButton";
 
 const Polish = () => {
   const [actionTxId, setActionTxId] = useState(false)
@@ -26,17 +26,12 @@ const Polish = () => {
   useSelectAvailableToken(STAGE.POLISH)
 
   const polish = async () => {
-    try {
-      const tx = await contract.polish(selectedTokenId, { value: token.polishable ? BigNumber.from(0) : polishPrice })
-      const receipt = await tx.wait()
+    const tx = await contract.polish(selectedTokenId, { value: token.polishable ? BigNumber.from(0) : polishPrice })
+    const receipt = await tx.wait()
 
-      dispatch(fetchTokenUri(contract, selectedTokenId))
-      setShowCompleteVideo(true)
-      setActionTxId(receipt.transactionHash)
-    }
-    catch (e) {
-      showError(e, 'Polish Failed')
-    }
+    dispatch(fetchTokenUri(contract, selectedTokenId))
+    setShowCompleteVideo(true)
+    setActionTxId(receipt.transactionHash)
   }
 
   const renderContent = () => {
@@ -70,7 +65,7 @@ const Polish = () => {
         </div>
         <div className="secondary-text">Discover the beauty, a billion years in the making</div>
         {isStageActive && (
-          <div className="button action-button" onClick={polish}>POLISH{token.polishable ? '' : ` (${ethersUtils.formatUnits(polishPrice)} ETH)`}</div>
+          <ActionButton actionKey="Polish" className="action-button" onClick={polish}>POLISH{token.polishable ? '' : ` (${ethersUtils.formatUnits(polishPrice)} ETH)`}</ActionButton>
         )}
         <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} polish`]} />
       </>

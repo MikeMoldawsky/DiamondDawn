@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import _ from 'lodash'
 import Countdown from 'components/Countdown';
-import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
@@ -17,6 +16,7 @@ import { STAGE } from "consts";
 import { useAccount } from "wagmi";
 import Diamond from "components/Diamond";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
+import ActionButton from "components/ActionButton";
 
 const Burn = () => {
   const contract = useDDContract()
@@ -42,19 +42,13 @@ const Burn = () => {
   })
 
   const saveAddressAndBurn = async (formData) => {
-    try {
-      console.log('saveAddressAndBurn', { formData })
-      // TODO - save shipping address off-chain
-      const tx = await contract.burn(selectedTokenId)
-      const receipt = await tx.wait()
+    // TODO - save shipping address off-chain
+    const tx = await contract.burn(selectedTokenId)
+    const receipt = await tx.wait()
 
-      dispatch(fetchTokenUri(contract, selectedTokenId))
-      setShowCompleteVideo(true)
-      setActionTxId(receipt.transactionHash)
-    }
-    catch (e) {
-      showError(e, 'Burn Failed')
-    }
+    dispatch(fetchTokenUri(contract, selectedTokenId))
+    setShowCompleteVideo(true)
+    setActionTxId(receipt.transactionHash)
   }
 
   const renderInput = (name, placeholder) => {
@@ -100,7 +94,7 @@ const Burn = () => {
             {renderInput('postalCode', 'Postal Code')}
           </div>
           {renderInput('address', 'Address')}
-          <div className="button" onClick={handleSubmit(saveAddressAndBurn)}>Burn and Ship</div>
+          <ActionButton actionKey="Burn" onClick={handleSubmit(saveAddressAndBurn)}>Burn and Ship</ActionButton>
         </form>
       </>
     )
