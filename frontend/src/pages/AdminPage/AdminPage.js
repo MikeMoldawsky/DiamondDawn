@@ -21,7 +21,7 @@ const AdminPage = () => {
         <Wallet />
       </Header>
       <main>
-        <Tabs tabs={TABS} activeTab={2} />
+        <Tabs tabs={TABS} activeTab={0} />
       </main>
     </div>
   );

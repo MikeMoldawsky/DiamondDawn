@@ -29,7 +29,7 @@ async function deleteDiamond(diamondId) {
   try {
     return await DiamondModel.findOneAndDelete({ _id: diamondId });
   } catch (e) {
-    console.log(`Failed to DELETE all diamonds`, e);
+    console.log(`Failed to DELETE Diamond`, e);
   }
 }
 

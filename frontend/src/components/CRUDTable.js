@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 
-const CRUDTable = ({ CRUD, columns, getNewItem, renderButtons, actions = [] }) => {
+const CRUDTable = ({ CRUD, columns, itemName, getNewItem, newCreatedOnServer, renderButtons, renderActions }) => {
   const [rows, setRows] = useState([])
   const [rowModesModel, setRowModesModel] = useState({});
 
@@ -28,9 +28,10 @@ const CRUDTable = ({ CRUD, columns, getNewItem, renderButtons, actions = [] }) =
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
-      width: 100,
+      width: 120,
       cellClassName: 'actions',
-      getActions: ({ id }) => {
+      getActions: (row) => {
+        const { id } = row
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
@@ -51,7 +52,7 @@ const CRUDTable = ({ CRUD, columns, getNewItem, renderButtons, actions = [] }) =
         }
 
         return [
-          ...actions,
+          ...(renderActions ? renderActions(row) : []),
           <GridActionsCellItem
             icon={<EditIcon />}
             label="Edit"
@@ -70,12 +71,13 @@ const CRUDTable = ({ CRUD, columns, getNewItem, renderButtons, actions = [] }) =
     },
   ];
 
-  const onAddClick = () => {
-    const _id = rows.length
-    setRows([...rows, { _id, isNew: true, ...getNewItem() }])
+  const onAddClick = async () => {
+    const newItem = await getNewItem()
+    const _id = newItem._id || rows.length
+    setRows([...rows, { _id, isNew: !newCreatedOnServer, ...newItem }])
     setRowModesModel({
       ...rowModesModel,
-      [_id]: { mode: GridRowModes.Edit, fieldToFocus: 'GIA' },
+      [_id]: { mode: GridRowModes.Edit, fieldToFocus: columns[0].field },
     });
   }
 
@@ -141,7 +143,7 @@ const CRUDTable = ({ CRUD, columns, getNewItem, renderButtons, actions = [] }) =
       </div>
       <div className="center-aligned-row">
         <div className="button link add-button" onClick={onAddClick}>
-          <FontAwesomeIcon icon={faPlus} /> Add Diamond
+          <FontAwesomeIcon icon={faPlus} /> Add {itemName}
         </div>
         {renderButtons && renderButtons()}
       </div>

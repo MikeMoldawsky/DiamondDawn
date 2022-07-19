@@ -63,6 +63,7 @@ const DiamondsTab = () => {
       <h1>Diamonds</h1>
       <CRUDTable CRUD={CRUD}
                  columns={columns}
+                 itemName="Diamond"
                  getNewItem={() => ({ GIA: '', shape: 0, carat: 0 })}
                  renderButtons={() => (
                    <div className="button link save-button">

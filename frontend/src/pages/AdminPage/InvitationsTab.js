@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { faLink, faUpload } from "@fortawesome/free-solid-svg-icons";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import axios from 'axios'
+import CRUDTable from "components/CRUDTable";
+import { GridActionsCellItem } from "@mui/x-data-grid";
 
 const getAllInvites = async () => {
   try {
@@ -16,15 +18,32 @@ const getAllInvites = async () => {
 
 const createInvitation = async () => {
   try {
-    const res = await axios.get(`/api/create_invite`)
+    const res = await axios.post(`/api/create_invite`)
     return res.data
   } catch (e) {
     return null
   }
 }
 
-const InvitationRow = ({ invitation }) => {
-  const { _id, revoked, opened, password, account } = invitation
+const updateInvite = async (diamond) => {
+  try {
+    const { data } = await axios.post(`/api/update_invite`, diamond)
+    return data
+  } catch (e) {
+    return null
+  }
+}
+
+const deleteInvite = async (diamondId) => {
+  try {
+    const { data } = await axios.post(`/api/delete_invite`, { diamondId })
+    return data
+  } catch (e) {
+    return null
+  }
+}
+
+const ClipboardButton = ({ inviteId }) => {
   const [isCopied, setIsCopied] = useState(false)
 
   useEffect(() => {
@@ -34,62 +53,54 @@ const InvitationRow = ({ invitation }) => {
   }, [isCopied])
 
   const hostname = window.location.hostname
-  const link = `http://${hostname}${hostname === 'localhost' ? ':3000' : ''}/invite/${_id}`
+  const link = `http://${hostname}${hostname === 'localhost' ? ':3000' : ''}/invite/${inviteId}`
 
   return (
-    <tr>
-      <td>
+    <GridActionsCellItem
+      icon={(
         <CopyToClipboard text={link} onCopy={() => setIsCopied(true)}>
           <FontAwesomeIcon icon={faLink} className={classNames({copied: isCopied})} />
         </CopyToClipboard>
-      </td>
-      <td>{_id}</td>
-      <td>{revoked.toString()}</td>
-      <td>{opened ? opened.toString() : '-'}</td>
-      <td>{password}</td>
-      <td>{account}</td>
-    </tr>
+      )}
+      label="Edit"
+      className="textPrimary"
+      color="inherit"
+    />
   )
 }
 
 const InvitationsTab = () => {
-  const [invites, setInvites] = useState([])
 
-  useEffect(() => {
-    const fetch = async () => {
-      setInvites(await getAllInvites())
-    }
-    fetch()
-  }, [])
+  const columns = [
+    { field: 'twitter', headerName: 'Twitter', width: 150, editable: true },
+    { field: 'password', headerName: 'Password', width: 150 },
+    { field: 'created', headerName: 'Created At', type: 'dateTime', width: 180 },
+    { field: 'revoked', headerName: 'Revoked', type: 'boolean', width: 100, editable: true },
+    { field: 'opened', headerName: 'Opened At', type: 'dateTime', width: 180 },
+    { field: 'note', headerName: 'Notes', flex: 1, editable: true },
+  ];
 
-  const generate = async () => {
-    const invitation = await createInvitation()
-    if (invitation) {
-      setInvites([...invites, invitation])
-    }
+  const CRUD = {
+    create: createInvitation,
+    read: getAllInvites,
+    update: updateInvite,
+    delete: deleteInvite,
   }
 
   return (
     <div className={classNames("tab-content invitations")}>
       <h1>Invitations</h1>
-      <table>
-        <thead>
-        <tr>
-          <th></th>
-          <th>ID</th>
-          <th>Revoked</th>
-          <th>Opened</th>
-          <th>Password</th>
-          <th>Account</th>
-        </tr>
-        </thead>
-        <tbody>
-        {invites.map((invitation, i) => (
-          <InvitationRow key={`invite-${i}`} invitation={invitation} />
-        ))}
-        </tbody>
-      </table>
-      <div className="button" onClick={generate}>GENERATE INVITE</div>
+      <CRUDTable CRUD={CRUD}
+                 columns={columns}
+                 itemName="Invitation"
+                 getNewItem={createInvitation}
+                 newCreatedOnServer
+                 renderActions={({ id }) => [<ClipboardButton inviteId={id} />]}
+                 renderButtons={() => (
+                   <div className="button link save-button">
+                     <FontAwesomeIcon icon={faUpload} /> Deploy
+                   </div>
+                 )} />
     </div>
   );
 };
