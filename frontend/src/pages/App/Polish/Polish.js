@@ -37,9 +37,7 @@ const Polish = () => {
   const renderContent = () => {
 
     if (showCompleteVideo) return (
-      <div onClick={() => setShowCompleteVideo(false)}>
-        <VideoPlayer>05 - POLISH VIDEO</VideoPlayer>
-      </div>
+      <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>05 - POLISH VIDEO</VideoPlayer>
     )
 
     const endTime = _.get(stageStartTimes, 3)

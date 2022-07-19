@@ -36,9 +36,7 @@ const Cut = () => {
 
   const renderContent = () => {
     if (showCompleteVideo) return (
-      <div onClick={() => setShowCompleteVideo(false)}>
-        <VideoPlayer>04 - CUTTING VIDEO</VideoPlayer>
-      </div>
+      <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>04 - CUTTING VIDEO</VideoPlayer>
     )
 
     const endTime = _.get(stageStartTimes, 2)

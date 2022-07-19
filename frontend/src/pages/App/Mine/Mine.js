@@ -83,16 +83,12 @@ const Mine = () => {
     if (showVideo) return (
       <>
         <div className="leading-text">THE MINE IS OPEN</div>
-        <div onClick={() => setShowVideo(false)}>
-          <VideoPlayer>02 - OPENING VIDEO</VideoPlayer>
-        </div>
+        <VideoPlayer onEnded={() => setShowVideo(false)}>02 - OPENING VIDEO</VideoPlayer>
       </>
     )
 
     if (showCompleteVideo) return (
-      <div onClick={() => setShowCompleteVideo(false)}>
-        <VideoPlayer>03 - MINE VIDEO</VideoPlayer>
-      </div>
+      <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>03 - MINE VIDEO</VideoPlayer>
     )
 
     const isTokenMined = token?.stage === STAGE.MINE

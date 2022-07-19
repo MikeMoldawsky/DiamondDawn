@@ -62,9 +62,7 @@ const Burn = () => {
   const renderContent = () => {
 
     if (showCompleteVideo) return (
-      <div onClick={() => setShowCompleteVideo(false)}>
-        <VideoPlayer>05 - BURN VIDEO</VideoPlayer>
-      </div>
+      <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>05 - BURN VIDEO</VideoPlayer>
     )
 
     const endTime = _.get(stageStartTimes, 4)

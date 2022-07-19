@@ -50,7 +50,9 @@ const ControlTab = () => {
       return
     }
     setArtUrlError(false)
-    const tx = await contract.completeCurrentStageAndRevealNextStage(artUrlInput)
+    const tx = await (isStageActive
+      ? contract.completeCurrentStageAndRevealNextStage(artUrlInput)
+      : contract.revealStage(artUrlInput))
     const receipt = await tx.wait()
     dispatch(fetchStage(contract))
     setArtUrlInput('')
@@ -96,7 +98,7 @@ const ControlTab = () => {
         <div className="input-container">
           <input type="text" placeholder="Video Url" value={artUrlInput} onChange={e => setArtUrlInput(e.target.value)} className={classNames({ 'validation-error': artUrlError })} />
         </div>
-        <ActionButton actionKey="Complete and Reveal Stage" onClick={completeAndRevealStage}>Complete and Reveal Stage</ActionButton>
+        <ActionButton actionKey="Complete and Reveal Stage" onClick={completeAndRevealStage}>Next Stage</ActionButton>
         <ActionButton actionKey="Reset Stage" onClick={resetStage}>Reset Stage</ActionButton>
         <div className="separator" />
         <ActionButton actionKey="Pause" onClick={pause}>Pause</ActionButton>
