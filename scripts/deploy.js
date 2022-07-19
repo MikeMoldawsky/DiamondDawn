@@ -60,9 +60,6 @@ async function main() {
   await mongoose.disconnect(); // build doesn't finish without disconnect
   // We also save the contract's artifacts and address in the frontend directory
   console.log("Successfully updated db with DiamondDawn artifacts");
-  console.log("Writing DiamondDawn artifacts to frontend");
-  saveFrontendFiles(diamondDawn.address, DiamondDawnArtifact);
-  console.log("Successfully updated frontend with DiamondDawn artifacts");
   if (hre.network.name === "goerli") {
     try {
       console.log("Verifying contract");
@@ -75,21 +72,6 @@ async function main() {
       console.log("Failed to verify contract", e);
     }
   }
-}
-
-function saveFrontendFiles(address, artifact) {
-  const contractObject = { address, artifact };
-  const contractsDir = path.resolve(__dirname, "../frontend/src/contracts");
-  const fs = require("fs");
-
-  if (!fs.existsSync(contractsDir)) {
-    fs.mkdirSync(contractsDir);
-  }
-
-  fs.writeFileSync(
-    contractsDir + "/DiamondDawn.json",
-    JSON.stringify(contractObject, null, 2)
-  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere
