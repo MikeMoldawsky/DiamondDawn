@@ -53,7 +53,15 @@ body {
     font-weight: 500;
   }
 
-  &:hover {
+  span > span {
+    background-color: $dark !important;
+  }
+  
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  &:hover:not(.disabled) {
     color: $white;
     background-color: $dark;
     border: solid 1px $white;

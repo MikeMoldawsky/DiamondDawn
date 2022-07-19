@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Countdown from 'components/Countdown';
-import { showError } from "utils";
 import useDDContract from "hooks/useDDContract";
 import { BigNumber, utils as ethersUtils } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +12,7 @@ import { STAGE } from "consts";
 import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
 import _ from "lodash";
+import ActionButton from "components/ActionButton";
 
 const Cut = () => {
   const [actionTxId, setActionTxId] = useState(false)
@@ -26,24 +26,17 @@ const Cut = () => {
   useSelectAvailableToken(STAGE.CUT)
 
   const cut = async () => {
-    try {
-      const tx = await contract.cut(selectedTokenId, { value: token.cutable ? BigNumber.from(0) : cutPrice })
-      const receipt = await tx.wait()
+    const tx = await contract.cut(selectedTokenId, { value: token.cutable ? BigNumber.from(0) : cutPrice })
+    const receipt = await tx.wait()
 
-      dispatch(fetchTokenUri(contract, selectedTokenId))
-      setShowCompleteVideo(true)
-      setActionTxId(receipt.transactionHash)
-    }
-    catch (e) {
-      showError(e, 'Cut Failed')
-    }
+    dispatch(fetchTokenUri(contract, selectedTokenId))
+    setShowCompleteVideo(true)
+    setActionTxId(receipt.transactionHash)
   }
 
   const renderContent = () => {
     if (showCompleteVideo) return (
-      <div onClick={() => setShowCompleteVideo(false)}>
-        <VideoPlayer>04 - CUTTING VIDEO</VideoPlayer>
-      </div>
+      <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>04 - CUTTING VIDEO</VideoPlayer>
     )
 
     const endTime = _.get(stageStartTimes, 2)
@@ -69,7 +62,7 @@ const Cut = () => {
         </div>
         <div className="secondary-text">Will you take the risk?</div>
         {isStageActive && (
-          <div className="button action-button" onClick={cut}>CUT{token.cutable ? '' : ` (${ethersUtils.formatUnits(cutPrice)} ETH)`}</div>
+          <ActionButton actionKey="Cut" className="action-button" onClick={cut}>CUT{token.cutable ? '' : ` (${ethersUtils.formatUnits(cutPrice)} ETH)`}</ActionButton>
         )}
         <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} cut`]} />
       </>

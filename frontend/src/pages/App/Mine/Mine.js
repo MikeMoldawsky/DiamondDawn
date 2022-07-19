@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import _ from 'lodash'
-import { showError } from 'utils'
 import useDDContract from "hooks/useDDContract";
 import { utils as ethersUtils } from "ethers";
 import classNames from "classnames";
@@ -17,6 +16,7 @@ import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
 import Diamond from "components/Diamond";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
+import ActionButton from "components/ActionButton";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -51,25 +51,20 @@ const Mine = () => {
   })
 
   const mine = async () => {
-    try {
-      let totalCost = minePrice
-      if (selectedPackage === 1) {
-        totalCost = mineAndCutPrice
-      }
-      else if (selectedPackage === 2) {
-        totalCost = fullPrice
-      }
-
-      const tx = await contract.mine(selectedPackage, { value: totalCost })
-      const receipt = await tx.wait()
-
-      dispatch(loadAccountNfts(contract, provider, account.address))
-      setShowCompleteVideo(true)
-      setActionTxId(receipt.transactionHash)
+    let totalCost = minePrice
+    if (selectedPackage === 1) {
+      totalCost = mineAndCutPrice
     }
-    catch (e) {
-      showError(e, 'Mine Failed')
+    else if (selectedPackage === 2) {
+      totalCost = fullPrice
     }
+
+    const tx = await contract.mine(selectedPackage, { value: totalCost })
+    const receipt = await tx.wait()
+
+    dispatch(loadAccountNfts(contract, provider, account.address))
+    setShowCompleteVideo(true)
+    setActionTxId(receipt.transactionHash)
   }
 
   const renderContent = () => {
@@ -88,16 +83,12 @@ const Mine = () => {
     if (showVideo) return (
       <>
         <div className="leading-text">THE MINE IS OPEN</div>
-        <div onClick={() => setShowVideo(false)}>
-          <VideoPlayer>02 - OPENING VIDEO</VideoPlayer>
-        </div>
+        <VideoPlayer onEnded={() => setShowVideo(false)}>02 - OPENING VIDEO</VideoPlayer>
       </>
     )
 
     if (showCompleteVideo) return (
-      <div onClick={() => setShowCompleteVideo(false)}>
-        <VideoPlayer>03 - MINE VIDEO</VideoPlayer>
-      </div>
+      <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>03 - MINE VIDEO</VideoPlayer>
     )
 
     const isTokenMined = token?.stage === STAGE.MINE
@@ -128,7 +119,7 @@ const Mine = () => {
           <PackageBox selected={selectedPackage} select={setSelectedPackage} index={2} text="Mine, Cut, Polish and Diamond" cost={fullPrice} />
         </div>
         <div className="action">
-          <div className="button action-button" onClick={mine}>MINE</div>
+          <ActionButton actionKey="Mine" className="action-button" onClick={mine}>MINE</ActionButton>
         </div>
         <Countdown date={endTime} text={['You have', 'to mine']} />
       </>
