@@ -38,6 +38,15 @@ const updateDiamond = async (diamond) => {
   }
 }
 
+const deleteDiamond = async (diamondId) => {
+  try {
+    const { data } = await axios.post(`/api/delete_diamond`, { diamondId })
+    return data
+  } catch (e) {
+    return null
+  }
+}
+
 const DiamondsTab = () => {
   const [diamonds, setDiamonds] = useState([])
   const [rowModesModel, setRowModesModel] = useState({});
@@ -110,12 +119,10 @@ const DiamondsTab = () => {
   }
 
   const handleRowEditStart = (params, event) => {
-    console.log('handleRowEditStart', { params })
     event.defaultMuiPrevented = true;
   };
 
   const handleRowEditStop = (params, event) => {
-    console.log('handleRowEditStop', { params })
     event.defaultMuiPrevented = true;
   };
 
@@ -127,7 +134,8 @@ const DiamondsTab = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id) => () => {
+  const handleDeleteClick = (id) => async () => {
+    const result = await deleteDiamond(id)
     setDiamonds(diamonds.filter((row) => row._id !== id));
   };
 
