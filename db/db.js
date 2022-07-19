@@ -9,7 +9,7 @@ function getDbConnection() {
       case "MikeMoldawsky":
         return mongoose.createConnection(process.env.MONGODB_URI_MIKE);
       case "sniirr":
-        return mongoose.createConnection(process.env.MONGODB_URI_ASSAF);
+        return mongoose.createConnection(process.env.MONGODB_URI_ASAF);
       case "galkleinman":
         throw Error("Gal send to Mike a mongo url for development");
       case "smarth30":
