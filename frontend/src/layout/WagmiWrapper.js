@@ -18,7 +18,7 @@ const localChain = {
     symbol: 'ETH',
   },
   rpcUrls: {
-    default: 'http://localhost:8545',
+    default: process.env.REACT_APP_VERCEL_URL ? `https://${process.env.REACT_APP_VERCEL_URL}:8545` : 'http://localhost:8545',
   },
   testnet: true,
 }
@@ -48,6 +48,7 @@ const ContractProvider = ({ children }) => {
 }
 
 function WagmiWrapper({ children }) {
+  console.log("MIKE DELETE THIS LINE", {localChain})
 
   const { chains, provider } = configureChains(
     [chain.goerli, chain.ropsten, localChain],
