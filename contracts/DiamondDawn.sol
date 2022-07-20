@@ -351,7 +351,7 @@ contract DiamondDawn is
         // 70 - 99 it will be shape 3
         if (randomNumber <= 34) {
             return Shape.OVAL;
-        } else if (randomNumber > 34 && randomNumber <= 70) {
+        } else if (randomNumber <= 70) {
             return Shape.PEAR;
         } else {
             return Shape.RADIANT;
@@ -589,10 +589,6 @@ contract DiamondDawn is
     }
 
     function _getPhysicalAttributeFromStage(Stage _stage) internal view returns (uint) {
-        if (_stage == Stage.MINE) {
-            return 20;
-        } else {
             return uint(_stage) * 20 + 20;
-        }
     }
 }
