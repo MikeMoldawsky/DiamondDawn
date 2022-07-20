@@ -278,6 +278,7 @@ contract DiamondDawn is
     function setDiamondMetadata(address _diamondMetaDataContract) public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
+        require(address(_diamondMetaDataContract) != address(0),"DiamondDawn: Address zero passed as DiamondDawnMetadata Contract");
         _diamondMetaData = IDiamondMetaData(_diamondMetaDataContract);
     }
 
