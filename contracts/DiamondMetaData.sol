@@ -10,6 +10,7 @@ interface IDiamondMetaData {
         uint256 tokenId,
         string calldata _videoUrl,
         uint256 _stage,
+        uint256 _physichalAttribute,
         uint256 _shape,
         string calldata _cutable,
         string calldata _polishable
@@ -31,6 +32,7 @@ contract DiamondMetaData is AccessControl {
         uint256 tokenId,
         string calldata _videoUrl,
         uint256 _stage,
+        uint256 _physichalAttribute,
         uint256 _shape,
         string calldata _cutable,
         string calldata _polishable
@@ -42,15 +44,15 @@ contract DiamondMetaData is AccessControl {
                         '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "',
                         _videoUrl,
                         '", "animation_url": "',
-                        _videoUrl,
-                        '", "stage": ',
-                        Strings.toString(_stage),
-                        ', "shape": ',
-                        Strings.toString(_shape),
-                        ', "cutable": ',
-                        _cutable,
-                        ', "polishable": ',
-                        _polishable,
+                        '",'
+                        '"attributes" :',
+                        getDiamondAttributes(
+                            _stage,
+                            _physichalAttribute,
+                            _shape,
+                            _cutable,
+                            _polishable
+                        ),
                         " }"
                     )
                 )
@@ -58,5 +60,48 @@ contract DiamondMetaData is AccessControl {
         );
 
         return string(abi.encodePacked("data:application/json;base64,", json));
+    }
+
+    function getDiamondAttributes(
+        uint256 _stage,
+        uint256 _physichalAttribute,
+        uint256 _shape,
+        string calldata _cutable,
+        string calldata _polishable
+    ) internal view returns (string memory) {
+        return (
+            string(
+                abi.encodePacked(
+                    "["
+                        "{"
+                          '"display_type": "number",'
+                          '"trait_type": "stage",'
+                          '"value":', Strings.toString(_stage),
+                        "},"
+                        "{"
+                          '"trait_type": "physical",'
+                          '"value":', Strings.toString(_physichalAttribute),
+                        "},"
+                        "{"
+                          '"display_type": "number",'
+                          '"trait_type": "shape", '
+                          '"value":', Strings.toString(_shape),
+                        "},"
+                        "{"
+                          '"trait_type": "type", '
+                          '"value": "Cape" '
+                        "},"
+                        "{"
+                          '"trait_type": "cutable",'
+                          '"value":', _cutable,
+                        "},"
+                        "{"
+                          '"trait_type": "polishable", '
+                          '"value":', _polishable,
+                        "}"
+                    "]"
+                )
+            )
+        );
     }
 }
