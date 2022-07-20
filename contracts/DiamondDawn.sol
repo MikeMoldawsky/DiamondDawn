@@ -552,29 +552,14 @@ contract DiamondDawn is
         override
         returns (string memory)
     {
-        string memory videoUrl = _getVideoUrl(tokenId);
-        string memory json = Base64.encode(
-            bytes(
-                string(
-                    abi.encodePacked(
-                        '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "',
-                        videoUrl,
-                        '", "animation_url": "',
-                        videoUrl,
-                        '", "stage": ',
-                        Strings.toString(uint(_tokensMetadata[tokenId].stage)),
-                        ', "shape": ',
-                        Strings.toString(uint(_tokensMetadata[tokenId].shape)),
-                        ', "cutable": ',
-                        _tokensMetadata[tokenId].cutable ? "true" : "false",
-                        ', "polishable": ',
-                        _tokensMetadata[tokenId].polishable ? "true" : "false",
-                        " }"
-                    )
-                )
-            )
+        require(
+            _exists(tokenId),
+            "ERC721: URI query for nonexistent token"
         );
-        
-        return string(abi.encodePacked("data:application/json;base64,", json));
+        string memory videoUrl = _getVideoUrl(tokenId);
+        string memory _cutable = _tokensMetadata[tokenId].cutable ? '"Yes"' : '"No"';
+        string memory _polishable = _tokensMetadata[tokenId].polishable ? '"Yes"' : '"No"';
+
+        return _diamondMetaData.tokenMetadata(videoUrl, uint256(_tokensMetadata[tokenId].stage), uint256(_tokensMetadata[tokenId].stage) * 20 + 20, uint256(_tokensMetadata[tokenId].shape), _cutable, _polishable);
     }
 }
