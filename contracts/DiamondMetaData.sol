@@ -4,24 +4,13 @@ pragma solidity ^0.8.14;
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-
-interface IDiamondMetaData {
-    function tokenMetadata(
-        uint256 tokenId,
-        string calldata _videoUrl,
-        uint256 _stage,
-        uint256 _physichalAttribute,
-        uint256 _shape,
-        string calldata _cutable,
-        string calldata _polishable
-    ) external view returns (string memory);
-}
+import "./interface/IDiamondMetaDataContract.sol";
 
 /**
  * @title DiamondDawn NFT Contract
  * @author Diamond Dawn
  */
-contract DiamondMetaData is AccessControl {
+contract DiamondMetaData is AccessControl , IDiamondMetaData {
     address public DiamondDawnNft;
 
     constructor() {
@@ -29,7 +18,6 @@ contract DiamondMetaData is AccessControl {
     }
 
     function tokenMetadata(
-        uint256 tokenId,
         string calldata _videoUrl,
         uint256 _stage,
         uint256 _physichalAttribute,

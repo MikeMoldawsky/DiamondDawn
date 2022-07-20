@@ -11,6 +11,7 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
+import "./interface/IDiamondMetaDataContract.sol";
 
 /**
  * @title DiamondDawn NFT Contract 
@@ -54,6 +55,7 @@ contract DiamondDawn is
     Counters.Counter private _tokenIdCounter;
     Stage private constant MAX_STAGE = Stage.REBIRTH;
     Stage public stage;
+    IDiamondMetaData private _diamondMetaData;
     uint public constant MINING_PRICE = 0.002 ether;
     uint public constant CUT_PRICE = 0.004 ether;
     uint public constant POLISH_PRICE = 0.006 ether;
@@ -72,7 +74,7 @@ contract DiamondDawn is
      *                                                                        *
      **************************************************************************/
 
-    constructor(uint96 _royaltyFeesInBips, address[] memory adminAddresses) ERC721("DiamondDawn", "DD") {
+    constructor(uint96 _royaltyFeesInBips, address[] memory adminAddresses,address _diamondMetaDataContract) ERC721("DiamondDawn", "DD") {
         // TODO: remove allow-list + admin from production and use grant role
         _setAdminAndAddToAllowList(adminAddresses);
         mintAllowedAddresses[_msgSender()] = true;
@@ -81,6 +83,7 @@ contract DiamondDawn is
         stage = Stage.MINE;
         isStageActive = false;
         setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
+        _diamondMetaData = IDiamondMetaData(_diamondMetaDataContract);
         _pause();
     }
 
@@ -264,6 +267,20 @@ contract DiamondDawn is
             mintAllowedAddresses[addresses[i]] = true;
         }
     }
+
+    /** 
+    * @notice Making a function to set Address for Diamond Metadata Contract.
+    *
+    * @dev This function is only available to the admin role.
+    *
+    * @param _diamondMetaDataContract a address of diamond metadata contract.
+    */
+    function setDiamondMetadata(address _diamondMetaDataContract) public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _diamondMetaData = IDiamondMetaData(_diamondMetaDataContract);
+    }
+
 
     /***********  TODO: Remove before production - Dev Tooling  **************/
 
