@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios'
-import { shapeName } from "utils";
+import { getShapeName } from "utils";
 import CRUDTable from "components/CRUDTable";
 
 const getAllDiamonds = async () => {
@@ -46,7 +46,7 @@ const DiamondsTab = () => {
 
   const columns = [
     { field: 'GIA', headerName: 'GIA', width: 200, editable: true },
-    { field: 'shape', headerName: 'Shape', type: 'singleSelect', valueOptions: [0, 1, 2], width: 150, editable: true, valueFormatter: params => shapeName(params.value) },
+    { field: 'shape', headerName: 'Shape', type: 'singleSelect', valueOptions: [0, 1, 2], width: 150, editable: true, valueFormatter: params => getShapeName(params.value) },
     { field: 'carat', headerName: 'Carat', type: 'number', width: 150, editable: true, valueGetter: ({ value }) => value.$numberDecimal },
     { field: '', headerName: ' ', flex: 1 },
   ];

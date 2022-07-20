@@ -8,6 +8,8 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import TextField from '@mui/material/TextField';
 import ActionButton from "components/ActionButton";
+import Countdown from "react-countdown";
+import { getStageName } from "utils";
 
 const updateStage = async (stage, startsAt) => {
   try {
@@ -15,6 +17,15 @@ const updateStage = async (stage, startsAt) => {
     return res.data
   } catch (e) {
     return []
+  }
+}
+
+const getStageCaption = stage => {
+  switch (stage) {
+    case STAGE.REBIRTH:
+      return 'Burn End'
+    default:
+      return `${getStageName(stage)} Start`
   }
 }
 
@@ -44,18 +55,21 @@ const ScheduleTab = () => {
       <h1>Stage Start Schedule</h1>
       <div className="stages" style={{ marginBottom: 40 }}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          {_.map(STAGE, (_stage, _stageName) => {
+          {_.map(STAGE, (_stage) => {
+            const value = _.get(stageStartTimes, _stage, null)
             return (
-              <div className="center-aligned-row stage-row">
-                <span>{_stageName}</span>
+              <div key={`stage-schedule-${_stage}`} className="center-aligned-row stage-row">
+                <span className="caption">{getStageCaption(_stage)}</span>
                 <div className="center-aligned-row inner-row">
                   <DateTimePicker
                     minDateTime={new Date()}
-                    value={_.get(stageStartTimes, _stage, null)}
+                    value={value}
                     onChange={onStartTimeChange(_stage)}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                  <ActionButton actionKey={`Save ${_stageName} Schedule`} className="btn-save" onClick={() => saveStage(_stage)}>Save</ActionButton>
+                    renderInput={(params) => <TextField {...params} />} />
+                  <div className="countdown">
+                    {value && <Countdown date={value} />}
+                  </div>
+                  <ActionButton actionKey={`Save ${getStageName(_stage)} Schedule`} className="btn-save" onClick={() => saveStage(_stage)}>Save</ActionButton>
                 </div>
               </div>
             )

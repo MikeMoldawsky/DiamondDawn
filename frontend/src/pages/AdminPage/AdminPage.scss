@@ -2,7 +2,7 @@
 
 .page.admin-page {
   main {
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 0 auto;
     padding-top: $headerHeight + 40px;
   }
@@ -70,7 +70,7 @@
   }
 
   .stages {
-    width: 520px;
+    width: 700px;
 
     .stage-row {
       margin-bottom: 40px;
@@ -78,6 +78,15 @@
 
     .inner-row {
       justify-content: flex-end;
+    }
+
+    .caption {
+      font-weight: 700;
+    }
+
+    .countdown {
+      width: 120px;
+      margin-left: 40px;
     }
 
     input {

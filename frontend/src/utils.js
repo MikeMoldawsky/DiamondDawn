@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { toast } from "react-toastify";
-import { SHAPE } from "consts";
+import { SHAPE, STAGE } from "consts";
 
 export const parseError = e => {
   let message = _.get(e, 'error.data.message', '')
@@ -33,7 +33,7 @@ export const showError = (e, prefix = 'Error') => {
   console.error(errorMessage)
 }
 
-export const shapeName = shape => {
+export const getShapeName = shape => {
   switch (shape) {
     case SHAPE.OVAL:
       return 'Oval'
@@ -43,5 +43,20 @@ export const shapeName = shape => {
       return 'Pear'
     default:
       return 'Rough'
+  }
+}
+
+export const getStageName = stage => {
+  switch (stage) {
+    case STAGE.CUT:
+      return 'Cut'
+    case STAGE.POLISH:
+      return 'Polish'
+    case STAGE.PHYSICAL:
+      return 'Burn'
+    case STAGE.REBIRTH:
+      return 'Rebirth'
+    default:
+      return 'Mine'
   }
 }
