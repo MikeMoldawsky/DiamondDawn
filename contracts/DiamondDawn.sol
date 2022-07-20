@@ -556,6 +556,7 @@ contract DiamondDawn is
             _exists(tokenId),
             "ERC721: URI query for nonexistent token"
         );
+        require(address(_diamondMetaData) != address(0),"DiamondDawn: Contract tokenURI Not Set");
         string memory videoUrl = _getVideoUrl(tokenId);
         string memory _cutable = _tokensMetadata[tokenId].cutable ? '"Yes"' : '"No"';
         string memory _polishable = _tokensMetadata[tokenId].polishable ? '"Yes"' : '"No"';
