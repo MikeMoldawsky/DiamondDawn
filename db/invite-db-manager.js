@@ -33,9 +33,9 @@ async function deleteInvite(inviteId) {
 	}
 }
 
-async function openInvite(inviteId) {
+async function openInvite(inviteId, country, state) {
 	try {
-		return await InviteModel.findOneAndUpdate({_id: inviteId}, {revoked: true, opened: Date.now()});
+		return await InviteModel.findOneAndUpdate({_id: inviteId}, {revoked: true, opened: Date.now(), location: `${state}, ${country}`});
 	} catch (e) {
 		console.log(`Failed to create invite`, e);
 	}

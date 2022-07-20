@@ -14,6 +14,8 @@ const InviteSchema = new mongoose.Schema({
   created: { type: Date, required: true, default: Date.now },
   revoked: { type: Boolean, required: true, default: false },
   opened: { type: Date },
+  location: { type: String },
+  ethAddress: { type: String },
   note: { type: String },
 });
 

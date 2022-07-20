@@ -77,7 +77,10 @@ const InvitationsTab = () => {
     { field: 'created', headerName: 'Created At', type: 'dateTime', width: 180 },
     { field: 'revoked', headerName: 'Revoked', type: 'boolean', width: 100, editable: true },
     { field: 'opened', headerName: 'Opened At', type: 'dateTime', width: 180 },
-    { field: 'note', headerName: 'Notes', flex: 1, editable: true },
+    { field: 'location', headerName: 'Location', width: 150 },
+    { field: 'ethAddress', headerName: 'ETH Address', width: 200, editable: true },
+    { field: 'whitelisted', headerName: 'Whitelisted', type: 'boolean', width: 100 },
+    { field: 'note', headerName: 'Notes', width: 300, flex: 1, editable: true },
   ];
 
   const CRUD = {

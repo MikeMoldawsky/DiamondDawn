@@ -2,8 +2,7 @@
 
 .page.admin-page {
   main {
-    max-width: 1500px;
-    margin: 0 auto;
+    margin: 0 100px;
     padding-top: $headerHeight + 40px;
   }
 
@@ -95,8 +94,7 @@
 
     .btn-save {
       width: 60px;
-      margin: 0;
-      margin-left: 40px;
+      margin: 0 0 0 40px;
     }
   }
 

@@ -52,7 +52,7 @@ const ScheduleTab = () => {
 
   return (
     <div className="admin-control">
-      <h1>Stage Start Schedule</h1>
+      <h1>Stages Schedule</h1>
       <div className="stages" style={{ marginBottom: 40 }}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           {_.map(STAGE, (_stage) => {
@@ -67,7 +67,7 @@ const ScheduleTab = () => {
                     onChange={onStartTimeChange(_stage)}
                     renderInput={(params) => <TextField {...params} />} />
                   <div className="countdown">
-                    {value && <Countdown date={value} />}
+                    {value ? <Countdown date={value} /> : <span>00:00:00:00</span>}
                   </div>
                   <ActionButton actionKey={`Save ${getStageName(_stage)} Schedule`} className="btn-save" onClick={() => saveStage(_stage)}>Save</ActionButton>
                 </div>
