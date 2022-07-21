@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
@@ -43,6 +43,14 @@ const deleteDiamond = async (diamondId) => {
 }
 
 const DiamondsTab = () => {
+  const [diamonds, setDiamonds] = useState([])
+
+  useEffect(() => {
+    const fetch = async () => {
+      setDiamonds(await getAllDiamonds())
+    }
+    fetch()
+  }, [])
 
   const columns = [
     { field: 'GIA', headerName: 'GIA', width: 200, editable: true },
@@ -53,7 +61,7 @@ const DiamondsTab = () => {
 
   const CRUD = {
     create: addDiamond,
-    read: getAllDiamonds,
+    // read: getAllDiamonds,
     update: updateDiamond,
     delete: deleteDiamond,
   }
@@ -63,6 +71,8 @@ const DiamondsTab = () => {
       <h1>Diamonds</h1>
       <CRUDTable CRUD={CRUD}
                  columns={columns}
+                 rows={diamonds}
+                 setRows={setDiamonds}
                  itemName="Diamond"
                  getNewItem={() => ({ GIA: '', shape: 0, carat: 0 })}
                  renderButtons={() => (

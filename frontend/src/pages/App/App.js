@@ -37,7 +37,7 @@ function App() {
     })
 
     return () => {
-      contract .removeAllListeners()
+      contract.removeAllListeners()
     }
   }, [])
 

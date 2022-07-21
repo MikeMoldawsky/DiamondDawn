@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import _ from 'lodash'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -8,19 +8,9 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 
-const CRUDTable = ({ CRUD, columns, itemName, getNewItem, newCreatedOnServer, renderButtons, renderActions }) => {
-  const [rows, setRows] = useState([])
+const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCreatedOnServer, renderButtons, renderActions, ...gridProps }) => {
   const [rowModesModel, setRowModesModel] = useState({});
-
-  useEffect(() => {
-    if (CRUD.read) {
-      const fetch = async () => {
-        const rows = await CRUD.read()
-        setRows(rows)
-      }
-      fetch()
-    }
-  }, [])
+  const [selectionModel, setSelectionModel] = useState([])
 
   const _columns = [
     ...columns,
@@ -124,6 +114,15 @@ const CRUDTable = ({ CRUD, columns, itemName, getNewItem, newCreatedOnServer, re
     return _newRow;
   };
 
+  const renderCustomButtons = () => {
+    if (!renderButtons) return null
+
+    const selectedRows = rows.filter(row => {
+      return selectionModel.includes(row._id)
+    })
+    return renderButtons(selectedRows)
+  }
+
   return (
     <>
       <div className="table-container">
@@ -131,6 +130,11 @@ const CRUDTable = ({ CRUD, columns, itemName, getNewItem, newCreatedOnServer, re
                   columns={_columns}
                   autoHeight
                   checkboxSelection
+                  onSelectionModelChange={(newSelectionModel) => {
+                    setSelectionModel(newSelectionModel);
+                  }}
+                  selectionModel={selectionModel}
+                  keepNonExistentRowsSelected
                   disableSelectionOnClick
                   editMode="row"
                   experimentalFeatures={{ newEditingApi: true }}
@@ -139,13 +143,14 @@ const CRUDTable = ({ CRUD, columns, itemName, getNewItem, newCreatedOnServer, re
                   rowModesModel={rowModesModel}
                   onRowEditStart={handleRowEditStart}
                   onRowEditStop={handleRowEditStop}
-                  processRowUpdate={processRowUpdate} />
+                  processRowUpdate={processRowUpdate}
+                  {...gridProps} />
       </div>
       <div className="center-aligned-row">
         <div className="button link add-button" onClick={onAddClick}>
           <FontAwesomeIcon icon={faPlus} /> Add {itemName}
         </div>
-        {renderButtons && renderButtons()}
+        {renderCustomButtons()}
       </div>
     </>
   );

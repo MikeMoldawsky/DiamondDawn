@@ -14,7 +14,8 @@ export const SHAPE = {
 }
 
 export const EVENTS = {
-  StageChanged: 'StageChanged'
+  StageChanged: 'StageChanged',
+  WhitelistUpdated: 'WhitelistUpdated',
 }
 
 const VIDEO_BY_STAGE = {

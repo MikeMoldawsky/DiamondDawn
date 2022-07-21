@@ -75,6 +75,10 @@ body {
     color: $white;
     background-color: $dark;
     border-color: transparent !important;
+
+    span > span {
+      background-color: $white !important;
+    }
   }
 }
 
