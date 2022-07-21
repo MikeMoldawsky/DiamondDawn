@@ -74,7 +74,7 @@ contract DiamondDawn is
      *                                                                        *
      **************************************************************************/
 
-    constructor(uint96 _royaltyFeesInBips, address[] memory adminAddresses,address _diamondDawnMineContract) ERC721("DiamondDawn", "DD") {
+    constructor(uint96 _royaltyFeesInBips, address _diamondDawnMineContract, address[] memory adminAddresses) ERC721("DiamondDawn", "DD") {
         // TODO: remove allow-list + admin from production and use grant role
         _setAdminAndAddToAllowList(adminAddresses);
         mintAllowedAddresses[_msgSender()] = true;
