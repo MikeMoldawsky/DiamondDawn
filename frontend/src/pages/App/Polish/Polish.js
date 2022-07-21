@@ -27,10 +27,12 @@ const Polish = () => {
 
   const polish = async () => {
     const tx = await contract.polish(selectedTokenId, { value: token.polishable ? BigNumber.from(0) : polishPrice })
+
+    setShowCompleteVideo(true)
+
     const receipt = await tx.wait()
 
     dispatch(fetchTokenUri(contract, selectedTokenId))
-    setShowCompleteVideo(true)
     setActionTxId(receipt.transactionHash)
   }
 

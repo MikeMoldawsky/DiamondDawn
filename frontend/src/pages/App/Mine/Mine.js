@@ -60,10 +60,12 @@ const Mine = () => {
     }
 
     const tx = await contract.mine(selectedPackage, { value: totalCost })
+
+    setShowCompleteVideo(true)
+
     const receipt = await tx.wait()
 
     dispatch(loadAccountNfts(contract, provider, account.address))
-    setShowCompleteVideo(true)
     setActionTxId(receipt.transactionHash)
   }
 
