@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
-import "./interface/IDiamondMetaDataContract.sol";
+import "./interface/IDiamondDawnMineContract.sol";
 
 /**
  * @title DiamondDawn NFT Contract 
@@ -55,7 +55,7 @@ contract DiamondDawn is
     Counters.Counter private _tokenIdCounter;
     Stage private constant MAX_STAGE = Stage.REBIRTH;
     Stage public stage;
-    IDiamondMetaData private _diamondMetaData;
+    IDiamondDawnMine private _DiamondDawnMine;
     uint public constant MINING_PRICE = 0.002 ether;
     uint public constant CUT_PRICE = 0.004 ether;
     uint public constant POLISH_PRICE = 0.006 ether;
@@ -74,7 +74,7 @@ contract DiamondDawn is
      *                                                                        *
      **************************************************************************/
 
-    constructor(uint96 _royaltyFeesInBips, address[] memory adminAddresses,address _diamondMetaDataContract) ERC721("DiamondDawn", "DD") {
+    constructor(uint96 _royaltyFeesInBips, address[] memory adminAddresses,address _DiamondDawnMineContract) ERC721("DiamondDawn", "DD") {
         // TODO: remove allow-list + admin from production and use grant role
         _setAdminAndAddToAllowList(adminAddresses);
         mintAllowedAddresses[_msgSender()] = true;
@@ -83,7 +83,7 @@ contract DiamondDawn is
         stage = Stage.MINE;
         isStageActive = false;
         setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
-        _diamondMetaData = IDiamondMetaData(_diamondMetaDataContract);
+        _DiamondDawnMine = IDiamondDawnMine(_DiamondDawnMineContract);
         _pause();
     }
 
@@ -273,13 +273,13 @@ contract DiamondDawn is
     *
     * @dev This function is only available to the admin role.
     *
-    * @param _diamondMetaDataContract a address of diamond metadata contract.
+    * @param _DiamondDawnMineContract a address of diamond metadata contract.
     */
-    function setDiamondMetadata(address _diamondMetaDataContract) public
+    function setDiamondDawnMine(address _DiamondDawnMineContract) public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        require(address(_diamondMetaDataContract) != address(0),"DiamondDawn: Address zero passed as DiamondDawnMetadata Contract");
-        _diamondMetaData = IDiamondMetaData(_diamondMetaDataContract);
+        require(address(_DiamondDawnMineContract) != address(0),"DiamondDawn: Address zero passed as DiamondDawnMetadata Contract");
+        _DiamondDawnMine = IDiamondDawnMine(_DiamondDawnMineContract);
     }
 
 
@@ -557,11 +557,11 @@ contract DiamondDawn is
             _exists(tokenId),
             "ERC721: URI query for nonexistent token"
         );
-        require(address(_diamondMetaData) != address(0),"DiamondDawn: Contract tokenURI Not Set");
+        require(address(_DiamondDawnMine) != address(0),"DiamondDawn: Contract tokenURI Not Set");
         string memory videoUrl = _getVideoUrl(tokenId);
         string memory _cutable = _tokensMetadata[tokenId].cutable ? '"Yes"' : '"No"';
         string memory _polishable = _tokensMetadata[tokenId].polishable ? '"Yes"' : '"No"';
 
-        return _diamondMetaData.tokenMetadata(videoUrl, uint256(_tokensMetadata[tokenId].stage), uint256(_tokensMetadata[tokenId].stage) * 20 + 20, uint256(_tokensMetadata[tokenId].shape), _cutable, _polishable);
+        return _DiamondDawnMine.tokenMetadata(videoUrl, uint256(_tokensMetadata[tokenId].stage), uint256(_tokensMetadata[tokenId].stage) * 20 + 20, uint256(_tokensMetadata[tokenId].shape), _cutable, _polishable);
     }
 }
