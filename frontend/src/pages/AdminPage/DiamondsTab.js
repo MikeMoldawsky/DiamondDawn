@@ -5,8 +5,7 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios'
 import { getShapeName } from "utils";
 import CRUDTable from "components/CRUDTable";
-import _ from "lodash";
-import { utils as ethersUtils } from "ethers";
+import { COLOR_GRADES, CLARITY_GRADES, COMMON_GRADES } from 'consts'
 
 const getAllDiamonds = async () => {
   try {
@@ -43,10 +42,6 @@ const deleteDiamond = async (diamondId) => {
     return null
   }
 }
-
-const COLOR_GRADES = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-const CLARITY_GRADES = ['FLAWLESS', 'INTERNALLY FLAWLESS', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'I1', 'I2', 'I3']
-const COMMON_GRADES = ['EXCELLENT', 'VERY GOOD', 'GOOD', 'FAIR', 'POOR']
 
 const DiamondsTab = () => {
   const [diamonds, setDiamonds] = useState([])

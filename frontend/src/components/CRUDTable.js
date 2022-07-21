@@ -109,7 +109,9 @@ const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCrea
       ? CRUD.create(_.omit(newRow, ['_id', 'isNew']))
       : CRUD.update(newRow))
 
-    setRows(rows.map((row) => (row._id === newRow._id ? _newRow : row)));
+    if (_newRow) {
+      setRows(rows.map((row) => (row._id === newRow._id ? _newRow : row)));
+    }
 
     return _newRow;
   };
