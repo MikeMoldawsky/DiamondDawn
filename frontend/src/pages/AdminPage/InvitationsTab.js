@@ -12,6 +12,7 @@ import ActionButton from "components/ActionButton";
 import { EVENTS } from "consts";
 import { watchWhitelist, whitelistSelector } from "store/whitelistReducer";
 import { useDispatch, useSelector } from "react-redux";
+import { utils as ethersUtils } from 'ethers'
 
 const getAllInvites = async () => {
   try {
@@ -102,7 +103,13 @@ const InvitationsTab = () => {
     { field: 'revoked', headerName: 'Revoked', type: 'boolean', width: 100, editable: true },
     { field: 'opened', headerName: 'Opened At', type: 'dateTime', width: 180 },
     { field: 'location', headerName: 'Location', width: 150 },
-    { field: 'ethAddress', headerName: 'ETH Address', width: 200, editable: true },
+    {
+      field: 'ethAddress', headerName: 'ETH Address', width: 200, editable: true,
+      preProcessEditCellProps: (params) => {
+        const isValid = _.isEmpty(params.props.value) || ethersUtils.isAddress(params.props.value);
+        return { ...params.props, error: !isValid };
+      },
+    },
     { field: 'whitelisted', headerName: 'Whitelisted', width: 100 },
     { field: 'note', headerName: 'Notes', width: 300, flex: 1, editable: true },
   ];

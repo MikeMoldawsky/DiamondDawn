@@ -12,7 +12,6 @@ const ControlTab = () => {
   const [artUrlError, setArtUrlError] = useState(false)
   const [stageStartTimes, setStageStartTimes] = useState({})
 
-  console.log({ stageStartTimes })
   const contract = useDDContract()
 
   const dispatch = useDispatch()

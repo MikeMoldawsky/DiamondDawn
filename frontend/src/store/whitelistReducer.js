@@ -6,7 +6,6 @@ const INITIAL_STATE = {}
 
 export const watchWhitelist = (contract) => dispatch => {
   contract.on(EVENTS.WhitelistUpdated, (wlAction, addresses) => {
-    console.log('EVENTS.WhitelistUpdated', { wlAction, addresses })
     dispatch({
       type: 'WHITELIST.PROCESS_CHUNK',
       payload: { wlAction, addresses }
