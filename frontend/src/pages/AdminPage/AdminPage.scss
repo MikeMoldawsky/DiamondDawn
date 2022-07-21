@@ -2,8 +2,7 @@
 
 .page.admin-page {
   main {
-    max-width: 1000px;
-    margin: 0 auto;
+    margin: 0 100px;
     padding-top: $headerHeight + 40px;
   }
 
@@ -11,9 +10,27 @@
     text-align: center;
   }
 
+  .Mui-error {
+    color: red;
+  }
+
   .button {
     margin: 80px auto 40px;
     width: 300px;
+  }
+
+  .add-button {
+    margin: unset;
+    width: 160px;
+    justify-content: flex-start;
+    padding: 0 18px;
+  }
+
+  .save-button {
+    margin: unset;
+    width: 100px;
+    justify-content: flex-end;
+    padding: 0 18px;
   }
 
   input[type=text] {
@@ -25,6 +42,10 @@
     height: 1px;
     background-color: white;
     margin-bottom: 40px;
+  }
+
+  .table-container {
+    background-color: white;
   }
 
   .admin-control {
@@ -52,7 +73,7 @@
   }
 
   .stages {
-    width: 520px;
+    width: 700px;
 
     .stage-row {
       margin-bottom: 40px;
@@ -62,14 +83,28 @@
       justify-content: flex-end;
     }
 
+    .caption {
+      font-weight: 700;
+    }
+
+    .countdown {
+      width: 120px;
+      margin-left: 40px;
+    }
+
     input {
       width: 180px;
     }
 
     .btn-save {
       width: 60px;
-      margin: 0;
-      margin-left: 40px;
+      margin: 0 0 0 40px;
+    }
+  }
+
+  .invitations {
+    .save-button {
+      width: 185px;
     }
   }
 

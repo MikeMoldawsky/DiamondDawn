@@ -34,6 +34,9 @@ async function main() {
   const deployerAddress = await deployer.getAddress();
   const deployerBalance = await deployer.getBalance();
   const admins = process.env.ADMINS?.split(" ") || [];
+  if (!admins.includes(deployerAddress)) {
+    admins.push(deployerAddress);
+  }
   const royalty = 1000; // 1000/10000 = 10/100 = 10 %
   console.log("Deploying DiamondDawn contract", {
     deployerAddress,

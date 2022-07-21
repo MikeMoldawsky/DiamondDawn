@@ -27,10 +27,12 @@ const Cut = () => {
 
   const cut = async () => {
     const tx = await contract.cut(selectedTokenId, { value: token.cutable ? BigNumber.from(0) : cutPrice })
+
+    setShowCompleteVideo(true)
+
     const receipt = await tx.wait()
 
     dispatch(fetchTokenUri(contract, selectedTokenId))
-    setShowCompleteVideo(true)
     setActionTxId(receipt.transactionHash)
   }
 

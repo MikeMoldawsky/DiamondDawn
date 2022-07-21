@@ -1,20 +1,41 @@
 const InviteModel = require("./models/InviteModel");
 
-
-async function createInvite(reason) {
+async function createInvite() {
 	try {
-		const document = {reason};
-		const guildCommunityBotModel = new InviteModel(document);
+		const guildCommunityBotModel = new InviteModel({});
 		return await guildCommunityBotModel.save();
 	} catch (e) {
 		console.log(`Failed to create invite`, e);
 	}
 }
 
-
-async function openInvite(inviteId) {
+async function getInvites() {
 	try {
-		return await InviteModel.findOneAndUpdate({_id: inviteId}, {revoked: true, opened: Date.now()});
+		return await InviteModel.find();
+	} catch (e) {
+		console.log(`Failed to get all invites`, e);
+	}
+}
+
+async function updateInvite(inviteProps) {
+	try {
+		return await InviteModel.findOneAndUpdate({ _id: inviteProps._id }, inviteProps, { new: true });
+	} catch (e) {
+		console.log(`Failed to UPDATE Invite`, e);
+	}
+}
+
+async function deleteInvite(inviteId) {
+	try {
+		return await InviteModel.findOneAndDelete({ _id: inviteId });
+	} catch (e) {
+		console.log(`Failed to DELETE Invite`, e);
+	}
+}
+
+async function openInvite(inviteId, country, state) {
+	try {
+		return await InviteModel.findOneAndUpdate({_id: inviteId}, {revoked: true, opened: Date.now(), location: `${state}, ${country}`});
 	} catch (e) {
 		console.log(`Failed to create invite`, e);
 	}
@@ -29,18 +50,11 @@ async function isInviteRevoked(inviteId) {
 	}
 }
 
-async function getInvites() {
-	try {
-		return await InviteModel.find();
-	} catch (e) {
-		console.log(`Failed to get all invites`, e);
-	}
-}
-
-
 module.exports = {
 	createInvite,
 	openInvite,
 	getInvites,
-	isInviteRevoked
+	isInviteRevoked,
+	updateInvite,
+	deleteInvite,
 };

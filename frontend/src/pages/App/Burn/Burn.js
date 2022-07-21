@@ -44,10 +44,12 @@ const Burn = () => {
   const saveAddressAndBurn = async (formData) => {
     // TODO - save shipping address off-chain
     const tx = await contract.burn(selectedTokenId)
+
+    setShowCompleteVideo(true)
+
     const receipt = await tx.wait()
 
     dispatch(fetchTokenUri(contract, selectedTokenId))
-    setShowCompleteVideo(true)
     setActionTxId(receipt.transactionHash)
   }
 

@@ -5,10 +5,12 @@ import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import getLocation from "utils/getLocation";
 
 const openInvite = async (inviteId) => {
   try {
-    const res = await axios.post(`/api/open_invite`, { inviteId })
+    const { country, state } = getLocation()
+    const res = await axios.post(`/api/open_invite`, { inviteId, country, state })
     return res.data
   } catch (e) {
     return null

@@ -34,7 +34,7 @@ const ContractProvider = ({ children }) => {
       dispatch(setDDContractData(data))
     }
     catch (e) {
-      console.log("Failed to get contract!!!!", e)
+      console.error("Failed to get contract data!!!!", e)
     }
   }
 
