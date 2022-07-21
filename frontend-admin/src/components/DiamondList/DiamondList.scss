@@ -1,0 +1,61 @@
+.diamond-list {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 40px;
+  border-right: solid 1px white;
+
+  .diamond-item {
+    position: relative;
+
+    .token-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      margin-right: 16px;
+      cursor: pointer;
+      border: solid 1px transparent;
+      border-radius: 4px;
+      padding: 7px 12px 3px;
+      opacity: .7;
+
+      svg {
+        width: 1.4em;
+        height: 1.4em;
+      }
+
+      .token-id {
+        font-size: .8em;
+        margin-top: 2px;
+      }
+    }
+
+    &.enabled {
+      .token-icon {
+        opacity: 1;
+      }
+    }
+
+    &.selected {
+      .token-icon {
+        border: solid 1px white;
+      }
+    }
+  }
+
+  .diamond-info-container {
+    width: 260px;
+    position: absolute;
+    right: 0;
+    top: 58px;
+    z-index: 1;
+    padding-top: 12px;
+
+    .diamond-info {
+      width: 260px;
+      background-color: black;
+      border: solid 1px white;
+    }
+  }
+}
