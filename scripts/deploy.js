@@ -16,6 +16,8 @@ async function main() {
     return;
   }
 
+  console.info("Deploying contract", { network: hre.network.name });
+
   // This is just a convenience check
   if (hre.network.name === "hardhat") {
     console.warn(
