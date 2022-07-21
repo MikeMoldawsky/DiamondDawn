@@ -32,16 +32,6 @@ async function main() {
   const deployerBalance = await deployer.getBalance();
   const admins = process.env.ADMINS?.split(" ") || [];
   const royalty = 1000; // 1000/10000 = 10/100 = 10 %
-
-  const DiamondMetaData = await hre.ethers.getContractFactory(
-    "DiamondMetaData"
-  );
-  const diamondMetaData = await DiamondMetaData.deploy(royalty, admins);
-  await diamondMetaData.deployed();
-
-  console.log(
-    "DiamondDawnMetaData Contract Deployed at " + diamondMetaData.address
-  );
   console.log("Deploying DiamondDawn contract", {
     deployerAddress,
     admins,
@@ -51,11 +41,7 @@ async function main() {
     network: hre.network.name,
   });
   const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
-  const diamondDawn = await DiamondDawn.deploy(
-    royalty,
-    admins,
-    diamondMetaData.address
-  );
+  const diamondDawn = await DiamondDawn.deploy(royalty, admins);
   await diamondDawn.deployed();
   const deployerNewBalance = await deployer.getBalance();
 
