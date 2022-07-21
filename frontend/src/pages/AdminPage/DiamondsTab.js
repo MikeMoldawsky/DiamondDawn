@@ -70,7 +70,7 @@ const DiamondsTab = () => {
     {
       field: 'measurements', headerName: 'Measurements', width: 250, editable: true,
       preProcessEditCellProps: (params) => {
-        const regex = new RegExp('^\\d{1}.\\d{2}-\\d{1}.\\d{2}\\*\\d{1}.\\d{2}$')
+        const regex = new RegExp('^\\d{1}.\\d{1,2}-\\d{1}.\\d{1,2}\\*\\d{1}.\\d{1,2}$')
         return { ...params.props, error: !regex.test(params.props.value) };
       },
     },
