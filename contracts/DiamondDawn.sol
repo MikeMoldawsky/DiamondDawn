@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
-import "./interface/IDiamondDawnMineContract.sol";
+import "./interface/IDiamondDawnMine.sol";
 
 /**
  * @title DiamondDawn NFT Contract 
