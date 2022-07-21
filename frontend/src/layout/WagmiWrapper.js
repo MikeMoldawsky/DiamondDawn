@@ -18,7 +18,7 @@ const localChain = {
     symbol: 'ETH',
   },
   rpcUrls: {
-    default: process.env.REACT_APP_VERCEL_URL ? `https://${process.env.REACT_APP_VERCEL_URL}:8545` : 'http://localhost:8545',
+    default: process.env.REACT_APP_VERCEL_URL ? `https://api/get_blockchain` : 'http://localhost:8545',
   },
   testnet: true,
 }
