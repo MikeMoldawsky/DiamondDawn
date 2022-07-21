@@ -16,7 +16,9 @@ async function main() {
     return;
   }
 
-  console.info("Deploying Diamond Dawn contract", { network: hre.network.name });
+  console.info("Deploying Diamond Dawn contract", {
+    network: hre.network.name,
+  });
 
   // This is just a convenience check
   if (hre.network.name === "hardhat") {
@@ -27,11 +29,8 @@ async function main() {
     );
   }
 
-  console.info("[MIKE] DELETE", { ethers: JSON.stringify(hre.ethers) });
-
   // ethers is available in the global scope
   const [deployer] = await hre.ethers.getSigners();
-  console.info("[MIKE] DELETE 2", { deployer });
   const deployerAddress = await deployer.getAddress();
   const deployerBalance = await deployer.getBalance();
   const admins = process.env.ADMINS?.split(" ") || [];
