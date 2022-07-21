@@ -18,7 +18,7 @@ const localChain = {
     symbol: 'ETH',
   },
   rpcUrls: {
-    default: process.env.REACT_APP_VERCEL_URL ? `https://api/get_blockchain` : 'http://localhost:8545',
+    default: 'http://localhost:8545',
   },
   testnet: true,
 }
@@ -51,7 +51,7 @@ function WagmiWrapper({ children }) {
   console.log("MIKE DELETE THIS LINE", {localChain})
 
   const { chains, provider } = configureChains(
-    [chain.goerli, chain.ropsten, localChain],
+    [chain.goerli, chain.ropsten, chain.polygonMumbai, localChain],
     [
       infuraProvider({ infuraId: "dbe63b3bdfc84f3abdf38cdc8e22f492" }),
       publicProvider(),
