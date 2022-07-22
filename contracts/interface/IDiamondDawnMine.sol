@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.14;
 
-import "./DiamondDawnStage.sol";
+import "../types/Stage.sol";
 
 interface IDiamondDawnMine {
 

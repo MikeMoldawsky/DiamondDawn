@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "./interface/IDiamondDawnMine.sol";
-import "./interface/DiamondDawnStage.sol";
+import "./types/Stage.sol";
 
 /**
  * @title DiamondDawn NFT Contract 
@@ -29,18 +29,9 @@ contract DiamondDawn is
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
 
-    enum Shape {
-        OVAL,
-        RADIANT,
-        PEAR,
-        ROUGH
-    }
-
     struct Metadata {
         Stage stage;
-        bool cutable;
-        bool polishable;
-        Shape shape;
+        uint diamondId;
     }
 
     event StageChanged(Stage stage, bool isStageActive);
@@ -330,19 +321,6 @@ contract DiamondDawn is
             )
         );
 
-        if (
-            (stage == Stage.CUT && !_tokensMetadata[tokenId].cutable) ||
-            (stage == Stage.POLISH && !_tokensMetadata[tokenId].polishable)
-        ) {
-            require(
-                msg.value == processingPrice,
-                string.concat(
-                    "Wrong payment - payment should be: ",
-                    Strings.toString(processingPrice)
-                )
-            );
-        }
-
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
     }
 
@@ -353,27 +331,6 @@ contract DiamondDawn is
                 _baseURI(),
                 _videoUrls[_tokensMetadata[tokenId].stage]
             );
-    }
-
-    function _getRandomNumber() internal view returns (uint) {
-        uint randomNumber = _randomModulo(100);
-        // 0  - 34 it will be shape 1
-        // 35 - 70 it will be shape 2
-        // 70 - 99 it will be shape 3
-        if (randomNumber <= 34) {
-            return 0;
-        } else if (randomNumber >= 35 && randomNumber <= 70) {
-            return 1;
-        } else {
-            return 2;
-        }
-    }
-
-    function _randomModulo(uint modulo) internal view returns (uint) {
-        return
-            uint(
-                keccak256(abi.encodePacked(block.timestamp, block.difficulty))
-            ) % modulo;
     }
 
     /**********************           Guards            ************************/
@@ -455,11 +412,20 @@ contract DiamondDawn is
         _;
     }
 
+    modifier _requireAssignedMineContract() {
+        require(
+            address(_diamondDawnMine) != address(0),
+            "DiamondDawn: DiamondDawnMine contract is not set"
+        );
+        _;
+    }
+
     /**********************        Transactions        ************************/
 
     function mine(uint processesPurchased) public payable
         whenStageIsActive(Stage.MINE)
         _requireAllowedMiner
+        _requireAssignedMineContract
     {
         _requireValidProcessesPurchased(processesPurchased);
         _requireValidPayment(processesPurchased, msg.value);
@@ -469,28 +435,26 @@ contract DiamondDawn is
         _tokenIdCounter.increment();
         _safeMint(_msgSender(), tokenId);
 
+        // Allocate a random diamond from the mine
+        uint diamondId = _diamondDawnMine.allocateDiamond();
+
         // Store token metadata
         _tokensMetadata[tokenId] = Metadata({
             stage: Stage.MINE,
-            cutable: processesPurchased >= 1,
-            polishable: processesPurchased == 2,
-            shape: Shape.ROUGH
+            diamondId: diamondId
         });
 
         // Restrict another mint by the same miner
         delete mintAllowedAddresses[_msgSender()];
     }
 
-    function cut(uint256 tokenId) public payable 
+    function cut(uint256 tokenId) public 
         whenStageIsActive(Stage.CUT) 
     {
         _process(tokenId, CUT_PRICE);
-
-        uint randomNumber = _getRandomNumber();
-        _tokensMetadata[tokenId].shape = Shape(randomNumber);
     }
 
-    function polish(uint256 tokenId) public payable
+    function polish(uint256 tokenId) public
         whenStageIsActive(Stage.POLISH)
     {
         _process(tokenId, POLISH_PRICE);
@@ -525,9 +489,11 @@ contract DiamondDawn is
     {
         uint256 ownerTokenCount = balanceOf(_owner);
         uint256[] memory tokenIds = new uint256[](ownerTokenCount);
+        
         for (uint256 i; i < ownerTokenCount; i++) {
             tokenIds[i] = tokenOfOwnerByIndex(_owner, i);
         }
+
         return tokenIds;
     }
 
@@ -536,23 +502,16 @@ contract DiamondDawn is
         return _ownerToBurnedTokens[owner].values();
     }
 
-    function getShapeForToken(uint tokenId) public view returns (Shape) {
-        return _tokensMetadata[tokenId].shape;
-    }
-
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override
+    function tokenURI(uint256 tokenId) public view override
+        _requireAssignedMineContract
         returns (string memory)
     {
-        require(
-            _exists(tokenId),
-            "ERC721: URI query for nonexistent token"
-        );
-        require(address(_diamondDawnMine) != address(0),"DiamondDawn: Contract tokenURI Not Set");
+        require(_exists(tokenId), "ERC721: URI query for nonexistent token");
+        
         string memory videoUrl = _getVideoUrl(tokenId);
+        uint diamondId = _tokensMetadata[tokenId].diamondId;
+        Stage diamondStage = _tokensMetadata[tokenId].stage;
 
-        return _diamondDawnMine.tokenMetadata(videoUrl, uint256(_tokensMetadata[tokenId].stage), uint256(_tokensMetadata[tokenId].stage) * 20 + 20, uint256(_tokensMetadata[tokenId].shape));
+        return _diamondDawnMine.getDiamondMetadata(diamondId, tokenId, diamondStage, videoUrl);
     }
 }

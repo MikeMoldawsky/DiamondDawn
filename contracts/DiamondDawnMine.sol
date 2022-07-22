@@ -70,15 +70,39 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         }
     }
 
+    function _getRandomNumber(uint maxNumber) internal view returns (uint) {
+        // TODO: Add the comments below to the method inline documentation.
+        // maxNumber instead of range in-order to save gas assuming the randomization will always start with 0.
+        // maxNumber is inclusive.
+        return
+            uint(
+                keccak256(abi.encodePacked(block.timestamp, block.difficulty))
+            ) % maxNumber;
+    }
+
+    function _popUnassignedDiamond(uint index) internal returns (DiamondMetadata memory) {
+        DiamondMetadata memory diamond = _unassignedDiamonds[index];
+        
+        // Move the last element into the place to delete
+        _unassignedDiamonds[index] = _unassignedDiamonds[_unassignedDiamonds.length - 1];
+        _unassignedDiamonds.pop();
+        
+        return diamond;
+    }
+
+    modifier _requireExistingUnassignedDiamond() {
+        require(_unassignedDiamonds.length > 0, "DiamondDawnMine: Insufficient diamonds in the pool");
+        _;
+    }
+
     function allocateDiamond() public 
         onlyDiamondDawn
+        _requireExistingUnassignedDiamond
         returns (uint)
     {
-        require(_unassignedDiamonds.length > 0, "DDMine: Insufficient diamonds in the pool");
-        // TODO: Consider randomization of the popped index
-        DiamondMetadata memory diamond = _unassignedDiamonds.pop();
+        uint randomIndex = _getRandomNumber(_unassignedDiamonds.length - 1);
+        DiamondMetadata memory diamond = _popUnassignedDiamond(randomIndex);
         uint diamondId = diamond.GIAReportId;
-
         _assignedDiamonds[diamondId] = diamond;
 
         return diamond.GIAReportId;
@@ -104,12 +128,12 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         string memory videoUrl
     ) private view returns (string memory) {        
         ERC721MetadataStructure memory metadata = ERC721MetadataStructure({
-            name: string(abi.encodePacked("Diamond Dawn #", tokenId.toString())),
+            name: string(abi.encodePacked("Diamond Dawn #", Strings.toString(tokenId))),
             // TODOL: Add real description
             description: "Diamond Dawn tokens description",
             createdBy: "Diamond Dawn",
             image: videoUrl,
-            attributes: _getJsonAttributes(diamondMetadata)
+            attributes: _getJsonAttributes(diamondMetadata, stage)
         });
 
         return _generateERC721Metadata(metadata);
@@ -119,8 +143,8 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         // TODO: Populate the attributes by stage visibility
         ERC721MetadataAttribute[] memory metadataAttributes = new ERC721MetadataAttribute[](11);
 
-        metadataAttributes[0] = _getERC721MetadataAttribute(false, true, false, "", "GIA Report ID", diamondMetadata.GIAReportId.toString());
-        metadataAttributes[1] = _getERC721MetadataAttribute(false, true, false, "", "GIA Report Date", diamondMetadata.GIAReportDate.toString());
+        metadataAttributes[0] = _getERC721MetadataAttribute(false, true, false, "", "GIA Report ID", Strings.toString(diamondMetadata.GIAReportId));
+        metadataAttributes[1] = _getERC721MetadataAttribute(false, true, false, "", "GIA Report Date", Strings.toString(diamondMetadata.GIAReportDate));
         metadataAttributes[2] = _getERC721MetadataAttribute(false, true, false, "", "Shape and Cutting Style", diamondMetadata.shape);
         metadataAttributes[3] = _getERC721MetadataAttribute(false, true, false, "", "Measurements", diamondMetadata.measurements);
         metadataAttributes[4] = _getERC721MetadataAttribute(false, true, false, "", "Carat Weight", diamondMetadata.caratWeight);
@@ -166,15 +190,9 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
           byteString,
           _pushJsonPrimitiveStringAttribute("created_by", metadata.createdBy, true));
     
-        if(metadata.isImageLinked) {
-            byteString = abi.encodePacked(
-                byteString,
-                _pushJsonPrimitiveStringAttribute("image", metadata.image, true));
-        } else {
-            byteString = abi.encodePacked(
-                byteString,
-                _pushJsonPrimitiveStringAttribute("image_data", metadata.image, true));
-        }
+        byteString = abi.encodePacked(
+            byteString,
+            _pushJsonPrimitiveStringAttribute("image", metadata.image, true));
 
         byteString = abi.encodePacked(
           byteString,
