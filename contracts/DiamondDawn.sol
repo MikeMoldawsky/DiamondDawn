@@ -12,6 +12,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "./interface/IDiamondDawnMine.sol";
+import "./interface/DiamondDawnStage.sol";
 
 /**
  * @title DiamondDawn NFT Contract 
@@ -27,14 +28,6 @@ contract DiamondDawn is
 {
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
-
-    enum Stage {
-        MINE,
-        CUT,
-        POLISH,
-        PHYSICAL,
-        REBIRTH
-    }
 
     enum Shape {
         OVAL,
@@ -559,9 +552,7 @@ contract DiamondDawn is
         );
         require(address(_diamondDawnMine) != address(0),"DiamondDawn: Contract tokenURI Not Set");
         string memory videoUrl = _getVideoUrl(tokenId);
-        string memory _cutable = _tokensMetadata[tokenId].cutable ? '"Yes"' : '"No"';
-        string memory _polishable = _tokensMetadata[tokenId].polishable ? '"Yes"' : '"No"';
 
-        return _diamondDawnMine.tokenMetadata(videoUrl, uint256(_tokensMetadata[tokenId].stage), uint256(_tokensMetadata[tokenId].stage) * 20 + 20, uint256(_tokensMetadata[tokenId].shape), _cutable, _polishable);
+        return _diamondDawnMine.tokenMetadata(videoUrl, uint256(_tokensMetadata[tokenId].stage), uint256(_tokensMetadata[tokenId].stage) * 20 + 20, uint256(_tokensMetadata[tokenId].shape));
     }
 }
