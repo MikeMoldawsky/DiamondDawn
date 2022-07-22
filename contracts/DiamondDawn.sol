@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.14;
+pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -41,10 +41,6 @@ contract DiamondDawn is
     Stage public stage;
     IDiamondDawnMine private _diamondDawnMine;
     uint public constant MINING_PRICE = 0.002 ether;
-    uint public constant CUT_PRICE = 0.004 ether;
-    uint public constant POLISH_PRICE = 0.006 ether;
-    uint public constant PREPAID_CUT_PRICE = 0.002 ether;
-    uint public constant PREPAID_POLISH_PRICE = 0.004 ether;
     bool public isStageActive;
     mapping(address => bool) public mintAllowedAddresses;
     mapping(Stage => string) private _videoUrls;
@@ -307,7 +303,7 @@ contract DiamondDawn is
         return _getNextStage(_tokensMetadata[tokenId].stage);
     }
 
-    function _process(uint256 tokenId, uint processingPrice) internal {
+    function _process(uint256 tokenId) internal {
         require(
             _isApprovedOrOwner(_msgSender(), tokenId),
             "ERC721: caller is not token owner nor approved"
@@ -353,36 +349,15 @@ contract DiamondDawn is
         );
     }
 
-    function _requireValidPayment(uint processesPurchased, uint value)
+    function _requireValidPayment(uint value)
         internal
         pure
     {
-        uint price = MINING_PRICE;
-        if (processesPurchased > 0) {
-            price += PREPAID_CUT_PRICE;
-        }
-        if (processesPurchased > 1) {
-            price += PREPAID_POLISH_PRICE;
-        }
-
         require(
-            value == price,
+            value == MINING_PRICE,
             string.concat(
                 "Wrong payment - payment should be: ",
-                Strings.toString(price)
-            )
-        );
-    }
-
-    function _requireValidProcessesPurchased(uint processesPurchased)
-        internal
-        pure
-    {
-        require(
-            processesPurchased <= uint(MAX_STAGE) - 1,
-            string.concat(
-                "Purchased processes should be less than or equal to ",
-                Strings.toString(uint(MAX_STAGE) - 1)
+                Strings.toString(MINING_PRICE)
             )
         );
     }
@@ -422,13 +397,12 @@ contract DiamondDawn is
 
     /**********************        Transactions        ************************/
 
-    function mine(uint processesPurchased) public payable
+    function mine() public payable
         whenStageIsActive(Stage.MINE)
         _requireAllowedMiner
         _requireAssignedMineContract
     {
-        _requireValidProcessesPurchased(processesPurchased);
-        _requireValidPayment(processesPurchased, msg.value);
+        _requireValidPayment(msg.value);
 
         // Regular mint logics
         uint256 tokenId = _tokenIdCounter.current();
@@ -451,13 +425,13 @@ contract DiamondDawn is
     function cut(uint256 tokenId) public 
         whenStageIsActive(Stage.CUT) 
     {
-        _process(tokenId, CUT_PRICE);
+        _process(tokenId);
     }
 
     function polish(uint256 tokenId) public
         whenStageIsActive(Stage.POLISH)
     {
-        _process(tokenId, POLISH_PRICE);
+        _process(tokenId);
     }
 
     function burn(uint256 tokenId) public override

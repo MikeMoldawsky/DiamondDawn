@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.14;
+pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
@@ -126,7 +126,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         uint tokenId,
         Stage stage,
         string memory videoUrl
-    ) private view returns (string memory) {        
+    ) private pure returns (string memory) {        
         ERC721MetadataStructure memory metadata = ERC721MetadataStructure({
             name: string(abi.encodePacked("Diamond Dawn #", Strings.toString(tokenId))),
             // TODOL: Add real description
