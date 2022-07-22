@@ -7,7 +7,7 @@ const hre = require("hardhat");
 const path = require("path");
 const { ethers } = require("ethers");
 const mongoose = require("mongoose");
-const { updateDiamondDawnContract } = require("../db/contract-db-manager");
+const { updateDiamondDawnContract, updateDiamondDawnMineContract } = require("../db/contract-db-manager");
 
 async function main() {
   if (!hre.network.name) {
@@ -73,13 +73,18 @@ async function main() {
       deployerBalance.sub(deployerNewBalance)
     ),
   });
+  
+  const DiamondDawnMineArtifact = hre.artifacts.readArtifactSync("DiamondDawnMine");
+  console.log("Updating db with DiamondDawnMine artifact");
+  await updateDiamondDawnMineContract(diamondDawn.address, DiamondDawnMineArtifact);
   const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
-  console.log("Updating db with DiamondDawn artifacts");
+  console.log("Updating db with DiamondDawn artifact");
   await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
   // TODO(mike): check what's the best way to create & close a connection with mongoose
   await mongoose.disconnect(); // build doesn't finish without disconnect
-  // We also save the contract's artifacts and address in the frontend directory
+
   console.log("Successfully updated db with DiamondDawn artifacts");
+  
   if (hre.network.name === "goerli") {
     try {
       console.log("Verifying DiamondDawnMine contract");
