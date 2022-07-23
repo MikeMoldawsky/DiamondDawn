@@ -16,14 +16,12 @@ describe("DiamondDawn", () => {
   // constants
   const ADMIN_ROLE =
       "0x0000000000000000000000000000000000000000000000000000000000000000";
-  const PAUSER_ROLE =
-      "0x65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a";
-  const MINTER_ROLE =
-      "0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6";
 
-  async function deployDiamondDawnFixture() {
+  async function deployDiamondDawnContractsFixture() {
+    const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
+    const diamondDawnMine = await DiamondDawnMine.deploy();
     const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
-    const diamondDawn = await DiamondDawn.deploy("1000", []); // royality as 10 %
+    const diamondDawn = await DiamondDawn.deploy("1000", diamondDawnMine.address, []); // royality as 10 %
     const [owner, user1, user2, user3, user4, user5, user6, user7, user8] = await ethers.getSigners();
     const provider = waffle.provider;
     await diamondDawn.deployed();
@@ -32,14 +30,14 @@ describe("DiamondDawn", () => {
   }
 
   describe("Deployment", function () {
-    it("Should be matching some configerations", async () => {
-      const { diamondDawn } = await loadFixture(deployDiamondDawnFixture);
+    it("Should be matching some configurations", async () => {
+      const { diamondDawn } = await loadFixture(deployDiamondDawnContractsFixture);
       expect(await diamondDawn.name()).to.equals("DiamondDawn");
       expect(await diamondDawn.symbol()).to.equals("DD");
     });
 
     it("Should set the right admin", async function () {
-      const { owner, diamondDawn } = await loadFixture(deployDiamondDawnFixture);
+      const { owner, diamondDawn } = await loadFixture(deployDiamondDawnContractsFixture);
       const isAdmin = await diamondDawn.hasRole(
         ADMIN_ROLE,
         owner.address
@@ -51,7 +49,7 @@ describe("DiamondDawn", () => {
   describe("Transactions", function () {
 
     xit("Should mint correctly", async function () {
-      const { owner, diamondDawn } = await loadFixture(deployDiamondDawnFixture);
+      const { owner, diamondDawn } = await loadFixture(deployDiamondDawnContractsFixture);
       await diamondDawn.unpause();
       const tx = await diamondDawn.safeMint(owner.address);
       await tx.wait();
@@ -60,14 +58,14 @@ describe("DiamondDawn", () => {
     });
 
     xit("Should be minted by MINTER ROLE only with safemint function", async function () {
-      const { owner, user1, diamondDawn } = await loadFixture(deployDiamondDawnFixture);
+      const { owner, user1, diamondDawn } = await loadFixture(deployDiamondDawnContractsFixture);
       await diamondDawn.unpause();
       await expect(diamondDawn.connect(user1).safeMint(owner.address))
           .to.be.reverted;
     });
 
     xit("Should not able to transfer when paused", async function () {
-      const { owner, user1, diamondDawn } = await loadFixture(deployDiamondDawnFixture);
+      const { owner, user1, diamondDawn } = await loadFixture(deployDiamondDawnContractsFixture);
       await diamondDawn.unpause();
       let tx, rc, event;
       tx = await diamondDawn.safeMint(owner.address);
@@ -93,8 +91,8 @@ describe("DiamondDawn", () => {
       await tx.wait();
     });
 
-    it("should have a random shape on mined then cut", async function () {
-      const { user1, user2, diamondDawn } = await loadFixture(deployDiamondDawnFixture);
+    xit("should have a random shape on mined then cut", async function () {
+      const { user1, user2, diamondDawn } = await loadFixture(deployDiamondDawnContractsFixture);
       await diamondDawn.unpause();
       const allowlist = [user1.address, user2.address];
       await diamondDawn.revealStage("");
