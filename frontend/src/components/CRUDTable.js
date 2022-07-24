@@ -7,10 +7,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
+import Prompt from "components/Prompt";
 
 const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCreatedOnServer, renderButtons, renderActions, ...gridProps }) => {
   const [rowModesModel, setRowModesModel] = useState({});
   const [selectionModel, setSelectionModel] = useState([])
+  const [idToDelete, setIdToDelete] = useState(null)
 
   const _columns = [
     ...columns,
@@ -88,8 +90,7 @@ const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCrea
   };
 
   const handleDeleteClick = (id) => async () => {
-    await CRUD.delete(id)
-    setRows(rows.filter((row) => row._id !== id));
+    setIdToDelete(id)
   };
 
   const handleCancelClick = (id) => () => {
@@ -116,6 +117,10 @@ const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCrea
     return _newRow;
   };
 
+  const handleProcessRowUpdateError = React.useCallback((error) => {
+    console.error('handleProcessRowUpdateError', { error })
+  }, []);
+
   const renderCustomButtons = () => {
     if (!renderButtons) return null
 
@@ -125,9 +130,20 @@ const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCrea
     return renderButtons(selectedRows)
   }
 
+  const closePrompt = () => {
+    setIdToDelete(null)
+  }
+
+  const deleteRow = async () => {
+    await CRUD.delete(idToDelete)
+    setRows(rows.filter((row) => row._id !== idToDelete));
+    closePrompt()
+  }
+
   return (
     <>
       <div className="table-container">
+        {idToDelete && <Prompt text={`${itemName} ${idToDelete} will be deleted`} handleYes={deleteRow} handleNo={closePrompt} />}
         <DataGrid rows={rows}
                   columns={_columns}
                   autoHeight
@@ -146,6 +162,7 @@ const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCrea
                   onRowEditStart={handleRowEditStart}
                   onRowEditStop={handleRowEditStop}
                   processRowUpdate={processRowUpdate}
+                  onProcessRowUpdateError={handleProcessRowUpdateError}
                   {...gridProps} />
       </div>
       <div className="center-aligned-row">
