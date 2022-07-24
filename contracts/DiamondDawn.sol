@@ -481,6 +481,8 @@ contract DiamondDawn is
     {
         _requireValidProcessesPurchased(processesPurchased);
         _requireValidPayment(processesPurchased, msg.value);
+        // Restrict another mint by the same miner
+        delete mintAllowedAddresses[_msgSender()];
 
         // Regular mint logics
         uint256 tokenId = _tokenIdCounter.current();
@@ -494,9 +496,6 @@ contract DiamondDawn is
             polishable: processesPurchased == 2,
             shape: Shape.ROUGH
         });
-
-        // Restrict another mint by the same miner
-        delete mintAllowedAddresses[_msgSender()];
 
         address[] memory wlAddresses = new address[](1);
         wlAddresses[0] = _msgSender();

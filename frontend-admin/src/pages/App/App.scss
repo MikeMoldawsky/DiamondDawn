@@ -1,0 +1,280 @@
+@import "css/vars";
+@import '../../assets/fonts/fonts.css';
+
+html,
+body,
+#root,
+.main-layout,
+.main-layout > div[data-rk] {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: black;
+  color: white;
+}
+
+* {
+  font-family: 'Saira', monospace;
+  font-weight: 300;
+}
+
+#root {
+  z-index: 1;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.center-aligned-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button {
+  font-size: 1.2em;
+  color: $dark;
+  background-color: $white;
+  height: 56px;
+  border-radius: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30px;
+  border: solid 1px transparent;
+  cursor: pointer;
+  font-weight: 500;
+  width: auto;
+
+  .button-text {
+    font-weight: 500;
+  }
+
+  span > span {
+    background-color: $dark !important;
+  }
+
+  svg {
+    margin-right: 10px;
+  }
+  
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  &:hover:not(.disabled) {
+    color: $white;
+    background-color: $dark;
+    border-color: $white;
+  }
+
+  &.link {
+    color: $white;
+    background-color: $dark;
+    border-color: transparent !important;
+
+    span > span {
+      background-color: $white !important;
+    }
+  }
+}
+
+input[type=text] {
+  width: 100%;
+  height: 48px;
+  padding: 0 10px;
+  border: none;
+  border-left: solid 6px white;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.validation-error {
+    border-color: $light-red;
+  }
+}
+
+.video-placeholder {
+  margin-top: 80px;
+  height: $videoHeight;
+  width: $videoWidth;
+  background-color: rgba(255, 255, 255, .2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8em;
+  cursor: pointer;
+}
+
+.app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: $dark;
+  color: $white;
+  position: relative;
+
+  main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 30px;
+  }
+
+  .countdown-view {
+    text-align: center;
+
+    .leading-text {
+      font-size: 1.2em;
+    }
+
+    .countdown {
+      font-size: 2em;
+    }
+  }
+
+  .countdown-row {
+    width: 670px;
+    margin: 0 auto;
+
+    div {
+      font-size: 1.2em;
+    }
+
+    span {
+      width: 480px;
+      font-size: 5em;
+      opacity: .4;
+    }
+  }
+
+  .action-view {
+    text-align: center;
+
+    .leading-text {
+      font-size: 2em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .secondary-text {
+      font-size: 1.5em;
+      color: #7E7D7D;
+      margin-bottom: 40px;
+    }
+
+    .countdown {
+      margin-top: 50px;
+
+      .countdown-text {
+        font-size: 1.5em;
+      }
+
+      span {
+        font-size: 1.8em
+      }
+    }
+  }
+
+  .action-button {
+    width: 200px;
+    margin: 0 auto 40px;
+  }
+
+  .content {
+    cursor: pointer;
+    z-index: 1;
+    position: absolute;
+    padding: 100px 300px;
+    background-color: $dark;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    border: solid 1px silver;
+    border-radius: 10px;
+  }
+
+  //.react-player {
+  //  position: fixed;
+  //  right: 0;
+  //  bottom: 0;
+  //  min-width: 100%;
+  //  min-height: 100%;
+  //  opacity: 1;
+  //}
+
+  &.show-content {
+    .content {
+      transition: opacity 0.25s ease-in;
+      transition-delay: 0.25s;
+      opacity: 1;
+    }
+
+    .react-player {
+      transition: opacity 0.25s ease-in;
+      opacity: 0.4;
+    }
+
+    header .replay-btn {
+      opacity: 1;
+      transition-delay: 0.25s;
+    }
+  }
+
+  &.hide-content {
+    .content {
+      transition: opacity 0.25s ease-in;
+      opacity: 0;
+    }
+
+    .react-player {
+      transition: opacity 0.25s ease-in;
+      transition-delay: 0.25s;
+      opacity: 1;
+    }
+
+    header .replay-btn {
+      opacity: 0;
+      transition-delay: unset;
+    }
+  }
+}
+
+.tabs {
+  .tabs-header {
+    justify-content: center;
+  }
+}
+
+.Toastify__toast-container {
+  top: 80px !important;
+}
+
+.MuiTextField-root {
+  background-color: white !important;
+}
+
+@media only screen and (max-width: 767px) {
+  .button {
+    font-size: 1em;
+    padding: 0 24px;
+    height: 44px;
+  }
+}

@@ -48,8 +48,6 @@ const ContractProvider = ({ children }) => {
 }
 
 function WagmiWrapper({ children }) {
-  console.log("MIKE DELETE THIS LINE", {localChain})
-
   const { chains, provider } = configureChains(
     [chain.goerli, chain.ropsten, chain.polygonMumbai, localChain],
     [
