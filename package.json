@@ -12,6 +12,8 @@
     "prettier": "prettier --write 'contracts/**/*.sol'",
     "quick-test": "hardhat test",
     "coverage": "npm run compile && hardhat coverage",
+    "prebuild-app": "cp frontend/src/layout/MainLayout.js frontend/src/layout/Layout.js",
+    "prebuild-admin": "cp frontend/src/layout/AdminLayout.js frontend/src/layout/Layout.js",
     "build": "npx hardhat run scripts/deploy.js",
     "build-dev": "npx hardhat run scripts/deploy.js",
     "postbuild": "cd frontend && npm run build",
