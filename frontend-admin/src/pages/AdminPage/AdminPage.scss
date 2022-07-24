@@ -11,7 +11,13 @@
   }
 
   .Mui-error {
-    color: red;
+    background-color: #e98383;
+  }
+
+  .MuiInputBase-input {
+    border-left: none !important;
+    padding: 17px 6px;
+    margin-bottom: 0 !important;
   }
 
   .button {

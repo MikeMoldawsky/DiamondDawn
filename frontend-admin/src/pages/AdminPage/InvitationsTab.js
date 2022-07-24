@@ -32,18 +32,18 @@ const createInvitation = async () => {
   }
 }
 
-const updateInvite = async (diamond) => {
+const updateInvite = async (invite) => {
   try {
-    const { data } = await axios.post(`/api/update_invite`, diamond)
+    const { data } = await axios.post(`/api/update_invite`, invite)
     return data
   } catch (e) {
     return null
   }
 }
 
-const deleteInvite = async (diamondId) => {
+const deleteInvite = async (inviteId) => {
   try {
-    const { data } = await axios.post(`/api/delete_invite`, { diamondId })
+    const { data } = await axios.post(`/api/delete_invite`, { inviteId })
     return data
   } catch (e) {
     return null
