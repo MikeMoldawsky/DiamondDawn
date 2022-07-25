@@ -4,14 +4,14 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "scripts": {
-    "hardhat": "../node_modules/.bin/hardhat",
+    "hardhat": "hardhat",
     "compile": "SKIP_LOAD=true hardhat clean && SKIP_LOAD=true hardhat compile",
     "test": "npm run compile && REPORT_GAS=true hardhat test",
-    "lint": "../node_modules/.bin/prettier --list-different 'contracts/**/*.sol'",
-    "format": "../node_modules/.bin/prettier --write 'contracts/**/*.sol'",
-    "prettier": "../node_modules/.bin/prettier --write 'contracts/**/*.sol'",
-    "quick-test": "../node_modules/.bin/hardhat test",
-    "coverage": "npm run compile && ../node_modules/.bin/hardhat coverage",
+    "lint": "prettier --list-different 'contracts/**/*.sol'",
+    "format": "prettier --write 'contracts/**/*.sol'",
+    "prettier": "prettier --write 'contracts/**/*.sol'",
+    "quick-test": "hardhat test",
+    "coverage": "npm run compile && hardhat coverage",
     "build": "npx hardhat run scripts/deploy.js"
   },
   "repository": {
