@@ -54,6 +54,12 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/develop' }}
     needs: [compile_and_run_tests]
+    env:
+      HARDHAT_NETWORK: goerli
+      GOERLI_URL: ${{ secrets.GOERLI_URL }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
     defaults:
       run:
         working-directory: ./smart-contracts
