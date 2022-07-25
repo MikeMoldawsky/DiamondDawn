@@ -27,7 +27,7 @@ jobs:
         with:
           path: coverage/cobertura-coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          minimum_coverage: 10
+          minimum_coverage: 0
           fail_below_threshold: True
           show_line: True
           show_branch: True

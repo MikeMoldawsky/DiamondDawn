@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.14;
+pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -11,6 +11,8 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
+import "./interface/IDiamondDawnMine.sol";
+import "./types/Stage.sol";
 
 /**
  * @title DiamondDawn NFT Contract 
@@ -27,26 +29,9 @@ contract DiamondDawn is
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
 
-    enum Stage {
-        MINE,
-        CUT,
-        POLISH,
-        PHYSICAL,
-        REBIRTH
-    }
-
-    enum Shape {
-        OVAL,
-        RADIANT,
-        PEAR,
-        ROUGH
-    }
-
     struct Metadata {
         Stage stage;
-        bool cutable;
-        bool polishable;
-        Shape shape;
+        uint diamondId;
     }
 
     event StageChanged(Stage stage, bool isStageActive);
@@ -62,11 +47,8 @@ contract DiamondDawn is
     Counters.Counter private _tokenIdCounter;
     Stage private constant MAX_STAGE = Stage.REBIRTH;
     Stage public stage;
+    IDiamondDawnMine private _diamondDawnMine;
     uint public constant MINING_PRICE = 0.002 ether;
-    uint public constant CUT_PRICE = 0.004 ether;
-    uint public constant POLISH_PRICE = 0.006 ether;
-    uint public constant PREPAID_CUT_PRICE = 0.002 ether;
-    uint public constant PREPAID_POLISH_PRICE = 0.004 ether;
     bool public isStageActive;
     mapping(address => bool) public mintAllowedAddresses;
     mapping(Stage => string) private _videoUrls;
@@ -80,7 +62,7 @@ contract DiamondDawn is
      *                                                                        *
      **************************************************************************/
 
-    constructor(uint96 _royaltyFeesInBips, address[] memory adminAddresses) ERC721("DiamondDawn", "DD") {
+    constructor(uint96 _royaltyFeesInBips, address _diamondDawnMineContract, address[] memory adminAddresses) ERC721("DiamondDawn", "DD") {
         // TODO: remove allow-list + admin from production and use grant role
         _setAdminAndAddToAllowList(adminAddresses);
 //        mintAllowedAddresses[_msgSender()] = true;
@@ -89,6 +71,7 @@ contract DiamondDawn is
         stage = Stage.MINE;
         isStageActive = false;
         setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
+        _diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
         _pause();
     }
 
@@ -292,6 +275,21 @@ contract DiamondDawn is
         emit WhitelistUpdated(WhitelistAction.REMOVE, addresses);
     }
 
+    /** 
+    * @notice Making a function to set Address for Diamond Metadata Contract.
+    *
+    * @dev This function is only available to the admin role.
+    *
+    * @param _diamondDawnMineContract a address of diamond metadata contract.
+    */
+    function setDiamondDawnMine(address _diamondDawnMineContract) public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        require(address(_diamondDawnMineContract) != address(0),"DiamondDawn: Address zero passed as DiamondDawnMetadata Contract");
+        _diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
+    }
+
+
     /***********  TODO: Remove before production - Dev Tooling  **************/
 
     function dev__ResetStage() public {
@@ -334,7 +332,7 @@ contract DiamondDawn is
         return _getNextStage(_tokensMetadata[tokenId].stage);
     }
 
-    function _process(uint256 tokenId, uint processingPrice) internal {
+    function _process(uint256 tokenId) internal {
         require(
             _isApprovedOrOwner(_msgSender(), tokenId),
             "ERC721: caller is not token owner nor approved"
@@ -348,19 +346,6 @@ contract DiamondDawn is
             )
         );
 
-        if (
-            (stage == Stage.CUT && !_tokensMetadata[tokenId].cutable) ||
-            (stage == Stage.POLISH && !_tokensMetadata[tokenId].polishable)
-        ) {
-            require(
-                msg.value == processingPrice,
-                string.concat(
-                    "Wrong payment - payment should be: ",
-                    Strings.toString(processingPrice)
-                )
-            );
-        }
-
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
     }
 
@@ -371,27 +356,6 @@ contract DiamondDawn is
                 _baseURI(),
                 _videoUrls[_tokensMetadata[tokenId].stage]
             );
-    }
-
-    function _getRandomNumber() internal view returns (uint) {
-        uint randomNumber = _randomModulo(100);
-        // 0  - 34 it will be shape 1
-        // 35 - 70 it will be shape 2
-        // 70 - 99 it will be shape 3
-        if (randomNumber <= 34) {
-            return 0;
-        } else if (randomNumber >= 35 && randomNumber <= 70) {
-            return 1;
-        } else {
-            return 2;
-        }
-    }
-
-    function _randomModulo(uint modulo) internal view returns (uint) {
-        return
-            uint(
-                keccak256(abi.encodePacked(block.timestamp, block.difficulty))
-            ) % modulo;
     }
 
     /**********************           Guards            ************************/
@@ -414,36 +378,15 @@ contract DiamondDawn is
         );
     }
 
-    function _requireValidPayment(uint processesPurchased, uint value)
+    function _requireValidPayment(uint value)
         internal
         pure
     {
-        uint price = MINING_PRICE;
-        if (processesPurchased > 0) {
-            price += PREPAID_CUT_PRICE;
-        }
-        if (processesPurchased > 1) {
-            price += PREPAID_POLISH_PRICE;
-        }
-
         require(
-            value == price,
+            value == MINING_PRICE,
             string.concat(
                 "Wrong payment - payment should be: ",
-                Strings.toString(price)
-            )
-        );
-    }
-
-    function _requireValidProcessesPurchased(uint processesPurchased)
-        internal
-        pure
-    {
-        require(
-            processesPurchased <= uint(MAX_STAGE) - 1,
-            string.concat(
-                "Purchased processes should be less than or equal to ",
-                Strings.toString(uint(MAX_STAGE) - 1)
+                Strings.toString(MINING_PRICE)
             )
         );
     }
@@ -473,14 +416,22 @@ contract DiamondDawn is
         _;
     }
 
+    modifier _requireAssignedMineContract() {
+        require(
+            address(_diamondDawnMine) != address(0),
+            "DiamondDawn: DiamondDawnMine contract is not set"
+        );
+        _;
+    }
+
     /**********************        Transactions        ************************/
 
-    function mine(uint processesPurchased) public payable
+    function mine() public payable
         whenStageIsActive(Stage.MINE)
         _requireAllowedMiner
+        _requireAssignedMineContract
     {
-        _requireValidProcessesPurchased(processesPurchased);
-        _requireValidPayment(processesPurchased, msg.value);
+        _requireValidPayment(msg.value);
         // Restrict another mint by the same miner
         delete mintAllowedAddresses[_msgSender()];
 
@@ -489,12 +440,13 @@ contract DiamondDawn is
         _tokenIdCounter.increment();
         _safeMint(_msgSender(), tokenId);
 
+        // Allocate a random diamond from the mine
+        uint diamondId = _diamondDawnMine.allocateDiamond();
+
         // Store token metadata
         _tokensMetadata[tokenId] = Metadata({
             stage: Stage.MINE,
-            cutable: processesPurchased >= 1,
-            polishable: processesPurchased == 2,
-            shape: Shape.ROUGH
+            diamondId: diamondId
         });
 
         address[] memory wlAddresses = new address[](1);
@@ -502,19 +454,16 @@ contract DiamondDawn is
         emit WhitelistUpdated(WhitelistAction.USE, wlAddresses);
     }
 
-    function cut(uint256 tokenId) public payable 
+    function cut(uint256 tokenId) public 
         whenStageIsActive(Stage.CUT) 
     {
-        _process(tokenId, CUT_PRICE);
-
-        uint randomNumber = _getRandomNumber();
-        _tokensMetadata[tokenId].shape = Shape(randomNumber);
+        _process(tokenId);
     }
 
-    function polish(uint256 tokenId) public payable
+    function polish(uint256 tokenId) public
         whenStageIsActive(Stage.POLISH)
     {
-        _process(tokenId, POLISH_PRICE);
+        _process(tokenId);
     }
 
     function burn(uint256 tokenId) public override
@@ -546,9 +495,11 @@ contract DiamondDawn is
     {
         uint256 ownerTokenCount = balanceOf(_owner);
         uint256[] memory tokenIds = new uint256[](ownerTokenCount);
+        
         for (uint256 i; i < ownerTokenCount; i++) {
             tokenIds[i] = tokenOfOwnerByIndex(_owner, i);
         }
+
         return tokenIds;
     }
 
@@ -557,39 +508,16 @@ contract DiamondDawn is
         return _ownerToBurnedTokens[owner].values();
     }
 
-    function getShapeForToken(uint tokenId) public view returns (Shape) {
-        return _tokensMetadata[tokenId].shape;
-    }
-
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override
+    function tokenURI(uint256 tokenId) public view override
+        _requireAssignedMineContract
         returns (string memory)
     {
-        string memory videoUrl = _getVideoUrl(tokenId);
-        string memory json = Base64.encode(
-            bytes(
-                string(
-                    abi.encodePacked(
-                        '{"name": "Diamond Dawn", "description": "This is the description of Diamond Dawn Project", "image": "',
-                        videoUrl,
-                        '", "animation_url": "',
-                        videoUrl,
-                        '", "stage": ',
-                        Strings.toString(uint(_tokensMetadata[tokenId].stage)),
-                        ', "shape": ',
-                        Strings.toString(uint(_tokensMetadata[tokenId].shape)),
-                        ', "cutable": ',
-                        _tokensMetadata[tokenId].cutable ? "true" : "false",
-                        ', "polishable": ',
-                        _tokensMetadata[tokenId].polishable ? "true" : "false",
-                        " }"
-                    )
-                )
-            )
-        );
+        require(_exists(tokenId), "ERC721: URI query for nonexistent token");
         
-        return string(abi.encodePacked("data:application/json;base64,", json));
+        string memory videoUrl = _getVideoUrl(tokenId);
+        uint diamondId = _tokensMetadata[tokenId].diamondId;
+        Stage diamondStage = _tokensMetadata[tokenId].stage;
+
+        return _diamondDawnMine.getDiamondMetadata(diamondId, tokenId, diamondStage, videoUrl);
     }
 }

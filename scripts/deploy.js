@@ -6,7 +6,7 @@
 const hre = require("hardhat");
 const { ethers } = require("ethers");
 const mongoose = require("mongoose");
-const { updateDiamondDawnContract } = require("../db/contract-db-manager");
+const { updateDiamondDawnContract, updateDiamondDawnMineContract } = require("../db/contract-db-manager");
 
 async function main() {
   if (!hre.network.name) {
@@ -32,13 +32,16 @@ async function main() {
   // ethers is available in the global scope
   const [deployer] = await hre.ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
-  const deployerBalance = await deployer.getBalance();
   const admins = process.env.ADMINS?.split(" ") || [];
   if (!admins.includes(deployerAddress)) {
     admins.push(deployerAddress);
   }
   const royalty = 1000; // 1000/10000 = 10/100 = 10 %
-  console.log("Deploying DiamondDawn contract", {
+  
+  let deployerBalance = await deployer.getBalance();
+  let deployerNewBalance;
+  
+  console.log("Deploying DiamondDawn contracts", {
     deployerAddress,
     admins,
     royalty,
@@ -46,10 +49,27 @@ async function main() {
     deployerEthBalance: ethers.utils.formatEther(deployerBalance),
     network: hre.network.name,
   });
+
+  const DiamondDawnMine = await hre.ethers.getContractFactory("DiamondDawnMine");
+  const diamondDawnMine = await DiamondDawnMine.deploy();
+  await diamondDawnMine.deployed();
+  deployerNewBalance = await deployer.getBalance();
+
+  console.log("DiamondDawnMine contract successfully deployed", {
+    address: diamondDawnMine.address,
+    deployerBalance: deployerNewBalance.toString(),
+    deployerEthBalance: ethers.utils.formatEther(deployerNewBalance),
+    deploymentEthCost: ethers.utils.formatEther(
+      deployerBalance.sub(deployerNewBalance)
+    ),
+  });
+
+  deployerBalance = deployerNewBalance;
+
   const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
-  const diamondDawn = await DiamondDawn.deploy(royalty, admins);
+  const diamondDawn = await DiamondDawn.deploy(royalty, diamondDawnMine.address, admins);
   await diamondDawn.deployed();
-  const deployerNewBalance = await deployer.getBalance();
+  deployerNewBalance = await deployer.getBalance();
 
   console.log("DiamondDawn contract successfully deployed", {
     address: diamondDawn.address,
@@ -59,16 +79,32 @@ async function main() {
       deployerBalance.sub(deployerNewBalance)
     ),
   });
+  
+  const DiamondDawnMineArtifact = hre.artifacts.readArtifactSync("DiamondDawnMine");
+  console.log("Updating db with DiamondDawnMine artifact");
+  await updateDiamondDawnMineContract(diamondDawn.address, DiamondDawnMineArtifact);
   const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
-  console.log("Updating db with DiamondDawn artifacts");
+  console.log("Updating db with DiamondDawn artifact");
   await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
   // TODO(mike): check what's the best way to create & close a connection with mongoose
   await mongoose.disconnect(); // build doesn't finish without disconnect
-  // We also save the contract's artifacts and address in the frontend directory
+
   console.log("Successfully updated db with DiamondDawn artifacts");
+  
   if (hre.network.name === "goerli") {
     try {
-      console.log("Verifying contract");
+      console.log("Verifying DiamondDawnMine contract");
+      await hre.run("verify:verify", {
+        address: diamondDawn.address,
+        constructorArguments: [royalty, admins],
+      });
+      console.log("Successfully verified the contract");
+    } catch (e) {
+      console.log("Failed to verify contract", e);
+    }
+
+    try {
+      console.log("Verifying DiamondDawn contract");
       await hre.run("verify:verify", {
         address: diamondDawn.address,
         constructorArguments: [royalty, admins],
