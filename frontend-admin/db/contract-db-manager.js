@@ -13,7 +13,9 @@ async function getDiamondDawnMineContract() {
 
 async function getContractByName(name) {
   try {
-    return await ContractModel.findOne({ name });
+    const contract = await ContractModel.findOne({ name });
+    console.log("Got contract by name", {name, contract})
+    return contract;
   } catch (e) {
     console.log(`Failed to get contract ${name}: ${e}`);
   }
