@@ -1,9 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import './PasswordBox.scss'
+import axios from "axios";
 
 const PASSWORD_LENGTH = 10
 const CHECK_TIME = 1750
+
+const checkPassword = async (password) => {
+  try {
+    const { data: isCorrect } = await axios.post(`/api/check_pwd`, { password })
+    return isCorrect
+  } catch (e) {
+    return false
+  }
+}
 
 const PasswordBox = () => {
   const [password, setPassword] = useState("");
@@ -11,23 +21,34 @@ const PasswordBox = () => {
   const [checkingPassword, setCheckingPassword] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
-  const submitPassword = () => {
+  useEffect(() => {
+    if (password.length === PASSWORD_LENGTH) {
+      submitPassword()
+    }
+  }, [password])
+
+  const submitPassword = async () => {
     pwdInput.current.blur()
-    return
     setCheckingPassword(true)
-    setTimeout(() => {
-      setCheckingPassword(false)
+    const isCorrect = await checkPassword(password)
+    setCheckingPassword(false)
+
+    if (isCorrect) {
+      console.log('PASSWORD CORRECT')
+    }
+    else {
       setPasswordError(true)
-      setPassword('')
-    }, CHECK_TIME)
+      setTimeout(() => {
+        setPasswordError(false)
+        setPassword('')
+        pwdInput.current.focus()
+      }, 500)
+    }
   }
 
   const onPasswordChange = e => {
     const pwd = e.target.value
     setPassword(pwd)
-    if (pwd.length === PASSWORD_LENGTH) {
-      submitPassword()
-    }
   };
 
   const onPasswordEnter = e => {
@@ -38,11 +59,11 @@ const PasswordBox = () => {
   }
 
   return (
-    <div className={classNames("password-box", { 'has-error': passwordError })}>
+    <div className={classNames("password-box", { loading: checkingPassword, 'has-error': passwordError })}>
       <div className="password-title">TRY PASSWORD</div>
-      <input ref={pwdInput} type="password"
-             className={classNames({filled: password.length > 0, loading: checkingPassword})}
-             value={password} onChange={onPasswordChange} onKeyPress={onPasswordEnter} maxLength={PASSWORD_LENGTH} />
+      <div className="input-container">
+        <input ref={pwdInput} type="password" value={password} onChange={onPasswordChange} onKeyPress={onPasswordEnter} maxLength={PASSWORD_LENGTH} />
+      </div>
     </div>
   );
 };

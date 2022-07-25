@@ -8,6 +8,7 @@ import SVG from "components/SVG";
 import scrollMarker from 'assets/images/scroll-marker.svg'
 import VideoPlayer from "components/VideoPlayer";
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
+import infinityLogo from 'assets/images/infinity-logo.png'
 import blackStone from 'assets/images/black-stone.png'
 import PasswordBox from "components/PasswordBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,15 +21,7 @@ const Homepage = () => {
       <div className="box box-top">
         <CommonView leadingText="A BILLION YEARS IN THE MAKING"
                     secondaryText="the first ever diamond mining experience, from NFT to reality">
-          <ReactPlayer
-            url={animation}
-            playing
-            playsinline
-            controls={false}
-            muted
-            className="react-player"
-          />
-          <div className="title">DIAMOND DAWN</div>
+          <img src={infinityLogo} alt={''} />
         </CommonView>
         <a href="#video">
           <SVG src={scrollMarker} className="scroll-marker" />
