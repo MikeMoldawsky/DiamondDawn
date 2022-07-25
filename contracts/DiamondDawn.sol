@@ -36,6 +36,14 @@ contract DiamondDawn is
 
     event StageChanged(Stage stage, bool isStageActive);
 
+    enum WhitelistAction {
+        ADD,
+        REMOVE,
+        USE
+    }
+
+    event WhitelistUpdated(WhitelistAction action, address[] addresses);
+
     Counters.Counter private _tokenIdCounter;
     Stage private constant MAX_STAGE = Stage.REBIRTH;
     Stage public stage;
@@ -57,7 +65,7 @@ contract DiamondDawn is
     constructor(uint96 _royaltyFeesInBips, address _diamondDawnMineContract, address[] memory adminAddresses) ERC721("DiamondDawn", "DD") {
         // TODO: remove allow-list + admin from production and use grant role
         _setAdminAndAddToAllowList(adminAddresses);
-        mintAllowedAddresses[_msgSender()] = true;
+//        mintAllowedAddresses[_msgSender()] = true;
         // Production starts from here
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         stage = Stage.MINE;
@@ -246,6 +254,25 @@ contract DiamondDawn is
         for (uint i = 0; i < addresses.length; i++) {
             mintAllowedAddresses[addresses[i]] = true;
         }
+
+        emit WhitelistUpdated(WhitelistAction.ADD, addresses);
+    }
+
+    /**
+    * @notice Removing a list of addresses from the list of allowed addresses to mint tokens.
+    *
+    * @dev This function is only available to the admin role.
+    *
+    * @param addresses a list of addresses to be removed from the list of allowed addresses.
+    */
+    function removeFromAllowList(address[] memory addresses) public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        for (uint i = 0; i < addresses.length; i++) {
+            delete mintAllowedAddresses[addresses[i]];
+        }
+
+        emit WhitelistUpdated(WhitelistAction.REMOVE, addresses);
     }
 
     /** 
@@ -285,6 +312,8 @@ contract DiamondDawn is
             mintAllowedAddresses[addresses[i]] = true;
             _grantRole(DEFAULT_ADMIN_ROLE, addresses[i]);
         }
+
+        emit WhitelistUpdated(WhitelistAction.ADD, addresses);
     }
 
     /**************************************************************************
@@ -403,6 +432,8 @@ contract DiamondDawn is
         _requireAssignedMineContract
     {
         _requireValidPayment(msg.value);
+        // Restrict another mint by the same miner
+        delete mintAllowedAddresses[_msgSender()];
 
         // Regular mint logics
         uint256 tokenId = _tokenIdCounter.current();
@@ -418,8 +449,9 @@ contract DiamondDawn is
             diamondId: diamondId
         });
 
-        // Restrict another mint by the same miner
-        delete mintAllowedAddresses[_msgSender()];
+        address[] memory wlAddresses = new address[](1);
+        wlAddresses[0] = _msgSender();
+        emit WhitelistUpdated(WhitelistAction.USE, wlAddresses);
     }
 
     function cut(uint256 tokenId) public 

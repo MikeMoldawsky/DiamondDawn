@@ -34,7 +34,7 @@ const ContractProvider = ({ children }) => {
       dispatch(setDDContractData(data))
     }
     catch (e) {
-      console.log("Failed to get contract!!!!", e)
+      console.error("Failed to get contract data!!!!", e)
     }
   }
 
@@ -48,9 +48,8 @@ const ContractProvider = ({ children }) => {
 }
 
 function WagmiWrapper({ children }) {
-
   const { chains, provider } = configureChains(
-    [chain.goerli, chain.ropsten, localChain],
+    [chain.goerli, chain.ropsten, chain.polygonMumbai, localChain],
     [
       infuraProvider({ infuraId: "dbe63b3bdfc84f3abdf38cdc8e22f492" }),
       publicProvider(),

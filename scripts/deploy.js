@@ -4,7 +4,6 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
-const path = require("path");
 const { ethers } = require("ethers");
 const mongoose = require("mongoose");
 const { updateDiamondDawnContract, updateDiamondDawnMineContract } = require("../db/contract-db-manager");
@@ -16,6 +15,10 @@ async function main() {
     );
     return;
   }
+
+  console.info("Deploying Diamond Dawn contract", {
+    network: hre.network.name,
+  });
 
   // This is just a convenience check
   if (hre.network.name === "hardhat") {
@@ -30,6 +33,9 @@ async function main() {
   const [deployer] = await hre.ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
   const admins = process.env.ADMINS?.split(" ") || [];
+  if (!admins.includes(deployerAddress)) {
+    admins.push(deployerAddress);
+  }
   const royalty = 1000; // 1000/10000 = 10/100 = 10 %
   
   let deployerBalance = await deployer.getBalance();
