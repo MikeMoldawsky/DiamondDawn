@@ -54,7 +54,7 @@ jobs:
       #     sarif_file: ${{ steps.slither.outputs.sarif }}
   deploy:
     runs-on: ubuntu-latest
-    if: GITHUB_REF_NAME == 'develop'
+    if: ${{ github.ref == 'refs/heads/develop' }}
     needs: [compile_and_run_tests]
     defaults:
       run:
