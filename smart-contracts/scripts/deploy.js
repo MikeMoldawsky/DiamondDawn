@@ -82,7 +82,7 @@ async function main() {
   
   const DiamondDawnMineArtifact = hre.artifacts.readArtifactSync("DiamondDawnMine");
   console.log("Updating db with DiamondDawnMine artifact");
-  await updateDiamondDawnMineContract(diamondDawn.address, DiamondDawnMineArtifact);
+  await updateDiamondDawnMineContract(diamondDawnMine.address, DiamondDawnMineArtifact);
   const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
   console.log("Updating db with DiamondDawn artifact");
   await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
@@ -93,21 +93,10 @@ async function main() {
   
   if (hre.network.name === "goerli") {
     try {
-      console.log("Verifying DiamondDawnMine contract");
-      await hre.run("verify:verify", {
-        address: diamondDawn.address,
-        constructorArguments: [royalty, admins],
-      });
-      console.log("Successfully verified the contract");
-    } catch (e) {
-      console.log("Failed to verify contract", e);
-    }
-
-    try {
       console.log("Verifying DiamondDawn contract");
       await hre.run("verify:verify", {
         address: diamondDawn.address,
-        constructorArguments: [royalty, admins],
+        constructorArguments: [royalty, diamondDawnMine.address, admins],
       });
       console.log("Successfully verified the contract");
     } catch (e) {
