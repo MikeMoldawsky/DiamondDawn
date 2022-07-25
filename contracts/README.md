@@ -113,7 +113,7 @@ Your environment will have everything you need to build a HardHatDaapExample pow
 - [Chai](https://www.chaijs.com/): A JavaScript assertion library.
 - [ethers.js](https://docs.ethers.io/v5/): A JavaScript library for interacting with Ethereum.
 - [Waffle](https://github.com/EthWorks/Waffle/): To have Ethereum-specific Chai assertions/mathers.
-- [A sample frontend/HardHatDaapExample](./frontend): A HardHatDaapExample which uses [Create React App](https://github.com/facebook/create-react-app).
+- [A sample frontend/HardHatDaapExample](../frontend): A HardHatDaapExample which uses [Create React App](https://github.com/facebook/create-react-app).
 
 ## Troubleshooting
 
