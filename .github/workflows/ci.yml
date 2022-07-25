@@ -54,7 +54,7 @@ jobs:
       #     sarif_file: ${{ steps.slither.outputs.sarif }}
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ GITHUB_REF_NAME == 'develop' }}
+    if: GITHUB_REF_NAME == 'develop'
     needs: [compile_and_run_tests]
     defaults:
       run:
@@ -66,4 +66,3 @@ jobs:
             node-version: '16'
       -   name: Deploy smart contracts
           run: npm run build
-
