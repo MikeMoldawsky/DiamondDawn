@@ -107,7 +107,7 @@ async function main() {
       console.log("Verifying DiamondDawn contract");
       await hre.run("verify:verify", {
         address: diamondDawn.address,
-        constructorArguments: [royalty, admins],
+        constructorArguments: [royalty, diamondDawnMine.address, admins],
       });
       console.log("Successfully verified the contract");
     } catch (e) {
