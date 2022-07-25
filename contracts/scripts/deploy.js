@@ -6,7 +6,7 @@
 const hre = require("hardhat");
 const { ethers } = require("ethers");
 const mongoose = require("mongoose");
-const { updateDiamondDawnContract, updateDiamondDawnMineContract } = require("../../frontend/db/contract-db-manager");
+const { updateDiamondDawnContract, updateDiamondDawnMineContract } = require("../db/contract-db-manager");
 
 async function main() {
   if (!hre.network.name) {
