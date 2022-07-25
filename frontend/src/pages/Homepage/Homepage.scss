@@ -1,0 +1,81 @@
+@import "css/vars";
+
+.page.homepage {
+  background: url("../../assets/images/bg-image.png") no-repeat left -400px;
+  background-size: 100% auto;
+
+  .box {
+    height: 100vh;
+  }
+
+  .box-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    .common-view {
+      margin-top: -5%;
+    }
+
+    .leading-text {
+      font-size: 3.125em;
+    }
+
+    .secondary-text {
+      font-size: 1.875em;
+    }
+
+    .react-player {
+      min-height: 180px;
+      height: 240px !important;
+      width: auto !important;
+    }
+
+    .title {
+      font-size: 2.5em;
+      margin-bottom: 4.5%;
+    }
+
+    .scroll-marker {
+      position: absolute;
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  .box-middle {
+    .video-player {
+      height: 90vh;
+      aspect-ratio: 16 / 9;
+      margin: 0 auto;
+
+      .react-player, .video-placeholder {
+        font-size: 4em;
+        background-color: white;
+        color: black;
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+  }
+
+  .box-bottom {
+    .password-box {
+      margin-top: 4%;
+    }
+
+    .join-us {
+      letter-spacing: 2px;
+      margin-top: 6%;
+      font-size: 1.25em;
+      margin-bottom: 3%;
+
+      .button {
+        margin-top: 5%;
+      }
+    }
+  }
+}
