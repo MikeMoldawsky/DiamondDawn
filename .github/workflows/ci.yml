@@ -6,7 +6,7 @@ concurrency:
 
 on:
   push:
-    branches: [main,develop]
+    branches: [main, develop]
   pull_request:
 
 jobs:
@@ -52,3 +52,18 @@ jobs:
       #   uses: github/codeql-action/upload-sarif@v2
       #   with:
       #     sarif_file: ${{ steps.slither.outputs.sarif }}
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ env.GITHUB_REF_NAME == 'develop' }}
+    needs: [compile_and_run_tests]
+    defaults:
+      run:
+        working-directory: ./smart-contracts
+    steps:
+      -   uses: actions/checkout@v2
+      -   uses: actions/setup-node@v2
+          with:
+            node-version: '16'
+      -   name: Deploy smart contracts
+          run: npm run build
+
