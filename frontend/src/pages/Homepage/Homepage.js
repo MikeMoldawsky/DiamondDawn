@@ -34,6 +34,7 @@ const Homepage = () => {
         </VideoPlayer>
       </div>
       <div className="box center-aligned-column box-bottom">
+        <div className="bg" />
         <CommonView leadingText={["EVERY BIRTH OF A DIAMOND IS A MIRACLE OF NATURE,", "BEGINNING ONLY AS A MERE POTENTIAL"]}
                     secondaryText="Do you have what it takes to shine?">
           <img src={blackStone} alt="Diamond" />
