@@ -1,23 +1,25 @@
 const ContractModel = require("./models/ContractModel");
 
-async function updateDiamondDawnContract(address, artifact) {
-  try {
-    const document = { address, artifact: artifact };
-    await ContractModel.findOneAndUpdate({}, document, { upsert: true });
-  } catch (e) {
-    throw new Error(`Failed to update contract ${e}`);
-  }
-}
+const DIAMOND_DAWN_CONTRACT_NAME = "DiamondDawn";
+const DIAMOND_DAWN_MINE_CONTRACT_NAME = "DiamondDawnMine";
 
 async function getDiamondDawnContract() {
+  return await getContractByName(DIAMOND_DAWN_CONTRACT_NAME);
+}
+
+async function getDiamondDawnMineContract() {
+  return await getContractByName(DIAMOND_DAWN_MINE_CONTRACT_NAME);
+}
+
+async function getContractByName(name) {
   try {
-    return await ContractModel.findOne({});
+    return await ContractModel.findOne({ name });
   } catch (e) {
-    console.log(`Failed to get contract`, e);
+    console.log(`Failed to get contract ${name}: ${e}`);
   }
 }
 
 module.exports = {
-  updateDiamondDawnContract,
   getDiamondDawnContract,
+  getDiamondDawnMineContract
 };

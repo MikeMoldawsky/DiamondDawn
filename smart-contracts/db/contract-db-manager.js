@@ -11,22 +11,6 @@ async function updateDiamondDawnMineContract(address, artifact) {
   await updateContractByName(DIAMOND_DAWN_MINE_CONTRACT_NAME, address, artifact);
 }
 
-async function getDiamondDawnContract() {
-  return await getContractByName(DIAMOND_DAWN_CONTRACT_NAME);
-}
-
-async function getDiamondDawnMineContract() {
-  return await getContractByName(DIAMOND_DAWN_MINE_CONTRACT_NAME);
-}
-
-async function getContractByName(name) {
-  try {
-    return await ContractModel.findOne({ name });
-  } catch (e) {
-    console.log(`Failed to get contract ${name}: ${e}`);
-  }
-}
-
 async function updateContractByName(name, address, artifact) {
   try {
     const document = { name, address, artifact };
@@ -38,7 +22,5 @@ async function updateContractByName(name, address, artifact) {
 
 module.exports = {
   updateDiamondDawnContract,
-  updateDiamondDawnMineContract,
-  getDiamondDawnContract,
-  getDiamondDawnMineContract
+  updateDiamondDawnMineContract
 };
