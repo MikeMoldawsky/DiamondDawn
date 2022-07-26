@@ -1,4 +1,4 @@
-const { getDiamonds } = require("../db/diamond-db-manager");
+const { getDiamonds } = require("../../db/diamond-db-manager");
 
 module.exports = async function (req, res) {
   const diamonds = await getDiamonds();

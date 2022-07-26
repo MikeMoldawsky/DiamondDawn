@@ -1,4 +1,4 @@
-const StageModel = require("./models/StageModel");
+const StageModel = require("../frontend-admin/db/models/StageModel");
 
 async function setStageStartTime(stage, startsAt) {
 	const dateTime = new Date(startsAt)

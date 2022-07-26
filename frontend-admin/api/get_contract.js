@@ -1,4 +1,4 @@
-const { getDiamondDawnContract } = require("../db/contract-db-manager");
+const { getDiamondDawnContract } = require("../../db/contract-db-manager");
 
 module.exports = async function (req, res) {
   const contract = await getDiamondDawnContract();

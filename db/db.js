@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
 
 function getDbConnection() {
-  console.log("Connecting to MongoDB...");
-  
   if (
-    process.env.VERCEL_ENV === "preview" &&
-    process.env.VERCEL_GIT_COMMIT_REF !== "develop"
+      process.env.VERCEL_ENV === "preview" &&
+      process.env.VERCEL_GIT_COMMIT_REF !== "develop"
   ) {
     switch (process.env.VERCEL_GIT_COMMIT_AUTHOR_LOGIN) {
       case "MikeMoldawsky":
@@ -18,7 +16,7 @@ function getDbConnection() {
         throw Error("Samarth send to Mike a mongo url for development");
       default:
         throw Error(
-          "MongoDB url is required for preview mode that is not on develop"
+            "MongoDB url is required for preview mode that is not on develop"
         );
     }
   }
