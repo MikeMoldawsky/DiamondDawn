@@ -15,7 +15,7 @@ const checkPassword = async (password) => {
   }
 }
 
-const PasswordBox = () => {
+const PasswordBox = ({ onCorrect }) => {
   const [password, setPassword] = useState("");
   const pwdInput = useRef(null);
   const [checkingPassword, setCheckingPassword] = useState(false);
@@ -35,6 +35,7 @@ const PasswordBox = () => {
 
     if (isCorrect) {
       console.log('PASSWORD CORRECT')
+      onCorrect()
     }
     else {
       setPasswordError(true)

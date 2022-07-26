@@ -15,8 +15,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const Homepage = () => {
+  const [hasEntered, setHasEntered] = useState(false)
+
   return (
-    <div className={classNames("page homepage")} >
+    <div className={classNames("page homepage", { 'entered': hasEntered })} >
+      <div className="bg-stars" />
       <div className="bg" />
       <div className="box box-top">
         <CommonView leadingText="A BILLION YEARS IN THE MAKING"
@@ -34,12 +37,12 @@ const Homepage = () => {
         </VideoPlayer>
       </div>
       <div className="box center-aligned-column box-bottom">
-        <div className="bg" />
+        {/*<div className="bg" />*/}
         <CommonView leadingText={["EVERY BIRTH OF A DIAMOND IS A MIRACLE OF NATURE,", "BEGINNING ONLY AS A MERE POTENTIAL"]}
                     secondaryText="Do you have what it takes to shine?">
-          <img src={blackStone} alt="Diamond" />
+          <img src={blackStone} alt="Diamond" onClick={() => setHasEntered(!hasEntered)} />
         </CommonView>
-        <PasswordBox />
+        <PasswordBox onCorrect={() => setHasEntered(true)} />
         <div className="center-aligned-column join-us">
           <div>join us on this unequaled experience</div>
           <div className="button inverted icon-after">

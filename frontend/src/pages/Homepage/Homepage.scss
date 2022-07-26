@@ -1,11 +1,42 @@
 @import "css/vars";
 
 .page.homepage {
-  background: url("../../assets/images/bg-image.png") no-repeat left -450px;
-  background-size: 100% auto;
+  $boxHeight: 98vh;
+  position: relative;
+  height: calc($boxHeight * 3);
+  overflow: hidden;
+
+  //.bg, .bg-stars {
+  .bg {
+    transition: all .5s ease-in-out;
+    transform: scale(1);
+  }
+
+  .bg {
+    z-index: 0;
+    position: absolute;
+    height: calc($boxHeight * 3);
+    width: 100%;
+    background: url(../../assets/images/bg-image.png) no-repeat bottom -246vh center;
+    background-size: 105%;
+    //background: url("../../assets/images/bg-image.png") no-repeat bottom -250vh left 0;
+    //background-size: 100% auto;
+  }
+
+  .bg-stars {
+    position: absolute;
+    width: 100%;
+    height: calc($boxHeight * 3);
+    bottom: 0;
+    z-index: 0;
+    background: url("../../assets/images/bg-stars.png") no-repeat bottom -20vh left 0;
+    background-size: 100% auto;
+  }
 
   .box {
-    height: 98vh;
+    height: $boxHeight;
+    z-index: 1;
+    position: relative;
   }
 
   .box-top {
@@ -13,7 +44,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
 
     .common-view {
       margin-top: -8%;
@@ -63,16 +93,14 @@
   }
 
   .box-bottom {
-    position: relative;
-
-    .bg{
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: url("../../assets/images/bg-stars.png") no-repeat 0 center;
-      background-size: 100% auto;
-    }
+    //.bg{
+    //  position: absolute;
+    //  width: 100%;
+    //  height: 100%;
+    //  z-index: -1;
+    //  background: url("../../assets/images/bg-stars.png") no-repeat 0 center;
+    //  background-size: 100% auto;
+    //}
 
     .password-box {
       margin-top: 3%;
@@ -86,6 +114,20 @@
       .button {
         margin-top: 5%;
       }
+    }
+  }
+
+  &.entered {
+    .bg, .bg-stars {
+      transform: scale(1.5);
+    }
+
+    .bg {
+      background-position: bottom -208vh left 0;
+    }
+
+    .bg-stars {
+      background-position: bottom 10vh left 0;
     }
   }
 }
