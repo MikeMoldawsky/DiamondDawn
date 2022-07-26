@@ -1,4 +1,4 @@
-const InviteModel = require("../frontend-admin/db/models/InviteModel");
+const InviteModel = require("./models/DiamondModel");
 
 async function createInvite() {
 	try {

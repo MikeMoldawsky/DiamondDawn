@@ -1,4 +1,4 @@
-const DiamondModel = require('../frontend-admin/db/models/DiamondModel');
+const DiamondModel = require('./models/DiamondModel');
 
 async function createDiamond(diamondProps) {
   try {
