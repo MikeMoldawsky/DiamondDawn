@@ -19,7 +19,7 @@ function useSelectAvailableToken(stage) {
       }
       dispatch(setSelectedTokenId(availableToken?.id))
     }
-  }, [tokens, stage])
+  }, [tokens, stage, dispatch])
 }
 
 export default useSelectAvailableToken;

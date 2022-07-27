@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
 
-const useEffectWithAccount = (func, deps = []) => {
+const useEffectWithAccount = (func) => {
 
   const account = useAccount()
 
@@ -9,7 +9,7 @@ const useEffectWithAccount = (func, deps = []) => {
     if (account?.address) {
       func && func()
     }
-  }, [account?.address, ...deps])
+  }, [account?.address])
 }
 
 export default useEffectWithAccount

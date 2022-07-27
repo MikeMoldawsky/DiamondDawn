@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Countdown from 'components/Countdown';
 import useDDContract from "hooks/useDDContract";
-import { BigNumber, utils as ethersUtils } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { fetchTokenUri, tokenByIdSelector } from "store/tokensReducer";
