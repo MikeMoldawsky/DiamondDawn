@@ -34,7 +34,7 @@ describe("DiamondDawnMine", () => {
 
     describe("Read API", () => {
 
-        it ("Should return the correct JSON for a diamond", async () => {
+        xit ("Should return the correct JSON for a diamond", async () => {
             const { diamondDawnMine } = await loadFixture(deployDiamondDawnMineFixture);
             
             await populateDiamondStubs(diamondDawnMine);

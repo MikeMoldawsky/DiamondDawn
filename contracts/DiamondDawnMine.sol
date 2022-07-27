@@ -43,8 +43,6 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         string value;
     }
 
-    event DiamondAllocated(uint diamondId);
-
     address private _diamondDawnContract;
     DiamondMetadata[] private _unassignedDiamonds;
     mapping(uint => DiamondMetadata) private _assignedDiamonds;
@@ -113,8 +111,6 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         DiamondMetadata memory diamond = _popUnassignedDiamond(randomIndex);
         uint diamondId = diamond.GIAReportId;
         _assignedDiamonds[diamondId] = diamond;
-
-        emit DiamondAllocated(diamondId);
 
         return diamondId;
     }
