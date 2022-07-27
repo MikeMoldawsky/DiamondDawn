@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import getLocation from "utils/getLocation";
+import Wallet from "components/Wallet";
+import Header from "components/Header";
 
 const openInvite = async (inviteId) => {
   try {
@@ -60,21 +62,21 @@ const InviteIntro = ({ open }) => (
 )
 
 const InvitePage = () => {
-  const { token } = useParams()
+  const { tokenId } = useParams()
   const [invite, setInvite] = useState(null)
   const [isRevoked, setIsRevoked] = useState(null)
 
   useEffect(() => {
     const fetch = async () => {
-      setIsRevoked(await isInviteRevoked(token))
+      setIsRevoked(await isInviteRevoked(tokenId))
     }
-    if (token) {
+    if (tokenId) {
       fetch()
     }
-  }, [token])
+  }, [tokenId])
 
   const onOpenInviteClick = async () => {
-    setInvite(await openInvite(token))
+    setInvite(await openInvite(tokenId))
   }
 
   const renderInviteContent = () => {
@@ -95,9 +97,16 @@ const InvitePage = () => {
   }
 
   return (
-    <div className={classNames("page invite-page")}>
-      {renderInviteContent()}
-    </div>
+    <>
+      <Header>
+        <Wallet />
+      </Header>
+      <main>
+        <div className={classNames("page invite-page")}>
+          {renderInviteContent()}
+        </div>
+      </main>
+    </>
   );
 };
 

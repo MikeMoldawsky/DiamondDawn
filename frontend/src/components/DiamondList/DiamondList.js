@@ -12,6 +12,7 @@ import { tokensSelector } from "store/tokensReducer";
 import DiamondInfo from "components/DiamondInfo";
 import useOnClickOutside from "hooks/useClickOutside";
 import {getTokenTrait} from "utils";
+import { NavLink } from "react-router-dom";
 
 const getDiamondIcon = (token) => {
   const stage = getTokenTrait(token, TRAIT.stage)
@@ -70,20 +71,22 @@ const DiamondItem = ({ diamond }) => {
   const enabled = isStageActive && (stage === systemStage - 1)
 
   return (
-    <div ref={ref} className={classNames("diamond-item", { selected, enabled })}
-         onMouseEnter={() => setShowInfo(true)}
-         onMouseLeave={() => setShowInfo(false)}
-         onClick={() => enabled && id !== selectedTokenId ? dispatch(setSelectedTokenId(id)) : setShowInfo(!showInfo)}>
-      <div className="token-icon">
-        <FontAwesomeIcon icon={getDiamondIcon(diamond)} />
-        <div className="token-id">#{id}</div>
-      </div>
-      {showInfo && (
-        <div className="diamond-info-container">
-          <DiamondInfo diamond={diamond} />
+    <NavLink to={`/nft/${id}`}>
+      <div ref={ref} className={classNames("diamond-item", { selected, enabled })}
+           onMouseEnter={() => setShowInfo(true)}
+           onMouseLeave={() => setShowInfo(false)}
+           onClick={() => enabled && id !== selectedTokenId ? dispatch(setSelectedTokenId(id)) : setShowInfo(!showInfo)}>
+        <div className="token-icon">
+          <FontAwesomeIcon icon={getDiamondIcon(diamond)} />
+          <div className="token-id">#{id}</div>
         </div>
-      )}
-    </div>
+        {showInfo && (
+          <div className="diamond-info-container">
+            <DiamondInfo diamond={diamond} />
+          </div>
+        )}
+      </div>
+    </NavLink>
   )
 }
 
