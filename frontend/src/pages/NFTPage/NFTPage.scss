@@ -1,0 +1,32 @@
+@import "css/vars";
+
+.page.nft-page {
+  .diamond-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+
+    .diamond-art {
+      width: 50%;
+    }
+
+    .text-content {
+      width: 380px;
+      padding: 0;
+
+      .token-id {
+        margin-bottom: 40px;
+      }
+    }
+  }
+
+  .actionable {
+    a {
+      margin-left: 40px;
+    }
+
+    .button {
+      width: 150px;
+    }
+  }
+}

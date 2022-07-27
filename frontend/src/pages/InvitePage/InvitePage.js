@@ -60,21 +60,21 @@ const InviteIntro = ({ open }) => (
 )
 
 const InvitePage = () => {
-  const { token } = useParams()
+  const { tokenId } = useParams()
   const [invite, setInvite] = useState(null)
   const [isRevoked, setIsRevoked] = useState(null)
 
   useEffect(() => {
     const fetch = async () => {
-      setIsRevoked(await isInviteRevoked(token))
+      setIsRevoked(await isInviteRevoked(tokenId))
     }
-    if (token) {
+    if (tokenId) {
       fetch()
     }
-  }, [token])
+  }, [tokenId])
 
   const onOpenInviteClick = async () => {
-    setInvite(await openInvite(token))
+    setInvite(await openInvite(tokenId))
   }
 
   const renderInviteContent = () => {

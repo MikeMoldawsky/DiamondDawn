@@ -11,7 +11,6 @@ import classNames from "classnames";
 import { systemSelector } from "store/systemReducer";
 import VideoPlayer from "components/VideoPlayer";
 import NoDiamondView from "components/NoDiamondView";
-import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
 import { useAccount } from "wagmi";
 import Diamond from "components/Diamond";
@@ -35,8 +34,6 @@ const Burn = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  useSelectAvailableToken(STAGE.PHYSICAL)
 
   useEffectWithAccount(() => {
     dispatch(fetchAccountBurnedTokens(contract, account.address))

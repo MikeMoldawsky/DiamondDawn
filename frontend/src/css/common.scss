@@ -1,0 +1,155 @@
+@import "vars";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-size: 16px;
+}
+
+.center-aligned-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.center-aligned-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  color: $dark;
+  background-color: $white;
+  height: 65px;
+  border-radius: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 60px;
+  border: solid 1px transparent;
+  cursor: pointer;
+  font-weight: 500;
+  width: auto;
+  letter-spacing: 2px;
+
+  .button-text {
+    font-weight: 500;
+  }
+
+  span > span {
+    background-color: $dark !important;
+  }
+
+  svg {
+    height: 1.4em;
+    margin-right: 16px;
+  }
+
+  &.icon-after {
+    svg {
+      margin-right: 0;
+      margin-left: 16px;
+    }
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+  }
+
+  &:hover:not(.disabled) {
+    color: $white;
+    background-color: $dark;
+    border-color: $white;
+  }
+
+  &.inverted, &.link {
+    color: $white;
+    background-color: $dark;
+    border-color: white !important;
+  }
+
+  &.link {
+    border-color: transparent !important;
+
+    span > span {
+      background-color: $white !important;
+    }
+  }
+}
+
+.common-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.leading-text {
+  font-size: 2.1875em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.35em;
+}
+
+.secondary-text {
+  font-size: 1.5625em;
+  color: $secondary_gray;
+  text-align: center;
+}
+
+.video-placeholder {
+  height: 100% !important;
+  width: 100% !important;;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    font-size: 4em;
+  }
+}
+
+// ANIMATIONS
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.5);
+  }
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}

@@ -1,51 +1,18 @@
-import React, { useEffect } from "react";
-import classNames from "classnames";
-import Wallet from "components/Wallet";
-import Header from "components/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchPricing, fetchStage, fetchStagesConfig, setStage, systemSelector } from "store/systemReducer";
+import React from "react";
+import {useSelector} from "react-redux";
+import { systemSelector } from "store/systemReducer";
 import Mine from "./Mine";
 import Cut from "./Cut";
 import Polish from "./Polish";
 import Burn from "./Burn";
-import useDDContract from "hooks/useDDContract";
-import DiamondList from "components/DiamondList";
-import ProgressBar from "components/ProgressBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
-import { loadAccountNfts } from "store/tokensReducer";
-import { useAccount, useProvider } from "wagmi";
-import useEffectWithAccount from "hooks/useEffectWithAccount";
-import { EVENTS } from 'consts'
+import useSelectToken from "hooks/useSelectToken";
 
 function App() {
   const { stage } = useSelector(systemSelector)
-  const account = useAccount()
-  // console.log({ tmp })
-  // const { data: account } = tmp
-  const provider = useProvider();
-  const dispatch = useDispatch()
-  const contract = useDDContract()
 
-  useEffect(() => {
-    dispatch(fetchStage(contract))
-    dispatch(fetchPricing(contract))
-    dispatch(fetchStagesConfig())
-
-    provider.once('block', () => {
-      contract.on(EVENTS.StageChanged, (_stage, _isStageActive) => {
-        dispatch(setStage(_stage, _isStageActive))
-      })
-    })
-
-    return () => {
-      contract.removeAllListeners()
-    }
-  }, [])
-
-  useEffectWithAccount(() => {
-    dispatch(loadAccountNfts(contract, provider, account?.address))
-  })
+  useSelectToken(stage)
 
   const renderStage = () => {
     switch (stage) {
@@ -71,18 +38,7 @@ function App() {
     }
   }
 
-  return (
-    <div className={classNames("app")}>
-      <Header>
-        <DiamondList />
-        <Wallet />
-      </Header>
-      <main>{stage !== -1 && renderStage()}</main>
-      <footer>
-        <ProgressBar />
-      </footer>
-    </div>
-  );
+  return stage !== -1 ? renderStage() : null
 }
 
 export default App;

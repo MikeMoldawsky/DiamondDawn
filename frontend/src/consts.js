@@ -22,6 +22,9 @@ export const COLOR_GRADES = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', '
 export const CLARITY_GRADES = ['FLAWLESS', 'INTERNALLY FLAWLESS', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'I1', 'I2', 'I3']
 export const COMMON_GRADES = ['EXCELLENT', 'VERY GOOD', 'GOOD', 'FAIR', 'POOR']
 
+export const DUMMY_VIDEO_URL = 'https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/final.mp4'
+
+
 export const TRAIT = {
   stage: 'Stage',
   GIAReportDate: 'GIA Report Date',

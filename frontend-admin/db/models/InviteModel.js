@@ -9,7 +9,7 @@ const InviteSchema = new mongoose.Schema({
   password: {
     type: Number,
     required: true,
-    default: () => chance.integer({ min: 100000, max: 999999 }),
+    default: () => chance.integer({ min: 1000000000, max: 9999999999 }),
   },
   created: { type: Date, required: true, default: Date.now },
   revoked: { type: Boolean, required: true, default: false },

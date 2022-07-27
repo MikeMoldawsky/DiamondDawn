@@ -7,6 +7,8 @@ body,
 .main-layout,
 .main-layout > div[data-rk] {
   height: 100%;
+  background-color: black;
+  color: white;
 }
 
 body {
@@ -20,8 +22,13 @@ body {
   font-weight: 300;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 #root {
-  z-index: 1;
+  //z-index: 1;
 }
 
 .text-center {
@@ -34,52 +41,10 @@ body {
   justify-content: space-between;
 }
 
-.button {
-  font-size: 1.2em;
-  color: $dark;
-  background-color: $white;
-  height: 56px;
-  border-radius: 27px;
+.center-center-aligned-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 30px;
-  border: solid 1px transparent;
-  cursor: pointer;
-  font-weight: 500;
-  width: auto;
-
-  .button-text {
-    font-weight: 500;
-  }
-
-  span > span {
-    background-color: $dark !important;
-  }
-
-  svg {
-    margin-right: 10px;
-  }
-  
-  &.disabled {
-    cursor: not-allowed;
-  }
-
-  &:hover:not(.disabled) {
-    color: $white;
-    background-color: $dark;
-    border-color: $white;
-  }
-
-  &.link {
-    color: $white;
-    background-color: $dark;
-    border-color: transparent !important;
-
-    span > span {
-      background-color: $white !important;
-    }
-  }
 }
 
 input[type=text] {
@@ -96,18 +61,6 @@ input[type=text] {
   &.validation-error {
     border-color: $light-red;
   }
-}
-
-.video-placeholder {
-  margin-top: 80px;
-  height: $videoHeight;
-  width: $videoWidth;
-  background-color: rgba(255, 255, 255, .2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8em;
-  cursor: pointer;
 }
 
 .app {
@@ -164,20 +117,32 @@ input[type=text] {
     }
   }
 
+  .video-placeholder {
+    margin-top: 80px;
+    height: $videoHeight;
+    width: $videoWidth;
+    background-color: rgba(255, 255, 255, .2);
+    //display: flex;
+    //align-items: center;
+    //justify-content: center;
+    font-size: 1.8em;
+    cursor: pointer;
+  }
+
   .action-view {
     text-align: center;
 
-    .leading-text {
-      font-size: 2em;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-
-    .secondary-text {
-      font-size: 1.5em;
-      color: #7E7D7D;
-      margin-bottom: 40px;
-    }
+    //.leading-text {
+    //  font-size: 2em;
+    //  margin-bottom: 20px;
+    //  text-transform: uppercase;
+    //}
+    //
+    //.secondary-text {
+    //  font-size: 1.5em;
+    //  color: #7E7D7D;
+    //  margin-bottom: 40px;
+    //}
 
     .countdown {
       margin-top: 50px;
