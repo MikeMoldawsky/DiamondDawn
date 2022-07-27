@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import './DiamondList.scss'
-import { STAGE, SHAPE } from "consts";
+import { STAGE, SHAPE, TRAIT } from "consts";
 import { systemSelector } from "store/systemReducer";
 import { tokensSelector } from "store/tokensReducer";
 import DiamondInfo from "components/DiamondInfo";
@@ -14,8 +14,8 @@ import useOnClickOutside from "hooks/useClickOutside";
 import {getTokenTrait} from "utils";
 
 const getDiamondIcon = (token) => {
-  const stage = getTokenTrait(token, 'Stage')
-  const shapeName = getTokenTrait(token, 'Shape and Cutting Style')
+  const stage = getTokenTrait(token, TRAIT.stage)
+  const shapeName = getTokenTrait(token, TRAIT.shape)
   const shape = SHAPE[_.toUpper(shapeName)]
 
   switch (stage) {

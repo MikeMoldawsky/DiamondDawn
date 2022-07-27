@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { toast } from "react-toastify";
-import { SHAPE, STAGE } from "consts";
+import { SHAPE, STAGE, TRAIT } from "consts";
 
 export const parseError = e => {
   let message = _.get(e, 'error.data.message', '')
@@ -66,4 +66,4 @@ export const getTokenTrait = (token, trait) => {
   return t?.value
 }
 
-export const isTokenInStage = (token, stage) => getTokenTrait(token, 'Stage') === stage
+export const isTokenInStage = (token, stage) => getTokenTrait(token, TRAIT.stage) === stage

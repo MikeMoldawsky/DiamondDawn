@@ -17,6 +17,7 @@ import { useAccount } from "wagmi";
 import Diamond from "components/Diamond";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
 import ActionButton from "components/ActionButton";
+import {isTokenInStage} from "utils";
 
 const Burn = () => {
   const contract = useDDContract()
@@ -69,7 +70,7 @@ const Burn = () => {
 
     const endTime = _.get(stageStartTimes, 4)
 
-    const isTokenBurned = token?.stage === STAGE.PHYSICAL
+    const isTokenBurned = isTokenInStage(token, STAGE.PHYSICAL)
     if (isTokenBurned) {
       return (
         <>
