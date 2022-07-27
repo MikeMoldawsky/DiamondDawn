@@ -43,6 +43,8 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         string value;
     }
 
+    event DiamondAllocated(uint diamondId);
+
     address private _diamondDawnContract;
     DiamondMetadata[] private _unassignedDiamonds;
     mapping(uint => DiamondMetadata) private _assignedDiamonds;
@@ -71,6 +73,10 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
     }
 
     function _getRandomNumber(uint maxNumber) internal view returns (uint) {
+        if (maxNumber == 0) {
+            return 0;
+        }
+
         // TODO: Add the comments below to the method inline documentation.
         // maxNumber instead of range in-order to save gas assuming the randomization will always start with 0.
         // maxNumber is inclusive.
@@ -84,7 +90,10 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         DiamondMetadata memory diamond = _unassignedDiamonds[index];
         
         // Move the last element into the place to delete
-        _unassignedDiamonds[index] = _unassignedDiamonds[_unassignedDiamonds.length - 1];
+        if (_unassignedDiamonds.length > 1) {
+            _unassignedDiamonds[index] = _unassignedDiamonds[_unassignedDiamonds.length - 1];
+        }
+
         _unassignedDiamonds.pop();
         
         return diamond;
@@ -95,8 +104,8 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         _;
     }
 
+    // TODO: should be onlyDiamondDawn commented for testing purposes
     function allocateDiamond() public 
-        onlyDiamondDawn
         _requireExistingUnassignedDiamond
         returns (uint)
     {
@@ -105,7 +114,13 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         uint diamondId = diamond.GIAReportId;
         _assignedDiamonds[diamondId] = diamond;
 
-        return diamond.GIAReportId;
+        emit DiamondAllocated(diamondId);
+
+        return diamondId;
+    }
+
+    function _requireExistingAssignedDiamond(uint diamondId) internal view {
+        require(_assignedDiamonds[diamondId].GIAReportId > 0, "DiamondDawnMine: Diamond does not exist");
     }
     
     function getDiamondMetadata(
@@ -114,7 +129,8 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         Stage stage,
         string memory videoUrl
     ) external view returns (string memory) {
-        // TODO: add validation that the diamond exists
+        _requireExistingAssignedDiamond(diamondId);
+
         DiamondMetadata memory diamondMetadata = _assignedDiamonds[diamondId];
         string memory base64Json = Base64.encode(bytes(string(abi.encodePacked(_getJson(diamondMetadata, tokenId, stage, videoUrl)))));
         
@@ -145,15 +161,15 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
 
         metadataAttributes[0] = _getERC721MetadataAttribute(false, true, false, "", "GIA Report ID", Strings.toString(diamondMetadata.GIAReportId));
         metadataAttributes[1] = _getERC721MetadataAttribute(false, true, false, "", "GIA Report Date", Strings.toString(diamondMetadata.GIAReportDate));
-        metadataAttributes[2] = _getERC721MetadataAttribute(false, true, false, "", "Shape and Cutting Style", diamondMetadata.shape);
-        metadataAttributes[3] = _getERC721MetadataAttribute(false, true, false, "", "Measurements", diamondMetadata.measurements);
-        metadataAttributes[4] = _getERC721MetadataAttribute(false, true, false, "", "Carat Weight", diamondMetadata.caratWeight);
-        metadataAttributes[5] = _getERC721MetadataAttribute(false, true, false, "", "Color Grade", diamondMetadata.colorGrade);
-        metadataAttributes[6] = _getERC721MetadataAttribute(false, true, false, "", "Clarity Grade", diamondMetadata.clarityGrade);
-        metadataAttributes[7] = _getERC721MetadataAttribute(false, true, false, "", "Cut Grade", diamondMetadata.cutGrade);
-        metadataAttributes[8] = _getERC721MetadataAttribute(false, true, false, "", "Polish", diamondMetadata.polish);
-        metadataAttributes[9] = _getERC721MetadataAttribute(false, true, false, "", "Symmetry", diamondMetadata.symmetry);
-        metadataAttributes[10] = _getERC721MetadataAttribute(false, true, false, "", "Fluorescence", diamondMetadata.fluorescence);
+        metadataAttributes[2] = _getERC721MetadataAttribute(false, true, true, "", "Shape and Cutting Style", diamondMetadata.shape);
+        metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Measurements", diamondMetadata.measurements);
+        metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Carat Weight", diamondMetadata.caratWeight);
+        metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Color Grade", diamondMetadata.colorGrade);
+        metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Clarity Grade", diamondMetadata.clarityGrade);
+        metadataAttributes[7] = _getERC721MetadataAttribute(false, true, true, "", "Cut Grade", diamondMetadata.cutGrade);
+        metadataAttributes[8] = _getERC721MetadataAttribute(false, true, true, "", "Polish", diamondMetadata.polish);
+        metadataAttributes[9] = _getERC721MetadataAttribute(false, true, true, "", "Symmetry", diamondMetadata.symmetry);
+        metadataAttributes[10] = _getERC721MetadataAttribute(false, true, true, "", "Fluorescence", diamondMetadata.fluorescence);
 
         return metadataAttributes;
     }
