@@ -17,6 +17,7 @@ import { STAGE } from "consts";
 import Diamond from "components/Diamond";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
 import ActionButton from "components/ActionButton";
+import { isTokenInStage } from "utils";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -94,7 +95,7 @@ const Mine = () => {
       <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>03 - MINE VIDEO</VideoPlayer>
     )
 
-    const isTokenMined = token?.stage === STAGE.MINE
+    const isTokenMined = isTokenInStage(token, STAGE.MINE)
     if (isTokenMined) return (
       <>
         <Diamond diamond={token} />

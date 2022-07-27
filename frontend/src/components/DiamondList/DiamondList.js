@@ -11,8 +11,13 @@ import { systemSelector } from "store/systemReducer";
 import { tokensSelector } from "store/tokensReducer";
 import DiamondInfo from "components/DiamondInfo";
 import useOnClickOutside from "hooks/useClickOutside";
+import {getTokenTrait} from "utils";
 
-const getDiamondIcon = ({ stage, shape }) => {
+const getDiamondIcon = (token) => {
+  const stage = getTokenTrait(token, 'Stage')
+  const shapeName = getTokenTrait(token, 'Shape and Cutting Style')
+  const shape = SHAPE[_.toUpper(shapeName)]
+
   switch (stage) {
     case STAGE.MINE:
       // rough diamond

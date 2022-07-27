@@ -3,13 +3,13 @@ import './Diamond.scss'
 import ReactPlayer from "react-player";
 
 const Diamond = ({ diamond }) => {
-  const { animation_url } = diamond
+  const { image } = diamond
 
   return (
     <div className="diamond-art">
-      {animation_url.endsWith('.mp4') ? (
+      {image.endsWith('.mp4') ? (
         <ReactPlayer
-          url={animation_url}
+          url={image}
           playing
           playsinline
           controls={false}
@@ -18,7 +18,7 @@ const Diamond = ({ diamond }) => {
           className="react-player"
         />
       ) : (
-        <img src={animation_url} alt="Diamond art" />
+        <img src={image} alt="Diamond art" />
       )}
     </div>
   )

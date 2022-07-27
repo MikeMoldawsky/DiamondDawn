@@ -60,3 +60,10 @@ export const getStageName = stage => {
       return 'Mine'
   }
 }
+
+export const getTokenTrait = (token, trait) => {
+  const t = _.find(token?.attributes, { trait_type: trait })
+  return t?.value
+}
+
+export const isTokenInStage = (token, stage) => getTokenTrait(token, 'Stage') === stage
