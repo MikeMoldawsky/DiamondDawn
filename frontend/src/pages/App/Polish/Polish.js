@@ -12,6 +12,7 @@ import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
 import _ from "lodash";
 import ActionButton from "components/ActionButton";
+import {isTokenInStage} from "utils";
 
 const Polish = () => {
   const [actionTxId, setActionTxId] = useState(false)
@@ -43,7 +44,7 @@ const Polish = () => {
 
     const endTime = _.get(stageStartTimes, 3)
 
-    const isTokenPolished = token?.stage === STAGE.POLISH
+    const isTokenPolished = isTokenInStage(token, STAGE.POLISH)
     if (isTokenPolished) return (
       <>
         <Diamond diamond={token} />

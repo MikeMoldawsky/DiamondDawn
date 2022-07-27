@@ -12,6 +12,7 @@ import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
 import _ from "lodash";
 import ActionButton from "components/ActionButton";
+import {isTokenInStage} from "utils";
 
 const Cut = () => {
   const [actionTxId, setActionTxId] = useState(false)
@@ -42,7 +43,7 @@ const Cut = () => {
 
     const endTime = _.get(stageStartTimes, 2)
 
-    const isTokenCut = token?.stage === STAGE.CUT
+    const isTokenCut = isTokenInStage(token, STAGE.CUT)
     if (isTokenCut) return (
       <>
         <Diamond diamond={token} />
