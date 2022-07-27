@@ -1,26 +1,19 @@
 import React, { useEffect } from "react";
-import classNames from "classnames";
 import Wallet from "components/Wallet";
 import Header from "components/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchPricing, fetchStage, fetchStagesConfig, setStage, systemSelector } from "store/systemReducer";
-import Mine from "./Mine";
-import Cut from "./Cut";
-import Polish from "./Polish";
-import Burn from "./Burn";
+import { useDispatch } from "react-redux";
+import { fetchPricing, fetchStage, fetchStagesConfig, setStage } from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
 import DiamondList from "components/DiamondList";
 import ProgressBar from "components/ProgressBar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGem } from "@fortawesome/free-solid-svg-icons";
 import { loadAccountNfts } from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
 import { EVENTS } from 'consts'
 import ContractProvider from "layout/ContractProvider";
+import WagmiWrapper from "layout/WagmiWrapper";
 
-function App() {
-  const { stage } = useSelector(systemSelector)
+const AppInternal = ({ children }) => {
   const account = useAccount()
   const provider = useProvider();
   const dispatch = useDispatch()
@@ -46,31 +39,32 @@ function App() {
     dispatch(loadAccountNfts(contract, provider, account?.address))
   })
 
-  const renderStage = () => {
-    switch (stage) {
-      case 0:
-        return <Mine />
-      case 1:
-        return <Cut />
-      case 2:
-        return <Polish />
-      case 3:
-        return <Burn />
-      case 4:
-        return (
-          <div className="action-view">
-            <div className="diamond-art">
-              <FontAwesomeIcon icon={faGem} />
-            </div>
-            <div className="leading-text">SYSTEM IS COMPLETE AND CLOSED</div>
-          </div>
-        )
-      default:
-        return null
-    }
-  }
-
-  return stage !== -1 ? renderStage() : null
+  return (
+    <main>{children}</main>
+  )
 }
 
-export default App;
+const AppLayout = ({ children, showTimeline }) => {
+  return (
+    <WagmiWrapper>
+      <div className="app">
+        <Header>
+          <ContractProvider>
+            <DiamondList />
+          </ContractProvider>
+          <Wallet />
+        </Header>
+        <ContractProvider>
+          <AppInternal>{children}</AppInternal>
+        </ContractProvider>
+        {showTimeline && (
+          <footer>
+            <ProgressBar />
+          </footer>
+        )}
+      </div>
+    </WagmiWrapper>
+  );
+}
+
+export default AppLayout;

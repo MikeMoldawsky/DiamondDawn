@@ -3,8 +3,6 @@ import classNames from "classnames";
 import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
 import ActionButton from "components/ActionButton";
-import Header from "components/Header";
-import Wallet from "components/Wallet";
 
 function RebirthPage() {
 
@@ -37,22 +35,15 @@ function RebirthPage() {
   }
 
   return (
-    <>
-      <Header>
-        <Wallet />
-      </Header>
-      <main>
-        <div className={classNames("page rebirth-page")}>
-          <div className="action-view">
-            <div className="leading-text">DIAMOND REBIRTH</div>
-            {showComplete
-              ? (<div className="secondary-text">Complete</div>)
-              : (<ActionButton actionKey="Rebirth" onClick={rebirth}>Rebirth</ActionButton>)
-            }
-          </div>
-        </div>
-      </main>
-    </>
+    <div className={classNames("page rebirth-page")}>
+      <div className="action-view">
+        <div className="leading-text">DIAMOND REBIRTH</div>
+        {showComplete
+          ? (<div className="secondary-text">Complete</div>)
+          : (<ActionButton actionKey="Rebirth" onClick={rebirth}>Rebirth</ActionButton>)
+        }
+      </div>
+    </div>
   );
 }
 

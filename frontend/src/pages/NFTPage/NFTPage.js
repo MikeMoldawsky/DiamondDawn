@@ -2,9 +2,6 @@ import React from "react";
 import classNames from "classnames";
 import './NFTPage.scss'
 import { useParams } from "react-router-dom";
-import Wallet from "components/Wallet";
-import Header from "components/Header";
-import DiamondList from "components/DiamondList";
 import DiamondInfo from "components/DiamondInfo";
 import {useSelector} from "react-redux";
 import {tokenByIdSelector} from "store/tokensReducer";
@@ -21,27 +18,19 @@ function NFTPage() {
   const stageName = getStageName(getTokenTrait(token, TRAIT.stage))
 
   return (
-    <>
-      <Header>
-        <DiamondList />
-        <Wallet />
-      </Header>
-      <main>
-        <div className={classNames("page nft-page")}>
-          <div className="info-container">
-            <DiamondInfo diamond={token} />
-          </div>
-          {isActionable && (
-            <div className="center-center-aligned-row actionable">
-              <div>Your NFT can be processed</div>
-              <NavLink to={`/process/${tokenId}`}>
-                <div className="button">{stageName}</div>
-              </NavLink>
-            </div>
-          )}
+    <div className={classNames("page nft-page")}>
+      <div className="info-container">
+        <DiamondInfo diamond={token} />
+      </div>
+      {isActionable && (
+        <div className="center-center-aligned-row actionable">
+          <div>Your NFT can be processed</div>
+          <NavLink to={`/process/${tokenId}`}>
+            <div className="button">{stageName}</div>
+          </NavLink>
         </div>
-      </main>
-    </>
+      )}
+    </div>
   );
 }
 

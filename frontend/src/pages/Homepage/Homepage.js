@@ -13,6 +13,7 @@ import blackStone from 'assets/images/black-stone.png'
 import PasswordBox from "components/PasswordBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { NavLink } from "react-router-dom";
 
 const Homepage = () => {
   const [hasEntered, setHasEntered] = useState(false)
@@ -26,6 +27,9 @@ const Homepage = () => {
                     secondaryText="the first ever diamond mining experience, from NFT to reality">
           <img src={infinityLogo} alt={''} />
         </CommonView>
+        <NavLink to={`/process`}>
+          <div className="button" style={{ marginTop: 40 }}>ENTER</div>
+        </NavLink>
         <a href="#video">
           <SVG src={scrollMarker} className="scroll-marker" />
         </a>
