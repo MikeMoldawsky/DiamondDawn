@@ -1,6 +1,5 @@
 import { makeReducer, reduceUpdateFull } from './reduxUtils'
 import _ from 'lodash'
-import { BigNumber } from 'ethers'
 import axios from "axios";
 import {CONTRACTS, STAGE} from "consts";
 

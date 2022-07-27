@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStage, fetchPaused, systemSelector, getStageConfigs } from "store/systemReducer";
+import { fetchStage, fetchPaused, systemSelector } from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
 import classNames from "classnames";
 import ActionButton from "components/ActionButton";
@@ -10,22 +10,15 @@ const ControlTab = () => {
   const { stage, isStageActive, paused } = useSelector(systemSelector)
   const [artUrlInput, setArtUrlInput] = useState('')
   const [artUrlError, setArtUrlError] = useState(false)
-  const [stageStartTimes, setStageStartTimes] = useState({})
 
   const contract = useDDContract()
 
   const dispatch = useDispatch()
 
-  const fetchStages = async () => {
-    const stagesConfig = await getStageConfigs()
-    setStageStartTimes(stagesConfig)
-  }
-
   useEffect(() => {
     dispatch(fetchStage(contract))
     dispatch(fetchPaused(contract))
-    fetchStages()
-  }, [])
+  }, [contract, dispatch])
 
   const completeAndRevealStage = async () => {
     if (artUrlInput === '') {
@@ -36,26 +29,26 @@ const ControlTab = () => {
     const tx = await (isStageActive
       ? contract.completeCurrentStageAndRevealNextStage(artUrlInput)
       : contract.revealStage(artUrlInput))
-    const receipt = await tx.wait()
+    await tx.wait()
     dispatch(fetchStage(contract))
     setArtUrlInput('')
   }
 
   const resetStage = async () => {
     const tx = await contract.dev__ResetStage()
-    const receipt = await tx.wait()
+    await tx.wait()
     dispatch(fetchStage(contract))
   }
 
   const pause = async () => {
     const tx = await contract.pause()
-    const receipt = await tx.wait()
+    await tx.wait()
     dispatch(fetchPaused(contract))
   }
 
   const unpause = async () => {
     const tx = await contract.unpause()
-    const receipt = await tx.wait()
+    await tx.wait()
     dispatch(fetchPaused(contract))
   }
 

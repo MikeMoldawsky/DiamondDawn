@@ -82,7 +82,7 @@ const DiamondsTab = () => {
         fluorescence: 'EXCELLENT',
       }
       const tx = await ddMineContract.populateDiamonds([tempDiamond])
-      const receipt = await tx.wait()
+      await tx.wait()
     }
     catch (e) {
       console.error('populateTokens Failed', { e })

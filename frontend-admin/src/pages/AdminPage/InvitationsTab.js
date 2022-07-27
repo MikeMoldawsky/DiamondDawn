@@ -94,7 +94,7 @@ const InvitationsTab = () => {
     return () => {
       contract.removeListener(EVENTS.WhitelistUpdated)
     }
-  }, [])
+  }, [contract, dispatch])
 
   const columns = [
     { field: 'twitter', headerName: 'Twitter', width: 150, editable: true },
@@ -125,7 +125,7 @@ const InvitationsTab = () => {
     try {
       const addresses = selectedRows.map(r => r.ethAddress)
       const tx = await contract.addToAllowList(addresses)
-      const receipt = await tx.wait()
+      await tx.wait()
     }
     catch (e) {
       console.error('addToWL Failed', { e })
@@ -136,7 +136,7 @@ const InvitationsTab = () => {
     try {
       const addresses = selectedRows.map(r => r.ethAddress)
       const tx = await contract.removeFromAllowList(addresses)
-      const receipt = await tx.wait()
+      await tx.wait()
     }
     catch (e) {
       console.error('removeFromWL Failed', { e })

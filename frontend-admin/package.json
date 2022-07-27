@@ -13,6 +13,7 @@
     "@mui/x-data-grid": "^5.13.1",
     "@mui/x-date-pickers": "^5.0.0-beta.0",
     "@rainbow-me/rainbowkit": "^0.4.4",
+    "@redux-devtools/extension": "^3.2.2",
     "axios": "^0.27.2",
     "chance": "^1.1.8",
     "classnames": "^2.3.1",
@@ -30,7 +31,6 @@
     "react-spinners": "^0.13.3",
     "react-toastify": "8.2",
     "redux": "^4.2.0",
-    "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
     "wagmi": "^0.5.11",
     "web-vitals": "^2.1.4"

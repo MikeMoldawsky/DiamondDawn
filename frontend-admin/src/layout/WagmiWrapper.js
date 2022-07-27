@@ -23,26 +23,26 @@ const localChain = {
   testnet: true,
 }
 
+const getContractData = () => async dispatch => {
+  try {
+    const { data } = await axios.get(`/api/get_contract`)
+    dispatch(setDDContractData(data))
+  }
+  catch (e) {
+    console.error("Failed to get contract data!!!!", e)
+  }
+}
+
 const ContractProvider = ({ children }) => {
 
   const { ddContractData } = useSelector(systemSelector)
   const dispatch = useDispatch()
 
-  const getContractData = async () => {
-    try {
-      const { data } = await axios.get(`/api/get_contract`)
-      dispatch(setDDContractData(data))
-    }
-    catch (e) {
-      console.error("Failed to get contract data!!!!", e)
-    }
-  }
-
   useEffect(() => {
     if (!ddContractData) {
-      getContractData()
+      dispatch(getContractData())
     }
-  }, [ddContractData])
+  }, [ddContractData, dispatch])
 
   return ddContractData ? children : null
 }
