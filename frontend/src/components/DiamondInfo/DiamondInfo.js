@@ -4,7 +4,7 @@ import Diamond from "components/Diamond";
 import { getShapeName } from "utils";
 
 const DiamondInfo = ({ diamond }) => {
-  const { id, shape, cutable, polishable } = diamond
+  const { id, shape } = diamond
 
   return (
     <div className="diamond-info">
@@ -12,8 +12,6 @@ const DiamondInfo = ({ diamond }) => {
       <div className="text-content">
         <div className="token-id"># {id}</div>
         <div className="center-aligned-row"><span>Shape</span><span>{getShapeName(shape)}</span></div>
-        <div className="center-aligned-row"><span>Cutable</span><span>{cutable.toString()}</span></div>
-        <div className="center-aligned-row"><span>Polishable</span><span>{polishable.toString()}</span></div>
       </div>
     </div>
   )

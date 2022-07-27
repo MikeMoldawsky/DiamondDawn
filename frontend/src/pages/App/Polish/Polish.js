@@ -19,14 +19,14 @@ const Polish = () => {
   const contract = useDDContract()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
-  const { polishPrice, isStageActive, stageStartTimes } = useSelector(systemSelector)
+  const { isStageActive, stageStartTimes } = useSelector(systemSelector)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const dispatch = useDispatch()
 
   useSelectAvailableToken(STAGE.POLISH)
 
   const polish = async () => {
-    const tx = await contract.polish(selectedTokenId, { value: token.polishable ? BigNumber.from(0) : polishPrice })
+    const tx = await contract.polish(selectedTokenId)
 
     setShowCompleteVideo(true)
 
@@ -65,7 +65,7 @@ const Polish = () => {
         </div>
         <div className="secondary-text">Discover the beauty, a billion years in the making</div>
         {isStageActive && (
-          <ActionButton actionKey="Polish" className="action-button" onClick={polish}>POLISH{token.polishable ? '' : ` (${ethersUtils.formatUnits(polishPrice)} ETH)`}</ActionButton>
+          <ActionButton actionKey="Polish" className="action-button" onClick={polish}>POLISH</ActionButton>
         )}
         <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} polish`]} />
       </>

@@ -3,7 +3,7 @@ import { useAccount } from "wagmi";
 
 const useEffectWithAccount = (func, deps = []) => {
 
-  const { data: account } = useAccount()
+  const account = useAccount()
 
   useEffect(() => {
     if (account?.address) {

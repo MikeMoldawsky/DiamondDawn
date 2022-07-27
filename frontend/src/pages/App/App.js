@@ -20,7 +20,9 @@ import { EVENTS } from 'consts'
 
 function App() {
   const { stage } = useSelector(systemSelector)
-  const { data: account } = useAccount()
+  const account = useAccount()
+  // console.log({ tmp })
+  // const { data: account } = tmp
   const provider = useProvider();
   const dispatch = useDispatch()
   const contract = useDDContract()

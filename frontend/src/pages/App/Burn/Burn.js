@@ -26,7 +26,7 @@ const Burn = () => {
   const [showShippingForm, setShowShippingForm] = useState(false)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const [actionTxId, setActionTxId] = useState(false)
-  const { data: account } = useAccount()
+  const account = useAccount()
   const dispatch = useDispatch()
 
   const {

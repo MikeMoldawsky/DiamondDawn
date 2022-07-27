@@ -2,7 +2,7 @@ import React from 'react'
 import ReactPlayer from "react-player";
 
 const VIDEO_URL = 'https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/final.mp4'
-const SHOW_VIDEO = true
+const SHOW_VIDEO = false
 
 const VideoPlayer = ({ children, onEnded }) => {
   return SHOW_VIDEO ? (
@@ -16,7 +16,7 @@ const VideoPlayer = ({ children, onEnded }) => {
       onEnded={() => onEnded && onEnded()}
     />
   ) : (
-    <div className="video-placeholder">
+    <div className="video-placeholder" onClick={onEnded}>
       {children}
     </div>
   )
