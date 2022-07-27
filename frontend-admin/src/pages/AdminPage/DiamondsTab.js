@@ -67,21 +67,17 @@ const DiamondsTab = () => {
 
   const populateTokens = async selectedRows => {
     try {
-      // const addresses = selectedRows.map(r => r.ethAddress)
-      const tempDiamond = {
-        GIAReportDate: 1,
-        GIAReportId: 1,
-        measurements: '5.12-5.14*3.55',
-        shape: 'Radiant',
-        caratWeight: '0.5',
-        colorGrade: 'EXCELLENT',
-        clarityGrade: 'EXCELLENT',
-        cutGrade: 'EXCELLENT',
-        polish: 'EXCELLENT',
-        symmetry: 'EXCELLENT',
-        fluorescence: 'EXCELLENT',
-      }
-      const tx = await ddMineContract.populateDiamonds([tempDiamond])
+      const diamonds = selectedRows.map(diamond => ({
+        ..._.omit(diamond, ['_id']),
+        GIAReportId: parseInt(diamond.GIAReportId),
+        GIAReportDate: parseInt(diamond.GIAReportDate),
+        shape: getShapeName(diamond.shape),
+        caratWeight: diamond.caratWeight.$numberDecimal,
+      }))
+
+      console.log('PUSHING DIAMONDS TO MINE CONTRACT', { diamonds })
+
+      const tx = await ddMineContract.populateDiamonds(diamonds)
       await tx.wait()
     }
     catch (e) {
@@ -91,7 +87,14 @@ const DiamondsTab = () => {
 
   const columns = [
     {
-      field: 'GIA', headerName: 'GIANumber', width: 150, editable: true,
+      field: 'GIAReportId', headerName: 'GIA #', width: 150, editable: true,
+      preProcessEditCellProps: (params) => {
+        const regex = new RegExp('^\\d{10}$')
+        return { ...params.props, error: !regex.test(params.props.value) };
+      },
+    },
+    {
+      field: 'GIAReportDate', headerName: 'Date', width: 150, editable: true,
       preProcessEditCellProps: (params) => {
         const regex = new RegExp('^\\d{10}$')
         return { ...params.props, error: !regex.test(params.props.value) };
@@ -109,7 +112,7 @@ const DiamondsTab = () => {
       },
     },
     {
-      field: 'carat', headerName: 'Carat Weight', type: 'number', width: 150, editable: true, valueGetter: ({ value }) => value.$numberDecimal,
+      field: 'caratWeight', headerName: 'Carat Weight', type: 'number', width: 150, editable: true, valueGetter: ({ value }) => value.$numberDecimal,
       preProcessEditCellProps: greaterThenZeroValidation,
     },
     {
@@ -125,14 +128,18 @@ const DiamondsTab = () => {
       preProcessEditCellProps: requiredValidation,
     },
     {
-      field: 'polishGrade', headerName: 'Polish Grade', type: 'singleSelect', valueOptions: COMMON_GRADES, width: 150, editable: true,
+      field: 'polish', headerName: 'Polish', type: 'singleSelect', valueOptions: COMMON_GRADES, width: 150, editable: true,
       preProcessEditCellProps: requiredValidation,
     },
     {
-      field: 'symmetryGrade', headerName: 'Symmetry Grade', type: 'singleSelect', valueOptions: COMMON_GRADES, width: 150, editable: true,
+      field: 'symmetry', headerName: 'Symmetry', type: 'singleSelect', valueOptions: COMMON_GRADES, width: 150, editable: true,
       preProcessEditCellProps: requiredValidation,
     },
-    { field: '', headerName: ' ', flex: 1 },
+    {
+      field: 'fluorescence', headerName: 'Fluorescence', type: 'singleSelect', valueOptions: COMMON_GRADES, width: 150, editable: true,
+      preProcessEditCellProps: requiredValidation,
+    },
+    { field: '', headerName: '', flex: 1 },
   ];
 
   const CRUD = {
@@ -150,7 +157,7 @@ const DiamondsTab = () => {
                  rows={diamonds}
                  setRows={setDiamonds}
                  itemName="Diamond"
-                 getNewItem={() => ({ GIA: '', shape: 0, measurements: '', carat: 0, colorGrade: '', clarityGrade: '', cutGrade: '', polishGrade: '', symmetryGrade: '' })}
+                 getNewItem={() => ({ GIAReportId: '', GIAReportDate: '', shape: 0, measurements: '', caratWeight: 0, colorGrade: '', clarityGrade: '', cutGrade: '', polish: '', symmetry: '', fluorescence: '' })}
                  renderButtons={(selectedRows) => (
                    <div className="button link save-button" onClick={() => populateTokens(selectedRows)}>
                      <FontAwesomeIcon icon={faUpload} /> Deploy

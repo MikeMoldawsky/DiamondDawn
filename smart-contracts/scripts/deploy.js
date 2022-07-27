@@ -79,6 +79,9 @@ async function main() {
       deployerBalance.sub(deployerNewBalance)
     ),
   });
+
+  // call DiamondDawnMine.initialize
+  await diamondDawnMine.initialize(diamondDawn.address)
   
   const DiamondDawnMineArtifact = hre.artifacts.readArtifactSync("DiamondDawnMine");
   console.log("Updating db with DiamondDawnMine artifact");
