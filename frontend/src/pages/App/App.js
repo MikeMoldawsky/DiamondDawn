@@ -21,8 +21,6 @@ import { EVENTS } from 'consts'
 function App() {
   const { stage } = useSelector(systemSelector)
   const account = useAccount()
-  // console.log({ tmp })
-  // const { data: account } = tmp
   const provider = useProvider();
   const dispatch = useDispatch()
   const contract = useDDContract()
@@ -72,7 +70,7 @@ function App() {
   }
 
   return (
-    <div className={classNames("app")}>
+    <>
       <Header>
         <DiamondList />
         <Wallet />
@@ -81,7 +79,7 @@ function App() {
       <footer>
         <ProgressBar />
       </footer>
-    </div>
+    </>
   );
 }
 

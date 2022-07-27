@@ -17,7 +17,17 @@ async function isInviteRevoked(inviteId) {
 	}
 }
 
+async function isCorrectPwd(password) {
+	try {
+		const invite = await InviteModel.findOne({ password: parseInt(password) });
+		return !!invite;
+	} catch (e) {
+		console.log(`Failed to check password`, e);
+	}
+}
+
 module.exports = {
 	openInvite,
-	isInviteRevoked
+	isInviteRevoked,
+	isCorrectPwd,
 };
