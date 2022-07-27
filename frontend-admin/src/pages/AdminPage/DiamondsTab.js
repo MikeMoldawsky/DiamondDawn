@@ -6,7 +6,8 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios'
 import { getShapeName } from "utils";
 import CRUDTable from "components/CRUDTable";
-import { COLOR_GRADES, CLARITY_GRADES, COMMON_GRADES } from 'consts'
+import {COLOR_GRADES, CLARITY_GRADES, COMMON_GRADES, CONTRACTS} from 'consts'
+import useDDContract from "hooks/useDDContract";
 
 const getAllDiamonds = async () => {
   try {
@@ -51,6 +52,7 @@ const requiredValidation = (params) => {
 
 const DiamondsTab = () => {
   const [diamonds, setDiamonds] = useState([])
+  const ddMineContract = useDDContract(CONTRACTS.DiamondDawnMine)
 
   useEffect(() => {
     const fetch = async () => {
@@ -58,6 +60,30 @@ const DiamondsTab = () => {
     }
     fetch()
   }, [])
+
+  const populateTokens = async selectedRows => {
+    try {
+      // const addresses = selectedRows.map(r => r.ethAddress)
+      const tempDiamond = {
+        GIAReportDate: 1,
+        GIAReportId: 1,
+        measurements: '5.12-5.14*3.55',
+        shape: 'Radiant',
+        caratWeight: '0.5',
+        colorGrade: 'EXCELLENT',
+        clarityGrade: 'EXCELLENT',
+        cutGrade: 'EXCELLENT',
+        polish: 'EXCELLENT',
+        symmetry: 'EXCELLENT',
+        fluorescence: 'EXCELLENT',
+      }
+      const tx = await ddMineContract.populateDiamonds([tempDiamond])
+      const receipt = await tx.wait()
+    }
+    catch (e) {
+      console.error('populateTokens Failed', { e })
+    }
+  }
 
   const columns = [
     {
@@ -121,8 +147,8 @@ const DiamondsTab = () => {
                  setRows={setDiamonds}
                  itemName="Diamond"
                  getNewItem={() => ({ GIA: '', shape: 0, measurements: '', carat: 0, colorGrade: '', clarityGrade: '', cutGrade: '', polishGrade: '', symmetryGrade: '' })}
-                 renderButtons={() => (
-                   <div className="button link save-button">
+                 renderButtons={(selectedRows) => (
+                   <div className="button link save-button" onClick={() => populateTokens(selectedRows)}>
                      <FontAwesomeIcon icon={faUpload} /> Deploy
                    </div>
                  )} />

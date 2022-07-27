@@ -2,10 +2,11 @@ import { makeReducer, reduceUpdateFull } from './reduxUtils'
 import _ from 'lodash'
 import { BigNumber } from 'ethers'
 import axios from "axios";
-import { STAGE } from "consts";
+import {CONTRACTS, STAGE} from "consts";
 
 const INITIAL_STATE = {
   ddContractData: null,
+  ddMineContractData: null,
   stage: -1,
   isStageActive: false,
   paused: false,
@@ -80,12 +81,15 @@ export const setStage = (stage, isStageActive) => ({
   payload: { stage, isStageActive },
 })
 
-export const setDDContractData = (ddContractData) => ({
+export const setDDContractData = ({ddContract, ddMineContract}) => ({
   type: 'SYSTEM.SET_DD_CONTRACT_DATA',
-  payload: { ddContractData },
+  payload: { ddContractData: ddContract, ddMineContractData: ddMineContract },
 })
 
 export const systemSelector = state => state.system
+export const contractSelector = (contractType = CONTRACTS.DiamondDawn) => state => {
+  return contractType === CONTRACTS.DiamondDawn ? state.system.ddContractData : state.system.ddMineContractData
+}
 
 export const systemReducer = makeReducer({
   'SYSTEM.SET_STAGE': reduceUpdateFull,
