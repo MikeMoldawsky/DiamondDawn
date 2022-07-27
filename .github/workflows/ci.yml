@@ -6,12 +6,15 @@ concurrency:
 
 on:
   push:
-    branches: [main,develop]
+    branches: [main, develop]
   pull_request:
 
 jobs:
   compile_and_run_tests:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./smart-contracts
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -19,15 +22,13 @@ jobs:
           node-version: '16'
       - name: Install dependencies
         run: npm ci
-      - name: Compile code
-        run: npm run compile
-      - name: Run test coverage
+      - name: Compile & Run test coverage
         run: npm run coverage
       - uses: 5monkeys/cobertura-action@master
         with:
-          path: coverage/cobertura-coverage.xml
+          path: smart-contracts/coverage/cobertura-coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          minimum_coverage: 10
+          minimum_coverage: 0
           fail_below_threshold: True
           show_line: True
           show_branch: True
@@ -49,5 +50,25 @@ jobs:
       #   uses: github/codeql-action/upload-sarif@v2
       #   with:
       #     sarif_file: ${{ steps.slither.outputs.sarif }}
-
-
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/develop' }}
+    needs: [compile_and_run_tests]
+    env:
+      HARDHAT_NETWORK: goerli
+      GOERLI_URL: ${{ secrets.GOERLI_URL }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+    defaults:
+      run:
+        working-directory: ./smart-contracts
+    steps:
+      -   uses: actions/checkout@v2
+      -   uses: actions/setup-node@v2
+          with:
+            node-version: '16'
+      -   name: Install dependencies
+          run: npm ci
+      -   name: Deploy smart contracts
+          run: npm run build

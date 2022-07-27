@@ -1,12 +1,3 @@
-node_modules
-.env
-coverage
-coverage.json
-typechain
-.idea
-
-#Hardhat files
-cache
-artifacts
 .vercel
-flat
+*/.env
+.idea

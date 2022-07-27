@@ -18,7 +18,7 @@ const VideoPlayer = ({ children, onEnded, noVideo }) => {
           onEnded={() => onEnded && onEnded()}
         />
       ) : (
-        <div className="video-placeholder">
+    <div className="video-placeholder" onClick={onEnded}>
           {children}
         </div>
       )}

@@ -17,6 +17,7 @@ import { STAGE } from "consts";
 import Diamond from "components/Diamond";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
 import ActionButton from "components/ActionButton";
+import { isTokenInStage } from "utils";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -32,10 +33,11 @@ const PackageBox = ({ selected, select, index, text, cost }) => {
 const Mine = () => {
   const [actionTxId, setActionTxId] = useState(false)
   const [selectedPackage, setSelectedPackage] = useState(0)
-  const { minePrice, mineAndCutPrice, fullPrice, isStageActive, stageStartTimes } = useSelector(systemSelector)
+  const { minePrice, isStageActive, stageStartTimes } = useSelector(systemSelector)
+  // const { minePrice, mineAndCutPrice, fullPrice, isStageActive, stageStartTimes } = useSelector(systemSelector)
   const [showVideo, setShowVideo] = useState(true)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
-  const { data: account } = useAccount()
+  const account = useAccount()
   const provider = useProvider();
   const contract = useDDContract()
   const dispatch = useDispatch()
@@ -51,15 +53,15 @@ const Mine = () => {
   })
 
   const mine = async () => {
-    let totalCost = minePrice
-    if (selectedPackage === 1) {
-      totalCost = mineAndCutPrice
-    }
-    else if (selectedPackage === 2) {
-      totalCost = fullPrice
-    }
+    // let totalCost = minePrice
+    // if (selectedPackage === 1) {
+    //   totalCost = mineAndCutPrice
+    // }
+    // else if (selectedPackage === 2) {
+    //   totalCost = fullPrice
+    // }
 
-    const tx = await contract.mine(selectedPackage, { value: totalCost })
+    const tx = await contract.mine({ value: minePrice })
 
     setShowCompleteVideo(true)
 
@@ -93,7 +95,7 @@ const Mine = () => {
       <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>03 - MINE VIDEO</VideoPlayer>
     )
 
-    const isTokenMined = token?.stage === STAGE.MINE
+    const isTokenMined = isTokenInStage(token, STAGE.MINE)
     if (isTokenMined) return (
       <>
         <Diamond diamond={token} />
@@ -117,8 +119,8 @@ const Mine = () => {
         <div className="secondary-text">The first one is to believe</div>
         <div className="center-aligned-row packages">
           <PackageBox selected={selectedPackage} select={setSelectedPackage} index={0} text="Mine" cost={minePrice} />
-          <PackageBox selected={selectedPackage} select={setSelectedPackage} index={1} text="Mine and Cut" cost={mineAndCutPrice} />
-          <PackageBox selected={selectedPackage} select={setSelectedPackage} index={2} text="Mine, Cut, Polish and Diamond" cost={fullPrice} />
+          {/*<PackageBox selected={selectedPackage} select={setSelectedPackage} index={1} text="Mine and Cut" cost={mineAndCutPrice} />*/}
+          {/*<PackageBox selected={selectedPackage} select={setSelectedPackage} index={2} text="Mine, Cut, Polish and Diamond" cost={fullPrice} />*/}
         </div>
         <div className="action">
           <ActionButton actionKey="Mine" className="action-button" onClick={mine}>MINE</ActionButton>

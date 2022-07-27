@@ -18,16 +18,24 @@ export const EVENTS = {
   WhitelistUpdated: 'WhitelistUpdated',
 }
 
-const VIDEO_BY_STAGE = {
-  [STAGE.MINE]: 'rough.jpeg',
-  [STAGE.CUT]: 'cut.mp4',
-  [STAGE.POLISH]: 'polish.mp4',
-  [STAGE.PHYSICAL]: 'burn.mp4',
-  [STAGE.REBIRTH]: 'final.mp4',
-}
-
 export const COLOR_GRADES = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 export const CLARITY_GRADES = ['FLAWLESS', 'INTERNALLY FLAWLESS', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'I1', 'I2', 'I3']
 export const COMMON_GRADES = ['EXCELLENT', 'VERY GOOD', 'GOOD', 'FAIR', 'POOR']
 
 export const DUMMY_VIDEO_URL = 'https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/final.mp4'
+
+
+export const TRAIT = {
+  stage: 'Stage',
+  GIAReportDate: 'GIA Report Date',
+  GIAReportId: 'GIA Report ID',
+  measurements: 'Measurements',
+  shape: 'Shape and Cutting Style',
+  caratWeight: 'Carat Weight',
+  colorGrade: 'Color Grade',
+  clarityGrade: 'Clarity Grade',
+  cutGrade: 'Cut Grade',
+  polish: 'Polish',
+  symmetry: 'Symmetry',
+  fluorescence: 'Fluorescence',
+}

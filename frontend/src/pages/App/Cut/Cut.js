@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Countdown from 'components/Countdown';
 import useDDContract from "hooks/useDDContract";
-import { BigNumber, utils as ethersUtils } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { fetchTokenUri, tokenByIdSelector } from "store/tokensReducer";
@@ -13,20 +12,21 @@ import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
 import _ from "lodash";
 import ActionButton from "components/ActionButton";
+import {isTokenInStage} from "utils";
 
 const Cut = () => {
   const [actionTxId, setActionTxId] = useState(false)
   const contract = useDDContract()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
-  const { cutPrice, isStageActive, stageStartTimes } = useSelector(systemSelector)
+  const { isStageActive, stageStartTimes } = useSelector(systemSelector)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const dispatch = useDispatch()
 
   useSelectAvailableToken(STAGE.CUT)
 
   const cut = async () => {
-    const tx = await contract.cut(selectedTokenId, { value: token.cutable ? BigNumber.from(0) : cutPrice })
+    const tx = await contract.cut(selectedTokenId)
 
     setShowCompleteVideo(true)
 
@@ -43,7 +43,7 @@ const Cut = () => {
 
     const endTime = _.get(stageStartTimes, 2)
 
-    const isTokenCut = token?.stage === STAGE.CUT
+    const isTokenCut = isTokenInStage(token, STAGE.CUT)
     if (isTokenCut) return (
       <>
         <Diamond diamond={token} />
@@ -64,7 +64,7 @@ const Cut = () => {
         </div>
         <div className="secondary-text">Will you take the risk?</div>
         {isStageActive && (
-          <ActionButton actionKey="Cut" className="action-button" onClick={cut}>CUT{token.cutable ? '' : ` (${ethersUtils.formatUnits(cutPrice)} ETH)`}</ActionButton>
+          <ActionButton actionKey="Cut" className="action-button" onClick={cut}>CUT</ActionButton>
         )}
         <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} cut`]} />
       </>

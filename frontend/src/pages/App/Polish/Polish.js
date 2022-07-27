@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Countdown from 'components/Countdown';
 import useDDContract from "hooks/useDDContract";
-import { BigNumber, utils as ethersUtils } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
@@ -13,20 +12,21 @@ import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
 import _ from "lodash";
 import ActionButton from "components/ActionButton";
+import {isTokenInStage} from "utils";
 
 const Polish = () => {
   const [actionTxId, setActionTxId] = useState(false)
   const contract = useDDContract()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
-  const { polishPrice, isStageActive, stageStartTimes } = useSelector(systemSelector)
+  const { isStageActive, stageStartTimes } = useSelector(systemSelector)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const dispatch = useDispatch()
 
   useSelectAvailableToken(STAGE.POLISH)
 
   const polish = async () => {
-    const tx = await contract.polish(selectedTokenId, { value: token.polishable ? BigNumber.from(0) : polishPrice })
+    const tx = await contract.polish(selectedTokenId)
 
     setShowCompleteVideo(true)
 
@@ -44,7 +44,7 @@ const Polish = () => {
 
     const endTime = _.get(stageStartTimes, 3)
 
-    const isTokenPolished = token?.stage === STAGE.POLISH
+    const isTokenPolished = isTokenInStage(token, STAGE.POLISH)
     if (isTokenPolished) return (
       <>
         <Diamond diamond={token} />
@@ -65,7 +65,7 @@ const Polish = () => {
         </div>
         <div className="secondary-text">Discover the beauty, a billion years in the making</div>
         {isStageActive && (
-          <ActionButton actionKey="Polish" className="action-button" onClick={polish}>POLISH{token.polishable ? '' : ` (${ethersUtils.formatUnits(polishPrice)} ETH)`}</ActionButton>
+          <ActionButton actionKey="Polish" className="action-button" onClick={polish}>POLISH</ActionButton>
         )}
         <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} polish`]} />
       </>

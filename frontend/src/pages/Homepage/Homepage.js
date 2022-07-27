@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
-import animation from "assets/video/infinity_video.mp4";
-import ReactPlayer from "react-player";
+// import animation from "assets/video/infinity_video.mp4";
+// import ReactPlayer from "react-player";
 import './Homepage.scss'
 import CommonView from "components/CommonView";
 import SVG from "components/SVG";
 import scrollMarker from 'assets/images/scroll-marker.svg'
 import VideoPlayer from "components/VideoPlayer";
-import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
+// import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import infinityLogo from 'assets/images/infinity-logo.png'
 import blackStone from 'assets/images/black-stone.png'
 import PasswordBox from "components/PasswordBox";
@@ -32,7 +32,7 @@ const Homepage = () => {
       </div>
       <div id="video" className="box center-aligned-column box-middle">
         <VideoPlayer noVideo>
-          <OndemandVideoIcon />
+          {/*<OndemandVideoIcon />*/}
           <div>TEASER VIDEO</div>
         </VideoPlayer>
       </div>

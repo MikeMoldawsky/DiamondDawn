@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import classNames from "classnames";
-import Wallet from "pages/Wallet";
+import Wallet from "components/Wallet";
 import Header from "components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPricing, fetchStage, fetchStagesConfig, setStage, systemSelector } from "store/systemReducer";
@@ -20,7 +20,9 @@ import { EVENTS } from 'consts'
 
 function App() {
   const { stage } = useSelector(systemSelector)
-  const { data: account } = useAccount()
+  const account = useAccount()
+  // console.log({ tmp })
+  // const { data: account } = tmp
   const provider = useProvider();
   const dispatch = useDispatch()
   const contract = useDDContract()

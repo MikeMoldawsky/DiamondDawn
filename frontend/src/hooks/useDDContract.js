@@ -12,7 +12,7 @@ function useDDContract() {
     contractInterface: ddContractData.artifact.abi,
     signerOrProvider: signer || provider,
   }
-
+  console.log("Using DiamondDawn client config ", {address: contractConfig.addressOrName, signerOrProvider: contractConfig.signerOrProvider});
   return useContract(contractConfig)
 }
 

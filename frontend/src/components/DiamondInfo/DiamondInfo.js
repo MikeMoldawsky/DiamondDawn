@@ -1,19 +1,34 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import './DiamondInfo.scss'
 import Diamond from "components/Diamond";
-import { getShapeName } from "utils";
+import _ from 'lodash'
+import {TRAIT} from "consts";
+import {getStageName} from "utils";
+
+const formatTraitValue = (trait_type, value) => {
+  switch (trait_type) {
+    case TRAIT.GIAReportDate:
+      const d = new Date(0);
+      d.setUTCSeconds(value);
+      return d.toDateString()
+    case TRAIT.stage:
+      return getStageName(value)
+    default:
+      return value
+  }
+}
 
 const DiamondInfo = ({ diamond }) => {
-  const { id, shape, cutable, polishable } = diamond
+  const { id, attributes } = diamond
 
   return (
     <div className="diamond-info">
       <Diamond diamond={diamond} />
       <div className="text-content">
         <div className="token-id"># {id}</div>
-        <div className="center-aligned-row"><span>Shape</span><span>{getShapeName(shape)}</span></div>
-        <div className="center-aligned-row"><span>Cutable</span><span>{cutable.toString()}</span></div>
-        <div className="center-aligned-row"><span>Polishable</span><span>{polishable.toString()}</span></div>
+        {_.map(attributes, ({ trait_type, value }) => (
+          <div key={`trait-${_.kebabCase(trait_type)}`} className="center-aligned-row"><span>{trait_type}</span><span>{formatTraitValue(trait_type, value)}</span></div>
+        ))}
       </div>
     </div>
   )
