@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import classNames from "classnames";
-import Wallet from "pages/Wallet";
+import Wallet from "components/Wallet";
 import Header from "components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPricing, fetchStage, fetchStagesConfig, setStage, systemSelector } from "store/systemReducer";

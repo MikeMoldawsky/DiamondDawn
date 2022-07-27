@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
-import Wallet from "pages/Wallet";
+import Wallet from "components/Wallet";
 import Header from "components/Header";
 import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
