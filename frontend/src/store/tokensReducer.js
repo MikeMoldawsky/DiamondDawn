@@ -11,6 +11,10 @@ const alchemy = initializeAlchemy({
 });
 
 export const loadAccountNfts = (contract, provider, address) => async dispatch => {
+  dispatch({
+    type: 'ACTION_STATUS.PENDING',
+    payload: { actionKey: 'load-nfts' },
+  })
   let nfts = []
   if (address) {
     if (provider?._network?.chainId === 1) {
@@ -38,6 +42,10 @@ export const loadAccountNfts = (contract, provider, address) => async dispatch =
   dispatch({
     type: 'TOKENS.SET',
     payload: nfts,
+  })
+  dispatch({
+    type: 'ACTION_STATUS.SUCCESS',
+    payload: { actionKey: 'load-nfts' },
   })
 };
 

@@ -1,7 +1,7 @@
 import { makeReducer, reduceUpdateFull } from './reduxUtils'
 
 const INITIAL_STATE = {
-  selectedTokenId: 0,
+  selectedTokenId: -1,
 }
 
 export const setSelectedTokenId = (selectedTokenId) => ({

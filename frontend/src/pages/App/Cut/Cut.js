@@ -6,7 +6,6 @@ import { uiSelector } from "store/uiReducer";
 import { fetchTokenUri, tokenByIdSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
 import VideoPlayer from "components/VideoPlayer";
-import useSelectAvailableToken from "hooks/useSelectAvailableToken";
 import { STAGE } from "consts";
 import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
@@ -22,8 +21,6 @@ const Cut = () => {
   const { isStageActive, stageStartTimes } = useSelector(systemSelector)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const dispatch = useDispatch()
-
-  useSelectAvailableToken(STAGE.CUT)
 
   const cut = async () => {
     const tx = await contract.cut(selectedTokenId)
