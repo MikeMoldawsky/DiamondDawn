@@ -11,31 +11,6 @@ const INITIAL_STATE = {
   isStageActive: false,
   paused: false,
   stageStartTimes: {},
-  minePrice: BigNumber.from(0),
-  cutPrice: BigNumber.from(0),
-  polishPrice: BigNumber.from(0),
-  mineAndCutPrice: BigNumber.from(0),
-  fullPrice: BigNumber.from(0),
-}
-
-export const fetchPricing = contract => async dispatch => {
-  const [minePrice, cutPrice, polishPrice, prepaidCutPrice, prepaidPolishPrice] = await Promise.all([
-    contract.MINING_PRICE(),
-    contract.CUT_PRICE(),
-    contract.POLISH_PRICE(),
-    contract.PREPAID_CUT_PRICE(),
-    contract.PREPAID_POLISH_PRICE()
-  ])
-
-  const prices = _.zipObject(
-    ['minePrice', 'cutPrice', 'polishPrice', 'mineAndCutPrice', 'fullPrice'],
-    [minePrice, cutPrice, polishPrice, minePrice.add(prepaidCutPrice), minePrice.add(prepaidCutPrice).add(prepaidPolishPrice)]
-  )
-
-  dispatch({
-    type: 'SYSTEM.SET_PRICE',
-    payload: prices,
-  })
 }
 
 export const fetchStage = contract => async dispatch => {
@@ -68,14 +43,6 @@ export const getStageConfigs = async () => {
   }
 }
 
-export const fetchStagesConfig = () => async dispatch => {
-  const stageStartTimes = await getStageConfigs()
-  dispatch({
-    type: 'SYSTEM.SET_STAGES_CONFIG',
-    payload: { stageStartTimes }
-  })
-}
-
 export const setStage = (stage, isStageActive) => ({
   type: 'SYSTEM.SET_STAGE',
   payload: { stage, isStageActive },
@@ -87,13 +54,13 @@ export const setDDContractData = ({ddContract, ddMineContract}) => ({
 })
 
 export const systemSelector = state => state.system
+
 export const contractSelector = (contractType = CONTRACTS.DiamondDawn) => state => {
   return contractType === CONTRACTS.DiamondDawn ? state.system.ddContractData : state.system.ddMineContractData
 }
 
 export const systemReducer = makeReducer({
   'SYSTEM.SET_STAGE': reduceUpdateFull,
-  'SYSTEM.SET_PRICE': reduceUpdateFull,
   'SYSTEM.SET_PAUSED': reduceUpdateFull,
   'SYSTEM.SET_STAGES_CONFIG': reduceUpdateFull,
   'SYSTEM.SET_DD_CONTRACT_DATA': reduceUpdateFull,

@@ -46,8 +46,12 @@ const deleteDiamond = async (diamondId) => {
 }
 
 const requiredValidation = (params) => {
-  console.log({ params })
   return { ...params.props, error: _.isEmpty(params.props.value) };
+}
+
+const greaterThenZeroValidation = (params) => {
+  const { value } = params.props
+  return { ...params.props, error: !value || value <= 0 };
 }
 
 const DiamondsTab = () => {
@@ -106,7 +110,7 @@ const DiamondsTab = () => {
     },
     {
       field: 'carat', headerName: 'Carat Weight', type: 'number', width: 150, editable: true, valueGetter: ({ value }) => value.$numberDecimal,
-      preProcessEditCellProps: requiredValidation,
+      preProcessEditCellProps: greaterThenZeroValidation,
     },
     {
       field: 'colorGrade', headerName: 'Color Grade', type: 'singleSelect', valueOptions: COLOR_GRADES, width: 150, editable: true,

@@ -6,7 +6,7 @@ import InvitationsTab from "./InvitationsTab";
 import ControlTab from "./ControlTab";
 import Tabs from "components/Tabs";
 import Header from "components/Header/Header";
-import Wallet from "pages/Wallet";
+import Wallet from "components/Wallet";
 import DiamondsTab from "./DiamondsTab";
 import ScheduleTab from "./ScheduleTab";
 
