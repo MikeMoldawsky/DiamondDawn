@@ -2,6 +2,21 @@ import React from 'react'
 import './DiamondInfo.scss'
 import Diamond from "components/Diamond";
 import _ from 'lodash'
+import {TRAIT} from "consts";
+import {getStageName} from "utils";
+
+const formatTraitValue = (trait_type, value) => {
+  switch (trait_type) {
+    case TRAIT.GIAReportDate:
+      const d = new Date(0);
+      d.setUTCSeconds(value);
+      return d.toDateString()
+    case TRAIT.stage:
+      return getStageName(value)
+    default:
+      return value
+  }
+}
 
 const DiamondInfo = ({ diamond }) => {
   const { id, attributes } = diamond
@@ -12,7 +27,7 @@ const DiamondInfo = ({ diamond }) => {
       <div className="text-content">
         <div className="token-id"># {id}</div>
         {_.map(attributes, ({ trait_type, value }) => (
-          <div key={`trait-${_.kebabCase(trait_type)}`} className="center-aligned-row"><span>{trait_type}</span><span>{value}</span></div>
+          <div key={`trait-${_.kebabCase(trait_type)}`} className="center-aligned-row"><span>{trait_type}</span><span>{formatTraitValue(trait_type, value)}</span></div>
         ))}
       </div>
     </div>
