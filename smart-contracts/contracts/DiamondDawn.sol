@@ -512,7 +512,8 @@ contract DiamondDawn is
         _requireAssignedMineContract
         returns (string memory)
     {
-        require(_exists(tokenId), "ERC721: URI query for nonexistent token");
+        // TODO - this require blocks getting the tokenURI of burnt tokens
+//        require(_exists(tokenId), "ERC721: URI query for nonexistent token");
         
         string memory videoUrl = _getVideoUrl(tokenId);
         uint diamondId = _tokensMetadata[tokenId].diamondId;
