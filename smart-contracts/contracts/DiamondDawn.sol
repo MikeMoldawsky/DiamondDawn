@@ -72,7 +72,7 @@ contract DiamondDawn is
         setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
         _diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
         _pause();
-        counters.increment();
+        _tokenIdCounter.increment();
     }
 
     function _beforeTokenTransfer(
