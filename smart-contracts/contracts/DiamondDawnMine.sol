@@ -170,16 +170,28 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
     function _getJsonAttributes(DiamondMetadata memory diamondMetadata, Stage stage) private pure returns (ERC721MetadataAttribute[] memory) {
         // TODO: Make this function more elegant & generic.
         // TODO: Check how we should handle the dynamic array creation
-        ERC721MetadataAttribute[] memory metadataAttributes = new ERC721MetadataAttribute[](17);
+        uint size;
+        if (stage == Stage.MINE){
+            size = 7;
+        } else if (stage == Stage.CUT){
+            size = 11;
+        }else if (stage == Stage.POLISH){
+            size = 14;
+        } else if (stage == Stage.PHYSICAL){
+            size = 3;
+        } else if (stage == Stage.REBIRTH){
+            size = 17;
+        }
+        ERC721MetadataAttribute[] memory metadataAttributes = new ERC721MetadataAttribute[](size);
         metadataAttributes[0] = _getERC721MetadataAttribute(false, true, true, "", "Origin", "Metaverse");
         metadataAttributes[1] = _getERC721MetadataAttribute(false, true, true, "", "Type", _getTypeAttribute(stage));
         metadataAttributes[2] = _getERC721MetadataAttribute(false, true, true, "", "Identification", "Natural");
         if (stage == Stage.MINE){
             // TODO: randomly calculate the carat
             metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", "0.92");
-            metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Color", "CAPE");
-            metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Shape", "Makeable");
-            metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Mine", "Underground");
+            metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Color", "CAPE");
+            metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Shape", "Makeable");
+            metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Mine", "Underground");
             return metadataAttributes;
         }
         if (stage == Stage.CUT){
