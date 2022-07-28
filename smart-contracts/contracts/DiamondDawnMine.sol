@@ -48,7 +48,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
 
     address private _diamondDawnContract;
     DiamondMetadata[] public _unassignedDiamonds;
-    mapping(uint => DiamondMetadata) public _assignedDiamonds;
+    mapping(uint => DiamondMetadata) public _tokenIdToAssignedDiamonds;
 
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -105,33 +105,30 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         _;
     }
 
-    function allocateDiamond() public 
+    function allocateDiamond(uint256 tokenId) external
         onlyDiamondDawn
         _requireExistingUnassignedDiamond
-        returns (uint)
     {
         uint randomIndex = _getRandomNumber(_unassignedDiamonds.length - 1);
         DiamondMetadata memory diamond = _popUnassignedDiamond(randomIndex);
-        uint diamondId = diamond.reportNumber;
-        _assignedDiamonds[diamondId] = diamond;
-
-        return diamondId;
+        _tokenIdToAssignedDiamonds[tokenId] = diamond;
     }
 
-    function _requireExistingAssignedDiamond(uint diamondId) internal view {
-        require(_assignedDiamonds[diamondId].reportNumber > 0, "DiamondDawnMine: Diamond does not exist");
+    function _requireExistingAssignedDiamond(uint tokenId) internal view {
+        require(_tokenIdToAssignedDiamonds[tokenId].reportNumber > 0, "DiamondDawnMine: Diamond does not exist");
     }
     
     function getDiamondMetadata(
-        uint diamondId,
         uint tokenId,
         Stage stage,
         string memory videoUrl
-    ) external view returns (string memory) {
+    ) external view returns (string memory)
+    {
+        // TODO: only diamond dawn contract.
         // TODO: add validation that the diamond exists
-        _requireExistingAssignedDiamond(diamondId);
+        _requireExistingAssignedDiamond(tokenId);
 
-        DiamondMetadata memory diamondMetadata = _assignedDiamonds[diamondId];
+        DiamondMetadata memory diamondMetadata = _tokenIdToAssignedDiamonds[tokenId];
         string memory base64Json = Base64.encode(bytes(string(abi.encodePacked(_getJson(diamondMetadata, tokenId, stage, videoUrl)))));
         
         return string(abi.encodePacked('data:application/json;base64,', base64Json));
@@ -209,58 +206,25 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
     }
 
     function _generateERC721Metadata(ERC721MetadataStructure memory metadata) private pure returns (string memory) {
-      bytes memory byteString;    
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _openJsonObject());
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _pushJsonPrimitiveStringAttribute("name", metadata.name, true));
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _pushJsonPrimitiveStringAttribute("description", metadata.description, true));
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _pushJsonPrimitiveStringAttribute("created_by", metadata.createdBy, true));
-    
-        byteString = abi.encodePacked(
-            byteString,
-            _pushJsonPrimitiveStringAttribute("image", metadata.image, true));
-
-        byteString = abi.encodePacked(
-          byteString,
-          _pushJsonComplexAttribute("attributes", _getAttributes(metadata.attributes), false));
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _closeJsonObject());
-    
+        bytes memory byteString;
+        byteString = abi.encodePacked(byteString, _openJsonObject());
+        byteString = abi.encodePacked(byteString, _pushJsonPrimitiveStringAttribute("name", metadata.name, true));
+        byteString = abi.encodePacked(byteString, _pushJsonPrimitiveStringAttribute("description", metadata.description, true));
+        byteString = abi.encodePacked(byteString, _pushJsonPrimitiveStringAttribute("created_by", metadata.createdBy, true));
+        byteString = abi.encodePacked(byteString, _pushJsonPrimitiveStringAttribute("image", metadata.image, true));
+        byteString = abi.encodePacked(byteString, _pushJsonComplexAttribute("attributes", _getAttributes(metadata.attributes), false));
+        byteString = abi.encodePacked(byteString, _closeJsonObject());
         return string(byteString);
     }
 
     function _getAttributes(ERC721MetadataAttribute[] memory attributes) private pure returns (string memory) {
         bytes memory byteString;
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _openJsonArray());
-    
+        byteString = abi.encodePacked(byteString, _openJsonArray());
         for (uint i = 0; i < attributes.length; i++) {
           ERC721MetadataAttribute memory attribute = attributes[i];
-
-          byteString = abi.encodePacked(
-            byteString,
-            _pushJsonArrayElement(_getAttribute(attribute), i < (attributes.length - 1)));
+          byteString = abi.encodePacked(byteString, _pushJsonArrayElement(_getAttribute(attribute), i < (attributes.length - 1)));
         }
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _closeJsonArray());
-    
+        byteString = abi.encodePacked(byteString, _closeJsonArray());
         return string(byteString);
     }
 
