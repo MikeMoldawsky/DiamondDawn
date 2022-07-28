@@ -20,8 +20,6 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         string cut;
         string depth;
         string fluorescence;
-        string identification;
-        string laboratory;
         string length;
         string polish;
         uint reportDate;
@@ -182,8 +180,8 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Cut", diamondMetadata.cut);
         metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Depth", diamondMetadata.depth);
         metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Fluorescence", diamondMetadata.fluorescence);
-        metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Identification", diamondMetadata.identification);
-        metadataAttributes[7] = _getERC721MetadataAttribute(false, true, true, "", "Laboratory", diamondMetadata.laboratory);
+        metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Identification", "Natural");
+        metadataAttributes[7] = _getERC721MetadataAttribute(false, true, true, "", "Laboratory", "GIA");
         metadataAttributes[8] = _getERC721MetadataAttribute(false, true, true, "", "Length", diamondMetadata.length);
         metadataAttributes[9] = _getERC721MetadataAttribute(false, true, true, "", "Origin", "Metaverse");
         metadataAttributes[10] = _getERC721MetadataAttribute(false, true, true, "", "Polish", diamondMetadata.polish);
@@ -191,7 +189,6 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         metadataAttributes[12] = _getERC721MetadataAttribute(false, true, false, "", "Report Number", Strings.toString(diamondMetadata.reportNumber));
         metadataAttributes[13] = _getERC721MetadataAttribute(false, true, true, "", "Shape", diamondMetadata.shape);
         metadataAttributes[14] = _getERC721MetadataAttribute(false, true, true, "", "Symmetry", diamondMetadata.symmetry);
-        // TODO: add physical attribute from stage
         metadataAttributes[15] = _getERC721MetadataAttribute(false, true, true, "", "Type", _getTypeAttribute(stage));
         metadataAttributes[16] = _getERC721MetadataAttribute(false, true, true, "", "Width", diamondMetadata.width);
 
