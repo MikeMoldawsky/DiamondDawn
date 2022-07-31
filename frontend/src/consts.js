@@ -26,16 +26,17 @@ export const DUMMY_VIDEO_URL = 'https://tweezers-public.s3.amazonaws.com/diamond
 
 
 export const TRAIT = {
-  stage: 'Stage',
-  GIAReportDate: 'GIA Report Date',
-  GIAReportId: 'GIA Report ID',
-  measurements: 'Measurements',
-  shape: 'Shape and Cutting Style',
-  caratWeight: 'Carat Weight',
-  colorGrade: 'Color Grade',
-  clarityGrade: 'Clarity Grade',
-  cutGrade: 'Cut Grade',
-  polish: 'Polish',
-  symmetry: 'Symmetry',
+  carat: 'Carat',
+  clarity: 'Clarity',
+  color: 'Color',
+  cut: 'Cut',
+  depth: 'Depth',
   fluorescence: 'Fluorescence',
+  length: 'Length',
+  polish: 'Polish',
+  reportDate: 'Report Date',
+  reportNumber: 'Report Number',
+  shape: 'Shape',
+  symmetry: 'Symmetry',
+  width: 'Width'
 }

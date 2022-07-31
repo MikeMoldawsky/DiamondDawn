@@ -31,7 +31,6 @@ contract DiamondDawn is
 
     struct Metadata {
         Stage stage;
-        uint diamondId;
     }
 
     event StageChanged(Stage stage, bool isStageActive);
@@ -73,6 +72,7 @@ contract DiamondDawn is
         setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
         _diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
         _pause();
+        _tokenIdCounter.increment();
     }
 
     function _beforeTokenTransfer(
@@ -439,14 +439,11 @@ contract DiamondDawn is
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(_msgSender(), tokenId);
-
-        // Allocate a random diamond from the mine
-        uint diamondId = _diamondDawnMine.allocateDiamond();
+        _diamondDawnMine.allocateDiamond(tokenId);
 
         // Store token metadata
         _tokensMetadata[tokenId] = Metadata({
-            stage: Stage.MINE,
-            diamondId: diamondId
+            stage: Stage.MINE
         });
 
         address[] memory wlAddresses = new address[](1);
@@ -514,11 +511,8 @@ contract DiamondDawn is
     {
         // TODO - this require blocks getting the tokenURI of burnt tokens
 //        require(_exists(tokenId), "ERC721: URI query for nonexistent token");
-        
         string memory videoUrl = _getVideoUrl(tokenId);
-        uint diamondId = _tokensMetadata[tokenId].diamondId;
         Stage diamondStage = _tokensMetadata[tokenId].stage;
-
-        return _diamondDawnMine.getDiamondMetadata(diamondId, tokenId, diamondStage, videoUrl);
+        return _diamondDawnMine.getDiamondMetadata(tokenId, diamondStage, videoUrl);
     }
 }

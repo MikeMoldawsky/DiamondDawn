@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interface/IDiamondDawnMine.sol";
+import "./types/Stage.sol";
 
 /**
  * @title DiamondDawn NFT Contract
@@ -13,17 +14,19 @@ import "./interface/IDiamondDawnMine.sol";
 contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
 
     struct DiamondMetadata {
-        uint GIAReportDate;
-        uint GIAReportId;
-        string measurements;
-        string shape;
-        string caratWeight;
-        string colorGrade;
-        string clarityGrade;
-        string cutGrade;
-        string polish;
-        string symmetry;
+        string carat;
+        string clarity;
+        string color;
+        string cut;
+        string depth;
         string fluorescence;
+        string length;
+        string polish;
+        uint reportDate;
+        uint reportNumber;
+        string shape;
+        string symmetry;
+        string width;
     }
 
     struct ERC721MetadataStructure {
@@ -45,7 +48,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
 
     address private _diamondDawnContract;
     DiamondMetadata[] public _unassignedDiamonds;
-    mapping(uint => DiamondMetadata) public _assignedDiamonds;
+    mapping(uint => DiamondMetadata) public _tokenIdToAssignedDiamonds;
 
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -102,36 +105,48 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
         _;
     }
 
-    function allocateDiamond() public 
+    function allocateDiamond(uint256 tokenId) external
         onlyDiamondDawn
         _requireExistingUnassignedDiamond
-        returns (uint)
     {
         uint randomIndex = _getRandomNumber(_unassignedDiamonds.length - 1);
         DiamondMetadata memory diamond = _popUnassignedDiamond(randomIndex);
-        uint diamondId = diamond.GIAReportId;
-        _assignedDiamonds[diamondId] = diamond;
-
-        return diamondId;
+        _tokenIdToAssignedDiamonds[tokenId] = diamond;
     }
 
-    function _requireExistingAssignedDiamond(uint diamondId) internal view {
-        require(_assignedDiamonds[diamondId].GIAReportId > 0, "DiamondDawnMine: Diamond does not exist");
+    function _requireExistingAssignedDiamond(uint tokenId) internal view {
+        require(_tokenIdToAssignedDiamonds[tokenId].reportNumber > 0, "DiamondDawnMine: Diamond does not exist");
     }
     
     function getDiamondMetadata(
-        uint diamondId,
         uint tokenId,
         Stage stage,
         string memory videoUrl
-    ) external view returns (string memory) {
+    ) external view returns (string memory)
+    {
+        // TODO: only diamond dawn contract.
         // TODO: add validation that the diamond exists
-        _requireExistingAssignedDiamond(diamondId);
+        _requireExistingAssignedDiamond(tokenId);
 
-        DiamondMetadata memory diamondMetadata = _assignedDiamonds[diamondId];
+        DiamondMetadata memory diamondMetadata = _tokenIdToAssignedDiamonds[tokenId];
         string memory base64Json = Base64.encode(bytes(string(abi.encodePacked(_getJson(diamondMetadata, tokenId, stage, videoUrl)))));
         
         return string(abi.encodePacked('data:application/json;base64,', base64Json));
+    }
+
+    function _getTypeAttribute(Stage stage) private pure returns (string memory) {
+        if (stage == Stage.MINE){
+            return "Rough";
+        } else if (stage == Stage.CUT){
+            return "Cut";
+        }else if (stage == Stage.POLISH){
+            return "Polished";
+        } else if (stage == Stage.PHYSICAL){
+            return "Burned";
+        } else if (stage == Stage.REBIRTH){
+            return "Reborn";
+        }
+        return "Unknown";
     }
 
     function _getJson(
@@ -142,7 +157,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
     ) private pure returns (string memory) {        
         ERC721MetadataStructure memory metadata = ERC721MetadataStructure({
             name: string(abi.encodePacked("Diamond Dawn #", Strings.toString(tokenId))),
-            // TODOL: Add real description
+            // TODO: Add real description
             description: "Diamond Dawn tokens description",
             createdBy: "Diamond Dawn",
             image: videoUrl,
@@ -153,22 +168,79 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
     }  
 
     function _getJsonAttributes(DiamondMetadata memory diamondMetadata, Stage stage) private pure returns (ERC721MetadataAttribute[] memory) {
-        // TODO: Populate the attributes by stage visibility
-        ERC721MetadataAttribute[] memory metadataAttributes = new ERC721MetadataAttribute[](12);
-
-        metadataAttributes[0] = _getERC721MetadataAttribute(false, true, false, "", "GIA Report ID", Strings.toString(diamondMetadata.GIAReportId));
-        metadataAttributes[1] = _getERC721MetadataAttribute(false, true, false, "", "GIA Report Date", Strings.toString(diamondMetadata.GIAReportDate));
-        metadataAttributes[2] = _getERC721MetadataAttribute(false, true, true, "", "Shape and Cutting Style", diamondMetadata.shape);
-        metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Measurements", diamondMetadata.measurements);
-        metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Carat Weight", diamondMetadata.caratWeight);
-        metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Color Grade", diamondMetadata.colorGrade);
-        metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Clarity Grade", diamondMetadata.clarityGrade);
-        metadataAttributes[7] = _getERC721MetadataAttribute(false, true, true, "", "Cut Grade", diamondMetadata.cutGrade);
-        metadataAttributes[8] = _getERC721MetadataAttribute(false, true, true, "", "Polish", diamondMetadata.polish);
-        metadataAttributes[9] = _getERC721MetadataAttribute(false, true, true, "", "Symmetry", diamondMetadata.symmetry);
-        metadataAttributes[10] = _getERC721MetadataAttribute(false, true, true, "", "Fluorescence", diamondMetadata.fluorescence);
-        metadataAttributes[11] = _getERC721MetadataAttribute(false, true, false, "", "Stage", Strings.toString(uint(stage)));
-
+        // TODO: Make this function more elegant & generic.
+        // TODO: Check how we should handle the dynamic array creation
+        uint size;
+        if (stage == Stage.MINE){
+            size = 7;
+        } else if (stage == Stage.CUT){
+            size = 11;
+        }else if (stage == Stage.POLISH){
+            size = 14;
+        } else if (stage == Stage.PHYSICAL){
+            size = 3;
+        } else if (stage == Stage.REBIRTH){
+            size = 17;
+        }
+        ERC721MetadataAttribute[] memory metadataAttributes = new ERC721MetadataAttribute[](size);
+        metadataAttributes[0] = _getERC721MetadataAttribute(false, true, true, "", "Origin", "Metaverse");
+        metadataAttributes[1] = _getERC721MetadataAttribute(false, true, true, "", "Type", _getTypeAttribute(stage));
+        metadataAttributes[2] = _getERC721MetadataAttribute(false, true, true, "", "Identification", "Natural");
+        if (stage == Stage.MINE){
+            // TODO: randomly calculate the carat
+            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", "0.92");
+            metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Color", "CAPE");
+            metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Shape", "Makeable");
+            metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Mine", "Underground");
+            return metadataAttributes;
+        }
+        if (stage == Stage.CUT){
+            // TODO: randomly calculate the carat
+            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", diamondMetadata.carat);
+            metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Color", diamondMetadata.color);
+            metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Cut", diamondMetadata.cut);
+            metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Depth", diamondMetadata.depth);
+            metadataAttributes[7] = _getERC721MetadataAttribute(false, true, true, "", "Fluorescence", diamondMetadata.fluorescence);
+            metadataAttributes[8] = _getERC721MetadataAttribute(false, true, true, "", "Length", diamondMetadata.length);
+            metadataAttributes[9] = _getERC721MetadataAttribute(false, true, true, "", "Shape", diamondMetadata.shape);
+            metadataAttributes[10] = _getERC721MetadataAttribute(false, true, true, "", "Width", diamondMetadata.width);
+            return metadataAttributes;
+        }else if (stage == Stage.POLISH){
+            // Cut
+            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", diamondMetadata.carat);
+            metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Color", diamondMetadata.color);
+            metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Cut", diamondMetadata.cut);
+            metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Depth", diamondMetadata.depth);
+            metadataAttributes[7] = _getERC721MetadataAttribute(false, true, true, "", "Fluorescence", diamondMetadata.fluorescence);
+            metadataAttributes[8] = _getERC721MetadataAttribute(false, true, true, "", "Length", diamondMetadata.length);
+            metadataAttributes[9] = _getERC721MetadataAttribute(false, true, true, "", "Shape", diamondMetadata.shape);
+            metadataAttributes[10] = _getERC721MetadataAttribute(false, true, true, "", "Width", diamondMetadata.width);
+            // Polish
+            metadataAttributes[11] = _getERC721MetadataAttribute(false, true, true, "", "Clarity", diamondMetadata.clarity);
+            metadataAttributes[12] = _getERC721MetadataAttribute(false, true, true, "", "Polish", diamondMetadata.polish);
+            metadataAttributes[13] = _getERC721MetadataAttribute(false, true, true, "", "Symmetry", diamondMetadata.symmetry);
+            return metadataAttributes;
+        } else if (stage == Stage.PHYSICAL){
+            // TODO: decide on burn attributes
+            return metadataAttributes;
+        } else if (stage == Stage.REBIRTH){
+            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", diamondMetadata.carat);
+            metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Color", diamondMetadata.color);
+            metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Cut", diamondMetadata.cut);
+            metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Depth", diamondMetadata.depth);
+            metadataAttributes[7] = _getERC721MetadataAttribute(false, true, true, "", "Fluorescence", diamondMetadata.fluorescence);
+            metadataAttributes[8] = _getERC721MetadataAttribute(false, true, true, "", "Length", diamondMetadata.length);
+            metadataAttributes[9] = _getERC721MetadataAttribute(false, true, true, "", "Shape", diamondMetadata.shape);
+            metadataAttributes[10] = _getERC721MetadataAttribute(false, true, true, "", "Width", diamondMetadata.width);
+            // Polish
+            metadataAttributes[11] = _getERC721MetadataAttribute(false, true, true, "", "Clarity", diamondMetadata.clarity);
+            metadataAttributes[12] = _getERC721MetadataAttribute(false, true, true, "", "Polish", diamondMetadata.polish);
+            metadataAttributes[13] = _getERC721MetadataAttribute(false, true, true, "", "Symmetry", diamondMetadata.symmetry);
+            // Rebirth
+            metadataAttributes[14] = _getERC721MetadataAttribute(false, true, true, "", "Laboratory", "GIA");
+            metadataAttributes[15] = _getERC721MetadataAttribute(false, true, false, "", "Report Date", Strings.toString(diamondMetadata.reportDate));
+            metadataAttributes[16] = _getERC721MetadataAttribute(false, true, false, "", "Report Number", Strings.toString(diamondMetadata.reportNumber));
+        }
         return metadataAttributes;
     }
 
@@ -186,58 +258,25 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine {
     }
 
     function _generateERC721Metadata(ERC721MetadataStructure memory metadata) private pure returns (string memory) {
-      bytes memory byteString;    
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _openJsonObject());
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _pushJsonPrimitiveStringAttribute("name", metadata.name, true));
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _pushJsonPrimitiveStringAttribute("description", metadata.description, true));
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _pushJsonPrimitiveStringAttribute("created_by", metadata.createdBy, true));
-    
-        byteString = abi.encodePacked(
-            byteString,
-            _pushJsonPrimitiveStringAttribute("image", metadata.image, true));
-
-        byteString = abi.encodePacked(
-          byteString,
-          _pushJsonComplexAttribute("attributes", _getAttributes(metadata.attributes), false));
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _closeJsonObject());
-    
+        bytes memory byteString;
+        byteString = abi.encodePacked(byteString, _openJsonObject());
+        byteString = abi.encodePacked(byteString, _pushJsonPrimitiveStringAttribute("name", metadata.name, true));
+        byteString = abi.encodePacked(byteString, _pushJsonPrimitiveStringAttribute("description", metadata.description, true));
+        byteString = abi.encodePacked(byteString, _pushJsonPrimitiveStringAttribute("created_by", metadata.createdBy, true));
+        byteString = abi.encodePacked(byteString, _pushJsonPrimitiveStringAttribute("image", metadata.image, true));
+        byteString = abi.encodePacked(byteString, _pushJsonComplexAttribute("attributes", _getAttributes(metadata.attributes), false));
+        byteString = abi.encodePacked(byteString, _closeJsonObject());
         return string(byteString);
     }
 
     function _getAttributes(ERC721MetadataAttribute[] memory attributes) private pure returns (string memory) {
         bytes memory byteString;
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _openJsonArray());
-    
+        byteString = abi.encodePacked(byteString, _openJsonArray());
         for (uint i = 0; i < attributes.length; i++) {
           ERC721MetadataAttribute memory attribute = attributes[i];
-
-          byteString = abi.encodePacked(
-            byteString,
-            _pushJsonArrayElement(_getAttribute(attribute), i < (attributes.length - 1)));
+          byteString = abi.encodePacked(byteString, _pushJsonArrayElement(_getAttribute(attribute), i < (attributes.length - 1)));
         }
-    
-        byteString = abi.encodePacked(
-          byteString,
-          _closeJsonArray());
-    
+        byteString = abi.encodePacked(byteString, _closeJsonArray());
         return string(byteString);
     }
 

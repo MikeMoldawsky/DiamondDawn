@@ -6,17 +6,19 @@ const CLARITY_GRADES = ['FLAWLESS', 'INTERNALLY FLAWLESS', 'VVS1', 'VVS2', 'VS1'
 const COMMON_GRADES = ['EXCELLENT', 'VERY GOOD', 'GOOD', 'FAIR', 'POOR']
 
 const DiamondSchema = new mongoose.Schema({
-  GIAReportId: { type: Number, required: true },
-  GIAReportDate: { type: Number, required: true },
+  reportNumber: { type: Number, required: true },
+  reportDate: { type: Number, required: true },
   shape: { type: Number, required: true, min: 0, max: 2 },
-  measurements: { type: String, required: true },
-  caratWeight: { type: mongoose.Types.Decimal128, required: true },
-  colorGrade: { type: String, enum: COLOR_GRADES, required: true },
-  clarityGrade: { type: String, enum: CLARITY_GRADES, required: true },
-  cutGrade: { type: String, enum: COMMON_GRADES, required: true },
+  carat: { type: mongoose.Types.Decimal128, required: true },
+  color: { type: String, enum: COLOR_GRADES, required: true },
+  clarity: { type: String, enum: CLARITY_GRADES, required: true },
+  cut: { type: String, enum: COMMON_GRADES, required: true },
   polish: { type: String, enum: COMMON_GRADES, required: true },
   symmetry: { type: String, enum: COMMON_GRADES, required: true },
   fluorescence: { type: String, enum: COMMON_GRADES, required: true },
+  length: { type: mongoose.Types.Decimal128, required: true },
+  width: { type: mongoose.Types.Decimal128, required: true },
+  depth: { type: mongoose.Types.Decimal128, required: true },
 });
 
 const DiamondModel = db.model("Diamond", DiamondSchema);

@@ -69,10 +69,19 @@ const DiamondsTab = () => {
     try {
       const diamonds = selectedRows.map(diamond => ({
         ..._.omit(diamond, ['_id']),
-        GIAReportId: parseInt(diamond.GIAReportId),
-        GIAReportDate: parseInt(diamond.GIAReportDate),
+        carat: diamond.carat.$numberDecimal,
+        clarity: diamond.clarity,
+        color: diamond.color,
+        cut: diamond.cut,
+        depth: diamond.depth.$numberDecimal,
+        fluorescence: diamond.fluorescence,
+        length: diamond.length.$numberDecimal,
+        polish: diamond.polish,
+        reportDate: parseInt(diamond.reportDate),
+        reportNumber: parseInt(diamond.reportNumber),
         shape: getShapeName(diamond.shape),
-        caratWeight: diamond.caratWeight.$numberDecimal,
+        symmetry: diamond.symmetry,
+        width: diamond.width.$numberDecimal
       }))
 
       console.log('PUSHING DIAMONDS TO MINE CONTRACT', { diamonds })
@@ -87,14 +96,14 @@ const DiamondsTab = () => {
 
   const columns = [
     {
-      field: 'GIAReportId', headerName: 'GIA #', width: 150, editable: true,
+      field: 'reportNumber', headerName: 'GIA #', width: 150, editable: true,
       preProcessEditCellProps: (params) => {
         const regex = new RegExp('^\\d{10}$')
         return { ...params.props, error: !regex.test(params.props.value) };
       },
     },
     {
-      field: 'GIAReportDate', headerName: 'Date', width: 150, editable: true,
+      field: 'reportDate', headerName: 'Date', width: 150, editable: true,
       preProcessEditCellProps: (params) => {
         const regex = new RegExp('^\\d{10}$')
         return { ...params.props, error: !regex.test(params.props.value) };
@@ -105,26 +114,19 @@ const DiamondsTab = () => {
       valueFormatter: params => getShapeName(params.value),
     },
     {
-      field: 'measurements', headerName: 'Measurements', width: 250, editable: true,
-      preProcessEditCellProps: (params) => {
-        const regex = new RegExp('^\\d{1}.\\d{1,2}-\\d{1}.\\d{1,2}\\*\\d{1}.\\d{1,2}$')
-        return { ...params.props, error: !regex.test(params.props.value) };
-      },
-    },
-    {
-      field: 'caratWeight', headerName: 'Carat Weight', type: 'number', width: 150, editable: true, valueGetter: ({ value }) => value.$numberDecimal,
+      field: 'carat', headerName: 'Carat', type: 'number', width: 150, editable: true, valueGetter: ({ value }) => value.$numberDecimal,
       preProcessEditCellProps: greaterThenZeroValidation,
     },
     {
-      field: 'colorGrade', headerName: 'Color Grade', type: 'singleSelect', valueOptions: COLOR_GRADES, width: 150, editable: true,
+      field: 'color', headerName: 'Color', type: 'singleSelect', valueOptions: COLOR_GRADES, width: 150, editable: true,
       preProcessEditCellProps: requiredValidation,
     },
     {
-      field: 'clarityGrade', headerName: 'Clarity Grade', type: 'singleSelect', valueOptions: CLARITY_GRADES, width: 150, editable: true,
+      field: 'clarity', headerName: 'Clarity', type: 'singleSelect', valueOptions: CLARITY_GRADES, width: 150, editable: true,
       preProcessEditCellProps: requiredValidation,
     },
     {
-      field: 'cutGrade', headerName: 'Cut Grade', type: 'singleSelect', valueOptions: COMMON_GRADES, width: 150, editable: true,
+      field: 'cut', headerName: 'Cut', type: 'singleSelect', valueOptions: COMMON_GRADES, width: 150, editable: true,
       preProcessEditCellProps: requiredValidation,
     },
     {
@@ -138,6 +140,18 @@ const DiamondsTab = () => {
     {
       field: 'fluorescence', headerName: 'Fluorescence', type: 'singleSelect', valueOptions: COMMON_GRADES, width: 150, editable: true,
       preProcessEditCellProps: requiredValidation,
+    },
+    {
+      field: 'length', headerName: 'Length', type: 'number', width: 150, editable: true, valueGetter: ({ value }) => value.$numberDecimal,
+      preProcessEditCellProps: greaterThenZeroValidation,
+    },
+    {
+      field: 'width', headerName: 'Width', type: 'number', width: 150, editable: true, valueGetter: ({ value }) => value.$numberDecimal,
+      preProcessEditCellProps: greaterThenZeroValidation,
+    },
+    {
+      field: 'depth', headerName: 'Depth', type: 'number', width: 150, editable: true, valueGetter: ({ value }) => value.$numberDecimal,
+      preProcessEditCellProps: greaterThenZeroValidation,
     },
     { field: '', headerName: '', flex: 1 },
   ];
@@ -157,7 +171,7 @@ const DiamondsTab = () => {
                  rows={diamonds}
                  setRows={setDiamonds}
                  itemName="Diamond"
-                 getNewItem={() => ({ GIAReportId: '', GIAReportDate: '', shape: 0, measurements: '', caratWeight: 0, colorGrade: '', clarityGrade: '', cutGrade: '', polish: '', symmetry: '', fluorescence: '' })}
+                 getNewItem={() => ({ reportNumber: '', reportDate: '', shape: 0, carat: 0, color: '', clarity: '', cut: '', polish: '', symmetry: '', fluorescence: '', length: 0, width: 0, depth: 0 })}
                  renderButtons={(selectedRows) => (
                    <div className="button link save-button" onClick={() => populateTokens(selectedRows)}>
                      <FontAwesomeIcon icon={faUpload} /> Deploy

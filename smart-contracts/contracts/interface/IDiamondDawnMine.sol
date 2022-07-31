@@ -5,10 +5,9 @@ import "../types/Stage.sol";
 
 interface IDiamondDawnMine {
 
-    function allocateDiamond() external returns(uint);
+    function allocateDiamond(uint tokenId) external;
     
     function getDiamondMetadata(
-        uint diamondId,
         uint tokenId,
         Stage stage,
         string memory videoUrl
