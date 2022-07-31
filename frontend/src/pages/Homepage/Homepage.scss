@@ -74,14 +74,12 @@
 
   .box-middle {
     .video-player {
-      height: 90vh;
+      max-height: 95vh;
+      max-width: 95vw;
       aspect-ratio: 16 / 9;
       margin: 0 auto;
 
-      .react-player, .video-placeholder {
-        font-size: 4em;
-        background-color: white;
-        color: black;
+      .react-player {
         width: 100% !important;
         height: 100% !important;
       }
