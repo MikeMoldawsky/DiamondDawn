@@ -1,22 +1,19 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import _ from 'lodash'
 import useDDContract from "hooks/useDDContract";
 import { utils as ethersUtils } from "ethers";
 import classNames from "classnames";
 import './Mine.scss'
 import { useDispatch, useSelector } from "react-redux";
-import { systemSelector } from "store/systemReducer";
+import {fetchPricing, systemSelector} from "store/systemReducer";
 import VideoPlayer from "components/VideoPlayer";
 import Countdown from 'components/Countdown';
-import { loadAccountNfts } from "store/tokensReducer";
+import {loadAccountNfts, watchTokenMined} from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
-import { uiSelector } from "store/uiReducer";
-import { tokenByIdSelector } from "store/tokensReducer";
-import { STAGE } from "consts";
-import Diamond from "components/Diamond";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
 import ActionButton from "components/ActionButton";
-import { isTokenInStage } from "utils";
+import {useNavigate} from "react-router-dom";
+import {isActionSuccessSelector} from "components/ActionButton/ActionButton.module";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -35,27 +32,43 @@ const Mine = () => {
   const { minePrice, isStageActive, stageStartTimes } = useSelector(systemSelector)
   const [showVideo, setShowVideo] = useState(true)
   const [showCompleteVideo, setShowCompleteVideo] = useState(false)
+  const [completeVideoEnded, setCompleteVideoEnded] = useState(false)
+  const [minedTokenId, setMinedTokenId] = useState(-1)
   const account = useAccount()
   const provider = useProvider();
   const contract = useDDContract()
   const dispatch = useDispatch()
-  const { selectedTokenId } = useSelector(uiSelector)
-  const token = useSelector(tokenByIdSelector(selectedTokenId))
   const [canMine, setCanMine] = useState(true)
+  const navigate = useNavigate()
+  const isFetchNftsSuccess = useSelector(isActionSuccessSelector('load-nfts'))
+
+  useEffect(() => {
+    dispatch(fetchPricing(contract))
+  }, [])
 
   useEffectWithAccount(async () => {
     const isWhitelisted = await contract.mintAllowedAddresses(account.address)
     setCanMine(isWhitelisted)
   })
 
+  useEffect(() => {
+    if (completeVideoEnded && minedTokenId > -1 && isFetchNftsSuccess) {
+      navigate(`/nft/${minedTokenId}`)
+    }
+  }, [completeVideoEnded, minedTokenId, isFetchNftsSuccess])
+
   const mine = async () => {
+    watchTokenMined(provider, contract, account?.address, (tokenId) => {
+      dispatch(loadAccountNfts(contract, provider, account.address))
+      setMinedTokenId(tokenId)
+    })
+
     const tx = await contract.mine({ value: minePrice })
 
     setShowCompleteVideo(true)
 
     const receipt = await tx.wait()
 
-    dispatch(loadAccountNfts(contract, provider, account.address))
     setActionTxId(receipt.transactionHash)
   }
 
@@ -72,6 +85,8 @@ const Mine = () => {
 
     const endTime = _.get(stageStartTimes, 1)
 
+    console.log({ showVideo, showCompleteVideo, completeVideoEnded })
+
     if (showVideo) return (
       <>
         <div className="leading-text">THE MINE IS OPEN</div>
@@ -79,18 +94,11 @@ const Mine = () => {
       </>
     )
 
-    if (showCompleteVideo) return (
-      <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>03 - MINE VIDEO</VideoPlayer>
-    )
-
-    const isTokenMined = isTokenInStage(token, STAGE.MINE)
-    if (isTokenMined) return (
-      <>
-        <Diamond diamond={token} />
-        <div className="leading-text">YOUR ROUGH DIAMOND NFT IS IN YOUR WALLET</div>
-        <Countdown date={endTime} text={['You have', 'until cutting']} />
-        <div className="secondary-text">But what lies beneath the surface</div>
-      </>
+    if (showCompleteVideo || completeVideoEnded) return (
+      <VideoPlayer onEnded={() => {
+        setCompleteVideoEnded(true)
+        setShowCompleteVideo(false)
+      }}>03 - MINE VIDEO</VideoPlayer>
     )
 
     if (!canMine) return (

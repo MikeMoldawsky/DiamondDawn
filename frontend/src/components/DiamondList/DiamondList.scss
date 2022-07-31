@@ -1,3 +1,5 @@
+@import "css/vars";
+
 .diamond-list {
   display: flex;
   align-items: center;
@@ -45,17 +47,11 @@
   }
 
   .diamond-info-container {
-    width: 380px;
+    width: 240px;
     position: absolute;
     right: 0;
-    top: 58px;
+    top: 70px;
     z-index: 1;
-    padding-top: 12px;
-
-    .diamond-info {
-      width: 380px;
-      background-color: black;
-      border: solid 1px white;
-    }
+    border: solid 1px $darker-gray;
   }
 }

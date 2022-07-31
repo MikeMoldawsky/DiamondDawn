@@ -13,10 +13,29 @@ import blackStone from 'assets/images/black-stone.png'
 import PasswordBox from "components/PasswordBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { NavLink } from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {systemSelector} from "store/systemReducer";
+import WagmiWrapper from "layout/WagmiWrapper";
+import Header from "components/Header";
+import ContractProvider from "layout/ContractProvider";
+import DiamondList from "components/DiamondList";
+import Wallet from "components/Wallet";
+import useSystemLoader from "hooks/useSystemLoader";
 
-const Homepage = () => {
+const HomepageInternal = () => {
+  const { stage, isStageActive } = useSelector(systemSelector)
   const [hasEntered, setHasEntered] = useState(false)
+  const navigate = useNavigate()
+
+  const isReady = useSystemLoader()
+
+  const canEnter = stage > 0 || isStageActive
+
+  const onCorrectPassword = () => {
+    // setHasEntered(true)
+    navigate('/process')
+  }
 
   return (
     <div className={classNames("page homepage", { 'entered': hasEntered })} >
@@ -27,9 +46,11 @@ const Homepage = () => {
                     secondaryText="the first ever diamond mining experience, from NFT to reality">
           <img src={infinityLogo} alt={''} />
         </CommonView>
-        <NavLink to={`/process`}>
-          <div className="button" style={{ marginTop: 40 }}>ENTER</div>
-        </NavLink>
+        {canEnter && (
+          <NavLink to={`/process`}>
+            <div className="button" style={{ marginTop: 40 }}>ENTER THE MINE</div>
+          </NavLink>
+        )}
         <a href="#video">
           <SVG src={scrollMarker} className="scroll-marker" />
         </a>
@@ -44,9 +65,9 @@ const Homepage = () => {
         {/*<div className="bg" />*/}
         <CommonView leadingText={["EVERY BIRTH OF A DIAMOND IS A MIRACLE OF NATURE,", "BEGINNING ONLY AS A MERE POTENTIAL"]}
                     secondaryText="Do you have what it takes to shine?">
-          <img src={blackStone} alt="Diamond" onClick={() => setHasEntered(!hasEntered)} />
+          <img src={blackStone} alt="Diamond" />
         </CommonView>
-        <PasswordBox onCorrect={() => setHasEntered(true)} />
+        <PasswordBox onCorrect={onCorrectPassword} />
         <div className="center-aligned-column join-us">
           <div>join us on this unequaled experience</div>
           <div className="button inverted icon-after">
@@ -57,5 +78,21 @@ const Homepage = () => {
     </div>
   );
 };
+
+const Homepage = () => {
+  return (
+    <WagmiWrapper>
+      <Header>
+        <ContractProvider>
+          <DiamondList />
+        </ContractProvider>
+        <Wallet />
+      </Header>
+      <ContractProvider>
+        <HomepageInternal />
+      </ContractProvider>
+    </WagmiWrapper>
+  )
+}
 
 export default Homepage;

@@ -4,6 +4,17 @@ import { Network, initializeAlchemy, getNftsForOwner } from "@alch/alchemy-sdk";
 
 const INITIAL_STATE = {}
 
+export const watchTokenMined = (provider, contract, address, callback) => {
+  provider.once('block', () => {
+    const filter = contract.filters.Transfer(null, address)
+    contract.on(filter, (from, to, tokenId) => {
+      console.log('MINED WITH FILTER', { from, to, tokenId })
+      contract.on(filter, null)
+      callback(tokenId)
+    })
+  })
+}
+
 const alchemy = initializeAlchemy({
   apiKey: process.env.REACT_ALCHEMY_KEY, // Replace with your Alchemy API Key.
   network: Network.ETH_MAINNET, // Replace with your network.

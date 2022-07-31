@@ -6,24 +6,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import './DiamondList.scss'
-import { STAGE, SHAPE, TRAIT } from "consts";
+import { STAGE, SHAPE, TRAIT, NFT_TYPE } from "consts";
 import { systemSelector } from "store/systemReducer";
 import { tokensSelector } from "store/tokensReducer";
 import DiamondInfo from "components/DiamondInfo";
 import useOnClickOutside from "hooks/useClickOutside";
 import {getTokenTrait} from "utils";
 import { NavLink } from "react-router-dom";
+import Diamond from "components/Diamond";
 
 const getDiamondIcon = (token) => {
-  const stage = getTokenTrait(token, TRAIT.stage)
+  const type = getTokenTrait(token, TRAIT.type)
   const shapeName = getTokenTrait(token, TRAIT.shape)
   const shape = SHAPE[_.toUpper(shapeName)]
 
-  switch (stage) {
-    case STAGE.MINE:
+  switch (type) {
+    case NFT_TYPE.Rough:
       // rough diamond
       return faGem
-    case STAGE.CUT:
+    case NFT_TYPE.Cut:
       // cut diamond by shape
       switch (shape) {
         case SHAPE.OVAL:
@@ -35,7 +36,7 @@ const getDiamondIcon = (token) => {
         default:
           return null
       }
-    case STAGE.POLISH:
+    case NFT_TYPE.Polished:
       // polished diamond by shape
       switch (shape) {
         case SHAPE.OVAL:
@@ -47,9 +48,9 @@ const getDiamondIcon = (token) => {
         default:
           return null
       }
-    case STAGE.PHYSICAL:
+    case NFT_TYPE.Burned:
       return faGem
-    case STAGE.REBIRTH:
+    case NFT_TYPE.Reborn:
       return faGem
     default:
       return null
@@ -82,7 +83,7 @@ const DiamondItem = ({ diamond }) => {
         </div>
         {showInfo && (
           <div className="diamond-info-container">
-            <DiamondInfo diamond={diamond} />
+            <Diamond diamond={diamond} />
           </div>
         )}
       </div>

@@ -13,22 +13,27 @@ export const clearActionStatus = actionKey => ({
 })
 
 // SELECTORS
-export const actionStatusSelector = actionKey => state => _.get(state, ['actionStatus', actionKey], '')
-export const isActionPendingSelector = actionKey => state => actionStatusSelector(actionKey)(state) === 'pending'
-export const isActionSuccessSelector = actionKey => state => actionStatusSelector(actionKey)(state) === 'success'
+export const actionStatusSelector = actionKey => state => _.get(state, ['actionStatus', actionKey], {})
+const isActionStatusSelector = (actionKey, status) => state => actionStatusSelector(actionKey)(state).status === status
+export const isActionPendingSelector = actionKey => isActionStatusSelector(actionKey, 'pending')
+export const isActionSuccessSelector = actionKey => isActionStatusSelector(actionKey, 'success')
+export const isActionFirstCompleteSelector = actionKey => state => actionStatusSelector(actionKey)(state).firstComplete
 
 // REDUCER
 const reduceStatus = status => (state, action) => {
     const {actionKey}= action.payload
     return {
         ...state,
-        [actionKey]: status,
+        [actionKey]: {
+            ..._.get(state, actionKey, {}),
+            ...status
+        },
     }
 }
 
 export const actionStatusReducer = makeReducer({
-    'ACTION_STATUS.PENDING': reduceStatus('pending'),
-    'ACTION_STATUS.SUCCESS': reduceStatus('success'),
+    'ACTION_STATUS.PENDING': reduceStatus({ status: 'pending' }),
+    'ACTION_STATUS.SUCCESS': reduceStatus({ status: 'success', firstComplete: true }),
     'ACTION_STATUS.CLEAR': (state, action) => {
         const {actionKey}= action.payload
         return _.omit(state, actionKey)
