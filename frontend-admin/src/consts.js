@@ -12,6 +12,7 @@ export const SHAPE = {
   ROUND: 2,
   OVAL: 3,
   RADIANT: 4,
+  NO_SHAPE: 5
 }
 
 export const EVENTS = {
