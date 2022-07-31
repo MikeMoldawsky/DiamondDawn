@@ -1,13 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import classNames from "classnames";
-// import animation from "assets/video/infinity_video.mp4";
-// import ReactPlayer from "react-player";
 import './Homepage.scss'
 import CommonView from "components/CommonView";
 import SVG from "components/SVG";
 import scrollMarker from 'assets/images/scroll-marker.svg'
 import VideoPlayer from "components/VideoPlayer";
-// import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import infinityLogo from 'assets/images/infinity-logo.png'
 import blackStone from 'assets/images/black-stone.png'
 import PasswordBox from "components/PasswordBox";
@@ -22,13 +19,16 @@ import ContractProvider from "layout/ContractProvider";
 import DiamondList from "components/DiamondList";
 import Wallet from "components/Wallet";
 import useSystemLoader from "hooks/useSystemLoader";
+import teaserVideo from 'assets/video/teaser.mp4'
 
 const HomepageInternal = () => {
   const { stage, isStageActive } = useSelector(systemSelector)
   const [hasEntered, setHasEntered] = useState(false)
   const navigate = useNavigate()
+  const videoPlayer = useRef(null)
+  const [playVideo, setPlayVideo] = useState(false)
 
-  const isReady = useSystemLoader()
+  useSystemLoader()
 
   const canEnter = stage > 0 || isStageActive
 
@@ -37,8 +37,21 @@ const HomepageInternal = () => {
     navigate('/process')
   }
 
+  const handleScroll = event => {
+    if (playVideo) return
+
+    const video = videoPlayer.current
+    const scrollTop = event.currentTarget.scrollTop
+    const videoTop = video.offsetTop + video.offsetParent.offsetTop
+    const startPlayAt = videoTop - (video.offsetHeight / 3)
+
+    if (scrollTop > startPlayAt) {
+      setPlayVideo(true)
+    }
+  };
+
   return (
-    <div className={classNames("page homepage", { 'entered': hasEntered })} >
+    <div className={classNames("page homepage", { 'entered': hasEntered })} onScroll={handleScroll}>
       <div className="bg-stars" />
       <div className="bg" />
       <div className="box box-top">
@@ -56,13 +69,9 @@ const HomepageInternal = () => {
         </a>
       </div>
       <div id="video" className="box center-aligned-column box-middle">
-        <VideoPlayer noVideo>
-          {/*<OndemandVideoIcon />*/}
-          <div>TEASER VIDEO</div>
-        </VideoPlayer>
+        <VideoPlayer id="home-video" videoPlayer={videoPlayer} src={teaserVideo} controls playing={playVideo} />
       </div>
       <div className="box center-aligned-column box-bottom">
-        {/*<div className="bg" />*/}
         <CommonView leadingText={["EVERY BIRTH OF A DIAMOND IS A MIRACLE OF NATURE,", "BEGINNING ONLY AS A MERE POTENTIAL"]}
                     secondaryText="Do you have what it takes to shine?">
           <img src={blackStone} alt="Diamond" />

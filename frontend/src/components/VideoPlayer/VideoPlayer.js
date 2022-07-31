@@ -4,21 +4,21 @@ import { DUMMY_VIDEO_URL } from 'consts'
 
 const GLOBAL_SHOW_VIDEO = true
 
-const VideoPlayer = ({ children, onEnded, noVideo }) => {
+const VideoPlayer = ({ children, src = DUMMY_VIDEO_URL, onEnded, controls, videoPlayer, playing = true, ...props }) => {
   return (
-    <div className="video-player">
-      {(GLOBAL_SHOW_VIDEO && !noVideo) ? (
+    <div className="video-player" {...props} ref={videoPlayer}>
+      {(GLOBAL_SHOW_VIDEO) ? (
         <ReactPlayer
-          url={DUMMY_VIDEO_URL}
-          playing
+          url={src}
+          playing={playing}
           playsinline
-          controls={false}
+          controls={controls}
           muted
           className="react-player"
           onEnded={() => onEnded && onEnded()}
         />
       ) : (
-    <div className="video-placeholder" onClick={onEnded}>
+        <div className="video-placeholder" onClick={onEnded}>
           {children}
         </div>
       )}
