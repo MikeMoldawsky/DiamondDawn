@@ -2,7 +2,7 @@ export const STAGE = {
   MINE: 0,
   CUT: 1,
   POLISH: 2,
-  PHYSICAL: 3,
+  BURN: 3,
   REBIRTH: 4,
 }
 

@@ -2,15 +2,16 @@ export const STAGE = {
   MINE: 0,
   CUT: 1,
   POLISH: 2,
-  PHYSICAL: 3,
+  BURN: 3,
   REBIRTH: 4,
 }
 
 export const SHAPE = {
-  OVAL: 0,
-  RADIANT: 1,
-  PEAR: 2,
-  ROUGH: 3,
+  MAKEABLE: 0,
+  PEAR: 1,
+  ROUND: 2,
+  OVAL: 3,
+  RADIANT: 4,
 }
 
 export const EVENTS = {

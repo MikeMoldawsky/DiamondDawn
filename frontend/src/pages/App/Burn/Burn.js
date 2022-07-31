@@ -67,7 +67,7 @@ const Burn = () => {
 
     const endTime = _.get(stageStartTimes, 4)
 
-    const isTokenBurned = isTokenInStage(token, STAGE.PHYSICAL)
+    const isTokenBurned = isTokenInStage(token, STAGE.BURN)
     if (isTokenBurned) {
       return (
         <>

@@ -9,7 +9,6 @@ interface IDiamondDawnMine {
     
     function getDiamondMetadata(
         uint tokenId,
-        Stage stage,
-        string memory videoUrl
+        Stage stage
     ) external view returns (string memory);
 }
