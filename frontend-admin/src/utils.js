@@ -33,30 +33,8 @@ export const showError = (e, prefix = 'Error') => {
   console.error(errorMessage)
 }
 
-export const getShapeName = shape => {
-  switch (shape) {
-    case SHAPE.OVAL:
-      return 'Oval'
-    case SHAPE.RADIANT:
-      return 'Radiant'
-    case SHAPE.PEAR:
-      return 'Pear'
-    default:
-      return 'Rough'
-  }
-}
+export const getEnumKeyByValue = (enm, value) => Object.keys(enm)[value]
 
-export const getStageName = stage => {
-  switch (stage) {
-    case STAGE.CUT:
-      return 'Cut'
-    case STAGE.POLISH:
-      return 'Polish'
-    case STAGE.BURN:
-      return 'Burn'
-    case STAGE.REBIRTH:
-      return 'Rebirth'
-    default:
-      return 'Mine'
-  }
-}
+export const getShapeName = shape => getEnumKeyByValue(SHAPE, shape)
+
+export const getStageName = stage => getEnumKeyByValue(STAGE, stage)

@@ -110,7 +110,7 @@ const DiamondsTab = () => {
       },
     },
     {
-      field: 'shape', headerName: 'Shape', type: 'singleSelect', valueOptions: [0, 1, 2], width: 150, editable: true,
+      field: 'shape', headerName: 'Shape', type: 'singleSelect', valueOptions: [2, 3, 4, 5], width: 150, editable: true,
       valueFormatter: params => getShapeName(params.value),
     },
     {
