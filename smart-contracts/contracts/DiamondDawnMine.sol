@@ -255,7 +255,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAd
             // TODO: randomly calculate the carat
             metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", "0.92");
             metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Color", "CAPE");
-            metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Shape", _getShapeAttributeFromShape(diamondMetadata.shape));
+            metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Shape", _getShapeAttributeFromShape(Shape.MAKEABLE));
             metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Mine", "Underground");
             return metadataAttributes;
         }
@@ -438,7 +438,9 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAd
     function _getDiamondVideoUrl(Stage stage, DiamondMetadata memory diamondMetadata) internal view returns (string memory)
     {
         string memory videoUrl;
-        if (stage == Stage.BURN || stage == Stage.REBIRTH){
+        if (stage == Stage.MINE){
+            videoUrl = _stageToShapeVideoUrls[uint(stage)][uint(Shape.MAKEABLE)];
+        } else if (stage == Stage.BURN || stage == Stage.REBIRTH){
             videoUrl = _stageToShapeVideoUrls[uint(stage)][uint(Shape.NO_SHAPE)];
         } else {
             videoUrl = _stageToShapeVideoUrls[uint(stage)][uint(diamondMetadata.shape)];

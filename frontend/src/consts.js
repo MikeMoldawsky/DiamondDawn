@@ -7,10 +7,12 @@ export const STAGE = {
 }
 
 export const SHAPE = {
-  OVAL: 0,
-  RADIANT: 1,
+  NO_SHAPE: 0,
+  MAKEABLE: 1,
   PEAR: 2,
-  ROUGH: 3,
+  ROUND: 3,
+  OVAL: 4,
+  RADIANT: 5
 }
 
 export const EVENTS = {
