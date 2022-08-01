@@ -181,7 +181,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAd
         return string(abi.encodePacked('data:application/json;base64,', base64Json));
     }
 
-    function _getTypeAttributeFromStage(Stage stage) private pure returns (string memory) {
+    function _getTypeAttributeForStage(Stage stage) private pure returns (string memory) {
         if (stage == Stage.MINE){
             return "Rough";
         } else if (stage == Stage.CUT){
