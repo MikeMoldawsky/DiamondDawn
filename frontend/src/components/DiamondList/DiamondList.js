@@ -47,7 +47,7 @@ const getDiamondIcon = (token) => {
         default:
           return null
       }
-    case STAGE.PHYSICAL:
+    case STAGE.BURN:
       return faGem
     case STAGE.REBIRTH:
       return faGem

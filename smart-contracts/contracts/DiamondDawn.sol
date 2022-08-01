@@ -50,7 +50,6 @@ contract DiamondDawn is
     uint public constant MINING_PRICE = 0.002 ether;
     bool public isStageActive;
     mapping(address => bool) public mintAllowedAddresses;
-    mapping(Stage => string) private _videoUrls;
     mapping(uint256 => Metadata) private _tokensMetadata;
     mapping(uint256 => address) private _burnedTokenToOwner;
     mapping(address => EnumerableSet.UintSet) private _ownerToBurnedTokens;
@@ -156,19 +155,6 @@ contract DiamondDawn is
         stage = _getNextStage(stage);
     }
 
-    /** 
-    * @notice Sets the video URL for the given stage.
-    *
-    * @dev This function is only available to the admin role.
-    *
-    * @param videoUrl a string containing the video url of the current stage.
-    */
-    function _assignCurrentStageVideo(string memory videoUrl) internal
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        _videoUrls[stage] = videoUrl;
-    }
-
     /**********************        Transactions        ************************/
 
     /** 
@@ -215,13 +201,11 @@ contract DiamondDawn is
     * @dev This function is only available to the admin role.
     * @dev Emitting StageChanged event triggering frontend to update the UI.
     *
-    * @param videoUrl a string containing the video url of the current stage.
     */
-    function revealStage(string memory videoUrl) public
+    function revealStage() public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _activateStage();
-        _assignCurrentStageVideo(videoUrl);
 
         emit StageChanged(stage, isStageActive);
     }
@@ -299,11 +283,11 @@ contract DiamondDawn is
         emit StageChanged(stage, isStageActive);
     }
 
-    function completeCurrentStageAndRevealNextStage(string memory videoUrl ) public 
-        onlyRole(DEFAULT_ADMIN_ROLE) 
+    function completeCurrentStageAndRevealNextStage() public
+        onlyRole(DEFAULT_ADMIN_ROLE)
     {
         completeCurrentStage();
-        revealStage(videoUrl);
+        revealStage();
     }
 
     function _setAdminAndAddToAllowList(address[] memory addresses) internal
@@ -324,10 +308,6 @@ contract DiamondDawn is
 
     /**********************     Internal & Helpers     ************************/
 
-    function _baseURI() internal pure override returns (string memory) {
-        return "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
-    }
-
     function _getNextStageForToken(uint tokenId) internal view returns (Stage) {
         return _getNextStage(_tokensMetadata[tokenId].stage);
     }
@@ -347,15 +327,6 @@ contract DiamondDawn is
         );
 
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
-    }
-
-    function _getVideoUrl(uint256 tokenId) internal view returns (string memory)
-    {
-        return
-            string.concat(
-                _baseURI(),
-                _videoUrls[_tokensMetadata[tokenId].stage]
-            );
     }
 
     /**********************           Guards            ************************/
@@ -409,7 +380,7 @@ contract DiamondDawn is
 
     modifier whenRebirthIsActive() {
         require(
-            (stage == Stage.PHYSICAL && isStageActive) ||
+            (stage == Stage.BURN && isStageActive) ||
                 stage == Stage.REBIRTH,
             "A stage should be active to perform this action"
         );
@@ -464,7 +435,7 @@ contract DiamondDawn is
     }
 
     function burn(uint256 tokenId) public override
-        whenStageIsActive(Stage.PHYSICAL)
+        whenStageIsActive(Stage.BURN)
     {
         super.burn(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
@@ -510,9 +481,8 @@ contract DiamondDawn is
         returns (string memory)
     {
         // TODO - this require blocks getting the tokenURI of burnt tokens
-//        require(_exists(tokenId), "ERC721: URI query for nonexistent token");
-        string memory videoUrl = _getVideoUrl(tokenId);
+        // require(_exists(tokenId), "ERC721: URI query for nonexistent token");
         Stage diamondStage = _tokensMetadata[tokenId].stage;
-        return _diamondDawnMine.getDiamondMetadata(tokenId, diamondStage, videoUrl);
+        return _diamondDawnMine.getDiamondMetadata(tokenId, diamondStage);
     }
 }

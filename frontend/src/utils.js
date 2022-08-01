@@ -52,7 +52,7 @@ export const getStageName = stage => {
       return 'Cut'
     case STAGE.POLISH:
       return 'Polish'
-    case STAGE.PHYSICAL:
+    case STAGE.BURN:
       return 'Burn'
     case STAGE.REBIRTH:
       return 'Rebirth'
