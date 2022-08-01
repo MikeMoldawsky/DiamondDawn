@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { toast } from "react-toastify";
-import { SHAPE, STAGE, TRAIT } from "consts";
+import {NFT_TYPE, SHAPE, STAGE, TRAIT} from "consts";
 
 export const parseError = e => {
   let message = _.get(e, 'error.data.message', '')
@@ -33,31 +33,26 @@ export const showError = (e, prefix = 'Error') => {
   console.error(errorMessage)
 }
 
-export const getShapeName = shape => {
-  switch (shape) {
-    case SHAPE.OVAL:
-      return 'Oval'
-    case SHAPE.RADIANT:
-      return 'Radiant'
-    case SHAPE.PEAR:
-      return 'Pear'
-    default:
-      return 'Rough'
-  }
-}
+export const getEnumKeyByValue = (enm, value) => Object.keys(enm)[value]
 
-export const getStageName = stage => {
+export const getShapeName = shape => getEnumKeyByValue(SHAPE, shape)
+
+export const getStageName = stage => getEnumKeyByValue(STAGE, stage)
+
+export const getTypeByStage = stage => {
   switch (stage) {
+    case STAGE.MINE:
+      return NFT_TYPE.Rough
     case STAGE.CUT:
-      return 'Cut'
+      return NFT_TYPE.Cut
     case STAGE.POLISH:
-      return 'Polish'
+      return NFT_TYPE.Polished
     case STAGE.BURN:
-      return 'Burn'
+      return NFT_TYPE.Burned
     case STAGE.REBIRTH:
-      return 'Rebirth'
+      return NFT_TYPE.Reborn
     default:
-      return 'Mine'
+      return NFT_TYPE.Unknown
   }
 }
 
@@ -67,3 +62,4 @@ export const getTokenTrait = (token, trait) => {
 }
 
 export const isTokenInStage = (token, stage) => getTokenTrait(token, TRAIT.stage) === stage
+export const isTokenOfType = (token, type) => getTokenTrait(token, TRAIT.type) === type
