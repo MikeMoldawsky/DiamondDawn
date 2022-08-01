@@ -171,7 +171,7 @@ const DiamondsTab = () => {
                  rows={diamonds}
                  setRows={setDiamonds}
                  itemName="Diamond"
-                 getNewItem={() => ({ reportNumber: '', reportDate: '', shape: 1, carat: 0, color: '', clarity: '', cut: '', polish: '', symmetry: '', fluorescence: '', length: 0, width: 0, depth: 0 })}
+                 getNewItem={() => ({ reportNumber: '', reportDate: '', shape: 2, carat: 0, color: '', clarity: '', cut: '', polish: '', symmetry: '', fluorescence: '', length: 0, width: 0, depth: 0 })}
                  renderButtons={(selectedRows) => (
                    <div className="button link save-button" onClick={() => populateTokens(selectedRows)}>
                      <FontAwesomeIcon icon={faUpload} /> Deploy

@@ -9,18 +9,18 @@ import "./interface/IDiamondDawnMineAdmin.sol";
 import "./types/Stage.sol";
 
 /**
- * @title DiamondDawn NFT Contract
+ * @title DiamondDawnMine NFT Contract
  * @author Diamond Dawn
  */
 contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAdmin {
 
     enum Shape {
+        NO_SHAPE,
         MAKEABLE,
         PEAR,
         ROUND,
         OVAL,
-        RADIANT,
-        NO_SHAPE
+        RADIANT
     }
 
     struct DiamondMetadata {
@@ -248,7 +248,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAd
         }
         ERC721MetadataAttribute[] memory metadataAttributes = new ERC721MetadataAttribute[](size);
         metadataAttributes[0] = _getERC721MetadataAttribute(false, true, true, "", "Origin", "Metaverse");
-        metadataAttributes[1] = _getERC721MetadataAttribute(false, true, true, "", "Type", _getTypeAttributeFromStage(stage));
+        metadataAttributes[1] = _getERC721MetadataAttribute(false, true, true, "", "Type", _getTypeAttributeForStage(stage));
         metadataAttributes[2] = _getERC721MetadataAttribute(false, true, true, "", "Identification", "Natural");
 
         if (stage == Stage.MINE){
@@ -430,7 +430,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAd
     * @param videoUrl a string containing the video url of the above stage and shape.
     */
     function _setVideoUrl(Stage stage, Shape shape, string memory videoUrl) internal
-    onlyRole(DEFAULT_ADMIN_ROLE)
+        onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _stageToShapeVideoUrls[uint(stage)][uint(shape)] = videoUrl;
     }
@@ -443,6 +443,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAd
         } else {
             videoUrl = _stageToShapeVideoUrls[uint(stage)][uint(diamondMetadata.shape)];
         }
+
         return string.concat(_videoBaseURI(), videoUrl);
     }
 }
