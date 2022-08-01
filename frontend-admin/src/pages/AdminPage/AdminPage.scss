@@ -50,6 +50,10 @@
     margin-bottom: 40px;
   }
 
+  .caption {
+    font-weight: 700;
+  }
+
   .table-container {
     background-color: white;
   }
@@ -78,6 +82,32 @@
     }
   }
 
+  .admin-art {
+    width: 700px;
+    margin: 0 auto;
+
+    .caption {
+      margin-bottom: 10px;
+    }
+
+    .stage-art {
+      align-items: flex-end;
+      margin-bottom: 40px;
+
+      .inputs {
+        flex-grow: 2;
+      }
+
+      .button {
+        width: 60px;
+        margin: 0 0 10px 100px;
+        height: 32px;
+        font-size: 1em;
+      }
+    }
+    padding-bottom: 40px;
+  }
+
   .stages {
     width: 700px;
 
@@ -87,10 +117,6 @@
 
     .inner-row {
       justify-content: flex-end;
-    }
-
-    .caption {
-      font-weight: 700;
     }
 
     .countdown {

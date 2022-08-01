@@ -33,6 +33,8 @@ export const showError = (e, prefix = 'Error') => {
   console.error(errorMessage)
 }
 
+export const showSuccess = toast.success
+
 export const getEnumKeyByValue = (enm, value) => Object.keys(enm)[value]
 
 export const getShapeName = shape => getEnumKeyByValue(SHAPE, shape)

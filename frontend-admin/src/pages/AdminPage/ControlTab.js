@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStage, fetchPaused, systemSelector } from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
-import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 
 const ControlTab = () => {
 
   const { stage, isStageActive, paused } = useSelector(systemSelector)
-  const [artUrlInput, setArtUrlInput] = useState('')
-  const [artUrlError, setArtUrlError] = useState(false)
 
   const contract = useDDContract()
 
@@ -21,17 +18,11 @@ const ControlTab = () => {
   }, [contract, dispatch])
 
   const completeAndRevealStage = async () => {
-    if (artUrlInput === '') {
-      setArtUrlError(true)
-      return
-    }
-    setArtUrlError(false)
     const tx = await (isStageActive
-      ? contract.completeCurrentStageAndRevealNextStage(artUrlInput)
-      : contract.revealStage(artUrlInput))
+      ? contract.completeCurrentStageAndRevealNextStage()
+      : contract.revealStage())
     await tx.wait()
     dispatch(fetchStage(contract))
-    setArtUrlInput('')
   }
 
   const resetStage = async () => {
@@ -63,9 +54,6 @@ const ControlTab = () => {
         </div>
       </div>
       <div className="actions">
-        <div className="input-container">
-          <input type="text" placeholder="Video Url" value={artUrlInput} onChange={e => setArtUrlInput(e.target.value)} className={classNames({ 'validation-error': artUrlError })} />
-        </div>
         <ActionButton actionKey="Complete and Reveal Stage" onClick={completeAndRevealStage}>Next Stage</ActionButton>
         <ActionButton actionKey="Reset Stage" onClick={resetStage}>Reset Stage</ActionButton>
         <div className="separator" />

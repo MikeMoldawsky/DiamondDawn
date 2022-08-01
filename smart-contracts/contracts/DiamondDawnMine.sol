@@ -446,4 +446,10 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAd
 
         return string.concat(_videoBaseURI(), videoUrl);
     }
+
+    function getDiamondVideoUrl(Stage stage, Shape shape) public onlyRole(DEFAULT_ADMIN_ROLE) view returns (string memory)
+    {
+        string memory videoUrl = _stageToShapeVideoUrls[uint(stage)][uint(shape)];
+        return videoUrl;
+    }
 }
