@@ -79,7 +79,7 @@ const DiamondsTab = () => {
         polish: diamond.polish,
         reportDate: parseInt(diamond.reportDate),
         reportNumber: parseInt(diamond.reportNumber),
-        shape: getShapeName(diamond.shape),
+        shape: diamond.shape,
         symmetry: diamond.symmetry,
         width: diamond.width.$numberDecimal
       }))
@@ -110,7 +110,7 @@ const DiamondsTab = () => {
       },
     },
     {
-      field: 'shape', headerName: 'Shape', type: 'singleSelect', valueOptions: [0, 1, 2], width: 150, editable: true,
+      field: 'shape', headerName: 'Shape', type: 'singleSelect', valueOptions: [2, 3, 4, 5], width: 150, editable: true,
       valueFormatter: params => getShapeName(params.value),
     },
     {
@@ -171,7 +171,7 @@ const DiamondsTab = () => {
                  rows={diamonds}
                  setRows={setDiamonds}
                  itemName="Diamond"
-                 getNewItem={() => ({ reportNumber: '', reportDate: '', shape: 0, carat: 0, color: '', clarity: '', cut: '', polish: '', symmetry: '', fluorescence: '', length: 0, width: 0, depth: 0 })}
+                 getNewItem={() => ({ reportNumber: '', reportDate: '', shape: 2, carat: 0, color: '', clarity: '', cut: '', polish: '', symmetry: '', fluorescence: '', length: 0, width: 0, depth: 0 })}
                  renderButtons={(selectedRows) => (
                    <div className="button link save-button" onClick={() => populateTokens(selectedRows)}>
                      <FontAwesomeIcon icon={faUpload} /> Deploy

@@ -8,7 +8,7 @@ const COMMON_GRADES = ['EXCELLENT', 'VERY GOOD', 'GOOD', 'FAIR', 'POOR']
 const DiamondSchema = new mongoose.Schema({
   reportNumber: { type: Number, required: true },
   reportDate: { type: Number, required: true },
-  shape: { type: Number, required: true, min: 0, max: 2 },
+  shape: { type: Number, required: true, min: 2, max: 5 },
   carat: { type: mongoose.Types.Decimal128, required: true },
   color: { type: String, enum: COLOR_GRADES, required: true },
   clarity: { type: String, enum: CLARITY_GRADES, required: true },

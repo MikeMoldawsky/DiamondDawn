@@ -9,9 +9,11 @@ import Header from "components/Header/Header";
 import Wallet from "components/Wallet";
 import DiamondsTab from "./DiamondsTab";
 import ScheduleTab from "./ScheduleTab";
+import ArtTab from "pages/AdminPage/ArtTab";
 
 const TABS = [
   { title: 'Control', component: () => <ControlTab /> },
+  { title: 'Art', component: () => <ArtTab /> },
   { title: 'Schedule', component: () => <ScheduleTab /> },
   { title: 'Invitations', component: () => <InvitationsTab /> },
   { title: 'Diamonds', component: () => <DiamondsTab /> },

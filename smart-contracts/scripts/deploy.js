@@ -89,7 +89,7 @@ async function main() {
     await diamondDawnMine.populateDiamonds([{
       "reportNumber": 1111111111,
       "reportDate": 1659254421,
-      "shape": "Radiant",
+      "shape": 4,
       "carat": "0.45",
       "color": "J",
       "clarity": "FLAWLESS",
@@ -101,8 +101,13 @@ async function main() {
       "width": "5.12",
       "depth": "35",
     }])
+    await diamondDawnMine.setRoughVideoUrl('rough.mp4')
+    await diamondDawnMine.setCutVideoUrl('cut.mp4', 'cut.mp4', 'cut.mp4', 'cut.mp4')
+    await diamondDawnMine.setPolishVideoUrl('polish.mp4', 'polish.mp4', 'polish.mp4', 'polish.mp4')
+    await diamondDawnMine.setBurnVideoUrl('burn.mp4')
+    await diamondDawnMine.setRebirthVideoUrl('final.mp4')
     await diamondDawn.unpause()
-    await diamondDawn.revealStage('rough.mp4')
+    await diamondDawn.revealStage()
   }
 
   const DiamondDawnMineArtifact = hre.artifacts.readArtifactSync("DiamondDawnMine");

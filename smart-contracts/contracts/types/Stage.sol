@@ -5,6 +5,6 @@ enum Stage {
     MINE,
     CUT,
     POLISH,
-    PHYSICAL,
+    BURN,
     REBIRTH
 }
