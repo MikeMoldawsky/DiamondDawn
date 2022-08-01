@@ -82,7 +82,34 @@ async function main() {
 
   // call DiamondDawnMine.initialize
   await diamondDawnMine.initialize(diamondDawn.address)
-  
+  //////////////////////////////////////////////////////
+  //                  DEV ONLY                        //
+  //////////////////////////////////////////////////////
+  if (hre.network.name === "localhost") {
+    await diamondDawnMine.populateDiamonds([{
+      "reportNumber": 1111111111,
+      "reportDate": 1659254421,
+      "shape": 4,
+      "carat": "0.45",
+      "color": "J",
+      "clarity": "FLAWLESS",
+      "cut": "EXCELLENT",
+      "polish": "EXCELLENT",
+      "symmetry": "EXCELLENT",
+      "fluorescence": "EXCELLENT",
+      "length": "5.1",
+      "width": "5.12",
+      "depth": "35",
+    }])
+    await diamondDawnMine.setRoughVideoUrl('rough.mp4')
+    await diamondDawnMine.setCutVideoUrl('cut.mp4', 'cut.mp4', 'cut.mp4', 'cut.mp4')
+    await diamondDawnMine.setPolishVideoUrl('polish.mp4', 'polish.mp4', 'polish.mp4', 'polish.mp4')
+    await diamondDawnMine.setBurnVideoUrl('burn.mp4')
+    await diamondDawnMine.setRebirthVideoUrl('final.mp4')
+    await diamondDawn.unpause()
+    await diamondDawn.revealStage()
+  }
+
   const DiamondDawnMineArtifact = hre.artifacts.readArtifactSync("DiamondDawnMine");
   console.log("Updating db with DiamondDawnMine artifact");
   await updateDiamondDawnMineContract(diamondDawnMine.address, DiamondDawnMineArtifact);

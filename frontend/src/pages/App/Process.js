@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {useSelector} from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import Mine from "./Mine";
@@ -7,14 +7,11 @@ import Polish from "./Polish";
 import Burn from "./Burn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
-import useSelectToken from "hooks/useSelectToken";
 
-function App() {
+const Process = () => {
   const { stage } = useSelector(systemSelector)
 
-  useSelectToken(stage)
-
-  const renderStage = () => {
+  const renderStage = useCallback(() => {
     switch (stage) {
       case 0:
         return <Mine />
@@ -36,9 +33,9 @@ function App() {
       default:
         return null
     }
-  }
+  }, [stage])
 
   return stage !== -1 ? renderStage() : null
 }
 
-export default App;
+export default Process;

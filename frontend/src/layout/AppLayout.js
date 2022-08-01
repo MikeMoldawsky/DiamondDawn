@@ -1,45 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Wallet from "components/Wallet";
 import Header from "components/Header";
-import {useDispatch, useSelector} from "react-redux";
-import { fetchPricing, fetchStage, fetchStagesConfig, setStage } from "store/systemReducer";
-import useDDContract from "hooks/useDDContract";
 import DiamondList from "components/DiamondList";
 import ProgressBar from "components/ProgressBar";
-import { loadAccountNfts } from "store/tokensReducer";
-import { useAccount, useProvider } from "wagmi";
-import useEffectWithAccount from "hooks/useEffectWithAccount";
-import { EVENTS } from 'consts'
 import ContractProvider from "layout/ContractProvider";
 import WagmiWrapper from "layout/WagmiWrapper";
-import {isActionSuccessSelector} from "components/ActionButton/ActionButton.module";
+import useSystemLoader from "hooks/useSystemLoader";
 
 const AppInternal = ({ children }) => {
-  const account = useAccount()
-  const provider = useProvider();
-  const dispatch = useDispatch()
-  const contract = useDDContract()
-  const isReady = useSelector(isActionSuccessSelector('load-nfts'))
-
-  useEffect(() => {
-    dispatch(fetchStage(contract))
-    dispatch(fetchPricing(contract))
-    dispatch(fetchStagesConfig())
-
-    provider.once('block', () => {
-      contract.on(EVENTS.StageChanged, (_stage, _isStageActive) => {
-        dispatch(setStage(_stage, _isStageActive))
-      })
-    })
-
-    return () => {
-      contract.removeAllListeners()
-    }
-  }, [])
-
-  useEffectWithAccount(() => {
-    dispatch(loadAccountNfts(contract, provider, account?.address))
-  })
+  const isReady = useSystemLoader()
 
   return isReady ? (
     <main>{children}</main>

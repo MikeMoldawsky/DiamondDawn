@@ -6,6 +6,15 @@ export const STAGE = {
   REBIRTH: 4,
 }
 
+export const NFT_TYPE = {
+  Rough: 'Rough',
+  Cut: 'Cut',
+  Polished: 'Polished',
+  Burned: 'Burned',
+  Reborn: 'Reborn',
+  Unknown: 'Unknown',
+}
+
 export const SHAPE = {
   NO_SHAPE: 0,
   MAKEABLE: 1,
@@ -40,5 +49,6 @@ export const TRAIT = {
   reportNumber: 'Report Number',
   shape: 'Shape',
   symmetry: 'Symmetry',
-  width: 'Width'
+  width: 'Width',
+  type: 'Type',
 }

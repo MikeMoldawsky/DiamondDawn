@@ -1,22 +1,18 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import _ from 'lodash'
 import useDDContract from "hooks/useDDContract";
 import { utils as ethersUtils } from "ethers";
 import classNames from "classnames";
 import './Mine.scss'
 import { useDispatch, useSelector } from "react-redux";
-import { systemSelector } from "store/systemReducer";
-import VideoPlayer from "components/VideoPlayer";
+import {fetchPricing, systemSelector} from "store/systemReducer";
 import Countdown from 'components/Countdown';
-import { loadAccountNfts } from "store/tokensReducer";
-import { useAccount, useProvider } from "wagmi";
-import { uiSelector } from "store/uiReducer";
-import { tokenByIdSelector } from "store/tokensReducer";
-import { STAGE } from "consts";
-import Diamond from "components/Diamond";
+import {watchTokenMined} from "store/tokensReducer";
+import { useAccount } from "wagmi";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
 import ActionButton from "components/ActionButton";
-import { isTokenInStage } from "utils";
+import ActionView from "components/ActionView";
+import { DUMMY_VIDEO_URL } from 'consts'
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -30,96 +26,48 @@ const PackageBox = ({ selected, select, index, text, cost }) => {
 }
 
 const Mine = () => {
-  const [actionTxId, setActionTxId] = useState(false)
   const [selectedPackage, setSelectedPackage] = useState(0)
-  const { minePrice, isStageActive, stageStartTimes } = useSelector(systemSelector)
-  const [showVideo, setShowVideo] = useState(true)
-  const [showCompleteVideo, setShowCompleteVideo] = useState(false)
+  const { minePrice, stageStartTimes } = useSelector(systemSelector)
   const account = useAccount()
-  const provider = useProvider();
   const contract = useDDContract()
   const dispatch = useDispatch()
-  const { selectedTokenId } = useSelector(uiSelector)
-  const token = useSelector(tokenByIdSelector(selectedTokenId))
   const [canMine, setCanMine] = useState(true)
+
+  useEffect(() => {
+    dispatch(fetchPricing(contract))
+  }, [])
 
   useEffectWithAccount(async () => {
     const isWhitelisted = await contract.mintAllowedAddresses(account.address)
     setCanMine(isWhitelisted)
   })
 
-  const mine = async () => {
-    const tx = await contract.mine({ value: minePrice })
+  const endTime = _.get(stageStartTimes, 1)
 
-    setShowCompleteVideo(true)
-
-    const receipt = await tx.wait()
-
-    dispatch(loadAccountNfts(contract, provider, account.address))
-    setActionTxId(receipt.transactionHash)
-  }
-
-  const renderContent = () => {
-    if (!isStageActive) {
-      const startTime = _.get(stageStartTimes, 0)
-      return (
-        <>
-          <VideoPlayer>01 - COMING SOON VIDEO</VideoPlayer>
-          <Countdown date={startTime} text={['You have', 'until mining']} />
-        </>
-      )
-    }
-
-    const endTime = _.get(stageStartTimes, 1)
-
-    if (showVideo) return (
-      <>
-        <div className="leading-text">THE MINE IS OPEN</div>
-        <VideoPlayer onEnded={() => setShowVideo(false)}>02 - OPENING VIDEO</VideoPlayer>
-      </>
-    )
-
-    if (showCompleteVideo) return (
-      <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>03 - MINE VIDEO</VideoPlayer>
-    )
-
-    const isTokenMined = isTokenInStage(token, STAGE.MINE)
-    if (isTokenMined) return (
-      <>
-        <Diamond diamond={token} />
-        <div className="leading-text">YOUR ROUGH DIAMOND NFT IS IN YOUR WALLET</div>
-        <Countdown date={endTime} text={['You have', 'until cutting']} />
-        <div className="secondary-text">But what lies beneath the surface</div>
-      </>
-    )
-
-    if (!canMine) return (
-      <div className="">
-        <div className="leading-text">ADDRESS NOT ALLOWED TO MINE</div>
-        <div className="button action-button">REQUEST WHITELIST</div>
-        <Countdown date={endTime} text={['You have', 'to mine']} />
+  const MineContent = ({ execute }) => canMine ? (
+    <>
+      <div className="leading-text">A DIAMONDS JOURNEY HAS MANY STEPS</div>
+      <div className="secondary-text">The first one is to believe</div>
+      <div className="center-aligned-row packages">
+        <PackageBox selected={selectedPackage} select={setSelectedPackage} index={0} text="Mine" cost={minePrice} />
       </div>
-    )
-
-    return (
-      <>
-        <div className="leading-text">A DIAMONDS JOURNEY HAS MANY STEPS</div>
-        <div className="secondary-text">The first one is to believe</div>
-        <div className="center-aligned-row packages">
-          <PackageBox selected={selectedPackage} select={setSelectedPackage} index={0} text="Mine" cost={minePrice} />
-        </div>
-        <div className="action">
-          <ActionButton actionKey="Mine" className="action-button" onClick={mine}>MINE</ActionButton>
-        </div>
-        <Countdown date={endTime} text={['You have', 'to mine']} />
-      </>
-    )
-  }
+      <div className="action">
+        <ActionButton actionKey="Mine" className="action-button" onClick={execute}>MINE</ActionButton>
+      </div>
+      <Countdown date={endTime} text={['You have', 'to mine']} />
+    </>
+  ) : (
+    <div className="">
+      <div className="leading-text">ADDRESS NOT ALLOWED TO MINE</div>
+      <div className="button action-button">REQUEST WHITELIST</div>
+      <Countdown date={endTime} text={['You have', 'to mine']} />
+    </div>
+  )
 
   return (
-    <div className="action-view mine">
-      {renderContent()}
-    </div>
+    <ActionView className="mine" watch={watchTokenMined} transact={() => contract.mine({ value: minePrice })} videoUrl={DUMMY_VIDEO_URL}>
+      <MineContent />
+    </ActionView>
   )
 }
 

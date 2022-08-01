@@ -7,7 +7,7 @@ const CommonView = ({ leadingText, secondaryText, children }) => {
   return (
     <div className="common-view centered">
       {children}
-      <div className="leading-text">{mainTexts.map(text => (<div>{text}</div>))}</div>
+      <div className="leading-text">{mainTexts.map((text, i) => (<div key={`common-view-texts-${i}`}>{text}</div>))}</div>
       <div className="secondary-text">{secondaryText}</div>
     </div>
   )
