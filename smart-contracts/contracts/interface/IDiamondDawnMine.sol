@@ -5,6 +5,8 @@ import "../types/Stage.sol";
 
 interface IDiamondDawnMine {
 
+    function allocateRoughDiamondCarat(uint tokenId) external;
+
     function allocateDiamond(uint tokenId) external;
     
     function getDiamondMetadata(
