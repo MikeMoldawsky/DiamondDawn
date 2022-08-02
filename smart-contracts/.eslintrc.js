@@ -9,6 +9,7 @@ module.exports = {
     "standard",
     "plugin:prettier/recommended",
     "plugin:node/recommended",
+    "prettier",
   ],
   parserOptions: {
     ecmaVersion: 12,
