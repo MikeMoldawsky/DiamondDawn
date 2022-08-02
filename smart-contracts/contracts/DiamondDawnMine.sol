@@ -123,17 +123,11 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAd
         _setVideoUrl(Stage.REBIRTH, Shape.NO_SHAPE, rebirthUrl);
     }
 
-    function _getRandomNumber(uint maxNumber) internal view returns (uint) {
-        if (maxNumber == 0) {
-            return 0;
-        }
-        // TODO: Add the comments below to the method inline documentation.
-        // maxNumber instead of range in-order to save gas assuming the randomization will always start with 0.
-        // maxNumber is inclusive.
-        return
-            uint(
-                keccak256(abi.encodePacked(block.timestamp, block.difficulty))
-            ) % maxNumber;
+    function _getRandomNumber(uint lowestNumber, uint highestNumber) internal view returns (uint) {
+        uint range = highestNumber - lowestNumber + 1;
+        uint randomNumber = uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty)));
+        
+        return (randomNumber % range) + lowestNumber;
     }
 
     function _popUnassignedDiamond(uint index) internal returns (DiamondMetadata memory) {
@@ -157,7 +151,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAd
         onlyDiamondDawn
         _requireExistingUnassignedDiamond
     {
-        uint randomIndex = _getRandomNumber(_unassignedDiamonds.length - 1);
+        uint randomIndex = _getRandomNumber(0, _unassignedDiamonds.length - 1);
         DiamondMetadata memory diamond = _popUnassignedDiamond(randomIndex);
         _tokenIdToAssignedDiamonds[tokenId] = diamond;
     }
@@ -331,6 +325,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAd
         byteString = abi.encodePacked(byteString, _pushJsonPrimitiveStringAttribute("image", metadata.image, true));
         byteString = abi.encodePacked(byteString, _pushJsonComplexAttribute("attributes", _getAttributes(metadata.attributes), false));
         byteString = abi.encodePacked(byteString, _closeJsonObject());
+        
         return string(byteString);
     }
 
@@ -342,6 +337,7 @@ contract DiamondDawnMine is AccessControl , IDiamondDawnMine, IDiamondDawnMineAd
           byteString = abi.encodePacked(byteString, _pushJsonArrayElement(_getAttribute(attribute), i < (attributes.length - 1)));
         }
         byteString = abi.encodePacked(byteString, _closeJsonArray());
+        
         return string(byteString);
     }
 
