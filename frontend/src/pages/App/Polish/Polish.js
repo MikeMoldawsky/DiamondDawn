@@ -17,7 +17,7 @@ const Polish = () => {
   const contract = useDDContract()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
-  const { isStageActive, stageStartTimes } = useSelector(systemSelector)
+  const { stageStartTimes } = useSelector(systemSelector)
 
   const endTime = _.get(stageStartTimes, 3)
 
@@ -32,7 +32,7 @@ const Polish = () => {
       <div className="action">
         <ActionButton actionKey="Polish" className="action-button" onClick={execute}>POLISH</ActionButton>
       </div>
-      <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} polish`]} />
+      <Countdown date={endTime} text={['You have', 'to polish']} />
     </>
   ) : <NoDiamondView stageName="polish" />
 

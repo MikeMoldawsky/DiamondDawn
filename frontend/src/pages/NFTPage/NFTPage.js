@@ -10,6 +10,7 @@ import {getTokenNextStageName, isTokenActionable} from "utils";
 import {uiSelector} from "store/uiReducer";
 import useSelectTokenFromRoute from "hooks/useSelectTokenFromRoute";
 import {systemSelector} from "store/systemReducer";
+import {STAGE} from "consts";
 
 function NFTPage() {
 
@@ -20,7 +21,7 @@ function NFTPage() {
 
   useSelectTokenFromRoute()
 
-  const isActionable = isTokenActionable(token, stage)
+  const isActionable = stage !== STAGE.REBIRTH && isTokenActionable(token, stage)
   const stageName = getTokenNextStageName(token)
 
   return token ? (

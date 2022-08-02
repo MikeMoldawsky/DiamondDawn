@@ -222,8 +222,6 @@ contract DiamondDawn is
     {
         _deactivateStage();
         _nextStage();
-
-        emit StageChanged(stage, isStageActive);
     }
 
     /** 

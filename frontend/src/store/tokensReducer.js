@@ -21,8 +21,8 @@ export const watchTokenProcessed = (tokenId, stage) => (contract, provider, call
       const numTokenId = _tokenId.toNumber()
       console.log('TOKEN PROCESSED EVENT', { _tokenId: numTokenId, _stage })
       if (numTokenId === tokenId && _stage === stage) {
-        contract.on('TokenProcessed', null)
         callback(tokenId)
+        contract.on('TokenProcessed', null)
       }
     })
   })

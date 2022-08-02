@@ -13,6 +13,8 @@ import RebirthPage from "pages/RebirthPage";
 import NFTPage from "pages/NFTPage";
 import AppLayout from "layout/AppLayout";
 import useMountLogger from "hooks/useMountLogger";
+import WagmiWrapper from "layout/WagmiWrapper";
+import ContractProvider from "layout/ContractProvider";
 
 const MainLayout = () => {
 
@@ -20,20 +22,26 @@ const MainLayout = () => {
 
   return (
     <div className={classNames("main-layout")}>
-      <Router>
-        <Routes>
-          <Route path="/" exact element={<Homepage />} />
-          <Route path="/">
-            <Route path="nft/:tokenId" element={<AppLayout showTimeline><NFTPage /></AppLayout>} />
-            <Route path="invite/:tokenId" element={<AppLayout><InvitePage /></AppLayout>} />
-            <Route path="rebirth/:tokenId" element={<AppLayout><RebirthPage /></AppLayout>} />
-            <Route path="process">
-              <Route path="" element={<AppLayout showTimeline><ProcessPage /></AppLayout>} />
-              <Route path=":tokenId" element={<AppLayout showTimeline><ProcessToken /></AppLayout>} />
-            </Route>
-          </Route>
-        </Routes>
-      </Router>
+      <WagmiWrapper>
+        <ContractProvider>
+            <Router>
+              <AppLayout>
+                <Routes>
+                  <Route path="/" exact element={<Homepage />} />
+                  <Route path="/">
+                    <Route path="nft/:tokenId" element={<NFTPage />} />
+                    <Route path="invite/:tokenId" element={<InvitePage />} />
+                    <Route path="rebirth/:tokenId" element={<RebirthPage />} />
+                    <Route path="process">
+                      <Route path="" element={<ProcessPage />} />
+                      <Route path=":tokenId" element={<ProcessToken />} />
+                    </Route>
+                  </Route>
+                </Routes>
+              </AppLayout>
+            </Router>
+        </ContractProvider>
+      </WagmiWrapper>
       <ToastContainer />
     </div>
   );
