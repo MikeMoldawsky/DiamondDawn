@@ -24,7 +24,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     }
 
     struct DiamondMetadata {
-        uint caratNumerator;
+        uint points;
         string clarity;
         string color;
         string cut;
@@ -56,18 +56,18 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         string value;
     }
 
-    uint constant private MIN_ROUGH_DIAMOND_CARAT = 85;
-    uint constant private MAX_ROUGH_DIAMOND_CARAT = 99;
-    uint constant private MIN_POLISH_CARAT_REDUCTION = 1;
-    uint constant private MAX_POLISH_CARAT_REDUCTION = 7;
+    uint constant private MIN_ROUGH_DIAMOND_POINTS = 85;
+    uint constant private MAX_ROUGH_DIAMOND_POINTS = 99;
+    uint constant private MIN_POLISH_POINTS_REDUCTION = 1;
+    uint constant private MAX_POLISH_POINTS_REDUCTION = 7;
 
     address private _diamondDawnContract;
     mapping(uint => mapping(uint => string)) private _stageToShapeVideoUrls;
 
     DiamondMetadata[] public _unassignedDiamonds;
     mapping(uint => DiamondMetadata) public _tokenIdToAssignedDiamonds;
-    mapping(uint => uint) public _tokenIdToRoughDiamondCarat;
-    mapping(uint => uint) public _tokenIdToPolishCaratReduction;
+    mapping(uint => uint) public _tokenIdToRoughDiamondPoints;
+    mapping(uint => uint) public _tokenIdToPolishPointsReduction;
 
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -157,8 +157,8 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     function allocateRoughDiamondCarat(uint tokenId) external
         onlyDiamondDawn()
     {
-        uint randomCarat = _getRandomNumber(MIN_ROUGH_DIAMOND_CARAT, MAX_ROUGH_DIAMOND_CARAT);
-        _tokenIdToRoughDiamondCarat[tokenId] = randomCarat;
+        uint randomPoints = _getRandomNumber(MIN_ROUGH_DIAMOND_POINTS, MAX_ROUGH_DIAMOND_POINTS);
+        _tokenIdToRoughDiamondPoints[tokenId] = randomPoints;
     }
 
     function allocateDiamond(uint256 tokenId) external
@@ -168,7 +168,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         uint randomIndex = _getRandomNumber(0, _unassignedDiamonds.length - 1);
         DiamondMetadata memory diamond = _popUnassignedDiamond(randomIndex);
         _tokenIdToAssignedDiamonds[tokenId] = diamond;
-        _tokenIdToPolishCaratReduction[tokenId] = _getRandomNumber(MIN_POLISH_CARAT_REDUCTION, MAX_POLISH_CARAT_REDUCTION);
+        _tokenIdToPolishPointsReduction[tokenId] = _getRandomNumber(MIN_POLISH_POINTS_REDUCTION, MAX_POLISH_POINTS_REDUCTION);
     }
 
     function _requireExistingAssignedDiamond(uint tokenId) internal view {
@@ -221,18 +221,18 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         return "Unknown";
     }
 
-    function _getCaratAsString(uint caratNumerator) private pure returns(string memory) {
+    function _pointsToCaratString(uint points) private pure returns(string memory) {
         return string.concat(
-            Strings.toString(caratNumerator / 100),
+            Strings.toString(points / 100),
             '.',
-            Strings.toString(caratNumerator % 100)
+            Strings.toString(points % 100)
         );
     }
 
-    function _getDiamondCutCaratAsString(uint caratNumerator, uint tokenId) internal view returns (string memory) {
-        uint caratAddition = _tokenIdToPolishCaratReduction[tokenId];
+    function _getDiamondCutCaratString(uint points, uint tokenId) internal view returns (string memory) {
+        uint pointsAddition = _tokenIdToPolishPointsReduction[tokenId];
         
-        return _getCaratAsString(caratNumerator + caratAddition);
+        return _pointsToCaratString(points + pointsAddition);
     }
 
     function _getJson(
@@ -275,7 +275,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
         if (stage == Stage.MINE){
             // TODO: validate that the rough carat exists
-            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", _getCaratAsString(_tokenIdToRoughDiamondCarat[tokenId]));
+            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", _pointsToCaratString(_tokenIdToRoughDiamondPoints[tokenId]));
             metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Color", "CAPE");
             metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Shape", _getShapeAttributeFromShape(Shape.MAKEABLE));
             metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Mine", "Underground");
@@ -283,7 +283,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         }
         if (stage == Stage.CUT){
             // TODO: validate that the additional carat exists
-            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat",  _getDiamondCutCaratAsString(diamondMetadata.caratNumerator, tokenId));
+            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat",  _getDiamondCutCaratString(diamondMetadata.points, tokenId));
             metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Color", diamondMetadata.color);
             metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Cut", diamondMetadata.cut);
             metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Depth", diamondMetadata.depth);
@@ -294,7 +294,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
             return metadataAttributes;
         }else if (stage == Stage.POLISH){
             // Cut
-            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", _getCaratAsString(diamondMetadata.caratNumerator));
+            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", _pointsToCaratString(diamondMetadata.points));
             metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Color", diamondMetadata.color);
             metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Cut", diamondMetadata.cut);
             metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Depth", diamondMetadata.depth);
@@ -311,7 +311,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
             // TODO: decide on burn attributes
             return metadataAttributes;
         } else if (stage == Stage.REBIRTH){
-            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", _getCaratAsString(diamondMetadata.caratNumerator));
+            metadataAttributes[3] = _getERC721MetadataAttribute(false, true, true, "", "Carat", _pointsToCaratString(diamondMetadata.points));
             metadataAttributes[4] = _getERC721MetadataAttribute(false, true, true, "", "Color", diamondMetadata.color);
             metadataAttributes[5] = _getERC721MetadataAttribute(false, true, true, "", "Cut", diamondMetadata.cut);
             metadataAttributes[6] = _getERC721MetadataAttribute(false, true, true, "", "Depth", diamondMetadata.depth);
