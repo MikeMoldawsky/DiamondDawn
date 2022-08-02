@@ -90,7 +90,7 @@ async function main() {
       "reportNumber": 1111111111,
       "reportDate": 1659254421,
       "shape": 4,
-      "carat": "0.45",
+      "points": 45,
       "color": "J",
       "clarity": "FLAWLESS",
       "cut": "EXCELLENT",
