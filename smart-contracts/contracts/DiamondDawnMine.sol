@@ -56,6 +56,11 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         string value;
     }
 
+    uint constant private MIN_ROUGH_DIAMOND_CARAT = 85;
+    uint constant private MAX_ROUGH_DIAMOND_CARAT = 99;
+    uint constant private MIN_POLISH_CARAT_REDUCTION = 1;
+    uint constant private MAX_POLISH_CARAT_REDUCTION = 7;
+
     address private _diamondDawnContract;
     mapping(uint => mapping(uint => string)) private _stageToShapeVideoUrls;
 
@@ -63,11 +68,6 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     mapping(uint => DiamondMetadata) public _tokenIdToAssignedDiamonds;
     mapping(uint => uint) public _tokenIdToRoughDiamondCarat;
     mapping(uint => uint) public _tokenIdToPolishCaratReduction;
-
-    uint constant private MIN_ROUGH_DIAMOND_CARAT = 85;
-    uint constant private MAX_ROUGH_DIAMOND_CARAT = 99;
-    uint constant private MIN_POLISH_CARAT_REDUCTION = 1;
-    uint constant private MAX_POLISH_CARAT_REDUCTION = 7;
 
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -181,8 +181,6 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     ) external view returns (string memory)
     {
         // TODO: only diamond dawn contract.
-        // TODO: add validation that the diamond exists
-        _requireExistingAssignedDiamond(tokenId);
         DiamondMetadata memory diamondMetadata = _tokenIdToAssignedDiamonds[tokenId];
         string memory videoUrl = _getDiamondVideoUrl(stage, diamondMetadata);
         string memory base64Json = Base64.encode(bytes(string(abi.encodePacked(_getJson(diamondMetadata, tokenId, stage, videoUrl)))));
@@ -224,7 +222,11 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     }
 
     function _getCaratAsString(uint caratNumerator) private pure returns(string memory) {
-        return Strings.toString(caratNumerator / 100);
+        return string.concat(
+            Strings.toString(caratNumerator / 100),
+            '.',
+            Strings.toString(caratNumerator % 100)
+        );
     }
 
     function _getDiamondCutCaratAsString(uint caratNumerator, uint tokenId) internal view returns (string memory) {
