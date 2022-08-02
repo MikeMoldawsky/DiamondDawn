@@ -56,6 +56,28 @@ export const getTypeByStage = stage => {
   }
 }
 
+export const getStageByTokenType = type => {
+  switch (type) {
+    case NFT_TYPE.Rough:
+      return STAGE.MINE
+    case NFT_TYPE.Cut:
+      return STAGE.CUT
+    case NFT_TYPE.Polished:
+      return STAGE.POLISH
+    case NFT_TYPE.Burned:
+      return STAGE.BURN
+    case NFT_TYPE.Reborn:
+      return STAGE.REBIRTH
+    default:
+      return STAGE.MINE
+  }
+}
+
+export const getTokenNextStageName = ({ type }) => {
+  const stage = getStageByTokenType(type)
+  return getStageName(stage + 1)
+}
+
 export const getTokenTrait = (token, trait) => {
   const t = _.find(token?.attributes, { trait_type: trait })
   return t?.value
@@ -63,3 +85,8 @@ export const getTokenTrait = (token, trait) => {
 
 export const isTokenInStage = (token, stage) => getTokenTrait(token, TRAIT.stage) === stage
 export const isTokenOfType = (token, type) => getTokenTrait(token, TRAIT.type) === type
+
+export const isTokenActionable = (token, systemStage) => {
+  const prevTokenType = getTypeByStage(systemStage - 1)
+  return isTokenOfType(token, prevTokenType)
+}
