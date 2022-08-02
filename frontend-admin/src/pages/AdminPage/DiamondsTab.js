@@ -68,8 +68,8 @@ const DiamondsTab = () => {
   const populateTokens = async selectedRows => {
     try {
       const diamonds = selectedRows.map(diamond => ({
-        ..._.omit(diamond, ['_id']),
-        carat: diamond.carat.$numberDecimal,
+        ..._.omit(diamond, ['_id', 'carat']),
+        points: parseInt((parseFloat(diamond.carat.$numberDecimal) * 100).toString()),
         clarity: diamond.clarity,
         color: diamond.color,
         cut: diamond.cut,
