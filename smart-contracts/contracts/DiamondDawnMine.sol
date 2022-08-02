@@ -130,11 +130,15 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         _setVideoUrl(Stage.REBIRTH, Shape.NO_SHAPE, rebirthUrl);
     }
 
-    function _getRandomNumber(uint minNumber, uint maxNumber) internal view returns (uint) {
+    function _getRandomNumberInRange(uint minNumber, uint maxNumber) internal view returns (uint) {
         uint range = maxNumber - minNumber + 1;
-        uint randomNumber = uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, tx.origin)));
+        uint randomNumber = _getRandomNumber();
         
         return (randomNumber % range) + minNumber;
+    }
+
+    function _getRandomNumber() internal view returns (uint) {
+        return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, tx.origin)));
     }
 
     function _popUnassignedDiamond(uint index) internal returns (DiamondMetadata memory) {
@@ -157,7 +161,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     function allocateRoughDiamondCarat(uint tokenId) external
         onlyDiamondDawn()
     {
-        uint randomPoints = _getRandomNumber(MIN_ROUGH_DIAMOND_POINTS, MAX_ROUGH_DIAMOND_POINTS);
+        uint randomPoints = _getRandomNumberInRange(MIN_ROUGH_DIAMOND_POINTS, MAX_ROUGH_DIAMOND_POINTS);
         _tokenIdToRoughDiamondPoints[tokenId] = randomPoints;
     }
 
@@ -165,10 +169,10 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         onlyDiamondDawn
         _requireExistingUnassignedDiamond
     {
-        uint randomIndex = _getRandomNumber(0, _unassignedDiamonds.length - 1);
+        uint randomIndex = _getRandomNumberInRange(0, _unassignedDiamonds.length - 1);
         DiamondMetadata memory diamond = _popUnassignedDiamond(randomIndex);
         _tokenIdToAssignedDiamonds[tokenId] = diamond;
-        _tokenIdToPolishPointsReduction[tokenId] = _getRandomNumber(MIN_POLISH_POINTS_REDUCTION, MAX_POLISH_POINTS_REDUCTION);
+        _tokenIdToPolishPointsReduction[tokenId] = _getRandomNumberInRange(MIN_POLISH_POINTS_REDUCTION, MAX_POLISH_POINTS_REDUCTION);
     }
 
     function _requireExistingAssignedDiamond(uint tokenId) internal view {
