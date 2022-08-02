@@ -28,7 +28,7 @@ const HomepageInternal = () => {
   const videoPlayer = useRef(null)
   const [playVideo, setPlayVideo] = useState(false)
 
-  useSystemLoader()
+  // useSystemLoader()
 
   const canEnter = stage > 0 || isStageActive
 
@@ -90,17 +90,7 @@ const HomepageInternal = () => {
 
 const Homepage = () => {
   return (
-    <WagmiWrapper>
-      <Header>
-        <ContractProvider>
-          <DiamondList />
-        </ContractProvider>
-        <Wallet />
-      </Header>
-      <ContractProvider>
-        <HomepageInternal />
-      </ContractProvider>
-    </WagmiWrapper>
+    <HomepageInternal />
   )
 }
 
