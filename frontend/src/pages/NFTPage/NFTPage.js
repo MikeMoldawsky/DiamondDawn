@@ -6,21 +6,23 @@ import DiamondInfo from "components/DiamondInfo";
 import {useSelector} from "react-redux";
 import {tokenByIdSelector} from "store/tokensReducer";
 import { NavLink } from "react-router-dom";
-import {getStageName, getTokenTrait} from "utils";
-import {TRAIT} from "consts";
+import {getTokenNextStageName, isTokenActionable} from "utils";
 import {uiSelector} from "store/uiReducer";
 import useSelectTokenFromRoute from "hooks/useSelectTokenFromRoute";
+import {systemSelector} from "store/systemReducer";
+import {STAGE} from "consts";
 
 function NFTPage() {
 
   const { tokenId: tokenIdString } = useParams()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
+  const { stage } = useSelector(systemSelector)
 
   useSelectTokenFromRoute()
 
-  const isActionable = true
-  const stageName = getStageName(getTokenTrait(token, TRAIT.stage))
+  const isActionable = stage !== STAGE.REBIRTH && isTokenActionable(token, stage)
+  const stageName = getTokenNextStageName(token)
 
   return token ? (
     <div className={classNames("page nft-page")}>

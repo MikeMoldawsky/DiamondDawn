@@ -107,7 +107,10 @@ async function main() {
     await diamondDawnMine.setBurnVideoUrl('burn.mp4')
     await diamondDawnMine.setRebirthVideoUrl('final.mp4')
     await diamondDawn.unpause()
-    await diamondDawn.revealStage()
+    // await diamondDawn.revealStage()
+
+    // const minePrice = await diamondDawn.MINING_PRICE()
+    // await diamondDawn.mine({ value: minePrice })
   }
 
   const DiamondDawnMineArtifact = hre.artifacts.readArtifactSync("DiamondDawnMine");

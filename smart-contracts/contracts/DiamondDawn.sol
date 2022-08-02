@@ -42,6 +42,7 @@ contract DiamondDawn is
     }
 
     event WhitelistUpdated(WhitelistAction action, address[] addresses);
+    event TokenProcessed(uint tokenId, Stage stage);
 
     Counters.Counter private _tokenIdCounter;
     Stage private constant MAX_STAGE = Stage.REBIRTH;
@@ -223,8 +224,6 @@ contract DiamondDawn is
     {
         _deactivateStage();
         _nextStage();
-
-        emit StageChanged(stage, isStageActive);
     }
 
     /** 
@@ -422,6 +421,7 @@ contract DiamondDawn is
         address[] memory wlAddresses = new address[](1);
         wlAddresses[0] = _msgSender();
         emit WhitelistUpdated(WhitelistAction.USE, wlAddresses);
+        emit TokenProcessed(tokenId, Stage.MINE);
     }
 
     function cut(uint256 tokenId) public 
@@ -429,12 +429,16 @@ contract DiamondDawn is
     {
         _process(tokenId);
         _diamondDawnMine.allocateDiamond(tokenId);
+        
+         emit TokenProcessed(tokenId, Stage.CUT);
     }
 
     function polish(uint256 tokenId) public
         whenStageIsActive(Stage.POLISH)
     {
         _process(tokenId);
+
+        emit TokenProcessed(tokenId, Stage.POLISH);
     }
 
     function burn(uint256 tokenId) public override
@@ -444,6 +448,8 @@ contract DiamondDawn is
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
         _burnedTokenToOwner[tokenId] = _msgSender();
         _ownerToBurnedTokens[_msgSender()].add(tokenId);
+
+        emit TokenProcessed(tokenId, Stage.BURN);
     }
 
     function rebirth(uint256 tokenId) public whenRebirthIsActive {
@@ -458,6 +464,8 @@ contract DiamondDawn is
         _ownerToBurnedTokens[_msgSender()].remove(tokenId);
         _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
         _safeMint(_msgSender(), tokenId);
+
+        emit TokenProcessed(tokenId, Stage.REBIRTH);
     }
 
     /**********************            Read            ************************/

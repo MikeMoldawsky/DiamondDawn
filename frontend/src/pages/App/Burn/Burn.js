@@ -4,27 +4,26 @@ import Countdown from 'components/Countdown';
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import { fetchTokenUri, fetchAccountBurnedTokens, tokenByIdSelector } from "store/tokensReducer";
+import {fetchAccountBurnedTokens, tokenByIdSelector, watchTokenProcessed} from "store/tokensReducer";
 import { useForm } from 'react-hook-form';
 import './Burn.scss'
 import classNames from "classnames";
 import { systemSelector } from "store/systemReducer";
-import VideoPlayer from "components/VideoPlayer";
 import NoDiamondView from "components/NoDiamondView";
-import { STAGE } from "consts";
+import {DUMMY_VIDEO_URL, NFT_TYPE, STAGE} from "consts";
 import { useAccount } from "wagmi";
 import Diamond from "components/Diamond";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
 import ActionButton from "components/ActionButton";
-import {isTokenInStage} from "utils";
+import {isTokenOfType} from "utils";
+import ActionView from "components/ActionView";
 
 const Burn = () => {
   const contract = useDDContract()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
-  const { isStageActive, stageStartTimes } = useSelector(systemSelector)
+  const { stageStartTimes } = useSelector(systemSelector)
   const [showShippingForm, setShowShippingForm] = useState(false)
-  const [showCompleteVideo, setShowCompleteVideo] = useState(false)
   const [actionTxId, setActionTxId] = useState(false)
   const account = useAccount()
   const dispatch = useDispatch()
@@ -39,18 +38,6 @@ const Burn = () => {
     dispatch(fetchAccountBurnedTokens(contract, account.address))
   })
 
-  const saveAddressAndBurn = async (formData) => {
-    // TODO - save shipping address off-chain
-    const tx = await contract.burn(selectedTokenId)
-
-    setShowCompleteVideo(true)
-
-    const receipt = await tx.wait()
-
-    dispatch(fetchTokenUri(contract, selectedTokenId))
-    setActionTxId(receipt.transactionHash)
-  }
-
   const renderInput = (name, placeholder) => {
     return (
       <div className="input-container">
@@ -59,25 +46,9 @@ const Burn = () => {
     )
   }
 
-  const renderContent = () => {
+  const endTime = _.get(stageStartTimes, 4)
 
-    if (showCompleteVideo) return (
-      <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>05 - BURN VIDEO</VideoPlayer>
-    )
-
-    const endTime = _.get(stageStartTimes, 4)
-
-    const isTokenBurned = isTokenInStage(token, STAGE.BURN)
-    if (isTokenBurned) {
-      return (
-        <>
-          <Diamond diamond={token} />
-          <div className="leading-text">READY TO HOLD IT IN YOUR HAND?</div>
-          <div className="secondary-text">A diamond's journey is eternal</div>
-        </>
-      )
-    }
-
+  const BurnContent = ({ execute }) => {
     if (showShippingForm) return (
       <>
         <div className="leading-text">ENTER A SHIPPING ADDRESS</div>
@@ -92,30 +63,30 @@ const Burn = () => {
             {renderInput('postalCode', 'Postal Code')}
           </div>
           {renderInput('address', 'Address')}
-          <ActionButton actionKey="Burn" onClick={handleSubmit(saveAddressAndBurn)}>Burn and Ship</ActionButton>
+          <ActionButton actionKey="Burn" onClick={handleSubmit(execute)}>Burn and Ship</ActionButton>
         </form>
       </>
     )
 
-    if (!token) return (<NoDiamondView stageName="burn" />)
-
-    return (
+    return isTokenOfType(token, NFT_TYPE.Polished) ? (
       <>
         <Diamond diamond={token} />
         <div className="leading-text">BUT... IS THERE MORE?</div>
         <div className="secondary-text">Letting the perfect stone go can be a risk... but a diamond's journey is never over</div>
-        {isStageActive && (
+        <div className="action">
           <div className="button action-button" onClick={() => setShowShippingForm(true)}>Burn NFT</div>
-        )}
-        <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} burn`]} />
+        </div>
+        <Countdown date={endTime} text={['You have', 'to burn']} />
       </>
-    )
+    ) : <NoDiamondView stageName="burn" />
   }
 
   return (
-    <div className="action-view burn">
-      {renderContent()}
-    </div>
+    <ActionView transact={() => contract.burn(selectedTokenId)}
+                watch={watchTokenProcessed(selectedTokenId, STAGE.BURN)}
+                videoUrl={DUMMY_VIDEO_URL}>
+      <BurnContent />
+    </ActionView>
   )
 }
 

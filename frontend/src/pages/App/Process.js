@@ -7,6 +7,7 @@ import Polish from "./Polish";
 import Burn from "./Burn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
+import useMountLogger from "hooks/useMountLogger";
 
 const Process = () => {
   const { stage } = useSelector(systemSelector)
@@ -34,6 +35,8 @@ const Process = () => {
         return null
     }
   }, [stage])
+
+  useMountLogger('Process')
 
   return stage !== -1 ? renderStage() : null
 }

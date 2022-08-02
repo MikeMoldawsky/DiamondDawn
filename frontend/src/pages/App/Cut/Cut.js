@@ -1,77 +1,50 @@
-import React, { useState } from "react";
+import React from "react";
 import Countdown from 'components/Countdown';
 import useDDContract from "hooks/useDDContract";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import { fetchTokenUri, tokenByIdSelector } from "store/tokensReducer";
+import {tokenByIdSelector, watchTokenProcessed} from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
-import VideoPlayer from "components/VideoPlayer";
-import { STAGE } from "consts";
+import {DUMMY_VIDEO_URL, NFT_TYPE, STAGE} from "consts";
 import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
 import _ from "lodash";
 import ActionButton from "components/ActionButton";
-import {isTokenInStage} from "utils";
+import {isTokenOfType} from "utils";
+import ActionView from "components/ActionView";
+import useMountLogger from "hooks/useMountLogger";
 
 const Cut = () => {
-  const [actionTxId, setActionTxId] = useState(false)
   const contract = useDDContract()
   const { selectedTokenId } = useSelector(uiSelector)
   const token = useSelector(tokenByIdSelector(selectedTokenId))
-  const { isStageActive, stageStartTimes } = useSelector(systemSelector)
-  const [showCompleteVideo, setShowCompleteVideo] = useState(false)
-  const dispatch = useDispatch()
+  const { stageStartTimes } = useSelector(systemSelector)
 
-  const cut = async () => {
-    const tx = await contract.cut(selectedTokenId)
+  useMountLogger('Cut')
 
-    setShowCompleteVideo(true)
+  const endTime = _.get(stageStartTimes, 2)
 
-    const receipt = await tx.wait()
-
-    dispatch(fetchTokenUri(contract, selectedTokenId))
-    setActionTxId(receipt.transactionHash)
-  }
-
-  const renderContent = () => {
-    if (showCompleteVideo) return (
-      <VideoPlayer onEnded={() => setShowCompleteVideo(false)}>04 - CUTTING VIDEO</VideoPlayer>
-    )
-
-    const endTime = _.get(stageStartTimes, 2)
-
-    const isTokenCut = isTokenInStage(token, STAGE.CUT)
-    if (isTokenCut) return (
-      <>
-        <Diamond diamond={token} />
-        <div className="leading-text">YOUR CUT DIAMOND NFT IS IN YOUR WALLET</div>
-        <Countdown date={endTime} text={['You have', 'until polish']} />
-        <div className="secondary-text">Without darkness, nothing could be able to shine glamorously</div>
-      </>
-    )
-
-    if (!token) return (<NoDiamondView stageName="cut" />)
-
-    return (
-      <>
-        <Diamond diamond={token} />
-        <div className="leading-text">
-          EVERYBODY WANT TO BE A DIAMOND,<br/>
-          BUT VERY FEW ARE WILLING TO CUT
-        </div>
-        <div className="secondary-text">Will you take the risk?</div>
-        {isStageActive && (
-          <ActionButton actionKey="Cut" className="action-button" onClick={cut}>CUT</ActionButton>
-        )}
-        <Countdown date={endTime} text={['You have', `${isStageActive ? 'to' : 'until'} cut`]} />
-      </>
-    )
-  }
+  const CutContent = ({ execute }) => isTokenOfType(token, NFT_TYPE.Rough) ? (
+    <>
+      <Diamond diamond={token} />
+      <div className="leading-text">
+        EVERYBODY WANT TO BE A DIAMOND,<br/>
+        BUT VERY FEW ARE WILLING TO CUT
+      </div>
+      <div className="secondary-text">Will you take the risk?</div>
+      <div className="action">
+        <ActionButton actionKey="Cut" className="action-button" onClick={execute}>CUT</ActionButton>
+      </div>
+      <Countdown date={endTime} text={['You have', 'to cut']} />
+    </>
+  ) : <NoDiamondView stageName="cut" />
 
   return (
-    <div className="action-view mine">
-      {renderContent()}
-    </div>
+    <ActionView transact={() => contract.cut(selectedTokenId)}
+                watch={watchTokenProcessed(selectedTokenId, STAGE.CUT)}
+                videoUrl={DUMMY_VIDEO_URL}>
+      <CutContent />
+    </ActionView>
   )
 }
 
