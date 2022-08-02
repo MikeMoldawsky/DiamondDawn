@@ -7,6 +7,7 @@ import {EVENTS} from "consts";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
 import {loadAccountNfts} from "store/tokensReducer";
 import {isActionFirstCompleteSelector} from "components/ActionButton/ActionButton.module";
+import useMountLogger from "hooks/useMountLogger";
 
 const useSystemLoader = () => {
   const account = useAccount()
@@ -15,12 +16,15 @@ const useSystemLoader = () => {
   const contract = useDDContract()
   const isReady = useSelector(isActionFirstCompleteSelector('load-nfts'))
 
+  useMountLogger('useSystemLoader')
+
   useEffect(() => {
     dispatch(fetchStage(contract))
     dispatch(fetchStagesConfig())
 
     provider.once('block', () => {
       contract.on(EVENTS.StageChanged, (_stage, _isStageActive) => {
+        console.log('EVENT StageChanged fired', { _stage, _isStageActive })
         dispatch(setStage(_stage, _isStageActive))
       })
     })

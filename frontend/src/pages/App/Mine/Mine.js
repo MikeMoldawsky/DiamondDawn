@@ -13,6 +13,7 @@ import useEffectWithAccount from "hooks/useEffectWithAccount";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import { DUMMY_VIDEO_URL } from 'consts'
+import useMountLogger from "hooks/useMountLogger";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -32,6 +33,8 @@ const Mine = () => {
   const contract = useDDContract()
   const dispatch = useDispatch()
   const [canMine, setCanMine] = useState(true)
+
+  useMountLogger('Mine')
 
   useEffect(() => {
     dispatch(fetchPricing(contract))

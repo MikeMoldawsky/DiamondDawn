@@ -73,8 +73,11 @@ export const getStageByTokenType = type => {
   }
 }
 
-export const getTokenNextStageName = ({ type }) => {
-  const stage = getStageByTokenType(type)
+export const getTokenNextStageName = (token) => {
+  if (!token) return STAGE.MINE
+
+  const tokenType = getTokenTrait(token, TRAIT.type)
+  const stage = getStageByTokenType(tokenType)
   return getStageName(stage + 1)
 }
 
