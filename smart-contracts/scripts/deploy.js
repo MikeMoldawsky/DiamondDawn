@@ -51,7 +51,7 @@ async function main() {
   });
 
   const DiamondDawnMine = await hre.ethers.getContractFactory("DiamondDawnMine");
-  const diamondDawnMine = await DiamondDawnMine.deploy();
+  const diamondDawnMine = await DiamondDawnMine.deploy(admins);
   await diamondDawnMine.deployed();
   deployerNewBalance = await deployer.getBalance();
 
