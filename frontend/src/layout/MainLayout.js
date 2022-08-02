@@ -12,8 +12,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import RebirthPage from "pages/RebirthPage";
 import NFTPage from "pages/NFTPage";
 import AppLayout from "layout/AppLayout";
+import useMountLogger from "hooks/useMountLogger";
 
 const MainLayout = () => {
+
+  useMountLogger('MainLayout')
+
   return (
     <div className={classNames("main-layout")}>
       <Router>

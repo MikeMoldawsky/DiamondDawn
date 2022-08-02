@@ -6,9 +6,12 @@ import ProgressBar from "components/ProgressBar";
 import ContractProvider from "layout/ContractProvider";
 import WagmiWrapper from "layout/WagmiWrapper";
 import useSystemLoader from "hooks/useSystemLoader";
+import useMountLogger from "hooks/useMountLogger";
 
 const AppInternal = ({ children }) => {
   const isReady = useSystemLoader()
+
+  useMountLogger('AppInternal')
 
   return isReady ? (
     <main>{children}</main>
@@ -16,6 +19,9 @@ const AppInternal = ({ children }) => {
 }
 
 const AppLayout = ({ children, showTimeline }) => {
+
+  useMountLogger('AppLayout')
+
   return (
     <WagmiWrapper>
       <div className="app">

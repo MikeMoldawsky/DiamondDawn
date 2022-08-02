@@ -28,7 +28,7 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   }, [completeVideoEnded, processedTokenId, isFetchNftsSuccess])
 
   const execute = async () => {
-    watch(provider, contract, account.address, tokenId => {
+    watch(contract, provider, tokenId => {
       dispatch(loadAccountNfts(contract, provider, account.address))
       setProcessedTokenId(tokenId)
     })
@@ -61,7 +61,7 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   }
 
   return (
-    <div className={classNames("action-view", className)}>
+    <div className={classNames("action-view mine", className)}>
       {renderContent()}
     </div>
   )

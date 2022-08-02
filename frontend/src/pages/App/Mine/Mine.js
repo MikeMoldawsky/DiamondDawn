@@ -7,7 +7,7 @@ import './Mine.scss'
 import { useDispatch, useSelector } from "react-redux";
 import {fetchPricing, systemSelector} from "store/systemReducer";
 import Countdown from 'components/Countdown';
-import {watchTokenMined} from "store/tokensReducer";
+import {watchTokenMinedBy} from "store/tokensReducer";
 import { useAccount } from "wagmi";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
 import ActionButton from "components/ActionButton";
@@ -65,7 +65,7 @@ const Mine = () => {
   )
 
   return (
-    <ActionView className="mine" watch={watchTokenMined} transact={() => contract.mine({ value: minePrice })} videoUrl={DUMMY_VIDEO_URL}>
+    <ActionView watch={watchTokenMinedBy(account.address)} transact={() => contract.mine({ value: minePrice })} videoUrl={DUMMY_VIDEO_URL}>
       <MineContent />
     </ActionView>
   )

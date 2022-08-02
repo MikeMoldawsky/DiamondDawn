@@ -84,7 +84,7 @@ export const getTokenTrait = (token, trait) => {
 }
 
 export const isTokenInStage = (token, stage) => getTokenTrait(token, TRAIT.stage) === stage
-export const isTokenOfType = (token, type) => getTokenTrait(token, TRAIT.type) === type
+export const isTokenOfType = (token, type) => token && getTokenTrait(token, TRAIT.type) === type
 
 export const isTokenActionable = (token, systemStage) => {
   const prevTokenType = getTypeByStage(systemStage - 1)
