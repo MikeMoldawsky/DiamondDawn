@@ -132,7 +132,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
     function _getRandomNumber(uint minNumber, uint maxNumber) internal view returns (uint) {
         uint range = maxNumber - minNumber + 1;
-        uint randomNumber = uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender)));
+        uint randomNumber = uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, tx.origin)));
         
         return (randomNumber % range) + minNumber;
     }
