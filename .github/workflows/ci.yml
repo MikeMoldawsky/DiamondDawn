@@ -25,6 +25,8 @@ jobs:
         run: cd smart-contracts && npm run check
   compile_and_run_tests:
     runs-on: ubuntu-latest
+    needs:
+      - check
     defaults:
       run:
         working-directory: ./smart-contracts
@@ -66,7 +68,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/develop' }}
-    needs: [compile_and_run_tests]
+    needs:
+      - check
+      - compile_and_run_tests
     env:
       HARDHAT_NETWORK: goerli
       GOERLI_URL: ${{ secrets.GOERLI_URL }}
