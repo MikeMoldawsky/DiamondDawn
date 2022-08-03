@@ -31,12 +31,13 @@ const PackageBox = ({ selected, select, index, text, cost }) => {
 };
 
 const Mine = () => {
-  const [selectedPackage, setSelectedPackage] = useState(0)
-  const { minePrice, stageStartTimes, isStageActive } = useSelector(systemSelector)
-  const account = useAccount()
-  const contract = useDDContract()
-  const dispatch = useDispatch()
-  const [canMine, setCanMine] = useState(true)
+  const [selectedPackage, setSelectedPackage] = useState(0);
+  const { minePrice, stageStartTimes, isStageActive } =
+    useSelector(systemSelector);
+  const account = useAccount();
+  const contract = useDDContract();
+  const dispatch = useDispatch();
+  const [canMine, setCanMine] = useState(true);
 
   useMountLogger("Mine");
 
@@ -53,13 +54,13 @@ const Mine = () => {
 
   const MineContent = ({ execute }) => {
     if (!isStageActive) {
-      const startTime = _.get(stageStartTimes, 0)
+      const startTime = _.get(stageStartTimes, 0);
       return (
         <>
           <VideoPlayer>01 - COMING SOON VIDEO</VideoPlayer>
-          <Countdown date={startTime} text={['You have', 'until mining']} />
+          <Countdown date={startTime} text={["You have", "until mining"]} />
         </>
-      )
+      );
     }
 
     return canMine ? (
@@ -67,21 +68,33 @@ const Mine = () => {
         <div className="leading-text">A DIAMONDS JOURNEY HAS MANY STEPS</div>
         <div className="secondary-text">The first one is to believe</div>
         <div className="center-aligned-row packages">
-          <PackageBox selected={selectedPackage} select={setSelectedPackage} index={0} text="Mine" cost={minePrice} />
+          <PackageBox
+            selected={selectedPackage}
+            select={setSelectedPackage}
+            index={0}
+            text="Mine"
+            cost={minePrice}
+          />
         </div>
         <div className="action">
-          <ActionButton actionKey="Mine" className="action-button" onClick={execute}>MINE</ActionButton>
+          <ActionButton
+            actionKey="Mine"
+            className="action-button"
+            onClick={execute}
+          >
+            MINE
+          </ActionButton>
         </div>
-        <Countdown date={endTime} text={['You have', 'to mine']} />
+        <Countdown date={endTime} text={["You have", "to mine"]} />
       </>
     ) : (
       <div className="">
         <div className="leading-text">ADDRESS NOT ALLOWED TO MINE</div>
         <div className="button action-button">REQUEST WHITELIST</div>
-        <Countdown date={endTime} text={['You have', 'to mine']} />
+        <Countdown date={endTime} text={["You have", "to mine"]} />
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <ActionView
