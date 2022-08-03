@@ -8,7 +8,11 @@ async function updateDiamondDawnContract(address, artifact) {
 }
 
 async function updateDiamondDawnMineContract(address, artifact) {
-  await updateContractByName(DIAMOND_DAWN_MINE_CONTRACT_NAME, address, artifact);
+  await updateContractByName(
+    DIAMOND_DAWN_MINE_CONTRACT_NAME,
+    address,
+    artifact
+  );
 }
 
 async function updateContractByName(name, address, artifact) {
@@ -22,5 +26,5 @@ async function updateContractByName(name, address, artifact) {
 
 module.exports = {
   updateDiamondDawnContract,
-  updateDiamondDawnMineContract
+  updateDiamondDawnMineContract,
 };

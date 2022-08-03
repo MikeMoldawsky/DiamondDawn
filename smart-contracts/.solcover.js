@@ -1,4 +1,4 @@
 module.exports = {
-    istanbulReporter: ['text', 'cobertura'],
-    configureYulOptimizer: true
+  istanbulReporter: ["text", "cobertura"],
+  configureYulOptimizer: true,
 };
