@@ -1,16 +1,29 @@
-import React, { useCallback } from "react";
-import { useSelector } from "react-redux";
+import React, { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
+import useAutoSelectToken from "hooks/useAutoSelectToken";
+import useMountLogger from "hooks/useMountLogger";
+import { setSelectedTokenId } from "store/uiReducer";
 import Mine from "./Mine";
 import Cut from "./Cut";
 import Polish from "./Polish";
 import Burn from "./Burn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
-import useMountLogger from "hooks/useMountLogger";
 
-const Process = () => {
+const ProcessPage = () => {
   const { stage } = useSelector(systemSelector);
+  const dispatch = useDispatch();
+
+  useAutoSelectToken(stage);
+
+  useEffect(() => {
+    return () => {
+      dispatch(setSelectedTokenId(-1));
+    };
+  }, []);
+
+  useMountLogger("ProcessPage");
 
   const renderStage = useCallback(() => {
     switch (stage) {
@@ -36,9 +49,7 @@ const Process = () => {
     }
   }, [stage]);
 
-  useMountLogger("Process");
-
   return stage !== -1 ? renderStage() : null;
 };
 
-export default Process;
+export default ProcessPage;

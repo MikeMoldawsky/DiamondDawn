@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import classNames from "classnames";
 import "./NFTPage.scss";
-import { useParams } from "react-router-dom";
 import DiamondInfo from "components/DiamondInfo";
 import { useSelector } from "react-redux";
 import { tokenByIdSelector } from "store/tokensReducer";
@@ -12,7 +11,6 @@ import useSelectTokenFromRoute from "hooks/useSelectTokenFromRoute";
 import { systemSelector } from "store/systemReducer";
 
 function NFTPage() {
-  const { tokenId: tokenIdString } = useParams();
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
   const { stage } = useSelector(systemSelector);
@@ -43,7 +41,7 @@ function NFTPage() {
             {actionName === "REBIRTH" ? (
               <div className="button disabled">{actionName}</div>
             ) : (
-              <NavLink to={`/process/${tokenIdString}`}>
+              <NavLink to={`/process`}>
                 <div className="button">{actionName}</div>
               </NavLink>
             )}
