@@ -4,13 +4,26 @@ import { Network, initializeAlchemy, getNftsForOwner } from "@alch/alchemy-sdk";
 
 const INITIAL_STATE = {}
 
-export const watchTokenMined = (provider, contract, address, callback) => {
+export const watchTokenMinedBy = address => (contract, provider, callback) => {
   provider.once('block', () => {
     const filter = contract.filters.Transfer(null, address)
     contract.on(filter, (from, to, tokenId) => {
       console.log('MINED WITH FILTER', { from, to, tokenId })
       contract.on(filter, null)
       callback(tokenId)
+    })
+  })
+}
+
+export const watchTokenProcessed = (tokenId, stage) => (contract, provider, callback) => {
+  provider.once('block', () => {
+    contract.on('TokenProcessed', (_tokenId, _stage) => {
+      const numTokenId = _tokenId.toNumber()
+      console.log('TOKEN PROCESSED EVENT', { _tokenId: numTokenId, _stage })
+      if (numTokenId === tokenId && _stage === stage) {
+        callback(tokenId)
+        contract.on('TokenProcessed', null)
+      }
     })
   })
 }

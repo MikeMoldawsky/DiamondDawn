@@ -51,7 +51,7 @@ async function main() {
   });
 
   const DiamondDawnMine = await hre.ethers.getContractFactory("DiamondDawnMine");
-  const diamondDawnMine = await DiamondDawnMine.deploy();
+  const diamondDawnMine = await DiamondDawnMine.deploy(admins);
   await diamondDawnMine.deployed();
   deployerNewBalance = await deployer.getBalance();
 
@@ -90,7 +90,7 @@ async function main() {
       "reportNumber": 1111111111,
       "reportDate": 1659254421,
       "shape": 4,
-      "carat": "0.45",
+      "points": 45,
       "color": "J",
       "clarity": "FLAWLESS",
       "cut": "EXCELLENT",
@@ -107,7 +107,10 @@ async function main() {
     await diamondDawnMine.setBurnVideoUrl('burn.mp4')
     await diamondDawnMine.setRebirthVideoUrl('final.mp4')
     await diamondDawn.unpause()
-    await diamondDawn.revealStage()
+    // await diamondDawn.revealStage()
+
+    // const minePrice = await diamondDawn.MINING_PRICE()
+    // await diamondDawn.mine({ value: minePrice })
   }
 
   const DiamondDawnMineArtifact = hre.artifacts.readArtifactSync("DiamondDawnMine");
