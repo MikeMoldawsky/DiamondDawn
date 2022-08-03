@@ -1,9 +1,12 @@
-const { getDiamondDawnContract, getDiamondDawnMineContract } = require("../db/contract-db-manager");
+const {
+  getDiamondDawnContract,
+  getDiamondDawnMineContract,
+} = require("../db/contract-db-manager");
 
 module.exports = async function (req, res) {
   const [ddContract, ddMineContract] = await Promise.all([
     getDiamondDawnContract(),
-    getDiamondDawnMineContract()
+    getDiamondDawnMineContract(),
   ]);
-  res.send(JSON.stringify({ddContract, ddMineContract}));
+  res.send(JSON.stringify({ ddContract, ddMineContract }));
 };

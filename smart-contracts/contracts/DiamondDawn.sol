@@ -15,7 +15,7 @@ import "./interface/IDiamondDawnMine.sol";
 import "./types/Stage.sol";
 
 /**
- * @title DiamondDawn NFT Contract 
+ * @title DiamondDawn NFT Contract
  * @author Diamond Dawn
  */
 contract DiamondDawn is
@@ -61,10 +61,14 @@ contract DiamondDawn is
      *                                                                        *
      **************************************************************************/
 
-    constructor(uint96 _royaltyFeesInBips, address _diamondDawnMineContract, address[] memory adminAddresses) ERC721("DiamondDawn", "DD") {
+    constructor(
+        uint96 _royaltyFeesInBips,
+        address _diamondDawnMineContract,
+        address[] memory adminAddresses
+    ) ERC721("DiamondDawn", "DD") {
         // TODO: remove allow-list + admin from production and use grant role
         _setAdminAndAddToAllowList(adminAddresses);
-//        mintAllowedAddresses[_msgSender()] = true;
+        //        mintAllowedAddresses[_msgSender()] = true;
         // Production starts from here
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         stage = Stage.MINE;
@@ -79,14 +83,14 @@ contract DiamondDawn is
         address from,
         address to,
         uint256 tokenId
-    ) internal override(ERC721, ERC721Enumerable) 
-        whenNotPaused 
-    {
+    ) internal override(ERC721, ERC721Enumerable) whenNotPaused {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
     // The following functions are overrides required by Solidity.
-    function supportsInterface(bytes4 interfaceId) public view
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
         override(ERC721, ERC721Enumerable, AccessControl, ERC2981)
         returns (bool)
     {
@@ -94,15 +98,15 @@ contract DiamondDawn is
         return super.supportsInterface(interfaceId);
     }
 
-    /** 
-    * @notice Returns the next stage enum value given a stage enum value.
-    *
-    * @dev throws an error if the next stage is out of bounds (greater than MAX_STAGE).
-    *
-    * @param _stage a Stage enum value.
-    *
-    * @return Stage Stage enum value containing the next stage of _stage param.
-    */
+    /**
+     * @notice Returns the next stage enum value given a stage enum value.
+     *
+     * @dev throws an error if the next stage is out of bounds (greater than MAX_STAGE).
+     *
+     * @param _stage a Stage enum value.
+     *
+     * @return Stage Stage enum value containing the next stage of _stage param.
+     */
     function _getNextStage(Stage _stage) internal pure returns (Stage) {
         require(
             uint(_stage) < uint(MAX_STAGE),
@@ -125,115 +129,103 @@ contract DiamondDawn is
 
     // TODO: Add withdraw funds method
 
-    /** 
-    * @notice Sets the flow in an active stage mode.
-    *
-    * @dev This function is only available to the admin role.
-    */
-    function _activateStage() internal
-        onlyRole(DEFAULT_ADMIN_ROLE) 
-    {
+    /**
+     * @notice Sets the flow in an active stage mode.
+     *
+     * @dev This function is only available to the admin role.
+     */
+    function _activateStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
         isStageActive = true;
     }
 
-    /** 
-    * @notice Sets the flow in an inactive stage mode.
-    *
-    * @dev This function is only available to the admin role.
-    */
-    function _deactivateStage() internal 
-        onlyRole(DEFAULT_ADMIN_ROLE) 
-    {
+    /**
+     * @notice Sets the flow in an inactive stage mode.
+     *
+     * @dev This function is only available to the admin role.
+     */
+    function _deactivateStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
         isStageActive = false;
     }
 
-    /** 
-    * @notice Sets the flow stage to the next stage of the currenly assigned stage.
-    *
-    * @dev This function is only available to the admin role.
-    */
-    function _nextStage() internal 
-        onlyRole(DEFAULT_ADMIN_ROLE) 
-    {
+    /**
+     * @notice Sets the flow stage to the next stage of the currenly assigned stage.
+     *
+     * @dev This function is only available to the admin role.
+     */
+    function _nextStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
         stage = _getNextStage(stage);
     }
 
     /**********************        Transactions        ************************/
 
-    /** 
-    * @notice Sets the royalty percentage and the royalties reciever address.
-    *
-    * @dev This function is only available to the admin role.
-    * @dev Using inherited ERC2981 functionality. 
-    *
-    * @param _receiver an address of the receiver of the royalties.
-    * @param _royaltyFeesInBips the numerator of the percentage of the royalties where denominator is 10000.
-    */
-    function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips) public
+    /**
+     * @notice Sets the royalty percentage and the royalties reciever address.
+     *
+     * @dev This function is only available to the admin role.
+     * @dev Using inherited ERC2981 functionality.
+     *
+     * @param _receiver an address of the receiver of the royalties.
+     * @param _royaltyFeesInBips the numerator of the percentage of the royalties where denominator is 10000.
+     */
+    function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
+        public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
     }
 
-    /** 
-    * @notice Sets the contract into a paused mode.
-    *
-    * @dev This function is only available to the admin role.
-    * @dev No transactions other than admin API can be executed while the contract is in the paused mode.
-    */
-    function pause() public
-        onlyRole(DEFAULT_ADMIN_ROLE) 
-    {
+    /**
+     * @notice Sets the contract into a paused mode.
+     *
+     * @dev This function is only available to the admin role.
+     * @dev No transactions other than admin API can be executed while the contract is in the paused mode.
+     */
+    function pause() public onlyRole(DEFAULT_ADMIN_ROLE) {
         _pause();
     }
 
-    /** 
-    * @notice Sets the contract into an unpaused mode.
-    *
-    * @dev This function is only available to the admin role.
-    */
-    function unpause() public 
-        onlyRole(DEFAULT_ADMIN_ROLE) 
-    {
+    /**
+     * @notice Sets the contract into an unpaused mode.
+     *
+     * @dev This function is only available to the admin role.
+     */
+    function unpause() public onlyRole(DEFAULT_ADMIN_ROLE) {
         _unpause();
     }
 
-    /** 
-    * @notice Activating the currently assigned stage and setting its video URL.
-    *
-    * @dev This function is only available to the admin role.
-    * @dev Emitting StageChanged event triggering frontend to update the UI.
-    *
-    */
-    function revealStage() public
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    /**
+     * @notice Activating the currently assigned stage and setting its video URL.
+     *
+     * @dev This function is only available to the admin role.
+     * @dev Emitting StageChanged event triggering frontend to update the UI.
+     *
+     */
+    function revealStage() public onlyRole(DEFAULT_ADMIN_ROLE) {
         _activateStage();
 
         emit StageChanged(stage, isStageActive);
     }
 
-    /** 
-    * @notice Completing the current stage by setting the next stage as the current stage in an inactive mode.
-    *
-    * @dev This function is only available to the admin role.
-    * @dev Emitting StageChanged event triggering frontend to update the UI.
-    */
-    function completeCurrentStage() public 
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    /**
+     * @notice Completing the current stage by setting the next stage as the current stage in an inactive mode.
+     *
+     * @dev This function is only available to the admin role.
+     * @dev Emitting StageChanged event triggering frontend to update the UI.
+     */
+    function completeCurrentStage() public onlyRole(DEFAULT_ADMIN_ROLE) {
         _deactivateStage();
         _nextStage();
     }
 
-    /** 
-    * @notice Adding a list of addresses to the list of allowed addresses to mint tokens.
-    *
-    * @dev This function is only available to the admin role.
-    *
-    * @param addresses a list of addresses to be added to the list of allowed addresses.
-    */
-    function addToAllowList(address[] memory addresses) public
+    /**
+     * @notice Adding a list of addresses to the list of allowed addresses to mint tokens.
+     *
+     * @dev This function is only available to the admin role.
+     *
+     * @param addresses a list of addresses to be added to the list of allowed addresses.
+     */
+    function addToAllowList(address[] memory addresses)
+        public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         for (uint i = 0; i < addresses.length; i++) {
@@ -244,13 +236,14 @@ contract DiamondDawn is
     }
 
     /**
-    * @notice Removing a list of addresses from the list of allowed addresses to mint tokens.
-    *
-    * @dev This function is only available to the admin role.
-    *
-    * @param addresses a list of addresses to be removed from the list of allowed addresses.
-    */
-    function removeFromAllowList(address[] memory addresses) public
+     * @notice Removing a list of addresses from the list of allowed addresses to mint tokens.
+     *
+     * @dev This function is only available to the admin role.
+     *
+     * @param addresses a list of addresses to be removed from the list of allowed addresses.
+     */
+    function removeFromAllowList(address[] memory addresses)
+        public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         for (uint i = 0; i < addresses.length; i++) {
@@ -260,20 +253,23 @@ contract DiamondDawn is
         emit WhitelistUpdated(WhitelistAction.REMOVE, addresses);
     }
 
-    /** 
-    * @notice Making a function to set Address for Diamond Metadata Contract.
-    *
-    * @dev This function is only available to the admin role.
-    *
-    * @param _diamondDawnMineContract a address of diamond metadata contract.
-    */
-    function setDiamondDawnMine(address _diamondDawnMineContract) public
+    /**
+     * @notice Making a function to set Address for Diamond Metadata Contract.
+     *
+     * @dev This function is only available to the admin role.
+     *
+     * @param _diamondDawnMineContract a address of diamond metadata contract.
+     */
+    function setDiamondDawnMine(address _diamondDawnMineContract)
+        public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        require(address(_diamondDawnMineContract) != address(0),"DiamondDawn: Address zero passed as DiamondDawnMetadata Contract");
+        require(
+            address(_diamondDawnMineContract) != address(0),
+            "DiamondDawn: Address zero passed as DiamondDawnMetadata Contract"
+        );
         _diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
     }
-
 
     /***********  TODO: Remove before production - Dev Tooling  **************/
 
@@ -284,15 +280,15 @@ contract DiamondDawn is
         emit StageChanged(stage, isStageActive);
     }
 
-    function completeCurrentStageAndRevealNextStage() public
+    function completeCurrentStageAndRevealNextStage()
+        public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         completeCurrentStage();
         revealStage();
     }
 
-    function _setAdminAndAddToAllowList(address[] memory addresses) internal
-    {
+    function _setAdminAndAddToAllowList(address[] memory addresses) internal {
         for (uint i = 0; i < addresses.length; i++) {
             mintAllowedAddresses[addresses[i]] = true;
             _grantRole(DEFAULT_ADMIN_ROLE, addresses[i]);
@@ -350,10 +346,7 @@ contract DiamondDawn is
         );
     }
 
-    function _requireValidPayment(uint value)
-        internal
-        pure
-    {
+    function _requireValidPayment(uint value) internal pure {
         require(
             value == MINING_PRICE,
             string.concat(
@@ -381,8 +374,7 @@ contract DiamondDawn is
 
     modifier whenRebirthIsActive() {
         require(
-            (stage == Stage.BURN && isStageActive) ||
-                stage == Stage.REBIRTH,
+            (stage == Stage.BURN && isStageActive) || stage == Stage.REBIRTH,
             "A stage should be active to perform this action"
         );
         _;
@@ -398,7 +390,9 @@ contract DiamondDawn is
 
     /**********************        Transactions        ************************/
 
-    function mine() public payable
+    function mine()
+        public
+        payable
         whenStageIsActive(Stage.MINE)
         _requireAllowedMiner
         _requireAssignedMineContract
@@ -414,9 +408,7 @@ contract DiamondDawn is
         _diamondDawnMine.allocateRoughDiamondCarat(tokenId);
 
         // Store token metadata
-        _tokensMetadata[tokenId] = Metadata({
-            stage: Stage.MINE
-        });
+        _tokensMetadata[tokenId] = Metadata({stage: Stage.MINE});
 
         address[] memory wlAddresses = new address[](1);
         wlAddresses[0] = _msgSender();
@@ -424,24 +416,22 @@ contract DiamondDawn is
         emit TokenProcessed(tokenId, Stage.MINE);
     }
 
-    function cut(uint256 tokenId) public 
-        whenStageIsActive(Stage.CUT) 
-    {
+    function cut(uint256 tokenId) public whenStageIsActive(Stage.CUT) {
         _process(tokenId);
         _diamondDawnMine.allocateDiamond(tokenId);
-        
-         emit TokenProcessed(tokenId, Stage.CUT);
+
+        emit TokenProcessed(tokenId, Stage.CUT);
     }
 
-    function polish(uint256 tokenId) public
-        whenStageIsActive(Stage.POLISH)
-    {
+    function polish(uint256 tokenId) public whenStageIsActive(Stage.POLISH) {
         _process(tokenId);
 
         emit TokenProcessed(tokenId, Stage.POLISH);
     }
 
-    function burn(uint256 tokenId) public override
+    function burn(uint256 tokenId)
+        public
+        override
         whenStageIsActive(Stage.BURN)
     {
         super.burn(tokenId);
@@ -470,11 +460,14 @@ contract DiamondDawn is
 
     /**********************            Read            ************************/
 
-    function walletOfOwner(address _owner) public view returns (uint256[] memory)
+    function walletOfOwner(address _owner)
+        public
+        view
+        returns (uint256[] memory)
     {
         uint256 ownerTokenCount = balanceOf(_owner);
         uint256[] memory tokenIds = new uint256[](ownerTokenCount);
-        
+
         for (uint256 i; i < ownerTokenCount; i++) {
             tokenIds[i] = tokenOfOwnerByIndex(_owner, i);
         }
@@ -482,12 +475,18 @@ contract DiamondDawn is
         return tokenIds;
     }
 
-    function getBurnedTokens(address owner) public view returns (uint256[] memory)
+    function getBurnedTokens(address owner)
+        public
+        view
+        returns (uint256[] memory)
     {
         return _ownerToBurnedTokens[owner].values();
     }
 
-    function tokenURI(uint256 tokenId) public view override
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override
         _requireAssignedMineContract
         returns (string memory)
     {

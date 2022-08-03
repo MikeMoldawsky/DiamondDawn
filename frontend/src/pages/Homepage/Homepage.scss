@@ -6,7 +6,7 @@
   height: 100vh;
 
   .bg {
-    transition: all .5s ease-in-out;
+    transition: all 0.5s ease-in-out;
     transform: scale(1);
   }
 
@@ -25,7 +25,8 @@
     height: calc($boxHeight * 3);
     bottom: 0;
     z-index: 0;
-    background: url("../../assets/images/bg-stars.png") no-repeat bottom -20vh left 0;
+    background: url("../../assets/images/bg-stars.png") no-repeat bottom -20vh left
+      0;
     background-size: 100% auto;
   }
 
@@ -103,7 +104,8 @@
   }
 
   &.entered {
-    .bg, .bg-stars {
+    .bg,
+    .bg-stars {
       transform: scale(1.5);
     }
 

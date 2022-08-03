@@ -1,3 +1,3 @@
 import Diamond from "./Diamond";
 
-export default Diamond
+export default Diamond;

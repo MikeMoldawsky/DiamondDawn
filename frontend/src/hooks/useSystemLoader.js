@@ -1,44 +1,44 @@
-import React, {useEffect} from "react";
-import {useAccount, useProvider} from "wagmi";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect } from "react";
+import { useAccount, useProvider } from "wagmi";
+import { useDispatch, useSelector } from "react-redux";
 import useDDContract from "hooks/useDDContract";
-import {fetchStage, fetchStagesConfig, setStage} from "store/systemReducer";
-import {EVENTS} from "consts";
+import { fetchStage, fetchStagesConfig, setStage } from "store/systemReducer";
+import { EVENTS } from "consts";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
-import {loadAccountNfts} from "store/tokensReducer";
-import {isActionFirstCompleteSelector} from "components/ActionButton/ActionButton.module";
+import { loadAccountNfts } from "store/tokensReducer";
+import { isActionFirstCompleteSelector } from "components/ActionButton/ActionButton.module";
 import useMountLogger from "hooks/useMountLogger";
 
 const useSystemLoader = () => {
-  const account = useAccount()
+  const account = useAccount();
   const provider = useProvider();
-  const dispatch = useDispatch()
-  const contract = useDDContract()
-  const isReady = useSelector(isActionFirstCompleteSelector('load-nfts'))
+  const dispatch = useDispatch();
+  const contract = useDDContract();
+  const isReady = useSelector(isActionFirstCompleteSelector("load-nfts"));
 
-  useMountLogger('useSystemLoader')
+  useMountLogger("useSystemLoader");
 
   useEffect(() => {
-    dispatch(fetchStage(contract))
-    dispatch(fetchStagesConfig())
+    dispatch(fetchStage(contract));
+    dispatch(fetchStagesConfig());
 
-    provider.once('block', () => {
+    provider.once("block", () => {
       contract.on(EVENTS.StageChanged, (_stage, _isStageActive) => {
-        console.log('EVENT StageChanged fired', { _stage, _isStageActive })
-        dispatch(setStage(_stage, _isStageActive))
-      })
-    })
+        console.log("EVENT StageChanged fired", { _stage, _isStageActive });
+        dispatch(setStage(_stage, _isStageActive));
+      });
+    });
 
     return () => {
-      contract.removeAllListeners()
-    }
-  }, [])
+      contract.removeAllListeners();
+    };
+  }, []);
 
   useEffectWithAccount(() => {
-    dispatch(loadAccountNfts(contract, provider, account?.address))
-  })
+    dispatch(loadAccountNfts(contract, provider, account?.address));
+  });
 
-  return isReady
-}
+  return isReady;
+};
 
-export default useSystemLoader
+export default useSystemLoader;
