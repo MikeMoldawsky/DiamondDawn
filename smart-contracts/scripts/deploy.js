@@ -6,7 +6,10 @@
 const hre = require("hardhat");
 const { ethers } = require("ethers");
 const mongoose = require("mongoose");
-const { updateDiamondDawnContract, updateDiamondDawnMineContract } = require("../db/contract-db-manager");
+const {
+  updateDiamondDawnContract,
+  updateDiamondDawnMineContract,
+} = require("../db/contract-db-manager");
 
 async function main() {
   if (!hre.network.name) {
@@ -37,10 +40,10 @@ async function main() {
     admins.push(deployerAddress);
   }
   const royalty = 1000; // 1000/10000 = 10/100 = 10 %
-  
+
   let deployerBalance = await deployer.getBalance();
   let deployerNewBalance;
-  
+
   console.log("Deploying DiamondDawn contracts", {
     deployerAddress,
     admins,
@@ -50,7 +53,9 @@ async function main() {
     network: hre.network.name,
   });
 
-  const DiamondDawnMine = await hre.ethers.getContractFactory("DiamondDawnMine");
+  const DiamondDawnMine = await hre.ethers.getContractFactory(
+    "DiamondDawnMine"
+  );
   const diamondDawnMine = await DiamondDawnMine.deploy(admins);
   await diamondDawnMine.deployed();
   deployerNewBalance = await deployer.getBalance();
@@ -67,7 +72,11 @@ async function main() {
   deployerBalance = deployerNewBalance;
 
   const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
-  const diamondDawn = await DiamondDawn.deploy(royalty, diamondDawnMine.address, admins);
+  const diamondDawn = await DiamondDawn.deploy(
+    royalty,
+    diamondDawnMine.address,
+    admins
+  );
   await diamondDawn.deployed();
   deployerNewBalance = await deployer.getBalance();
 
@@ -81,41 +90,57 @@ async function main() {
   });
 
   // call DiamondDawnMine.initialize
-  await diamondDawnMine.initialize(diamondDawn.address)
+  await diamondDawnMine.initialize(diamondDawn.address);
   //////////////////////////////////////////////////////
   //                  DEV ONLY                        //
   //////////////////////////////////////////////////////
   if (hre.network.name === "localhost") {
-    await diamondDawnMine.populateDiamonds([{
-      "reportNumber": 1111111111,
-      "reportDate": 1659254421,
-      "shape": 4,
-      "points": 45,
-      "color": "J",
-      "clarity": "FLAWLESS",
-      "cut": "EXCELLENT",
-      "polish": "EXCELLENT",
-      "symmetry": "EXCELLENT",
-      "fluorescence": "EXCELLENT",
-      "length": "5.1",
-      "width": "5.12",
-      "depth": "35",
-    }])
-    await diamondDawnMine.setRoughVideoUrl('rough.mp4')
-    await diamondDawnMine.setCutVideoUrl('cut.mp4', 'cut.mp4', 'cut.mp4', 'cut.mp4')
-    await diamondDawnMine.setPolishVideoUrl('polish.mp4', 'polish.mp4', 'polish.mp4', 'polish.mp4')
-    await diamondDawnMine.setBurnVideoUrl('burn.mp4')
-    await diamondDawnMine.setRebirthVideoUrl('final.mp4')
-    await diamondDawn.unpause()
+    await diamondDawnMine.populateDiamonds([
+      {
+        reportNumber: 1111111111,
+        reportDate: 1659254421,
+        shape: 4,
+        points: 45,
+        color: "J",
+        clarity: "FLAWLESS",
+        cut: "EXCELLENT",
+        polish: "EXCELLENT",
+        symmetry: "EXCELLENT",
+        fluorescence: "EXCELLENT",
+        length: "5.1",
+        width: "5.12",
+        depth: "35",
+      },
+    ]);
+    await diamondDawnMine.setRoughVideoUrl("rough.mp4");
+    await diamondDawnMine.setCutVideoUrl(
+      "cut.mp4",
+      "cut.mp4",
+      "cut.mp4",
+      "cut.mp4"
+    );
+    await diamondDawnMine.setPolishVideoUrl(
+      "polish.mp4",
+      "polish.mp4",
+      "polish.mp4",
+      "polish.mp4"
+    );
+    await diamondDawnMine.setBurnVideoUrl("burn.mp4");
+    await diamondDawnMine.setRebirthVideoUrl("final.mp4");
+    await diamondDawn.unpause();
     // await diamondDawn.revealStage()
 
     // const minePrice = await diamondDawn.MINING_PRICE()
     // await diamondDawn.mine({ value: minePrice })
   }
 
-  const DiamondDawnMineArtifact = hre.artifacts.readArtifactSync("DiamondDawnMine");
+  const DiamondDawnMineArtifact =
+    hre.artifacts.readArtifactSync("DiamondDawnMine");
   console.log("Updating db with DiamondDawnMine artifact");
-  await updateDiamondDawnMineContract(diamondDawnMine.address, DiamondDawnMineArtifact);
+  await updateDiamondDawnMineContract(
+    diamondDawnMine.address,
+    DiamondDawnMineArtifact
+  );
   const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
   console.log("Updating db with DiamondDawn artifact");
   await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
@@ -123,7 +148,7 @@ async function main() {
   await mongoose.disconnect(); // build doesn't finish without disconnect
 
   console.log("Successfully updated db with DiamondDawn artifacts");
-  
+
   if (hre.network.name === "goerli") {
     try {
       console.log("Verifying DiamondDawn contract");

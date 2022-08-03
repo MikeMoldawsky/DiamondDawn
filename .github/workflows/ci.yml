@@ -1,4 +1,4 @@
-name: ci
+name: Diamond Dawn CI
 
 concurrency:
   group: '${{ github.workflow }}-${{ github.head_ref || github.ref }}'
@@ -10,8 +10,23 @@ on:
   pull_request:
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Check formatting - frontent
+        run: cd frontend && npm run check
+      - name: Check formatting - frontent-admin
+        run: cd frontend-admin && npm run check
+      - name: Check formatting - smart-contracts
+        run: cd smart-contracts && npm run check
   compile_and_run_tests:
     runs-on: ubuntu-latest
+    needs:
+      - check
     defaults:
       run:
         working-directory: ./smart-contracts
@@ -53,7 +68,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/develop' }}
-    needs: [compile_and_run_tests]
+    needs:
+      - check
+      - compile_and_run_tests
     env:
       HARDHAT_NETWORK: goerli
       GOERLI_URL: ${{ secrets.GOERLI_URL }}

@@ -1,6 +1,6 @@
 import React from "react";
 import tweezersLogo from "assets/images/logo.png";
-import './Header.scss'
+import "./Header.scss";
 import { NavLink } from "react-router-dom";
 
 const Header = ({ children }) => {

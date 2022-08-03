@@ -3,9 +3,9 @@ import Process from "pages/App/Process";
 import useSelectTokenFromRoute from "hooks/useSelectTokenFromRoute";
 
 const ProcessToken = () => {
-  useSelectTokenFromRoute()
+  useSelectTokenFromRoute();
 
-  return <Process />
-}
+  return <Process />;
+};
 
 export default ProcessToken;

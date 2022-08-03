@@ -37,7 +37,8 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
-    "prettier": "^2.7.1",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "2.7.1",
     "react-error-overlay": "6.0.9",
     "sass": "^1.52.1"
   },
@@ -54,7 +55,8 @@
     "lint:fix": "npm run lint -- --fix",
     "eslint": "eslint .",
     "prettier": "prettier .",
-    "format": "npm run prettier -- --write"
+    "format": "npm run prettier -- --write",
+    "check": "npx prettier --check ."
   },
   "eslintConfig": {
     "extends": [

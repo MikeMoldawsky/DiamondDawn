@@ -2,12 +2,21 @@
 pragma solidity ^0.8.15;
 
 interface IDiamondDawnMineAdmin {
-
     function setRoughVideoUrl(string calldata roughUrl) external;
 
-    function setCutVideoUrl(string calldata pearUrl, string calldata roundUrl, string calldata ovalUrl, string calldata radiantUrl) external;
+    function setCutVideoUrl(
+        string calldata pearUrl,
+        string calldata roundUrl,
+        string calldata ovalUrl,
+        string calldata radiantUrl
+    ) external;
 
-    function setPolishVideoUrl(string calldata pearUrl, string calldata roundUrl, string calldata ovalUrl, string calldata radiantUrl) external;
+    function setPolishVideoUrl(
+        string calldata pearUrl,
+        string calldata roundUrl,
+        string calldata ovalUrl,
+        string calldata radiantUrl
+    ) external;
 
     function setBurnVideoUrl(string calldata burnUrl) external;
 

@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 
 const useMountLogger = (compName) => {
   useEffect(() => {
-    console.log(`${compName} Mounting`)
+    console.log(`${compName} Mounting`);
 
-    return () => console.log(`${compName} Unmounting`)
-  }, [])
-}
+    return () => console.log(`${compName} Unmounting`);
+  }, []);
+};
 
 export default useMountLogger;
