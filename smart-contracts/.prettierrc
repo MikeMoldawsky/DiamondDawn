@@ -1,10 +1,10 @@
 {
   "overrides": [
-	{
-	  "files": "*.sol",
-	  "options": {
-		"explicitTypes": "preserve"
-	  }
-	}
+    {
+      "files": "*.sol",
+      "options": {
+        "explicitTypes": "preserve"
+      }
+    }
   ]
 }

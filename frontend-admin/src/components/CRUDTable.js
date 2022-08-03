@@ -1,27 +1,38 @@
 import React, { useState } from "react";
-import _ from 'lodash'
+import _ from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { DataGrid, GridRowModes, GridActionsCellItem } from '@mui/x-data-grid';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
+import { DataGrid, GridRowModes, GridActionsCellItem } from "@mui/x-data-grid";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Close";
 
-const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCreatedOnServer, renderButtons, renderActions, ...gridProps }) => {
+const CRUDTable = ({
+  CRUD,
+  rows,
+  setRows,
+  columns,
+  itemName,
+  getNewItem,
+  newCreatedOnServer,
+  renderButtons,
+  renderActions,
+  ...gridProps
+}) => {
   const [rowModesModel, setRowModesModel] = useState({});
-  const [selectionModel, setSelectionModel] = useState([])
+  const [selectionModel, setSelectionModel] = useState([]);
 
   const _columns = [
     ...columns,
     {
-      field: 'actions',
-      type: 'actions',
-      headerName: 'Actions',
+      field: "actions",
+      type: "actions",
+      headerName: "Actions",
       width: 120,
-      cellClassName: 'actions',
+      cellClassName: "actions",
       getActions: (row) => {
-        const { id } = row
+        const { id } = row;
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
@@ -62,14 +73,14 @@ const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCrea
   ];
 
   const onAddClick = async () => {
-    const newItem = await getNewItem()
-    const _id = newItem._id || rows.length
-    setRows([...rows, { _id, isNew: !newCreatedOnServer, ...newItem }])
+    const newItem = await getNewItem();
+    const _id = newItem._id || rows.length;
+    setRows([...rows, { _id, isNew: !newCreatedOnServer, ...newItem }]);
     setRowModesModel({
       ...rowModesModel,
       [_id]: { mode: GridRowModes.Edit, fieldToFocus: columns[0].field },
     });
-  }
+  };
 
   const handleRowEditStart = (params, event) => {
     event.defaultMuiPrevented = true;
@@ -88,7 +99,7 @@ const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCrea
   };
 
   const handleDeleteClick = (id) => async () => {
-    await CRUD.delete(id)
+    await CRUD.delete(id);
     setRows(rows.filter((row) => row._id !== id));
   };
 
@@ -106,8 +117,8 @@ const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCrea
 
   const processRowUpdate = async (newRow) => {
     let _newRow = await (newRow.isNew
-      ? CRUD.create(_.omit(newRow, ['_id', 'isNew']))
-      : CRUD.update(newRow))
+      ? CRUD.create(_.omit(newRow, ["_id", "isNew"]))
+      : CRUD.update(newRow));
 
     if (_newRow) {
       setRows(rows.map((row) => (row._id === newRow._id ? _newRow : row)));
@@ -117,36 +128,38 @@ const CRUDTable = ({ CRUD, rows, setRows, columns, itemName, getNewItem, newCrea
   };
 
   const renderCustomButtons = () => {
-    if (!renderButtons) return null
+    if (!renderButtons) return null;
 
-    const selectedRows = rows.filter(row => {
-      return selectionModel.includes(row._id)
-    })
-    return renderButtons(selectedRows)
-  }
+    const selectedRows = rows.filter((row) => {
+      return selectionModel.includes(row._id);
+    });
+    return renderButtons(selectedRows);
+  };
 
   return (
     <>
       <div className="table-container">
-        <DataGrid rows={rows}
-                  columns={_columns}
-                  autoHeight
-                  checkboxSelection
-                  onSelectionModelChange={(newSelectionModel) => {
-                    setSelectionModel(newSelectionModel);
-                  }}
-                  selectionModel={selectionModel}
-                  keepNonExistentRowsSelected
-                  disableSelectionOnClick
-                  editMode="row"
-                  experimentalFeatures={{ newEditingApi: true }}
-                  disableColumnMenu
-                  getRowId={row => row._id}
-                  rowModesModel={rowModesModel}
-                  onRowEditStart={handleRowEditStart}
-                  onRowEditStop={handleRowEditStop}
-                  processRowUpdate={processRowUpdate}
-                  {...gridProps} />
+        <DataGrid
+          rows={rows}
+          columns={_columns}
+          autoHeight
+          checkboxSelection
+          onSelectionModelChange={(newSelectionModel) => {
+            setSelectionModel(newSelectionModel);
+          }}
+          selectionModel={selectionModel}
+          keepNonExistentRowsSelected
+          disableSelectionOnClick
+          editMode="row"
+          experimentalFeatures={{ newEditingApi: true }}
+          disableColumnMenu
+          getRowId={(row) => row._id}
+          rowModesModel={rowModesModel}
+          onRowEditStart={handleRowEditStart}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
+          {...gridProps}
+        />
       </div>
       <div className="center-aligned-row">
         <div className="button link add-button" onClick={onAddClick}>

@@ -7,10 +7,9 @@ import useSystemLoader from "hooks/useSystemLoader";
 import useMountLogger from "hooks/useMountLogger";
 
 const AppLayout = ({ children, showTimeline }) => {
+  const isReady = useSystemLoader();
 
-  const isReady = useSystemLoader()
-
-  useMountLogger('AppLayout')
+  useMountLogger("AppLayout");
 
   return (
     <div className="app">
@@ -26,6 +25,6 @@ const AppLayout = ({ children, showTimeline }) => {
       )}
     </div>
   );
-}
+};
 
 export default AppLayout;

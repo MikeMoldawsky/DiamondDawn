@@ -14,7 +14,7 @@ async function getDiamondDawnMineContract() {
 async function getContractByName(name) {
   try {
     const contract = await ContractModel.findOne({ name });
-    console.log("Got contract by name", {name, address: contract.address})
+    console.log("Got contract by name", { name, address: contract.address });
     return contract;
   } catch (e) {
     console.log(`Failed to get contract ${name}: ${e}`);
@@ -23,5 +23,5 @@ async function getContractByName(name) {
 
 module.exports = {
   getDiamondDawnContract,
-  getDiamondDawnMineContract
+  getDiamondDawnMineContract,
 };

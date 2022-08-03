@@ -1,3 +1,3 @@
 import DiamondList from "./DiamondList";
 
-export default DiamondList
+export default DiamondList;
