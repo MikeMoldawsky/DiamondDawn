@@ -19,7 +19,7 @@ describe("DiamondDawn", () => {
 
   async function deployDiamondDawnContractsFixture() {
     const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
-    const diamondDawnMine = await DiamondDawnMine.deploy();
+    const diamondDawnMine = await DiamondDawnMine.deploy([]);
     const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
     const diamondDawn = await DiamondDawn.deploy("1000", diamondDawnMine.address, []); // royality as 10 %
     const [owner, user1, user2, user3, user4, user5, user6, user7, user8] = await ethers.getSigners();

@@ -69,8 +69,10 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     mapping(uint => uint) public _tokenIdToRoughDiamondPoints;
     mapping(uint => uint) public _tokenIdToPolishPointsReduction;
 
-    constructor() {
+    constructor(address[] memory adminAddresses) {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
+        // TODO: remove admins after testing
+        _setAdminAndAddToAllowList(adminAddresses);
     }
 
     modifier onlyDiamondDawn() {
@@ -481,5 +483,12 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     {
         string memory videoUrl = _stageToShapeVideoUrls[uint(stage)][uint(shape)];
         return videoUrl;
+    }
+
+    function _setAdminAndAddToAllowList(address[] memory addresses) internal
+    {
+        for (uint i = 0; i < addresses.length; i++) {
+            _grantRole(DEFAULT_ADMIN_ROLE, addresses[i]);
+        }
     }
 }
