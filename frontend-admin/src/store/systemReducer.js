@@ -1,7 +1,7 @@
-import { makeReducer, reduceUpdateFull } from "./reduxUtils";
-import _ from "lodash";
+import { makeReducer, reduceUpdateFull } from './reduxUtils'
+import _ from 'lodash'
 import axios from "axios";
-import { CONTRACTS, STAGE } from "consts";
+import {CONTRACTS, STAGE} from "consts";
 
 const INITIAL_STATE = {
   ddContractData: null,
@@ -10,63 +10,57 @@ const INITIAL_STATE = {
   isStageActive: false,
   paused: false,
   stageStartTimes: {},
-};
+}
 
-export const fetchStage = (contract) => async (dispatch) => {
-  const _stage = await contract.stage();
-  const _isStageActive = await contract.isStageActive();
-  dispatch(setStage(_stage, _isStageActive));
-};
+export const fetchStage = contract => async dispatch => {
+  const _stage = await contract.stage()
+  const _isStageActive = await contract.isStageActive()
+  dispatch(setStage(_stage, _isStageActive))
+}
 
-export const fetchPaused = (contract) => async (dispatch) => {
-  const paused = await contract.paused();
+export const fetchPaused = contract => async dispatch => {
+  const paused = await contract.paused()
   dispatch({
-    type: "SYSTEM.SET_PAUSED",
+    type: 'SYSTEM.SET_PAUSED',
     payload: { paused },
-  });
-};
+  })
+}
 
 export const getStageConfigs = async () => {
   try {
-    const res = await axios.get(`/api/get_stages`);
+    const res = await axios.get(`/api/get_stages`)
     return _.zipObject(
       _.values(STAGE),
-      _.map(_.values(STAGE), (stage) => {
-        const dbConf = _.find(res.data, { stage });
-        return dbConf ? dbConf.startsAt : null;
+      _.map(_.values(STAGE), stage => {
+        const dbConf = _.find(res.data, { stage })
+        return dbConf ? dbConf.startsAt : null
       })
-    );
-  } catch (e) {
-    return [];
+    )
   }
-};
+  catch (e) {
+    return []
+  }
+}
 
 export const setStage = (stage, isStageActive) => ({
-  type: "SYSTEM.SET_STAGE",
+  type: 'SYSTEM.SET_STAGE',
   payload: { stage, isStageActive },
-});
+})
 
-export const setDDContractData = ({ ddContract, ddMineContract }) => ({
-  type: "SYSTEM.SET_DD_CONTRACT_DATA",
+export const setDDContractData = ({ddContract, ddMineContract}) => ({
+  type: 'SYSTEM.SET_DD_CONTRACT_DATA',
   payload: { ddContractData: ddContract, ddMineContractData: ddMineContract },
-});
+})
 
-export const systemSelector = (state) => state.system;
+export const systemSelector = state => state.system
 
-export const contractSelector =
-  (contractType = CONTRACTS.DiamondDawn) =>
-  (state) => {
-    return contractType === CONTRACTS.DiamondDawn
-      ? state.system.ddContractData
-      : state.system.ddMineContractData;
-  };
+export const contractSelector = (contractType = CONTRACTS.DiamondDawn) => state => {
+  return contractType === CONTRACTS.DiamondDawn ? state.system.ddContractData : state.system.ddMineContractData
+}
 
-export const systemReducer = makeReducer(
-  {
-    "SYSTEM.SET_STAGE": reduceUpdateFull,
-    "SYSTEM.SET_PAUSED": reduceUpdateFull,
-    "SYSTEM.SET_STAGES_CONFIG": reduceUpdateFull,
-    "SYSTEM.SET_DD_CONTRACT_DATA": reduceUpdateFull,
-  },
-  INITIAL_STATE
-);
+export const systemReducer = makeReducer({
+  'SYSTEM.SET_STAGE': reduceUpdateFull,
+  'SYSTEM.SET_PAUSED': reduceUpdateFull,
+  'SYSTEM.SET_STAGES_CONFIG': reduceUpdateFull,
+  'SYSTEM.SET_DD_CONTRACT_DATA': reduceUpdateFull,
+}, INITIAL_STATE)

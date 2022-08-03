@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import animation from "assets/video/infinity_video.mp4";
 import ReactPlayer from "react-player";
-import "./LandingPage.scss";
+import './LandingPage.scss'
 
-const PASSWORD_LENGTH = 4;
-const CHECK_TIME = 1750;
+const PASSWORD_LENGTH = 4
+const CHECK_TIME = 1750
 
 const LandingPage = () => {
   const [animate, setAnimate] = useState(false);
@@ -19,30 +19,30 @@ const LandingPage = () => {
   }, []);
 
   const submitPassword = () => {
-    pwdInput.current.blur();
+    pwdInput.current.blur()
     // return
-    setCheckingPassword(true);
+    setCheckingPassword(true)
     setTimeout(() => {
-      setCheckingPassword(false);
-      setPasswordError(true);
-      setPassword("");
-    }, CHECK_TIME);
-  };
+      setCheckingPassword(false)
+      setPasswordError(true)
+      setPassword('')
+    }, CHECK_TIME)
+  }
 
-  const onPasswordChange = (e) => {
-    const pwd = e.target.value;
-    setPassword(pwd);
+  const onPasswordChange = e => {
+    const pwd = e.target.value
+    setPassword(pwd)
     if (pwd.length === PASSWORD_LENGTH) {
-      submitPassword();
+      submitPassword()
     }
   };
 
-  const onPasswordEnter = (e) => {
+  const onPasswordEnter = e => {
     if (e.charCode === 13) {
       // enter key
-      submitPassword();
+      submitPassword()
     }
-  };
+  }
 
   // const onResultClick = () => {
   //   setPasswordError(false)
@@ -77,31 +77,17 @@ const LandingPage = () => {
         </div>
         {!passwordError ? (
           <div className="password-box">
-            <div className="pwd-bg" />
+            <div className="pwd-bg"/>
             <div className="password-title">TRY PASSWORD</div>
-            <input
-              ref={pwdInput}
-              type="text"
-              autoFocus
-              className={classNames({
-                filled: password.length > 0,
-                loading: checkingPassword,
-              })}
-              value={password}
-              onChange={onPasswordChange}
-              onKeyPress={onPasswordEnter}
-              maxLength={PASSWORD_LENGTH}
-            />
+            <input ref={pwdInput} type="text" autoFocus
+                   className={classNames({filled: password.length > 0, loading: checkingPassword})}
+                   value={password} onChange={onPasswordChange} onKeyPress={onPasswordEnter} maxLength={PASSWORD_LENGTH} />
           </div>
         ) : (
           <div className="password-error">
             <div className="error-message">Wrong Password</div>
             <div className="button">
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20"
-              >
+              <a target="_blank" rel="noreferrer" href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20">
                 <div className="button-text">Request Vanguards</div>
               </a>
             </div>

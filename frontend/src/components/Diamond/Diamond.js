@@ -1,13 +1,13 @@
-import React from "react";
-import "./Diamond.scss";
+import React from 'react'
+import './Diamond.scss'
 import ReactPlayer from "react-player";
 
 const Diamond = ({ diamond }) => {
-  const { image } = diamond;
+  const { image } = diamond
 
   return (
     <div className="diamond-art">
-      {image.endsWith(".mp4") ? (
+      {image.endsWith('.mp4') ? (
         <ReactPlayer
           url={image}
           playing
@@ -21,7 +21,7 @@ const Diamond = ({ diamond }) => {
         <img src={image} alt="Diamond art" />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Diamond;
+export default Diamond

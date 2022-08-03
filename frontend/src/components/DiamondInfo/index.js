@@ -1,3 +1,3 @@
 import DiamondInfo from "./DiamondInfo";
 
-export default DiamondInfo;
+export default DiamondInfo

@@ -15,5 +15,5 @@ async function getContractByName(name) {
 }
 
 module.exports = {
-  getDiamondDawnContract,
+  getDiamondDawnContract
 };

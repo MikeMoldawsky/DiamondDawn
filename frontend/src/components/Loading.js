@@ -14,7 +14,7 @@ const Loading = () => {
       className="react-player"
       width={300}
     />
-  );
-};
+  )
+}
 
-export default Loading;
+export default Loading

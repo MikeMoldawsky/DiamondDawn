@@ -1,4 +1,4 @@
-const DiamondModel = require("./models/DiamondModel");
+const DiamondModel = require('./models/DiamondModel');
 
 async function createDiamond(diamondProps) {
   try {
@@ -19,11 +19,7 @@ async function getDiamonds() {
 
 async function updateDiamond(diamondProps) {
   try {
-    return await DiamondModel.findOneAndUpdate(
-      { _id: diamondProps._id },
-      diamondProps,
-      { new: true }
-    );
+    return await DiamondModel.findOneAndUpdate({ _id: diamondProps._id }, diamondProps, { new: true });
   } catch (e) {
     console.log(`Failed to UPDATE Diamond`, e);
   }
@@ -42,4 +38,4 @@ module.exports = {
   createDiamond,
   updateDiamond,
   deleteDiamond,
-};
+}

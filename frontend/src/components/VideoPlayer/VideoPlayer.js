@@ -1,21 +1,13 @@
-import React from "react";
+import React from 'react'
 import ReactPlayer from "react-player";
-import { DUMMY_VIDEO_URL } from "consts";
+import { DUMMY_VIDEO_URL } from 'consts'
 
-const GLOBAL_SHOW_VIDEO = true;
+const GLOBAL_SHOW_VIDEO = true
 
-const VideoPlayer = ({
-  children,
-  src = DUMMY_VIDEO_URL,
-  onEnded,
-  controls,
-  videoPlayer,
-  playing = true,
-  ...props
-}) => {
+const VideoPlayer = ({ children, src = DUMMY_VIDEO_URL, onEnded, controls, videoPlayer, playing = true, ...props }) => {
   return (
     <div className="video-player" {...props} ref={videoPlayer}>
-      {GLOBAL_SHOW_VIDEO ? (
+      {(GLOBAL_SHOW_VIDEO) ? (
         <ReactPlayer
           url={src}
           playing={playing}
@@ -31,7 +23,7 @@ const VideoPlayer = ({
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default VideoPlayer;
+export default VideoPlayer

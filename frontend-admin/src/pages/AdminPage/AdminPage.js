@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
-import "../App/App.scss";
-import "./AdminPage.scss";
+import '../App/App.scss'
+import './AdminPage.scss'
 import InvitationsTab from "./InvitationsTab";
 import ControlTab from "./ControlTab";
 import Tabs from "components/Tabs";
@@ -12,12 +12,12 @@ import ScheduleTab from "./ScheduleTab";
 import ArtTab from "pages/AdminPage/ArtTab";
 
 const TABS = [
-  { title: "Control", component: () => <ControlTab /> },
-  { title: "Art", component: () => <ArtTab /> },
-  { title: "Schedule", component: () => <ScheduleTab /> },
-  { title: "Invitations", component: () => <InvitationsTab /> },
-  { title: "Diamonds", component: () => <DiamondsTab /> },
-];
+  { title: 'Control', component: () => <ControlTab /> },
+  { title: 'Art', component: () => <ArtTab /> },
+  { title: 'Schedule', component: () => <ScheduleTab /> },
+  { title: 'Invitations', component: () => <InvitationsTab /> },
+  { title: 'Diamonds', component: () => <DiamondsTab /> },
+]
 
 const AdminPage = () => {
   return (

@@ -1,11 +1,5 @@
-import ActionButton from "./ActionButton";
+import ActionButton from './ActionButton'
 
-export {
-  actionStatusReducer,
-  clearActionStatus,
-  setActionPending,
-  actionStatusSelector,
-  isActionPendingSelector,
-} from "./ActionButton.module";
+export {actionStatusReducer, clearActionStatus, setActionPending, actionStatusSelector, isActionPendingSelector} from './ActionButton.module'
 
-export default ActionButton;
+export default ActionButton

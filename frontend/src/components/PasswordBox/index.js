@@ -1,3 +1,3 @@
-import PasswordBox from "./PasswordBox";
+import PasswordBox from './PasswordBox'
 
-export default PasswordBox;
+export default PasswordBox

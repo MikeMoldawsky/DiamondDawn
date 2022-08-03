@@ -2,7 +2,7 @@
   .text-content {
     padding: 20px;
 
-    & > div:not(:last-child) {
+    &>div:not(:last-child) {
       margin-bottom: 10px;
     }
 

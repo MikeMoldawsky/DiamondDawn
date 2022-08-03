@@ -38,7 +38,7 @@ a {
     h1 {
       margin: 0;
       font-size: 4em;
-      opacity: 0.28;
+      opacity: .28;
       white-space: nowrap;
     }
 
@@ -59,8 +59,7 @@ a {
       font-weight: 700;
     }
 
-    .password-box,
-    .password-error {
+    .password-box, .password-error {
       margin-top: 80px;
     }
 
@@ -103,7 +102,7 @@ a {
         border: none;
         font-size: 2.5em;
         color: $white;
-        letter-spacing: 0.6em;
+        letter-spacing: .6em;
         width: 200px;
         caret-color: transparent;
         margin: 0 6px 0 38px;
@@ -178,7 +177,7 @@ a {
         margin: 20px 0 0;
         font-size: 2em;
         white-space: unset;
-        opacity: 0.4;
+        opacity: .4;
         line-height: 1.2em;
       }
 
@@ -192,14 +191,14 @@ a {
       }
 
       .coming-soon {
-        font-size: 0.8em;
+        font-size: .8em;
       }
 
       .password-box {
         height: 46px;
 
         .password-title {
-          font-size: 0.8em;
+          font-size: .8em;
         }
 
         input {

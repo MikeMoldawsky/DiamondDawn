@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 function getDbConnection() {
   console.log("Connecting to MongoDB...");
-
+  
   if (
     process.env.VERCEL_ENV === "preview" &&
     process.env.VERCEL_GIT_COMMIT_REF !== "develop"
