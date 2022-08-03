@@ -1,26 +1,25 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
-import './NFTPage.scss'
-import {useParams} from "react-router-dom";
+import "./NFTPage.scss";
+import { useParams } from "react-router-dom";
 import DiamondInfo from "components/DiamondInfo";
-import {useSelector} from "react-redux";
-import {tokenByIdSelector} from "store/tokensReducer";
+import { useSelector } from "react-redux";
+import { tokenByIdSelector } from "store/tokensReducer";
 import { NavLink } from "react-router-dom";
-import {getStageName, getTokenTrait} from "utils";
-import {TRAIT} from "consts";
-import {uiSelector} from "store/uiReducer";
+import { getStageName, getTokenTrait } from "utils";
+import { TRAIT } from "consts";
+import { uiSelector } from "store/uiReducer";
 import useSelectTokenFromRoute from "hooks/useSelectTokenFromRoute";
 
 function NFTPage() {
+  const { tokenId: tokenIdString } = useParams();
+  const { selectedTokenId } = useSelector(uiSelector);
+  const token = useSelector(tokenByIdSelector(selectedTokenId));
 
-  const { tokenId: tokenIdString } = useParams()
-  const { selectedTokenId } = useSelector(uiSelector)
-  const token = useSelector(tokenByIdSelector(selectedTokenId))
+  useSelectTokenFromRoute();
 
-  useSelectTokenFromRoute()
-
-  const isActionable = true
-  const stageName = getStageName(getTokenTrait(token, TRAIT.stage))
+  const isActionable = true;
+  const stageName = getStageName(getTokenTrait(token, TRAIT.stage));
 
   return token ? (
     <div className={classNames("page nft-page")}>
@@ -36,7 +35,7 @@ function NFTPage() {
         </div>
       )}
     </div>
-  ) : null
+  ) : null;
 }
 
 export default NFTPage;

@@ -8,12 +8,10 @@ import WagmiWrapper from "layout/WagmiWrapper";
 import useSystemLoader from "hooks/useSystemLoader";
 
 const AppInternal = ({ children }) => {
-  const isReady = useSystemLoader()
+  const isReady = useSystemLoader();
 
-  return isReady ? (
-    <main>{children}</main>
-  ) : null
-}
+  return isReady ? <main>{children}</main> : null;
+};
 
 const AppLayout = ({ children, showTimeline }) => {
   return (
@@ -36,6 +34,6 @@ const AppLayout = ({ children, showTimeline }) => {
       </div>
     </WagmiWrapper>
   );
-}
+};
 
 export default AppLayout;

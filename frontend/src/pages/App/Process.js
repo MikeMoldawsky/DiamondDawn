@@ -1,5 +1,5 @@
-import React, {useCallback} from "react";
-import {useSelector} from "react-redux";
+import React, { useCallback } from "react";
+import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import Mine from "./Mine";
 import Cut from "./Cut";
@@ -9,18 +9,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 
 const Process = () => {
-  const { stage } = useSelector(systemSelector)
+  const { stage } = useSelector(systemSelector);
 
   const renderStage = useCallback(() => {
     switch (stage) {
       case 0:
-        return <Mine />
+        return <Mine />;
       case 1:
-        return <Cut />
+        return <Cut />;
       case 2:
-        return <Polish />
+        return <Polish />;
       case 3:
-        return <Burn />
+        return <Burn />;
       case 4:
         return (
           <div className="action-view">
@@ -29,13 +29,13 @@ const Process = () => {
             </div>
             <div className="leading-text">SYSTEM IS COMPLETE AND CLOSED</div>
           </div>
-        )
+        );
       default:
-        return null
+        return null;
     }
-  }, [stage])
+  }, [stage]);
 
-  return stage !== -1 ? renderStage() : null
-}
+  return stage !== -1 ? renderStage() : null;
+};
 
 export default Process;
