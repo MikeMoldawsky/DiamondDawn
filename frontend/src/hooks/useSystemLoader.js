@@ -5,7 +5,7 @@ import useDDContract from "hooks/useDDContract";
 import { fetchStage, fetchStagesConfig, setStage } from "store/systemReducer";
 import { EVENTS } from "consts";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
-import { loadAccountNfts } from "store/tokensReducer";
+import { fetchAccountBurnedTokens, loadAccountNfts } from "store/tokensReducer";
 import { isActionFirstCompleteSelector } from "components/ActionButton/ActionButton.module";
 import useMountLogger from "hooks/useMountLogger";
 
@@ -36,6 +36,7 @@ const useSystemLoader = () => {
 
   useEffectWithAccount(() => {
     dispatch(loadAccountNfts(contract, provider, account?.address));
+    dispatch(fetchAccountBurnedTokens(contract, account.address));
   });
 
   return isReady;

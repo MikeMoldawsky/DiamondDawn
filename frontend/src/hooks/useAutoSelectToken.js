@@ -14,7 +14,7 @@ function useAutoSelectToken(stage) {
   const tokens = useSelector(tokensSelector);
 
   useEffect(() => {
-    if (_.size(tokens) > 0) {
+    if (selectedTokenId === -1 && _.size(tokens) > 0) {
       const prevTokenType = getTypeByStage(stage - 1);
       const tokenType = getTypeByStage(stage);
       // first look for a token that can be processed

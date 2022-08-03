@@ -1,12 +1,11 @@
 import React from "react";
 import classNames from "classnames";
 import "css/common.scss";
-import "pages/App/App.scss";
+import "pages/ProcessPage/App.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "pages/Homepage";
 import InvitePage from "pages/InvitePage";
-import ProcessPage from "pages/App/ProcessPage";
-import ProcessToken from "pages/App/ProcessToken";
+import ProcessPage from "pages/ProcessPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RebirthPage from "pages/RebirthPage";
@@ -31,10 +30,7 @@ const MainLayout = () => {
                   <Route path="nft/:tokenId" element={<NFTPage />} />
                   <Route path="invite/:tokenId" element={<InvitePage />} />
                   <Route path="rebirth/:tokenId" element={<RebirthPage />} />
-                  <Route path="process">
-                    <Route path="" element={<ProcessPage />} />
-                    <Route path=":tokenId" element={<ProcessToken />} />
-                  </Route>
+                  <Route path="process" element={<ProcessPage />} />
                 </Route>
               </Routes>
             </AppLayout>
