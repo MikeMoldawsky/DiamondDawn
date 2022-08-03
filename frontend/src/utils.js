@@ -90,6 +90,30 @@ export const isTokenInStage = (token, stage) => getTokenTrait(token, TRAIT.stage
 export const isTokenOfType = (token, type) => token && getTokenTrait(token, TRAIT.type) === type
 
 export const isTokenActionable = (token, systemStage) => {
-  const prevTokenType = getTypeByStage(systemStage - 1)
-  return isTokenOfType(token, prevTokenType)
+  if (!token) return false
+
+  const tokenType = getTokenTrait(token, TRAIT.type)
+  switch (systemStage) {
+    case STAGE.REBIRTH:
+      return tokenType === NFT_TYPE.Burned;
+    case STAGE.BURN:
+      return tokenType === NFT_TYPE.Polished || tokenType === NFT_TYPE.Burned;
+    default:
+      const prevTokenType = getTypeByStage(systemStage - 1)
+      return isTokenOfType(token, prevTokenType)
+  }
+}
+
+export const isTokenDone = (token, systemStage) => {
+  if (!token) return false
+
+  const tokenType = getTokenTrait(token, TRAIT.type)
+  switch (systemStage) {
+    case STAGE.REBIRTH:
+    case STAGE.BURN:
+      return tokenType === NFT_TYPE.Reborn
+    default:
+      const tokenStage = getStageByTokenType(tokenType)
+      return tokenStage < systemStage - 1
+  }
 }
