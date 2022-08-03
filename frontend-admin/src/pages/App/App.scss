@@ -1,5 +1,5 @@
 @import "css/vars";
-@import '../../assets/fonts/fonts.css';
+@import "../../assets/fonts/fonts.css";
 
 html,
 body,
@@ -16,7 +16,7 @@ body {
 }
 
 * {
-  font-family: 'Saira', monospace;
+  font-family: "Saira", monospace;
   font-weight: 300;
 }
 
@@ -60,7 +60,7 @@ body {
   svg {
     margin-right: 10px;
   }
-  
+
   &.disabled {
     cursor: not-allowed;
   }
@@ -82,7 +82,7 @@ body {
   }
 }
 
-input[type=text] {
+input[type="text"] {
   width: 100%;
   height: 48px;
   padding: 0 10px;
@@ -102,7 +102,7 @@ input[type=text] {
   margin-top: 80px;
   height: $videoHeight;
   width: $videoWidth;
-  background-color: rgba(255, 255, 255, .2);
+  background-color: rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -160,7 +160,7 @@ input[type=text] {
     span {
       width: 480px;
       font-size: 5em;
-      opacity: .4;
+      opacity: 0.4;
     }
   }
 
@@ -175,7 +175,7 @@ input[type=text] {
 
     .secondary-text {
       font-size: 1.5em;
-      color: #7E7D7D;
+      color: #7e7d7d;
       margin-bottom: 40px;
     }
 
@@ -187,7 +187,7 @@ input[type=text] {
       }
 
       span {
-        font-size: 1.8em
+        font-size: 1.8em;
       }
     }
   }
