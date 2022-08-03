@@ -12,7 +12,8 @@
     "prettier": "prettier --write 'contracts/**/*.sol'",
     "quick-test": "hardhat test",
     "coverage": "npm run compile && hardhat coverage",
-    "build": "npx hardhat run scripts/deploy.js"
+    "build": "npx hardhat run scripts/deploy.js",
+    "check": "npx prettier --check ."
   },
   "repository": {
     "type": "git",

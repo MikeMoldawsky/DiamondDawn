@@ -52,7 +52,8 @@
     "lint:fix": "npm run lint -- --fix",
     "eslint": "eslint .",
     "prettier": "prettier .",
-    "format": "npm run prettier -- --write"
+    "format": "npm run prettier -- --write",
+    "check": "npx prettier --check ."
   },
   "eslintConfig": {
     "extends": [
