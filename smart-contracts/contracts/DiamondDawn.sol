@@ -303,30 +303,6 @@ contract DiamondDawn is
      *                             Client functions                           *
      *                                                                        *
      **************************************************************************/
-
-    /**********************     Internal & Helpers     ************************/
-
-    function _getNextStageForToken(uint tokenId) internal view returns (Stage) {
-        return _getNextStage(_tokensMetadata[tokenId].stage);
-    }
-
-    function _process(uint256 tokenId) internal {
-        require(
-            _isApprovedOrOwner(_msgSender(), tokenId),
-            "ERC721: caller is not token owner nor approved"
-        );
-        require(
-            uint(_tokensMetadata[tokenId].stage) == uint(stage) - 1,
-            string.concat(
-                "The level of the diamond should be ",
-                Strings.toString(uint(stage) - 1),
-                " to perform this action"
-            )
-        );
-
-        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
-    }
-
     /**********************           Guards            ************************/
 
     function _requireActiveStage() internal view {
@@ -408,9 +384,6 @@ contract DiamondDawn is
         _safeMint(_msgSender(), tokenId);
         _diamondDawnMine.mine(tokenId);
 
-        // Store token metadata
-        _tokensMetadata[tokenId] = Metadata({stage: Stage.MINE});
-
         address[] memory wlAddresses = new address[](1);
         wlAddresses[0] = _msgSender();
         emit WhitelistUpdated(WhitelistAction.USE, wlAddresses);
@@ -488,7 +461,6 @@ contract DiamondDawn is
     {
         // TODO - this require blocks getting the tokenURI of burnt tokens
         // require(_exists(tokenId), "ERC721: URI query for nonexistent token");
-        Stage diamondStage = _tokensMetadata[tokenId].stage;
-        return _diamondDawnMine.getDiamondMetadata(tokenId, diamondStage);
+        return _diamondDawnMine.getDiamondMetadata(tokenId);
     }
 }

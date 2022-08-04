@@ -63,9 +63,9 @@ contract DiamondDawnMine is
 
     struct DiamondDawnMetadata {
         DiamondDawnType diamondDawnType;
-        RoughDiamondMetadata roughDiamondMetadata;
-        CutDiamondMetadata cutDiamondMetadata;
-        PolishedDiamondCertificate polishedDiamond;
+        RoughDiamondMetadata rough;
+        CutDiamondMetadata cut;
+        PolishedDiamondCertificate polished;
     }
 
     struct ERC721MetadataStructure {
@@ -246,8 +246,9 @@ contract DiamondDawnMine is
         );
         _tokenIdToDiamondDawnMetadata[tokenId] = DiamondDawnMetadata({
             diamondDawnType: DiamondDawnType.ROUGH,
-            roughDiamondMetadata: RoughDiamondMetadata({ shape: RoughDiamondShape.MAKEABLE, points: randomPoints}),
-            polishedDiamond: _mineDiamond()
+            rough: RoughDiamondMetadata({ shape: RoughDiamondShape.MAKEABLE, points: randomPoints}),
+            cut: CutDiamondMetadata({ points: 0}),
+            polished: _mineDiamond()
         });
     }
 
@@ -262,10 +263,34 @@ contract DiamondDawnMine is
             MAX_POLISH_POINTS_REDUCTION
         );
         DiamondDawnMetadata storage diamondDawnMetadata = _tokenIdToDiamondDawnMetadata[tokenId];
-        diamondDawnMetadata.cutDiamondMetadata = CutDiamondMetadata({
-            points: diamondDawnMetadata.polishedDiamond.points + polishPointsReduction
+        diamondDawnMetadata.cut = CutDiamondMetadata({
+            points: diamondDawnMetadata.polished.points + polishPointsReduction
         });
         diamondDawnMetadata.diamondDawnType = DiamondDawnType.CUT;
+    }
+
+    function polish(uint256 tokenId)
+    external
+    onlyDiamondDawn
+    requireDiamondDawnType(tokenId, DiamondDawnType.CUT)
+    {
+        _tokenIdToDiamondDawnMetadata[tokenId].diamondDawnType = DiamondDawnType.POLISHED;
+    }
+
+    function burn(uint256 tokenId)
+    external
+    onlyDiamondDawn
+    requireDiamondDawnType(tokenId, DiamondDawnType.POLISHED)
+    {
+        _tokenIdToDiamondDawnMetadata[tokenId].diamondDawnType = DiamondDawnType.BURNED;
+    }
+
+    function rebirth(uint256 tokenId)
+    external
+    onlyDiamondDawn
+    requireDiamondDawnType(tokenId, DiamondDawnType.BURNED)
+    {
+        _tokenIdToDiamondDawnMetadata[tokenId].diamondDawnType = DiamondDawnType.REBORN;
     }
 
     function getDiamondMetadata(uint tokenId)
@@ -357,7 +382,7 @@ contract DiamondDawnMine is
         DiamondDawnMetadata memory diamondDawnMetadata,
         uint tokenId,
         string memory videoUrl
-    ) private view returns (string memory) {
+    ) private pure returns (string memory) {
         // TODO: Add real description
         ERC721MetadataStructure memory metadata = ERC721MetadataStructure({
             name: string(
@@ -366,7 +391,7 @@ contract DiamondDawnMine is
             description: "Diamond Dawn tokens description",
             createdBy: "Diamond Dawn",
             image: videoUrl,
-            attributes: _getJsonAttributes(diamondDawnMetadata, tokenId)
+            attributes: _getJsonAttributes(diamondDawnMetadata)
         });
 
         return _generateERC721Metadata(metadata);
@@ -421,7 +446,7 @@ contract DiamondDawnMine is
 
         if (DiamondDawnType.ROUGH == diamondDawnType) {
             // TODO: validate that the rough carat exists
-            RoughDiamondMetadata memory roughDiamondMetadata = diamondDawnMetadata.roughDiamondMetadata;
+            RoughDiamondMetadata memory roughDiamondMetadata = diamondDawnMetadata.rough;
             metadataAttributes[3] = _getERC721MetadataAttribute(
                 false,
                 true,
@@ -456,10 +481,10 @@ contract DiamondDawnMine is
             );
             return metadataAttributes;
         }
-        PolishedDiamondCertificate memory polishedDiamond = diamondDawnMetadata.polishedDiamond;
+        PolishedDiamondCertificate memory polishedDiamond = diamondDawnMetadata.polished;
         if (DiamondDawnType.CUT == diamondDawnType) {
             // TODO: validate that the additional carat exists
-            CutDiamondMetadata memory cutDiamondMetadata = diamondDawnMetadata.cutDiamondMetadata;
+            CutDiamondMetadata memory cutDiamondMetadata = diamondDawnMetadata.cut;
             metadataAttributes[3] = _getERC721MetadataAttribute(
                 false,
                 true,
@@ -961,11 +986,11 @@ contract DiamondDawnMine is
         DiamondDawnType diamondDawnType = diamondDawnMetadata.diamondDawnType;
         string memory videoUrl;
         if (DiamondDawnType.ROUGH == diamondDawnType) {
-            videoUrl = _roughShapeToVideoUrls[uint(diamondDawnMetadata.roughDiamondMetadata.shape)];
+            videoUrl = _roughShapeToVideoUrls[uint(diamondDawnMetadata.rough.shape)];
         } else if (DiamondDawnType.CUT == diamondDawnType) {
-            videoUrl = _cutShapeToVideoUrls[uint(diamondDawnMetadata.polish.shape)];
+            videoUrl = _cutShapeToVideoUrls[uint(diamondDawnMetadata.polished.shape)];
         } else if (DiamondDawnType.POLISHED == diamondDawnType) {
-            videoUrl = _polishShapeToVideoUrls[uint(diamondDawnMetadata.polish.shape)];
+            videoUrl = _polishShapeToVideoUrls[uint(diamondDawnMetadata.polished.shape)];
         } else if (DiamondDawnType.BURNED == diamondDawnType) {
             videoUrl = _burnVideoUrl;
         } else if (DiamondDawnType.REBORN == diamondDawnType) {
