@@ -1,34 +1,42 @@
 import React, { useEffect, useState } from "react";
 import useDDContract from "hooks/useDDContract";
-import { CONTRACTS, SHAPE, STAGE } from "consts";
+import {CONTRACTS, ROUGH_SHAPE, SHAPE, STAGE} from "consts";
 import _ from "lodash";
 import { getShapeName, getStageName, showError, showSuccess } from "utils";
 import ActionButton from "components/ActionButton";
 
 const ART_MAPPING = {
-  [STAGE.MINE]: { shapes: [SHAPE.MAKEABLE], setter: "setRoughVideoUrl" },
+  [STAGE.MINE]: { shapes: [ROUGH_SHAPE.MAKEABLE], setter: "setRoughVideoUrl", getter: "roughShapeToVideoUrls"},
   [STAGE.CUT]: {
     shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
     setter: "setCutVideoUrl",
+    getter: "cutShapeToVideoUrls"
   },
   [STAGE.POLISH]: {
     shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
     setter: "setPolishVideoUrl",
+    getter: "polishShapeToVideoUrls"
   },
-  [STAGE.BURN]: { shapes: [SHAPE.NO_SHAPE], setter: "setBurnVideoUrl" },
-  [STAGE.REBIRTH]: { shapes: [SHAPE.NO_SHAPE], setter: "setRebirthVideoUrl" },
+  [STAGE.BURN]: { shapes: [undefined], setter: "setBurnVideoUrl", getter: "burnVideoUrl" },
+  [STAGE.REBIRTH]: { shapes: [undefined], setter: "setRebirthVideoUrl", getter: "rebirthVideoUrl" },
 };
 
 const StageArt = ({ stage }) => {
   const [stageArtData, setStageArtData] = useState({});
 
   const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
-  const { shapes, setter } = ART_MAPPING[stage];
+  const { shapes, setter, getter } = ART_MAPPING[stage];
 
   const fetchStageArtData = async () => {
     try {
       const stageArt = await Promise.all(
-        _.map(shapes, (shape) => mineContract.getDiamondVideoUrl(stage, shape))
+               _.map(shapes, (shape) => {
+                   if (shape !== undefined){
+                    return mineContract[getter](shape);
+                   } else {
+                    return mineContract[getter]();
+                   }
+               })
       );
       setStageArtData(_.zipObject(_.map(shapes, getShapeName), stageArt));
     } catch (e) {

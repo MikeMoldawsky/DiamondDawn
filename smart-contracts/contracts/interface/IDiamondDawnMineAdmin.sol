@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
+import "../DiamondDawnMine.sol";
+
 interface IDiamondDawnMineAdmin {
     function setRoughVideoUrl(string calldata roughUrl) external;
 
@@ -21,4 +23,6 @@ interface IDiamondDawnMineAdmin {
     function setBurnVideoUrl(string calldata burnUrl) external;
 
     function setRebirthVideoUrl(string calldata rebirthUrl) external;
+
+    function populateDiamonds(PolishedDiamondCertificate[] memory diamonds) external;
 }

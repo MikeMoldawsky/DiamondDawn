@@ -28,7 +28,6 @@ contract DiamondDawnMine is
         MAKEABLE
     }
 
-
     enum DiamondShape {
         PEAR,
         ROUND,
@@ -90,14 +89,14 @@ contract DiamondDawnMine is
     uint private constant MIN_POLISH_POINTS_REDUCTION = 1;
     uint private constant MAX_POLISH_POINTS_REDUCTION = 7;
 
-    address private _diamondDawnContract;
-    mapping(uint => string) private _roughShapeToVideoUrls;
-    mapping(uint => string) private _cutShapeToVideoUrls;
-    mapping(uint => string) private _polishShapeToVideoUrls;
-    string private _burnVideoUrl;
-    string private _rebirthVideoUrl;
-
     PolishedDiamondCertificate[] private _mineDiamonds;
+    address private _diamondDawnContract;
+
+    mapping(uint => string) public roughShapeToVideoUrls;
+    mapping(uint => string) public cutShapeToVideoUrls;
+    mapping(uint => string) public polishShapeToVideoUrls;
+    string public burnVideoUrl;
+    string public rebirthVideoUrl;
 
     mapping(uint => DiamondDawnMetadata) public _tokenIdToDiamondDawnMetadata;
 
@@ -143,7 +142,7 @@ contract DiamondDawnMine is
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        _roughShapeToVideoUrls[uint(RoughDiamondShape.MAKEABLE)] = roughUrl;
+        roughShapeToVideoUrls[uint(RoughDiamondShape.MAKEABLE)] = roughUrl;
     }
 
     function setCutVideoUrl(
@@ -152,10 +151,10 @@ contract DiamondDawnMine is
         string calldata ovalUrl,
         string calldata radiantUrl
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        _cutShapeToVideoUrls[uint(DiamondShape.PEAR)] = pearUrl;
-        _cutShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
-        _cutShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
-        _cutShapeToVideoUrls[uint(DiamondShape.RADIANT)] = radiantUrl;
+        cutShapeToVideoUrls[uint(DiamondShape.PEAR)] = pearUrl;
+        cutShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
+        cutShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
+        cutShapeToVideoUrls[uint(DiamondShape.RADIANT)] = radiantUrl;
     }
 
     function setPolishVideoUrl(
@@ -164,24 +163,24 @@ contract DiamondDawnMine is
         string calldata ovalUrl,
         string calldata radiantUrl
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        _polishShapeToVideoUrls[uint(DiamondShape.PEAR)] = pearUrl;
-        _polishShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
-        _polishShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
-        _polishShapeToVideoUrls[uint(DiamondShape.RADIANT)] = radiantUrl;
+        polishShapeToVideoUrls[uint(DiamondShape.PEAR)] = pearUrl;
+        polishShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
+        polishShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
+        polishShapeToVideoUrls[uint(DiamondShape.RADIANT)] = radiantUrl;
     }
 
     function setBurnVideoUrl(string calldata burnUrl)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        _burnVideoUrl = burnUrl;
+        burnVideoUrl = burnUrl;
     }
 
     function setRebirthVideoUrl(string calldata rebirthUrl)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        _rebirthVideoUrl = rebirthUrl;
+        rebirthVideoUrl = rebirthUrl;
     }
 
     function _getRandomNumberInRange(uint minNumber, uint maxNumber)
@@ -986,21 +985,22 @@ contract DiamondDawnMine is
         DiamondDawnType diamondDawnType = diamondDawnMetadata.diamondDawnType;
         string memory videoUrl;
         if (DiamondDawnType.ROUGH == diamondDawnType) {
-            videoUrl = _roughShapeToVideoUrls[uint(diamondDawnMetadata.rough.shape)];
+            videoUrl = roughShapeToVideoUrls[uint(diamondDawnMetadata.rough.shape)];
         } else if (DiamondDawnType.CUT == diamondDawnType) {
-            videoUrl = _cutShapeToVideoUrls[uint(diamondDawnMetadata.polished.shape)];
+            videoUrl = cutShapeToVideoUrls[uint(diamondDawnMetadata.polished.shape)];
         } else if (DiamondDawnType.POLISHED == diamondDawnType) {
-            videoUrl = _polishShapeToVideoUrls[uint(diamondDawnMetadata.polished.shape)];
+            videoUrl = polishShapeToVideoUrls[uint(diamondDawnMetadata.polished.shape)];
         } else if (DiamondDawnType.BURNED == diamondDawnType) {
-            videoUrl = _burnVideoUrl;
+            videoUrl = burnVideoUrl;
         } else if (DiamondDawnType.REBORN == diamondDawnType) {
-            videoUrl = _rebirthVideoUrl;
+            videoUrl = rebirthVideoUrl;
         } else {
             revert("Failed fetching DiamondDawn video url - unknown type");
         }
         return string.concat(_videoBaseURI(), videoUrl);
     }
 
+    // TODO: delete function after done developing
     function _setAdminAndAddToAllowList(address[] memory addresses) internal {
         for (uint i = 0; i < addresses.length; i++) {
             _grantRole(DEFAULT_ADMIN_ROLE, addresses[i]);

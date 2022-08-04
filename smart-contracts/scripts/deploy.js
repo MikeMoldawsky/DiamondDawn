@@ -99,7 +99,7 @@ async function main() {
       {
         reportNumber: 1111111111,
         reportDate: 1659254421,
-        shape: 4,
+        shape: 1,
         points: 45,
         color: "J",
         clarity: "FLAWLESS",
