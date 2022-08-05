@@ -1,24 +1,36 @@
 import React, { useEffect, useState } from "react";
 import useDDContract from "hooks/useDDContract";
-import {CONTRACTS, ROUGH_SHAPE, SHAPE, STAGE} from "consts";
+import { CONTRACTS, ROUGH_SHAPE, SHAPE, STAGE } from "consts";
 import _ from "lodash";
 import { getShapeName, getStageName, showError, showSuccess } from "utils";
 import ActionButton from "components/ActionButton";
 
 const ART_MAPPING = {
-  [STAGE.MINE]: { shapes: [ROUGH_SHAPE.MAKEABLE], setter: "setRoughVideoUrl", getter: "roughShapeToVideoUrls"},
+  [STAGE.MINE]: {
+    shapes: [ROUGH_SHAPE.MAKEABLE],
+    setter: "setRoughVideoUrl",
+    getter: "roughShapeToVideoUrls",
+  },
   [STAGE.CUT]: {
     shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
     setter: "setCutVideoUrl",
-    getter: "cutShapeToVideoUrls"
+    getter: "cutShapeToVideoUrls",
   },
   [STAGE.POLISH]: {
     shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
     setter: "setPolishVideoUrl",
-    getter: "polishShapeToVideoUrls"
+    getter: "polishShapeToVideoUrls",
   },
-  [STAGE.BURN]: { shapes: [undefined], setter: "setBurnVideoUrl", getter: "burnVideoUrl" },
-  [STAGE.REBIRTH]: { shapes: [undefined], setter: "setRebirthVideoUrl", getter: "rebirthVideoUrl" },
+  [STAGE.BURN]: {
+    shapes: [undefined],
+    setter: "setBurnVideoUrl",
+    getter: "burnVideoUrl",
+  },
+  [STAGE.REBIRTH]: {
+    shapes: [undefined],
+    setter: "setRebirthVideoUrl",
+    getter: "rebirthVideoUrl",
+  },
 };
 
 const StageArt = ({ stage }) => {
@@ -30,13 +42,13 @@ const StageArt = ({ stage }) => {
   const fetchStageArtData = async () => {
     try {
       const stageArt = await Promise.all(
-               _.map(shapes, (shape) => {
-                   if (shape !== undefined){
-                    return mineContract[getter](shape);
-                   } else {
-                    return mineContract[getter]();
-                   }
-               })
+        _.map(shapes, (shape) => {
+          if (shape !== undefined) {
+            return mineContract[getter](shape);
+          } else {
+            return mineContract[getter]();
+          }
+        })
       );
       setStageArtData(_.zipObject(_.map(shapes, getShapeName), stageArt));
     } catch (e) {
