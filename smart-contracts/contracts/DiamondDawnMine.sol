@@ -225,7 +225,6 @@ contract DiamondDawnMine is
             ];
         }
         _mineDiamonds.pop();
-
         return diamond;
     }
 
