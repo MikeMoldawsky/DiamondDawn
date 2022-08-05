@@ -12,7 +12,6 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "./interface/IDiamondDawnMine.sol";
-import "./types/Stage.sol";
 
 /**
  * @title DiamondDawn NFT Contract
@@ -29,18 +28,21 @@ contract DiamondDawn is
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
 
-    struct Metadata {
-        Stage stage;
-    }
-
-    event StageChanged(Stage stage, bool isStageActive);
-
     enum WhitelistAction {
         ADD,
         REMOVE,
         USE
     }
 
+    enum Stage {
+        MINE,
+        CUT,
+        POLISH,
+        BURN,
+        REBIRTH
+    }
+
+    event StageChanged(Stage stage, bool isStageActive);
     event WhitelistUpdated(WhitelistAction action, address[] addresses);
     event TokenProcessed(uint tokenId, Stage stage);
 
@@ -51,7 +53,6 @@ contract DiamondDawn is
     uint public constant MINING_PRICE = 0.002 ether;
     bool public isStageActive;
     mapping(address => bool) public mintAllowedAddresses;
-    mapping(uint256 => Metadata) private _tokensMetadata;
     mapping(uint256 => address) private _burnedTokenToOwner;
     mapping(address => EnumerableSet.UintSet) private _ownerToBurnedTokens;
 
@@ -302,30 +303,6 @@ contract DiamondDawn is
      *                             Client functions                           *
      *                                                                        *
      **************************************************************************/
-
-    /**********************     Internal & Helpers     ************************/
-
-    function _getNextStageForToken(uint tokenId) internal view returns (Stage) {
-        return _getNextStage(_tokensMetadata[tokenId].stage);
-    }
-
-    function _process(uint256 tokenId) internal {
-        require(
-            _isApprovedOrOwner(_msgSender(), tokenId),
-            "ERC721: caller is not token owner nor approved"
-        );
-        require(
-            uint(_tokensMetadata[tokenId].stage) == uint(stage) - 1,
-            string.concat(
-                "The level of the diamond should be ",
-                Strings.toString(uint(stage) - 1),
-                " to perform this action"
-            )
-        );
-
-        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
-    }
-
     /**********************           Guards            ************************/
 
     function _requireActiveStage() internal view {
@@ -405,10 +382,7 @@ contract DiamondDawn is
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(_msgSender(), tokenId);
-        _diamondDawnMine.allocateRoughDiamondCarat(tokenId);
-
-        // Store token metadata
-        _tokensMetadata[tokenId] = Metadata({stage: Stage.MINE});
+        _diamondDawnMine.mine(tokenId);
 
         address[] memory wlAddresses = new address[](1);
         wlAddresses[0] = _msgSender();
@@ -417,15 +391,12 @@ contract DiamondDawn is
     }
 
     function cut(uint256 tokenId) public whenStageIsActive(Stage.CUT) {
-        _process(tokenId);
-        _diamondDawnMine.allocateDiamond(tokenId);
-
+        _diamondDawnMine.cut(tokenId);
         emit TokenProcessed(tokenId, Stage.CUT);
     }
 
     function polish(uint256 tokenId) public whenStageIsActive(Stage.POLISH) {
-        _process(tokenId);
-
+        _diamondDawnMine.polish(tokenId);
         emit TokenProcessed(tokenId, Stage.POLISH);
     }
 
@@ -435,10 +406,9 @@ contract DiamondDawn is
         whenStageIsActive(Stage.BURN)
     {
         super.burn(tokenId);
-        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
+        _diamondDawnMine.burn(tokenId);
         _burnedTokenToOwner[tokenId] = _msgSender();
         _ownerToBurnedTokens[_msgSender()].add(tokenId);
-
         emit TokenProcessed(tokenId, Stage.BURN);
     }
 
@@ -452,9 +422,8 @@ contract DiamondDawn is
         );
         delete _burnedTokenToOwner[tokenId];
         _ownerToBurnedTokens[_msgSender()].remove(tokenId);
-        _tokensMetadata[tokenId].stage = _getNextStageForToken(tokenId);
+        _diamondDawnMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);
-
         emit TokenProcessed(tokenId, Stage.REBIRTH);
     }
 
@@ -492,7 +461,6 @@ contract DiamondDawn is
     {
         // TODO - this require blocks getting the tokenURI of burnt tokens
         // require(_exists(tokenId), "ERC721: URI query for nonexistent token");
-        Stage diamondStage = _tokensMetadata[tokenId].stage;
-        return _diamondDawnMine.getDiamondMetadata(tokenId, diamondStage);
+        return _diamondDawnMine.getDiamondMetadata(tokenId);
     }
 }

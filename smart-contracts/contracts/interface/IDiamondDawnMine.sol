@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "../types/Stage.sol";
-
 interface IDiamondDawnMine {
-    function allocateRoughDiamondCarat(uint tokenId) external;
+    function mine(uint tokenId) external;
 
-    function allocateDiamond(uint tokenId) external;
+    function cut(uint tokenId) external;
 
-    function getDiamondMetadata(uint tokenId, Stage stage)
+    function polish(uint tokenId) external;
+
+    function burn(uint tokenId) external;
+
+    function rebirth(uint tokenId) external;
+
+    function getDiamondMetadata(uint tokenId)
         external
         view
         returns (string memory);
