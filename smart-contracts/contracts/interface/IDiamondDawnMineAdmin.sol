@@ -27,7 +27,6 @@ interface IDiamondDawnMineAdmin {
         string width;
     }
 
-
     function setRoughVideoUrl(string calldata roughUrl) external;
 
     function setCutVideoUrl(

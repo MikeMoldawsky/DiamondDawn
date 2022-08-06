@@ -360,51 +360,14 @@ contract DiamondDawnMine is
             );
     }
 
-    function _getJson(
-        DiamondDawnMetadata memory diamondDawnMetadata,
-        uint tokenId,
-        string memory videoUrl
-    ) private pure returns (string memory) {
-        // TODO: Add real description
-        ERC721MetadataStructure memory metadata = ERC721MetadataStructure({
-            name: string(
-                abi.encodePacked("Diamond Dawn #", Strings.toString(tokenId))
-            ),
-            description: "Diamond Dawn tokens description",
-            createdBy: "Diamond Dawn",
-            image: videoUrl,
-            attributes: _getJsonAttributes(diamondDawnMetadata)
-        });
-
-        return _generateERC721Metadata(metadata);
-    }
-
-    function _getJsonAttributes(DiamondDawnMetadata memory diamondDawnMetadata)
+    function _getBaseDiamondDawnJsonAttributes(DiamondDawnType diamondDawnType)
         private
         pure
         returns (ERC721MetadataAttribute[] memory)
     {
-        // TODO: Make this function more elegant & generic.
-        // TODO: Check how we should handle the dynamic array creation
-        DiamondDawnType diamondDawnType = diamondDawnMetadata.diamondDawnType;
-        uint size;
-        if (DiamondDawnType.ROUGH == diamondDawnType) {
-            size = 7;
-        } else if (DiamondDawnType.CUT == diamondDawnType) {
-            size = 11;
-        } else if (DiamondDawnType.POLISHED == diamondDawnType) {
-            size = 14;
-        } else if (DiamondDawnType.BURNED == diamondDawnType) {
-            size = 3;
-        } else if (DiamondDawnType.REBORN == diamondDawnType) {
-            size = 17;
-        } else {
-            revert(
-                "Failed fetching DiamondDawn json attributes - unknown type"
-            );
-        }
+        // TODO: check about fix sized array in returns type (returns (ERC721MetadataAttribute[3] memory)).
         ERC721MetadataAttribute[]
-            memory metadataAttributes = new ERC721MetadataAttribute[](size);
+            memory metadataAttributes = new ERC721MetadataAttribute[](3);
         metadataAttributes[0] = _getERC721MetadataAttribute(
             false,
             true,
@@ -429,330 +392,440 @@ contract DiamondDawnMine is
             "Identification",
             "Natural"
         );
+        return metadataAttributes;
+    }
 
-        if (DiamondDawnType.ROUGH == diamondDawnType) {
-            // TODO: validate that the rough carat exists
-            RoughDiamondMetadata
-                memory roughDiamondMetadata = diamondDawnMetadata.rough;
-            metadataAttributes[3] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Carat",
-                _pointsToCaratString(roughDiamondMetadata.points)
+    function _getRoughDiamondJsonAttributes(
+        DiamondDawnMetadata memory diamondDawnMetadata
+    ) private pure returns (ERC721MetadataAttribute[] memory) {
+        assert(DiamondDawnType.ROUGH == diamondDawnMetadata.diamondDawnType);
+        ERC721MetadataAttribute[]
+            memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
+                diamondDawnMetadata.diamondDawnType
             );
-            metadataAttributes[4] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Color",
-                "CAPE"
+        ERC721MetadataAttribute[]
+            memory metadataAttributes = new ERC721MetadataAttribute[](7);
+        // TODO make it more generic
+        metadataAttributes[0] = baseAttributes[0];
+        metadataAttributes[1] = baseAttributes[1];
+        metadataAttributes[2] = baseAttributes[2];
+        // TODO: validate that the rough carat exists
+        RoughDiamondMetadata memory roughDiamondMetadata = diamondDawnMetadata
+            .rough;
+        metadataAttributes[3] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Carat",
+            _pointsToCaratString(roughDiamondMetadata.points)
+        );
+        metadataAttributes[4] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Color",
+            "CAPE"
+        );
+        metadataAttributes[5] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Shape",
+            _toRoughDiamondShapeString(roughDiamondMetadata.shape)
+        );
+        metadataAttributes[6] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Mine",
+            "Underground"
+        );
+        return metadataAttributes;
+    }
+
+    function _getCutDiamondJsonAttributes(
+        DiamondDawnMetadata memory diamondDawnMetadata
+    ) private pure returns (ERC721MetadataAttribute[] memory) {
+        assert(DiamondDawnType.CUT == diamondDawnMetadata.diamondDawnType);
+        ERC721MetadataAttribute[]
+            memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
+                diamondDawnMetadata.diamondDawnType
             );
-            metadataAttributes[5] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Shape",
-                _toRoughDiamondShapeString(roughDiamondMetadata.shape)
-            );
-            metadataAttributes[6] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Mine",
-                "Underground"
-            );
-            return metadataAttributes;
-        }
+        ERC721MetadataAttribute[]
+            memory metadataAttributes = new ERC721MetadataAttribute[](11);
+        // TODO make it more generic
+        metadataAttributes[0] = baseAttributes[0];
+        metadataAttributes[1] = baseAttributes[1];
+        metadataAttributes[2] = baseAttributes[2];
+
         PolishedDiamondCertificate memory polishedDiamond = diamondDawnMetadata
             .polished;
-        if (DiamondDawnType.CUT == diamondDawnType) {
-            // TODO: validate that the additional carat exists
-            CutDiamondMetadata memory cutDiamondMetadata = diamondDawnMetadata
-                .cut;
-            metadataAttributes[3] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Carat",
-                _pointsToCaratString(cutDiamondMetadata.points)
-            );
-            metadataAttributes[4] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Color",
-                polishedDiamond.color
-            );
-            metadataAttributes[5] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Cut",
-                polishedDiamond.cut
-            );
-            metadataAttributes[6] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Depth",
-                polishedDiamond.depth
-            );
-            metadataAttributes[7] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Fluorescence",
-                polishedDiamond.fluorescence
-            );
-            metadataAttributes[8] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Length",
-                polishedDiamond.length
-            );
-            metadataAttributes[9] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Shape",
-                _toDiamondShapeString(polishedDiamond.shape)
-            );
-            metadataAttributes[10] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Width",
-                polishedDiamond.width
-            );
-            return metadataAttributes;
-        } else if (DiamondDawnType.POLISHED == diamondDawnType) {
-            // Cut
-            metadataAttributes[3] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Carat",
-                _pointsToCaratString(polishedDiamond.points)
-            );
-            metadataAttributes[4] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Color",
-                polishedDiamond.color
-            );
-            metadataAttributes[5] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Cut",
-                polishedDiamond.cut
-            );
-            metadataAttributes[6] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Depth",
-                polishedDiamond.depth
-            );
-            metadataAttributes[7] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Fluorescence",
-                polishedDiamond.fluorescence
-            );
-            metadataAttributes[8] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Length",
-                polishedDiamond.length
-            );
-            metadataAttributes[9] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Shape",
-                _toDiamondShapeString(polishedDiamond.shape)
-            );
-            metadataAttributes[10] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Width",
-                polishedDiamond.width
-            );
-            // Polish
-            metadataAttributes[11] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Clarity",
-                polishedDiamond.clarity
-            );
-            metadataAttributes[12] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Polish",
-                polishedDiamond.polish
-            );
-            metadataAttributes[13] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Symmetry",
-                polishedDiamond.symmetry
-            );
-            return metadataAttributes;
-        } else if (DiamondDawnType.BURNED == diamondDawnType) {
-            // TODO: decide on burn attributes
-            return metadataAttributes;
-        } else if (DiamondDawnType.REBORN == diamondDawnType) {
-            metadataAttributes[3] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Carat",
-                _pointsToCaratString(polishedDiamond.points)
-            );
-            metadataAttributes[4] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Color",
-                polishedDiamond.color
-            );
-            metadataAttributes[5] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Cut",
-                polishedDiamond.cut
-            );
-            metadataAttributes[6] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Depth",
-                polishedDiamond.depth
-            );
-            metadataAttributes[7] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Fluorescence",
-                polishedDiamond.fluorescence
-            );
-            metadataAttributes[8] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Length",
-                polishedDiamond.length
-            );
-            metadataAttributes[9] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Shape",
-                _toDiamondShapeString(polishedDiamond.shape)
-            );
-            metadataAttributes[10] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Width",
-                polishedDiamond.width
-            );
-            // Polish
-            metadataAttributes[11] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Clarity",
-                polishedDiamond.clarity
-            );
-            metadataAttributes[12] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Polish",
-                polishedDiamond.polish
-            );
-            metadataAttributes[13] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Symmetry",
-                polishedDiamond.symmetry
-            );
-            // Rebirth
-            metadataAttributes[14] = _getERC721MetadataAttribute(
-                false,
-                true,
-                true,
-                "",
-                "Laboratory",
-                "GIA"
-            );
-            metadataAttributes[15] = _getERC721MetadataAttribute(
-                false,
-                true,
-                false,
-                "",
-                "Report Date",
-                Strings.toString(polishedDiamond.reportDate)
-            );
-            metadataAttributes[16] = _getERC721MetadataAttribute(
-                false,
-                true,
-                false,
-                "",
-                "Report Number",
-                Strings.toString(polishedDiamond.reportNumber)
-            );
-        } else {
-            revert("Failed to create diamond json attributes");
-        }
+        // TODO: validate that the additional carat exists
+        CutDiamondMetadata memory cutDiamondMetadata = diamondDawnMetadata.cut;
+        metadataAttributes[3] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Carat",
+            _pointsToCaratString(cutDiamondMetadata.points)
+        );
+        metadataAttributes[4] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Color",
+            polishedDiamond.color
+        );
+        metadataAttributes[5] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Cut",
+            polishedDiamond.cut
+        );
+        metadataAttributes[6] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Depth",
+            polishedDiamond.depth
+        );
+        metadataAttributes[7] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Fluorescence",
+            polishedDiamond.fluorescence
+        );
+        metadataAttributes[8] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Length",
+            polishedDiamond.length
+        );
+        metadataAttributes[9] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Shape",
+            _toDiamondShapeString(polishedDiamond.shape)
+        );
+        metadataAttributes[10] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Width",
+            polishedDiamond.width
+        );
         return metadataAttributes;
+    }
+
+    function _getPolishedDiamondJsonAttributes(
+        DiamondDawnMetadata memory diamondDawnMetadata
+    ) private pure returns (ERC721MetadataAttribute[] memory) {
+        assert(DiamondDawnType.POLISHED == diamondDawnMetadata.diamondDawnType);
+
+        ERC721MetadataAttribute[]
+            memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
+                diamondDawnMetadata.diamondDawnType
+            );
+        ERC721MetadataAttribute[]
+            memory metadataAttributes = new ERC721MetadataAttribute[](14);
+        // TODO make it more generic
+        metadataAttributes[0] = baseAttributes[0];
+        metadataAttributes[1] = baseAttributes[1];
+        metadataAttributes[2] = baseAttributes[2];
+        PolishedDiamondCertificate memory polishedDiamond = diamondDawnMetadata
+            .polished;
+
+        metadataAttributes[3] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Carat",
+            _pointsToCaratString(polishedDiamond.points)
+        );
+        metadataAttributes[4] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Color",
+            polishedDiamond.color
+        );
+        metadataAttributes[5] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Cut",
+            polishedDiamond.cut
+        );
+        metadataAttributes[6] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Depth",
+            polishedDiamond.depth
+        );
+        metadataAttributes[7] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Fluorescence",
+            polishedDiamond.fluorescence
+        );
+        metadataAttributes[8] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Length",
+            polishedDiamond.length
+        );
+        metadataAttributes[9] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Shape",
+            _toDiamondShapeString(polishedDiamond.shape)
+        );
+        metadataAttributes[10] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Width",
+            polishedDiamond.width
+        );
+        // Polish
+        metadataAttributes[11] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Clarity",
+            polishedDiamond.clarity
+        );
+        metadataAttributes[12] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Polish",
+            polishedDiamond.polish
+        );
+        metadataAttributes[13] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Symmetry",
+            polishedDiamond.symmetry
+        );
+        return metadataAttributes;
+    }
+
+    function _getBurnedDiamondJsonAttributes(
+        DiamondDawnMetadata memory diamondDawnMetadata
+    ) private pure returns (ERC721MetadataAttribute[] memory) {
+        assert(DiamondDawnType.BURNED == diamondDawnMetadata.diamondDawnType);
+        return
+            _getBaseDiamondDawnJsonAttributes(
+                diamondDawnMetadata.diamondDawnType
+            );
+    }
+
+    function _getRebornDiamondJsonAttributes(
+        DiamondDawnMetadata memory diamondDawnMetadata
+    ) private pure returns (ERC721MetadataAttribute[] memory) {
+        assert(DiamondDawnType.REBORN == diamondDawnMetadata.diamondDawnType);
+
+        ERC721MetadataAttribute[]
+            memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
+                diamondDawnMetadata.diamondDawnType
+            );
+        ERC721MetadataAttribute[]
+            memory metadataAttributes = new ERC721MetadataAttribute[](17);
+        // TODO make it more generic
+        metadataAttributes[0] = baseAttributes[0];
+        metadataAttributes[1] = baseAttributes[1];
+        metadataAttributes[2] = baseAttributes[2];
+
+        PolishedDiamondCertificate memory polishedDiamond = diamondDawnMetadata
+            .polished;
+        metadataAttributes[3] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Carat",
+            _pointsToCaratString(polishedDiamond.points)
+        );
+        metadataAttributes[4] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Color",
+            polishedDiamond.color
+        );
+        metadataAttributes[5] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Cut",
+            polishedDiamond.cut
+        );
+        metadataAttributes[6] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Depth",
+            polishedDiamond.depth
+        );
+        metadataAttributes[7] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Fluorescence",
+            polishedDiamond.fluorescence
+        );
+        metadataAttributes[8] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Length",
+            polishedDiamond.length
+        );
+        metadataAttributes[9] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Shape",
+            _toDiamondShapeString(polishedDiamond.shape)
+        );
+        metadataAttributes[10] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Width",
+            polishedDiamond.width
+        );
+        // Polish
+        metadataAttributes[11] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Clarity",
+            polishedDiamond.clarity
+        );
+        metadataAttributes[12] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Polish",
+            polishedDiamond.polish
+        );
+        metadataAttributes[13] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Symmetry",
+            polishedDiamond.symmetry
+        );
+
+        // Rebirth
+        metadataAttributes[14] = _getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Laboratory",
+            "GIA"
+        );
+        metadataAttributes[15] = _getERC721MetadataAttribute(
+            false,
+            true,
+            false,
+            "",
+            "Report Date",
+            Strings.toString(polishedDiamond.reportDate)
+        );
+        metadataAttributes[16] = _getERC721MetadataAttribute(
+            false,
+            true,
+            false,
+            "",
+            "Report Number",
+            Strings.toString(polishedDiamond.reportNumber)
+        );
+        return metadataAttributes;
+    }
+
+    function _getJson(
+        DiamondDawnMetadata memory diamondDawnMetadata,
+        uint tokenId,
+        string memory videoUrl
+    ) private pure returns (string memory) {
+        // TODO: Add real description
+        ERC721MetadataStructure memory metadata = ERC721MetadataStructure({
+            name: string(
+                abi.encodePacked("Diamond Dawn #", Strings.toString(tokenId))
+            ),
+            description: "Diamond Dawn tokens description",
+            createdBy: "Diamond Dawn",
+            image: videoUrl,
+            attributes: _getJsonAttributes(diamondDawnMetadata)
+        });
+
+        return _generateERC721Metadata(metadata);
+    }
+
+    function _getJsonAttributes(DiamondDawnMetadata memory diamondDawnMetadata)
+        private
+        pure
+        returns (ERC721MetadataAttribute[] memory)
+    {
+        DiamondDawnType diamondDawnType = diamondDawnMetadata.diamondDawnType;
+        if (DiamondDawnType.ROUGH == diamondDawnType) {
+            return _getRoughDiamondJsonAttributes(diamondDawnMetadata);
+        } else if (DiamondDawnType.CUT == diamondDawnType) {
+            return _getCutDiamondJsonAttributes(diamondDawnMetadata);
+        } else if (DiamondDawnType.POLISHED == diamondDawnType) {
+            return _getPolishedDiamondJsonAttributes(diamondDawnMetadata);
+        } else if (DiamondDawnType.BURNED == diamondDawnType) {
+            return _getBurnedDiamondJsonAttributes(diamondDawnMetadata);
+        } else if (DiamondDawnType.REBORN == diamondDawnType) {
+            return _getRebornDiamondJsonAttributes(diamondDawnMetadata);
+        }
+        revert("Failed fetching DiamondDawn json attributes - unknown type");
     }
 
     function _getERC721MetadataAttribute(
