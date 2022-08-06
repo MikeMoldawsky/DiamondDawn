@@ -31,34 +31,34 @@ contract DiamondDawnMine is
 
     struct RoughDiamondMetadata {
         RoughDiamondShape shape;
-        uint points;
+        uint pointsReduction;
     }
 
     struct CutDiamondMetadata {
-        uint points;
+        uint pointsReduction;
     }
 
     struct DiamondDawnMetadata {
-        DiamondDawnType diamondDawnType;
+        DiamondDawnType type_;
         RoughDiamondMetadata rough;
         CutDiamondMetadata cut;
         DiamondCertificate certificate;
     }
 
-    uint private constant MIN_ROUGH_DIAMOND_POINTS = 85;
-    uint private constant MAX_ROUGH_DIAMOND_POINTS = 99;
-    uint private constant MIN_POLISH_POINTS_REDUCTION = 1;
-    uint private constant MAX_POLISH_POINTS_REDUCTION = 7;
+    uint private constant MIN_ROUGH_POINTS_REDUCTION = 40;
+    uint private constant MAX_ROUGH_POINTS_REDUCTION = 80;
+    uint private constant MIN_CUT_POINTS_REDUCTION = 1;
+    uint private constant MAX_CUT_POINTS_REDUCTION = 7;
 
     DiamondCertificate[] private _mineDiamonds;
     address private _diamondDawnContract;
 
+    mapping(uint => DiamondDawnMetadata) public _tokenIdToMetadata;
     mapping(uint => string) public roughShapeToVideoUrls;
     mapping(uint => string) public cutShapeToVideoUrls;
     mapping(uint => string) public polishShapeToVideoUrls;
     string public burnVideoUrl;
     string public rebirthVideoUrl;
-    mapping(uint => DiamondDawnMetadata) public _tokenIdToDiamondDawnMetadata;
 
     /**********************     Modifiers     ************************/
     modifier onlyDiamondDawn() {
@@ -75,7 +75,7 @@ contract DiamondDawnMine is
     ) {
         require(
             diamondDawnType ==
-                _tokenIdToDiamondDawnMetadata[tokenId].diamondDawnType,
+                _tokenIdToMetadata[tokenId].type_,
             "Invalid diamond dawn type"
         );
         _;
@@ -85,6 +85,8 @@ contract DiamondDawnMine is
         require(_mineDiamonds.length > 0, "Diamond Dawn Mine is empty");
         _;
     }
+
+    /**********************     Constructor     ************************/
 
     constructor(address[] memory adminAddresses) {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -159,17 +161,18 @@ contract DiamondDawnMine is
 
     function mine(uint tokenId) external onlyDiamondDawn _requireMineNotDry {
         // TODO: change to carat calculate randomly according to polished weight
-        uint randomPoints = _getRandomNumberInRange(
-            MIN_ROUGH_DIAMOND_POINTS,
-            MAX_ROUGH_DIAMOND_POINTS
+        // TODO: we need to generate a number between 40-60% that represents how good is the
+        uint pointsReduction = _getRandomNumberInRange(
+            MIN_ROUGH_POINTS_REDUCTION,
+            MAX_ROUGH_POINTS_REDUCTION
         );
-        _tokenIdToDiamondDawnMetadata[tokenId] = DiamondDawnMetadata({
+        _tokenIdToMetadata[tokenId] = DiamondDawnMetadata({
             diamondDawnType: DiamondDawnType.ROUGH,
             rough: RoughDiamondMetadata({
                 shape: RoughDiamondShape.MAKEABLE,
-                points: randomPoints
+                pointsReduction: pointsReduction
             }),
-            cut: CutDiamondMetadata({points: 0}),
+            cut: CutDiamondMetadata({pointsReduction: 0}),
             certificate: _mineDiamond()
         });
     }
@@ -180,19 +183,13 @@ contract DiamondDawnMine is
         requireDiamondDawnType(tokenId, DiamondDawnType.ROUGH)
     {
         // TODO: fix random points creation
-        uint polishPointsReduction = _getRandomNumberInRange(
-            MIN_POLISH_POINTS_REDUCTION,
-            MAX_POLISH_POINTS_REDUCTION
+        uint pointsReduction = _getRandomNumberInRange(
+            MIN_CUT_POINTS_REDUCTION,
+            MAX_CUT_POINTS_REDUCTION
         );
-        DiamondDawnMetadata
-            storage diamondDawnMetadata = _tokenIdToDiamondDawnMetadata[
-                tokenId
-            ];
-        diamondDawnMetadata.cut = CutDiamondMetadata({
-            points: diamondDawnMetadata.certificate.points +
-                polishPointsReduction
-        });
-        diamondDawnMetadata.diamondDawnType = DiamondDawnType.CUT;
+        DiamondDawnMetadata storage diamondDawnMetadata = _tokenIdToMetadata[tokenId];
+        diamondDawnMetadata.cut.pointsReduction = pointsReduction;
+        diamondDawnMetadata.type_ = DiamondDawnType.CUT;
     }
 
     function polish(uint256 tokenId)
@@ -200,7 +197,7 @@ contract DiamondDawnMine is
         onlyDiamondDawn
         requireDiamondDawnType(tokenId, DiamondDawnType.CUT)
     {
-        _tokenIdToDiamondDawnMetadata[tokenId].diamondDawnType = DiamondDawnType
+        _tokenIdToMetadata[tokenId].type_ = DiamondDawnType
             .POLISHED;
     }
 
@@ -209,7 +206,7 @@ contract DiamondDawnMine is
         onlyDiamondDawn
         requireDiamondDawnType(tokenId, DiamondDawnType.POLISHED)
     {
-        _tokenIdToDiamondDawnMetadata[tokenId].diamondDawnType = DiamondDawnType
+        _tokenIdToMetadata[tokenId].type_ = DiamondDawnType
             .BURNED;
     }
 
@@ -218,7 +215,7 @@ contract DiamondDawnMine is
         onlyDiamondDawn
         requireDiamondDawnType(tokenId, DiamondDawnType.BURNED)
     {
-        _tokenIdToDiamondDawnMetadata[tokenId].diamondDawnType = DiamondDawnType
+        _tokenIdToMetadata[tokenId].type_ = DiamondDawnType
             .REBORN;
     }
 
@@ -229,7 +226,7 @@ contract DiamondDawnMine is
     {
         // TODO: only diamond dawn contract.
         DiamondDawnMetadata
-            memory diamondDawnMetadata = _tokenIdToDiamondDawnMetadata[tokenId];
+            memory diamondDawnMetadata = _tokenIdToMetadata[tokenId];
         string memory videoUrl = _getDiamondDawnVideoUrl(diamondDawnMetadata);
         string memory base64Json = Base64.encode(
             bytes(
@@ -352,16 +349,18 @@ contract DiamondDawnMine is
         return metadataAttributes;
     }
 
-    function _getRoughDiamondJsonAttributes(RoughDiamondMetadata memory rough)
+    function _getRoughDiamondJsonAttributes(RoughDiamondMetadata memory rough, DiamondCertificate certificate)
         private
         pure
         returns (ERC721MetadataAttribute[] memory)
     {
-        assert(rough.points > 0);
+        assert(rough.pointsReduction > 0);
+        assert(certificate.points > 0);
+
         ERC721MetadataAttribute[]
             memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
                 DiamondDawnType.ROUGH,
-                rough.points
+                certificate.points + rough.pointsReduction
             );
         ERC721MetadataAttribute[]
             memory metadataAttributes = new ERC721MetadataAttribute[](7);
@@ -403,13 +402,13 @@ contract DiamondDawnMine is
         CutDiamondMetadata memory cutMetadata,
         DiamondCertificate memory certificate
     ) private pure returns (ERC721MetadataAttribute[] memory) {
-        assert(cutMetadata.points > 0);
+        assert(cutMetadata.pointsReduction > 0);
         assert(certificate.points > 0);
 
         ERC721MetadataAttribute[]
             memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
                 DiamondDawnType.CUT,
-                cutMetadata.points
+                certificate.points + cutMetadata.pointsReduction
             );
         ERC721MetadataAttribute[]
             memory metadataAttributes = new ERC721MetadataAttribute[](11);
@@ -741,9 +740,9 @@ contract DiamondDawnMine is
     ) private pure returns (ERC721MetadataAttribute[] memory) {
         assert(diamondDawnMetadata.certificate.points > 0);
 
-        DiamondDawnType diamondDawnType = diamondDawnMetadata.diamondDawnType;
+        DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
         if (DiamondDawnType.ROUGH == diamondDawnType) {
-            return _getRoughDiamondJsonAttributes(diamondDawnMetadata.rough);
+            return _getRoughDiamondJsonAttributes(diamondDawnMetadata.rough, diamondDawnMetadata.certificate);
         } else if (DiamondDawnType.CUT == diamondDawnType) {
             return
                 _getCutDiamondJsonAttributes(
@@ -775,7 +774,7 @@ contract DiamondDawnMine is
     function _getDiamondDawnVideoUrl(
         DiamondDawnMetadata memory diamondDawnMetadata
     ) internal view returns (string memory) {
-        DiamondDawnType diamondDawnType = diamondDawnMetadata.diamondDawnType;
+        DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
         string memory videoUrl;
         if (DiamondDawnType.ROUGH == diamondDawnType) {
             videoUrl = roughShapeToVideoUrls[
