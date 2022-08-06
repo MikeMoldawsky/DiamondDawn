@@ -27,6 +27,10 @@ interface IDiamondDawnMineAdmin {
         string width;
     }
 
+    function initialize(address diamondDawnContract) external;
+
+    function populateDiamonds(DiamondCertificate[] memory diamonds) external;
+
     function setRoughVideoUrl(string calldata roughUrl) external;
 
     function setCutVideoUrl(
@@ -46,7 +50,4 @@ interface IDiamondDawnMineAdmin {
     function setBurnVideoUrl(string calldata burnUrl) external;
 
     function setRebirthVideoUrl(string calldata rebirthUrl) external;
-
-    function populateDiamonds(DiamondCertificate[] memory diamonds)
-        external;
 }
