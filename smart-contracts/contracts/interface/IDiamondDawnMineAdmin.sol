@@ -11,7 +11,7 @@ interface IDiamondDawnMineAdmin {
         RADIANT
     }
 
-    struct PolishedDiamondCertificate {
+    struct DiamondCertificate {
         uint points;
         string clarity;
         string color;
@@ -26,6 +26,10 @@ interface IDiamondDawnMineAdmin {
         string symmetry;
         string width;
     }
+
+    function initialize(address diamondDawnContract) external;
+
+    function populateDiamonds(DiamondCertificate[] memory diamonds) external;
 
     function setRoughVideoUrl(string calldata roughUrl) external;
 
@@ -46,7 +50,4 @@ interface IDiamondDawnMineAdmin {
     function setBurnVideoUrl(string calldata burnUrl) external;
 
     function setRebirthVideoUrl(string calldata rebirthUrl) external;
-
-    function populateDiamonds(PolishedDiamondCertificate[] memory diamonds)
-        external;
 }
