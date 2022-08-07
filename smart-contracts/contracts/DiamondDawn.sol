@@ -33,7 +33,7 @@ contract DiamondDawn is
     using EnumerableSet for EnumerableSet.UintSet;
 
     uint public constant MINING_PRICE = 0.002 ether;
-    Stage public stage;
+    SystemStage public stage;
     IDiamondDawnMine public diamondDawnMine;
 
     mapping(address => EnumerableSet.UintSet) private _ownerToBurnedTokens;
@@ -46,7 +46,7 @@ contract DiamondDawn is
         address[] memory adminAddresses
     ) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        stage = Stage.MINE;
+        stage = SystemStage.MINE_OPEN;
         setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
         diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
         _tokenIdCounter.increment();
@@ -59,7 +59,7 @@ contract DiamondDawn is
 
     /**********************          Modifiers          ************************/
 
-    modifier onlyStage(Stage _stage) {
+    modifier onlyStage(SystemStage _stage) {
         require(
             stage == _stage,
             string.concat(
@@ -67,14 +67,6 @@ contract DiamondDawn is
                 Strings.toString(uint(_stage)),
                 " to perform this action"
             )
-        );
-        _;
-    }
-
-    modifier whenRebirthIsActive() {
-        require(
-            (stage == Stage.BURN) || stage == Stage.REBIRTH,
-            "A stage should be active to perform this action"
         );
         _;
     }
@@ -101,7 +93,7 @@ contract DiamondDawn is
         external
         payable
         assignedDiamondDawnMine
-        onlyStage(Stage.MINE)
+        onlyStage(SystemStage.MINE_OPEN)
         costs(MINING_PRICE)
     {
         // Regular mint logics
@@ -109,43 +101,39 @@ contract DiamondDawn is
         _tokenIdCounter.increment();
         _safeMint(_msgSender(), tokenId);
         diamondDawnMine.mine(tokenId);
-        emit TokenProcessed(tokenId, Stage.MINE);
     }
 
     function cut(uint256 tokenId)
         external
         assignedDiamondDawnMine
-        onlyStage(Stage.CUT)
+        onlyStage(SystemStage.CUT_OPEN)
     {
         diamondDawnMine.cut(tokenId);
-        emit TokenProcessed(tokenId, Stage.CUT);
     }
 
     function polish(uint256 tokenId)
         external
         assignedDiamondDawnMine
-        onlyStage(Stage.POLISH)
+        onlyStage(SystemStage.POLISH_OPEN)
     {
         diamondDawnMine.polish(tokenId);
-        emit TokenProcessed(tokenId, Stage.POLISH);
     }
 
     function burnAndShip(uint256 tokenId)
         external
         assignedDiamondDawnMine
-        onlyStage(Stage.BURN)
+        onlyStage(SystemStage.SHIP)
     {
         super.burn(tokenId);
         diamondDawnMine.burn(tokenId);
         _burnedTokenToOwner[tokenId] = _msgSender();
         _ownerToBurnedTokens[_msgSender()].add(tokenId);
-        emit TokenProcessed(tokenId, Stage.BURN);
     }
 
     function rebirth(uint256 tokenId)
         external
         assignedDiamondDawnMine
-        whenRebirthIsActive
+        onlyStage(SystemStage.SHIP)
     {
         address burner = _burnedTokenToOwner[tokenId];
         require(
@@ -158,7 +146,6 @@ contract DiamondDawn is
         _ownerToBurnedTokens[_msgSender()].remove(tokenId);
         diamondDawnMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);
-        emit TokenProcessed(tokenId, Stage.REBIRTH);
     }
 
     function getBurnedTokens(address owner)
@@ -180,9 +167,9 @@ contract DiamondDawn is
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        assert(uint(stage) < uint(type(Stage).max));
-        stage = Stage(uint(stage) + 1);
-        emit StageChanged(stage);
+        assert(uint(stage) < uint(type(SystemStage).max));
+        stage = SystemStage(uint(stage) + 1);
+        emit SystemStageChanged(stage);
     }
 
     function getTokenIdsByOwner(address owner)
