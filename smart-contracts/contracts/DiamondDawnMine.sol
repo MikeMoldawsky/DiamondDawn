@@ -66,7 +66,7 @@ contract DiamondDawnMine is
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         // TODO: remove admins after testing
         for (uint i = 0; i < adminAddresses.length; i++) {
-            _grantRole(DEFAULT_ADMIN_ROLE, addresses[i]);
+            _grantRole(DEFAULT_ADMIN_ROLE, adminAddresses[i]);
         }
     }
 
@@ -74,7 +74,7 @@ contract DiamondDawnMine is
     modifier onlyDiamondDawn() {
         require(
             msg.sender == _diamondDawnContract,
-            "DiamondDawnMine: onlyDiamondDawn allowed"
+            "OnlyDiamondDawn allowed"
         );
         _;
     }
