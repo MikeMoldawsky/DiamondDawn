@@ -17,7 +17,6 @@ interface IDiamondDawn {
     }
 
     event StageChanged(Stage stage);
-    event WhitelistUpdated(WhitelistAction action, address[] addresses);
     event TokenProcessed(uint tokenId, Stage stage);
 
     function mine() external payable;

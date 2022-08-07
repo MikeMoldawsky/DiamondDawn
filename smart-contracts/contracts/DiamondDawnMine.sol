@@ -45,26 +45,36 @@ contract DiamondDawnMine is
         DiamondCertificate certificate;
     }
 
+    mapping(uint => DiamondDawnMetadata) public _tokenIdToMetadata;
+    mapping(uint => string) public roughShapeToVideoUrls;
+    mapping(uint => string) public cutShapeToVideoUrls;
+    mapping(uint => string) public polishShapeToVideoUrls;
+
+    string public burnVideoUrl;
+    string public rebirthVideoUrl;
+
     uint private constant MIN_ROUGH_POINTS_REDUCTION = 38; // Min of ~35% carat loss.
     uint private constant MAX_ROUGH_POINTS_REDUCTION = 74; // Max of ~65% carat loss.
     uint private constant MIN_CUT_POINTS_REDUCTION = 1; // Min of ~2% carat loss.
     uint private constant MAX_CUT_POINTS_REDUCTION = 4; // Max of ~8% carat loss.
 
-    DiamondCertificate[] private _mineDiamonds;
     address private _diamondDawnContract;
 
-    mapping(uint => DiamondDawnMetadata) public _tokenIdToMetadata;
-    mapping(uint => string) public roughShapeToVideoUrls;
-    mapping(uint => string) public cutShapeToVideoUrls;
-    mapping(uint => string) public polishShapeToVideoUrls;
-    string public burnVideoUrl;
-    string public rebirthVideoUrl;
+    DiamondCertificate[] private _mineDiamonds;
+
+    constructor(address[] memory adminAddresses) {
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
+        // TODO: remove admins after testing
+        for (uint i = 0; i < adminAddresses.length; i++) {
+            _grantRole(DEFAULT_ADMIN_ROLE, adminAddresses[i]);
+        }
+    }
 
     /**********************     Modifiers     ************************/
     modifier onlyDiamondDawn() {
         require(
             msg.sender == _diamondDawnContract,
-            "DiamondDawnMine: onlyDiamondDawn allowed"
+            "OnlyDiamondDawn allowed"
         );
         _;
     }
@@ -85,15 +95,7 @@ contract DiamondDawnMine is
         _;
     }
 
-    /**********************     Constructor     ************************/
-
-    constructor(address[] memory adminAddresses) {
-        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        // TODO: remove admins after testing
-        _setAdminAndAddToAllowList(adminAddresses);
-    }
-
-    /**********************     Admin Functions     ************************/
+    /**********************     External Functions     ************************/
 
     function initialize(address diamondDawnContract)
         external
@@ -155,8 +157,6 @@ contract DiamondDawnMine is
     {
         rebirthVideoUrl = rebirthUrl;
     }
-
-    /**********************     Diamond Dawn Mine Functions     ************************/
 
     function mine(uint tokenId) external onlyDiamondDawn _requireMineNotDry {
         // TODO: change to carat calculate randomly according to polished weight
@@ -231,7 +231,11 @@ contract DiamondDawnMine is
             bytes(
                 string(
                     abi.encodePacked(
-                        _getJson(diamondDawnMetadata, tokenId, videoUrl)
+                        _getDiamondDawnMetadataJson(
+                            diamondDawnMetadata,
+                            tokenId,
+                            videoUrl
+                        )
                     )
                 )
             )
@@ -243,66 +247,122 @@ contract DiamondDawnMine is
             );
     }
 
-    /**********************     Internal & Helpers     ************************/
+    /**********************     Private Functions     ************************/
 
-    function _toDiamondDawnTypeString(DiamondDawnType _type)
-        private
-        pure
-        returns (string memory)
-    {
-        if (_type == DiamondDawnType.ROUGH) {
-            return "Rough";
-        } else if (_type == DiamondDawnType.CUT) {
-            return "Cut";
-        } else if (_type == DiamondDawnType.POLISHED) {
-            return "Polished";
-        } else if (_type == DiamondDawnType.BURNED) {
-            return "Burned";
-        } else if (_type == DiamondDawnType.REBORN) {
-            return "Reborn";
+    function _mineDiamond() private returns (DiamondCertificate memory) {
+        // TODO: check if there's a library that pops a random element from the list.
+        uint randomIndex = _getRandomNumberInRange(0, _mineDiamonds.length - 1);
+        DiamondCertificate memory diamond = _mineDiamonds[randomIndex];
+
+        // TODO: Move the last element into the place to delete
+        if (_mineDiamonds.length > 1) {
+            _mineDiamonds[randomIndex] = _mineDiamonds[
+                _mineDiamonds.length - 1
+            ];
         }
-        revert("Failed to convert DiamondDawnType");
+        _mineDiamonds.pop();
+        return diamond;
     }
 
-    function _toRoughDiamondShapeString(RoughDiamondShape shape)
-        private
-        pure
-        returns (string memory)
-    {
-        if (shape == RoughDiamondShape.MAKEABLE) {
-            return "Makeable";
+    function _getDiamondDawnVideoUrl(
+        DiamondDawnMetadata memory diamondDawnMetadata
+    ) private view returns (string memory) {
+        DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
+        string memory videoUrl;
+        if (DiamondDawnType.ROUGH == diamondDawnType) {
+            videoUrl = roughShapeToVideoUrls[
+                uint(diamondDawnMetadata.rough.shape)
+            ];
+        } else if (DiamondDawnType.CUT == diamondDawnType) {
+            videoUrl = cutShapeToVideoUrls[
+                uint(diamondDawnMetadata.certificate.shape)
+            ];
+        } else if (DiamondDawnType.POLISHED == diamondDawnType) {
+            videoUrl = polishShapeToVideoUrls[
+                uint(diamondDawnMetadata.certificate.shape)
+            ];
+        } else if (DiamondDawnType.BURNED == diamondDawnType) {
+            videoUrl = burnVideoUrl;
+        } else if (DiamondDawnType.REBORN == diamondDawnType) {
+            videoUrl = rebirthVideoUrl;
+        } else {
+            revert("Failed fetching DiamondDawn video url - unknown type");
         }
-        revert("Failed to convert RoughDiamondShape");
+        return string.concat(_videoBaseURI(), videoUrl);
     }
 
-    function _toDiamondShapeString(DiamondShape shape)
+    function _getRandomNumberInRange(uint minNumber, uint maxNumber)
         private
-        pure
-        returns (string memory)
+        view
+        returns (uint)
     {
-        if (shape == DiamondShape.PEAR) {
-            return "Pear";
-        } else if (shape == DiamondShape.ROUND) {
-            return "Round";
-        } else if (shape == DiamondShape.OVAL) {
-            return "Oval";
-        } else if (shape == DiamondShape.RADIANT) {
-            return "Radiant";
-        }
-        revert("Failed converting Diamond shape");
+        // TODO: make sure that using tx.origin is fine and check for a better implementation.
+        uint randomNumber = uint(
+            keccak256(
+                abi.encodePacked(block.timestamp, block.difficulty, tx.origin)
+            )
+        );
+        uint range = maxNumber - minNumber + 1;
+        return (randomNumber % range) + minNumber;
     }
 
-    function _pointsToCaratString(uint points)
-        private
-        pure
-        returns (string memory)
-    {
+    function _videoBaseURI() private pure returns (string memory) {
+        // TODO: in production we'll get the full ipfs/arweave url - base URI will change.
         return
-            string.concat(
-                Strings.toString(points / 100),
-                ".",
-                Strings.toString(points % 100)
-            );
+            "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
+    }
+
+    function _getDiamondDawnMetadataJson(
+        DiamondDawnMetadata memory diamondDawnMetadata,
+        uint tokenId,
+        string memory videoUrl
+    ) private pure returns (string memory) {
+        // TODO: Add real description
+        ERC721MetadataStructure memory metadata = ERC721MetadataStructure({
+            name: string(
+                abi.encodePacked("Diamond Dawn #", Strings.toString(tokenId))
+            ),
+            description: "Diamond Dawn tokens description",
+            createdBy: "Diamond Dawn",
+            image: videoUrl,
+            attributes: _getDiamondDawnJsonAttributes(diamondDawnMetadata)
+        });
+
+        return generateERC721Metadata(metadata);
+    }
+
+    function _getDiamondDawnJsonAttributes(
+        DiamondDawnMetadata memory diamondDawnMetadata
+    ) private pure returns (ERC721MetadataAttribute[] memory) {
+        assert(diamondDawnMetadata.certificate.points > 0);
+
+        DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
+        if (DiamondDawnType.ROUGH == diamondDawnType) {
+            return
+                _getRoughDiamondJsonAttributes(
+                    diamondDawnMetadata.rough,
+                    diamondDawnMetadata.certificate
+                );
+        } else if (DiamondDawnType.CUT == diamondDawnType) {
+            return
+                _getCutDiamondJsonAttributes(
+                    diamondDawnMetadata.cut,
+                    diamondDawnMetadata.certificate
+                );
+        } else if (DiamondDawnType.POLISHED == diamondDawnType) {
+            return
+                _getPolishedDiamondJsonAttributes(
+                    diamondDawnMetadata.certificate
+                );
+        } else if (DiamondDawnType.BURNED == diamondDawnType) {
+            return _getBurnedDiamondJsonAttributes();
+        } else if (DiamondDawnType.REBORN == diamondDawnType) {
+            return
+                _getRebornDiamondJsonAttributes(
+                    diamondDawnMetadata.certificate
+                );
+        }
+        revert("Failed fetching DiamondDawn json attributes - unknown type");
     }
 
     function _getBaseDiamondDawnJsonAttributes(
@@ -714,138 +774,63 @@ contract DiamondDawnMine is
         return metadataAttributes;
     }
 
-    function _getJson(
-        DiamondDawnMetadata memory diamondDawnMetadata,
-        uint tokenId,
-        string memory videoUrl
-    ) private pure returns (string memory) {
-        // TODO: Add real description
-        ERC721MetadataStructure memory metadata = ERC721MetadataStructure({
-            name: string(
-                abi.encodePacked("Diamond Dawn #", Strings.toString(tokenId))
-            ),
-            description: "Diamond Dawn tokens description",
-            createdBy: "Diamond Dawn",
-            image: videoUrl,
-            attributes: _getDiamondDawnJsonAttributes(diamondDawnMetadata)
-        });
-
-        return generateERC721Metadata(metadata);
-    }
-
-    function _getDiamondDawnJsonAttributes(
-        DiamondDawnMetadata memory diamondDawnMetadata
-    ) private pure returns (ERC721MetadataAttribute[] memory) {
-        assert(diamondDawnMetadata.certificate.points > 0);
-
-        DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
-        if (DiamondDawnType.ROUGH == diamondDawnType) {
-            return
-                _getRoughDiamondJsonAttributes(
-                    diamondDawnMetadata.rough,
-                    diamondDawnMetadata.certificate
-                );
-        } else if (DiamondDawnType.CUT == diamondDawnType) {
-            return
-                _getCutDiamondJsonAttributes(
-                    diamondDawnMetadata.cut,
-                    diamondDawnMetadata.certificate
-                );
-        } else if (DiamondDawnType.POLISHED == diamondDawnType) {
-            return
-                _getPolishedDiamondJsonAttributes(
-                    diamondDawnMetadata.certificate
-                );
-        } else if (DiamondDawnType.BURNED == diamondDawnType) {
-            return _getBurnedDiamondJsonAttributes();
-        } else if (DiamondDawnType.REBORN == diamondDawnType) {
-            return
-                _getRebornDiamondJsonAttributes(
-                    diamondDawnMetadata.certificate
-                );
-        }
-        revert("Failed fetching DiamondDawn json attributes - unknown type");
-    }
-
-    function _videoBaseURI() internal pure returns (string memory) {
-        // TODO: in production we'll get the full ipfs/arweave url - base URI will change.
-        return
-            "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
-    }
-
-    function _getDiamondDawnVideoUrl(
-        DiamondDawnMetadata memory diamondDawnMetadata
-    ) internal view returns (string memory) {
-        DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
-        string memory videoUrl;
-        if (DiamondDawnType.ROUGH == diamondDawnType) {
-            videoUrl = roughShapeToVideoUrls[
-                uint(diamondDawnMetadata.rough.shape)
-            ];
-        } else if (DiamondDawnType.CUT == diamondDawnType) {
-            videoUrl = cutShapeToVideoUrls[
-                uint(diamondDawnMetadata.certificate.shape)
-            ];
-        } else if (DiamondDawnType.POLISHED == diamondDawnType) {
-            videoUrl = polishShapeToVideoUrls[
-                uint(diamondDawnMetadata.certificate.shape)
-            ];
-        } else if (DiamondDawnType.BURNED == diamondDawnType) {
-            videoUrl = burnVideoUrl;
-        } else if (DiamondDawnType.REBORN == diamondDawnType) {
-            videoUrl = rebirthVideoUrl;
-        } else {
-            revert("Failed fetching DiamondDawn video url - unknown type");
-        }
-        return string.concat(_videoBaseURI(), videoUrl);
-    }
-
-    function _mineDiamond() internal returns (DiamondCertificate memory) {
-        // TODO: check if there's a library that pops a random element from the list.
-        uint randomIndex = _getRandomNumberInRange(0, _mineDiamonds.length - 1);
-        DiamondCertificate memory diamond = _mineDiamonds[randomIndex];
-
-        // TODO: Move the last element into the place to delete
-        if (_mineDiamonds.length > 1) {
-            _mineDiamonds[randomIndex] = _mineDiamonds[
-                _mineDiamonds.length - 1
-            ];
-        }
-        _mineDiamonds.pop();
-        return diamond;
-    }
-
-    /**********************     Math Helpers     ************************/
-    function _getRandomNumberInRange(uint minNumber, uint maxNumber)
-        internal
-        view
-        returns (uint)
+    function _toDiamondDawnTypeString(DiamondDawnType _type)
+        private
+        pure
+        returns (string memory)
     {
-        uint range = maxNumber - minNumber + 1;
-        uint randomNumber = _getRandomNumber();
-
-        return (randomNumber % range) + minNumber;
-    }
-
-    function _getRandomNumber() internal view returns (uint) {
-        // TODO: make sure that using tx.origin is fine and check for a better implementation.
-        return
-            uint(
-                keccak256(
-                    abi.encodePacked(
-                        block.timestamp,
-                        block.difficulty,
-                        tx.origin
-                    )
-                )
-            );
-    }
-
-    /**********************     Function to delete     ************************/
-    // TODO: delete function after done developing
-    function _setAdminAndAddToAllowList(address[] memory addresses) internal {
-        for (uint i = 0; i < addresses.length; i++) {
-            _grantRole(DEFAULT_ADMIN_ROLE, addresses[i]);
+        if (_type == DiamondDawnType.ROUGH) {
+            return "Rough";
+        } else if (_type == DiamondDawnType.CUT) {
+            return "Cut";
+        } else if (_type == DiamondDawnType.POLISHED) {
+            return "Polished";
+        } else if (_type == DiamondDawnType.BURNED) {
+            return "Burned";
+        } else if (_type == DiamondDawnType.REBORN) {
+            return "Reborn";
         }
+        revert("Failed to convert DiamondDawnType");
+    }
+
+    function _toRoughDiamondShapeString(RoughDiamondShape shape)
+        private
+        pure
+        returns (string memory)
+    {
+        if (shape == RoughDiamondShape.MAKEABLE) {
+            return "Makeable";
+        }
+        revert("Failed to convert RoughDiamondShape");
+    }
+
+    function _toDiamondShapeString(DiamondShape shape)
+        private
+        pure
+        returns (string memory)
+    {
+        if (shape == DiamondShape.PEAR) {
+            return "Pear";
+        } else if (shape == DiamondShape.ROUND) {
+            return "Round";
+        } else if (shape == DiamondShape.OVAL) {
+            return "Oval";
+        } else if (shape == DiamondShape.RADIANT) {
+            return "Radiant";
+        }
+        revert("Failed converting Diamond shape");
+    }
+
+    function _pointsToCaratString(uint points)
+        private
+        pure
+        returns (string memory)
+    {
+        return
+            string.concat(
+                Strings.toString(points / 100),
+                ".",
+                Strings.toString(points % 100)
+            );
     }
 }
