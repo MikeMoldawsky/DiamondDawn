@@ -1,59 +1,19 @@
 import React, { useEffect, useState } from "react";
 import useDDContract from "hooks/useDDContract";
-import { CONTRACTS, ROUGH_SHAPE, SHAPE, STAGE } from "consts";
+import { CONTRACTS, STAGE } from "consts";
 import _ from "lodash";
-import { getShapeName, getStageName, showError, showSuccess } from "utils";
+import { getStageName } from "utils";
 import ActionButton from "components/ActionButton";
-
-const ART_MAPPING = {
-  [STAGE.MINE]: {
-    shapes: [ROUGH_SHAPE.MAKEABLE],
-    setter: "setRoughVideoUrl",
-    getter: "roughShapeToVideoUrls",
-  },
-  [STAGE.CUT]: {
-    shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
-    setter: "setCutVideoUrl",
-    getter: "cutShapeToVideoUrls",
-  },
-  [STAGE.POLISH]: {
-    shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
-    setter: "setPolishVideoUrl",
-    getter: "polishShapeToVideoUrls",
-  },
-  [STAGE.BURN]: {
-    shapes: [undefined],
-    setter: "setBurnVideoUrl",
-    getter: "burnVideoUrl",
-  },
-  [STAGE.REBIRTH]: {
-    shapes: [undefined],
-    setter: "setRebirthVideoUrl",
-    getter: "rebirthVideoUrl",
-  },
-};
+import {getStageVideoUrls, setStageVideoUrls} from "api/contractApi";
 
 const StageArt = ({ stage }) => {
   const [stageArtData, setStageArtData] = useState({});
 
   const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
-  const { shapes, setter, getter } = ART_MAPPING[stage];
 
   const fetchStageArtData = async () => {
-    try {
-      const stageArt = await Promise.all(
-        _.map(shapes, (shape) => {
-          if (shape !== undefined) {
-            return mineContract[getter](shape);
-          } else {
-            return mineContract[getter]();
-          }
-        })
-      );
-      setStageArtData(_.zipObject(_.map(shapes, getShapeName), stageArt));
-    } catch (e) {
-      console.error("fetchArtData Failed", e);
-    }
+    const stageArt = await getStageVideoUrls(mineContract, stage)
+    setStageArtData(stageArt);
   };
 
   useEffect(() => {
@@ -68,18 +28,8 @@ const StageArt = ({ stage }) => {
   };
 
   const saveVideoUrls = async () => {
-    try {
-      const urls = _.values(stageArtData);
-      console.log("saving urls", { urls });
-      const tx = await mineContract[setter](...urls);
-
-      await tx.wait();
-
-      showSuccess(`Video urls for ${getStageName(stage)} saved successfully`);
-      console.log("saveVideoUrls SUCCESS");
-    } catch (e) {
-      showError(e, "saveVideoUrls Error");
-    }
+    const urls = _.values(stageArtData);
+    await setStageVideoUrls(mineContract, stage, urls)
   };
 
   return (
@@ -113,7 +63,7 @@ const ArtTab = () => {
   return (
     <div className="admin-art">
       <h1>Art Mapping</h1>
-      {_.map(ART_MAPPING, ({ shapes }, stage) => (
+      {_.map(STAGE, (stage) => (
         <div key={`stage-art-${stage}`}>
           <div className="caption">{getStageName(stage)}</div>
           <StageArt stage={stage} />

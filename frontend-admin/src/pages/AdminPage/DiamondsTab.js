@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { getShapeName } from "utils";
 import CRUDTable from "components/CRUDTable";
-import { COLOR_GRADES, CLARITY_GRADES, COMMON_GRADES, CONTRACTS } from "consts";
+import {COLOR_GRADES, CLARITY_GRADES, COMMON_GRADES, CONTRACTS, STAGE} from "consts";
 import useDDContract from "hooks/useDDContract";
 import { populateDiamonds } from 'api/contractApi'
 import { getEmptyDiamond, getAllDiamonds, addDiamond, updateDiamond, deleteDiamond } from "api/serverApi";
@@ -47,7 +47,7 @@ const DIAMOND_COLUMNS = [
     valueOptions: [0, 1, 2, 3],
     width: 150,
     editable: true,
-    valueFormatter: (params) => getShapeName(params.value),
+    valueFormatter: (params) => getShapeName(params.value, STAGE.CUT),
   },
   {
     field: "carat",
