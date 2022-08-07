@@ -39,12 +39,11 @@ contract DiamondDawn is
 
     Stage public stage; // API
     uint public constant MINING_PRICE = 0.002 ether; // API
-    bool public constant isStageActive = true; // API
     mapping(address => bool) public mintAllowedAddresses; // API
 
     /**********************          Modifiers          ************************/
 
-    modifier _requireAllowedMiner() {
+    modifier allowedMiner() {
         require(
             mintAllowedAddresses[_msgSender()],
             "The miner is not allowed to mint tokens"
@@ -52,15 +51,21 @@ contract DiamondDawn is
         _;
     }
 
-    modifier whenStageIsActive(Stage _stage) {
-        _requireActiveStage();
-        _requireSpecificStage(_stage);
+    modifier onlyStage(Stage _stage) {
+        require(
+            stage == _stage,
+            string.concat(
+                "The stage should be ",
+                Strings.toString(uint(_stage)),
+                " to perform this action"
+            )
+        );
         _;
     }
 
     modifier whenRebirthIsActive() {
         require(
-            (stage == Stage.BURN && isStageActive) || stage == Stage.REBIRTH,
+            (stage == Stage.BURN) || stage == Stage.REBIRTH,
             "A stage should be active to perform this action"
         );
         _;
@@ -98,8 +103,8 @@ contract DiamondDawn is
     function mine()
         external
         payable
-        whenStageIsActive(Stage.MINE)
-        _requireAllowedMiner
+        onlyStage(Stage.MINE)
+        allowedMiner
         _requireAssignedMineContract
     {
         _requireValidPayment(msg.value);
@@ -118,20 +123,17 @@ contract DiamondDawn is
         emit TokenProcessed(tokenId, Stage.MINE);
     }
 
-    function cut(uint256 tokenId) external whenStageIsActive(Stage.CUT) {
+    function cut(uint256 tokenId) external onlyStage(Stage.CUT) {
         _diamondDawnMine.cut(tokenId);
         emit TokenProcessed(tokenId, Stage.CUT);
     }
 
-    function polish(uint256 tokenId) external whenStageIsActive(Stage.POLISH) {
+    function polish(uint256 tokenId) external onlyStage(Stage.POLISH) {
         _diamondDawnMine.polish(tokenId);
         emit TokenProcessed(tokenId, Stage.POLISH);
     }
 
-    function burnAndShip(uint256 tokenId)
-        external
-        whenStageIsActive(Stage.BURN)
-    {
+    function burnAndShip(uint256 tokenId) external onlyStage(Stage.BURN) {
         super.burn(tokenId);
         _diamondDawnMine.burn(tokenId);
         _burnedTokenToOwner[tokenId] = _msgSender();
@@ -302,7 +304,7 @@ contract DiamondDawn is
      * @param _diamondDawnMineContract a address of diamond metadata contract.
      */
     function setDiamondDawnMine(address _diamondDawnMineContract)
-        public
+        external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         require(
@@ -314,18 +316,13 @@ contract DiamondDawn is
 
     /***********  TODO: Remove before production - Dev Tooling  **************/
 
-    function dev__ResetStage() public {
-        stage = Stage(0);
-        emit StageChanged(stage, isStageActive);
-    }
-
     function completeCurrentStageAndRevealNextStage()
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         assert(uint(stage) < uint(type(Stage).max));
         stage = Stage(uint(stage) + 1);
-        emit StageChanged(stage, isStageActive);
+        emit StageChanged(stage);
     }
 
     function _setAdminAndAddToAllowList(address[] memory addresses) internal {
@@ -343,24 +340,6 @@ contract DiamondDawn is
      *                                                                        *
      **************************************************************************/
     /**********************           Guards            ************************/
-
-    function _requireActiveStage() internal pure {
-        require(
-            isStageActive,
-            "A stage should be active to perform this action"
-        );
-    }
-
-    function _requireSpecificStage(Stage _stage) internal view {
-        require(
-            stage == _stage,
-            string.concat(
-                "The stage should be ",
-                Strings.toString(uint(_stage)),
-                " to perform this action"
-            )
-        );
-    }
 
     function _requireValidPayment(uint value) internal pure {
         require(
