@@ -4,7 +4,6 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink, faRemove, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import axios from "axios";
 import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import useDDContract from "hooks/useDDContract";
@@ -13,42 +12,41 @@ import { EVENTS } from "consts";
 import { watchWhitelist, whitelistSelector } from "store/whitelistReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { utils as ethersUtils } from "ethers";
+import { getAllInvites, createInvitation, updateInvite, deleteInvite } from "api/serverApi";
 
-const getAllInvites = async () => {
-  try {
-    const res = await axios.get(`/api/get_invites`);
-    return res.data;
-  } catch (e) {
-    return [];
-  }
-};
-
-const createInvitation = async () => {
-  try {
-    const res = await axios.post(`/api/create_invite`);
-    return res.data;
-  } catch (e) {
-    return null;
-  }
-};
-
-const updateInvite = async (invite) => {
-  try {
-    const { data } = await axios.post(`/api/update_invite`, invite);
-    return data;
-  } catch (e) {
-    return null;
-  }
-};
-
-const deleteInvite = async (inviteId) => {
-  try {
-    const { data } = await axios.post(`/api/delete_invite`, { inviteId });
-    return data;
-  } catch (e) {
-    return null;
-  }
-};
+const INVITATION_COLUMNS = [
+  { field: "twitter", headerName: "Twitter", width: 150, editable: true },
+  { field: "password", headerName: "Password", width: 150 },
+  {
+    field: "created",
+    headerName: "Created At",
+    type: "dateTime",
+    width: 180,
+  },
+  {
+    field: "revoked",
+    headerName: "Revoked",
+    type: "boolean",
+    width: 100,
+    editable: true,
+  },
+  { field: "opened", headerName: "Opened At", type: "dateTime", width: 180 },
+  { field: "location", headerName: "Location", width: 150 },
+  {
+    field: "ethAddress",
+    headerName: "ETH Address",
+    width: 400,
+    editable: true,
+    preProcessEditCellProps: (params) => {
+      const isValid =
+        _.isEmpty(params.props.value) ||
+        ethersUtils.isAddress(params.props.value);
+      return { ...params.props, error: !isValid };
+    },
+  },
+  { field: "whitelisted", headerName: "Whitelisted", width: 100 },
+  { field: "note", headerName: "Notes", width: 300, flex: 1, editable: true },
+];
 
 const ClipboardButton = ({ inviteId }) => {
   const [isCopied, setIsCopied] = useState(false);
@@ -100,43 +98,8 @@ const InvitationsTab = () => {
     };
   }, [contract, dispatch]);
 
-  const columns = [
-    { field: "twitter", headerName: "Twitter", width: 150, editable: true },
-    { field: "password", headerName: "Password", width: 150 },
-    {
-      field: "created",
-      headerName: "Created At",
-      type: "dateTime",
-      width: 180,
-    },
-    {
-      field: "revoked",
-      headerName: "Revoked",
-      type: "boolean",
-      width: 100,
-      editable: true,
-    },
-    { field: "opened", headerName: "Opened At", type: "dateTime", width: 180 },
-    { field: "location", headerName: "Location", width: 150 },
-    {
-      field: "ethAddress",
-      headerName: "ETH Address",
-      width: 400,
-      editable: true,
-      preProcessEditCellProps: (params) => {
-        const isValid =
-          _.isEmpty(params.props.value) ||
-          ethersUtils.isAddress(params.props.value);
-        return { ...params.props, error: !isValid };
-      },
-    },
-    { field: "whitelisted", headerName: "Whitelisted", width: 100 },
-    { field: "note", headerName: "Notes", width: 300, flex: 1, editable: true },
-  ];
-
   const CRUD = {
     create: createInvitation,
-    // read: getAllInvites,
     update: updateInvite,
     delete: deleteInvite,
   };
@@ -196,7 +159,7 @@ const InvitationsTab = () => {
       {processedRows.length > 0 && (
         <CRUDTable
           CRUD={CRUD}
-          columns={columns}
+          columns={INVITATION_COLUMNS}
           rows={processedRows}
           setRows={setInvitations}
           isRowSelectable={({ row }) => !!row.ethAddress}

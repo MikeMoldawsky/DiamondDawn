@@ -79,3 +79,40 @@ export const deleteDiamond = async (diamondId) => {
     return null;
   }
 };
+
+// INVITATIONS
+export const getAllInvites = async () => {
+  try {
+    const res = await axios.get(`/api/get_invites`);
+    return res.data;
+  } catch (e) {
+    return [];
+  }
+};
+
+export const createInvitation = async () => {
+  try {
+    const res = await axios.post(`/api/create_invite`);
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+};
+
+export const updateInvite = async (invite) => {
+  try {
+    const { data } = await axios.post(`/api/update_invite`, invite);
+    return data;
+  } catch (e) {
+    return null;
+  }
+};
+
+export const deleteInvite = async (inviteId) => {
+  try {
+    const { data } = await axios.post(`/api/delete_invite`, { inviteId });
+    return data;
+  } catch (e) {
+    return null;
+  }
+};
