@@ -1,23 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
+
 interface IDiamondDawn {
-    enum WhitelistAction {
-        ADD,
-        REMOVE,
-        USE
+    enum SystemStage {
+        MINE_OPEN,
+        CUT_OPEN,
+        POLISH_OPEN,
+        SHIP,
+        COMPLETE
     }
 
-    enum Stage {
-        MINE,
-        CUT,
-        POLISH,
-        BURN,
-        REBIRTH
-    }
-
-    event StageChanged(Stage stage);
-    event TokenProcessed(uint tokenId, Stage stage);
+    event SystemStageChanged(SystemStage stage);
+    // TODO: maybe dedicated events for Cut, Polish etc
 
     function mine() external payable;
 

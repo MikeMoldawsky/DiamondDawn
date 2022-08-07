@@ -17,14 +17,6 @@ contract DiamondDawnMine is
     IDiamondDawnMine,
     IDiamondDawnMineAdmin
 {
-    enum DiamondDawnType {
-        ROUGH,
-        CUT,
-        POLISHED,
-        BURNED,
-        REBORN
-    }
-
     enum RoughDiamondShape {
         MAKEABLE
     }
