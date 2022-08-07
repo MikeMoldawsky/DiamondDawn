@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
+import "../DiamondDawnMine.sol";
+
 interface IDiamondDawnMineAdmin {
     enum DiamondShape {
         PEAR,
@@ -27,7 +29,7 @@ interface IDiamondDawnMineAdmin {
 
     function initialize(address diamondDawnContract) external;
 
-    function populateDiamonds(DiamondCertificate[] memory diamonds) external;
+    function populateDiamonds(DiamondCertificate[] calldata diamonds) external;
 
     function setRoughVideoUrl(string calldata roughUrl) external;
 
