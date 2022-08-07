@@ -16,7 +16,7 @@ interface IDiamondDawn {
         REBIRTH
     }
 
-    event StageChanged(Stage stage, bool isStageActive);
+    event StageChanged(Stage stage);
     event WhitelistUpdated(WhitelistAction action, address[] addresses);
     event TokenProcessed(uint tokenId, Stage stage);
 
