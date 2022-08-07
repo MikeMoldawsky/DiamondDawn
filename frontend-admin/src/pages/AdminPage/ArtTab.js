@@ -4,7 +4,7 @@ import { CONTRACTS, STAGE } from "consts";
 import _ from "lodash";
 import { getStageName } from "utils";
 import ActionButton from "components/ActionButton";
-import {getStageVideoUrls, setStageVideoUrls} from "api/contractApi";
+import { getStageVideoUrls, setStageVideoUrls } from "api/contractApi";
 
 const StageArt = ({ stage }) => {
   const [stageArtData, setStageArtData] = useState({});
@@ -12,7 +12,7 @@ const StageArt = ({ stage }) => {
   const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
 
   const fetchStageArtData = async () => {
-    const stageArt = await getStageVideoUrls(mineContract, stage)
+    const stageArt = await getStageVideoUrls(mineContract, stage);
     setStageArtData(stageArt);
   };
 
@@ -29,7 +29,7 @@ const StageArt = ({ stage }) => {
 
   const saveVideoUrls = async () => {
     const urls = _.values(stageArtData);
-    await setStageVideoUrls(mineContract, stage, urls)
+    await setStageVideoUrls(mineContract, stage, urls);
   };
 
   return (

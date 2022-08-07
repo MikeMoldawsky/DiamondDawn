@@ -9,7 +9,12 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch } from "react-redux";
 import { utils as ethersUtils } from "ethers";
-import { getAllInvites, createInvitation, updateInvite, deleteInvite } from "api/serverApi";
+import {
+  getAllInvites,
+  createInvitation,
+  updateInvite,
+  deleteInvite,
+} from "api/serverApi";
 
 const INVITATION_COLUMNS = [
   { field: "twitter", headerName: "Twitter", width: 150, editable: true },

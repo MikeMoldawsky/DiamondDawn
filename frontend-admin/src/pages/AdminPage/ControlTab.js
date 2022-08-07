@@ -3,8 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchStage, fetchPaused, systemSelector } from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
 import ActionButton from "components/ActionButton";
-import { completeCurrentStageAndRevealNextStage, pause, unpause } from 'api/contractApi'
-import {getStageName} from "utils";
+import {
+  completeCurrentStageAndRevealNextStage,
+  pause,
+  unpause,
+} from "api/contractApi";
+import { getStageName } from "utils";
 
 const ControlTab = () => {
   const { stage, paused } = useSelector(systemSelector);
@@ -36,7 +40,8 @@ const ControlTab = () => {
         <div className="stage">{getStageName(stage)}</div>
         <ActionButton
           actionKey="Complete and Reveal Stage"
-          onClick={completeAndRevealStage}>
+          onClick={completeAndRevealStage}
+        >
           Next Stage
         </ActionButton>
       </div>
@@ -45,7 +50,7 @@ const ControlTab = () => {
       <div className="center-aligned-row input-row">
         <div className="stage">{paused.toString()}</div>
         <ActionButton actionKey="togglePause" onClick={togglePause}>
-          {paused ? 'Unpause' : 'Pause'}
+          {paused ? "Unpause" : "Pause"}
         </ActionButton>
       </div>
     </div>

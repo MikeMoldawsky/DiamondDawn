@@ -32,15 +32,15 @@ const ContractProvider = ({ children }) => {
   const dispatch = useDispatch();
 
   const getContracts = async () => {
-    const contractData = await getContractData()
+    const contractData = await getContractData();
     if (contractData) {
       dispatch(setDDContractData(contractData));
     }
-  }
+  };
 
   useEffect(() => {
     if (!ddContractData) {
-      getContracts()
+      getContracts();
     }
   }, [ddContractData, dispatch]);
 

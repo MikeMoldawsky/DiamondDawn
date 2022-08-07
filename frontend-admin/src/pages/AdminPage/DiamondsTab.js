@@ -5,10 +5,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { getShapeName } from "utils";
 import CRUDTable from "components/CRUDTable";
-import {COLOR_GRADES, CLARITY_GRADES, COMMON_GRADES, CONTRACTS, STAGE} from "consts";
+import {
+  COLOR_GRADES,
+  CLARITY_GRADES,
+  COMMON_GRADES,
+  CONTRACTS,
+  STAGE,
+} from "consts";
 import useDDContract from "hooks/useDDContract";
-import { populateDiamonds } from 'api/contractApi'
-import { getEmptyDiamond, getAllDiamonds, addDiamond, updateDiamond, deleteDiamond } from "api/serverApi";
+import { populateDiamonds } from "api/contractApi";
+import {
+  getEmptyDiamond,
+  getAllDiamonds,
+  addDiamond,
+  updateDiamond,
+  deleteDiamond,
+} from "api/serverApi";
 
 const requiredValidation = (params) => {
   return { ...params.props, error: _.isEmpty(params.props.value) };
@@ -166,7 +178,7 @@ const DiamondsTab = () => {
     >
       <FontAwesomeIcon icon={faUpload} /> Deploy
     </div>
-  )
+  );
 
   return (
     <div className={classNames("tab-content diamonds")}>

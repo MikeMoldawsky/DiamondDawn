@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import ActionButton from "components/ActionButton";
 import Countdown from "react-countdown";
 import { getStageName } from "utils";
-import { getStagesSchedule, updateStageSchedule } from 'api/serverApi'
+import { getStagesSchedule, updateStageSchedule } from "api/serverApi";
 
 const getStageCaption = (stage) => {
   switch (stage) {

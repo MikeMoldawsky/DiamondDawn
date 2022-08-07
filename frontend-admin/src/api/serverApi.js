@@ -1,15 +1,15 @@
 import axios from "axios";
 import _ from "lodash";
-import {STAGE} from "consts";
+import { STAGE } from "consts";
 
 // CONTRACTS
 export const getContractData = async () => {
   try {
     const { data } = await axios.get(`/api/get_contract`);
-    return data
+    return data;
   } catch (e) {
     console.error("Failed to get contract data!!!!", e);
-    return null
+    return null;
   }
 };
 
@@ -53,7 +53,7 @@ export const getEmptyDiamond = () => ({
   length: 0,
   width: 0,
   depth: 0,
-})
+});
 
 export const getAllDiamonds = async () => {
   try {
