@@ -1,8 +1,8 @@
-// ADMIN CONTROL API
 import {ROUGH_SHAPE, SHAPE, STAGE} from "consts";
 import _ from "lodash";
 import {getShapeName} from "utils";
 
+// ADMIN CONTROL API
 export const completeCurrentStageAndRevealNextStage = async (contract) => {
   const tx = await contract.completeCurrentStageAndRevealNextStage();
   const receipt = await tx.wait();

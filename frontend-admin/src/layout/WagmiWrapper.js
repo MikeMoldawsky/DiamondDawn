@@ -10,7 +10,7 @@ import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/dist/index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setDDContractData, systemSelector } from "store/systemReducer";
-import axios from "axios";
+import { getContractData } from "api/serverApi";
 
 const localChain = {
   id: 31337,
@@ -27,22 +27,20 @@ const localChain = {
   testnet: true,
 };
 
-const getContractData = () => async (dispatch) => {
-  try {
-    const { data } = await axios.get(`/api/get_contract`);
-    dispatch(setDDContractData(data));
-  } catch (e) {
-    console.error("Failed to get contract data!!!!", e);
-  }
-};
-
 const ContractProvider = ({ children }) => {
   const { ddContractData } = useSelector(systemSelector);
   const dispatch = useDispatch();
 
+  const getContracts = async () => {
+    const contractData = await getContractData()
+    if (contractData) {
+      dispatch(setDDContractData(contractData));
+    }
+  }
+
   useEffect(() => {
     if (!ddContractData) {
-      dispatch(getContractData());
+      getContracts()
     }
   }, [ddContractData, dispatch]);
 

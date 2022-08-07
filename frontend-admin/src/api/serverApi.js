@@ -2,6 +2,17 @@ import axios from "axios";
 import _ from "lodash";
 import {STAGE} from "consts";
 
+// CONTRACTS
+export const getContractData = async () => {
+  try {
+    const { data } = await axios.get(`/api/get_contract`);
+    return data
+  } catch (e) {
+    console.error("Failed to get contract data!!!!", e);
+    return null
+  }
+};
+
 // SCHEDULE
 export const getStagesSchedule = async () => {
   try {
