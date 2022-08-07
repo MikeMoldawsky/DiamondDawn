@@ -12,6 +12,8 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "./interface/IDiamondDawnMine.sol";
+import "./interface/IDiamondDawn.sol";
+import "./interface/IDiamondDawnAdmin.sol";
 
 /**
  * @title DiamondDawn NFT Contract
@@ -23,44 +25,56 @@ contract DiamondDawn is
     Pausable,
     AccessControl,
     ERC721Burnable,
-    ERC721Enumerable
+    ERC721Enumerable,
+    IDiamondDawn,
+    IDiamondDawnAdmin
 {
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
 
-    enum WhitelistAction {
-        ADD,
-        REMOVE,
-        USE
-    }
-
-    enum Stage {
-        MINE,
-        CUT,
-        POLISH,
-        BURN,
-        REBIRTH
-    }
-
-    event StageChanged(Stage stage, bool isStageActive);
-    event WhitelistUpdated(WhitelistAction action, address[] addresses);
-    event TokenProcessed(uint tokenId, Stage stage);
-
     Counters.Counter private _tokenIdCounter;
-    Stage private constant MAX_STAGE = Stage.REBIRTH;
-    Stage public stage;
     IDiamondDawnMine private _diamondDawnMine;
-    uint public constant MINING_PRICE = 0.002 ether;
-    bool public isStageActive;
-    mapping(address => bool) public mintAllowedAddresses;
     mapping(uint256 => address) private _burnedTokenToOwner;
-    mapping(address => EnumerableSet.UintSet) private _ownerToBurnedTokens;
+    mapping(address => EnumerableSet.UintSet) private _ownerToBurnedTokens; // API
 
-    /**************************************************************************
-     *                                                                        *
-     *                               General                                  *
-     *                                                                        *
-     **************************************************************************/
+    Stage public stage; // API
+    uint public constant MINING_PRICE = 0.002 ether; // API
+    bool public constant isStageActive = true; // API
+    mapping(address => bool) public mintAllowedAddresses; // API
+
+    /**********************          Modifiers          ************************/
+
+    modifier _requireAllowedMiner() {
+        require(
+            mintAllowedAddresses[_msgSender()],
+            "The miner is not allowed to mint tokens"
+        );
+        _;
+    }
+
+    modifier whenStageIsActive(Stage _stage) {
+        _requireActiveStage();
+        _requireSpecificStage(_stage);
+        _;
+    }
+
+    modifier whenRebirthIsActive() {
+        require(
+            (stage == Stage.BURN && isStageActive) || stage == Stage.REBIRTH,
+            "A stage should be active to perform this action"
+        );
+        _;
+    }
+
+    modifier _requireAssignedMineContract() {
+        require(
+            address(_diamondDawnMine) != address(0),
+            "DiamondDawn: DiamondDawnMine contract is not set"
+        );
+        _;
+    }
+
+    /**********************          Constructor          ************************/
 
     constructor(
         uint96 _royaltyFeesInBips,
@@ -73,13 +87,111 @@ contract DiamondDawn is
         // Production starts from here
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         stage = Stage.MINE;
-        isStageActive = false;
         setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
         _diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
         _pause();
         _tokenIdCounter.increment();
     }
 
+    /**********************     Diamond Dawn Mine Functions     ************************/
+
+    function mine()
+        external
+        payable
+        whenStageIsActive(Stage.MINE)
+        _requireAllowedMiner
+        _requireAssignedMineContract
+    {
+        _requireValidPayment(msg.value);
+        // Restrict another mint by the same miner
+        delete mintAllowedAddresses[_msgSender()];
+
+        // Regular mint logics
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
+        _safeMint(_msgSender(), tokenId);
+        _diamondDawnMine.mine(tokenId);
+
+        address[] memory wlAddresses = new address[](1);
+        wlAddresses[0] = _msgSender();
+        emit WhitelistUpdated(WhitelistAction.USE, wlAddresses);
+        emit TokenProcessed(tokenId, Stage.MINE);
+    }
+
+    function cut(uint256 tokenId) external whenStageIsActive(Stage.CUT) {
+        _diamondDawnMine.cut(tokenId);
+        emit TokenProcessed(tokenId, Stage.CUT);
+    }
+
+    function polish(uint256 tokenId) external whenStageIsActive(Stage.POLISH) {
+        _diamondDawnMine.polish(tokenId);
+        emit TokenProcessed(tokenId, Stage.POLISH);
+    }
+
+    function burnAndShip(uint256 tokenId)
+        external
+        whenStageIsActive(Stage.BURN)
+    {
+        super.burn(tokenId);
+        _diamondDawnMine.burn(tokenId);
+        _burnedTokenToOwner[tokenId] = _msgSender();
+        _ownerToBurnedTokens[_msgSender()].add(tokenId);
+        emit TokenProcessed(tokenId, Stage.BURN);
+    }
+
+    function rebirth(uint256 tokenId) external whenRebirthIsActive {
+        address burner = _burnedTokenToOwner[tokenId];
+        require(
+            _msgSender() == burner,
+            string.concat(
+                "Rebirth failed - only burner is allowed to perform rebirth"
+            )
+        );
+        delete _burnedTokenToOwner[tokenId];
+        _ownerToBurnedTokens[_msgSender()].remove(tokenId);
+        _diamondDawnMine.rebirth(tokenId);
+        _safeMint(_msgSender(), tokenId);
+        emit TokenProcessed(tokenId, Stage.REBIRTH);
+    }
+
+    function getBurnedTokens(address owner)
+        external
+        view
+        returns (uint[] memory)
+    {
+        return _ownerToBurnedTokens[owner].values();
+    }
+
+    function getTokenIdsByOwner(address owner)
+        external
+        view
+        returns (uint[] memory)
+    {
+        uint ownerTokenCount = balanceOf(owner);
+        uint[] memory tokenIds = new uint256[](ownerTokenCount);
+
+        for (uint i; i < ownerTokenCount; i++) {
+            tokenIds[i] = tokenOfOwnerByIndex(owner, i);
+        }
+
+        return tokenIds;
+    }
+
+    /*************** Functions *****************************/
+
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override
+        _requireAssignedMineContract
+        returns (string memory)
+    {
+        // TODO - this require blocks getting the tokenURI of burnt tokens
+        // require(_exists(tokenId), "ERC721: URI query for nonexistent token");
+        return _diamondDawnMine.getDiamondMetadata(tokenId);
+    }
+
+    /**********************     Others     ************************/
     function _beforeTokenTransfer(
         address from,
         address to,
@@ -99,27 +211,6 @@ contract DiamondDawn is
         return super.supportsInterface(interfaceId);
     }
 
-    /**
-     * @notice Returns the next stage enum value given a stage enum value.
-     *
-     * @dev throws an error if the next stage is out of bounds (greater than MAX_STAGE).
-     *
-     * @param _stage a Stage enum value.
-     *
-     * @return Stage Stage enum value containing the next stage of _stage param.
-     */
-    function _getNextStage(Stage _stage) internal pure returns (Stage) {
-        require(
-            uint(_stage) < uint(MAX_STAGE),
-            string.concat(
-                "The stage should be less than ",
-                Strings.toString(uint(MAX_STAGE))
-            )
-        );
-
-        return Stage(uint(_stage) + 1);
-    }
-
     /**************************************************************************
      *                                                                        *
      *                       Administrator functions                          *
@@ -129,33 +220,6 @@ contract DiamondDawn is
     /**********************     Internal & Helpers     ************************/
 
     // TODO: Add withdraw funds method
-
-    /**
-     * @notice Sets the flow in an active stage mode.
-     *
-     * @dev This function is only available to the admin role.
-     */
-    function _activateStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
-        isStageActive = true;
-    }
-
-    /**
-     * @notice Sets the flow in an inactive stage mode.
-     *
-     * @dev This function is only available to the admin role.
-     */
-    function _deactivateStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
-        isStageActive = false;
-    }
-
-    /**
-     * @notice Sets the flow stage to the next stage of the currenly assigned stage.
-     *
-     * @dev This function is only available to the admin role.
-     */
-    function _nextStage() internal onlyRole(DEFAULT_ADMIN_ROLE) {
-        stage = _getNextStage(stage);
-    }
 
     /**********************        Transactions        ************************/
 
@@ -192,30 +256,6 @@ contract DiamondDawn is
      */
     function unpause() public onlyRole(DEFAULT_ADMIN_ROLE) {
         _unpause();
-    }
-
-    /**
-     * @notice Activating the currently assigned stage and setting its video URL.
-     *
-     * @dev This function is only available to the admin role.
-     * @dev Emitting StageChanged event triggering frontend to update the UI.
-     *
-     */
-    function revealStage() public onlyRole(DEFAULT_ADMIN_ROLE) {
-        _activateStage();
-
-        emit StageChanged(stage, isStageActive);
-    }
-
-    /**
-     * @notice Completing the current stage by setting the next stage as the current stage in an inactive mode.
-     *
-     * @dev This function is only available to the admin role.
-     * @dev Emitting StageChanged event triggering frontend to update the UI.
-     */
-    function completeCurrentStage() public onlyRole(DEFAULT_ADMIN_ROLE) {
-        _deactivateStage();
-        _nextStage();
     }
 
     /**
@@ -276,17 +316,16 @@ contract DiamondDawn is
 
     function dev__ResetStage() public {
         stage = Stage(0);
-        isStageActive = false;
-
         emit StageChanged(stage, isStageActive);
     }
 
     function completeCurrentStageAndRevealNextStage()
-        public
+        external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        completeCurrentStage();
-        revealStage();
+        assert(uint(stage) < uint(type(Stage).max));
+        stage = Stage(uint(stage) + 1);
+        emit StageChanged(stage, isStageActive);
     }
 
     function _setAdminAndAddToAllowList(address[] memory addresses) internal {
@@ -305,7 +344,7 @@ contract DiamondDawn is
      **************************************************************************/
     /**********************           Guards            ************************/
 
-    function _requireActiveStage() internal view {
+    function _requireActiveStage() internal pure {
         require(
             isStageActive,
             "A stage should be active to perform this action"
@@ -331,136 +370,5 @@ contract DiamondDawn is
                 Strings.toString(MINING_PRICE)
             )
         );
-    }
-
-    /**********************          Modifiers          ************************/
-
-    modifier _requireAllowedMiner() {
-        require(
-            mintAllowedAddresses[_msgSender()],
-            "The miner is not allowed to mint tokens"
-        );
-        _;
-    }
-
-    modifier whenStageIsActive(Stage _stage) {
-        _requireActiveStage();
-        _requireSpecificStage(_stage);
-        _;
-    }
-
-    modifier whenRebirthIsActive() {
-        require(
-            (stage == Stage.BURN && isStageActive) || stage == Stage.REBIRTH,
-            "A stage should be active to perform this action"
-        );
-        _;
-    }
-
-    modifier _requireAssignedMineContract() {
-        require(
-            address(_diamondDawnMine) != address(0),
-            "DiamondDawn: DiamondDawnMine contract is not set"
-        );
-        _;
-    }
-
-    /**********************        Transactions        ************************/
-
-    function mine()
-        public
-        payable
-        whenStageIsActive(Stage.MINE)
-        _requireAllowedMiner
-        _requireAssignedMineContract
-    {
-        _requireValidPayment(msg.value);
-        // Restrict another mint by the same miner
-        delete mintAllowedAddresses[_msgSender()];
-
-        // Regular mint logics
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
-        _safeMint(_msgSender(), tokenId);
-        _diamondDawnMine.mine(tokenId);
-
-        address[] memory wlAddresses = new address[](1);
-        wlAddresses[0] = _msgSender();
-        emit WhitelistUpdated(WhitelistAction.USE, wlAddresses);
-        emit TokenProcessed(tokenId, Stage.MINE);
-    }
-
-    function cut(uint256 tokenId) public whenStageIsActive(Stage.CUT) {
-        _diamondDawnMine.cut(tokenId);
-        emit TokenProcessed(tokenId, Stage.CUT);
-    }
-
-    function polish(uint256 tokenId) public whenStageIsActive(Stage.POLISH) {
-        _diamondDawnMine.polish(tokenId);
-        emit TokenProcessed(tokenId, Stage.POLISH);
-    }
-
-    function burn(uint256 tokenId)
-        public
-        override
-        whenStageIsActive(Stage.BURN)
-    {
-        super.burn(tokenId);
-        _diamondDawnMine.burn(tokenId);
-        _burnedTokenToOwner[tokenId] = _msgSender();
-        _ownerToBurnedTokens[_msgSender()].add(tokenId);
-        emit TokenProcessed(tokenId, Stage.BURN);
-    }
-
-    function rebirth(uint256 tokenId) public whenRebirthIsActive {
-        address burner = _burnedTokenToOwner[tokenId];
-        require(
-            _msgSender() == burner,
-            string.concat(
-                "Rebirth failed - only burner is allowed to perform rebirth"
-            )
-        );
-        delete _burnedTokenToOwner[tokenId];
-        _ownerToBurnedTokens[_msgSender()].remove(tokenId);
-        _diamondDawnMine.rebirth(tokenId);
-        _safeMint(_msgSender(), tokenId);
-        emit TokenProcessed(tokenId, Stage.REBIRTH);
-    }
-
-    /**********************            Read            ************************/
-
-    function walletOfOwner(address _owner)
-        public
-        view
-        returns (uint256[] memory)
-    {
-        uint256 ownerTokenCount = balanceOf(_owner);
-        uint256[] memory tokenIds = new uint256[](ownerTokenCount);
-
-        for (uint256 i; i < ownerTokenCount; i++) {
-            tokenIds[i] = tokenOfOwnerByIndex(_owner, i);
-        }
-
-        return tokenIds;
-    }
-
-    function getBurnedTokens(address owner)
-        public
-        view
-        returns (uint256[] memory)
-    {
-        return _ownerToBurnedTokens[owner].values();
-    }
-
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override
-        _requireAssignedMineContract
-        returns (string memory)
-    {
-        // TODO - this require blocks getting the tokenURI of burnt tokens
-        // require(_exists(tokenId), "ERC721: URI query for nonexistent token");
-        return _diamondDawnMine.getDiamondMetadata(tokenId);
     }
 }
