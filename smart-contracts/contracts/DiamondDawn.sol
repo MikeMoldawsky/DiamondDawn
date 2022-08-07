@@ -133,10 +133,7 @@ contract DiamondDawn is
         emit TokenProcessed(tokenId, Stage.POLISH);
     }
 
-    function burnAndShip(uint256 tokenId)
-        external
-        onlyStage(Stage.BURN)
-    {
+    function burnAndShip(uint256 tokenId) external onlyStage(Stage.BURN) {
         super.burn(tokenId);
         _diamondDawnMine.burn(tokenId);
         _burnedTokenToOwner[tokenId] = _msgSender();
