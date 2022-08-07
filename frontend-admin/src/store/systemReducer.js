@@ -7,15 +7,13 @@ const INITIAL_STATE = {
   ddContractData: null,
   ddMineContractData: null,
   stage: -1,
-  isStageActive: false,
   paused: false,
   stageStartTimes: {},
 };
 
 export const fetchStage = (contract) => async (dispatch) => {
   const _stage = await contract.stage();
-  const _isStageActive = await contract.isStageActive();
-  dispatch(setStage(_stage, _isStageActive));
+  dispatch(setStage(_stage));
 };
 
 export const fetchPaused = (contract) => async (dispatch) => {
@@ -41,9 +39,9 @@ export const getStageConfigs = async () => {
   }
 };
 
-export const setStage = (stage, isStageActive) => ({
+export const setStage = (stage) => ({
   type: "SYSTEM.SET_STAGE",
-  payload: { stage, isStageActive },
+  payload: { stage },
 });
 
 export const setDDContractData = ({ ddContract, ddMineContract }) => ({

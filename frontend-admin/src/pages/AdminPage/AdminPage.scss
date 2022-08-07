@@ -21,8 +21,8 @@
   }
 
   .button {
-    margin: 80px auto 40px;
-    width: 300px;
+    //margin: 80px auto 40px;
+    //width: 300px;
   }
 
   .add-button {
@@ -61,9 +61,15 @@
   .admin-control {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
     text-align: center;
+    width: 360px;
+    margin: 0 auto;
+
+    .input-row {
+      margin-bottom: 30px;
+    }
 
     .title {
       font-weight: 700;
@@ -72,7 +78,6 @@
     }
 
     .button {
-      margin-top: 10px;
       height: 32px;
       font-size: 1em;
     }
