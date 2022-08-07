@@ -1,7 +1,5 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
-import _ from "lodash";
-import axios from "axios";
-import { CONTRACTS, STAGE } from "consts";
+import { CONTRACTS } from "consts";
 
 const INITIAL_STATE = {
   ddContractData: null,
@@ -22,21 +20,6 @@ export const fetchPaused = (contract) => async (dispatch) => {
     type: "SYSTEM.SET_PAUSED",
     payload: { paused },
   });
-};
-
-export const getStageConfigs = async () => {
-  try {
-    const res = await axios.get(`/api/get_stages`);
-    return _.zipObject(
-      _.values(STAGE),
-      _.map(_.values(STAGE), (stage) => {
-        const dbConf = _.find(res.data, { stage });
-        return dbConf ? dbConf.startsAt : null;
-      })
-    );
-  } catch (e) {
-    return [];
-  }
 };
 
 export const setStage = (stage) => ({

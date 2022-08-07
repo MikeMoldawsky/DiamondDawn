@@ -117,8 +117,16 @@
     padding-bottom: 40px;
   }
 
-  .stages {
+  .admin-schedule {
     width: 700px;
+    margin: 0 auto;
+
+    .button {
+      height: 32px;
+      font-size: 1em;
+      width: 60px;
+      margin: 0 0 0 40px;
+    }
 
     .stage-row {
       margin-bottom: 40px;
@@ -135,11 +143,6 @@
 
     input {
       width: 180px;
-    }
-
-    .btn-save {
-      width: 60px;
-      margin: 0 0 0 40px;
     }
   }
 

@@ -1,4 +1,31 @@
 import axios from "axios";
+import _ from "lodash";
+import {STAGE} from "consts";
+
+// SCHEDULE
+export const getStagesSchedule = async () => {
+  try {
+    const res = await axios.get(`/api/get_stages`);
+    return _.zipObject(
+      _.values(STAGE),
+      _.map(_.values(STAGE), (stage) => {
+        const dbConf = _.find(res.data, { stage });
+        return dbConf ? dbConf.startsAt : null;
+      })
+    );
+  } catch (e) {
+    return [];
+  }
+};
+
+export const updateStageSchedule = async (stage, startsAt) => {
+  try {
+    const res = await axios.post(`/api/update_stage`, { stage, startsAt });
+    return res.data;
+  } catch (e) {
+    return [];
+  }
+};
 
 // DIAMONDS
 export const getEmptyDiamond = () => ({
