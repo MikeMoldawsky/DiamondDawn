@@ -167,7 +167,7 @@ contract DiamondDawnMine is
             MAX_ROUGH_POINTS_REDUCTION
         );
         _tokenIdToMetadata[tokenId] = DiamondDawnMetadata({
-            diamondDawnType: DiamondDawnType.ROUGH,
+            type_: DiamondDawnType.ROUGH,
             rough: RoughDiamondMetadata({
                 shape: RoughDiamondShape.MAKEABLE,
                 pointsReduction: pointsReduction
