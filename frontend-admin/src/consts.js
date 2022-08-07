@@ -20,7 +20,6 @@ export const SHAPE = {
 export const EVENTS = {
   Transfer: "Transfer",
   StageChanged: "StageChanged",
-  WhitelistUpdated: "WhitelistUpdated",
 };
 
 export const COLOR_GRADES = [

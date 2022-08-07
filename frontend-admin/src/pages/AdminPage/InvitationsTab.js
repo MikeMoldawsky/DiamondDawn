@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink, faRemove, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import useDDContract from "hooks/useDDContract";
-import ActionButton from "components/ActionButton";
-import { EVENTS } from "consts";
-import { watchWhitelist, whitelistSelector } from "store/whitelistReducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { utils as ethersUtils } from "ethers";
 import { getAllInvites, createInvitation, updateInvite, deleteInvite } from "api/serverApi";
 
@@ -44,7 +41,6 @@ const INVITATION_COLUMNS = [
       return { ...params.props, error: !isValid };
     },
   },
-  { field: "whitelisted", headerName: "Whitelisted", width: 100 },
   { field: "note", headerName: "Notes", width: 300, flex: 1, editable: true },
 ];
 
@@ -82,7 +78,6 @@ const ClipboardButton = ({ inviteId }) => {
 const InvitationsTab = () => {
   const [invitations, setInvitations] = useState([]);
   const contract = useDDContract();
-  const whitelist = useSelector(whitelistSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -90,12 +85,6 @@ const InvitationsTab = () => {
       setInvitations(await getAllInvites());
     };
     fetch();
-
-    dispatch(watchWhitelist(contract));
-
-    return () => {
-      contract.removeListener(EVENTS.WhitelistUpdated);
-    };
   }, [contract, dispatch]);
 
   const CRUD = {
@@ -104,72 +93,20 @@ const InvitationsTab = () => {
     delete: deleteInvite,
   };
 
-  const addToWL = async (selectedRows) => {
-    try {
-      const addresses = selectedRows.map((r) => r.ethAddress);
-      const tx = await contract.addToAllowList(addresses);
-      await tx.wait();
-    } catch (e) {
-      console.error("addToWL Failed", { e });
-    }
-  };
-
-  const removeFromWL = async (selectedRows) => {
-    try {
-      const addresses = selectedRows.map((r) => r.ethAddress);
-      const tx = await contract.removeFromAllowList(addresses);
-      await tx.wait();
-    } catch (e) {
-      console.error("removeFromWL Failed", { e });
-    }
-  };
-
-  const renderButtons = (selectedRows) => {
-    const disabled = selectedRows.length === 0;
-    return (
-      <div className="center-aligned-row">
-        <ActionButton
-          actionKey="Add To WL"
-          className="link save-button"
-          disabled={disabled}
-          onClick={() => addToWL(selectedRows)}
-        >
-          <FontAwesomeIcon icon={faPlus} /> Add To WL
-        </ActionButton>
-        <ActionButton
-          actionKey="Remove From WL"
-          className="link save-button"
-          disabled={disabled}
-          onClick={() => removeFromWL(selectedRows)}
-        >
-          <FontAwesomeIcon icon={faRemove} /> Remove From WL
-        </ActionButton>
-      </div>
-    );
-  };
-
-  const processedRows = invitations.map((i) => ({
-    ...i,
-    whitelisted: _.get(whitelist, i.ethAddress, "No"),
-  }));
-
   return (
     <div className={classNames("tab-content invitations")}>
       <h1>Invitations</h1>
-      {processedRows.length > 0 && (
-        <CRUDTable
-          CRUD={CRUD}
-          columns={INVITATION_COLUMNS}
-          rows={processedRows}
-          setRows={setInvitations}
-          isRowSelectable={({ row }) => !!row.ethAddress}
-          itemName="Invitation"
-          getNewItem={createInvitation}
-          newCreatedOnServer
-          renderActions={({ id }) => [<ClipboardButton inviteId={id} />]}
-          renderButtons={renderButtons}
-        />
-      )}
+      <CRUDTable
+        CRUD={CRUD}
+        columns={INVITATION_COLUMNS}
+        rows={invitations}
+        setRows={setInvitations}
+        isRowSelectable={({ row }) => !!row.ethAddress}
+        itemName="Invitation"
+        getNewItem={createInvitation}
+        newCreatedOnServer
+        renderActions={({ id }) => [<ClipboardButton inviteId={id} />]}
+      />
     </div>
   );
 };
