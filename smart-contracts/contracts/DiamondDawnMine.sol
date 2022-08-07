@@ -349,7 +349,7 @@ contract DiamondDawnMine is
         return metadataAttributes;
     }
 
-    function _getRoughDiamondJsonAttributes(RoughDiamondMetadata memory rough, DiamondCertificate certificate)
+    function _getRoughDiamondJsonAttributes(RoughDiamondMetadata memory rough, DiamondCertificate memory certificate)
         private
         pure
         returns (ERC721MetadataAttribute[] memory)
