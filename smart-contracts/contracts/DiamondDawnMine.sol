@@ -101,7 +101,7 @@ contract DiamondDawnMine is
         _diamondDawnContract = diamondDawnContract;
     }
 
-    function populateDiamonds(DiamondCertificate[] memory diamonds)
+    function populateDiamonds(DiamondCertificate[] calldata diamonds)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {

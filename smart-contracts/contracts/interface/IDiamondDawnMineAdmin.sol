@@ -27,7 +27,7 @@ interface IDiamondDawnMineAdmin {
 
     function initialize(address diamondDawnContract) external;
 
-    function populateDiamonds(DiamondCertificate[] memory diamonds) external;
+    function populateDiamonds(DiamondCertificate[] calldata diamonds) external;
 
     function setRoughVideoUrl(string calldata roughUrl) external;
 
