@@ -72,10 +72,7 @@ contract DiamondDawnMine is
 
     /**********************     Modifiers     ************************/
     modifier onlyDiamondDawn() {
-        require(
-            msg.sender == _diamondDawnContract,
-            "OnlyDiamondDawn allowed"
-        );
+        require(msg.sender == _diamondDawnContract, "OnlyDiamondDawn allowed");
         _;
     }
 
@@ -104,7 +101,7 @@ contract DiamondDawnMine is
         _diamondDawnContract = diamondDawnContract;
     }
 
-    function populateDiamonds(DiamondCertificate[] memory diamonds)
+    function populateDiamonds(DiamondCertificate[] calldata diamonds)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
@@ -774,20 +771,20 @@ contract DiamondDawnMine is
         return metadataAttributes;
     }
 
-    function _toDiamondDawnTypeString(DiamondDawnType _type)
+    function _toDiamondDawnTypeString(DiamondDawnType type_)
         private
         pure
         returns (string memory)
     {
-        if (_type == DiamondDawnType.ROUGH) {
+        if (type_ == DiamondDawnType.ROUGH) {
             return "Rough";
-        } else if (_type == DiamondDawnType.CUT) {
+        } else if (type_ == DiamondDawnType.CUT) {
             return "Cut";
-        } else if (_type == DiamondDawnType.POLISHED) {
+        } else if (type_ == DiamondDawnType.POLISHED) {
             return "Polished";
-        } else if (_type == DiamondDawnType.BURNED) {
+        } else if (type_ == DiamondDawnType.BURNED) {
             return "Burned";
-        } else if (_type == DiamondDawnType.REBORN) {
+        } else if (type_ == DiamondDawnType.REBORN) {
             return "Reborn";
         }
         revert("Failed to convert DiamondDawnType");
