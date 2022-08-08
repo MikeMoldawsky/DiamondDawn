@@ -33,7 +33,7 @@ contract DiamondDawn is
     using EnumerableSet for EnumerableSet.UintSet;
 
     uint public constant MINING_PRICE = 0.002 ether;
-    SystemStage public stage;
+    SystemStage public systemStage;
     IDiamondDawnMine public diamondDawnMine;
 
     mapping(address => EnumerableSet.UintSet) private _ownerToShippingTokenIds;
@@ -46,7 +46,7 @@ contract DiamondDawn is
         address[] memory adminAddresses
     ) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        stage = SystemStage.MINE_OPEN;
+        systemStage = SystemStage.MINE_OPEN;
         setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
         diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
         _tokenIdCounter.increment();
@@ -61,7 +61,7 @@ contract DiamondDawn is
 
     modifier onlyStage(SystemStage _stage) {
         require(
-            stage == _stage,
+            systemStage == _stage,
             string.concat(
                 "The stage should be ",
                 Strings.toString(uint(_stage)),
@@ -71,8 +71,8 @@ contract DiamondDawn is
         _;
     }
 
-    modifier diamondDawnNotCompleted() {
-        require(uint(stage) < uint(type(SystemStage).max));
+    modifier validSystemStage(uint _systemStage) {
+        require(uint(type(SystemStage).min <= _systemStage && _systemStage <= uint(type(SystemStage).max));
         _;
     }
 
@@ -166,13 +166,13 @@ contract DiamondDawn is
         diamondDawnMine = IDiamondDawnMine(diamondDawnMine_);
     }
 
-    function nextStage()
+    function setSystemStage(uint systemStage_)
         external
-        diamondDawnNotCompleted
+        validSystemStage(systemStage_)
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        stage = SystemStage(uint(stage) + 1);
-        emit SystemStageChanged(stage);
+        systemStage = systemStage_;
+        emit SystemStageChanged(systemStage);
     }
 
     function getTokenIdsByOwner(address owner)
