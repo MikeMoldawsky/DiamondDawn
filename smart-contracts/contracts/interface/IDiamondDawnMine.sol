@@ -24,4 +24,9 @@ interface IDiamondDawnMine {
         external
         view
         returns (string memory);
+
+    function isRevealed(DiamondDawnType type_)
+    external
+    view
+    returns (bool);
 }

@@ -11,9 +11,10 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
-import "./interface/IDiamondDawnMine.sol";
 import "./interface/IDiamondDawn.sol";
 import "./interface/IDiamondDawnAdmin.sol";
+import "./interface/IDiamondDawnMine.sol";
+import "./interface/IDiamondDawnMine.sol";
 
 /**
  * @title DiamondDawn NFT Contract
@@ -33,8 +34,8 @@ contract DiamondDawn is
     using EnumerableSet for EnumerableSet.UintSet;
 
     uint public constant MINING_PRICE = 0.002 ether;
-    SystemStage public systemStage;
     IDiamondDawnMine public diamondDawnMine;
+    SystemStage public systemStage;
 
     mapping(address => EnumerableSet.UintSet) private _ownerToShippingTokenIds;
     mapping(uint256 => address) private _shippedTokenIdToOwner;
@@ -70,6 +71,12 @@ contract DiamondDawn is
         );
         _;
     }
+
+    modifier isRevealed(IDiamondDawnMine.DiamondDawnType type_) {
+        require(diamondDawnMine.isRevealed(type_), "DiamondDawnMine is not revealed");
+        _;
+    }
+
 
     modifier validSystemStage(uint _systemStage) {
         require(_systemStage >= uint(type(SystemStage).min));
@@ -107,6 +114,7 @@ contract DiamondDawn is
         payable
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.MINE_OPEN)
+        isRevealed(IDiamondDawnMine.DiamondDawnType.ROUGH)
         costs(MINING_PRICE)
     {
         // Regular mint logics
@@ -121,6 +129,7 @@ contract DiamondDawn is
         external
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.CUT_OPEN)
+        isRevealed(IDiamondDawnMine.DiamondDawnType.CUT)
     {
         diamondDawnMine.cut(tokenId);
         emit Cut(tokenId);
@@ -130,6 +139,7 @@ contract DiamondDawn is
         external
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.POLISH_OPEN)
+        isRevealed(IDiamondDawnMine.DiamondDawnType.POLISHED)
     {
         diamondDawnMine.polish(tokenId);
         emit Polish(tokenId);
@@ -139,6 +149,7 @@ contract DiamondDawn is
         external
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.SHIP)
+        isRevealed(IDiamondDawnMine.DiamondDawnType.BURNED)
     {
         super.burn(tokenId);
         diamondDawnMine.burn(tokenId);
@@ -151,6 +162,7 @@ contract DiamondDawn is
         external
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.SHIP)
+        isRevealed(IDiamondDawnMine.DiamondDawnType.REBORN)
         onlyShippedDiamondOwner(tokenId)
     {
         delete _shippedTokenIdToOwner[tokenId];
