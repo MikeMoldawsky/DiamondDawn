@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import useDDContract from "hooks/useDDContract";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import VideoPlayer from "components/VideoPlayer";
 import {
-  fetchAccountShippingTokens,
+  loadAccountShippingTokens,
   loadAccountNfts,
 } from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
@@ -14,6 +14,7 @@ import classNames from "classnames";
 import { systemSelector } from "store/systemReducer";
 import _ from "lodash";
 import { uiSelector } from "store/uiReducer";
+import useActionDispatch from "hooks/useActionDispatch";
 
 const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const [actionTxId, setActionTxId] = useState(false);
@@ -23,7 +24,7 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const account = useAccount();
   const provider = useProvider();
   const contract = useDDContract();
-  const dispatch = useDispatch();
+  const actionDispatch = useActionDispatch();
   const navigate = useNavigate();
   const isFetchNftsSuccess = useSelector(isActionSuccessSelector("load-nfts"));
   const { systemStage, systemSchedule } = useSelector(systemSelector);
@@ -37,8 +38,14 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   }, [completeVideoEnded, processedTokenId, isFetchNftsSuccess]);
 
   const onSuccess = (tokenId) => {
-    dispatch(loadAccountNfts(contract, provider, account.address));
-    dispatch(fetchAccountShippingTokens(contract, account.address));
+    actionDispatch(
+      loadAccountNfts(contract, provider, account.address),
+      "load-nfts"
+    );
+    actionDispatch(
+      loadAccountShippingTokens(contract, account.address),
+      "load-shipping-nfts"
+    );
     setProcessedTokenId(tokenId);
   };
 

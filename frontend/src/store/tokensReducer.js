@@ -1,6 +1,11 @@
 import { makeReducer } from "./reduxUtils";
 import _ from "lodash";
-import { Network, initializeAlchemy, getNftsForOwner } from "@alch/alchemy-sdk";
+import { getNftsByAddressAlchemyApi } from "api/alchemy";
+import {
+  getAccountNftsApi,
+  getShippingTokensApi,
+  getTokenUriApi,
+} from "api/contractApi";
 
 const INITIAL_STATE = {};
 
@@ -16,101 +21,35 @@ export const watchTokenMinedBy =
     });
   };
 
-export const watchTokenProcessed =
-  (tokenId, stage) => (contract, provider, callback) => {
-    provider.once("block", () => {
-      contract.on("TokenProcessed", (_tokenId, _stage) => {
-        const numTokenId = _tokenId.toNumber();
-        console.log("TOKEN PROCESSED EVENT", { _tokenId: numTokenId, _stage });
-        if (numTokenId === tokenId && _stage === stage) {
-          callback(tokenId);
-          contract.on("TokenProcessed", null);
-        }
-      });
-    });
-  };
-
-const alchemy = initializeAlchemy({
-  apiKey: process.env.REACT_ALCHEMY_KEY, // Replace with your Alchemy API Key.
-  network: Network.ETH_MAINNET, // Replace with your network.
-  maxRetries: 10,
-});
-
 export const loadAccountNfts =
   (contract, provider, address) => async (dispatch) => {
-    dispatch({
-      type: "ACTION_STATUS.PENDING",
-      payload: { actionKey: "load-nfts" },
-    });
-    let nfts = [];
-    if (address) {
-      if (provider?._network?.chainId === 1) {
-        // for mainnet   "https://eth-mainnet.alchemyapi.io/nft/v2/demo/getNFTs/?owner=${addressData?.address}&contractAddresses[]=${contractAddress.DiamondDawn}"
-        await getNftsForOwner(
-          alchemy,
-          "0x9469c98Be5AFD94cD601E094bc401dDD37F480a3",
-          {
-            contractAddresses: ["0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"],
-          }
-        ).then((result) => {
-          let response = result?.ownedNfts;
-          nfts = response.map((object) => ({
-            tokenId: object?.tokenId,
-            tokenUri: object?.tokenUri?.gateway || object?.tokenUri?.raw,
-            metadata: object?.rawMetadata,
-          }));
-        });
-      } else {
-        const ownerTokenIds = await contract.getTokenIdsByOwner(address);
-        nfts = await tokenIdsToUris(contract, ownerTokenIds);
-      }
-    }
+    if (!address) return;
+
+    const nfts = await (provider?._network?.chainId === 1
+      ? getNftsByAddressAlchemyApi(contract, address)
+      : getAccountNftsApi(contract, address));
 
     dispatch({
       type: "TOKENS.SET",
       payload: nfts,
     });
-    dispatch({
-      type: "ACTION_STATUS.SUCCESS",
-      payload: { actionKey: "load-nfts" },
-    });
   };
 
-export const fetchAccountShippingTokens =
+export const loadAccountShippingTokens =
   (contract, address) => async (dispatch) => {
-    dispatch({
-      type: "ACTION_STATUS.PENDING",
-      payload: { actionKey: "load-shipping-nfts" },
-    });
+    if (!address) return;
 
-    const shippingTokenIds = await contract.getShippingTokenIds(address);
-    const shippingTokens = await tokenIdsToUris(contract, shippingTokenIds);
-    console.log({ shippingTokenIds, shippingTokens });
+    const shippingTokens = await getShippingTokensApi(contract, address);
 
     dispatch({
       type: "TOKENS.SET",
       payload: shippingTokens,
     });
-    dispatch({
-      type: "ACTION_STATUS.SUCCESS",
-      payload: { actionKey: "load-shipping-nfts" },
-    });
   };
 
-const tokenIdsToUris = async (contract, tokenIds) => {
-  return Promise.all(
-    tokenIds.map(async (element) => {
-      const tokenUri = await contract.tokenURI(element.toNumber());
-      return {
-        tokenId: element.toNumber(),
-        tokenUri: JSON.parse(atob(tokenUri.split(",")[1])),
-      };
-    })
-  );
-};
+export const loadTokenUri = (contract, tokenId) => async (dispatch) => {
+  const tokenUri = await getTokenUriApi(contract, tokenId);
 
-export const fetchTokenUri = (contract, tokenId) => async (dispatch) => {
-  const tokenUri = await contract.tokenURI(tokenId);
   dispatch({
     type: "TOKENS.SET_TOKEN",
     payload: { tokenId, tokenUri: JSON.parse(atob(tokenUri.split(",")[1])) },

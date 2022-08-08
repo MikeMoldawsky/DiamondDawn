@@ -3,13 +3,14 @@ import Countdown from "components/Countdown";
 import useDDContract from "hooks/useDDContract";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import { tokenByIdSelector, watchTokenProcessed } from "store/tokensReducer";
+import { tokenByIdSelector } from "store/tokensReducer";
 import { DUMMY_VIDEO_URL, NFT_TYPE, SYSTEM_STAGE } from "consts";
 import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
 import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
+import { polishApi } from "api/contractApi";
 
 const Polish = () => {
   const contract = useDDContract();
@@ -45,7 +46,7 @@ const Polish = () => {
 
   return (
     <ActionView
-      transact={() => contract.polish(selectedTokenId)}
+      transact={() => polishApi(contract, selectedTokenId)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <PolishContent />

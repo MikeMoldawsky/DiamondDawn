@@ -13,13 +13,12 @@ import {
   SYSTEM_STAGE,
 } from "consts";
 import useDDContract from "hooks/useDDContract";
-import { populateDiamonds } from "api/contractApi";
+import { populateDiamondsApi } from "api/contractApi";
 import {
-  getEmptyDiamond,
-  getAllDiamonds,
-  addDiamond,
-  updateDiamond,
-  deleteDiamond,
+  getDiamondsApi,
+  addDiamondApi,
+  updateDiamondApi,
+  deleteDiamondApi,
 } from "api/serverApi";
 
 const requiredValidation = (params) => {
@@ -30,6 +29,22 @@ const greaterThenZeroValidation = (params) => {
   const { value } = params.props;
   return { ...params.props, error: !value || value <= 0 };
 };
+
+const getEmptyDiamond = () => ({
+  reportNumber: "",
+  reportDate: "",
+  shape: 2,
+  carat: 0,
+  color: "",
+  clarity: "",
+  cut: "",
+  polish: "",
+  symmetry: "",
+  fluorescence: "",
+  length: 0,
+  width: 0,
+  depth: 0,
+});
 
 const DIAMOND_COLUMNS = [
   {
@@ -161,21 +176,21 @@ const DiamondsTab = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      setDiamonds(await getAllDiamonds());
+      setDiamonds(await getDiamondsApi());
     };
     fetch();
   }, []);
 
   const CRUD = {
-    create: addDiamond,
-    update: updateDiamond,
-    delete: deleteDiamond,
+    create: addDiamondApi,
+    update: updateDiamondApi,
+    delete: deleteDiamondApi,
   };
 
   const renderDeployButton = (selectedRows) => (
     <div
       className="button link save-button"
-      onClick={() => populateDiamonds(ddMineContract, selectedRows)}
+      onClick={() => populateDiamondsApi(ddMineContract, selectedRows)}
     >
       <FontAwesomeIcon icon={faUpload} /> Deploy
     </div>

@@ -10,10 +10,10 @@ import useDDContract from "hooks/useDDContract";
 import { useDispatch } from "react-redux";
 import { utils as ethersUtils } from "ethers";
 import {
-  getAllInvites,
-  createInvitation,
-  updateInvite,
-  deleteInvite,
+  getInvitesApi,
+  createInviteApi,
+  updateInviteApi,
+  deleteInviteApi,
 } from "api/serverApi";
 
 const INVITATION_COLUMNS = [
@@ -87,15 +87,15 @@ const InvitationsTab = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      setInvitations(await getAllInvites());
+      setInvitations(await getInvitesApi());
     };
     fetch();
   }, [contract, dispatch]);
 
   const CRUD = {
-    create: createInvitation,
-    update: updateInvite,
-    delete: deleteInvite,
+    create: createInviteApi,
+    update: updateInviteApi,
+    delete: deleteInviteApi,
   };
 
   return (
@@ -108,7 +108,7 @@ const InvitationsTab = () => {
         setRows={setInvitations}
         isRowSelectable={({ row }) => !!row.ethAddress}
         itemName="Invitation"
-        getNewItem={createInvitation}
+        getNewItem={createInviteApi}
         newCreatedOnServer
         renderActions={({ id }) => [<ClipboardButton inviteId={id} />]}
       />

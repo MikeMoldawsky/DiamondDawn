@@ -43,6 +43,9 @@ export const showError = (e, prefix = "Error") => {
   console.error(errorMessage);
 };
 
+export const logApiError = (e, funcName) =>
+  console.error(`Api Error - ${funcName} Failed`, e);
+
 export const getEnumKeyByValue = (enm, value) => Object.keys(enm)[value];
 
 export const getShapeName = (shape) => getEnumKeyByValue(SHAPE, shape);

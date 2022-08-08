@@ -6,16 +6,18 @@ import { loadSystemStage, loadSystemSchedule } from "store/systemReducer";
 import { EVENTS } from "consts";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
 import {
-  fetchAccountShippingTokens,
+  loadAccountShippingTokens,
   loadAccountNfts,
 } from "store/tokensReducer";
 import { isActionFirstCompleteSelector } from "components/ActionButton/ActionButton.module";
 import useMountLogger from "hooks/useMountLogger";
+import useActionDispatch from "hooks/useActionDispatch";
 
 const useSystemLoader = () => {
   const account = useAccount();
   const provider = useProvider();
   const dispatch = useDispatch();
+  const actionDispatch = useActionDispatch();
   const contract = useDDContract();
   const isNftsLoaded = useSelector(isActionFirstCompleteSelector("load-nfts"));
   const isShippingNftsLoaded = useSelector(
@@ -45,8 +47,14 @@ const useSystemLoader = () => {
   }, []);
 
   useEffectWithAccount(() => {
-    dispatch(loadAccountNfts(contract, provider, account?.address));
-    dispatch(fetchAccountShippingTokens(contract, account.address));
+    actionDispatch(
+      loadAccountNfts(contract, provider, account?.address),
+      "load-nfts"
+    );
+    actionDispatch(
+      loadAccountShippingTokens(contract, account.address),
+      "load-shipping-nfts"
+    );
   });
 
   return isReady;

@@ -18,7 +18,6 @@ const DiamondItem = ({ diamond }) => {
   const [showInfo, setShowInfo] = useState(false);
   const ref = useRef(null);
   const location = useLocation();
-  console.log({ location });
 
   useOnClickOutside(ref, () => setShowInfo(false));
 

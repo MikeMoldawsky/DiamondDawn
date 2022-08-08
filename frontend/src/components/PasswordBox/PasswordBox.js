@@ -1,21 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import "./PasswordBox.scss";
-import axios from "axios";
+import { checkPasswordApi } from "api/serverApi";
 
 const PASSWORD_LENGTH = 10;
 const CHECK_TIME = 1750;
-
-const checkPassword = async (password) => {
-  try {
-    const { data: isCorrect } = await axios.post(`/api/check_pwd`, {
-      password,
-    });
-    return isCorrect;
-  } catch (e) {
-    return false;
-  }
-};
 
 const PasswordBox = ({ onCorrect }) => {
   const [password, setPassword] = useState("");
@@ -32,7 +21,7 @@ const PasswordBox = ({ onCorrect }) => {
   const submitPassword = async () => {
     pwdInput.current.blur();
     setCheckingPassword(true);
-    const isCorrect = await checkPassword(password);
+    const isCorrect = await checkPasswordApi(password);
     setCheckingPassword(false);
 
     if (isCorrect) {

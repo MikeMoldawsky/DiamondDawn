@@ -13,6 +13,7 @@ import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import { DUMMY_VIDEO_URL } from "consts";
 import useMountLogger from "hooks/useMountLogger";
+import { mineApi } from "api/contractApi";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -85,7 +86,7 @@ const Mine = () => {
   return (
     <ActionView
       watch={watchTokenMinedBy(account.address)}
-      transact={() => contract.mine({ value: minePrice })}
+      transact={() => mineApi(contract, minePrice)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <MineContent />

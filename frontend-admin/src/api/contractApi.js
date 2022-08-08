@@ -58,7 +58,7 @@ const ART_MAPPING = {
   },
 };
 
-export const getStageVideoUrls = async (mineContract, stage) => {
+export const getVideoUrlsByStageApi = async (mineContract, stage) => {
   const { shapes, getter } = ART_MAPPING[stage];
   const urls = await Promise.all(
     _.map(shapes, (shape) => {
@@ -74,7 +74,7 @@ export const getStageVideoUrls = async (mineContract, stage) => {
   return _.zipObject(shapeNames, urls);
 };
 
-export const setStageVideoUrls = async (mineContract, stage, urls) => {
+export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
   const { setter } = ART_MAPPING[stage];
   const tx = await mineContract[setter](...urls);
   const receipt = await tx.wait();
@@ -98,7 +98,7 @@ const prepareDiamondForPopulate = (diamond) => ({
   width: diamond.width.$numberDecimal,
 });
 
-export const populateDiamonds = async (mineContract, diamonds) => {
+export const populateDiamondsApi = async (mineContract, diamonds) => {
   const processedDiamonds = diamonds.map(prepareDiamondForPopulate);
 
   console.log("PUSHING DIAMONDS TO MINE CONTRACT", {

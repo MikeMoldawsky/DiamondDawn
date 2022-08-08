@@ -5,9 +5,8 @@ import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import {
-  fetchAccountShippingTokens,
+  loadAccountShippingTokens,
   tokenByIdSelector,
-  watchTokenProcessed,
 } from "store/tokensReducer";
 import { useForm } from "react-hook-form";
 import "./Ship.scss";
@@ -20,6 +19,8 @@ import useEffectWithAccount from "hooks/useEffectWithAccount";
 import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
+import useActionDispatch from "hooks/useActionDispatch";
+import { shipApi } from "api/contractApi";
 
 const Ship = () => {
   const contract = useDDContract();
@@ -27,7 +28,7 @@ const Ship = () => {
   const token = useSelector(tokenByIdSelector(selectedTokenId));
   const [showShippingForm, setShowShippingForm] = useState(false);
   const account = useAccount();
-  const dispatch = useDispatch();
+  const actionDispatch = useActionDispatch();
 
   const {
     register,
@@ -36,7 +37,10 @@ const Ship = () => {
   } = useForm();
 
   useEffectWithAccount(() => {
-    dispatch(fetchAccountShippingTokens(contract, account.address));
+    actionDispatch(
+      loadAccountShippingTokens(contract, account.address),
+      "load-shipping-nfts"
+    );
   });
 
   const renderInput = (name, placeholder) => {
@@ -101,7 +105,7 @@ const Ship = () => {
 
   return (
     <ActionView
-      transact={() => contract.ship(selectedTokenId)}
+      transact={() => shipApi(contract, selectedTokenId)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <BurnContent />
