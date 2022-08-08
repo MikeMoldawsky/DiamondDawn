@@ -1,7 +1,7 @@
-export const fetchMinePrice = async (contract) => {
+export const getMinePriceApi = async (contract) => {
   return await contract.MINING_PRICE();
 };
 
-export const fetchSystemStage = async (contract) => {
-  return await contract.stage();
+export const getSystemStageApi = async (contract) => {
+  return await contract.systemStage();
 };

@@ -14,7 +14,9 @@ const useSystemLoader = () => {
   const provider = useProvider();
   const dispatch = useDispatch();
   const contract = useDDContract();
-  const isReady = useSelector(isActionFirstCompleteSelector("load-nfts"));
+  const isNftsLoaded = useSelector(isActionFirstCompleteSelector("load-nfts"));
+  const isShippingNftsLoaded = useSelector(isActionFirstCompleteSelector("load-shipping-nfts"));
+  const isReady = isNftsLoaded && isShippingNftsLoaded
 
   useMountLogger("useSystemLoader");
 

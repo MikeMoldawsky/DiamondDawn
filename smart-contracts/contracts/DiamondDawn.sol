@@ -71,6 +71,18 @@ contract DiamondDawn is
         _;
     }
 
+    modifier systemStageEqualOrGreater(SystemStage _stage) {
+        require(
+            systemStage >= _stage,
+            string.concat(
+                "The stage should be ",
+                Strings.toString(uint(_stage)),
+                " to perform this action"
+            )
+        );
+        _;
+    }
+
     modifier isRevealed(IDiamondDawnMine.DiamondDawnType type_) {
         require(
             diamondDawnMine.isRevealed(type_),
@@ -162,7 +174,7 @@ contract DiamondDawn is
     function rebirth(uint256 tokenId)
         external
         assignedDiamondDawnMine
-        onlySystemStage(SystemStage.SHIP)
+        systemStageEqualOrGreater(SystemStage.SHIP)
         isRevealed(IDiamondDawnMine.DiamondDawnType.REBORN)
         onlyShippedDiamondOwner(tokenId)
     {

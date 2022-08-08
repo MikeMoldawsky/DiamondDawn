@@ -38,7 +38,7 @@ function NFTPage() {
           </div>
           <div className="center-center-aligned-row actionable">
             <div>Your NFT can be processed</div>
-            {actionName === "REBIRTH" ? (
+            {actionName === "COMPLETE" ? (
               <div className="button disabled">{actionName}</div>
             ) : (
               <NavLink to={`/process`}>

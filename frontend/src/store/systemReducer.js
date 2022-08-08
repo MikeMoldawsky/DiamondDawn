@@ -1,7 +1,7 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import { BigNumber } from "ethers";
 import {fetchSystemSchedule} from "api/serverApi";
-import {fetchMinePrice, fetchSystemStage} from "api/contractApi";
+import {getMinePriceApi, getSystemStageApi} from "api/contractApi";
 
 const INITIAL_STATE = {
   ddContractData: null,
@@ -12,7 +12,7 @@ const INITIAL_STATE = {
 };
 
 export const loadMinePrice = (contract) => async (dispatch) => {
-  const minePrice = await fetchMinePrice(contract);
+  const minePrice = await getMinePriceApi(contract);
   dispatch({
     type: "SYSTEM.SET_PRICE",
     payload: { minePrice },
@@ -20,7 +20,7 @@ export const loadMinePrice = (contract) => async (dispatch) => {
 };
 
 export const loadSystemStage = (contract) => async (dispatch) => {
-  const systemStage = await fetchSystemStage(contract);
+  const systemStage = await getSystemStageApi(contract);
   dispatch({
     type: "SYSTEM.SET_STAGE",
     payload: { systemStage },
