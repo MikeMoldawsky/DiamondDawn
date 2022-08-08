@@ -71,8 +71,9 @@ contract DiamondDawn is
         _;
     }
 
-    modifier notLastStage() {
+    modifier diamondDawnNotCompleted() {
         require(uint(stage) < uint(type(SystemStage).max));
+        _;
     }
 
     modifier costs(uint price) {
@@ -151,7 +152,6 @@ contract DiamondDawn is
         onlyStage(SystemStage.SHIP)
         onlyShippedDiamondOwner(tokenId)
     {
-        address burner = _shippedTokenIdToOwner[tokenId];
         delete _shippedTokenIdToOwner[tokenId];
         _ownerToShippingTokenIds[_msgSender()].remove(tokenId);
         diamondDawnMine.rebirth(tokenId);
@@ -166,7 +166,7 @@ contract DiamondDawn is
         diamondDawnMine = IDiamondDawnMine(diamondDawnMine_);
     }
 
-    function nextStage() external onlyRole(DEFAULT_ADMIN_ROLE) notLastStage {
+    function nextStage() external diamondDawnNotCompleted onlyRole(DEFAULT_ADMIN_ROLE) {
         stage = SystemStage(uint(stage) + 1);
         emit SystemStageChanged(stage);
     }

@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interface/IDiamondDawnMine.sol";
 import "./interface/IDiamondDawnMineAdmin.sol";
 import {getERC721MetadataAttribute, generateERC721Metadata, ERC721MetadataAttribute, ERC721MetadataStructure} from "./utils/ERC721MetadataUtils.sol";
+import {rand} from "./utils/RandomUtils.sol";
 
 /**
  * @title DiamondDawnMine NFT Contract
@@ -49,6 +50,8 @@ contract DiamondDawnMine is
     uint private constant MAX_ROUGH_POINTS_REDUCTION = 74; // Max of ~65% carat loss.
     uint private constant MIN_CUT_POINTS_REDUCTION = 1; // Min of ~2% carat loss.
     uint private constant MAX_CUT_POINTS_REDUCTION = 4; // Max of ~8% carat loss.
+
+    uint private _randNonce = 0;
 
     address private _diamondDawnContract;
 
@@ -253,6 +256,16 @@ contract DiamondDawnMine is
         return diamond;
     }
 
+    function _getRandomNumberInRange(uint minNumber, uint maxNumber)
+    private
+    returns (uint)
+    {
+        _randNonce++;
+        uint randomNumber = rand(_randNonce);
+        uint range = maxNumber - minNumber + 1;
+        return (randomNumber % range) + minNumber;
+    }
+
     function _getDiamondDawnVideoUrl(
         DiamondDawnMetadata memory diamondDawnMetadata
     ) private view returns (string memory) {
@@ -280,23 +293,9 @@ contract DiamondDawnMine is
         return string.concat(_videoBaseURI(), videoUrl);
     }
 
-    function _getRandomNumberInRange(uint minNumber, uint maxNumber)
-        private
-        view
-        returns (uint)
-    {
-        // TODO: make sure that using tx.origin is fine and check for a better implementation.
-        uint randomNumber = uint(
-            keccak256(
-                abi.encodePacked(block.timestamp, block.difficulty, tx.origin)
-            )
-        );
-        uint range = maxNumber - minNumber + 1;
-        return (randomNumber % range) + minNumber;
-    }
-
     function _videoBaseURI() private pure returns (string memory) {
         // TODO: in production we'll get the full ipfs/arweave url - base URI will change.
+        // TODO: galk to check what's the best approach
         return
             "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
     }
