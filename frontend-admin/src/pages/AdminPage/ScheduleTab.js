@@ -8,13 +8,13 @@ import TextField from "@mui/material/TextField";
 import ActionButton from "components/ActionButton";
 import Countdown from "react-countdown";
 import { getSystemStageName } from "utils";
-import { getSystemSchedule, updateSystemSchedule } from "api/serverApi";
+import { getSystemScheduleApi, updateSystemScheduleApi } from "api/serverApi";
 
 const ScheduleTab = () => {
   const [schedule, setSchedule] = useState({});
 
   const fetchSchedule = async () => {
-    setSchedule(await getSystemSchedule());
+    setSchedule(await getSystemScheduleApi());
   };
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const ScheduleTab = () => {
   };
 
   const saveSchedule = async (_stage) => {
-    return await updateSystemSchedule(_stage, schedule[_stage]);
+    return await updateSystemScheduleApi(_stage, schedule[_stage]);
   };
 
   return (

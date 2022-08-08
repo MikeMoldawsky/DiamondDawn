@@ -10,7 +10,7 @@ import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/dist/index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setDDContractData, systemSelector } from "store/systemReducer";
-import { getContractData } from "api/serverApi";
+import { getContractDataApi } from "api/serverApi";
 
 const localChain = {
   id: 31337,
@@ -32,7 +32,7 @@ const ContractProvider = ({ children }) => {
   const dispatch = useDispatch();
 
   const getContracts = async () => {
-    const contractData = await getContractData();
+    const contractData = await getContractDataApi();
     if (contractData) {
       dispatch(setDDContractData(contractData));
     }
