@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import VideoPlayer from "components/VideoPlayer";
-import { fetchAccountBurnedTokens, loadAccountNfts } from "store/tokensReducer";
+import {
+  fetchAccountShippingTokens,
+  loadAccountNfts,
+} from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import { isActionSuccessSelector } from "components/ActionButton/ActionButton.module";
@@ -30,7 +33,7 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const execute = async () => {
     watch(contract, provider, (tokenId) => {
       dispatch(loadAccountNfts(contract, provider, account.address));
-      dispatch(fetchAccountBurnedTokens(contract, account.address));
+      dispatch(fetchAccountShippingTokens(contract, account.address));
       setProcessedTokenId(tokenId);
     });
 

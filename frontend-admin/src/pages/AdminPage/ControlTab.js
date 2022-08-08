@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchStage, fetchPaused, systemSelector } from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
 import ActionButton from "components/ActionButton";
-import {
-  completeCurrentStageAndRevealNextStage,
-  pause,
-  unpause,
-} from "api/contractApi";
+import { nextStage, pause, unpause } from "api/contractApi";
 import { getStageName } from "utils";
 
 const ControlTab = () => {
@@ -23,7 +19,7 @@ const ControlTab = () => {
   }, [contract, dispatch]);
 
   const completeAndRevealStage = async () => {
-    await completeCurrentStageAndRevealNextStage(contract);
+    await nextStage(contract);
     dispatch(fetchStage(contract));
   };
 

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-
 interface IDiamondDawn {
     enum SystemStage {
         MINE_OPEN,
@@ -12,7 +11,11 @@ interface IDiamondDawn {
     }
 
     event SystemStageChanged(SystemStage stage);
-    // TODO: maybe dedicated events for Cut, Polish etc
+    event Mine(uint tokenId);
+    event Cut(uint tokenId);
+    event Polish(uint indexed tokenId);
+    event Ship(uint tokenId);
+    event Rebirth(uint tokenId);
 
     function mine() external payable;
 
@@ -20,11 +23,17 @@ interface IDiamondDawn {
 
     function polish(uint tokenId) external;
 
-    function burnAndShip(uint tokenId) external;
+    function ship(uint tokenId) external;
 
     function rebirth(uint tokenId) external;
 
     function getTokenIdsByOwner(address owner)
+        external
+        view
+        returns (uint[] memory);
+
+    // TODO: check with Asaf if we need this function
+    function getShippingTokenIds(address owner)
         external
         view
         returns (uint[] memory);

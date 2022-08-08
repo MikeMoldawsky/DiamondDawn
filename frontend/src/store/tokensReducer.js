@@ -76,15 +76,15 @@ export const loadAccountNfts =
     });
   };
 
-export const fetchAccountBurnedTokens =
+export const fetchAccountShippingTokens =
   (contract, address) => async (dispatch) => {
-    const burnedTokenIds = await contract.getBurnedTokens(address);
-    const burnedTokens = await tokenIdsToUris(contract, burnedTokenIds);
-    console.log({ burnedTokenIds, burnedTokens });
+    const shippingTokenIds = await contract.getShippingTokens(address);
+    const shippingTokens = await tokenIdsToUris(contract, shippingTokenIds);
+    console.log({ shippingTokenIds, shippingTokens });
 
     dispatch({
       type: "TOKENS.SET",
-      payload: burnedTokens,
+      payload: shippingTokens,
     });
   };
 
