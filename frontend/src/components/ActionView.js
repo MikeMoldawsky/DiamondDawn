@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { isActionSuccessSelector } from "components/ActionButton/ActionButton.module";
 import Loading from "components/Loading";
 import classNames from "classnames";
+import {systemSelector} from "store/systemReducer";
+import _ from "lodash";
 
 const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const [actionTxId, setActionTxId] = useState(false);
@@ -23,6 +25,8 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isFetchNftsSuccess = useSelector(isActionSuccessSelector("load-nfts"));
+  const { systemStage, systemSchedule } = useSelector(systemSelector);
+  const endTime = _.get(systemSchedule, systemStage + 1);
 
   useEffect(() => {
     if (completeVideoEnded && processedTokenId > -1 && isFetchNftsSuccess) {
@@ -64,7 +68,7 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
       return <Loading />;
     }
 
-    return React.cloneElement(children, { execute });
+    return React.cloneElement(children, { execute, endTime });
   };
 
   return (

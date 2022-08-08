@@ -2,13 +2,10 @@ import React, { useEffect } from "react";
 import { useAccount, useProvider } from "wagmi";
 import { useDispatch, useSelector } from "react-redux";
 import useDDContract from "hooks/useDDContract";
-import { fetchStage, fetchStagesConfig, setStage } from "store/systemReducer";
+import { loadSystemStage, loadSystemSchedule } from "store/systemReducer";
 import { EVENTS } from "consts";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
-import {
-  fetchAccountShippingTokens,
-  loadAccountNfts,
-} from "store/tokensReducer";
+import { fetchAccountShippingTokens, loadAccountNfts } from "store/tokensReducer";
 import { isActionFirstCompleteSelector } from "components/ActionButton/ActionButton.module";
 import useMountLogger from "hooks/useMountLogger";
 
@@ -22,13 +19,13 @@ const useSystemLoader = () => {
   useMountLogger("useSystemLoader");
 
   useEffect(() => {
-    dispatch(fetchStage(contract));
-    dispatch(fetchStagesConfig());
+    dispatch(loadSystemStage(contract));
+    dispatch(loadSystemSchedule());
 
     provider.once("block", () => {
-      contract.on(EVENTS.StageChanged, (_stage, _isStageActive) => {
-        console.log("EVENT StageChanged fired", { _stage, _isStageActive });
-        dispatch(setStage(_stage, _isStageActive));
+      contract.on(EVENTS.SystemStageChanged, (_stage, _isStageActive) => {
+        console.log("EVENT SystemStageChanged fired", { _stage, _isStageActive });
+        dispatch(loadSystemStage(contract));
       });
     });
 

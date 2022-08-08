@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import "./DiamondList.scss";
-import { STAGE, SHAPE, TRAIT, NFT_TYPE } from "consts";
+import { SYSTEM_STAGE, SHAPE, TRAIT, NFT_TYPE } from "consts";
 import { systemSelector } from "store/systemReducer";
 import { tokensSelector } from "store/tokensReducer";
 import DiamondInfo from "components/DiamondInfo";
@@ -59,7 +59,7 @@ const getDiamondIcon = (token) => {
 
 const DiamondItem = ({ diamond }) => {
   const { selectedTokenId } = useSelector(uiSelector);
-  const { stage: systemStage, isStageActive } = useSelector(systemSelector);
+  const { systemStage } = useSelector(systemSelector);
   const [showInfo, setShowInfo] = useState(false);
   const dispatch = useDispatch();
   const ref = useRef(null);
@@ -69,7 +69,7 @@ const DiamondItem = ({ diamond }) => {
   const { id, stage } = diamond;
 
   const selected = selectedTokenId === id;
-  const enabled = isStageActive && stage === systemStage - 1;
+  const enabled = stage === systemStage - 1;
 
   return (
     <NavLink to={`/nft/${id}`}>

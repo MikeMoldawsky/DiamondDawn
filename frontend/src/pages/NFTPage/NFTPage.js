@@ -13,14 +13,14 @@ import { systemSelector } from "store/systemReducer";
 function NFTPage() {
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-  const { stage } = useSelector(systemSelector);
+  const { systemStage } = useSelector(systemSelector);
 
   useSelectTokenFromRoute();
 
   if (!token) return null;
 
   const renderByStatusPart = () => {
-    if (isTokenDone(token, stage))
+    if (isTokenDone(token, systemStage))
       return (
         <>
           <div className="leading-text">This is Your Final Diamond NFT</div>
@@ -29,7 +29,7 @@ function NFTPage() {
           </div>
         </>
       );
-    if (isTokenActionable(token, stage)) {
+    if (isTokenActionable(token, systemStage)) {
       const actionName = getTokenNextStageName(token);
       return (
         <>

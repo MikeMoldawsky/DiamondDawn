@@ -1,60 +1,39 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
-import _ from "lodash";
 import { BigNumber } from "ethers";
-import axios from "axios";
-import { STAGE } from "consts";
+import {fetchSystemSchedule} from "api/serverApi";
+import {fetchMinePrice, fetchSystemStage} from "api/contractApi";
 
 const INITIAL_STATE = {
   ddContractData: null,
-  stage: -1,
-  isStageActive: false,
+  systemStage: -1,
   paused: false,
-  stageStartTimes: {},
+  systemSchedule: {},
   minePrice: BigNumber.from(0),
 };
 
-export const fetchPricing = (contract) => async (dispatch) => {
-  const minePrice = await contract.MINING_PRICE();
-
+export const loadMinePrice = (contract) => async (dispatch) => {
+  const minePrice = await fetchMinePrice(contract);
   dispatch({
     type: "SYSTEM.SET_PRICE",
     payload: { minePrice },
   });
 };
 
-export const fetchStage = (contract) => async (dispatch) => {
-  const _stage = await contract.stage();
-  const _isStageActive = await contract.isStageActive();
-  dispatch(setStage(_stage, _isStageActive));
-};
-
-export const getStageConfigs = async () => {
-  try {
-    const res = await axios.get(`/api/get_stages`);
-    return _.zipObject(
-      _.values(STAGE),
-      _.map(_.values(STAGE), (stage) => {
-        const dbConf = _.find(res.data, { stage });
-        return dbConf ? dbConf.startsAt : null;
-      })
-    );
-  } catch (e) {
-    return [];
-  }
-};
-
-export const fetchStagesConfig = () => async (dispatch) => {
-  const stageStartTimes = await getStageConfigs();
+export const loadSystemStage = (contract) => async (dispatch) => {
+  const systemStage = await fetchSystemStage(contract);
   dispatch({
-    type: "SYSTEM.SET_STAGES_CONFIG",
-    payload: { stageStartTimes },
+    type: "SYSTEM.SET_STAGE",
+    payload: { systemStage },
   });
 };
 
-export const setStage = (stage, isStageActive) => ({
-  type: "SYSTEM.SET_STAGE",
-  payload: { stage, isStageActive },
-});
+export const loadSystemSchedule = () => async (dispatch) => {
+  const systemSchedule = await fetchSystemSchedule();
+  dispatch({
+    type: "SYSTEM.SET_SCHEDULE",
+    payload: { systemSchedule },
+  });
+};
 
 export const setDDContractData = (ddContractData) => ({
   type: "SYSTEM.SET_DD_CONTRACT_DATA",
@@ -68,7 +47,7 @@ export const systemReducer = makeReducer(
     "SYSTEM.SET_STAGE": reduceUpdateFull,
     "SYSTEM.SET_PRICE": reduceUpdateFull,
     "SYSTEM.SET_PAUSED": reduceUpdateFull,
-    "SYSTEM.SET_STAGES_CONFIG": reduceUpdateFull,
+    "SYSTEM.SET_SCHEDULE": reduceUpdateFull,
     "SYSTEM.SET_DD_CONTRACT_DATA": reduceUpdateFull,
   },
   INITIAL_STATE

@@ -12,9 +12,8 @@ import {
 import { useForm } from "react-hook-form";
 import "./Ship.scss";
 import classNames from "classnames";
-import { systemSelector } from "store/systemReducer";
 import NoDiamondView from "components/NoDiamondView";
-import { DUMMY_VIDEO_URL, NFT_TYPE, STAGE } from "consts";
+import { DUMMY_VIDEO_URL, NFT_TYPE, SYSTEM_STAGE } from "consts";
 import { useAccount } from "wagmi";
 import Diamond from "components/Diamond";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
@@ -26,9 +25,7 @@ const Ship = () => {
   const contract = useDDContract();
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-  const { stageStartTimes } = useSelector(systemSelector);
   const [showShippingForm, setShowShippingForm] = useState(false);
-  const [actionTxId, setActionTxId] = useState(false);
   const account = useAccount();
   const dispatch = useDispatch();
 
@@ -56,9 +53,7 @@ const Ship = () => {
     );
   };
 
-  const endTime = _.get(stageStartTimes, 4);
-
-  const BurnContent = ({ execute }) => {
+  const BurnContent = ({ execute, endTime }) => {
     if (showShippingForm)
       return (
         <>
@@ -107,7 +102,7 @@ const Ship = () => {
   return (
     <ActionView
       transact={() => contract.burn(selectedTokenId)}
-      watch={watchTokenProcessed(selectedTokenId, STAGE.BURN)}
+      watch={watchTokenProcessed(selectedTokenId, SYSTEM_STAGE.SHIP)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <BurnContent />

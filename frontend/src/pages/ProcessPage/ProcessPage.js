@@ -10,12 +10,13 @@ import Polish from "./Polish";
 import Ship from "./Burn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
+import {SYSTEM_STAGE} from "consts";
 
 const ProcessPage = () => {
-  const { stage } = useSelector(systemSelector);
+  const { systemStage } = useSelector(systemSelector);
   const dispatch = useDispatch();
 
-  useAutoSelectToken(stage);
+  useAutoSelectToken(systemStage);
 
   useEffect(() => {
     return () => {
@@ -25,17 +26,17 @@ const ProcessPage = () => {
 
   useMountLogger("ProcessPage");
 
-  const renderStage = useCallback(() => {
-    switch (stage) {
-      case 0:
+  const renderByStage = useCallback(() => {
+    switch (systemStage) {
+      case SYSTEM_STAGE.MINE_OPEN:
         return <Mine />;
-      case 1:
+      case SYSTEM_STAGE.CUT_OPEN:
         return <Cut />;
-      case 2:
+      case SYSTEM_STAGE.POLISH_OPEN:
         return <Polish />;
-      case 3:
+      case SYSTEM_STAGE.SHIP:
         return <Ship />;
-      case 4:
+      case SYSTEM_STAGE.COMPLETE:
         return (
           <div className="action-view">
             <div className="diamond-art">
@@ -47,9 +48,9 @@ const ProcessPage = () => {
       default:
         return null;
     }
-  }, [stage]);
+  }, [systemStage]);
 
-  return stage !== -1 ? renderStage() : null;
+  return systemStage >= SYSTEM_STAGE.MINE_OPEN ? renderByStage() : null;
 };
 
 export default ProcessPage;

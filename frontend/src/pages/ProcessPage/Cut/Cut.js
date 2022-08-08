@@ -4,11 +4,9 @@ import useDDContract from "hooks/useDDContract";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { tokenByIdSelector, watchTokenProcessed } from "store/tokensReducer";
-import { systemSelector } from "store/systemReducer";
-import { DUMMY_VIDEO_URL, NFT_TYPE, STAGE } from "consts";
+import { DUMMY_VIDEO_URL, NFT_TYPE, SYSTEM_STAGE } from "consts";
 import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
-import _ from "lodash";
 import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
@@ -18,13 +16,10 @@ const Cut = () => {
   const contract = useDDContract();
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-  const { stageStartTimes } = useSelector(systemSelector);
 
   useMountLogger("Cut");
 
-  const endTime = _.get(stageStartTimes, 2);
-
-  const CutContent = ({ execute }) =>
+  const CutContent = ({ execute, endTime }) =>
     isTokenOfType(token, NFT_TYPE.Rough) ? (
       <>
         <Diamond diamond={token} />
@@ -52,7 +47,7 @@ const Cut = () => {
   return (
     <ActionView
       transact={() => contract.cut(selectedTokenId)}
-      watch={watchTokenProcessed(selectedTokenId, STAGE.CUT)}
+      watch={watchTokenProcessed(selectedTokenId, SYSTEM_STAGE.CUT_OPEN)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <CutContent />
