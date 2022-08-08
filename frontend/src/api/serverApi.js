@@ -1,6 +1,6 @@
 import axios from "axios";
 import _ from "lodash";
-import {SYSTEM_STAGE} from "consts";
+import { SYSTEM_STAGE } from "consts";
 
 // SYSTEM SCHEDULE
 export const fetchSystemSchedule = async () => {

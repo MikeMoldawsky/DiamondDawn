@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { toast } from "react-toastify";
-import {NFT_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE, TRAIT} from "consts";
-import {faGem} from "@fortawesome/free-solid-svg-icons";
+import { NFT_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE, TRAIT } from "consts";
+import { faGem } from "@fortawesome/free-solid-svg-icons";
 
 export const parseError = (e) => {
   let message = _.get(e, "error.data.message", "");
@@ -99,16 +99,16 @@ export const getTokenTrait = (token, trait) => {
 export const getDiamondIcon = (token) => {
   const type = getTokenTrait(token, TRAIT.type);
   const shapeName = getTokenTrait(token, TRAIT.shape);
-  let shape
+  let shape;
 
   switch (type) {
     case NFT_TYPE.Rough:
       shape = ROUGH_SHAPE[_.toUpper(shapeName)];
       switch (shape) {
         case ROUGH_SHAPE.MAKEABLE:
-          return faGem
+          return faGem;
         default:
-          return null
+          return null;
       }
     case NFT_TYPE.Cut:
       shape = SHAPE[_.toUpper(shapeName)];

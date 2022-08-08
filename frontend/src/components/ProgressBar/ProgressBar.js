@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import classNames from "classnames";
 import { systemSelector } from "store/systemReducer";
 import "./ProgressBar.scss";
-import {SYSTEM_STAGE} from "consts";
+import { SYSTEM_STAGE } from "consts";
 
 const ProgressBar = () => {
   const { systemStage } = useSelector(systemSelector);

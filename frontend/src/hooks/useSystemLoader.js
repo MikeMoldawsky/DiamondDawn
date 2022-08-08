@@ -5,7 +5,10 @@ import useDDContract from "hooks/useDDContract";
 import { loadSystemStage, loadSystemSchedule } from "store/systemReducer";
 import { EVENTS } from "consts";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
-import { fetchAccountShippingTokens, loadAccountNfts } from "store/tokensReducer";
+import {
+  fetchAccountShippingTokens,
+  loadAccountNfts,
+} from "store/tokensReducer";
 import { isActionFirstCompleteSelector } from "components/ActionButton/ActionButton.module";
 import useMountLogger from "hooks/useMountLogger";
 
@@ -15,8 +18,10 @@ const useSystemLoader = () => {
   const dispatch = useDispatch();
   const contract = useDDContract();
   const isNftsLoaded = useSelector(isActionFirstCompleteSelector("load-nfts"));
-  const isShippingNftsLoaded = useSelector(isActionFirstCompleteSelector("load-shipping-nfts"));
-  const isReady = isNftsLoaded && isShippingNftsLoaded
+  const isShippingNftsLoaded = useSelector(
+    isActionFirstCompleteSelector("load-shipping-nfts")
+  );
+  const isReady = isNftsLoaded && isShippingNftsLoaded;
 
   useMountLogger("useSystemLoader");
 
@@ -26,7 +31,10 @@ const useSystemLoader = () => {
 
     provider.once("block", () => {
       contract.on(EVENTS.SystemStageChanged, (_stage, _isStageActive) => {
-        console.log("EVENT SystemStageChanged fired", { _stage, _isStageActive });
+        console.log("EVENT SystemStageChanged fired", {
+          _stage,
+          _isStageActive,
+        });
         dispatch(loadSystemStage(contract));
       });
     });

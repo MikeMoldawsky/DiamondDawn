@@ -76,25 +76,26 @@ export const loadAccountNfts =
     });
   };
 
-export const fetchAccountShippingTokens = (contract, address) => async (dispatch) => {
-  dispatch({
-    type: "ACTION_STATUS.PENDING",
-    payload: { actionKey: "load-shipping-nfts" },
-  });
+export const fetchAccountShippingTokens =
+  (contract, address) => async (dispatch) => {
+    dispatch({
+      type: "ACTION_STATUS.PENDING",
+      payload: { actionKey: "load-shipping-nfts" },
+    });
 
-  const shippingTokenIds = await contract.getShippingTokenIds(address);
-  const shippingTokens = await tokenIdsToUris(contract, shippingTokenIds);
-  console.log({ shippingTokenIds, shippingTokens });
+    const shippingTokenIds = await contract.getShippingTokenIds(address);
+    const shippingTokens = await tokenIdsToUris(contract, shippingTokenIds);
+    console.log({ shippingTokenIds, shippingTokens });
 
-  dispatch({
-    type: "TOKENS.SET",
-    payload: shippingTokens,
-  });
-  dispatch({
-    type: "ACTION_STATUS.SUCCESS",
-    payload: { actionKey: "load-shipping-nfts" },
-  });
-};
+    dispatch({
+      type: "TOKENS.SET",
+      payload: shippingTokens,
+    });
+    dispatch({
+      type: "ACTION_STATUS.SUCCESS",
+      payload: { actionKey: "load-shipping-nfts" },
+    });
+  };
 
 const tokenIdsToUris = async (contract, tokenIds) => {
   return Promise.all(

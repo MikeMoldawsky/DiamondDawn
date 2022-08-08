@@ -8,8 +8,8 @@ import "./DiamondList.scss";
 import { systemSelector } from "store/systemReducer";
 import { tokensSelector } from "store/tokensReducer";
 import useOnClickOutside from "hooks/useClickOutside";
-import {getDiamondIcon, isTokenActionable} from "utils";
-import {NavLink, useLocation} from "react-router-dom";
+import { getDiamondIcon, isTokenActionable } from "utils";
+import { NavLink, useLocation } from "react-router-dom";
 import Diamond from "components/Diamond";
 
 const DiamondItem = ({ diamond }) => {
@@ -17,15 +17,15 @@ const DiamondItem = ({ diamond }) => {
   const { systemStage } = useSelector(systemSelector);
   const [showInfo, setShowInfo] = useState(false);
   const ref = useRef(null);
-  const location = useLocation()
-  console.log({ location })
+  const location = useLocation();
+  console.log({ location });
 
   useOnClickOutside(ref, () => setShowInfo(false));
 
   const { id } = diamond;
   const selected = selectedTokenId === id;
-  const enabled = isTokenActionable(diamond, systemStage)
-  const isLinkToNftPage = !location.pathname.startsWith('/nft')
+  const enabled = isTokenActionable(diamond, systemStage);
+  const isLinkToNftPage = !location.pathname.startsWith("/nft");
 
   return (
     <NavLink to={`/nft/${id}`}>

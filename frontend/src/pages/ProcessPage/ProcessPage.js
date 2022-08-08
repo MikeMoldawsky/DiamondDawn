@@ -10,7 +10,7 @@ import Polish from "./Polish";
 import Ship from "./Burn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
-import {SYSTEM_STAGE} from "consts";
+import { SYSTEM_STAGE } from "consts";
 
 const ProcessPage = () => {
   const { systemStage } = useSelector(systemSelector);

@@ -1,7 +1,7 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import { BigNumber } from "ethers";
-import {fetchSystemSchedule} from "api/serverApi";
-import {getMinePriceApi, getSystemStageApi} from "api/contractApi";
+import { fetchSystemSchedule } from "api/serverApi";
+import { getMinePriceApi, getSystemStageApi } from "api/contractApi";
 
 const INITIAL_STATE = {
   ddContractData: null,
