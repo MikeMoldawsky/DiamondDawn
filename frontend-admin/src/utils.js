@@ -58,4 +58,5 @@ export const getShapeName = (shape, stage) => {
   }
 };
 
-export const getSystemStageName = (stage) => getEnumKeyByValue(SYSTEM_STAGE, stage);
+export const getSystemStageName = (stage) =>
+  getEnumKeyByValue(SYSTEM_STAGE, stage);

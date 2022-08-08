@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSystemStage, fetchPaused, systemSelector } from "store/systemReducer";
+import {
+  fetchSystemStage,
+  fetchPaused,
+  systemSelector,
+} from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
 import ActionButton from "components/ActionButton";
 import { nextStage, pause, unpause } from "api/contractApi";
