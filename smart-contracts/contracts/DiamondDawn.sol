@@ -14,7 +14,6 @@ import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "./interface/IDiamondDawn.sol";
 import "./interface/IDiamondDawnAdmin.sol";
 import "./interface/IDiamondDawnMine.sol";
-import "./interface/IDiamondDawnMine.sol";
 
 /**
  * @title DiamondDawn NFT Contract
