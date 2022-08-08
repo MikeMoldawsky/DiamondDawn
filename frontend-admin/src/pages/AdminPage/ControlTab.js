@@ -7,8 +7,9 @@ import {
 } from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
 import ActionButton from "components/ActionButton";
-import { nextStage, pause, unpause } from "api/contractApi";
+import { setSystemStageApi, pause, unpause } from "api/contractApi";
 import { getSystemStageName } from "utils";
+import { SYSTEM_STAGE } from "../../consts";
 
 const ControlTab = () => {
   const { systemStage, paused } = useSelector(systemSelector);
@@ -22,8 +23,8 @@ const ControlTab = () => {
     dispatch(fetchPaused(contract));
   }, [contract, dispatch]);
 
-  const completeAndRevealStage = async () => {
-    await nextStage(contract);
+  const setSystemStage = async (systemStage) => {
+    await setSystemStageApi(contract, systemStage);
     dispatch(fetchSystemStage(contract));
   };
 
@@ -32,6 +33,7 @@ const ControlTab = () => {
     dispatch(fetchPaused(contract));
   };
 
+  // TODO: asaf add system Stage param from admin panel
   return (
     <div className="admin-control">
       <h1>Control Panel</h1>
@@ -40,7 +42,7 @@ const ControlTab = () => {
         <div className="stage">{getSystemStageName(systemStage)}</div>
         <ActionButton
           actionKey="Complete and Reveal Stage"
-          onClick={completeAndRevealStage}
+          onClick={() => setSystemStage(SYSTEM_STAGE.MINE_OPEN)}
         >
           Next Stage
         </ActionButton>
