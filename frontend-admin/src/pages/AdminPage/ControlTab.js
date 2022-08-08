@@ -1,26 +1,30 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStage, fetchPaused, systemSelector } from "store/systemReducer";
+import {
+  fetchSystemStage,
+  fetchPaused,
+  systemSelector,
+} from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
 import ActionButton from "components/ActionButton";
 import { nextStage, pause, unpause } from "api/contractApi";
-import { getStageName } from "utils";
+import { getSystemStageName } from "utils";
 
 const ControlTab = () => {
-  const { stage, paused } = useSelector(systemSelector);
+  const { systemStage, paused } = useSelector(systemSelector);
 
   const contract = useDDContract();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchStage(contract));
+    dispatch(fetchSystemStage(contract));
     dispatch(fetchPaused(contract));
   }, [contract, dispatch]);
 
   const completeAndRevealStage = async () => {
     await nextStage(contract);
-    dispatch(fetchStage(contract));
+    dispatch(fetchSystemStage(contract));
   };
 
   const togglePause = async () => {
@@ -31,9 +35,9 @@ const ControlTab = () => {
   return (
     <div className="admin-control">
       <h1>Control Panel</h1>
-      <div className="caption">STAGE</div>
+      <div className="caption">SYSTEM STAGE</div>
       <div className="center-aligned-row input-row">
-        <div className="stage">{getStageName(stage)}</div>
+        <div className="stage">{getSystemStageName(systemStage)}</div>
         <ActionButton
           actionKey="Complete and Reveal Stage"
           onClick={completeAndRevealStage}

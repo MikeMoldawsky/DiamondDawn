@@ -4,14 +4,17 @@ import { CONTRACTS } from "consts";
 const INITIAL_STATE = {
   ddContractData: null,
   ddMineContractData: null,
-  stage: -1,
+  systemStage: -1,
   paused: false,
   stageStartTimes: {},
 };
 
-export const fetchStage = (contract) => async (dispatch) => {
-  const _stage = await contract.stage();
-  dispatch(setStage(_stage));
+export const fetchSystemStage = (contract) => async (dispatch) => {
+  const systemStage = await contract.stage();
+  dispatch({
+    type: "SYSTEM.SET_STAGE",
+    payload: { systemStage },
+  });
 };
 
 export const fetchPaused = (contract) => async (dispatch) => {
@@ -21,11 +24,6 @@ export const fetchPaused = (contract) => async (dispatch) => {
     payload: { paused },
   });
 };
-
-export const setStage = (stage) => ({
-  type: "SYSTEM.SET_STAGE",
-  payload: { stage },
-});
 
 export const setDDContractData = ({ ddContract, ddMineContract }) => ({
   type: "SYSTEM.SET_DD_CONTRACT_DATA",

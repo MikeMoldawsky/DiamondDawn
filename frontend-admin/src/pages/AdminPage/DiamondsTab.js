@@ -10,7 +10,7 @@ import {
   CLARITY_GRADES,
   COMMON_GRADES,
   CONTRACTS,
-  STAGE,
+  SYSTEM_STAGE,
 } from "consts";
 import useDDContract from "hooks/useDDContract";
 import { populateDiamonds } from "api/contractApi";
@@ -59,7 +59,8 @@ const DIAMOND_COLUMNS = [
     valueOptions: [0, 1, 2, 3],
     width: 150,
     editable: true,
-    valueFormatter: (params) => getShapeName(params.value, STAGE.CUT),
+    valueFormatter: (params) =>
+      getShapeName(params.value, SYSTEM_STAGE.CUT_OPEN),
   },
   {
     field: "carat",

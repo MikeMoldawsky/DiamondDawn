@@ -1,56 +1,46 @@
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
-import { STAGE } from "consts";
+import { SYSTEM_STAGE } from "consts";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import TextField from "@mui/material/TextField";
 import ActionButton from "components/ActionButton";
 import Countdown from "react-countdown";
-import { getStageName } from "utils";
-import { getStagesSchedule, updateStageSchedule } from "api/serverApi";
-
-const getStageCaption = (stage) => {
-  switch (stage) {
-    case STAGE.REBIRTH:
-      return "Burn End";
-    default:
-      return `${getStageName(stage)} Start`;
-  }
-};
+import { getSystemStageName } from "utils";
+import { getSystemSchedule, updateSystemSchedule } from "api/serverApi";
 
 const ScheduleTab = () => {
-  const [stageStartTimes, setStageStartTimes] = useState({});
+  const [schedule, setSchedule] = useState({});
 
-  const fetchStages = async () => {
-    const stagesConfig = await getStagesSchedule();
-    setStageStartTimes(stagesConfig);
+  const fetchSchedule = async () => {
+    setSchedule(await getSystemSchedule());
   };
 
   useEffect(() => {
-    fetchStages();
+    fetchSchedule();
   }, []);
 
   const onStartTimeChange = (_stage) => async (_startTime) => {
-    setStageStartTimes({ ...stageStartTimes, [_stage]: _startTime });
+    setSchedule({ ...schedule, [_stage]: _startTime });
   };
 
-  const saveStage = async (_stage) => {
-    return await updateStageSchedule(_stage, stageStartTimes[_stage]);
+  const saveSchedule = async (_stage) => {
+    return await updateSystemSchedule(_stage, schedule[_stage]);
   };
 
   return (
     <div className="admin-schedule">
       <h1>Stages Schedule</h1>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        {_.map(STAGE, (_stage) => {
-          const value = _.get(stageStartTimes, _stage, null);
+        {_.map(SYSTEM_STAGE, (_stage) => {
+          const value = _.get(schedule, _stage, null);
           return (
             <div
               key={`stage-schedule-${_stage}`}
               className="center-aligned-row stage-row"
             >
-              <span className="caption">{getStageCaption(_stage)}</span>
+              <span className="caption">{getSystemStageName(_stage)}</span>
               <div className="center-aligned-row inner-row">
                 <DateTimePicker
                   minDateTime={new Date()}
@@ -66,9 +56,9 @@ const ScheduleTab = () => {
                   )}
                 </div>
                 <ActionButton
-                  actionKey={`Save ${getStageName(_stage)} Schedule`}
+                  actionKey={`Save ${getSystemStageName(_stage)} Schedule`}
                   className="btn-save"
-                  onClick={() => saveStage(_stage)}
+                  onClick={() => saveSchedule(_stage)}
                 >
                   Save
                 </ActionButton>
