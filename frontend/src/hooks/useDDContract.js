@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 
 function useDDContract() {
-  const { ddContractData } = useSelector(systemSelector);
+  const { ddContractInfo } = useSelector(systemSelector);
   const provider = useProvider();
   const { data: signer } = useSigner();
 
   const contractConfig = {
-    addressOrName: ddContractData.address,
-    contractInterface: ddContractData.artifact.abi,
+    addressOrName: ddContractInfo.address,
+    contractInterface: ddContractInfo.artifact.abi,
     signerOrProvider: signer || provider,
   };
 

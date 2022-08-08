@@ -3,7 +3,7 @@ import Countdown from "components/Countdown";
 import useDDContract from "hooks/useDDContract";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import { tokenByIdSelector, watchTokenProcessed } from "store/tokensReducer";
+import { tokenByIdSelector } from "store/tokensReducer";
 import { DUMMY_VIDEO_URL, NFT_TYPE, SYSTEM_STAGE } from "consts";
 import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";

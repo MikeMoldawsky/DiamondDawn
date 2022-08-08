@@ -1,10 +1,10 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import { BigNumber } from "ethers";
-import { fetchSystemSchedule } from "api/serverApi";
+import {getContractInfoApi, getSystemScheduleApi} from "api/serverApi";
 import { getMinePriceApi, getSystemStageApi } from "api/contractApi";
 
 const INITIAL_STATE = {
-  ddContractData: null,
+  ddContractInfo: null,
   systemStage: -1,
   paused: false,
   systemSchedule: {},
@@ -28,17 +28,20 @@ export const loadSystemStage = (contract) => async (dispatch) => {
 };
 
 export const loadSystemSchedule = () => async (dispatch) => {
-  const systemSchedule = await fetchSystemSchedule();
+  const systemSchedule = await getSystemScheduleApi();
   dispatch({
     type: "SYSTEM.SET_SCHEDULE",
     payload: { systemSchedule },
   });
 };
 
-export const setDDContractData = (ddContractData) => ({
-  type: "SYSTEM.SET_DD_CONTRACT_DATA",
-  payload: { ddContractData },
-});
+export const loadContractInfo = () => async (dispatch) => {
+  const ddContractInfo = await getContractInfoApi();
+  dispatch({
+    type: "SYSTEM.SET_DD_CONTRACT_INFO",
+    payload: { ddContractInfo },
+  });
+};
 
 export const systemSelector = (state) => state.system;
 
@@ -48,7 +51,7 @@ export const systemReducer = makeReducer(
     "SYSTEM.SET_PRICE": reduceUpdateFull,
     "SYSTEM.SET_PAUSED": reduceUpdateFull,
     "SYSTEM.SET_SCHEDULE": reduceUpdateFull,
-    "SYSTEM.SET_DD_CONTRACT_DATA": reduceUpdateFull,
+    "SYSTEM.SET_DD_CONTRACT_INFO": reduceUpdateFull,
   },
   INITIAL_STATE
 );
