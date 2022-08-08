@@ -5,12 +5,12 @@ import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import {
-  fetchAccountBurnedTokens,
+  fetchAccountShippingTokens,
   tokenByIdSelector,
   watchTokenProcessed,
 } from "store/tokensReducer";
 import { useForm } from "react-hook-form";
-import "./Burn.scss";
+import "./Ship.scss";
 import classNames from "classnames";
 import { systemSelector } from "store/systemReducer";
 import NoDiamondView from "components/NoDiamondView";
@@ -22,7 +22,7 @@ import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
 
-const Burn = () => {
+const Ship = () => {
   const contract = useDDContract();
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
@@ -39,7 +39,7 @@ const Burn = () => {
   } = useForm();
 
   useEffectWithAccount(() => {
-    dispatch(fetchAccountBurnedTokens(contract, account.address));
+    dispatch(fetchAccountShippingTokens(contract, account.address));
   });
 
   const renderInput = (name, placeholder) => {
@@ -115,4 +115,4 @@ const Burn = () => {
   );
 };
 
-export default Burn;
+export default Ship;

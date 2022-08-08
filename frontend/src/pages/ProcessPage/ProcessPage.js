@@ -7,7 +7,7 @@ import { setSelectedTokenId } from "store/uiReducer";
 import Mine from "./Mine";
 import Cut from "./Cut";
 import Polish from "./Polish";
-import Burn from "./Burn";
+import Ship from "./Burn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 
@@ -34,7 +34,7 @@ const ProcessPage = () => {
       case 2:
         return <Polish />;
       case 3:
-        return <Burn />;
+        return <Ship />;
       case 4:
         return (
           <div className="action-view">

@@ -1,3 +1,3 @@
-import Burn from "./Burn";
+import Ship from "./Ship";
 
-export default Burn;
+export default Ship;

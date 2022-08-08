@@ -36,8 +36,8 @@ contract DiamondDawn is
     SystemStage public stage;
     IDiamondDawnMine public diamondDawnMine;
 
-    mapping(address => EnumerableSet.UintSet) private _ownerToBurnedTokens;
-    mapping(uint256 => address) private _burnedTokenToOwner;
+    mapping(address => EnumerableSet.UintSet) private _ownerToShippingTokenIds;
+    mapping(uint256 => address) private _shippedTokenIdToOwner;
     Counters.Counter private _tokenIdCounter;
 
     constructor(
@@ -71,11 +71,22 @@ contract DiamondDawn is
         _;
     }
 
+    modifier notLastStage() {
+        require(uint(stage) < uint(type(SystemStage).max));
+    }
+
     modifier costs(uint price) {
         require(
             msg.value == price,
             string.concat("Cost should be: ", Strings.toString(price))
         );
+        _;
+    }
+
+    modifier onlyShippedDiamondOwner(uint tokenId) {
+        address shippingOwner = _shippedTokenIdToOwner[tokenId];
+        require(shippingOwner != address(0), "DiamondDawn is not shipping");
+        require(shippingOwner == _msgSender(), "Sender isn't a diamond holder");
         _;
     }
 
@@ -101,6 +112,7 @@ contract DiamondDawn is
         _tokenIdCounter.increment();
         _safeMint(_msgSender(), tokenId);
         diamondDawnMine.mine(tokenId);
+        emit Mine(tokenId);
     }
 
     function cut(uint256 tokenId)
@@ -109,6 +121,7 @@ contract DiamondDawn is
         onlyStage(SystemStage.CUT_OPEN)
     {
         diamondDawnMine.cut(tokenId);
+        emit Cut(tokenId);
     }
 
     function polish(uint256 tokenId)
@@ -117,43 +130,33 @@ contract DiamondDawn is
         onlyStage(SystemStage.POLISH_OPEN)
     {
         diamondDawnMine.polish(tokenId);
+        emit Polish(tokenId);
     }
 
-    function burnAndShip(uint256 tokenId)
+    function ship(uint256 tokenId)
         external
         assignedDiamondDawnMine
         onlyStage(SystemStage.SHIP)
     {
         super.burn(tokenId);
         diamondDawnMine.burn(tokenId);
-        _burnedTokenToOwner[tokenId] = _msgSender();
-        _ownerToBurnedTokens[_msgSender()].add(tokenId);
+        _shippedTokenIdToOwner[tokenId] = _msgSender();
+        _ownerToShippingTokenIds[_msgSender()].add(tokenId);
+        emit Ship(tokenId);
     }
 
     function rebirth(uint256 tokenId)
         external
         assignedDiamondDawnMine
         onlyStage(SystemStage.SHIP)
+        onlyShippedDiamondOwner(tokenId)
     {
-        address burner = _burnedTokenToOwner[tokenId];
-        require(
-            _msgSender() == burner,
-            string.concat(
-                "Rebirth failed - only burner is allowed to perform rebirth"
-            )
-        );
-        delete _burnedTokenToOwner[tokenId];
-        _ownerToBurnedTokens[_msgSender()].remove(tokenId);
+        address burner = _shippedTokenIdToOwner[tokenId];
+        delete _shippedTokenIdToOwner[tokenId];
+        _ownerToShippingTokenIds[_msgSender()].remove(tokenId);
         diamondDawnMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);
-    }
-
-    function getBurnedTokens(address owner)
-        external
-        view
-        returns (uint[] memory)
-    {
-        return _ownerToBurnedTokens[owner].values();
+        emit Rebirth(tokenId);
     }
 
     function setDiamondDawnMine(address diamondDawnMine_)
@@ -163,11 +166,7 @@ contract DiamondDawn is
         diamondDawnMine = IDiamondDawnMine(diamondDawnMine_);
     }
 
-    function completeCurrentStageAndRevealNextStage()
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        assert(uint(stage) < uint(type(SystemStage).max));
+    function nextStage() external onlyRole(DEFAULT_ADMIN_ROLE) notLastStage {
         stage = SystemStage(uint(stage) + 1);
         emit SystemStageChanged(stage);
     }
@@ -179,16 +178,37 @@ contract DiamondDawn is
     {
         uint ownerTokenCount = balanceOf(owner);
         uint[] memory tokenIds = new uint256[](ownerTokenCount);
-
         for (uint i; i < ownerTokenCount; i++) {
             tokenIds[i] = tokenOfOwnerByIndex(owner, i);
         }
-
         return tokenIds;
+    }
+
+    function getShippingTokenIds(address owner)
+        external
+        view
+        returns (uint[] memory)
+    {
+        return _ownerToShippingTokenIds[owner].values();
     }
 
     /**********************     Public Functions     ************************/
     // TODO: Add withdraw funds method
+
+    function pause() public onlyRole(DEFAULT_ADMIN_ROLE) {
+        _pause();
+    }
+
+    function unpause() public onlyRole(DEFAULT_ADMIN_ROLE) {
+        _unpause();
+    }
+
+    function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
+    }
 
     function tokenURI(uint256 tokenId)
         public
@@ -203,7 +223,6 @@ contract DiamondDawn is
         return diamondDawnMine.getDiamondMetadata(tokenId);
     }
 
-    // The following functions are overrides required by Solidity.
     function supportsInterface(bytes4 interfaceId)
         public
         view
@@ -212,21 +231,6 @@ contract DiamondDawn is
     {
         // EIP2981 supported for royalties
         return super.supportsInterface(interfaceId);
-    }
-
-    function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
-        public
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
-    }
-
-    function pause() public onlyRole(DEFAULT_ADMIN_ROLE) {
-        _pause();
-    }
-
-    function unpause() public onlyRole(DEFAULT_ADMIN_ROLE) {
-        _unpause();
     }
 
     /**********************     Internal Functions     ************************/

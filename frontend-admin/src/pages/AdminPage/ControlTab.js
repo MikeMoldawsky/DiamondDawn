@@ -4,7 +4,7 @@ import { fetchStage, fetchPaused, systemSelector } from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
 import ActionButton from "components/ActionButton";
 import {
-  completeCurrentStageAndRevealNextStage,
+  nextStage,
   pause,
   unpause,
 } from "api/contractApi";
@@ -23,7 +23,7 @@ const ControlTab = () => {
   }, [contract, dispatch]);
 
   const completeAndRevealStage = async () => {
-    await completeCurrentStageAndRevealNextStage(contract);
+    await nextStage(contract);
     dispatch(fetchStage(contract));
   };
 
