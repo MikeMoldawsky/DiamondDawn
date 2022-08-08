@@ -102,7 +102,7 @@ const Ship = () => {
   return (
     <ActionView
       transact={() => contract.burn(selectedTokenId)}
-      watch={watchTokenProcessed(selectedTokenId, SYSTEM_STAGE.SHIP)}
+      // watch={watchTokenProcessed(selectedTokenId, SYSTEM_STAGE.SHIP)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <BurnContent />

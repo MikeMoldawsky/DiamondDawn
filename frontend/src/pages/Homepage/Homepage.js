@@ -13,12 +13,6 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
-import WagmiWrapper from "layout/WagmiWrapper";
-import Header from "components/Header";
-import ContractProvider from "layout/ContractProvider";
-import DiamondList from "components/DiamondList";
-import Wallet from "components/Wallet";
-import useSystemLoader from "hooks/useSystemLoader";
 import teaserVideo from "assets/video/teaser.mp4";
 
 const HomepageInternal = () => {

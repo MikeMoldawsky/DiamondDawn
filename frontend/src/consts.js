@@ -15,13 +15,15 @@ export const NFT_TYPE = {
   Unknown: "Unknown",
 };
 
+export const ROUGH_SHAPE = {
+  MAKEABLE: 0,
+};
+
 export const SHAPE = {
-  NO_SHAPE: 0,
-  MAKEABLE: 1,
-  PEAR: 2,
-  ROUND: 3,
-  OVAL: 4,
-  RADIANT: 5,
+  PEAR: 0,
+  ROUND: 1,
+  OVAL: 2,
+  RADIANT: 3,
 };
 
 export const EVENTS = {

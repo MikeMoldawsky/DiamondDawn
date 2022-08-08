@@ -47,7 +47,7 @@ const Cut = () => {
   return (
     <ActionView
       transact={() => contract.cut(selectedTokenId)}
-      watch={watchTokenProcessed(selectedTokenId, SYSTEM_STAGE.CUT_OPEN)}
+      // watch={watchTokenProcessed(selectedTokenId, SYSTEM_STAGE.CUT_OPEN)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <CutContent />

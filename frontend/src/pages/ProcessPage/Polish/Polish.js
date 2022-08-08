@@ -46,7 +46,7 @@ const Polish = () => {
   return (
     <ActionView
       transact={() => contract.polish(selectedTokenId)}
-      watch={watchTokenProcessed(selectedTokenId, SYSTEM_STAGE.POLISH_OPEN)}
+      // watch={watchTokenProcessed(selectedTokenId, SYSTEM_STAGE.POLISH_OPEN)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <PolishContent />
