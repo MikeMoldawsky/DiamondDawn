@@ -4,7 +4,10 @@ import { CONTRACTS, SYSTEM_STAGE } from "consts";
 import _ from "lodash";
 import { getSystemStageName } from "utils";
 import ActionButton from "components/ActionButton";
-import { getVideoUrlsByStageApi, setVideoUrlsByStageApi } from "api/contractApi";
+import {
+  getVideoUrlsByStageApi,
+  setVideoUrlsByStageApi,
+} from "api/contractApi";
 
 const SystemStageArt = ({ systemStage }) => {
   const [stageArtData, setStageArtData] = useState({});
