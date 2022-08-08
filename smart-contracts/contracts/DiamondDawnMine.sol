@@ -539,7 +539,7 @@ contract DiamondDawnMine is
 
         ERC721MetadataAttribute[]
             memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
-                DiamondDawnType.CUT,
+                DiamondDawnType.POLISHED,
                 certificate.points
             );
         ERC721MetadataAttribute[]

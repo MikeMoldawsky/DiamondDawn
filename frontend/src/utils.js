@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { toast } from "react-toastify";
-import { NFT_TYPE, SHAPE, STAGE, TRAIT } from "consts";
+import { NFT_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE, TRAIT } from "consts";
+import { faGem } from "@fortawesome/free-solid-svg-icons";
 
 export const parseError = (e) => {
   let message = _.get(e, "error.data.message", "");
@@ -46,19 +47,19 @@ export const getEnumKeyByValue = (enm, value) => Object.keys(enm)[value];
 
 export const getShapeName = (shape) => getEnumKeyByValue(SHAPE, shape);
 
-export const getStageName = (stage) => getEnumKeyByValue(STAGE, stage);
+export const getStageName = (stage) => getEnumKeyByValue(SYSTEM_STAGE, stage);
 
 export const getTypeByStage = (stage) => {
   switch (stage) {
-    case STAGE.MINE:
+    case SYSTEM_STAGE.MINE_OPEN:
       return NFT_TYPE.Rough;
-    case STAGE.CUT:
+    case SYSTEM_STAGE.CUT_OPEN:
       return NFT_TYPE.Cut;
-    case STAGE.POLISH:
+    case SYSTEM_STAGE.POLISH_OPEN:
       return NFT_TYPE.Polished;
-    case STAGE.BURN:
+    case SYSTEM_STAGE.SHIP:
       return NFT_TYPE.Burned;
-    case STAGE.REBIRTH:
+    case SYSTEM_STAGE.COMPLETE:
       return NFT_TYPE.Reborn;
     default:
       return NFT_TYPE.Unknown;
@@ -68,22 +69,22 @@ export const getTypeByStage = (stage) => {
 export const getStageByTokenType = (type) => {
   switch (type) {
     case NFT_TYPE.Rough:
-      return STAGE.MINE;
+      return SYSTEM_STAGE.MINE_OPEN;
     case NFT_TYPE.Cut:
-      return STAGE.CUT;
+      return SYSTEM_STAGE.CUT_OPEN;
     case NFT_TYPE.Polished:
-      return STAGE.POLISH;
+      return SYSTEM_STAGE.POLISH_OPEN;
     case NFT_TYPE.Burned:
-      return STAGE.BURN;
+      return SYSTEM_STAGE.SHIP;
     case NFT_TYPE.Reborn:
-      return STAGE.REBIRTH;
+      return SYSTEM_STAGE.COMPLETE;
     default:
-      return STAGE.MINE;
+      return SYSTEM_STAGE.MINE_OPEN;
   }
 };
 
 export const getTokenNextStageName = (token) => {
-  if (!token) return STAGE.MINE;
+  if (!token) return SYSTEM_STAGE.MINE_OPEN;
 
   const tokenType = getTokenTrait(token, TRAIT.type);
   const stage = getStageByTokenType(tokenType);
@@ -95,8 +96,60 @@ export const getTokenTrait = (token, trait) => {
   return t?.value;
 };
 
+export const getDiamondIcon = (token) => {
+  const type = getTokenTrait(token, TRAIT.type);
+  const shapeName = getTokenTrait(token, TRAIT.shape);
+  let shape;
+
+  switch (type) {
+    case NFT_TYPE.Rough:
+      shape = ROUGH_SHAPE[_.toUpper(shapeName)];
+      switch (shape) {
+        case ROUGH_SHAPE.MAKEABLE:
+          return faGem;
+        default:
+          return null;
+      }
+    case NFT_TYPE.Cut:
+      shape = SHAPE[_.toUpper(shapeName)];
+      switch (shape) {
+        case SHAPE.PEAR:
+          return faGem;
+        case SHAPE.ROUND:
+          return faGem;
+        case SHAPE.OVAL:
+          return faGem;
+        case SHAPE.RADIANT:
+          return faGem;
+        default:
+          return null;
+      }
+    case NFT_TYPE.Polished:
+      shape = SHAPE[_.toUpper(shapeName)];
+      switch (shape) {
+        case SHAPE.PEAR:
+          return faGem;
+        case SHAPE.ROUND:
+          return faGem;
+        case SHAPE.OVAL:
+          return faGem;
+        case SHAPE.RADIANT:
+          return faGem;
+        default:
+          return null;
+      }
+    case NFT_TYPE.Burned:
+      return faGem;
+    case NFT_TYPE.Reborn:
+      return faGem;
+    default:
+      return null;
+  }
+};
+
 export const isTokenInStage = (token, stage) =>
   getTokenTrait(token, TRAIT.stage) === stage;
+
 export const isTokenOfType = (token, type) =>
   token && getTokenTrait(token, TRAIT.type) === type;
 
@@ -105,9 +158,9 @@ export const isTokenActionable = (token, systemStage) => {
 
   const tokenType = getTokenTrait(token, TRAIT.type);
   switch (systemStage) {
-    case STAGE.REBIRTH:
+    case SYSTEM_STAGE.COMPLETE:
       return tokenType === NFT_TYPE.Burned;
-    case STAGE.BURN:
+    case SYSTEM_STAGE.SHIP:
       return tokenType === NFT_TYPE.Polished || tokenType === NFT_TYPE.Burned;
     default:
       const prevTokenType = getTypeByStage(systemStage - 1);
@@ -120,8 +173,8 @@ export const isTokenDone = (token, systemStage) => {
 
   const tokenType = getTokenTrait(token, TRAIT.type);
   switch (systemStage) {
-    case STAGE.REBIRTH:
-    case STAGE.BURN:
+    case SYSTEM_STAGE.COMPLETE:
+    case SYSTEM_STAGE.SHIP:
       return tokenType === NFT_TYPE.Reborn;
     default:
       const tokenStage = getStageByTokenType(tokenType);

@@ -13,24 +13,16 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
-import WagmiWrapper from "layout/WagmiWrapper";
-import Header from "components/Header";
-import ContractProvider from "layout/ContractProvider";
-import DiamondList from "components/DiamondList";
-import Wallet from "components/Wallet";
-import useSystemLoader from "hooks/useSystemLoader";
 import teaserVideo from "assets/video/teaser.mp4";
 
 const HomepageInternal = () => {
-  const { stage, isStageActive } = useSelector(systemSelector);
+  const { systemStage } = useSelector(systemSelector);
   const [hasEntered, setHasEntered] = useState(false);
   const navigate = useNavigate();
   const videoPlayer = useRef(null);
   const [playVideo, setPlayVideo] = useState(false);
 
-  // useSystemLoader()
-
-  const canEnter = stage > 0 || isStageActive;
+  const canEnter = systemStage >= 0;
 
   const onCorrectPassword = () => {
     // setHasEntered(true)

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
 import { utils as ethersUtils } from "ethers";
 import classNames from "classnames";
 import "./Mine.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPricing, systemSelector } from "store/systemReducer";
+import { loadMinePrice, systemSelector } from "store/systemReducer";
 import Countdown from "components/Countdown";
 import { watchTokenMinedBy } from "store/tokensReducer";
 import { useAccount } from "wagmi";
@@ -14,7 +13,6 @@ import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import { DUMMY_VIDEO_URL } from "consts";
 import useMountLogger from "hooks/useMountLogger";
-import VideoPlayer from "components/VideoPlayer";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -32,8 +30,7 @@ const PackageBox = ({ selected, select, index, text, cost }) => {
 
 const Mine = () => {
   const [selectedPackage, setSelectedPackage] = useState(0);
-  const { minePrice, stageStartTimes, isStageActive } =
-    useSelector(systemSelector);
+  const { minePrice } = useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
   const dispatch = useDispatch();
@@ -42,27 +39,16 @@ const Mine = () => {
   useMountLogger("Mine");
 
   useEffect(() => {
-    dispatch(fetchPricing(contract));
+    dispatch(loadMinePrice(contract));
   }, []);
 
   useEffectWithAccount(async () => {
-    const isWhitelisted = await contract.mintAllowedAddresses(account.address);
-    setCanMine(isWhitelisted);
+    // TODO - apply whitelist once developed
+    // const isWhitelisted = await contract.mintAllowedAddresses(account.address);
+    setCanMine(true);
   });
 
-  const endTime = _.get(stageStartTimes, 1);
-
-  const MineContent = ({ execute }) => {
-    if (!isStageActive) {
-      const startTime = _.get(stageStartTimes, 0);
-      return (
-        <>
-          <VideoPlayer>01 - COMING SOON VIDEO</VideoPlayer>
-          <Countdown date={startTime} text={["You have", "until mining"]} />
-        </>
-      );
-    }
-
+  const MineContent = ({ execute, endTime }) => {
     return canMine ? (
       <>
         <div className="leading-text">A DIAMONDS JOURNEY HAS MANY STEPS</div>

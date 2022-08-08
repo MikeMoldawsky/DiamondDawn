@@ -3,19 +3,27 @@ import _ from "lodash";
 import { getShapeName } from "utils";
 
 // ADMIN CONTROL API
+export const getSystemStageApi = async (contract) => {
+  return await contract.systemStage();
+};
+
+export const getSystemPausedApi = async (contract) => {
+  return await contract.paused();
+};
+
 export const setSystemStageApi = async (contract, systemStage) => {
   const tx = await contract.setSystemStage(systemStage);
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };
 
-export const pause = async (contract) => {
+export const pauseApi = async (contract) => {
   const tx = await contract.pause();
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };
 
-export const unpause = async (contract) => {
+export const unpauseApi = async (contract) => {
   const tx = await contract.unpause();
   const receipt = await tx.wait();
   return receipt.transactionHash;

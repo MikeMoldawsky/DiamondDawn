@@ -11,6 +11,9 @@ import { useNavigate } from "react-router-dom";
 import { isActionSuccessSelector } from "components/ActionButton/ActionButton.module";
 import Loading from "components/Loading";
 import classNames from "classnames";
+import { systemSelector } from "store/systemReducer";
+import _ from "lodash";
+import { uiSelector } from "store/uiReducer";
 
 const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const [actionTxId, setActionTxId] = useState(false);
@@ -23,6 +26,9 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isFetchNftsSuccess = useSelector(isActionSuccessSelector("load-nfts"));
+  const { systemStage, systemSchedule } = useSelector(systemSelector);
+  const { selectedTokenId } = useSelector(uiSelector);
+  const endTime = _.get(systemSchedule, systemStage + 1);
 
   useEffect(() => {
     if (completeVideoEnded && processedTokenId > -1 && isFetchNftsSuccess) {
@@ -30,18 +36,27 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
     }
   }, [completeVideoEnded, processedTokenId, isFetchNftsSuccess]);
 
+  const onSuccess = (tokenId) => {
+    dispatch(loadAccountNfts(contract, provider, account.address));
+    dispatch(fetchAccountShippingTokens(contract, account.address));
+    setProcessedTokenId(tokenId);
+  };
+
   const execute = async () => {
-    watch(contract, provider, (tokenId) => {
-      dispatch(loadAccountNfts(contract, provider, account.address));
-      dispatch(fetchAccountShippingTokens(contract, account.address));
-      setProcessedTokenId(tokenId);
-    });
+    const requireWatch = _.isFunction(watch);
+    if (requireWatch) {
+      watch(contract, provider, onSuccess);
+    }
 
     const tx = await transact();
 
     setShowCompleteVideo(true);
 
     const receipt = await tx.wait();
+
+    if (!requireWatch) {
+      onSuccess(selectedTokenId);
+    }
 
     setActionTxId(receipt.transactionHash);
   };
@@ -64,7 +79,7 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
       return <Loading />;
     }
 
-    return React.cloneElement(children, { execute });
+    return React.cloneElement(children, { execute, endTime });
   };
 
   return (

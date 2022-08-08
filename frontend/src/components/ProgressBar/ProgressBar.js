@@ -4,33 +4,27 @@ import { useSelector } from "react-redux";
 import classNames from "classnames";
 import { systemSelector } from "store/systemReducer";
 import "./ProgressBar.scss";
-
-const steps = {
-  MINE: 0,
-  CUT: 1,
-  POLISH: 2,
-  BURN: 3,
-};
+import { SYSTEM_STAGE } from "consts";
 
 const ProgressBar = () => {
-  const { stage: systemStage, isStageActive } = useSelector(systemSelector);
+  const { systemStage } = useSelector(systemSelector);
 
-  if ((systemStage === 0 && !isStageActive) || systemStage === 4) return null;
+  if (systemStage === SYSTEM_STAGE.COMPLETE) return null;
 
   return (
     <div className={classNames("progress-bar")}>
-      {_.map(steps, (value, step) => {
-        const isComplete = value < systemStage;
-        const isInProgress = value === systemStage && isStageActive;
+      {_.map(SYSTEM_STAGE, (stage, stageName) => {
+        const isStageComplete = stage < systemStage;
+        const isStageInProgress = stage === systemStage;
         return (
           <div
-            key={`progress-bar-step-${value}`}
+            key={`progress-bar-step-${stage}`}
             className={classNames("progress-step", {
-              complete: isComplete,
-              active: isInProgress,
+              complete: isStageComplete,
+              active: isStageInProgress,
             })}
           >
-            <span>{step}</span>
+            <span>{stageName}</span>
           </div>
         );
       })}

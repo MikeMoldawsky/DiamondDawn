@@ -4,11 +4,9 @@ import useDDContract from "hooks/useDDContract";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { tokenByIdSelector, watchTokenProcessed } from "store/tokensReducer";
-import { systemSelector } from "store/systemReducer";
-import { DUMMY_VIDEO_URL, NFT_TYPE, STAGE } from "consts";
+import { DUMMY_VIDEO_URL, NFT_TYPE, SYSTEM_STAGE } from "consts";
 import NoDiamondView from "components/NoDiamondView";
 import Diamond from "components/Diamond";
-import _ from "lodash";
 import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
@@ -17,11 +15,8 @@ const Polish = () => {
   const contract = useDDContract();
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-  const { stageStartTimes } = useSelector(systemSelector);
 
-  const endTime = _.get(stageStartTimes, 3);
-
-  const PolishContent = ({ execute }) =>
+  const PolishContent = ({ execute, endTime }) =>
     isTokenOfType(token, NFT_TYPE.Cut) ? (
       <>
         <Diamond diamond={token} />
@@ -51,7 +46,6 @@ const Polish = () => {
   return (
     <ActionView
       transact={() => contract.polish(selectedTokenId)}
-      watch={watchTokenProcessed(selectedTokenId, STAGE.POLISH)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <PolishContent />

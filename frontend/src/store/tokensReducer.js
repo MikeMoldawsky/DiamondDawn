@@ -61,8 +61,8 @@ export const loadAccountNfts =
           }));
         });
       } else {
-        const nftsOwnedByOwner = await contract.walletOfOwner(address);
-        nfts = await tokenIdsToUris(contract, nftsOwnedByOwner);
+        const ownerTokenIds = await contract.getTokenIdsByOwner(address);
+        nfts = await tokenIdsToUris(contract, ownerTokenIds);
       }
     }
 
@@ -78,13 +78,22 @@ export const loadAccountNfts =
 
 export const fetchAccountShippingTokens =
   (contract, address) => async (dispatch) => {
-    const shippingTokenIds = await contract.getShippingTokens(address);
+    dispatch({
+      type: "ACTION_STATUS.PENDING",
+      payload: { actionKey: "load-shipping-nfts" },
+    });
+
+    const shippingTokenIds = await contract.getShippingTokenIds(address);
     const shippingTokens = await tokenIdsToUris(contract, shippingTokenIds);
     console.log({ shippingTokenIds, shippingTokens });
 
     dispatch({
       type: "TOKENS.SET",
       payload: shippingTokens,
+    });
+    dispatch({
+      type: "ACTION_STATUS.SUCCESS",
+      payload: { actionKey: "load-shipping-nfts" },
     });
   };
 
