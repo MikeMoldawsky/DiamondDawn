@@ -1,7 +1,11 @@
 import { makeReducer } from "./reduxUtils";
 import _ from "lodash";
-import {getNftsByAddressAlchemyApi} from "api/alchemy";
-import {getAccountNftsApi, getShippingTokensApi, getTokenUriApi} from "api/contractApi";
+import { getNftsByAddressAlchemyApi } from "api/alchemy";
+import {
+  getAccountNftsApi,
+  getShippingTokensApi,
+  getTokenUriApi,
+} from "api/contractApi";
 
 const INITIAL_STATE = {};
 
@@ -17,34 +21,34 @@ export const watchTokenMinedBy =
     });
   };
 
-export const loadAccountNfts = (contract, provider, address) => async (dispatch) => {
-  if (!address) return
+export const loadAccountNfts =
+  (contract, provider, address) => async (dispatch) => {
+    if (!address) return;
 
-  const nfts = await (
-    provider?._network?.chainId === 1
+    const nfts = await (provider?._network?.chainId === 1
       ? getNftsByAddressAlchemyApi(contract, address)
-      : getAccountNftsApi(contract, address)
-  )
+      : getAccountNftsApi(contract, address));
 
-  dispatch({
-    type: "TOKENS.SET",
-    payload: nfts,
-  });
-};
+    dispatch({
+      type: "TOKENS.SET",
+      payload: nfts,
+    });
+  };
 
-export const loadAccountShippingTokens = (contract, address) => async (dispatch) => {
-  if (!address) return
+export const loadAccountShippingTokens =
+  (contract, address) => async (dispatch) => {
+    if (!address) return;
 
-  const shippingTokens = await getShippingTokensApi(contract, address);
+    const shippingTokens = await getShippingTokensApi(contract, address);
 
-  dispatch({
-    type: "TOKENS.SET",
-    payload: shippingTokens,
-  });
-};
+    dispatch({
+      type: "TOKENS.SET",
+      payload: shippingTokens,
+    });
+  };
 
 export const loadTokenUri = (contract, tokenId) => async (dispatch) => {
-  const tokenUri = await getTokenUriApi(contract, tokenId)
+  const tokenUri = await getTokenUriApi(contract, tokenId);
 
   dispatch({
     type: "TOKENS.SET_TOKEN",

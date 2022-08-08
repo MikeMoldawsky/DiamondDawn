@@ -13,7 +13,7 @@ import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import { DUMMY_VIDEO_URL } from "consts";
 import useMountLogger from "hooks/useMountLogger";
-import {mineApi} from "api/contractApi";
+import { mineApi } from "api/contractApi";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (

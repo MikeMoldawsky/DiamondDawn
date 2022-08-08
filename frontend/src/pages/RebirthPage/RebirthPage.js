@@ -3,7 +3,7 @@ import classNames from "classnames";
 import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
 import ActionButton from "components/ActionButton";
-import {rebirthApi} from "api/contractApi";
+import { rebirthApi } from "api/contractApi";
 
 function RebirthPage() {
   const { tokenId } = useParams();

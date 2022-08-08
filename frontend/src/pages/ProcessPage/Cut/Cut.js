@@ -11,7 +11,7 @@ import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
 import useMountLogger from "hooks/useMountLogger";
-import {cutApi} from "api/contractApi";
+import { cutApi } from "api/contractApi";
 
 const Cut = () => {
   const contract = useDDContract();

@@ -17,7 +17,7 @@ const useSystemLoader = () => {
   const account = useAccount();
   const provider = useProvider();
   const dispatch = useDispatch();
-  const actionDispatch = useActionDispatch()
+  const actionDispatch = useActionDispatch();
   const contract = useDDContract();
   const isNftsLoaded = useSelector(isActionFirstCompleteSelector("load-nfts"));
   const isShippingNftsLoaded = useSelector(
@@ -47,8 +47,14 @@ const useSystemLoader = () => {
   }, []);
 
   useEffectWithAccount(() => {
-    actionDispatch(loadAccountNfts(contract, provider, account?.address), 'load-nfts');
-    actionDispatch(loadAccountShippingTokens(contract, account.address), 'load-shipping-nfts');
+    actionDispatch(
+      loadAccountNfts(contract, provider, account?.address),
+      "load-nfts"
+    );
+    actionDispatch(
+      loadAccountShippingTokens(contract, account.address),
+      "load-shipping-nfts"
+    );
   });
 
   return isReady;

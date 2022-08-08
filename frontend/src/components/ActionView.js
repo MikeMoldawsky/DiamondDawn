@@ -24,7 +24,7 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const account = useAccount();
   const provider = useProvider();
   const contract = useDDContract();
-  const actionDispatch = useActionDispatch()
+  const actionDispatch = useActionDispatch();
   const navigate = useNavigate();
   const isFetchNftsSuccess = useSelector(isActionSuccessSelector("load-nfts"));
   const { systemStage, systemSchedule } = useSelector(systemSelector);
@@ -38,8 +38,14 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   }, [completeVideoEnded, processedTokenId, isFetchNftsSuccess]);
 
   const onSuccess = (tokenId) => {
-    actionDispatch(loadAccountNfts(contract, provider, account.address), 'load-nfts');
-    actionDispatch(loadAccountShippingTokens(contract, account.address), 'load-shipping-nfts');
+    actionDispatch(
+      loadAccountNfts(contract, provider, account.address),
+      "load-nfts"
+    );
+    actionDispatch(
+      loadAccountShippingTokens(contract, account.address),
+      "load-shipping-nfts"
+    );
     setProcessedTokenId(tokenId);
   };
 

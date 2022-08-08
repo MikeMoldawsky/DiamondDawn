@@ -20,7 +20,7 @@ import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
 import useActionDispatch from "hooks/useActionDispatch";
-import {shipApi} from "api/contractApi";
+import { shipApi } from "api/contractApi";
 
 const Ship = () => {
   const contract = useDDContract();
@@ -28,7 +28,7 @@ const Ship = () => {
   const token = useSelector(tokenByIdSelector(selectedTokenId));
   const [showShippingForm, setShowShippingForm] = useState(false);
   const account = useAccount();
-  const actionDispatch = useActionDispatch()
+  const actionDispatch = useActionDispatch();
 
   const {
     register,
@@ -37,7 +37,10 @@ const Ship = () => {
   } = useForm();
 
   useEffectWithAccount(() => {
-    actionDispatch(loadAccountShippingTokens(contract, account.address), 'load-shipping-nfts');
+    actionDispatch(
+      loadAccountShippingTokens(contract, account.address),
+      "load-shipping-nfts"
+    );
   });
 
   const renderInput = (name, placeholder) => {

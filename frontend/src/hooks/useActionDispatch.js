@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
-import isFunction from 'lodash/isFunction'
+import isFunction from "lodash/isFunction";
 
 const useActionDispatch = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return async (action, actionKey) => {
     dispatch({
@@ -12,25 +12,23 @@ const useActionDispatch = () => {
 
     try {
       if (isFunction(action)) {
-        await action(dispatch)
-      }
-      else {
-        dispatch(action)
+        await action(dispatch);
+      } else {
+        dispatch(action);
       }
 
       dispatch({
         type: "ACTION_STATUS.SUCCESS",
         payload: { actionKey },
       });
-    }
-    catch (e) {
-      console.error('useActionDispatch Failed', { e })
+    } catch (e) {
+      console.error("useActionDispatch Failed", { e });
       dispatch({
         type: "ACTION_STATUS.ERROR",
         payload: { actionKey },
       });
     }
-  }
-}
+  };
+};
 
-export default useActionDispatch
+export default useActionDispatch;

@@ -43,7 +43,8 @@ export const showError = (e, prefix = "Error") => {
   console.error(errorMessage);
 };
 
-export const logApiError = (e, funcName) => console.error(`Api Error - ${funcName} Failed`, e);
+export const logApiError = (e, funcName) =>
+  console.error(`Api Error - ${funcName} Failed`, e);
 
 export const getEnumKeyByValue = (enm, value) => Object.keys(enm)[value];
 

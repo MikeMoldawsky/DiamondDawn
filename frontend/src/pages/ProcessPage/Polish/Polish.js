@@ -10,7 +10,7 @@ import Diamond from "components/Diamond";
 import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
-import {polishApi} from "api/contractApi";
+import { polishApi } from "api/contractApi";
 
 const Polish = () => {
   const contract = useDDContract();

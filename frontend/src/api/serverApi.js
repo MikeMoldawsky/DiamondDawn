@@ -1,16 +1,16 @@
 import axios from "axios";
 import _ from "lodash";
 import { SYSTEM_STAGE } from "consts";
-import { logApiError } from 'utils'
+import { logApiError } from "utils";
 
 // CONTRACT INFO
 export const getContractInfoApi = async () => {
   try {
     const { data } = await axios.get(`/api/get_contract`);
-    return data
+    return data;
   } catch (e) {
-    logApiError(e, 'getContractInfoApi');
-    return {}
+    logApiError(e, "getContractInfoApi");
+    return {};
   }
 };
 
@@ -26,7 +26,7 @@ export const getSystemScheduleApi = async () => {
       })
     );
   } catch (e) {
-    logApiError(e, 'getSystemScheduleApi');
+    logApiError(e, "getSystemScheduleApi");
     return {};
   }
 };
@@ -39,7 +39,7 @@ export const checkPasswordApi = async (password) => {
     });
     return isCorrect;
   } catch (e) {
-    logApiError(e, 'checkPasswordApi');
+    logApiError(e, "checkPasswordApi");
     return false;
   }
 };
