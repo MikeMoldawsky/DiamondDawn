@@ -244,11 +244,7 @@ contract DiamondDawnMine is
             );
     }
 
-
-    function isRevealed(DiamondDawnType type_)
-    external
-    view
-    returns (bool){
+    function isRevealed(DiamondDawnType type_) external view returns (bool) {
         return diamondDawnTypeToIsRevealed[uint(type_)];
     }
 

@@ -73,10 +73,12 @@ contract DiamondDawn is
     }
 
     modifier isRevealed(IDiamondDawnMine.DiamondDawnType type_) {
-        require(diamondDawnMine.isRevealed(type_), "DiamondDawnMine is not revealed");
+        require(
+            diamondDawnMine.isRevealed(type_),
+            "DiamondDawnMine is not revealed"
+        );
         _;
     }
-
 
     modifier validSystemStage(uint _systemStage) {
         require(_systemStage >= uint(type(SystemStage).min));

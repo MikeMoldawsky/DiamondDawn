@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-
 interface IDiamondDawn {
     event Mine(uint tokenId);
     event Cut(uint tokenId);
