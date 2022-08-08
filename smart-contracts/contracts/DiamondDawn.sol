@@ -59,7 +59,7 @@ contract DiamondDawn is
 
     /**********************          Modifiers          ************************/
 
-    modifier onlyStage(SystemStage _stage) {
+    modifier onlySystemStage(SystemStage _stage) {
         require(
             systemStage == _stage,
             string.concat(
@@ -106,7 +106,7 @@ contract DiamondDawn is
         external
         payable
         assignedDiamondDawnMine
-        onlyStage(SystemStage.MINE_OPEN)
+        onlySystemStage(SystemStage.MINE_OPEN)
         costs(MINING_PRICE)
     {
         // Regular mint logics
@@ -120,7 +120,7 @@ contract DiamondDawn is
     function cut(uint256 tokenId)
         external
         assignedDiamondDawnMine
-        onlyStage(SystemStage.CUT_OPEN)
+        onlySystemStage(SystemStage.CUT_OPEN)
     {
         diamondDawnMine.cut(tokenId);
         emit Cut(tokenId);
@@ -129,7 +129,7 @@ contract DiamondDawn is
     function polish(uint256 tokenId)
         external
         assignedDiamondDawnMine
-        onlyStage(SystemStage.POLISH_OPEN)
+        onlySystemStage(SystemStage.POLISH_OPEN)
     {
         diamondDawnMine.polish(tokenId);
         emit Polish(tokenId);
@@ -138,7 +138,7 @@ contract DiamondDawn is
     function ship(uint256 tokenId)
         external
         assignedDiamondDawnMine
-        onlyStage(SystemStage.SHIP)
+        onlySystemStage(SystemStage.SHIP)
     {
         super.burn(tokenId);
         diamondDawnMine.burn(tokenId);
@@ -150,7 +150,7 @@ contract DiamondDawn is
     function rebirth(uint256 tokenId)
         external
         assignedDiamondDawnMine
-        onlyStage(SystemStage.SHIP)
+        onlySystemStage(SystemStage.SHIP)
         onlyShippedDiamondOwner(tokenId)
     {
         delete _shippedTokenIdToOwner[tokenId];
@@ -172,7 +172,7 @@ contract DiamondDawn is
         validSystemStage(systemStage_)
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        systemStage = systemStage_;
+        systemStage = SystemStage(systemStage_);
         emit SystemStageChanged(systemStage);
     }
 
