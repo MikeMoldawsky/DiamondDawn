@@ -7,27 +7,26 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import TextField from "@mui/material/TextField";
 import ActionButton from "components/ActionButton";
 import Countdown from "react-countdown";
-import { getStageName } from "utils";
-import { getStagesSchedule, updateStageSchedule } from "api/serverApi";
+import { getSystemStageName } from "utils";
+import { getSystemSchedule, updateSystemSchedule } from "api/serverApi";
 
 const ScheduleTab = () => {
-  const [stageStartTimes, setStageStartTimes] = useState({});
+  const [schedule, setSchedule] = useState({});
 
-  const fetchStages = async () => {
-    const stagesConfig = await getStagesSchedule();
-    setStageStartTimes(stagesConfig);
+  const fetchSchedule = async () => {
+    setSchedule(await getSystemSchedule());
   };
 
   useEffect(() => {
-    fetchStages();
+    fetchSchedule();
   }, []);
 
   const onStartTimeChange = (_stage) => async (_startTime) => {
-    setStageStartTimes({ ...stageStartTimes, [_stage]: _startTime });
+    setSchedule({ ...schedule, [_stage]: _startTime });
   };
 
-  const saveStage = async (_stage) => {
-    return await updateStageSchedule(_stage, stageStartTimes[_stage]);
+  const saveSchedule = async (_stage) => {
+    return await updateSystemSchedule(_stage, schedule[_stage]);
   };
 
   return (
@@ -35,13 +34,13 @@ const ScheduleTab = () => {
       <h1>Stages Schedule</h1>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         {_.map(SYSTEM_STAGE, (_stage) => {
-          const value = _.get(stageStartTimes, _stage, null);
+          const value = _.get(schedule, _stage, null);
           return (
             <div
               key={`stage-schedule-${_stage}`}
               className="center-aligned-row stage-row"
             >
-              <span className="caption">{getStageName(_stage)}</span>
+              <span className="caption">{getSystemStageName(_stage)}</span>
               <div className="center-aligned-row inner-row">
                 <DateTimePicker
                   minDateTime={new Date()}
@@ -57,9 +56,9 @@ const ScheduleTab = () => {
                   )}
                 </div>
                 <ActionButton
-                  actionKey={`Save ${getStageName(_stage)} Schedule`}
+                  actionKey={`Save ${getSystemStageName(_stage)} Schedule`}
                   className="btn-save"
-                  onClick={() => saveStage(_stage)}
+                  onClick={() => saveSchedule(_stage)}
                 >
                   Save
                 </ActionButton>

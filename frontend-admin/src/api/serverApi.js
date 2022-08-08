@@ -14,7 +14,7 @@ export const getContractData = async () => {
 };
 
 // SCHEDULE
-export const getStagesSchedule = async () => {
+export const getSystemSchedule = async () => {
   try {
     const res = await axios.get(`/api/get_stages`);
     return _.zipObject(
@@ -29,7 +29,7 @@ export const getStagesSchedule = async () => {
   }
 };
 
-export const updateStageSchedule = async (stage, startsAt) => {
+export const updateSystemSchedule = async (stage, startsAt) => {
   try {
     const res = await axios.post(`/api/update_stage`, { stage, startsAt });
     return res.data;
