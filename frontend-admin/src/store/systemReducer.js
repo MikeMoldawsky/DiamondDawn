@@ -1,6 +1,6 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import { CONTRACTS } from "consts";
-import {getSystemPausedApi, getSystemStageApi} from "api/contractApi";
+import { getSystemPausedApi, getSystemStageApi } from "api/contractApi";
 
 const INITIAL_STATE = {
   ddContractData: null,
@@ -18,7 +18,7 @@ export const loadSystemStage = (contract) => async (dispatch) => {
 };
 
 export const loadSystemPaused = (contract) => async (dispatch) => {
-  const paused = await getSystemPausedApi(contract)
+  const paused = await getSystemPausedApi(contract);
   dispatch({
     type: "SYSTEM.SET_PAUSED",
     payload: { paused },

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import map from 'lodash/map'
+import React, { useEffect, useState } from "react";
+import map from "lodash/map";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loadSystemStage,
@@ -12,11 +12,11 @@ import { setSystemStageApi, pauseApi, unpauseApi } from "api/contractApi";
 import { getSystemStageName } from "utils";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import {SYSTEM_STAGE} from "consts";
+import { SYSTEM_STAGE } from "consts";
 
 const ControlTab = () => {
   const { systemStage, paused } = useSelector(systemSelector);
-  const [inputStage, setInputStage] = useState(-1)
+  const [inputStage, setInputStage] = useState(-1);
 
   const contract = useDDContract();
 
@@ -37,7 +37,7 @@ const ControlTab = () => {
     dispatch(loadSystemPaused(contract));
   };
 
-  const onStageInputChange = e => setInputStage(e.target.value)
+  const onStageInputChange = (e) => setInputStage(e.target.value);
 
   return (
     <div className="admin-control">
@@ -57,8 +57,10 @@ const ControlTab = () => {
         <div className="stage">
           <Select value={inputStage} onChange={onStageInputChange}>
             <MenuItem value={-1}>NOT SELECTED</MenuItem>
-            {map(SYSTEM_STAGE, stage => (
-              <MenuItem key={`stage-select-item-${stage}`} value={stage}>{getSystemStageName(stage)}</MenuItem>
+            {map(SYSTEM_STAGE, (stage) => (
+              <MenuItem key={`stage-select-item-${stage}`} value={stage}>
+                {getSystemStageName(stage)}
+              </MenuItem>
             ))}
           </Select>
         </div>
