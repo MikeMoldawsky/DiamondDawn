@@ -1,39 +1,44 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
+import map from 'lodash/map'
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchSystemStage,
-  fetchPaused,
+  loadSystemStage,
+  loadSystemPaused,
   systemSelector,
 } from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
 import ActionButton from "components/ActionButton";
-import { setSystemStageApi, pause, unpause } from "api/contractApi";
+import { setSystemStageApi, pauseApi, unpauseApi } from "api/contractApi";
 import { getSystemStageName } from "utils";
-import { SYSTEM_STAGE } from "../../consts";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import {SYSTEM_STAGE} from "consts";
 
 const ControlTab = () => {
   const { systemStage, paused } = useSelector(systemSelector);
+  const [inputStage, setInputStage] = useState(-1)
 
   const contract = useDDContract();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchSystemStage(contract));
-    dispatch(fetchPaused(contract));
+    dispatch(loadSystemStage(contract));
+    dispatch(loadSystemPaused(contract));
   }, [contract, dispatch]);
 
   const setSystemStage = async (systemStage) => {
     await setSystemStageApi(contract, systemStage);
-    dispatch(fetchSystemStage(contract));
+    dispatch(loadSystemStage(contract));
   };
 
   const togglePause = async () => {
-    await (paused ? unpause(contract) : pause(contract));
-    dispatch(fetchPaused(contract));
+    await (paused ? unpauseApi(contract) : pauseApi(contract));
+    dispatch(loadSystemPaused(contract));
   };
 
-  // TODO: asaf add system Stage param from admin panel
+  const onStageInputChange = e => setInputStage(e.target.value)
+
   return (
     <div className="admin-control">
       <h1>Control Panel</h1>
@@ -42,9 +47,26 @@ const ControlTab = () => {
         <div className="stage">{getSystemStageName(systemStage)}</div>
         <ActionButton
           actionKey="Complete and Reveal Stage"
-          onClick={() => setSystemStage(SYSTEM_STAGE.MINE_OPEN)}
+          disabled={systemStage === SYSTEM_STAGE.COMPLETE}
+          onClick={() => setSystemStage(systemStage + 1)}
         >
-          Next Stage
+          NEXT STAGE
+        </ActionButton>
+      </div>
+      <div className="center-aligned-row input-row">
+        <div className="stage">
+          <Select value={inputStage} onChange={onStageInputChange}>
+            <MenuItem value={-1}>NOT SELECTED</MenuItem>
+            {map(SYSTEM_STAGE, stage => (
+              <MenuItem key={`stage-select-item-${stage}`} value={stage}>{getSystemStageName(stage)}</MenuItem>
+            ))}
+          </Select>
+        </div>
+        <ActionButton
+          actionKey="Set Stage"
+          onClick={() => setSystemStage(inputStage)}
+        >
+          SET STAGE
         </ActionButton>
       </div>
       <div className="separator" />
@@ -52,7 +74,7 @@ const ControlTab = () => {
       <div className="center-aligned-row input-row">
         <div className="stage">{paused.toString()}</div>
         <ActionButton actionKey="togglePause" onClick={togglePause}>
-          {paused ? "Unpause" : "Pause"}
+          {paused ? "UNPAUSE" : "PAUSE"}
         </ActionButton>
       </div>
     </div>
