@@ -10,6 +10,7 @@ import Diamond from "components/Diamond";
 import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
+import {polishApi} from "api/contractApi";
 
 const Polish = () => {
   const contract = useDDContract();
@@ -45,7 +46,7 @@ const Polish = () => {
 
   return (
     <ActionView
-      transact={() => contract.polish(selectedTokenId)}
+      transact={() => polishApi(contract, selectedTokenId)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <PolishContent />

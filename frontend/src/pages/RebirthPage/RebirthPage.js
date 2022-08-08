@@ -3,19 +3,16 @@ import classNames from "classnames";
 import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
 import ActionButton from "components/ActionButton";
+import {rebirthApi} from "api/contractApi";
 
 function RebirthPage() {
   const { tokenId } = useParams();
   const navigate = useNavigate();
   const contract = useDDContract();
   const [showComplete, setShowComplete] = useState(false);
-  const [metadata, setMetadata] = useState(null);
 
   useEffect(() => {
     const fetch = async () => {
-      const md = await contract.tokenURI(tokenId);
-      setMetadata(JSON.parse(atob(md.split(",")[1])));
-
       const events = await contract.queryFilter(contract.filters.Transfer());
       console.log({ events });
     };
@@ -27,8 +24,8 @@ function RebirthPage() {
   if (!tokenId) navigate("/");
 
   const rebirth = async () => {
-    const tx = await contract.rebirth(tokenId);
-    const receipt = await tx.wait();
+    const tx = await rebirthApi(contract, tokenId);
+    await tx.wait();
 
     setShowComplete(true);
   };

@@ -1,5 +1,4 @@
 export const SYSTEM_STAGE = {
-  UNKNOWN: -1,
   MINE_OPEN: 0,
   CUT_OPEN: 1,
   POLISH_OPEN: 2,

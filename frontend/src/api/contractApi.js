@@ -1,5 +1,4 @@
 import {logApiError} from "utils";
-import {SYSTEM_STAGE} from "consts";
 
 // STATE/STORAGE
 export const getSystemStageApi = async (contract) => {
@@ -8,7 +7,7 @@ export const getSystemStageApi = async (contract) => {
   }
   catch (e) {
     logApiError(e, 'getSystemStageApi')
-    return SYSTEM_STAGE.UNKNOWN
+    return -1
   }
 };
 
@@ -23,6 +22,55 @@ export const getMinePriceApi = async (contract) => {
 };
 
 // PROCESS
+export const mineApi = async (contract, minePrice) => {
+  try {
+    return await contract.mine({ value: minePrice })
+  }
+  catch (e) {
+    logApiError(e, 'mineApi')
+    throw new Error(e)
+  }
+};
+
+export const cutApi = async (contract, tokenId) => {
+  try {
+    return await contract.cut(tokenId)
+  }
+  catch (e) {
+    logApiError(e, 'cutApi')
+    throw new Error(e)
+  }
+};
+
+export const polishApi = async (contract, tokenId) => {
+  try {
+    return await contract.polish(tokenId)
+  }
+  catch (e) {
+    logApiError(e, 'polishApi')
+    throw new Error(e)
+  }
+};
+
+export const shipApi = async (contract, tokenId) => {
+  try {
+    return await contract.ship(tokenId)
+  }
+  catch (e) {
+    logApiError(e, 'shipApi')
+    throw new Error(e)
+  }
+};
+
+export const rebirthApi = async (contract, tokenId) => {
+  try {
+    return await contract.rebirth(tokenId)
+  }
+  catch (e) {
+    logApiError(e, 'rebirthApi')
+    throw new Error(e)
+  }
+};
 
 // TOKEN URIs
 export const getTokenUriApi = async (contract, tokenId) => {
@@ -40,7 +88,7 @@ const tokenIdsToUris = async (contract, tokenIds) => {
   return Promise.all(
     tokenIds.map(async (element) => {
       const tokenId = element.toNumber()
-      const tokenUri = await getTokenUriApi(tokenId);
+      const tokenUri = await getTokenUriApi(contract, tokenId);
       return { tokenId, tokenUri };
     })
   );

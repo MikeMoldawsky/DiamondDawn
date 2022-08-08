@@ -20,6 +20,7 @@ import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
 import useActionDispatch from "hooks/useActionDispatch";
+import {shipApi} from "api/contractApi";
 
 const Ship = () => {
   const contract = useDDContract();
@@ -101,7 +102,7 @@ const Ship = () => {
 
   return (
     <ActionView
-      transact={() => contract.ship(selectedTokenId)}
+      transact={() => shipApi(contract, selectedTokenId)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <BurnContent />

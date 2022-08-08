@@ -18,7 +18,7 @@ export const watchTokenMinedBy =
   };
 
 export const loadAccountNfts = (contract, provider, address) => async (dispatch) => {
-  if (address) return
+  if (!address) return
 
   const nfts = await (
     provider?._network?.chainId === 1
@@ -33,7 +33,7 @@ export const loadAccountNfts = (contract, provider, address) => async (dispatch)
 };
 
 export const loadAccountShippingTokens = (contract, address) => async (dispatch) => {
-  if (address) return
+  if (!address) return
 
   const shippingTokens = await getShippingTokensApi(contract, address);
 

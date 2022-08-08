@@ -11,6 +11,7 @@ import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
 import useMountLogger from "hooks/useMountLogger";
+import {cutApi} from "api/contractApi";
 
 const Cut = () => {
   const contract = useDDContract();
@@ -46,7 +47,7 @@ const Cut = () => {
 
   return (
     <ActionView
-      transact={() => contract.cut(selectedTokenId)}
+      transact={() => cutApi(contract, selectedTokenId)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <CutContent />
