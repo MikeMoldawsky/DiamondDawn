@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import VideoPlayer from "components/VideoPlayer";
-import { fetchAccountShippingTokens, loadAccountNfts } from "store/tokensReducer";
+import {
+  fetchAccountShippingTokens,
+  loadAccountNfts,
+} from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import { isActionSuccessSelector } from "components/ActionButton/ActionButton.module";

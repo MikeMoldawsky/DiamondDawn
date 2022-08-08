@@ -166,7 +166,11 @@ contract DiamondDawn is
         diamondDawnMine = IDiamondDawnMine(diamondDawnMine_);
     }
 
-    function nextStage() external diamondDawnNotCompleted onlyRole(DEFAULT_ADMIN_ROLE) {
+    function nextStage()
+        external
+        diamondDawnNotCompleted
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         stage = SystemStage(uint(stage) + 1);
         emit SystemStageChanged(stage);
     }

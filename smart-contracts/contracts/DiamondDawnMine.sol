@@ -257,8 +257,8 @@ contract DiamondDawnMine is
     }
 
     function _getRandomNumberInRange(uint minNumber, uint maxNumber)
-    private
-    returns (uint)
+        private
+        returns (uint)
     {
         _randNonce++;
         uint randomNumber = rand(_randNonce);
