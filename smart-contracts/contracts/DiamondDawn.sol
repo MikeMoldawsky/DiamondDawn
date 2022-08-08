@@ -72,7 +72,8 @@ contract DiamondDawn is
     }
 
     modifier validSystemStage(uint _systemStage) {
-        require(uint(type(SystemStage).min <= _systemStage && _systemStage <= uint(type(SystemStage).max));
+        require(_systemStage >= uint(type(SystemStage).min));
+        require(_systemStage <= uint(type(SystemStage).max));
         _;
     }
 

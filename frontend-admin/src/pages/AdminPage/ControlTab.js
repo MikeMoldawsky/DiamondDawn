@@ -9,7 +9,7 @@ import useDDContract from "hooks/useDDContract";
 import ActionButton from "components/ActionButton";
 import { setSystemStageApi, pause, unpause } from "api/contractApi";
 import { getSystemStageName } from "utils";
-import {SYSTEM_STAGE} from "../../consts";
+import { SYSTEM_STAGE } from "../../consts";
 
 const ControlTab = () => {
   const { systemStage, paused } = useSelector(systemSelector);
@@ -40,7 +40,7 @@ const ControlTab = () => {
       <div className="caption">SYSTEM STAGE</div>
       <div className="center-aligned-row input-row">
         <div className="stage">{getSystemStageName(systemStage)}</div>
-          <ActionButton
+        <ActionButton
           actionKey="Complete and Reveal Stage"
           onClick={() => setSystemStage(SYSTEM_STAGE.MINE_OPEN)}
         >
