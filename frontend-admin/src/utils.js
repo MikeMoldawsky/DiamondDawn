@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { toast } from "react-toastify";
-import { ROUGH_SHAPE, SHAPE, STAGE } from "consts";
+import { ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
 
 export const parseError = (e) => {
   let message = _.get(e, "error.data.message", "");
@@ -48,14 +48,14 @@ export const getEnumKeyByValue = (enm, value) => Object.keys(enm)[value];
 
 export const getShapeName = (shape, stage) => {
   switch (stage) {
-    case STAGE.MINE:
+    case SYSTEM_STAGE.MINE_OPEN:
       return getEnumKeyByValue(ROUGH_SHAPE, shape);
-    case STAGE.CUT:
-    case STAGE.POLISH:
+    case SYSTEM_STAGE.CUT_OPEN:
+    case SYSTEM_STAGE.POLISH_OPEN:
       return getEnumKeyByValue(SHAPE, shape);
     default:
       return "UNKNOWN";
   }
 };
 
-export const getStageName = (stage) => getEnumKeyByValue(STAGE, stage);
+export const getStageName = (stage) => getEnumKeyByValue(SYSTEM_STAGE, stage);

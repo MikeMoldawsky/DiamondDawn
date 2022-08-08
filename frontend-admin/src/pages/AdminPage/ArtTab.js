@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useDDContract from "hooks/useDDContract";
-import { CONTRACTS, STAGE } from "consts";
+import { CONTRACTS, SYSTEM_STAGE } from "consts";
 import _ from "lodash";
 import { getStageName } from "utils";
 import ActionButton from "components/ActionButton";
@@ -63,7 +63,7 @@ const ArtTab = () => {
   return (
     <div className="admin-art">
       <h1>Art Mapping</h1>
-      {_.map(STAGE, (stage) => (
+      {_.map(SYSTEM_STAGE, (stage) => (
         <div key={`stage-art-${stage}`}>
           <div className="caption">{getStageName(stage)}</div>
           <StageArt stage={stage} />

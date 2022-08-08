@@ -1,9 +1,9 @@
-export const STAGE = {
-  MINE: 0,
-  CUT: 1,
-  POLISH: 2,
-  BURN: 3,
-  REBIRTH: 4,
+export const SYSTEM_STAGE = {
+  MINE_OPEN: 0,
+  CUT_OPEN: 1,
+  POLISH_OPEN: 2,
+  SHIP: 3,
+  COMPLETE: 4,
 };
 
 export const ROUGH_SHAPE = {

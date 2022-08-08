@@ -31,7 +31,7 @@ const ControlTab = () => {
   return (
     <div className="admin-control">
       <h1>Control Panel</h1>
-      <div className="caption">STAGE</div>
+      <div className="caption">SYSTEM STAGE</div>
       <div className="center-aligned-row input-row">
         <div className="stage">{getStageName(stage)}</div>
         <ActionButton

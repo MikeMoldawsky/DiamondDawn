@@ -1,6 +1,6 @@
 import axios from "axios";
 import _ from "lodash";
-import { STAGE } from "consts";
+import { SYSTEM_STAGE } from "consts";
 
 // CONTRACTS
 export const getContractData = async () => {
@@ -18,8 +18,8 @@ export const getStagesSchedule = async () => {
   try {
     const res = await axios.get(`/api/get_stages`);
     return _.zipObject(
-      _.values(STAGE),
-      _.map(_.values(STAGE), (stage) => {
+      _.values(SYSTEM_STAGE),
+      _.map(_.values(SYSTEM_STAGE), (stage) => {
         const dbConf = _.find(res.data, { stage });
         return dbConf ? dbConf.startsAt : null;
       })

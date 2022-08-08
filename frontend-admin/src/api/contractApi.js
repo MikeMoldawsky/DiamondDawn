@@ -1,4 +1,4 @@
-import { ROUGH_SHAPE, SHAPE, STAGE } from "consts";
+import { ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
 import _ from "lodash";
 import { getShapeName } from "utils";
 
@@ -23,27 +23,27 @@ export const unpause = async (contract) => {
 
 // ART URLS API
 const ART_MAPPING = {
-  [STAGE.MINE]: {
+  [SYSTEM_STAGE.MINE_OPEN]: {
     shapes: [ROUGH_SHAPE.MAKEABLE],
     setter: "setRoughVideoUrl",
     getter: "roughShapeToVideoUrls",
   },
-  [STAGE.CUT]: {
+  [SYSTEM_STAGE.CUT_OPEN]: {
     shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
     setter: "setCutVideoUrl",
     getter: "cutShapeToVideoUrls",
   },
-  [STAGE.POLISH]: {
+  [SYSTEM_STAGE.POLISH_OPEN]: {
     shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
     setter: "setPolishVideoUrl",
     getter: "polishShapeToVideoUrls",
   },
-  [STAGE.BURN]: {
+  [SYSTEM_STAGE.SHIP]: {
     shapes: [undefined],
     setter: "setBurnVideoUrl",
     getter: "burnVideoUrl",
   },
-  [STAGE.REBIRTH]: {
+  [SYSTEM_STAGE.COMPLETE]: {
     shapes: [undefined],
     setter: "setRebirthVideoUrl",
     getter: "rebirthVideoUrl",

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
-import { STAGE } from "consts";
+import { SYSTEM_STAGE } from "consts";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -9,15 +9,6 @@ import ActionButton from "components/ActionButton";
 import Countdown from "react-countdown";
 import { getStageName } from "utils";
 import { getStagesSchedule, updateStageSchedule } from "api/serverApi";
-
-const getStageCaption = (stage) => {
-  switch (stage) {
-    case STAGE.REBIRTH:
-      return "Burn End";
-    default:
-      return `${getStageName(stage)} Start`;
-  }
-};
 
 const ScheduleTab = () => {
   const [stageStartTimes, setStageStartTimes] = useState({});
@@ -43,14 +34,14 @@ const ScheduleTab = () => {
     <div className="admin-schedule">
       <h1>Stages Schedule</h1>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        {_.map(STAGE, (_stage) => {
+        {_.map(SYSTEM_STAGE, (_stage) => {
           const value = _.get(stageStartTimes, _stage, null);
           return (
             <div
               key={`stage-schedule-${_stage}`}
               className="center-aligned-row stage-row"
             >
-              <span className="caption">{getStageCaption(_stage)}</span>
+              <span className="caption">{getStageName(_stage)}</span>
               <div className="center-aligned-row inner-row">
                 <DateTimePicker
                   minDateTime={new Date()}
