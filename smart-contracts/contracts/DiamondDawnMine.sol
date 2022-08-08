@@ -52,7 +52,7 @@ contract DiamondDawnMine is
     uint private constant MAX_CUT_POINTS_REDUCTION = 4; // Max of ~8% carat loss.
 
     uint private _randNonce = 0;
-
+    mapping(uint => bool) private diamondDawnTypeToIsRevealed;
     address private _diamondDawnContract;
 
     DiamondCertificate[] private _mineDiamonds;
@@ -110,6 +110,7 @@ contract DiamondDawnMine is
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         roughShapeToVideoUrls[uint(RoughDiamondShape.MAKEABLE)] = roughUrl;
+        diamondDawnTypeToIsRevealed[uint(DiamondDawnType.ROUGH)] = true;
     }
 
     function setCutVideoUrl(
@@ -122,6 +123,7 @@ contract DiamondDawnMine is
         cutShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
         cutShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
         cutShapeToVideoUrls[uint(DiamondShape.RADIANT)] = radiantUrl;
+        diamondDawnTypeToIsRevealed[uint(DiamondDawnType.CUT)] = true;
     }
 
     function setPolishVideoUrl(
@@ -134,6 +136,7 @@ contract DiamondDawnMine is
         polishShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
         polishShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
         polishShapeToVideoUrls[uint(DiamondShape.RADIANT)] = radiantUrl;
+        diamondDawnTypeToIsRevealed[uint(DiamondDawnType.POLISHED)] = true;
     }
 
     function setBurnVideoUrl(string calldata burnUrl)
@@ -141,6 +144,7 @@ contract DiamondDawnMine is
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         burnVideoUrl = burnUrl;
+        diamondDawnTypeToIsRevealed[uint(DiamondDawnType.BURNED)] = true;
     }
 
     function setRebirthVideoUrl(string calldata rebirthUrl)
@@ -148,6 +152,7 @@ contract DiamondDawnMine is
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         rebirthVideoUrl = rebirthUrl;
+        diamondDawnTypeToIsRevealed[uint(DiamondDawnType.REBORN)] = true;
     }
 
     function mine(uint tokenId) external onlyDiamondDawn _requireMineNotDry {
@@ -237,6 +242,10 @@ contract DiamondDawnMine is
             string(
                 abi.encodePacked("data:application/json;base64,", base64Json)
             );
+    }
+
+    function isRevealed(DiamondDawnType type_) external view returns (bool) {
+        return diamondDawnTypeToIsRevealed[uint(type_)];
     }
 
     /**********************     Private Functions     ************************/
