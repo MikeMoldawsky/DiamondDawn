@@ -1,7 +1,7 @@
 import React, { useSelector } from "react-redux";
 import { isActionFirstCompleteSelector } from "components/ActionButton/ActionButton.module";
 import Loading from "components/Loading";
-import ContractProvider from "layout/ContractProvider";
+import ContractProvider from "containers/ContractProvider";
 import { useAccount } from "wagmi";
 import Wallet from "components/Wallet";
 

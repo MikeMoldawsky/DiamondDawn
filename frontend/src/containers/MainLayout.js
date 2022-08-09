@@ -2,19 +2,19 @@ import React from "react";
 import classNames from "classnames";
 import "css/common.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Homepage from "pages/Homepage";
-import InvitePage from "pages/InvitePage";
-import ProcessPage from "pages/ProcessPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import RebirthPage from "pages/RebirthPage";
-import NFTPage from "pages/NFTPage";
-import AppLoader from "layout/AppLoader";
 import useMountLogger from "hooks/useMountLogger";
-import WagmiWrapper from "layout/WagmiWrapper";
-import ContractProvider from "layout/ContractProvider";
+import WagmiWrapper from "containers/WagmiWrapper";
+import ContractProvider from "containers/ContractProvider";
+import TokensProvider from "containers/TokensProvider";
+import AppLoader from "containers/AppLoader";
+import Homepage from "pages/Homepage";
+import ProcessPage from "pages/ProcessPage";
+import NFTPage from "pages/NFTPage";
+import RebirthPage from "pages/RebirthPage";
+import InvitePage from "pages/InvitePage";
 import Header from "components/Header";
-import TokensProvider from "layout/TokensProvider";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");

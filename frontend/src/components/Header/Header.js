@@ -4,7 +4,7 @@ import "./Header.scss";
 import { NavLink } from "react-router-dom";
 import DiamondList from "components/DiamondList";
 import Wallet from "components/Wallet";
-import ContractProvider from "layout/ContractProvider";
+import ContractProvider from "containers/ContractProvider";
 
 const Header = () => {
   return (

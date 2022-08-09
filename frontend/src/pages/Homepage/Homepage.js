@@ -14,7 +14,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import teaserVideo from "assets/video/teaser.mp4";
-import ContractProvider from "layout/ContractProvider";
+import ContractProvider from "containers/ContractProvider";
 
 const EnterButton = () => {
   const { systemStage } = useSelector(systemSelector);
