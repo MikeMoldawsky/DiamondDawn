@@ -1,57 +1,48 @@
 import React, { useEffect, useState } from "react";
 import useDDContract from "hooks/useDDContract";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import VideoPlayer from "components/VideoPlayer";
-import {
-  loadAccountShippingTokens,
-  loadAccountNfts,
-} from "store/tokensReducer";
-import { useAccount, useProvider } from "wagmi";
+import { setTokenUri } from "store/tokensReducer";
+import { useProvider } from "wagmi";
 import { useNavigate } from "react-router-dom";
-import { isActionSuccessSelector } from "components/ActionButton/ActionButton.module";
 import Loading from "components/Loading";
 import classNames from "classnames";
 import { systemSelector } from "store/systemReducer";
 import _ from "lodash";
 import { uiSelector } from "store/uiReducer";
-import useActionDispatch from "hooks/useActionDispatch";
+import { getTokenUriApi } from "api/contractApi";
 
 const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const [actionTxId, setActionTxId] = useState(false);
   const [showCompleteVideo, setShowCompleteVideo] = useState(false);
   const [completeVideoEnded, setCompleteVideoEnded] = useState(false);
   const [processedTokenId, setProcessedTokenId] = useState(-1);
-  const account = useAccount();
+  const [processedTokenUri, setProcessedTokenUri] = useState(null);
   const provider = useProvider();
   const contract = useDDContract();
-  const actionDispatch = useActionDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isFetchNftsSuccess = useSelector(isActionSuccessSelector("load-nfts"));
   const { systemStage, systemSchedule } = useSelector(systemSelector);
   const { selectedTokenId } = useSelector(uiSelector);
   const endTime = _.get(systemSchedule, systemStage + 1);
 
   useEffect(() => {
-    if (completeVideoEnded && processedTokenId > -1 && isFetchNftsSuccess) {
+    if (completeVideoEnded && processedTokenId > -1 && processedTokenUri) {
+      dispatch(setTokenUri(processedTokenId, processedTokenUri));
       navigate(`/nft/${processedTokenId}`);
     }
-  }, [completeVideoEnded, processedTokenId, isFetchNftsSuccess]);
+  }, [completeVideoEnded, processedTokenId, processedTokenUri]);
 
-  const onSuccess = (tokenId) => {
-    actionDispatch(
-      loadAccountNfts(contract, provider, account.address),
-      "load-nfts"
-    );
-    actionDispatch(
-      loadAccountShippingTokens(contract, account.address),
-      "load-shipping-nfts"
-    );
+  const onSuccess = async (tokenId) => {
+    // fetch and store tokenUri in local state until video has ended
+    const tokenUri = await getTokenUriApi(contract, tokenId);
     setProcessedTokenId(tokenId);
+    setProcessedTokenUri(tokenUri);
   };
 
   const execute = async () => {
-    const requireWatch = _.isFunction(watch);
-    if (requireWatch) {
+    const withWatch = _.isFunction(watch);
+    if (withWatch) {
       watch(contract, provider, onSuccess);
     }
 
@@ -61,7 +52,7 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
 
     const receipt = await tx.wait();
 
-    if (!requireWatch) {
+    if (!withWatch) {
       onSuccess(selectedTokenId);
     }
 

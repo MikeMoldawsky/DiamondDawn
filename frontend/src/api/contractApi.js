@@ -65,7 +65,7 @@ export const rebirthApi = async (contract, tokenId) => {
   }
 };
 
-// TOKEN URIs
+// TOKEN URI
 export const getTokenUriApi = async (contract, tokenId) => {
   try {
     const tokenUri = await contract.tokenURI(tokenId);
