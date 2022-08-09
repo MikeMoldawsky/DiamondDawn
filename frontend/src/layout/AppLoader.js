@@ -6,7 +6,7 @@ import useActionDispatch from "hooks/useActionDispatch";
 import useDDContract from "hooks/useDDContract";
 import { loadSystemSchedule, loadSystemStage } from "store/systemReducer";
 import { EVENTS } from "consts";
-import useEffectWithAccount from "hooks/useEffectWithAccount";
+import useOnConnect from "hooks/useOnConnect";
 import {
   loadAccountNfts,
   loadAccountShippingTokens,
@@ -37,7 +37,7 @@ const AppLoader = () => {
     };
   }, []);
 
-  useEffectWithAccount(
+  useOnConnect(
     () => {
       actionDispatch(
         loadAccountNfts(contract, provider, account?.address),
