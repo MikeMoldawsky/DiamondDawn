@@ -32,15 +32,17 @@ function RebirthPage() {
 
   return (
     <div className={classNames("page rebirth-page")}>
-      <div className="action-view">
-        <div className="leading-text">DIAMOND REBIRTH</div>
-        {showComplete ? (
-          <div className="secondary-text">Complete</div>
-        ) : (
-          <ActionButton actionKey="Rebirth" onClick={rebirth}>
-            Rebirth
-          </ActionButton>
-        )}
+      <div className="inner-page">
+        <div className="action-view">
+          <div className="leading-text">DIAMOND REBIRTH</div>
+          {showComplete ? (
+            <div className="secondary-text">Complete</div>
+          ) : (
+            <ActionButton actionKey="Rebirth" onClick={rebirth}>
+              Rebirth
+            </ActionButton>
+          )}
+        </div>
       </div>
     </div>
   );
