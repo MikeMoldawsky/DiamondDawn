@@ -16,7 +16,7 @@ export const watchTokenMinedBy =
       contract.on(filter, (from, to, tokenId) => {
         console.log("MINED WITH FILTER", { from, to, tokenId });
         contract.on(filter, null);
-        callback(tokenId);
+        callback(tokenId.toNumber());
       });
     });
   };
@@ -49,12 +49,13 @@ export const loadAccountShippingTokens =
 
 export const loadTokenUri = (contract, tokenId) => async (dispatch) => {
   const tokenUri = await getTokenUriApi(contract, tokenId);
-
-  dispatch({
-    type: "TOKENS.SET_TOKEN",
-    payload: { tokenId, tokenUri: JSON.parse(atob(tokenUri.split(",")[1])) },
-  });
+  dispatch(setTokenUri(tokenId, tokenUri));
 };
+
+export const setTokenUri = (tokenId, tokenUri) => ({
+  type: "TOKENS.SET_TOKEN",
+  payload: { tokenId, tokenUri },
+})
 
 export const tokensSelector = (state) => state.tokens;
 
