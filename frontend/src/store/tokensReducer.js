@@ -55,7 +55,7 @@ export const loadTokenUri = (contract, tokenId) => async (dispatch) => {
 export const setTokenUri = (tokenId, tokenUri) => ({
   type: "TOKENS.SET_TOKEN",
   payload: { tokenId, tokenUri },
-})
+});
 
 export const tokensSelector = (state) => state.tokens;
 

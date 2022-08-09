@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useDDContract from "hooks/useDDContract";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import VideoPlayer from "components/VideoPlayer";
 import { setTokenUri } from "store/tokensReducer";
 import { useProvider } from "wagmi";
@@ -10,7 +10,7 @@ import classNames from "classnames";
 import { systemSelector } from "store/systemReducer";
 import _ from "lodash";
 import { uiSelector } from "store/uiReducer";
-import {getTokenUriApi} from "api/contractApi";
+import { getTokenUriApi } from "api/contractApi";
 
 const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const [actionTxId, setActionTxId] = useState(false);
@@ -20,7 +20,7 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const [processedTokenUri, setProcessedTokenUri] = useState(null);
   const provider = useProvider();
   const contract = useDDContract();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { systemStage, systemSchedule } = useSelector(systemSelector);
   const { selectedTokenId } = useSelector(uiSelector);
@@ -28,16 +28,16 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
 
   useEffect(() => {
     if (completeVideoEnded && processedTokenId > -1 && processedTokenUri) {
-      dispatch(setTokenUri(processedTokenId, processedTokenUri))
+      dispatch(setTokenUri(processedTokenId, processedTokenUri));
       navigate(`/nft/${processedTokenId}`);
     }
   }, [completeVideoEnded, processedTokenId, processedTokenUri]);
 
-  const onSuccess =  async (tokenId) => {
+  const onSuccess = async (tokenId) => {
     // fetch and store tokenUri in local state until video has ended
-    const tokenUri = await getTokenUriApi(contract, tokenId)
+    const tokenUri = await getTokenUriApi(contract, tokenId);
     setProcessedTokenId(tokenId);
-    setProcessedTokenUri(tokenUri)
+    setProcessedTokenUri(tokenUri);
   };
 
   const execute = async () => {
