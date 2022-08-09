@@ -2,8 +2,11 @@ import React from "react";
 import tweezersLogo from "assets/images/logo.png";
 import "./Header.scss";
 import { NavLink } from "react-router-dom";
+import DiamondList from "components/DiamondList";
+import Wallet from "components/Wallet";
+import ContractProvider from "containers/ContractProvider";
 
-const Header = ({ children }) => {
+const Header = () => {
   return (
     <header>
       <div className="header-internal">
@@ -12,7 +15,12 @@ const Header = ({ children }) => {
             <img src={tweezersLogo} alt="TWEEZERS" />
           </NavLink>
         </div>
-        <div className="center-aligned-row">{children}</div>
+        <div className="center-aligned-row">
+          <ContractProvider>
+            <DiamondList />
+          </ContractProvider>
+          <Wallet />
+        </div>
       </div>
     </header>
   );

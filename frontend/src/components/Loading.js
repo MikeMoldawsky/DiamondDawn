@@ -4,16 +4,18 @@ import ReactPlayer from "react-player";
 
 const Loading = () => {
   return (
-    <ReactPlayer
-      url={animation}
-      playing
-      playsinline
-      controls={false}
-      muted
-      loop
-      className="react-player"
-      width={300}
-    />
+    <div className="center-aligned-column loader-container">
+      <ReactPlayer
+        url={animation}
+        playing
+        playsinline
+        controls={false}
+        muted
+        loop
+        className="react-player loader"
+        width={300}
+      />
+    </div>
   );
 };
 

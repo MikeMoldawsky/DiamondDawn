@@ -53,5 +53,6 @@ export const systemReducer = makeReducer(
     "SYSTEM.SET_SCHEDULE": reduceUpdateFull,
     "SYSTEM.SET_DD_CONTRACT_INFO": reduceUpdateFull,
   },
-  INITIAL_STATE
+  INITIAL_STATE,
+  false
 );

@@ -8,7 +8,7 @@ import { loadMinePrice, systemSelector } from "store/systemReducer";
 import Countdown from "components/Countdown";
 import { watchTokenMinedBy } from "store/tokensReducer";
 import { useAccount } from "wagmi";
-import useEffectWithAccount from "hooks/useEffectWithAccount";
+import useOnConnect from "hooks/useOnConnect";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import { DUMMY_VIDEO_URL } from "consts";
@@ -43,7 +43,7 @@ const Mine = () => {
     dispatch(loadMinePrice(contract));
   }, []);
 
-  useEffectWithAccount(async () => {
+  useOnConnect(async () => {
     // TODO - apply whitelist once developed
     // const isWhitelisted = await contract.mintAllowedAddresses(account.address);
     setCanMine(true);

@@ -1,8 +1,9 @@
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadContractInfo, systemSelector } from "store/systemReducer";
-import { useEffect } from "react";
+import Loading from "components/Loading";
 
-const ContractProvider = ({ children }) => {
+const ContractProvider = ({ children, withLoader }) => {
   const { ddContractInfo } = useSelector(systemSelector);
   const dispatch = useDispatch();
 
@@ -12,7 +13,7 @@ const ContractProvider = ({ children }) => {
     }
   }, [ddContractInfo, dispatch]);
 
-  return ddContractInfo ? children : null;
+  return ddContractInfo ? children : withLoader ? <Loading /> : null;
 };
 
 export default ContractProvider;

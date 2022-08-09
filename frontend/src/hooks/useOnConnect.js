@@ -1,14 +1,15 @@
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
 
-const useEffectWithAccount = (func) => {
+const useOnConnect = (onConnect, onDisconnect) => {
   const account = useAccount();
 
   useEffect(() => {
+    onDisconnect && onDisconnect();
     if (account?.address) {
-      func && func();
+      onConnect && onConnect();
     }
   }, [account?.address]);
 };
 
-export default useEffectWithAccount;
+export default useOnConnect;

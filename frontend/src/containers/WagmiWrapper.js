@@ -26,7 +26,7 @@ const localChain = {
 
 function WagmiWrapper({ children }) {
   const { chains, provider } = configureChains(
-    [chain.goerli, chain.ropsten, chain.polygonMumbai, localChain],
+    [localChain, chain.goerli, chain.ropsten, chain.polygonMumbai],
     [
       infuraProvider({ infuraId: "dbe63b3bdfc84f3abdf38cdc8e22f492" }),
       publicProvider(),

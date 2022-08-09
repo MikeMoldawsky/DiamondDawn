@@ -15,7 +15,7 @@ import NoDiamondView from "components/NoDiamondView";
 import { DUMMY_VIDEO_URL, NFT_TYPE, SYSTEM_STAGE } from "consts";
 import { useAccount } from "wagmi";
 import Diamond from "components/Diamond";
-import useEffectWithAccount from "hooks/useEffectWithAccount";
+import useOnConnect from "hooks/useOnConnect";
 import ActionButton from "components/ActionButton";
 import { isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
@@ -36,7 +36,7 @@ const Ship = () => {
     formState: { errors },
   } = useForm();
 
-  useEffectWithAccount(() => {
+  useOnConnect(() => {
     actionDispatch(
       loadAccountShippingTokens(contract, account.address),
       "load-shipping-nfts"

@@ -11,6 +11,7 @@ import Ship from "./Burn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import { SYSTEM_STAGE } from "consts";
+import "./ProcessPage.scss";
 
 const ProcessPage = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -50,7 +51,13 @@ const ProcessPage = () => {
     }
   }, [systemStage]);
 
-  return systemStage >= SYSTEM_STAGE.MINE_OPEN ? renderByStage() : null;
+  return (
+    <div className="page process-page">
+      <div className="inner-page">
+        {systemStage >= SYSTEM_STAGE.MINE_OPEN ? renderByStage() : null}
+      </div>
+    </div>
+  );
 };
 
 export default ProcessPage;

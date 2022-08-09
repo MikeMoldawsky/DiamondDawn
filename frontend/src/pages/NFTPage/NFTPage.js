@@ -57,7 +57,9 @@ function NFTPage() {
   };
 
   return (
-    <div className={classNames("page nft-page")}>{renderByStatusPart()}</div>
+    <div className={classNames("page nft-page")}>
+      <div className="inner-page">{renderByStatusPart()}</div>
+    </div>
   );
 }
 
