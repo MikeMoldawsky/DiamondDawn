@@ -1,31 +1,25 @@
 import React, { useEffect } from "react";
+import useMountLogger from "hooks/useMountLogger";
 import { useAccount, useProvider } from "wagmi";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import useActionDispatch from "hooks/useActionDispatch";
 import useDDContract from "hooks/useDDContract";
-import { loadSystemStage, loadSystemSchedule } from "store/systemReducer";
+import { loadSystemSchedule, loadSystemStage } from "store/systemReducer";
 import { EVENTS } from "consts";
 import useEffectWithAccount from "hooks/useEffectWithAccount";
 import {
-  loadAccountShippingTokens,
   loadAccountNfts,
+  loadAccountShippingTokens,
 } from "store/tokensReducer";
-import { isActionFirstCompleteSelector } from "components/ActionButton/ActionButton.module";
-import useMountLogger from "hooks/useMountLogger";
-import useActionDispatch from "hooks/useActionDispatch";
 
-const useSystemLoader = () => {
+const AppLoader = () => {
   const account = useAccount();
   const provider = useProvider();
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
   const contract = useDDContract();
-  const isNftsLoaded = useSelector(isActionFirstCompleteSelector("load-nfts"));
-  const isShippingNftsLoaded = useSelector(
-    isActionFirstCompleteSelector("load-shipping-nfts")
-  );
-  const isReady = isNftsLoaded && isShippingNftsLoaded;
 
-  useMountLogger("useSystemLoader");
+  useMountLogger("AppLoader");
 
   useEffect(() => {
     dispatch(loadSystemStage(contract));
@@ -57,7 +51,7 @@ const useSystemLoader = () => {
     );
   });
 
-  return isReady;
+  return null;
 };
 
-export default useSystemLoader;
+export default AppLoader;

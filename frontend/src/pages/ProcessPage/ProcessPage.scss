@@ -1,0 +1,96 @@
+@import "css/vars";
+
+.page.process-page {
+  display: flex;
+  flex-direction: column;
+
+  main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 30px;
+  }
+
+  .countdown-view {
+    text-align: center;
+
+    .leading-text {
+      font-size: 1.2em;
+    }
+
+    .countdown {
+      font-size: 2em;
+    }
+  }
+
+  .countdown-row {
+    width: 670px;
+    margin: 0 auto;
+
+    div {
+      font-size: 1.2em;
+    }
+
+    span {
+      width: 480px;
+      font-size: 5em;
+      opacity: 0.4;
+    }
+  }
+
+  .video-placeholder {
+    margin-top: 80px;
+    height: $videoHeight;
+    width: $videoWidth;
+    background-color: rgba(255, 255, 255, 0.2);
+    font-size: 1.8em;
+    cursor: pointer;
+  }
+
+  .action-view {
+    text-align: center;
+
+    .countdown {
+      margin-top: 50px;
+
+      .countdown-text {
+        font-size: 1.5em;
+      }
+
+      span {
+        font-size: 1.8em;
+      }
+    }
+  }
+
+  .action-button {
+    width: 200px;
+    margin: 0 auto 40px;
+  }
+
+  .content {
+    cursor: pointer;
+    z-index: 1;
+    position: absolute;
+    padding: 100px 300px;
+    background-color: $dark;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    border: solid 1px silver;
+    border-radius: 10px;
+  }
+}

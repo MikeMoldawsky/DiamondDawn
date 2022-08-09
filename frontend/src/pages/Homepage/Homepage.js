@@ -14,15 +14,26 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import teaserVideo from "assets/video/teaser.mp4";
+import ContractProvider from "layout/ContractProvider";
 
-const HomepageInternal = () => {
+const EnterButton = () => {
   const { systemStage } = useSelector(systemSelector);
-  const [hasEntered, setHasEntered] = useState(false);
+  const canEnter = systemStage >= 0;
+
+  return canEnter ? (
+    <NavLink to={`/process`}>
+      <div className="button" style={{ marginTop: 40 }}>
+        ENTER THE MINE
+      </div>
+    </NavLink>
+  ) : null;
+};
+
+const Homepage = () => {
   const navigate = useNavigate();
   const videoPlayer = useRef(null);
+  const [hasEntered, setHasEntered] = useState(false);
   const [playVideo, setPlayVideo] = useState(false);
-
-  const canEnter = systemStage >= 0;
 
   const onCorrectPassword = () => {
     // setHasEntered(true)
@@ -56,13 +67,9 @@ const HomepageInternal = () => {
         >
           <img src={infinityLogo} alt={""} />
         </CommonView>
-        {canEnter && (
-          <NavLink to={`/process`}>
-            <div className="button" style={{ marginTop: 40 }}>
-              ENTER THE MINE
-            </div>
-          </NavLink>
-        )}
+        <ContractProvider>
+          <EnterButton />
+        </ContractProvider>
         <a href="#video">
           <SVG src={scrollMarker} className="scroll-marker" />
         </a>
@@ -96,10 +103,6 @@ const HomepageInternal = () => {
       </div>
     </div>
   );
-};
-
-const Homepage = () => {
-  return <HomepageInternal />;
 };
 
 export default Homepage;
