@@ -1,6 +1,6 @@
-import React, { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { loadContractInfo, systemSelector } from "store/systemReducer";
-import { useEffect } from "react";
 import Loading from "components/Loading";
 
 const ContractProvider = ({ children, withLoader }) => {
