@@ -26,11 +26,8 @@ const AppLoader = () => {
     dispatch(loadSystemSchedule());
 
     provider.once("block", () => {
-      contract.on(EVENTS.SystemStageChanged, (_stage, _isStageActive) => {
-        console.log("EVENT SystemStageChanged fired", {
-          _stage,
-          _isStageActive,
-        });
+      contract.on(EVENTS.SystemStageChanged, (_stage) => {
+        console.log("EVENT SystemStageChanged fired", { _stage });
         dispatch(loadSystemStage(contract));
       });
     });
@@ -40,16 +37,21 @@ const AppLoader = () => {
     };
   }, []);
 
-  useEffectWithAccount(() => {
-    actionDispatch(
-      loadAccountNfts(contract, provider, account?.address),
-      "load-nfts"
-    );
-    actionDispatch(
-      loadAccountShippingTokens(contract, account.address),
-      "load-shipping-nfts"
-    );
-  });
+  useEffectWithAccount(
+    () => {
+      actionDispatch(
+        loadAccountNfts(contract, provider, account?.address),
+        "load-nfts"
+      );
+      actionDispatch(
+        loadAccountShippingTokens(contract, account.address),
+        "load-shipping-nfts"
+      );
+    },
+    () => {
+      dispatch({ type: "RESET_STATE" });
+    }
+  );
 
   return null;
 };
