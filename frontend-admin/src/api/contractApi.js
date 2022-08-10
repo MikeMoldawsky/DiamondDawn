@@ -1,6 +1,6 @@
-import { ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
+import { DIAMOND_DAWN_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
 import _ from "lodash";
-import { getShapeName } from "utils";
+import { getShapeName, getVideoUrlParamName } from "utils";
 
 // ADMIN CONTROL API
 export const getSystemStageApi = async (contract) => {
@@ -32,46 +32,36 @@ export const unpauseApi = async (contract) => {
 // ART URLS API
 const ART_MAPPING = {
   [SYSTEM_STAGE.MINE_OPEN]: {
-    shapes: [ROUGH_SHAPE.MAKEABLE],
     setter: "setRoughVideoUrl",
     getter: "roughShapeToVideoUrls",
+    getterArgs: [ROUGH_SHAPE.MAKEABLE],
   },
   [SYSTEM_STAGE.CUT_OPEN]: {
-    shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
     setter: "setCutVideoUrl",
     getter: "cutShapeToVideoUrls",
+    getterArgs: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.POLISH_OPEN]: {
-    shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
     setter: "setPolishVideoUrl",
     getter: "polishShapeToVideoUrls",
+    getterArgs: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.SHIP]: {
-    shapes: [undefined],
-    setter: "setBurnVideoUrl",
-    getter: "burnVideoUrl",
-  },
-  [SYSTEM_STAGE.COMPLETE]: {
-    shapes: [undefined],
-    setter: "setRebirthVideoUrl",
-    getter: "rebirthVideoUrl",
+    setter: "setShipVideoUrls",
+    getter: "diamondDawnTypeToShipVideoUrls",
+    getterArgs: [DIAMOND_DAWN_TYPE.BURNED, DIAMOND_DAWN_TYPE.REBORN],
   },
 };
 
 export const getVideoUrlsByStageApi = async (mineContract, stage) => {
-  const { shapes, getter } = ART_MAPPING[stage];
+  const { getter, getterArgs } = ART_MAPPING[stage];
   const urls = await Promise.all(
-    _.map(shapes, (shape) => {
-      if (shape !== undefined) {
-        return mineContract[getter](shape);
-      } else {
-        return mineContract[getter]();
-      }
-    })
+    _.map(getterArgs, (getterArg) => mineContract[getter](getterArg))
   );
-
-  const shapeNames = _.map(shapes, (shape) => getShapeName(shape, stage));
-  return _.zipObject(shapeNames, urls);
+  const getterParamNames = _.map(getterArgs, (getterArg) =>
+    getVideoUrlParamName(getterArg, stage)
+  );
+  return _.zipObject(getterParamNames, urls);
 };
 
 export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {

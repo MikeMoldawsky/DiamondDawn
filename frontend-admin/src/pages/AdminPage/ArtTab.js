@@ -66,12 +66,16 @@ const ArtTab = () => {
   return (
     <div className="admin-art">
       <h1>Art Mapping</h1>
-      {_.map(SYSTEM_STAGE, (systemStage) => (
-        <div key={`stage-art-${systemStage}`}>
-          <div className="caption">{getSystemStageName(systemStage)}</div>
-          <SystemStageArt systemStage={systemStage} />
-        </div>
-      ))}
+      {_.map(
+        SYSTEM_STAGE,
+        (systemStage) =>
+          systemStage < SYSTEM_STAGE.COMPLETE && (
+            <div key={`stage-art-${systemStage}`}>
+              <div className="caption">{getSystemStageName(systemStage)}</div>
+              <SystemStageArt systemStage={systemStage} />
+            </div>
+          )
+      )}
     </div>
   );
 };

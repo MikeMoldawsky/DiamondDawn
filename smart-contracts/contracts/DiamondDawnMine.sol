@@ -42,9 +42,7 @@ contract DiamondDawnMine is
     mapping(uint => string) public roughShapeToVideoUrls;
     mapping(uint => string) public cutShapeToVideoUrls;
     mapping(uint => string) public polishShapeToVideoUrls;
-
-    string public burnVideoUrl;
-    string public rebirthVideoUrl;
+    mapping(uint => string) public diamondDawnTypeToShipVideoUrls;
 
     uint private constant MIN_ROUGH_POINTS_REDUCTION = 38; // Min of ~35% carat loss.
     uint private constant MAX_ROUGH_POINTS_REDUCTION = 74; // Max of ~65% carat loss.
@@ -52,9 +50,8 @@ contract DiamondDawnMine is
     uint private constant MAX_CUT_POINTS_REDUCTION = 4; // Max of ~8% carat loss.
 
     uint private _randNonce = 0;
-    mapping(uint => bool) private diamondDawnTypeToIsRevealed;
+    mapping(uint => bool) private _diamondDawnTypeToIsRevealed;
     address private _diamondDawnContract;
-
     DiamondCertificate[] private _mineDiamonds;
 
     constructor(address[] memory adminAddresses) {
@@ -110,7 +107,7 @@ contract DiamondDawnMine is
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         roughShapeToVideoUrls[uint(RoughDiamondShape.MAKEABLE)] = roughUrl;
-        diamondDawnTypeToIsRevealed[uint(DiamondDawnType.ROUGH)] = true;
+        _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.ROUGH)] = true;
     }
 
     function setCutVideoUrl(
@@ -123,7 +120,7 @@ contract DiamondDawnMine is
         cutShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
         cutShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
         cutShapeToVideoUrls[uint(DiamondShape.RADIANT)] = radiantUrl;
-        diamondDawnTypeToIsRevealed[uint(DiamondDawnType.CUT)] = true;
+        _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.CUT)] = true;
     }
 
     function setPolishVideoUrl(
@@ -136,28 +133,22 @@ contract DiamondDawnMine is
         polishShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
         polishShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
         polishShapeToVideoUrls[uint(DiamondShape.RADIANT)] = radiantUrl;
-        diamondDawnTypeToIsRevealed[uint(DiamondDawnType.POLISHED)] = true;
+        _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.POLISHED)] = true;
     }
 
-    function setBurnVideoUrl(string calldata burnUrl)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        burnVideoUrl = burnUrl;
-        diamondDawnTypeToIsRevealed[uint(DiamondDawnType.BURNED)] = true;
-    }
-
-    function setRebirthVideoUrl(string calldata rebirthUrl)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        rebirthVideoUrl = rebirthUrl;
-        diamondDawnTypeToIsRevealed[uint(DiamondDawnType.REBORN)] = true;
+    function setShipVideoUrls(
+        string calldata burnUrl,
+        string calldata rebirthUrl
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        diamondDawnTypeToShipVideoUrls[uint(DiamondDawnType.BURNED)] = burnUrl;
+        diamondDawnTypeToShipVideoUrls[
+            uint(DiamondDawnType.REBORN)
+        ] = rebirthUrl;
+        _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.BURNED)] = true;
+        _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.REBORN)] = true;
     }
 
     function mine(uint tokenId) external onlyDiamondDawn _requireMineNotDry {
-        // TODO: change to carat calculate randomly according to polished weight
-        // TODO: we need to generate a number between 40-60% that represents how good is the
         uint pointsReduction = _getRandomNumberInRange(
             MIN_ROUGH_POINTS_REDUCTION,
             MAX_ROUGH_POINTS_REDUCTION
@@ -217,9 +208,9 @@ contract DiamondDawnMine is
     function getDiamondMetadata(uint tokenId)
         external
         view
+        onlyDiamondDawn
         returns (string memory)
     {
-        // TODO: only diamond dawn contract.
         DiamondDawnMetadata memory diamondDawnMetadata = _tokenIdToMetadata[
             tokenId
         ];
@@ -244,8 +235,22 @@ contract DiamondDawnMine is
             );
     }
 
-    function isRevealed(DiamondDawnType type_) external view returns (bool) {
-        return diamondDawnTypeToIsRevealed[uint(type_)];
+    function isMineReady() external view returns (bool) {
+        return _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.ROUGH)];
+    }
+
+    function isCutReady() external view returns (bool) {
+        return _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.CUT)];
+    }
+
+    function isPolishReady() external view returns (bool) {
+        return _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.POLISHED)];
+    }
+
+    function isShipReady() external view returns (bool) {
+        return
+            _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.BURNED)] &&
+            _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.REBORN)];
     }
 
     /**********************     Private Functions     ************************/
@@ -293,9 +298,13 @@ contract DiamondDawnMine is
                 uint(diamondDawnMetadata.certificate.shape)
             ];
         } else if (DiamondDawnType.BURNED == diamondDawnType) {
-            videoUrl = burnVideoUrl;
+            videoUrl = diamondDawnTypeToShipVideoUrls[
+                uint(DiamondDawnType.BURNED)
+            ];
         } else if (DiamondDawnType.REBORN == diamondDawnType) {
-            videoUrl = rebirthVideoUrl;
+            videoUrl = diamondDawnTypeToShipVideoUrls[
+                uint(DiamondDawnType.REBORN)
+            ];
         } else {
             revert("Failed fetching DiamondDawn video url - unknown type");
         }

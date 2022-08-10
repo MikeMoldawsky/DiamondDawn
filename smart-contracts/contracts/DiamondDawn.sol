@@ -71,11 +71,28 @@ contract DiamondDawn is
         _;
     }
 
-    modifier isRevealed(IDiamondDawnMine.DiamondDawnType type_) {
-        require(
-            diamondDawnMine.isRevealed(type_),
-            "DiamondDawnMine is not revealed"
-        );
+    modifier isDiamondDawnMineReady(SystemStage systemStage_) {
+        if (systemStage_ == SystemStage.MINE_OPEN) {
+            require(
+                diamondDawnMine.isMineReady(),
+                "DiamondDawnMine mine isn't ready"
+            );
+        } else if (systemStage_ == SystemStage.CUT_OPEN) {
+            require(
+                diamondDawnMine.isCutReady(),
+                "DiamondDawnMine cut isn't ready"
+            );
+        } else if (systemStage_ == SystemStage.POLISH_OPEN) {
+            require(
+                diamondDawnMine.isPolishReady(),
+                "DiamondDawnMine polish isn't ready"
+            );
+        } else if (systemStage_ == SystemStage.SHIP) {
+            require(
+                diamondDawnMine.isShipReady(),
+                "DiamondDawnMine burn isn't ready"
+            );
+        }
         _;
     }
 
@@ -115,7 +132,7 @@ contract DiamondDawn is
         payable
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.MINE_OPEN)
-        isRevealed(IDiamondDawnMine.DiamondDawnType.ROUGH)
+        isDiamondDawnMineReady(SystemStage.MINE_OPEN)
         costs(MINING_PRICE)
     {
         // Regular mint logics
@@ -130,7 +147,7 @@ contract DiamondDawn is
         external
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.CUT_OPEN)
-        isRevealed(IDiamondDawnMine.DiamondDawnType.CUT)
+        isDiamondDawnMineReady(SystemStage.CUT_OPEN)
     {
         diamondDawnMine.cut(tokenId);
         emit Cut(tokenId);
@@ -140,7 +157,7 @@ contract DiamondDawn is
         external
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.POLISH_OPEN)
-        isRevealed(IDiamondDawnMine.DiamondDawnType.POLISHED)
+        isDiamondDawnMineReady(SystemStage.POLISH_OPEN)
     {
         diamondDawnMine.polish(tokenId);
         emit Polish(tokenId);
@@ -150,7 +167,7 @@ contract DiamondDawn is
         external
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.SHIP)
-        isRevealed(IDiamondDawnMine.DiamondDawnType.BURNED)
+        isDiamondDawnMineReady(SystemStage.SHIP)
     {
         super.burn(tokenId);
         diamondDawnMine.burn(tokenId);
@@ -162,7 +179,7 @@ contract DiamondDawn is
     function rebirth(uint256 tokenId)
         external
         assignedDiamondDawnMine
-        isRevealed(IDiamondDawnMine.DiamondDawnType.REBORN)
+        isDiamondDawnMineReady(SystemStage.SHIP)
         onlyShippedDiamondOwner(tokenId)
     {
         delete _shippedTokenIdToOwner[tokenId];
@@ -182,6 +199,7 @@ contract DiamondDawn is
     function setSystemStage(uint systemStage_)
         external
         validSystemStage(systemStage_)
+        isDiamondDawnMineReady(SystemStage(systemStage_))
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         systemStage = SystemStage(systemStage_);
