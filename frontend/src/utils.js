@@ -185,7 +185,5 @@ export const isTokenDone = (token, systemStage) => {
 };
 
 export const getActionableTokens = (tokens, systemStage) => {
-  return _.filter(tokens, (token) =>
-    isTokenActionable(token, systemStage)
-  )
-}
+  return _.filter(tokens, (token) => isTokenActionable(token, systemStage));
+};

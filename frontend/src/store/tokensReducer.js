@@ -16,18 +16,18 @@ export const watchTokenMinedBy =
     const transferListener = (from, to, tokenId) => {
       console.log("MINED WITH FILTER", { from, to, tokenId });
       callback(tokenId.toNumber());
-    }
+    };
 
     const blockListener = () => {
       contract.on(filter, transferListener);
-    }
+    };
 
     provider.once("block", blockListener);
 
     return () => {
       provider.off("block", blockListener);
       contract.off(filter, transferListener);
-    }
+    };
   };
 
 export const loadAccountNfts =

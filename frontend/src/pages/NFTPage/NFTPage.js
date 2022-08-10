@@ -4,18 +4,18 @@ import "./NFTPage.scss";
 import DiamondInfo from "components/DiamondInfo";
 import { useSelector } from "react-redux";
 import { tokenByIdSelector } from "store/tokensReducer";
-import {NavLink, useLocation} from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { getTokenNextStageName, isTokenActionable, isTokenDone } from "utils";
 import { uiSelector } from "store/uiReducer";
 import useSelectTokenFromRoute from "hooks/useSelectTokenFromRoute";
 import { systemSelector } from "store/systemReducer";
-import {PageTransition} from "@steveeeie/react-page-transition";
+import { PageTransition } from "@steveeeie/react-page-transition";
 
 function NFTPage() {
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
   const { systemStage } = useSelector(systemSelector);
-  const location = useLocation()
+  const location = useLocation();
 
   useSelectTokenFromRoute();
 

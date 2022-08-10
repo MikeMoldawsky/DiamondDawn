@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import useAutoSelectToken from "hooks/useAutoSelectToken";

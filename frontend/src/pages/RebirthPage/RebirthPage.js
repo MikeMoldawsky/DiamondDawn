@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
-import _ from 'lodash'
+import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
 import ActionButton from "components/ActionButton";
-import {rebirthApi} from "api/contractApi";
-import {DUMMY_VIDEO_URL, NFT_TYPE} from "consts";
+import { rebirthApi } from "api/contractApi";
+import { DUMMY_VIDEO_URL, NFT_TYPE } from "consts";
 import ActionView from "components/ActionView";
-import {useDispatch, useSelector} from "react-redux";
-import {tokensSelector} from "store/tokensReducer";
-import {isTokenOfType} from "utils";
-import {setSelectedTokenId} from "store/uiReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { tokensSelector } from "store/tokensReducer";
+import { isTokenOfType } from "utils";
+import { setSelectedTokenId } from "store/uiReducer";
 
 function RebirthPage() {
   const { tokenId } = useParams();
   const navigate = useNavigate();
   const contract = useDDContract();
-  const tokens = useSelector(tokensSelector)
-  const [isReady, setIsReady] = useState(false)
-  const dispatch = useDispatch()
+  const tokens = useSelector(tokensSelector);
+  const [isReady, setIsReady] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetch = async () => {
@@ -31,24 +31,22 @@ function RebirthPage() {
 
   useEffect(() => {
     try {
-      const intTokenId = parseInt(tokenId)
+      const intTokenId = parseInt(tokenId);
       if (!_.isEmpty(tokens)) {
-        const token = _.find(tokens, t => t.id === intTokenId)
+        const token = _.find(tokens, (t) => t.id === intTokenId);
         if (!token || !isTokenOfType(token, NFT_TYPE.Burned)) {
           navigate("/");
-        }
-        else {
+        } else {
           dispatch(setSelectedTokenId(intTokenId));
-          setIsReady(true)
+          setIsReady(true);
         }
       }
-    }
-    catch (e) {
+    } catch (e) {
       navigate("/");
     }
-  }, [])
+  }, []);
 
-  if (!isReady) return null
+  if (!isReady) return null;
 
   const RebirthContent = ({ execute }) => (
     <>
@@ -57,7 +55,7 @@ function RebirthPage() {
         Rebirth
       </ActionButton>
     </>
-  )
+  );
 
   return (
     <div className="page rebirth-page">
@@ -70,7 +68,7 @@ function RebirthPage() {
         </ActionView>
       </div>
     </div>
-  )
+  );
 }
 
 export default RebirthPage;

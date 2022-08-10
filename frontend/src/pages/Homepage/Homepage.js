@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import "./Homepage.scss";
 import CommonView from "components/CommonView";
@@ -11,12 +11,12 @@ import PasswordBox from "components/PasswordBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { NavLink, useNavigate } from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import teaserVideo from "assets/video/teaser.mp4";
 import ContractProvider from "containers/ContractProvider";
-import {SYSTEM_STAGE_NAME} from "consts";
-import {setSelectedTokenId} from "store/uiReducer";
+import { SYSTEM_STAGE_NAME } from "consts";
+import { setSelectedTokenId } from "store/uiReducer";
 
 const EnterButton = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -36,11 +36,11 @@ const Homepage = () => {
   const videoPlayer = useRef(null);
   const [hasEntered, setHasEntered] = useState(false);
   const [playVideo, setPlayVideo] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setSelectedTokenId(-1))
-  }, [])
+    dispatch(setSelectedTokenId(-1));
+  }, []);
 
   const onCorrectPassword = () => {
     // setHasEntered(true)

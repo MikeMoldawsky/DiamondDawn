@@ -1,9 +1,9 @@
-import {useEffect} from "react";
+import { useEffect } from "react";
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
-import {setSelectedTokenId, uiSelector} from "store/uiReducer";
-import {getActionableTokens} from "utils";
+import { setSelectedTokenId, uiSelector } from "store/uiReducer";
+import { getActionableTokens } from "utils";
 
 function useAutoSelectToken(systemStage) {
   const dispatch = useDispatch();
@@ -12,16 +12,23 @@ function useAutoSelectToken(systemStage) {
 
   useEffect(() => {
     if (_.size(tokens) > 0) {
-      const actionableTokens = getActionableTokens(tokens, systemStage)
+      const actionableTokens = getActionableTokens(tokens, systemStage);
 
       if (selectedTokenId !== -1) {
-        const selectedActionable = _.find(actionableTokens, token => token.id === selectedTokenId)
+        const selectedActionable = _.find(
+          actionableTokens,
+          (token) => token.id === selectedTokenId
+        );
         if (selectedActionable) {
-          return
+          return;
         }
       }
 
-      const tokenId = !_.isEmpty(actionableTokens) && actionableTokens[0].id !== selectedTokenId ? actionableTokens[0].id : -1
+      const tokenId =
+        !_.isEmpty(actionableTokens) &&
+        actionableTokens[0].id !== selectedTokenId
+          ? actionableTokens[0].id
+          : -1;
       dispatch(setSelectedTokenId(tokenId));
     }
   }, [tokens, systemStage, dispatch, selectedTokenId]);
