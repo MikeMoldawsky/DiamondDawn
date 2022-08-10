@@ -125,8 +125,7 @@ async function main() {
       "polish.mp4",
       "polish.mp4"
     );
-    await diamondDawnMine.setBurnVideoUrl("burn.mp4");
-    await diamondDawnMine.setRebirthVideoUrl("final.mp4");
+    await diamondDawnMine.setShipVideoUrls("burn.mp4", "final.mp4");
     await diamondDawn.unpause();
   }
 
