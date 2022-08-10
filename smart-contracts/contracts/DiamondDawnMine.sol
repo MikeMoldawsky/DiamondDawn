@@ -140,8 +140,10 @@ contract DiamondDawnMine is
         string calldata burnUrl,
         string calldata rebirthUrl
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        diamondDawnTypeToShipVideoUrls[DiamondDawnType.BURNED] = burnUrl;
-        diamondDawnTypeToShipVideoUrls[DiamondDawnType.REBORN] = rebirthUrl;
+        diamondDawnTypeToShipVideoUrls[uint(DiamondDawnType.BURNED)] = burnUrl;
+        diamondDawnTypeToShipVideoUrls[
+            uint(DiamondDawnType.REBORN)
+        ] = rebirthUrl;
         _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.BURNED)] = true;
         _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.REBORN)] = true;
     }
@@ -234,21 +236,21 @@ contract DiamondDawnMine is
     }
 
     function isMineReady() external view returns (bool) {
-        return _diamondDawnTypeToIsRevealed[DiamondDawnType.MINE];
+        return _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.ROUGH)];
     }
 
     function isCutReady() external view returns (bool) {
-        return _diamondDawnTypeToIsRevealed[DiamondDawnType.CUT];
+        return _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.CUT)];
     }
 
     function isPolishReady() external view returns (bool) {
-        return _diamondDawnTypeToIsRevealed[DiamondDawnType.POLISHED];
+        return _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.POLISHED)];
     }
 
     function isShipReady() external view returns (bool) {
         return
-            _diamondDawnTypeToIsRevealed[DiamondDawnType.BURNED] &&
-            _diamondDawnTypeToIsRevealed[DiamondDawnType.REBORN];
+            _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.BURNED)] &&
+            _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.REBORN)];
     }
 
     /**********************     Private Functions     ************************/
@@ -296,9 +298,13 @@ contract DiamondDawnMine is
                 uint(diamondDawnMetadata.certificate.shape)
             ];
         } else if (DiamondDawnType.BURNED == diamondDawnType) {
-            videoUrl = diamondDawnTypeToShipVideoUrls[DiamondDawnType.BURNED];
+            videoUrl = diamondDawnTypeToShipVideoUrls[
+                uint(DiamondDawnType.BURNED)
+            ];
         } else if (DiamondDawnType.REBORN == diamondDawnType) {
-            videoUrl = diamondDawnTypeToShipVideoUrls[DiamondDawnType.REBORN];
+            videoUrl = diamondDawnTypeToShipVideoUrls[
+                uint(DiamondDawnType.REBORN)
+            ];
         } else {
             revert("Failed fetching DiamondDawn video url - unknown type");
         }

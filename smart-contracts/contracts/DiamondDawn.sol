@@ -79,7 +79,7 @@ contract DiamondDawn is
             );
         } else if (systemStage_ == SystemStage.CUT_OPEN) {
             require(
-                diamondDawnMine.isCutReady()(),
+                diamondDawnMine.isCutReady(),
                 "DiamondDawnMine cut isn't ready"
             );
         } else if (systemStage_ == SystemStage.POLISH_OPEN) {
@@ -89,7 +89,7 @@ contract DiamondDawn is
             );
         } else if (systemStage_ == SystemStage.SHIP) {
             require(
-                diamondDawnMine.isShipReady()(),
+                diamondDawnMine.isShipReady(),
                 "DiamondDawnMine burn isn't ready"
             );
         }
@@ -170,7 +170,7 @@ contract DiamondDawn is
         isDiamondDawnMineReady(SystemStage.SHIP)
     {
         super.burn(tokenId);
-        diamondDawnMine.ship(tokenId);
+        diamondDawnMine.burn(tokenId);
         _shippedTokenIdToOwner[tokenId] = _msgSender();
         _ownerToShippingTokenIds[_msgSender()].add(tokenId);
         emit Ship(tokenId);
@@ -199,7 +199,7 @@ contract DiamondDawn is
     function setSystemStage(uint systemStage_)
         external
         validSystemStage(systemStage_)
-        isDiamondDawnMineReady(systemStage_)
+        isDiamondDawnMineReady(SystemStage(systemStage_))
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         systemStage = SystemStage(systemStage_);
