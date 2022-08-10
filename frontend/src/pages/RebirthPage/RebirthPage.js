@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from "react";
-import classNames from "classnames";
+import _ from 'lodash'
 import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
 import ActionButton from "components/ActionButton";
-import { rebirthApi } from "api/contractApi";
+import {rebirthApi} from "api/contractApi";
+import {DUMMY_VIDEO_URL, NFT_TYPE} from "consts";
+import ActionView from "components/ActionView";
+import {useDispatch, useSelector} from "react-redux";
+import {tokensSelector} from "store/tokensReducer";
+import {isTokenOfType} from "utils";
+import {setSelectedTokenId} from "store/uiReducer";
 
 function RebirthPage() {
   const { tokenId } = useParams();
   const navigate = useNavigate();
   const contract = useDDContract();
-  const [showComplete, setShowComplete] = useState(false);
+  const tokens = useSelector(tokensSelector)
+  const [isReady, setIsReady] = useState(false)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const fetch = async () => {
@@ -21,31 +29,48 @@ function RebirthPage() {
     }
   }, [tokenId]);
 
-  if (!tokenId) navigate("/");
+  useEffect(() => {
+    try {
+      const intTokenId = parseInt(tokenId)
+      if (!_.isEmpty(tokens)) {
+        const token = _.find(tokens, t => t.id === intTokenId)
+        if (!token || !isTokenOfType(token, NFT_TYPE.Burned)) {
+          navigate("/");
+        }
+        else {
+          dispatch(setSelectedTokenId(intTokenId));
+          setIsReady(true)
+        }
+      }
+    }
+    catch (e) {
+      navigate("/");
+    }
+  }, [])
 
-  const rebirth = async () => {
-    const tx = await rebirthApi(contract, tokenId);
-    await tx.wait();
+  if (!isReady) return null
 
-    setShowComplete(true);
-  };
+  const RebirthContent = ({ execute }) => (
+    <>
+      <div className="leading-text">DIAMOND REBIRTH</div>
+      <ActionButton actionKey="Rebirth" onClick={execute}>
+        Rebirth
+      </ActionButton>
+    </>
+  )
 
   return (
-    <div className={classNames("page rebirth-page")}>
+    <div className="page rebirth-page">
       <div className="inner-page">
-        <div className="action-view">
-          <div className="leading-text">DIAMOND REBIRTH</div>
-          {showComplete ? (
-            <div className="secondary-text">Complete</div>
-          ) : (
-            <ActionButton actionKey="Rebirth" onClick={rebirth}>
-              Rebirth
-            </ActionButton>
-          )}
-        </div>
+        <ActionView
+          transact={() => rebirthApi(contract, tokenId)}
+          videoUrl={DUMMY_VIDEO_URL}
+        >
+          <RebirthContent />
+        </ActionView>
       </div>
     </div>
-  );
+  )
 }
 
 export default RebirthPage;
