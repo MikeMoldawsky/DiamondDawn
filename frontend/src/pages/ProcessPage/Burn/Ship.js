@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useCallback, useState} from "react";
 import _ from "lodash";
 import Countdown from "components/Countdown";
 import useDDContract from "hooks/useDDContract";
@@ -12,15 +12,16 @@ import { useForm } from "react-hook-form";
 import "./Ship.scss";
 import classNames from "classnames";
 import NoDiamondView from "components/NoDiamondView";
-import { DUMMY_VIDEO_URL, NFT_TYPE, SYSTEM_STAGE } from "consts";
+import {DUMMY_VIDEO_URL, NFT_TYPE, SYSTEM_STAGE, TRAIT} from "consts";
 import { useAccount } from "wagmi";
 import Diamond from "components/Diamond";
 import useOnConnect from "hooks/useOnConnect";
 import ActionButton from "components/ActionButton";
-import { isTokenOfType } from "utils";
+import {getTokenTrait, isTokenOfType} from "utils";
 import ActionView from "components/ActionView";
 import useActionDispatch from "hooks/useActionDispatch";
 import { shipApi } from "api/contractApi";
+import DiamondPicker from "components/DiamondPicker";
 
 const Ship = () => {
   const contract = useDDContract();
@@ -29,6 +30,7 @@ const Ship = () => {
   const [showShippingForm, setShowShippingForm] = useState(false);
   const account = useAccount();
   const actionDispatch = useActionDispatch();
+  const tokenType = getTokenTrait(token, TRAIT.type)
 
   const {
     register,
@@ -57,7 +59,7 @@ const Ship = () => {
     );
   };
 
-  const BurnContent = ({ execute, endTime }) => {
+  const BurnContent = useCallback(({ execute, endTime }) => {
     if (showShippingForm)
       return (
         <>
@@ -82,7 +84,7 @@ const Ship = () => {
 
     return isTokenOfType(token, NFT_TYPE.Polished) ? (
       <>
-        <Diamond diamond={token} />
+        <DiamondPicker />
         <div className="leading-text">BUT... IS THERE MORE?</div>
         <div className="secondary-text">
           Letting the perfect stone go can be a risk... but a diamond's journey
@@ -101,7 +103,7 @@ const Ship = () => {
     ) : (
       <NoDiamondView stageName="burn" />
     );
-  };
+  }, [tokenType, showShippingForm])
 
   return (
     <ActionView

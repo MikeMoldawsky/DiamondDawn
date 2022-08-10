@@ -1,29 +1,29 @@
-import React from "react";
+import React, {useCallback} from "react";
 import Countdown from "components/Countdown";
 import useDDContract from "hooks/useDDContract";
-import { useSelector } from "react-redux";
-import { uiSelector } from "store/uiReducer";
+import {useSelector} from "react-redux";
+import {uiSelector} from "store/uiReducer";
 import { tokenByIdSelector } from "store/tokensReducer";
-import { DUMMY_VIDEO_URL, NFT_TYPE, SYSTEM_STAGE } from "consts";
+import {DUMMY_VIDEO_URL, NFT_TYPE, TRAIT} from "consts";
 import NoDiamondView from "components/NoDiamondView";
-import Diamond from "components/Diamond";
 import ActionButton from "components/ActionButton";
-import { isTokenOfType } from "utils";
+import {getTokenTrait, isTokenOfType} from "utils";
 import ActionView from "components/ActionView";
 import useMountLogger from "hooks/useMountLogger";
 import { cutApi } from "api/contractApi";
+import DiamondPicker from "components/DiamondPicker";
 
 const Cut = () => {
   const contract = useDDContract();
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-
+  const tokenType = getTokenTrait(token, TRAIT.type)
   useMountLogger("Cut");
 
-  const CutContent = ({ execute, endTime }) =>
+  const CutContent = useCallback(({ execute, endTime }) =>
     isTokenOfType(token, NFT_TYPE.Rough) ? (
       <>
-        <Diamond diamond={token} />
+        <DiamondPicker />
         <div className="leading-text">
           EVERYBODY WANT TO BE A DIAMOND,
           <br />
@@ -43,7 +43,7 @@ const Cut = () => {
       </>
     ) : (
       <NoDiamondView stageName="cut" />
-    );
+    ), [tokenType]);
 
   return (
     <ActionView
