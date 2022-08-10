@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import teaserVideo from "assets/video/teaser.mp4";
 import ContractProvider from "containers/ContractProvider";
+import {SYSTEM_STAGE_NAME} from "consts";
 
 const EnterButton = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -22,8 +23,8 @@ const EnterButton = () => {
 
   return canEnter ? (
     <NavLink to={`/process`}>
-      <div className="button" style={{ marginTop: 40 }}>
-        ENTER THE MINE
+      <div className="button text-upper" style={{ marginTop: 40 }}>
+        ENTER {SYSTEM_STAGE_NAME[systemStage]}
       </div>
     </NavLink>
   ) : null;

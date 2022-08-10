@@ -14,7 +14,7 @@ import ProcessPage from "pages/ProcessPage";
 import NFTPage from "pages/NFTPage";
 import RebirthPage from "pages/RebirthPage";
 import InvitePage from "pages/InvitePage";
-import Header from "components/Header";
+import Header from "components/Header";;
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
@@ -29,11 +29,7 @@ const MainLayout = () => {
             <Route path="/">
               <Route
                 path="nft/:tokenId"
-                element={
-                  <TokensProvider withLoader>
-                    <NFTPage />
-                  </TokensProvider>
-                }
+                element={<TokensProvider withLoader><NFTPage /></TokensProvider>}
               />
               <Route path="invite/:tokenId" element={<InvitePage />} />
               <Route

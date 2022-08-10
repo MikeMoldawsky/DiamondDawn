@@ -17,21 +17,19 @@ const DiamondItem = ({ diamond }) => {
   const { systemStage } = useSelector(systemSelector);
   const [showInfo, setShowInfo] = useState(false);
   const ref = useRef(null);
-  const location = useLocation();
 
   useOnClickOutside(ref, () => setShowInfo(false));
 
   const { id } = diamond;
   const selected = selectedTokenId === id;
   const enabled = isTokenActionable(diamond, systemStage);
-  const isLinkToNftPage = !location.pathname.startsWith("/nft");
 
   return (
     <NavLink to={`/nft/${id}`}>
       <div
         ref={ref}
         className={classNames("diamond-item", { selected, enabled })}
-        onMouseEnter={() => isLinkToNftPage && setShowInfo(true)}
+        onMouseEnter={() => setShowInfo(true)}
         onMouseLeave={() => setShowInfo(false)}
       >
         <div className="token-icon">
