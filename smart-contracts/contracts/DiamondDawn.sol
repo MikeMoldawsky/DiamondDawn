@@ -72,14 +72,26 @@ contract DiamondDawn is
     }
 
     modifier isDiamondDawnMineReady(SystemStage systemStage_) {
-        if(systemStage_ == SystemStage.MINE_OPEN){
-            require(diamondDawnMine.isMineReady(), "DiamondDawnMine mine isn't ready");
-        } else if(systemStage_ == SystemStage.CUT_OPEN) {
-            require(diamondDawnMine.isCutReady()(), "DiamondDawnMine cut isn't ready");
-        } else if(systemStage_ == SystemStage.POLISH_OPEN) {
-            require(diamondDawnMine.isPolishReady(), "DiamondDawnMine polish isn't ready");
-        } else if(systemStage_ == SystemStage.SHIP) {
-            require(diamondDawnMine.isShipReady()(), "DiamondDawnMine burn isn't ready");
+        if (systemStage_ == SystemStage.MINE_OPEN) {
+            require(
+                diamondDawnMine.isMineReady(),
+                "DiamondDawnMine mine isn't ready"
+            );
+        } else if (systemStage_ == SystemStage.CUT_OPEN) {
+            require(
+                diamondDawnMine.isCutReady()(),
+                "DiamondDawnMine cut isn't ready"
+            );
+        } else if (systemStage_ == SystemStage.POLISH_OPEN) {
+            require(
+                diamondDawnMine.isPolishReady(),
+                "DiamondDawnMine polish isn't ready"
+            );
+        } else if (systemStage_ == SystemStage.SHIP) {
+            require(
+                diamondDawnMine.isShipReady()(),
+                "DiamondDawnMine burn isn't ready"
+            );
         }
         _;
     }

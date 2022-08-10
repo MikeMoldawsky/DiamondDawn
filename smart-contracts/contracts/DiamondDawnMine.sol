@@ -18,14 +18,6 @@ contract DiamondDawnMine is
     IDiamondDawnMine,
     IDiamondDawnMineAdmin
 {
-    enum DiamondDawnType {
-        ROUGH,
-        CUT,
-        POLISHED,
-        BURNED,
-        REBORN
-    }
-
     enum RoughDiamondShape {
         MAKEABLE
     }
@@ -144,10 +136,10 @@ contract DiamondDawnMine is
         _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.POLISHED)] = true;
     }
 
-    function setShipVideoUrls(string calldata burnUrl, string calldata rebirthUrl)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    function setShipVideoUrls(
+        string calldata burnUrl,
+        string calldata rebirthUrl
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         diamondDawnTypeToShipVideoUrls[DiamondDawnType.BURNED] = burnUrl;
         diamondDawnTypeToShipVideoUrls[DiamondDawnType.REBORN] = rebirth;
         _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.BURNED)] = true;
@@ -253,9 +245,10 @@ contract DiamondDawnMine is
         return _diamondDawnTypeToIsRevealed[DiamondDawnType.POLISHED];
     }
 
-    function isShipReady() external view returns (bool){
-        return _diamondDawnTypeToIsRevealed[DiamondDawnType.BURNED] &&
-                _diamondDawnTypeToIsRevealed[DiamondDawnType.REBORN];
+    function isShipReady() external view returns (bool) {
+        return
+            _diamondDawnTypeToIsRevealed[DiamondDawnType.BURNED] &&
+            _diamondDawnTypeToIsRevealed[DiamondDawnType.REBORN];
     }
 
     /**********************     Private Functions     ************************/

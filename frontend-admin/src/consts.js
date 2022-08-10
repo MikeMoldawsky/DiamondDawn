@@ -6,6 +6,14 @@ export const SYSTEM_STAGE = {
   COMPLETE: 4,
 };
 
+export const DIAMOND_DAWN_TYPE = {
+  ROUGH: 0,
+  CUT: 1,
+  POLISHED: 2,
+  BURNED: 3,
+  REBORN: 4,
+};
+
 export const ROUGH_SHAPE = {
   MAKEABLE: 0,
 };

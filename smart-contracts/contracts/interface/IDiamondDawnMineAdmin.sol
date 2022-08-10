@@ -45,5 +45,8 @@ interface IDiamondDawnMineAdmin {
         string calldata radiantUrl
     ) external;
 
-    function setShipVideoUrls(string calldata burnUrl, string calldata rebirthUrl) external;
+    function setShipVideoUrls(
+        string calldata burnUrl,
+        string calldata rebirthUrl
+    ) external;
 }

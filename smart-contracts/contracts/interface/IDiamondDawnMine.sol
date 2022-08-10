@@ -2,6 +2,13 @@
 pragma solidity ^0.8.15;
 
 interface IDiamondDawnMine {
+    enum DiamondDawnType {
+        ROUGH,
+        CUT,
+        POLISHED,
+        BURNED,
+        REBORN
+    }
 
     function mine(uint tokenId) external;
 
