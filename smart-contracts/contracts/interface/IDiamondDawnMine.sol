@@ -2,13 +2,6 @@
 pragma solidity ^0.8.15;
 
 interface IDiamondDawnMine {
-    enum DiamondDawnType {
-        ROUGH,
-        CUT,
-        POLISHED,
-        BURNED,
-        REBORN
-    }
 
     function mine(uint tokenId) external;
 
@@ -25,5 +18,11 @@ interface IDiamondDawnMine {
         view
         returns (string memory);
 
-    function isRevealed(DiamondDawnType type_) external view returns (bool);
+    function isMineReady() external view returns (bool);
+
+    function isCutReady() external view returns (bool);
+
+    function isPolishReady() external view returns (bool);
+
+    function isShipReady() external view returns (bool);
 }
