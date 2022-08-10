@@ -141,7 +141,7 @@ contract DiamondDawnMine is
         string calldata rebirthUrl
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         diamondDawnTypeToShipVideoUrls[DiamondDawnType.BURNED] = burnUrl;
-        diamondDawnTypeToShipVideoUrls[DiamondDawnType.REBORN] = rebirth;
+        diamondDawnTypeToShipVideoUrls[DiamondDawnType.REBORN] = rebirthUrl;
         _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.BURNED)] = true;
         _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.REBORN)] = true;
     }
