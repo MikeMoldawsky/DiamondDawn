@@ -25,6 +25,20 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const { systemStage, systemSchedule } = useSelector(systemSelector);
   const { selectedTokenId } = useSelector(uiSelector);
   const endTime = _.get(systemSchedule, systemStage + 1);
+  const withWatch = _.isFunction(watch);
+
+  useEffect(() => {
+    console.log("useEffect WATCH TRIGGERED");
+    let unwatch = null;
+    if (withWatch) {
+      unwatch = watch(contract, provider, onSuccess);
+    }
+
+    return () => {
+      console.log("useEffect UNMOUNTING");
+      _.isFunction(unwatch) && unwatch();
+    };
+  }, [withWatch]);
 
   useEffect(() => {
     if (completeVideoEnded && processedTokenId > -1 && processedTokenUri) {
@@ -41,11 +55,6 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   };
 
   const execute = async () => {
-    const withWatch = _.isFunction(watch);
-    if (withWatch) {
-      watch(contract, provider, onSuccess);
-    }
-
     const tx = await transact();
 
     setShowCompleteVideo(true);

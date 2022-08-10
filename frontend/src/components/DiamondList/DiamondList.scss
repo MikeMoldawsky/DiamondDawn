@@ -40,9 +40,13 @@
     }
 
     &.selected {
-      .token-icon {
-        border: solid 1px white;
-      }
+      transform: scale(1.2);
+    }
+  }
+
+  a.active {
+    .token-icon {
+      border: solid 1px white;
     }
   }
 

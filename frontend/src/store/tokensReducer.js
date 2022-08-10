@@ -11,14 +11,23 @@ const INITIAL_STATE = {};
 
 export const watchTokenMinedBy =
   (address) => (contract, provider, callback) => {
-    provider.once("block", () => {
-      const filter = contract.filters.Transfer(null, address);
-      contract.on(filter, (from, to, tokenId) => {
-        console.log("MINED WITH FILTER", { from, to, tokenId });
-        contract.on(filter, null);
-        callback(tokenId.toNumber());
-      });
-    });
+    const filter = contract.filters.Transfer(null, address);
+
+    const transferListener = (from, to, tokenId) => {
+      console.log("MINED WITH FILTER", { from, to, tokenId });
+      callback(tokenId.toNumber());
+    };
+
+    const blockListener = () => {
+      contract.on(filter, transferListener);
+    };
+
+    provider.once("block", blockListener);
+
+    return () => {
+      provider.off("block", blockListener);
+      contract.off(filter, transferListener);
+    };
   };
 
 export const loadAccountNfts =

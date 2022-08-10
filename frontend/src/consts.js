@@ -6,6 +6,14 @@ export const SYSTEM_STAGE = {
   COMPLETE: 4,
 };
 
+export const SYSTEM_STAGE_NAME = {
+  [SYSTEM_STAGE.MINE_OPEN]: "Mine",
+  [SYSTEM_STAGE.CUT_OPEN]: "Cut",
+  [SYSTEM_STAGE.POLISH_OPEN]: "Polish",
+  [SYSTEM_STAGE.SHIP]: "Ship",
+  [SYSTEM_STAGE.COMPLETE]: "Complete",
+};
+
 export const NFT_TYPE = {
   Rough: "Rough",
   Cut: "Cut",
