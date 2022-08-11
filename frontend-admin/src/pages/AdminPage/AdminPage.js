@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import classNames from "classnames";
 import "../App/App.scss";
 import "./AdminPage.scss";
@@ -11,7 +11,10 @@ import DiamondsTab from "./DiamondsTab";
 // import ScheduleTab from "./ScheduleTab";
 // import ArtTab from "pages/AdminPage/ArtTab";
 import StageTab from "./StageTab";
-import {SYSTEM_STAGE} from "consts";
+import {CONTRACTS, SYSTEM_STAGE} from "consts";
+import {loadDiamondCount, loadSchedule, loadSystemPaused, loadSystemStage} from "store/systemReducer";
+import useDDContract from "hooks/useDDContract";
+import {useDispatch} from "react-redux";
 
 const TABS = [
   { title: "Mine", component: () => <StageTab stage={SYSTEM_STAGE.MINE_OPEN} /> },
@@ -26,6 +29,19 @@ const TABS = [
 ];
 
 const AdminPage = () => {
+
+  const contract = useDDContract();
+  const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadSystemStage(contract));
+    dispatch(loadSystemPaused(contract));
+    dispatch(loadDiamondCount(mineContract))
+    dispatch(loadSchedule())
+  }, [contract, dispatch]);
+
   return (
     <div className={classNames("page admin-page")}>
       <Header>

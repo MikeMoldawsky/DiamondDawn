@@ -205,6 +205,16 @@ contract DiamondDawnMine is
         _tokenIdToMetadata[tokenId].type_ = DiamondDawnType.REBORN;
     }
 
+    function getDiamondCount()
+        external
+        view
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        returns (uint)
+    {
+        return _mineDiamonds.length;
+    }
+
+
     function getDiamondMetadata(uint tokenId)
         external
         view

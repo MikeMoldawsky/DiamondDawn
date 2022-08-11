@@ -8,23 +8,24 @@ import {
   setVideoUrlsByStageApi,
 } from "api/contractApi";
 import rdiff from "recursive-diff"
+import {useDispatch, useSelector} from "react-redux";
+import {loadStageArt, systemSelector} from "store/systemReducer";
 
 const StageArt = ({ systemStage }) => {
-  const [contractStageArt, setContractStageArt] = useState({});
+  const dispatch = useDispatch()
+  const { videoArt: contractStageArt } = useSelector(systemSelector)
   const [stageArtData, setStageArtData] = useState({});
-
-  console.log({ stageArtData })
 
   const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
 
   const fetchStageArtData = async () => {
     const stageArt = await getVideoUrlsByStageApi(mineContract, systemStage);
     setStageArtData(stageArt);
-    setContractStageArt(stageArt);
   };
 
   useEffect(() => {
     fetchStageArtData();
+    dispatch(loadStageArt(mineContract, systemStage))
   }, [systemStage]);
 
   const setVideoUrl = (shapeName, videoUrl) => {
@@ -37,6 +38,7 @@ const StageArt = ({ systemStage }) => {
   const saveVideoUrls = async () => {
     const urls = _.values(stageArtData);
     await setVideoUrlsByStageApi(mineContract, systemStage, urls);
+    dispatch(loadStageArt(mineContract, systemStage))
   };
 
   const diff = rdiff.getDiff(contractStageArt, stageArtData)

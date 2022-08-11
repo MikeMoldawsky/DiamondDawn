@@ -1,4 +1,5 @@
 import React from "react";
+import _ from 'lodash'
 import { useDispatch, useSelector } from "react-redux";
 import useDDContract from "hooks/useDDContract";
 import ActionButton from "components/ActionButton";
@@ -11,7 +12,7 @@ import {pauseApi, setSystemStageApi, unpauseApi} from "api/contractApi";
 import classNames from "classnames";
 
 const StageTab = ({ stage }) => {
-  const { systemStage, paused } = useSelector(systemSelector);
+  const { systemStage, paused, diamondCount, schedule, videoArt } = useSelector(systemSelector);
   const systemStageName = getSystemStageName(stage)
 
   const contract = useDDContract();
@@ -28,18 +29,36 @@ const StageTab = ({ stage }) => {
     dispatch(loadSystemStage(contract));
   };
 
+  const startTime = _.get(schedule, stage)
+  const isStartTimeSet = startTime && new Date(startTime) > new Date()
+  const endTime = _.get(schedule, stage + 1)
+  const isEndTimeSet = endTime && new Date(endTime) > new Date()
+  const isScheduleSet = stage === 0 ? isEndTimeSet : (isStartTimeSet && isEndTimeSet)
+  const isVideoArtSet = _.every(videoArt, videoUrl => !_.isEmpty(videoUrl))
+
+  let canReveal = isScheduleSet && isVideoArtSet
+  if (stage === 0) {
+    canReveal = canReveal && !paused
+    // canReveal = canReveal && diamondCount === 333 && !paused
+  }
+
   return (
     <div className="stage-tab">
       <h1 className={classNames({ current: systemStage === stage })}>{systemStageName}</h1>
-      <div className="title">{systemStageName} ART</div>
+      <div className={classNames("title", { success: isVideoArtSet, error: !isVideoArtSet })}>{systemStageName} ART</div>
       <StageArt systemStage={stage} />
       <div className="separator" />
-      <div className="title">{systemStageName} SCHEDULE</div>
+      <div className={classNames("title", { success: isScheduleSet, error: !isScheduleSet })}>{systemStageName} SCHEDULE</div>
       <StageSchedule stage={stage} />
       {stage === 0 && (
         <>
           <div className="separator" />
-          <div className="title">IS PAUSED</div>
+          <div className={classNames("title", { success: diamondCount === 333, error: diamondCount !== 333 })}>POPULATED DIAMOND COUNT</div>
+          <div className="center-aligned-row input-row">
+            <div className="stage">{diamondCount}</div>
+          </div>
+          <div className="separator" />
+          <div className={classNames("title", { success: !paused, error: paused })}>IS PAUSED</div>
           <div className="center-aligned-row input-row">
             <div className="stage">{paused.toString()}</div>
             <ActionButton actionKey="togglePause" onClick={togglePause}>
@@ -53,7 +72,7 @@ const StageTab = ({ stage }) => {
         <ActionButton
           className="reveal-button"
           actionKey="Complete and Reveal Stage"
-          disabled={stage === SYSTEM_STAGE.COMPLETE}
+          disabled={!canReveal}
           onClick={() => setSystemStage(stage)}
         >
           REVEAL {systemStageName}

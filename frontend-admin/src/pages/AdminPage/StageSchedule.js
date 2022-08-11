@@ -9,15 +9,17 @@ import Countdown from "react-countdown";
 import { getSystemStageName } from "utils";
 import { getSystemScheduleApi, updateSystemScheduleApi } from "api/serverApi";
 import rdiff from "recursive-diff";
+import {useDispatch, useSelector} from "react-redux";
+import {loadSchedule, systemSelector} from "store/systemReducer";
 
 const StageSchedule = ({ stage }) => {
-  const [dbSchedule, setDBSchedule] = useState({});
+  const dispatch = useDispatch()
+  const { schedule: dbSchedule } = useSelector(systemSelector)
   const [schedule, setSchedule] = useState({});
 
   const fetchSchedule = async () => {
     const systemSchedule = await getSystemScheduleApi()
     setSchedule(systemSchedule);
-    setDBSchedule(systemSchedule)
   };
 
   useEffect(() => {
@@ -28,8 +30,12 @@ const StageSchedule = ({ stage }) => {
     setSchedule({ ...schedule, [_stage]: _startTime });
   };
 
-  const saveSchedule = async (_stage) => {
-    return await updateSystemScheduleApi(_stage, schedule[_stage]);
+  const saveSchedule = async () => {
+    await updateSystemScheduleApi(stage + 1, schedule[stage + 1]);
+    if (stage > 0) {
+      await updateSystemScheduleApi(stage, schedule[stage]);
+    }
+    dispatch(loadSchedule())
   };
 
   const renderRow = (_stage, caption) => {
@@ -57,7 +63,9 @@ const StageSchedule = ({ stage }) => {
     )
   }
 
-  const diff = rdiff.getDiff(dbSchedule, schedule)
+  const getStageTimes = (times) => _.pick(times, stage > 0 ? [stage, stage + 1] : [stage + 1])
+
+  const diff = rdiff.getDiff(getStageTimes(dbSchedule), getStageTimes(schedule))
 
   return (
     <div className="stage-schedule">
@@ -69,7 +77,7 @@ const StageSchedule = ({ stage }) => {
         <ActionButton
           actionKey={`Save ${getSystemStageName(stage)} Schedule`}
           className="save-button"
-          onClick={() => saveSchedule(stage)}
+          onClick={() => saveSchedule()}
           disabled={_.isEmpty(diff)}
         >
           SAVE

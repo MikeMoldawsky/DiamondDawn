@@ -81,6 +81,26 @@
     font-weight: 700;
     margin-bottom: 30px;
     font-size: 1.2em;
+    position: relative;
+
+    &.success, &.error {
+      &:before {
+        position: absolute;
+        top: -13px;
+        left: -40px;
+        font-size: 1.8em;
+      }
+    }
+
+    &.success:before {
+      color: green;
+      content: '\2713'
+    }
+
+    &.error:before {
+      color: red;
+      content: '\2715'
+    }
   }
 
   .caption {
