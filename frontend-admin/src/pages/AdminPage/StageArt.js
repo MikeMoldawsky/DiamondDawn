@@ -7,13 +7,13 @@ import {
   getVideoUrlsByStageApi,
   setVideoUrlsByStageApi,
 } from "api/contractApi";
-import rdiff from "recursive-diff"
-import {useDispatch, useSelector} from "react-redux";
-import {loadStageArt, systemSelector} from "store/systemReducer";
+import rdiff from "recursive-diff";
+import { useDispatch, useSelector } from "react-redux";
+import { loadStageArt, systemSelector } from "store/systemReducer";
 
 const StageArt = ({ systemStage }) => {
-  const dispatch = useDispatch()
-  const { videoArt: contractStageArt } = useSelector(systemSelector)
+  const dispatch = useDispatch();
+  const { videoArt: contractStageArt } = useSelector(systemSelector);
   const [stageArtData, setStageArtData] = useState({});
 
   const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
@@ -25,7 +25,7 @@ const StageArt = ({ systemStage }) => {
 
   useEffect(() => {
     fetchStageArtData();
-    dispatch(loadStageArt(mineContract, systemStage))
+    dispatch(loadStageArt(mineContract, systemStage));
   }, [systemStage]);
 
   const setVideoUrl = (shapeName, videoUrl) => {
@@ -38,10 +38,10 @@ const StageArt = ({ systemStage }) => {
   const saveVideoUrls = async () => {
     const urls = _.values(stageArtData);
     await setVideoUrlsByStageApi(mineContract, systemStage, urls);
-    dispatch(loadStageArt(mineContract, systemStage))
+    dispatch(loadStageArt(mineContract, systemStage));
   };
 
-  const diff = rdiff.getDiff(contractStageArt, stageArtData)
+  const diff = rdiff.getDiff(contractStageArt, stageArtData);
 
   return (
     <div className="stage-art">

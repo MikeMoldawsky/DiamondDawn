@@ -1,7 +1,12 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import { CONTRACTS } from "consts";
-import {getMineDiamondCountApi, getSystemPausedApi, getSystemStageApi, getVideoUrlsByStageApi} from "api/contractApi";
-import {getSystemScheduleApi} from "api/serverApi";
+import {
+  getMineDiamondCountApi,
+  getSystemPausedApi,
+  getSystemStageApi,
+  getVideoUrlsByStageApi,
+} from "api/contractApi";
+import { getSystemScheduleApi } from "api/serverApi";
 
 const INITIAL_STATE = {
   ddContractData: null,

@@ -1,9 +1,9 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import "../App/App.scss";
 import "./AdminPage.scss";
 import InvitationsTab from "./InvitationsTab";
-import ControlTab from "./ControlTab";
+// import ControlTab from "./ControlTab";
 import Tabs from "components/Tabs";
 import Header from "components/Header/Header";
 import Wallet from "components/Wallet";
@@ -11,17 +11,28 @@ import DiamondsTab from "./DiamondsTab";
 // import ScheduleTab from "./ScheduleTab";
 // import ArtTab from "pages/AdminPage/ArtTab";
 import StageTab from "./StageTab";
-import {CONTRACTS, SYSTEM_STAGE} from "consts";
-import {loadDiamondCount, loadSchedule, loadSystemPaused, loadSystemStage} from "store/systemReducer";
+import { CONTRACTS, SYSTEM_STAGE } from "consts";
+import {
+  loadDiamondCount,
+  loadSchedule,
+  loadSystemPaused,
+  loadSystemStage,
+} from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 
 const TABS = [
-  { title: "Mine", component: () => <StageTab stage={SYSTEM_STAGE.MINE_OPEN} /> },
+  {
+    title: "Mine",
+    component: () => <StageTab stage={SYSTEM_STAGE.MINE_OPEN} />,
+  },
   { title: "Cut", component: () => <StageTab stage={SYSTEM_STAGE.CUT_OPEN} /> },
-  { title: "Polish", component: () => <StageTab stage={SYSTEM_STAGE.POLISH_OPEN} /> },
+  {
+    title: "Polish",
+    component: () => <StageTab stage={SYSTEM_STAGE.POLISH_OPEN} />,
+  },
   { title: "Ship", component: () => <StageTab stage={SYSTEM_STAGE.SHIP} /> },
-  { title: "Control", component: () => <ControlTab /> },
+  // { title: "Control", component: () => <ControlTab /> },
   // { title: "Art", component: () => <ArtTab /> },
   // { title: "Schedule", component: () => <ScheduleTab /> },
   { title: "Invitations", component: () => <InvitationsTab /> },
@@ -29,7 +40,6 @@ const TABS = [
 ];
 
 const AdminPage = () => {
-
   const contract = useDDContract();
   const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
 
@@ -38,8 +48,8 @@ const AdminPage = () => {
   useEffect(() => {
     dispatch(loadSystemStage(contract));
     dispatch(loadSystemPaused(contract));
-    dispatch(loadDiamondCount(mineContract))
-    dispatch(loadSchedule())
+    dispatch(loadDiamondCount(mineContract));
+    dispatch(loadSchedule());
   }, [contract, dispatch]);
 
   return (
