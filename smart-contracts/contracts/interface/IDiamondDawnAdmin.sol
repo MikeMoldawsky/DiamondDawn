@@ -3,7 +3,7 @@ pragma solidity ^0.8.15;
 
 interface IDiamondDawnAdmin {
     enum SystemStage {
-        MINE_ENTRANCE,
+        INVITATIONS,
         MINE_OPEN,
         CUT_OPEN,
         POLISH_OPEN,

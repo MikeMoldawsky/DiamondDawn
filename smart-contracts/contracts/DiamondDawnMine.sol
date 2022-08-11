@@ -160,7 +160,7 @@ contract DiamondDawnMine is
 
     function enterMine(uint tokenId) external onlyDiamondDawn {
         _tokenIdToMetadata[tokenId] = DiamondDawnMetadata({
-            type_: DiamondDawnType.INVITATION,
+            type_: DiamondDawnType.ENTER_MINE,
             rough: RoughDiamondMetadata({
                 shape: RoughDiamondShape.NO_SHAPE,
                 pointsReduction: 0

@@ -74,7 +74,7 @@ contract DiamondDawn is
     }
 
     modifier isDiamondDawnMineReady(SystemStage systemStage_) {
-        if (systemStage_ == SystemStage.MINE_ENTRANCE) {
+        if (systemStage_ == SystemStage.INVITATIONS) {
             require(
                 diamondDawnMine.isMineEntranceReady(),
                 "DiamondDawnMine entrance isn't ready"
@@ -154,7 +154,7 @@ contract DiamondDawn is
     function allowMineEntrance(bytes32[] calldata passwordsHash)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
-        onlySystemStage(SystemStage.MINE_ENTRANCE)
+        onlySystemStage(SystemStage.INVITATIONS)
     {
         for (uint i = 0; i < passwordsHash.length; i++) {
             _invitations[passwordsHash[i]] = true;
@@ -165,8 +165,8 @@ contract DiamondDawn is
         external
         payable
         assignedDiamondDawnMine
-        onlySystemStage(SystemStage.MINE_ENTRANCE)
-        isDiamondDawnMineReady(SystemStage.MINE_ENTRANCE)
+        onlySystemStage(SystemStage.INVITATIONS)
+        isDiamondDawnMineReady(SystemStage.INVITATIONS)
         costs(MINING_PRICE)
         useInvite(password)
     {
