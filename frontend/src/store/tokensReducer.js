@@ -10,12 +10,13 @@ import {
 const INITIAL_STATE = {};
 
 export const watchTokenMinedBy =
-  (address, maxAddressTokenId = -1) => (contract, provider, callback) => {
-    console.log('WATCHING TOKEN_MINED_BY', { address, maxAddressTokenId })
+  (address, maxAddressTokenId = -1) =>
+  (contract, provider, callback) => {
+    console.log("WATCHING TOKEN_MINED_BY", { address, maxAddressTokenId });
     const filter = contract.filters.Transfer(null, address);
 
     const transferListener = (from, to, tokenId) => {
-      const numTokenId = tokenId.toNumber()
+      const numTokenId = tokenId.toNumber();
       if (maxAddressTokenId === -1 || numTokenId > maxAddressTokenId) {
         console.log("TOKEN MINED EVENT", { from, to, tokenId });
         callback(numTokenId);
