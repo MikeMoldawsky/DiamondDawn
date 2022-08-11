@@ -142,7 +142,7 @@ async function main() {
         depth: "35",
       },
     ]);
-    await diamondDawnMine.setMineEntranceVideoUrl("infinity.mp4")
+    await diamondDawnMine.setMineEntranceVideoUrl("infinity.mp4");
     await diamondDawnMine.setRoughVideoUrl("rough.mp4");
     await diamondDawnMine.setCutVideoUrl(
       "cut.mp4",

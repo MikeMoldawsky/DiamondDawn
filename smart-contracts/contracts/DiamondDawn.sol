@@ -168,7 +168,7 @@ contract DiamondDawn is
         onlySystemStage(SystemStage.INVITATIONS)
         isDiamondDawnMineReady(SystemStage.INVITATIONS)
         costs(MINING_PRICE)
-//        useInvite(password)
+    //        useInvite(password)
     {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();

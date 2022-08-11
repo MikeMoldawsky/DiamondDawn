@@ -248,7 +248,6 @@ contract DiamondDawnMine is
         return _mineDiamonds.length;
     }
 
-
     function getDiamondMetadata(uint tokenId)
         external
         view
