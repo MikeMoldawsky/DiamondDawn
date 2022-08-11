@@ -35,6 +35,12 @@ export const unpauseApi = async (contract) => {
 
 // ART URLS API
 const ART_MAPPING = {
+  [SYSTEM_STAGE.INVITATIONS]: {
+    setter: "setMineEntranceVideoUrl",
+    getter: "mineEntranceVideoUrl",
+    getterArgs: [ROUGH_SHAPE.NO_SHAPE],
+    isNotMap: true,
+  },
   [SYSTEM_STAGE.MINE_OPEN]: {
     setter: "setRoughVideoUrl",
     getter: "roughShapeToVideoUrls",
@@ -58,9 +64,9 @@ const ART_MAPPING = {
 };
 
 export const getVideoUrlsByStageApi = async (mineContract, stage) => {
-  const { getter, getterArgs } = ART_MAPPING[stage];
+  const { getter, getterArgs, isNotMap } = ART_MAPPING[stage];
   const urls = await Promise.all(
-    _.map(getterArgs, (getterArg) => mineContract[getter](getterArg))
+    _.map(getterArgs, (getterArg) => isNotMap ? mineContract[getter]() : mineContract[getter](getterArg))
   );
   const getterParamNames = _.map(getterArgs, (getterArg) =>
     getVideoUrlParamName(getterArg, stage)

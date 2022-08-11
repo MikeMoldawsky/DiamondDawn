@@ -48,7 +48,7 @@ contract DiamondDawn is
         address[] memory adminAddresses
     ) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        systemStage = SystemStage.MINE_OPEN;
+        systemStage = SystemStage.INVITATIONS;
         setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
         diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
         _tokenIdCounter.increment();
