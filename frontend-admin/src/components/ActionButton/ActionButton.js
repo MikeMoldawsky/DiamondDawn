@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -33,7 +34,7 @@ const ActionButton = ({
 
   return (
     <div
-      className={classNames("button", actionKey, className, {
+      className={classNames("button", _.kebabCase(actionKey), className, {
         disabled: disabled || isPending,
       })}
       onClick={clickHandler}

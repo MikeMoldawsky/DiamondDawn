@@ -11,6 +11,10 @@ export const getSystemPausedApi = async (contract) => {
   return await contract.paused();
 };
 
+export const getMineDiamondCountApi = async (mineContract) => {
+  return await mineContract.getDiamondCount();
+};
+
 export const setSystemStageApi = async (contract, systemStage) => {
   const tx = await contract.setSystemStage(systemStage);
   const receipt = await tx.wait();

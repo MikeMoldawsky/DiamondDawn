@@ -63,7 +63,7 @@ export const getVideoUrlParamName = (getterParam, stage) => {
     case SYSTEM_STAGE.SHIP:
       return getEnumKeyByValue(DIAMOND_DAWN_TYPE, getterParam);
     default:
-      return getShapeName(getterParam, getterParam);
+      return getShapeName(getterParam, stage);
   }
 };
 
