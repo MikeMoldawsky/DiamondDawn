@@ -4,7 +4,7 @@ import useDDContract from "hooks/useDDContract";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { tokenByIdSelector } from "store/tokensReducer";
-import { DUMMY_VIDEO_URL, NFT_TYPE, TRAIT } from "consts";
+import { DUMMY_VIDEO_URL, DIAMOND_DAWN_TYPE, TRAIT } from "consts";
 import NoDiamondView from "components/NoDiamondView";
 import ActionButton from "components/ActionButton";
 import { getTokenTrait, isTokenOfType } from "utils";
@@ -18,11 +18,12 @@ const Cut = () => {
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
   const tokenType = getTokenTrait(token, TRAIT.type);
+
   useMountLogger("Cut");
 
   const CutContent = useCallback(
     ({ execute, endTime }) =>
-      isTokenOfType(token, NFT_TYPE.Rough) ? (
+      isTokenOfType(token, DIAMOND_DAWN_TYPE.ROUGH) ? (
         <>
           <DiamondPicker />
           <div className="leading-text">

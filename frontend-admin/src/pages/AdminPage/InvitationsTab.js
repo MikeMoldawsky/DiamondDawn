@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { faLink, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
@@ -15,10 +15,13 @@ import {
   updateInviteApi,
   deleteInviteApi,
 } from "api/serverApi";
+import keccak256 from "keccak256";
+import { allowMineEntranceApi, populateDiamondsApi } from "api/contractApi";
 
 const INVITATION_COLUMNS = [
   { field: "twitter", headerName: "Twitter", width: 150, editable: true },
   { field: "password", headerName: "Password", width: 150 },
+  { field: "hash", headerName: "Hash", width: 600 },
   {
     field: "created",
     headerName: "Created At",
@@ -87,7 +90,16 @@ const InvitationsTab = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      setInvitations(await getInvitesApi());
+      const invites = await getInvitesApi();
+      setInvitations(
+        invites.map((invite) => {
+          return {
+            ...invite,
+            // hash: keccak256(ethersUtils.formatBytes32String(invite.password)),
+            hash: keccak256(invite.password).toString("hex"),
+          };
+        })
+      );
     };
     fetch();
   }, [contract, dispatch]);
@@ -97,6 +109,17 @@ const InvitationsTab = () => {
     update: updateInviteApi,
     delete: deleteInviteApi,
   };
+
+  const renderDeployButton = (selectedRows) => (
+    <div
+      className="button link save-button"
+      onClick={() =>
+        allowMineEntranceApi(contract, _.map(selectedRows, "hash"))
+      }
+    >
+      <FontAwesomeIcon icon={faUpload} /> Deploy
+    </div>
+  );
 
   return (
     <div className={classNames("tab-content invitations")}>
@@ -111,6 +134,7 @@ const InvitationsTab = () => {
         getNewItem={createInviteApi}
         newCreatedOnServer
         renderActions={({ id }) => [<ClipboardButton inviteId={id} />]}
+        renderButtons={renderDeployButton}
       />
     </div>
   );

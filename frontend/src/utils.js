@@ -1,6 +1,12 @@
 import _ from "lodash";
 import { toast } from "react-toastify";
-import { NFT_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE, TRAIT } from "consts";
+import {
+  DIAMOND_DAWN_TYPE,
+  ROUGH_SHAPE,
+  SHAPE,
+  SYSTEM_STAGE,
+  TRAIT,
+} from "consts";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 
 export const parseError = (e) => {
@@ -54,35 +60,58 @@ export const getStageName = (stage) => getEnumKeyByValue(SYSTEM_STAGE, stage);
 
 export const getTypeByStage = (stage) => {
   switch (stage) {
+    case SYSTEM_STAGE.INVITATIONS:
+      return DIAMOND_DAWN_TYPE.ENTER_MINE;
     case SYSTEM_STAGE.MINE_OPEN:
-      return NFT_TYPE.Rough;
+      return DIAMOND_DAWN_TYPE.ROUGH;
     case SYSTEM_STAGE.CUT_OPEN:
-      return NFT_TYPE.Cut;
+      return DIAMOND_DAWN_TYPE.CUT;
     case SYSTEM_STAGE.POLISH_OPEN:
-      return NFT_TYPE.Polished;
+      return DIAMOND_DAWN_TYPE.POLISHED;
     case SYSTEM_STAGE.SHIP:
-      return NFT_TYPE.Burned;
+      return DIAMOND_DAWN_TYPE.BURNED;
     case SYSTEM_STAGE.COMPLETE:
-      return NFT_TYPE.Reborn;
+      return DIAMOND_DAWN_TYPE.REBORN;
     default:
-      return NFT_TYPE.Unknown;
+      return -1;
   }
 };
 
 export const getStageByTokenType = (type) => {
   switch (type) {
-    case NFT_TYPE.Rough:
+    case DIAMOND_DAWN_TYPE.ENTER_MINE:
+      return SYSTEM_STAGE.INVITATIONS;
+    case DIAMOND_DAWN_TYPE.ROUGH:
       return SYSTEM_STAGE.MINE_OPEN;
-    case NFT_TYPE.Cut:
+    case DIAMOND_DAWN_TYPE.CUT:
       return SYSTEM_STAGE.CUT_OPEN;
-    case NFT_TYPE.Polished:
+    case DIAMOND_DAWN_TYPE.POLISHED:
       return SYSTEM_STAGE.POLISH_OPEN;
-    case NFT_TYPE.Burned:
+    case DIAMOND_DAWN_TYPE.BURNED:
       return SYSTEM_STAGE.SHIP;
-    case NFT_TYPE.Reborn:
+    case DIAMOND_DAWN_TYPE.REBORN:
       return SYSTEM_STAGE.COMPLETE;
     default:
-      return SYSTEM_STAGE.MINE_OPEN;
+      return -1;
+  }
+};
+
+export const getTypeByDisplayType = (displayType) => {
+  switch (displayType) {
+    case "Mine Entrance":
+      return DIAMOND_DAWN_TYPE.ENTER_MINE;
+    case "Rough":
+      return DIAMOND_DAWN_TYPE.ROUGH;
+    case "Cut":
+      return DIAMOND_DAWN_TYPE.CUT;
+    case "Polished":
+      return DIAMOND_DAWN_TYPE.POLISHED;
+    case "Burned":
+      return DIAMOND_DAWN_TYPE.BURNED;
+    case "Reborn":
+      return DIAMOND_DAWN_TYPE.REBORN;
+    default:
+      return DIAMOND_DAWN_TYPE.ENTER_MINE;
   }
 };
 
@@ -96,6 +125,9 @@ export const getTokenNextStageName = (token) => {
 
 export const getTokenTrait = (token, trait) => {
   const t = _.find(token?.attributes, { trait_type: trait });
+  if (trait === TRAIT.type) {
+    return getTypeByDisplayType(t?.value);
+  }
   return t?.value;
 };
 
@@ -105,7 +137,9 @@ export const getDiamondIcon = (token) => {
   let shape;
 
   switch (type) {
-    case NFT_TYPE.Rough:
+    case DIAMOND_DAWN_TYPE.ENTER_MINE:
+      return faGem;
+    case DIAMOND_DAWN_TYPE.ROUGH:
       shape = ROUGH_SHAPE[_.toUpper(shapeName)];
       switch (shape) {
         case ROUGH_SHAPE.MAKEABLE:
@@ -113,7 +147,7 @@ export const getDiamondIcon = (token) => {
         default:
           return null;
       }
-    case NFT_TYPE.Cut:
+    case DIAMOND_DAWN_TYPE.CUT:
       shape = SHAPE[_.toUpper(shapeName)];
       switch (shape) {
         case SHAPE.PEAR:
@@ -127,7 +161,7 @@ export const getDiamondIcon = (token) => {
         default:
           return null;
       }
-    case NFT_TYPE.Polished:
+    case DIAMOND_DAWN_TYPE.POLISHED:
       shape = SHAPE[_.toUpper(shapeName)];
       switch (shape) {
         case SHAPE.PEAR:
@@ -141,9 +175,9 @@ export const getDiamondIcon = (token) => {
         default:
           return null;
       }
-    case NFT_TYPE.Burned:
+    case DIAMOND_DAWN_TYPE.BURNED:
       return faGem;
-    case NFT_TYPE.Reborn:
+    case DIAMOND_DAWN_TYPE.REBORN:
       return faGem;
     default:
       return null;
@@ -178,7 +212,7 @@ export const isTokenDone = (token, systemStage) => {
   switch (systemStage) {
     case SYSTEM_STAGE.COMPLETE:
     case SYSTEM_STAGE.SHIP:
-      return tokenType === NFT_TYPE.Reborn || isNotProcessedEnough;
+      return tokenType === DIAMOND_DAWN_TYPE.REBORN || isNotProcessedEnough;
     default:
       return isNotProcessedEnough;
   }

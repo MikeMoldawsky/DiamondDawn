@@ -104,7 +104,7 @@ const StageTab = ({ stage }) => {
         <ActionButton
           className="reveal-button"
           actionKey="Complete and Reveal Stage"
-          disabled={!canReveal}
+          disabled={stage === systemStage || !canReveal}
           onClick={() => setSystemStage(stage)}
         >
           REVEAL {systemStageName}

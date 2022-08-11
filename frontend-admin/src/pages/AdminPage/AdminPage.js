@@ -23,6 +23,10 @@ import { useDispatch } from "react-redux";
 
 const TABS = [
   {
+    title: "Invite",
+    component: () => <StageTab stage={SYSTEM_STAGE.INVITATIONS} />,
+  },
+  {
     title: "Mine",
     component: () => <StageTab stage={SYSTEM_STAGE.MINE_OPEN} />,
   },

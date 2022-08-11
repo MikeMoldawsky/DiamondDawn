@@ -12,9 +12,8 @@ import { useForm } from "react-hook-form";
 import "./Ship.scss";
 import classNames from "classnames";
 import NoDiamondView from "components/NoDiamondView";
-import { DUMMY_VIDEO_URL, NFT_TYPE, SYSTEM_STAGE, TRAIT } from "consts";
+import { DUMMY_VIDEO_URL, DIAMOND_DAWN_TYPE, TRAIT } from "consts";
 import { useAccount } from "wagmi";
-import Diamond from "components/Diamond";
 import useOnConnect from "hooks/useOnConnect";
 import ActionButton from "components/ActionButton";
 import { getTokenTrait, isTokenOfType } from "utils";
@@ -85,7 +84,7 @@ const Ship = () => {
           </>
         );
 
-      return isTokenOfType(token, NFT_TYPE.Polished) ? (
+      return isTokenOfType(token, DIAMOND_DAWN_TYPE.POLISHED) ? (
         <>
           <DiamondPicker />
           <div className="leading-text">BUT... IS THERE MORE?</div>

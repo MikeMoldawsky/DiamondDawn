@@ -19,6 +19,7 @@ contract DiamondDawnMine is
     IDiamondDawnMineAdmin
 {
     enum RoughDiamondShape {
+        NO_SHAPE,
         MAKEABLE
     }
 
@@ -39,6 +40,8 @@ contract DiamondDawnMine is
     }
 
     mapping(uint => DiamondDawnMetadata) public _tokenIdToMetadata;
+
+    string public mineEntranceVideoUrl;
     mapping(uint => string) public roughShapeToVideoUrls;
     mapping(uint => string) public cutShapeToVideoUrls;
     mapping(uint => string) public polishShapeToVideoUrls;
@@ -102,6 +105,13 @@ contract DiamondDawnMine is
         }
     }
 
+    function setMineEntranceVideoUrl(string calldata mineEntranceUrl)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        mineEntranceVideoUrl = mineEntranceUrl;
+    }
+
     function setRoughVideoUrl(string calldata roughUrl)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
@@ -148,20 +158,44 @@ contract DiamondDawnMine is
         _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.REBORN)] = true;
     }
 
+    function enterMine(uint tokenId) external onlyDiamondDawn {
+        _tokenIdToMetadata[tokenId] = DiamondDawnMetadata({
+            type_: DiamondDawnType.ENTER_MINE,
+            rough: RoughDiamondMetadata({
+                shape: RoughDiamondShape.NO_SHAPE,
+                pointsReduction: 0
+            }),
+            cut: CutDiamondMetadata({pointsReduction: 0}),
+            certificate: DiamondCertificate({
+                points: 0,
+                clarity: "",
+                color: "",
+                cut: "",
+                depth: "",
+                fluorescence: "",
+                length: "",
+                polish: "",
+                reportDate: 0,
+                reportNumber: 0,
+                shape: DiamondShape.NO_SHAPE,
+                symmetry: "",
+                width: ""
+            })
+        });
+    }
+
     function mine(uint tokenId) external onlyDiamondDawn _requireMineNotDry {
         uint pointsReduction = _getRandomNumberInRange(
             MIN_ROUGH_POINTS_REDUCTION,
             MAX_ROUGH_POINTS_REDUCTION
         );
-        _tokenIdToMetadata[tokenId] = DiamondDawnMetadata({
-            type_: DiamondDawnType.ROUGH,
-            rough: RoughDiamondMetadata({
-                shape: RoughDiamondShape.MAKEABLE,
-                pointsReduction: pointsReduction
-            }),
-            cut: CutDiamondMetadata({pointsReduction: 0}),
-            certificate: _mineDiamond()
+        DiamondDawnMetadata storage metadata = _tokenIdToMetadata[tokenId];
+        metadata.type_ = DiamondDawnType.ROUGH;
+        metadata.rough = RoughDiamondMetadata({
+            shape: RoughDiamondShape.MAKEABLE,
+            pointsReduction: pointsReduction
         });
+        metadata.certificate = _mineDiamond();
     }
 
     function cut(uint256 tokenId)
@@ -214,7 +248,6 @@ contract DiamondDawnMine is
         return _mineDiamonds.length;
     }
 
-
     function getDiamondMetadata(uint tokenId)
         external
         view
@@ -243,6 +276,10 @@ contract DiamondDawnMine is
             string(
                 abi.encodePacked("data:application/json;base64,", base64Json)
             );
+    }
+
+    function isMineEntranceReady() external view returns (bool) {
+        return bytes(mineEntranceVideoUrl).length > 0;
     }
 
     function isMineReady() external view returns (bool) {
@@ -295,7 +332,9 @@ contract DiamondDawnMine is
     ) private view returns (string memory) {
         DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
         string memory videoUrl;
-        if (DiamondDawnType.ROUGH == diamondDawnType) {
+        if (DiamondDawnType.ENTER_MINE == diamondDawnType) {
+            videoUrl = mineEntranceVideoUrl;
+        } else if (DiamondDawnType.ROUGH == diamondDawnType) {
             videoUrl = roughShapeToVideoUrls[
                 uint(diamondDawnMetadata.rough.shape)
             ];
@@ -350,10 +389,12 @@ contract DiamondDawnMine is
     function _getDiamondDawnJsonAttributes(
         DiamondDawnMetadata memory diamondDawnMetadata
     ) private pure returns (ERC721MetadataAttribute[] memory) {
-        assert(diamondDawnMetadata.certificate.points > 0);
+        //assert(diamondDawnMetadata.certificate.points > 0);
 
         DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
-        if (DiamondDawnType.ROUGH == diamondDawnType) {
+        if (DiamondDawnType.ENTER_MINE == diamondDawnType) {
+            return _getMineEntranceJsonAttributes();
+        } else if (DiamondDawnType.ROUGH == diamondDawnType) {
             return
                 _getRoughDiamondJsonAttributes(
                     diamondDawnMetadata.rough,
@@ -381,6 +422,33 @@ contract DiamondDawnMine is
         revert("Failed fetching DiamondDawn json attributes - unknown type");
     }
 
+    function _getTypeAttribute(DiamondDawnType diamondDawnType)
+        private
+        pure
+        returns (ERC721MetadataAttribute memory)
+    {
+        return
+            getERC721MetadataAttribute(
+                false,
+                true,
+                true,
+                "",
+                "Type",
+                _toDiamondDawnTypeString(diamondDawnType)
+            );
+    }
+
+    function _getMineEntranceJsonAttributes()
+        private
+        pure
+        returns (ERC721MetadataAttribute[] memory)
+    {
+        ERC721MetadataAttribute[]
+            memory metadataAttributes = new ERC721MetadataAttribute[](1);
+        metadataAttributes[0] = _getTypeAttribute(DiamondDawnType.ENTER_MINE);
+        return metadataAttributes;
+    }
+
     function _getBaseDiamondDawnJsonAttributes(
         DiamondDawnType diamondDawnType,
         uint points
@@ -397,14 +465,7 @@ contract DiamondDawnMine is
             "Origin",
             "Metaverse"
         );
-        metadataAttributes[1] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Type",
-            _toDiamondDawnTypeString(diamondDawnType)
-        );
+        metadataAttributes[1] = _getTypeAttribute(diamondDawnType);
         metadataAttributes[2] = getERC721MetadataAttribute(
             false,
             true,
@@ -795,7 +856,9 @@ contract DiamondDawnMine is
         pure
         returns (string memory)
     {
-        if (type_ == DiamondDawnType.ROUGH) {
+        if (type_ == DiamondDawnType.ENTER_MINE) {
+            return "Mine Entrance";
+        } else if (type_ == DiamondDawnType.ROUGH) {
             return "Rough";
         } else if (type_ == DiamondDawnType.CUT) {
             return "Cut";
