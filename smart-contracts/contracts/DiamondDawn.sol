@@ -161,8 +161,7 @@ contract DiamondDawn is
         }
     }
 
-//    function enterMine(bytes32 password)
-    function enterMine()
+    function enterMine(bytes32 password)
         external
         payable
         assignedDiamondDawnMine

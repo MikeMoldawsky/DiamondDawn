@@ -20,9 +20,9 @@ export const getMinePriceApi = async (contract) => {
 };
 
 // PROCESS
-export const enterMineApi = async (contract, minePrice) => {
+export const enterMineApi = async (contract, password, minePrice) => {
   try {
-    return await contract.enterMine({ value: minePrice });
+    return await contract.enterMine(password, { value: minePrice });
   } catch (e) {
     logApiError(e, "enterMineApi");
     throw new Error(e);
