@@ -416,7 +416,7 @@ contract DiamondDawnMine is
     function _getTypeAttribute(DiamondDawnType diamondDawnType)
         private
         pure
-        returns (ERC721MetadataAttribute)
+        returns (ERC721MetadataAttribute memory)
     {
         return
             getERC721MetadataAttribute(
@@ -456,7 +456,7 @@ contract DiamondDawnMine is
             "Origin",
             "Metaverse"
         );
-        metadataAttributes[1] = _getTypeAttribute(DiamondDawnType.ENTER_MINE);
+        metadataAttributes[1] = _getTypeAttribute(diamondDawnType);
         metadataAttributes[2] = getERC721MetadataAttribute(
             false,
             true,
