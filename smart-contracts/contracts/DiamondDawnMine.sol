@@ -323,7 +323,9 @@ contract DiamondDawnMine is
     ) private view returns (string memory) {
         DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
         string memory videoUrl;
-        if (DiamondDawnType.ROUGH == diamondDawnType) {
+        if (DiamondDawnType.ENTER_MINE == diamondDawnType) {
+            videoUrl = mineEntranceVideoUrl;
+        } else if (DiamondDawnType.ROUGH == diamondDawnType) {
             videoUrl = roughShapeToVideoUrls[
                 uint(diamondDawnMetadata.rough.shape)
             ];
@@ -381,7 +383,9 @@ contract DiamondDawnMine is
         assert(diamondDawnMetadata.certificate.points > 0);
 
         DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
-        if (DiamondDawnType.ROUGH == diamondDawnType) {
+        if (DiamondDawnType.ENTER_MINE == diamondDawnType) {
+            return _getMineEntranceJsonAttributes();
+        } else if (DiamondDawnType.ROUGH == diamondDawnType) {
             return
                 _getRoughDiamondJsonAttributes(
                     diamondDawnMetadata.rough,
@@ -409,6 +413,33 @@ contract DiamondDawnMine is
         revert("Failed fetching DiamondDawn json attributes - unknown type");
     }
 
+    function _getTypeAttribute(DiamondDawnType diamondDawnType)
+        private
+        pure
+        returns (ERC721MetadataAttribute)
+    {
+        return
+            getERC721MetadataAttribute(
+                false,
+                true,
+                true,
+                "",
+                "Type",
+                _toDiamondDawnTypeString(diamondDawnType)
+            );
+    }
+
+    function _getMineEntranceJsonAttributes()
+        private
+        pure
+        returns (ERC721MetadataAttribute[] memory)
+    {
+        ERC721MetadataAttribute[]
+            memory metadataAttributes = new ERC721MetadataAttribute[](1);
+        metadataAttributes[0] = _getTypeAttribute(DiamondDawnType.ENTER_MINE);
+        return metadataAttributes;
+    }
+
     function _getBaseDiamondDawnJsonAttributes(
         DiamondDawnType diamondDawnType,
         uint points
@@ -425,14 +456,7 @@ contract DiamondDawnMine is
             "Origin",
             "Metaverse"
         );
-        metadataAttributes[1] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Type",
-            _toDiamondDawnTypeString(diamondDawnType)
-        );
+        metadataAttributes[1] = _getTypeAttribute(DiamondDawnType.ENTER_MINE);
         metadataAttributes[2] = getERC721MetadataAttribute(
             false,
             true,
@@ -823,7 +847,9 @@ contract DiamondDawnMine is
         pure
         returns (string memory)
     {
-        if (type_ == DiamondDawnType.ROUGH) {
+        if (type_ == DiamondDawnType.ENTER_MINE) {
+            return "Mine Entrance";
+        } else if (type_ == DiamondDawnType.ROUGH) {
             return "Rough";
         } else if (type_ == DiamondDawnType.CUT) {
             return "Cut";
