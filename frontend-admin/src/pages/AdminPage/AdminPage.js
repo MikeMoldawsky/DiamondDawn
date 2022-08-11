@@ -8,13 +8,19 @@ import Tabs from "components/Tabs";
 import Header from "components/Header/Header";
 import Wallet from "components/Wallet";
 import DiamondsTab from "./DiamondsTab";
-import ScheduleTab from "./ScheduleTab";
-import ArtTab from "pages/AdminPage/ArtTab";
+// import ScheduleTab from "./ScheduleTab";
+// import ArtTab from "pages/AdminPage/ArtTab";
+import StageTab from "./StageTab";
+import {SYSTEM_STAGE} from "consts";
 
 const TABS = [
+  { title: "Mine", component: () => <StageTab stage={SYSTEM_STAGE.MINE_OPEN} /> },
+  { title: "Cut", component: () => <StageTab stage={SYSTEM_STAGE.CUT_OPEN} /> },
+  { title: "Polish", component: () => <StageTab stage={SYSTEM_STAGE.POLISH_OPEN} /> },
+  { title: "Ship", component: () => <StageTab stage={SYSTEM_STAGE.SHIP} /> },
   { title: "Control", component: () => <ControlTab /> },
-  { title: "Art", component: () => <ArtTab /> },
-  { title: "Schedule", component: () => <ScheduleTab /> },
+  // { title: "Art", component: () => <ArtTab /> },
+  // { title: "Schedule", component: () => <ScheduleTab /> },
   { title: "Invitations", component: () => <InvitationsTab /> },
   { title: "Diamonds", component: () => <DiamondsTab /> },
 ];
