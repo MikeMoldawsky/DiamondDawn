@@ -19,6 +19,7 @@ contract DiamondDawnMine is
     IDiamondDawnMineAdmin
 {
     enum RoughDiamondShape {
+        NO_SHAPE,
         MAKEABLE
     }
 
@@ -39,6 +40,8 @@ contract DiamondDawnMine is
     }
 
     mapping(uint => DiamondDawnMetadata) public _tokenIdToMetadata;
+
+    string public mineEntranceVideoUrl;
     mapping(uint => string) public roughShapeToVideoUrls;
     mapping(uint => string) public cutShapeToVideoUrls;
     mapping(uint => string) public polishShapeToVideoUrls;
@@ -102,6 +105,13 @@ contract DiamondDawnMine is
         }
     }
 
+    function setMineEntranceVideoUrl(string calldata mineEntranceUrl)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        mineEntranceVideoUrl = mineEntranceUrl;
+    }
+
     function setRoughVideoUrl(string calldata roughUrl)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
@@ -148,20 +158,44 @@ contract DiamondDawnMine is
         _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.REBORN)] = true;
     }
 
+    function enterMine(uint tokenId) external onlyDiamondDawn {
+        _tokenIdToMetadata[tokenId] = DiamondDawnMetadata({
+            type_: DiamondDawnType.INVITATION,
+            rough: RoughDiamondMetadata({
+                shape: RoughDiamondShape.NO_SHAPE,
+                pointsReduction: 0
+            }),
+            cut: CutDiamondMetadata({pointsReduction: 0}),
+            certificate: DiamondCertificate({
+                points: 0,
+                clarity: "",
+                color: "",
+                cut: "",
+                depth: "",
+                fluorescence: "",
+                length: "",
+                polish: "",
+                reportDate: 0,
+                reportNumber: 0,
+                shape: DiamondShape.NO_SHAPE,
+                symmetry: "",
+                width: ""
+            })
+        });
+    }
+
     function mine(uint tokenId) external onlyDiamondDawn _requireMineNotDry {
         uint pointsReduction = _getRandomNumberInRange(
             MIN_ROUGH_POINTS_REDUCTION,
             MAX_ROUGH_POINTS_REDUCTION
         );
-        _tokenIdToMetadata[tokenId] = DiamondDawnMetadata({
-            type_: DiamondDawnType.ROUGH,
-            rough: RoughDiamondMetadata({
-                shape: RoughDiamondShape.MAKEABLE,
-                pointsReduction: pointsReduction
-            }),
-            cut: CutDiamondMetadata({pointsReduction: 0}),
-            certificate: _mineDiamond()
+        DiamondDawnMetadata storage metadata = _tokenIdToMetadata[tokenId];
+        metadata.type_ = DiamondDawnType.ROUGH;
+        metadata.rough = RoughDiamondMetadata({
+            shape: RoughDiamondShape.MAKEABLE,
+            pointsReduction: pointsReduction
         });
+        metadata.certificate = _mineDiamond();
     }
 
     function cut(uint256 tokenId)
@@ -233,6 +267,10 @@ contract DiamondDawnMine is
             string(
                 abi.encodePacked("data:application/json;base64,", base64Json)
             );
+    }
+
+    function isMineEntranceReady() external view returns (bool) {
+        return bytes(mineEntranceVideoUrl).length > 0;
     }
 
     function isMineReady() external view returns (bool) {
