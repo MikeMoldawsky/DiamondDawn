@@ -3,12 +3,15 @@ pragma solidity ^0.8.15;
 
 interface IDiamondDawnMine {
     enum DiamondDawnType {
+        ENTER_MINE,
         ROUGH,
         CUT,
         POLISHED,
         BURNED,
         REBORN
     }
+
+    function enterMine(uint tokenId) external;
 
     function mine(uint tokenId) external;
 
@@ -24,6 +27,8 @@ interface IDiamondDawnMine {
         external
         view
         returns (string memory);
+
+    function isMineEntranceReady() external view returns (bool);
 
     function isMineReady() external view returns (bool);
 

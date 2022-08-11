@@ -3,6 +3,7 @@ pragma solidity ^0.8.15;
 
 interface IDiamondDawnMineAdmin {
     enum DiamondShape {
+        NO_SHAPE,
         PEAR,
         ROUND,
         OVAL,
@@ -28,6 +29,8 @@ interface IDiamondDawnMineAdmin {
     function initialize(address diamondDawnContract) external;
 
     function populateDiamonds(DiamondCertificate[] calldata diamonds) external;
+
+    function setMineEntranceVideoUrl(string calldata mineEntranceUrl) external;
 
     function setRoughVideoUrl(string calldata roughUrl) external;
 
