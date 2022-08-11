@@ -91,11 +91,13 @@ const InvitationsTab = () => {
   useEffect(() => {
     const fetch = async () => {
       const invites = await getInvitesApi()
-      setInvitations(invites.map(invite => ({
-        ...invite,
-        hash: keccak256(invite.password),
-        // hash: keccak256(invite.password).toString('hex'),
-      })));
+      setInvitations(invites.map(invite => {
+        return {
+          ...invite,
+          // hash: keccak256(ethersUtils.formatBytes32String(invite.password)),
+          hash: keccak256(invite.password).toString('hex'),
+        }
+      }));
     };
     fetch();
   }, [contract, dispatch]);
