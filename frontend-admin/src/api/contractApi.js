@@ -110,3 +110,13 @@ export const populateDiamondsApi = async (mineContract, diamonds) => {
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };
+
+export const allowMineEntranceApi = async (contract, hashes) => {
+  // const processedDiamonds = diamonds.map(prepareDiamondForPopulate);
+
+  console.log("PUSHING HASHES TO CONTRACT", { hashes });
+
+  const tx = await contract.allowMineEntrance(hashes);
+  const receipt = await tx.wait();
+  return receipt.transactionHash;
+};
