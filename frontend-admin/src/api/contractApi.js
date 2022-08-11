@@ -66,7 +66,9 @@ const ART_MAPPING = {
 export const getVideoUrlsByStageApi = async (mineContract, stage) => {
   const { getter, getterArgs, isNotMap } = ART_MAPPING[stage];
   const urls = await Promise.all(
-    _.map(getterArgs, (getterArg) => isNotMap ? mineContract[getter]() : mineContract[getter](getterArg))
+    _.map(getterArgs, (getterArg) =>
+      isNotMap ? mineContract[getter]() : mineContract[getter](getterArg)
+    )
   );
   const getterParamNames = _.map(getterArgs, (getterArg) =>
     getVideoUrlParamName(getterArg, stage)
