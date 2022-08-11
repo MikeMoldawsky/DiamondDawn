@@ -13,7 +13,7 @@ import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import { DUMMY_VIDEO_URL } from "consts";
 import useMountLogger from "hooks/useMountLogger";
-import {enterMineApi} from "api/contractApi";
+import { enterMineApi } from "api/contractApi";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -70,10 +70,10 @@ const EnterMine = () => {
         </div>
         <Countdown date={endTime} text={["You have", "to enter"]} />
       </>
-    )
+    );
   };
 
-  const bytesPassword = ethersUtils.formatBytes32String('201854')
+  const bytesPassword = ethersUtils.formatBytes32String("201854");
   // console.log({ bytesPassword })
 
   return (

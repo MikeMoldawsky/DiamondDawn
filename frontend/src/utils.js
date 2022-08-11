@@ -1,6 +1,12 @@
 import _ from "lodash";
 import { toast } from "react-toastify";
-import { DIAMOND_DAWN_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE, TRAIT } from "consts";
+import {
+  DIAMOND_DAWN_TYPE,
+  ROUGH_SHAPE,
+  SHAPE,
+  SYSTEM_STAGE,
+  TRAIT,
+} from "consts";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 
 export const parseError = (e) => {
@@ -107,7 +113,7 @@ export const getTypeByDisplayType = (displayType) => {
     default:
       return DIAMOND_DAWN_TYPE.ENTER_MINE;
   }
-}
+};
 
 export const getTokenNextStageName = (token) => {
   if (!token) return SYSTEM_STAGE.MINE_OPEN;
@@ -120,7 +126,7 @@ export const getTokenNextStageName = (token) => {
 export const getTokenTrait = (token, trait) => {
   const t = _.find(token?.attributes, { trait_type: trait });
   if (trait === TRAIT.type) {
-    return getTypeByDisplayType(t?.value)
+    return getTypeByDisplayType(t?.value);
   }
   return t?.value;
 };
