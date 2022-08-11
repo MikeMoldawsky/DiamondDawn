@@ -73,13 +73,13 @@ const EnterMine = () => {
     )
   };
 
-  const bytesPassword = ethersUtils.formatBytes32String('201854')
-  console.log({ bytesPassword })
+  // const bytesPassword = ethersUtils.formatBytes32String('201854')
+  // console.log({ bytesPassword })
 
   return (
     <ActionView
       watch={watchTokenMinedBy(account.address, maxTokenId)}
-      transact={() => enterMineApi(contract, bytesPassword, minePrice)}
+      transact={() => enterMineApi(contract, minePrice)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <EnterMineContent />

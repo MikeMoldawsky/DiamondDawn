@@ -390,7 +390,7 @@ contract DiamondDawnMine is
     function _getDiamondDawnJsonAttributes(
         DiamondDawnMetadata memory diamondDawnMetadata
     ) private pure returns (ERC721MetadataAttribute[] memory) {
-        assert(diamondDawnMetadata.certificate.points > 0);
+        //assert(diamondDawnMetadata.certificate.points > 0);
 
         DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
         if (DiamondDawnType.ENTER_MINE == diamondDawnType) {

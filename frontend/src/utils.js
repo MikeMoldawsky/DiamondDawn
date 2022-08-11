@@ -67,7 +67,7 @@ export const getTypeByStage = (stage) => {
     case SYSTEM_STAGE.COMPLETE:
       return DIAMOND_DAWN_TYPE.REBORN;
     default:
-      return DIAMOND_DAWN_TYPE.ENTER_MINE;
+      return -1;
   }
 };
 
@@ -86,9 +86,28 @@ export const getStageByTokenType = (type) => {
     case DIAMOND_DAWN_TYPE.REBORN:
       return SYSTEM_STAGE.COMPLETE;
     default:
-      return SYSTEM_STAGE.INVITATIONS;
+      return -1;
   }
 };
+
+export const getTypeByDisplayType = (displayType) => {
+  switch (displayType) {
+    case "Mine Entrance":
+      return DIAMOND_DAWN_TYPE.ENTER_MINE;
+    case "Rough":
+      return DIAMOND_DAWN_TYPE.ROUGH;
+    case "Cut":
+      return DIAMOND_DAWN_TYPE.CUT;
+    case "Polished":
+      return DIAMOND_DAWN_TYPE.POLISHED;
+    case "Burned":
+      return DIAMOND_DAWN_TYPE.BURNED;
+    case "Reborn":
+      return DIAMOND_DAWN_TYPE.REBORN;
+    default:
+      return DIAMOND_DAWN_TYPE.ENTER_MINE;
+  }
+}
 
 export const getTokenNextStageName = (token) => {
   if (!token) return SYSTEM_STAGE.MINE_OPEN;
@@ -100,6 +119,9 @@ export const getTokenNextStageName = (token) => {
 
 export const getTokenTrait = (token, trait) => {
   const t = _.find(token?.attributes, { trait_type: trait });
+  if (trait === TRAIT.type) {
+    return getTypeByDisplayType(t?.value)
+  }
   return t?.value;
 };
 
