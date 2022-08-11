@@ -5,7 +5,7 @@ interface IDiamondDawn {
     event EnterMine(uint tokenId);
     event Mine(uint tokenId);
     event Cut(uint tokenId);
-    event Polish(uint indexed tokenId);
+    event Polish(uint tokenId);
     event Ship(uint tokenId);
     event Rebirth(uint tokenId);
 
