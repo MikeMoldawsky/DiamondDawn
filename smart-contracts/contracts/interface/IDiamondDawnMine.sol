@@ -25,6 +25,8 @@ interface IDiamondDawnMine {
         view
         returns (string memory);
 
+    function isMineEntranceReady() external view returns (bool);
+
     function isMineReady() external view returns (bool);
 
     function isCutReady() external view returns (bool);

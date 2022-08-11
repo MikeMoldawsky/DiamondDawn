@@ -32,12 +32,14 @@ contract DiamondDawn is
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
 
+    uint public constant MAX_MINE_ENTRANCE = 333;
     uint public constant MINING_PRICE = 0.002 ether;
     IDiamondDawnMine public diamondDawnMine;
     SystemStage public systemStage;
 
     mapping(address => EnumerableSet.UintSet) private _ownerToShippingTokenIds;
     mapping(uint256 => address) private _shippedTokenIdToOwner;
+    mapping(bytes32 => bool) private _invitations;
     Counters.Counter private _tokenIdCounter;
 
     constructor(
@@ -72,7 +74,12 @@ contract DiamondDawn is
     }
 
     modifier isDiamondDawnMineReady(SystemStage systemStage_) {
-        if (systemStage_ == SystemStage.MINE_OPEN) {
+        if (systemStage_ == SystemStage.MINE_ENTRANCE) {
+            require(
+                diamondDawnMine.isMineEntranceReady(),
+                "DiamondDawnMine entrance isn't ready"
+            );
+        } else if (systemStage_ == SystemStage.MINE_OPEN) {
             require(
                 diamondDawnMine.isMineReady(),
                 "DiamondDawnMine mine isn't ready"
@@ -125,20 +132,57 @@ contract DiamondDawn is
         _;
     }
 
-    /**********************     External Functions     ************************/
+    modifier mineEntranceLeft() {
+        require(
+            _tokenIdCounter.current() <= MAX_MINE_ENTRANCE,
+            "Diamond Dawn's mine is at max capacity."
+        );
+        _;
+    }
 
-    function mine()
+    modifier useInvite(bytes32 password) {
+        bytes32 passwordHash = keccak256(abi.encodePacked(password));
+        require(
+            _invitations[passwordHash],
+            "You can't enter the mine, you're not invited"
+        );
+        delete _invitations[passwordHash];
+        _;
+    }
+
+    /**********************     External Functions     ************************/
+    function allowMineEntrance(bytes32[] calldata passwordsHash)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        onlySystemStage(SystemStage.MINE_ENTRANCE)
+    {
+        for (uint i = 0; i < passwordsHash.length; i++) {
+            _invitations[passwordsHash[i]] = true;
+        }
+    }
+
+    function enterMine(bytes32 password)
         external
         payable
         assignedDiamondDawnMine
-        onlySystemStage(SystemStage.MINE_OPEN)
-        isDiamondDawnMineReady(SystemStage.MINE_OPEN)
+        onlySystemStage(SystemStage.MINE_ENTRANCE)
+        isDiamondDawnMineReady(SystemStage.MINE_ENTRANCE)
         costs(MINING_PRICE)
+        useInvite(password)
     {
-        // Regular mint logics
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(_msgSender(), tokenId);
+        diamondDawnMine.enterMine(tokenId);
+        emit EnterMine(tokenId);
+    }
+
+    function mine(uint tokenId)
+        external
+        assignedDiamondDawnMine
+        onlySystemStage(SystemStage.MINE_OPEN)
+        isDiamondDawnMineReady(SystemStage.MINE_OPEN)
+    {
         diamondDawnMine.mine(tokenId);
         emit Mine(tokenId);
     }
@@ -202,6 +246,7 @@ contract DiamondDawn is
         isDiamondDawnMineReady(SystemStage(systemStage_))
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
+        // TODO: Mine Open should be open when we had 333 diamonds at the beginning
         systemStage = SystemStage(systemStage_);
         emit SystemStageChanged(systemStage);
     }
