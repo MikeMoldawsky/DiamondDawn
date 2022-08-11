@@ -4,9 +4,8 @@ import useDDContract from "hooks/useDDContract";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { tokenByIdSelector } from "store/tokensReducer";
-import { DUMMY_VIDEO_URL, NFT_TYPE, SYSTEM_STAGE, TRAIT } from "consts";
+import { DUMMY_VIDEO_URL, DIAMOND_DAWN_TYPE, TRAIT } from "consts";
 import NoDiamondView from "components/NoDiamondView";
-import Diamond from "components/Diamond";
 import ActionButton from "components/ActionButton";
 import { getTokenTrait, isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
@@ -21,7 +20,7 @@ const Polish = () => {
 
   const PolishContent = useCallback(
     ({ execute, endTime }) =>
-      isTokenOfType(token, NFT_TYPE.Cut) ? (
+      isTokenOfType(token, DIAMOND_DAWN_TYPE.CUT) ? (
         <>
           <DiamondPicker />
           <div className="leading-text">

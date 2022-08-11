@@ -1,9 +1,10 @@
 export const SYSTEM_STAGE = {
-  MINE_OPEN: 0,
-  CUT_OPEN: 1,
-  POLISH_OPEN: 2,
-  SHIP: 3,
-  COMPLETE: 4,
+  INVITATIONS: 0,
+  MINE_OPEN: 1,
+  CUT_OPEN: 2,
+  POLISH_OPEN: 3,
+  SHIP: 4,
+  COMPLETE: 5,
 };
 
 export const SYSTEM_STAGE_NAME = {
@@ -14,26 +15,27 @@ export const SYSTEM_STAGE_NAME = {
   [SYSTEM_STAGE.COMPLETE]: "Complete",
 };
 
-export const NFT_TYPE = {
-  Rough: "Rough",
-  Cut: "Cut",
-  Polished: "Polished",
-  Burned: "Burned",
-  Reborn: "Reborn",
-  Unknown: "Unknown",
+export const DIAMOND_DAWN_TYPE = {
+  ENTER_MINE: 0,
+  ROUGH: 1,
+  CUT: 2,
+  POLISHED: 3,
+  BURNED: 4,
+  REBORN: 5,
 };
 
 export const ROUGH_SHAPE = {
-  MAKEABLE: 0,
+  NO_SHAPE: 0,
+  MAKEABLE: 1,
 };
 
 export const SHAPE = {
-  PEAR: 0,
-  ROUND: 1,
-  OVAL: 2,
-  RADIANT: 3,
+  NO_SHAPE: 0,
+  PEAR: 1,
+  ROUND: 2,
+  OVAL: 3,
+  RADIANT: 4,
 };
-
 export const EVENTS = {
   SystemStageChanged: "SystemStageChanged",
 };

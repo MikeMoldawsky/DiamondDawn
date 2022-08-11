@@ -4,6 +4,7 @@ import { systemSelector } from "store/systemReducer";
 import useAutoSelectToken from "hooks/useAutoSelectToken";
 import useMountLogger from "hooks/useMountLogger";
 import { setSelectedTokenId } from "store/uiReducer";
+import EnterMine from "./EnterMine";
 import Mine from "./Mine";
 import Cut from "./Cut";
 import Polish from "./Polish";
@@ -29,6 +30,8 @@ const ProcessPage = () => {
 
   const renderByStage = useCallback(() => {
     switch (systemStage) {
+      case SYSTEM_STAGE.INVITATIONS:
+        return <EnterMine />;
       case SYSTEM_STAGE.MINE_OPEN:
         return <Mine />;
       case SYSTEM_STAGE.CUT_OPEN:
@@ -54,7 +57,7 @@ const ProcessPage = () => {
   return (
     <div className="page process-page">
       <div className="inner-page">
-        {systemStage >= SYSTEM_STAGE.MINE_OPEN ? renderByStage() : null}
+        {systemStage >= SYSTEM_STAGE.INVITATIONS ? renderByStage() : null}
       </div>
     </div>
   );

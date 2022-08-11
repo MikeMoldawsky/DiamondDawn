@@ -4,7 +4,7 @@ import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
 import ActionButton from "components/ActionButton";
 import { rebirthApi } from "api/contractApi";
-import { DUMMY_VIDEO_URL, NFT_TYPE } from "consts";
+import { DUMMY_VIDEO_URL, DIAMOND_DAWN_TYPE } from "consts";
 import ActionView from "components/ActionView";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
@@ -34,7 +34,7 @@ function RebirthPage() {
       const intTokenId = parseInt(tokenId);
       if (!_.isEmpty(tokens)) {
         const token = _.find(tokens, (t) => t.id === intTokenId);
-        if (!token || !isTokenOfType(token, NFT_TYPE.Burned)) {
+        if (!token || !isTokenOfType(token, DIAMOND_DAWN_TYPE.BURNED)) {
           navigate("/");
         } else {
           dispatch(setSelectedTokenId(intTokenId));

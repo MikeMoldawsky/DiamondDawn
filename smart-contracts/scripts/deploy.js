@@ -142,20 +142,21 @@ async function main() {
         depth: "35",
       },
     ]);
-    // await diamondDawnMine.setRoughVideoUrl("rough.mp4");
-    // await diamondDawnMine.setCutVideoUrl(
-    //   "cut.mp4",
-    //   "cut.mp4",
-    //   "cut.mp4",
-    //   "cut.mp4"
-    // );
-    // await diamondDawnMine.setPolishVideoUrl(
-    //   "polish.mp4",
-    //   "polish.mp4",
-    //   "polish.mp4",
-    //   "polish.mp4"
-    // );
-    // await diamondDawnMine.setShipVideoUrls("burn.mp4", "final.mp4");
+    await diamondDawnMine.setMineEntranceVideoUrl("infinity.mp4")
+    await diamondDawnMine.setRoughVideoUrl("rough.mp4");
+    await diamondDawnMine.setCutVideoUrl(
+      "cut.mp4",
+      "cut.mp4",
+      "cut.mp4",
+      "cut.mp4"
+    );
+    await diamondDawnMine.setPolishVideoUrl(
+      "polish.mp4",
+      "polish.mp4",
+      "polish.mp4",
+      "polish.mp4"
+    );
+    await diamondDawnMine.setShipVideoUrls("burn.mp4", "final.mp4");
     await diamondDawn.unpause();
   }
 
