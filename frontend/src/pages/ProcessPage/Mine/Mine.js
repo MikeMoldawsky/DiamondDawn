@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
 import { utils as ethersUtils } from "ethers";
 import classNames from "classnames";
@@ -6,7 +7,7 @@ import "./Mine.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMinePrice, systemSelector } from "store/systemReducer";
 import Countdown from "components/Countdown";
-import { watchTokenMinedBy } from "store/tokensReducer";
+import { tokensSelector, watchTokenMinedBy } from "store/tokensReducer";
 import { useAccount } from "wagmi";
 import useOnConnect from "hooks/useOnConnect";
 import ActionButton from "components/ActionButton";
@@ -36,6 +37,9 @@ const Mine = () => {
   const contract = useDDContract();
   const dispatch = useDispatch();
   const [canMine, setCanMine] = useState(true);
+  const tokens = useSelector(tokensSelector);
+
+  const maxTokenId = _.max(_.map(tokens, "id"));
 
   useMountLogger("Mine");
 
@@ -85,7 +89,7 @@ const Mine = () => {
 
   return (
     <ActionView
-      watch={watchTokenMinedBy(account.address)}
+      watch={watchTokenMinedBy(account.address, maxTokenId)}
       transact={() => mineApi(contract, minePrice)}
       videoUrl={DUMMY_VIDEO_URL}
     >

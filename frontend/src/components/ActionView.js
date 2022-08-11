@@ -28,14 +28,12 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
   const withWatch = _.isFunction(watch);
 
   useEffect(() => {
-    console.log("useEffect WATCH TRIGGERED");
     let unwatch = null;
     if (withWatch) {
       unwatch = watch(contract, provider, onSuccess);
     }
 
     return () => {
-      console.log("useEffect UNMOUNTING");
       _.isFunction(unwatch) && unwatch();
     };
   }, [withWatch]);
