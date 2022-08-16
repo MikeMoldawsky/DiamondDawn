@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import getLocation from "utils/getLocation";
+import {getPasswordApi} from "api/serverApi";
 
 const openInvite = async (inviteId) => {
   try {
@@ -81,21 +82,27 @@ const InviteIntro = ({ open }) => (
 );
 
 const InvitePage = () => {
-  const { tokenId } = useParams();
+  const { inviteId } = useParams();
   const [invite, setInvite] = useState(null);
+  const [password, setPassword] = useState(null);
   const [isRevoked, setIsRevoked] = useState(null);
+
+  const getPasswordForInvite = async () => {
+    setPassword(await getPasswordApi(inviteId))
+  }
 
   useEffect(() => {
     const fetch = async () => {
-      setIsRevoked(await isInviteRevoked(tokenId));
+      setIsRevoked(await isInviteRevoked(inviteId));
     };
-    if (tokenId) {
+    if (inviteId) {
       fetch();
+      getPasswordForInvite()
     }
-  }, [tokenId]);
+  }, [inviteId]);
 
   const onOpenInviteClick = async () => {
-    setInvite(await openInvite(tokenId));
+    setInvite(await openInvite(inviteId));
   };
 
   const renderInviteContent = () => {
@@ -107,7 +114,7 @@ const InvitePage = () => {
     return (
       <>
         <h1>You Are Invited to Diamonds Dawn!</h1>
-        <div>Your Password is {invite.password}</div>
+        <div>Your Password is {password}</div>
         <a
           target="_blank"
           rel="noreferrer"

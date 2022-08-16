@@ -32,6 +32,16 @@ export const getSystemScheduleApi = async () => {
 };
 
 // ON-BOARDING
+export const getPasswordApi = async (inviteId) => {
+  try {
+    const { data: password } = await axios.post(`/api/get_pwd`, { inviteId });
+    return password;
+  } catch (e) {
+    logApiError(e, "getPasswordApi");
+    return null;
+  }
+};
+
 export const checkPasswordApi = async (password) => {
   try {
     const { data: isCorrect } = await axios.post(`/api/check_pwd`, {

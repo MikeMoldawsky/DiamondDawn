@@ -43,7 +43,7 @@ const MainLayout = () => {
                   </TokensProvider>
                 }
               />
-              <Route path="invite/:tokenId" element={<InvitePage />} />
+              <Route path="invite/:inviteId" element={<InvitePage />} />
               <Route
                 path="rebirth/:tokenId"
                 element={
