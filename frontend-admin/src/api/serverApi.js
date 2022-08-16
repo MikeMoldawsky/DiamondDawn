@@ -85,9 +85,9 @@ export const createPasswordsApi = async (numPasswords) => {
   }
 };
 
-export const countPasswordsApi = async () => {
+export const countPasswordsApi = async (status) => {
   try {
-    const { data: passwordCount } = await axios.get(`/api/count_passwords`);
+    const { data: passwordCount } = await axios.post(`/api/count_passwords`, { status });
     return passwordCount;
   } catch (e) {
     return null;

@@ -10,11 +10,11 @@ async function createPasswords(numPasswords) {
   }
 }
 
-async function countPasswords() {
+async function countPasswords(status) {
   try {
-    return await PasswordModel.estimatedDocumentCount();
+    return await PasswordModel.countDocuments({ status });
   } catch (e) {
-    console.log(`Failed to CREATE Passwords`, e);
+    console.log(`Failed to COUNT Passwords`, e);
   }
 }
 module.exports = {

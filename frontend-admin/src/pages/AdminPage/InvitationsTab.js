@@ -86,7 +86,7 @@ const ClipboardButton = ({ inviteId }) => {
 
 const InvitationsTab = () => {
   const [invitations, setInvitations] = useState([]);
-  const [passwordCount, setPasswordCount] = useState(0);
+  const [passwordCount, setPasswordCount] = useState({});
   const contract = useDDContract();
   const dispatch = useDispatch();
 
@@ -105,7 +105,15 @@ const InvitationsTab = () => {
   };
 
   const fetchPasswordCount = async () => {
-    setPasswordCount(await countPasswordsApi())
+    const available = await countPasswordsApi('available')
+    const pending = await countPasswordsApi('pending')
+    const used = await countPasswordsApi('used')
+    setPasswordCount({
+      available,
+      pending,
+      used,
+      total: available + pending + used,
+    })
   };
 
   const createPasswords = async () => {
@@ -151,7 +159,10 @@ const InvitationsTab = () => {
         renderButtons={renderDeployButton}
       />
       <h1>Passwords</h1>
-      <div>Password Count: {passwordCount}</div>
+      <div>Available Password: {passwordCount.available}</div>
+      <div>Pending Password: {passwordCount.pending}</div>
+      <div>Used Password: {passwordCount.used}</div>
+      <div>Total Password: {passwordCount.total}</div>
       <div className="button link" onClick={createPasswords}>CREATE PASSWORDS</div>
     </div>
   );
