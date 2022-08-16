@@ -459,9 +459,13 @@ contract DiamondDawnMine is
                     diamondDawnMetadata.cut,
                     diamondDawnMetadata.certificate
                 );
-        } else if (DiamondDawnType.POLISHED == diamondDawnType || DiamondDawnType.BURNED == diamondDawnType) {
+        } else if (
+            DiamondDawnType.POLISHED == diamondDawnType ||
+            DiamondDawnType.BURNED == diamondDawnType
+        ) {
             return
-                _getPolishedOrBurnedDiamondJsonAttributes(diamondDawnType,
+                _getPolishedOrBurnedDiamondJsonAttributes(
+                    diamondDawnType,
                     diamondDawnMetadata.certificate
                 );
         } else if (DiamondDawnType.REBORN == diamondDawnType) {
@@ -668,7 +672,10 @@ contract DiamondDawnMine is
         DiamondCertificate memory certificate
     ) private pure returns (ERC721MetadataAttribute[] memory) {
         assert(certificate.points > 0);
-        assert(diamondDawnType == DiamondDawnType.POLISHED || diamondDawnType == DiamondDawnType.BURNED);
+        assert(
+            diamondDawnType == DiamondDawnType.POLISHED ||
+                diamondDawnType == DiamondDawnType.BURNED
+        );
 
         ERC721MetadataAttribute[]
             memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
