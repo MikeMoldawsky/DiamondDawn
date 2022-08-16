@@ -30,9 +30,16 @@ interface IDiamondDawnMineAdmin {
 
     function populateDiamonds(DiamondCertificate[] calldata diamonds) external;
 
+    function setIsMineOpen(bool isMineOpen) external;
+
     function setMineEntranceVideoUrl(string calldata mineEntranceUrl) external;
 
     function setRoughVideoUrl(string calldata roughUrl) external;
+
+    function replaceLostShipment(
+        uint tokenId,
+        DiamondCertificate calldata diamond
+    ) external;
 
     function setCutVideoUrl(
         string calldata pearUrl,

@@ -13,6 +13,8 @@ interface IDiamondDawnAdmin {
 
     event SystemStageChanged(SystemStage stage);
 
+    function lockDiamondDawn() external;
+
     function setSystemStage(uint systemStage_) external;
 
     function setDiamondDawnMine(address diamondDawnMine_) external;
