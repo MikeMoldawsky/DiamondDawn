@@ -459,13 +459,11 @@ contract DiamondDawnMine is
                     diamondDawnMetadata.cut,
                     diamondDawnMetadata.certificate
                 );
-        } else if (DiamondDawnType.POLISHED == diamondDawnType) {
+        } else if (DiamondDawnType.POLISHED == diamondDawnType || DiamondDawnType.BURNED == diamondDawnType) {
             return
-                _getPolishedDiamondJsonAttributes(
+                _getPolishedOrBurnedDiamondJsonAttributes(diamondDawnType,
                     diamondDawnMetadata.certificate
                 );
-        } else if (DiamondDawnType.BURNED == diamondDawnType) {
-            return _getBurnedDiamondJsonAttributes();
         } else if (DiamondDawnType.REBORN == diamondDawnType) {
             return
                 _getRebornDiamondJsonAttributes(
@@ -665,14 +663,16 @@ contract DiamondDawnMine is
         return metadataAttributes;
     }
 
-    function _getPolishedDiamondJsonAttributes(
+    function _getPolishedOrBurnedDiamondJsonAttributes(
+        DiamondDawnType diamondDawnType,
         DiamondCertificate memory certificate
     ) private pure returns (ERC721MetadataAttribute[] memory) {
         assert(certificate.points > 0);
+        assert(diamondDawnType == DiamondDawnType.POLISHED || diamondDawnType == DiamondDawnType.BURNED);
 
         ERC721MetadataAttribute[]
             memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
-                DiamondDawnType.POLISHED,
+                diamondDawnType,
                 certificate.points
             );
         ERC721MetadataAttribute[]
@@ -765,15 +765,6 @@ contract DiamondDawnMine is
             certificate.symmetry
         );
         return metadataAttributes;
-    }
-
-    function _getBurnedDiamondJsonAttributes()
-        private
-        pure
-        returns (ERC721MetadataAttribute[] memory)
-    {
-        // TODO decide what are the burned parameters and choose carat accordingly
-        return _getBaseDiamondDawnJsonAttributes(DiamondDawnType.BURNED, 1000);
     }
 
     function _getRebornDiamondJsonAttributes(
