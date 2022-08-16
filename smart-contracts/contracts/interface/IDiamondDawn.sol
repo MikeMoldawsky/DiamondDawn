@@ -9,7 +9,7 @@ interface IDiamondDawn {
     event Ship(uint tokenId);
     event Rebirth(uint tokenId);
 
-    function enterMine(bytes32 password) external payable;
+    function enterMine(string calldata password) external payable;
 
     function mine(uint tokenId) external;
 

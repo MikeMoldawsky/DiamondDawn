@@ -146,7 +146,7 @@ contract DiamondDawn is
         _;
     }
 
-    modifier useInvite(bytes32 password) {
+    modifier useInvite(string calldata password) {
         bytes32 passwordHash = keccak256(abi.encodePacked(password));
         require(
             _invitations[passwordHash],
@@ -168,14 +168,14 @@ contract DiamondDawn is
         }
     }
 
-    function enterMine(bytes32 password)
+    function enterMine(string calldata password)
         external
         payable
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.INVITATIONS)
         isDiamondDawnMineReady(SystemStage.INVITATIONS)
         costs(MINING_PRICE)
-    //        useInvite(password)
+        useInvite(password)
     {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
