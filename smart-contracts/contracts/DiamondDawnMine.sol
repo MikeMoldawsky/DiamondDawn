@@ -89,7 +89,12 @@ contract DiamondDawnMine is
     }
 
     modifier mineClosed() {
-        require(!isMineOpen, "Diamond Dawn Mine is open");
+        require(!isMineOpen, "Diamond Dawn Mine should be closed");
+        _;
+    }
+
+    modifier mineOpen() {
+        require(isMineOpen, "Diamond Dawn Mine should be open");
         _;
     }
 
@@ -117,6 +122,7 @@ contract DiamondDawnMine is
     function populateDiamonds(DiamondCertificate[] calldata diamonds)
         external
         mineNotLocked
+//        mineClosed
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         for (uint i = 0; i < diamonds.length; i++) {
@@ -200,7 +206,7 @@ contract DiamondDawnMine is
         metadata.certificate = diamond;
     }
 
-    function enterMine(uint tokenId) external onlyDiamondDawn {
+    function enterMine(uint tokenId) external onlyDiamondDawn mineOpen {
         _tokenIdToMetadata[tokenId] = DiamondDawnMetadata({
             type_: DiamondDawnType.ENTER_MINE,
             rough: RoughDiamondMetadata({
@@ -226,7 +232,7 @@ contract DiamondDawnMine is
         });
     }
 
-    function mine(uint tokenId) external onlyDiamondDawn mineNotDry {
+    function mine(uint tokenId) external onlyDiamondDawn mineOpen mineNotDry {
         uint pointsReduction = _getRandomNumberInRange(
             MIN_ROUGH_TO_DIAMOND_POINTS_REDUCTION,
             MAX_ROUGH_TO_DIAMOND_POINTS_REDUCTION
@@ -243,6 +249,7 @@ contract DiamondDawnMine is
     function cut(uint256 tokenId)
         external
         onlyDiamondDawn
+    mineOpen
         onlyDiamondDawnType(tokenId, DiamondDawnType.ROUGH)
     {
         // TODO: fix random points creation
@@ -260,6 +267,7 @@ contract DiamondDawnMine is
     function polish(uint256 tokenId)
         external
         onlyDiamondDawn
+        mineOpen
         onlyDiamondDawnType(tokenId, DiamondDawnType.CUT)
     {
         _tokenIdToMetadata[tokenId].type_ = DiamondDawnType.POLISHED;
@@ -268,6 +276,7 @@ contract DiamondDawnMine is
     function burn(uint256 tokenId)
         external
         onlyDiamondDawn
+        mineOpen
         onlyDiamondDawnType(tokenId, DiamondDawnType.POLISHED)
     {
         _tokenIdToMetadata[tokenId].type_ = DiamondDawnType.BURNED;
@@ -281,7 +290,7 @@ contract DiamondDawnMine is
         _tokenIdToMetadata[tokenId].type_ = DiamondDawnType.REBORN;
     }
 
-    function lockMine() external mineClosed onlyDiamondDawn {
+    function lockMine() external onlyDiamondDawn mineClosed {
         isMineLocked = true;
     }
 
