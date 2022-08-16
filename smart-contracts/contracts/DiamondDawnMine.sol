@@ -122,7 +122,7 @@ contract DiamondDawnMine is
     function populateDiamonds(DiamondCertificate[] calldata diamonds)
         external
         mineNotLocked
-//        mineClosed
+        //        mineClosed
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         for (uint i = 0; i < diamonds.length; i++) {
@@ -249,7 +249,7 @@ contract DiamondDawnMine is
     function cut(uint256 tokenId)
         external
         onlyDiamondDawn
-    mineOpen
+        mineOpen
         onlyDiamondDawnType(tokenId, DiamondDawnType.ROUGH)
     {
         // TODO: fix random points creation
