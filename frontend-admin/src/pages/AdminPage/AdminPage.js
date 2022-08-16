@@ -62,7 +62,7 @@ const AdminPage = () => {
         <Wallet />
       </Header>
       <main>
-        <Tabs tabs={TABS} activeTab={0} />
+        <Tabs tabs={TABS} activeTab={5} />
       </main>
     </div>
   );

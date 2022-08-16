@@ -14,14 +14,15 @@ import {
   createInviteApi,
   updateInviteApi,
   deleteInviteApi,
+  createPasswordsApi, countPasswordsApi,
 } from "api/serverApi";
 import keccak256 from "keccak256";
 import { allowMineEntranceApi, populateDiamondsApi } from "api/contractApi";
 
 const INVITATION_COLUMNS = [
   { field: "twitter", headerName: "Twitter", width: 150, editable: true },
-  { field: "password", headerName: "Password", width: 150 },
-  { field: "hash", headerName: "Hash", width: 600 },
+  // { field: "password", headerName: "Password", width: 150 },
+  // { field: "hash", headerName: "Hash", width: 600 },
   {
     field: "created",
     headerName: "Created At",
@@ -85,23 +86,36 @@ const ClipboardButton = ({ inviteId }) => {
 
 const InvitationsTab = () => {
   const [invitations, setInvitations] = useState([]);
+  const [passwordCount, setPasswordCount] = useState(0);
   const contract = useDDContract();
   const dispatch = useDispatch();
 
+  const fetchInvites = async () => {
+    setInvitations(await getInvitesApi())
+    // const invites = await getInvitesApi();
+    // setInvitations(
+    //   invites.map((invite) => {
+    //     return {
+    //       ...invite,
+    //       // hash: keccak256(ethersUtils.formatBytes32String(invite.password)),
+    //       hash: keccak256(invite.password).toString("hex"),
+    //     };
+    //   })
+    // );
+  };
+
+  const fetchPasswordCount = async () => {
+    setPasswordCount(await countPasswordsApi())
+  };
+
+  const createPasswords = async () => {
+    await createPasswordsApi(333)
+    fetchPasswordCount()
+  }
+
   useEffect(() => {
-    const fetch = async () => {
-      const invites = await getInvitesApi();
-      setInvitations(
-        invites.map((invite) => {
-          return {
-            ...invite,
-            // hash: keccak256(ethersUtils.formatBytes32String(invite.password)),
-            hash: keccak256(invite.password).toString("hex"),
-          };
-        })
-      );
-    };
-    fetch();
+    fetchInvites();
+    fetchPasswordCount()
   }, [contract, dispatch]);
 
   const CRUD = {
@@ -136,6 +150,9 @@ const InvitationsTab = () => {
         renderActions={({ id }) => [<ClipboardButton inviteId={id} />]}
         renderButtons={renderDeployButton}
       />
+      <h1>Passwords</h1>
+      <div>Password Count: {passwordCount}</div>
+      <div className="button link" onClick={createPasswords}>CREATE PASSWORDS</div>
     </div>
   );
 };
