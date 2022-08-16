@@ -39,7 +39,9 @@ contract DiamondDawnMine is
         DiamondCertificate certificate;
     }
 
-    mapping(uint => DiamondDawnMetadata) public _tokenIdToMetadata;
+
+    bool public isMineOpen = false; // mine is closed until it's initialized.
+    bool public isMineLocked = false; // mine is locked forever when the project ends (immutable).
 
     string public mineEntranceVideoUrl;
     mapping(uint => string) public roughShapeToVideoUrls;
@@ -47,12 +49,15 @@ contract DiamondDawnMine is
     mapping(uint => string) public polishShapeToVideoUrls;
     mapping(uint => string) public diamondDawnTypeToShipVideoUrls;
 
-    uint private constant MIN_ROUGH_POINTS_REDUCTION = 38; // Min of ~35% carat loss.
-    uint private constant MAX_ROUGH_POINTS_REDUCTION = 74; // Max of ~65% carat loss.
-    uint private constant MIN_CUT_POINTS_REDUCTION = 1; // Min of ~2% carat loss.
-    uint private constant MAX_CUT_POINTS_REDUCTION = 4; // Max of ~8% carat loss.
+    // Carat loss of ~35% to ~65% from rough stone to the polished diamond.
+    uint private constant MIN_ROUGH_TO_DIAMOND_POINTS_REDUCTION = 38;
+    uint private constant MAX_ROUGH_TO_DIAMOND_POINTS_REDUCTION = 74;
+    // Carat loss from ~2% to ~8% in the polish process.
+    uint private constant MIN_POLISH_PROCESS_POINTS_REDUCTION = 1;
+    uint private constant MAX_POLISH_PROCESS_POINTS_REDUCTION = 4;
 
     uint private _randNonce = 0;
+    mapping(uint => DiamondDawnMetadata) private _tokenIdToMetadata;
     mapping(uint => bool) private _diamondDawnTypeToIsRevealed;
     address private _diamondDawnContract;
     DiamondCertificate[] private _mineDiamonds;
@@ -66,12 +71,14 @@ contract DiamondDawnMine is
     }
 
     /**********************     Modifiers     ************************/
+    // TODO: Make the contract immutable by adding 2 functions (mine closed, mine dried).
+
     modifier onlyDiamondDawn() {
         require(msg.sender == _diamondDawnContract, "OnlyDiamondDawn allowed");
         _;
     }
 
-    modifier requireDiamondDawnType(
+    modifier onlyDiamondDawnType(
         uint tokenId,
         DiamondDawnType diamondDawnType
     ) {
@@ -82,7 +89,17 @@ contract DiamondDawnMine is
         _;
     }
 
-    modifier _requireMineNotDry() {
+    modifier mineClosed() {
+        require(!isMineOpen, "Diamond Dawn Mine is open");
+        _;
+    }
+
+    modifier mineNotLocked() {
+        require(!isMineLocked, "Diamond Dawn Mine is locked forever");
+        _;
+    }
+
+    modifier mineNotDry() {
         require(_mineDiamonds.length > 0, "Diamond Dawn Mine is empty");
         _;
     }
@@ -91,13 +108,16 @@ contract DiamondDawnMine is
 
     function initialize(address diamondDawnContract)
         external
+        mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _diamondDawnContract = diamondDawnContract;
+        isMineOpen = true;
     }
 
     function populateDiamonds(DiamondCertificate[] calldata diamonds)
         external
+        mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         for (uint i = 0; i < diamonds.length; i++) {
@@ -105,8 +125,16 @@ contract DiamondDawnMine is
         }
     }
 
+    function setIsMineOpen(bool isMineOpen_) external
+        mineNotLocked
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        isMineOpen = isMineOpen_;
+    }
+
     function setMineEntranceVideoUrl(string calldata mineEntranceUrl)
         external
+        mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         mineEntranceVideoUrl = mineEntranceUrl;
@@ -114,6 +142,7 @@ contract DiamondDawnMine is
 
     function setRoughVideoUrl(string calldata roughUrl)
         external
+        mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         roughShapeToVideoUrls[uint(RoughDiamondShape.MAKEABLE)] = roughUrl;
@@ -125,7 +154,9 @@ contract DiamondDawnMine is
         string calldata roundUrl,
         string calldata ovalUrl,
         string calldata radiantUrl
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external
+    mineNotLocked
+    onlyRole(DEFAULT_ADMIN_ROLE) {
         cutShapeToVideoUrls[uint(DiamondShape.PEAR)] = pearUrl;
         cutShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
         cutShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
@@ -138,7 +169,9 @@ contract DiamondDawnMine is
         string calldata roundUrl,
         string calldata ovalUrl,
         string calldata radiantUrl
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external
+    mineNotLocked
+    onlyRole(DEFAULT_ADMIN_ROLE) {
         polishShapeToVideoUrls[uint(DiamondShape.PEAR)] = pearUrl;
         polishShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
         polishShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
@@ -149,7 +182,9 @@ contract DiamondDawnMine is
     function setShipVideoUrls(
         string calldata burnUrl,
         string calldata rebirthUrl
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external
+    mineNotLocked
+    onlyRole(DEFAULT_ADMIN_ROLE) {
         diamondDawnTypeToShipVideoUrls[uint(DiamondDawnType.BURNED)] = burnUrl;
         diamondDawnTypeToShipVideoUrls[
             uint(DiamondDawnType.REBORN)
@@ -158,7 +193,18 @@ contract DiamondDawnMine is
         _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.REBORN)] = true;
     }
 
-    function enterMine(uint tokenId) external onlyDiamondDawn {
+    function replaceLostShipment(uint tokenId, DiamondCertificate calldata diamond) external
+    mineNotLocked
+    onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        DiamondDawnMetadata storage metadata = _tokenIdToMetadata[tokenId];
+        require(metadata.type_ == DiamondDawnType.REBORN || metadata.type_ == DiamondDawnType.BURNED, "Diamond isn't in shipping stage");
+        metadata.certificate = diamond;
+    }
+
+
+    function enterMine(uint tokenId) external
+    onlyDiamondDawn {
         _tokenIdToMetadata[tokenId] = DiamondDawnMetadata({
             type_: DiamondDawnType.ENTER_MINE,
             rough: RoughDiamondMetadata({
@@ -184,10 +230,10 @@ contract DiamondDawnMine is
         });
     }
 
-    function mine(uint tokenId) external onlyDiamondDawn _requireMineNotDry {
+    function mine(uint tokenId) external onlyDiamondDawn mineNotDry {
         uint pointsReduction = _getRandomNumberInRange(
-            MIN_ROUGH_POINTS_REDUCTION,
-            MAX_ROUGH_POINTS_REDUCTION
+            MIN_ROUGH_TO_DIAMOND_POINTS_REDUCTION,
+            MAX_ROUGH_TO_DIAMOND_POINTS_REDUCTION
         );
         DiamondDawnMetadata storage metadata = _tokenIdToMetadata[tokenId];
         metadata.type_ = DiamondDawnType.ROUGH;
@@ -201,12 +247,12 @@ contract DiamondDawnMine is
     function cut(uint256 tokenId)
         external
         onlyDiamondDawn
-        requireDiamondDawnType(tokenId, DiamondDawnType.ROUGH)
+        onlyDiamondDawnType(tokenId, DiamondDawnType.ROUGH)
     {
         // TODO: fix random points creation
         uint pointsReduction = _getRandomNumberInRange(
-            MIN_CUT_POINTS_REDUCTION,
-            MAX_CUT_POINTS_REDUCTION
+            MIN_POLISH_PROCESS_POINTS_REDUCTION,
+            MAX_POLISH_PROCESS_POINTS_REDUCTION
         );
         DiamondDawnMetadata storage diamondDawnMetadata = _tokenIdToMetadata[
             tokenId
@@ -218,7 +264,7 @@ contract DiamondDawnMine is
     function polish(uint256 tokenId)
         external
         onlyDiamondDawn
-        requireDiamondDawnType(tokenId, DiamondDawnType.CUT)
+        onlyDiamondDawnType(tokenId, DiamondDawnType.CUT)
     {
         _tokenIdToMetadata[tokenId].type_ = DiamondDawnType.POLISHED;
     }
@@ -226,7 +272,7 @@ contract DiamondDawnMine is
     function burn(uint256 tokenId)
         external
         onlyDiamondDawn
-        requireDiamondDawnType(tokenId, DiamondDawnType.POLISHED)
+        onlyDiamondDawnType(tokenId, DiamondDawnType.POLISHED)
     {
         _tokenIdToMetadata[tokenId].type_ = DiamondDawnType.BURNED;
     }
@@ -234,9 +280,13 @@ contract DiamondDawnMine is
     function rebirth(uint256 tokenId)
         external
         onlyDiamondDawn
-        requireDiamondDawnType(tokenId, DiamondDawnType.BURNED)
+        onlyDiamondDawnType(tokenId, DiamondDawnType.BURNED)
     {
         _tokenIdToMetadata[tokenId].type_ = DiamondDawnType.REBORN;
+    }
+
+    function lockMine() external mineClosed onlyDiamondDawn {
+        isMineLocked = true;
     }
 
     function getDiamondCount()

@@ -11,6 +11,8 @@ interface IDiamondDawnMine {
         REBORN
     }
 
+    function lockMine() external;
+
     function enterMine(uint tokenId) external;
 
     function mine(uint tokenId) external;
