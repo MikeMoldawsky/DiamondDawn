@@ -54,7 +54,7 @@ input[type="text"] {
   position: relative;
 
   .inner-page {
-    padding-top: 100px;
+    padding-top: 200px;
     max-width: 1200px;
     margin: 0 auto;
   }
@@ -192,6 +192,20 @@ input[type="text"] {
 
 .MuiTextField-root {
   background-color: white !important;
+}
+
+.MuiDrawer-root .MuiPaper-root {
+  padding-top: 150px;
+  width: 250px;
+  background: #ffffff55;
+  box-shadow: 0 10px 30px #00000029;
+  color: white;
+  padding-left: 50px;
+
+  .menu-item {
+    margin-bottom: 20px;
+    font-size: 1.4em;
+  }
 }
 
 // ANIMATIONS

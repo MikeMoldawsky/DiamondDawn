@@ -32,7 +32,7 @@ const DiamondItem = ({ diamond }) => {
         onMouseEnter={() => setShowInfo(true)}
         onMouseLeave={() => setShowInfo(false)}
       >
-        <div className="token-icon">
+        <div className="center-aligned-row token-icon">
           <FontAwesomeIcon icon={getDiamondIcon(diamond)} />
           <div className="token-id">#{id}</div>
         </div>
@@ -48,8 +48,10 @@ const DiamondItem = ({ diamond }) => {
 
 const DiamondList = () => {
   const accountTokens = useSelector(tokensSelector);
+  const hasDiamonds = _.size(accountTokens) > 0;
   return (
     <div className="diamond-list">
+      {hasDiamonds && <div className="vertical-sep" />}
       {_.map(accountTokens, (diamond) => (
         <DiamondItem
           key={`diamond-list-item-${diamond.id}`}
