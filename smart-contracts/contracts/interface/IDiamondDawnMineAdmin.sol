@@ -36,7 +36,10 @@ interface IDiamondDawnMineAdmin {
 
     function setRoughVideoUrl(string calldata roughUrl) external;
 
-    function replaceLostShipment(uint tokenId, DiamondCertificate calldata diamond) external;
+    function replaceLostShipment(
+        uint tokenId,
+        DiamondCertificate calldata diamond
+    ) external;
 
     function setCutVideoUrl(
         string calldata pearUrl,

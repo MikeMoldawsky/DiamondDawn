@@ -39,7 +39,6 @@ contract DiamondDawnMine is
         DiamondCertificate certificate;
     }
 
-
     bool public isMineOpen = false; // mine is closed until it's initialized.
     bool public isMineLocked = false; // mine is locked forever when the project ends (immutable).
 
@@ -125,7 +124,8 @@ contract DiamondDawnMine is
         }
     }
 
-    function setIsMineOpen(bool isMineOpen_) external
+    function setIsMineOpen(bool isMineOpen_)
+        external
         mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
@@ -154,9 +154,7 @@ contract DiamondDawnMine is
         string calldata roundUrl,
         string calldata ovalUrl,
         string calldata radiantUrl
-    ) external
-    mineNotLocked
-    onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
         cutShapeToVideoUrls[uint(DiamondShape.PEAR)] = pearUrl;
         cutShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
         cutShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
@@ -169,9 +167,7 @@ contract DiamondDawnMine is
         string calldata roundUrl,
         string calldata ovalUrl,
         string calldata radiantUrl
-    ) external
-    mineNotLocked
-    onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
         polishShapeToVideoUrls[uint(DiamondShape.PEAR)] = pearUrl;
         polishShapeToVideoUrls[uint(DiamondShape.ROUND)] = roundUrl;
         polishShapeToVideoUrls[uint(DiamondShape.OVAL)] = ovalUrl;
@@ -182,9 +178,7 @@ contract DiamondDawnMine is
     function setShipVideoUrls(
         string calldata burnUrl,
         string calldata rebirthUrl
-    ) external
-    mineNotLocked
-    onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
         diamondDawnTypeToShipVideoUrls[uint(DiamondDawnType.BURNED)] = burnUrl;
         diamondDawnTypeToShipVideoUrls[
             uint(DiamondDawnType.REBORN)
@@ -193,18 +187,20 @@ contract DiamondDawnMine is
         _diamondDawnTypeToIsRevealed[uint(DiamondDawnType.REBORN)] = true;
     }
 
-    function replaceLostShipment(uint tokenId, DiamondCertificate calldata diamond) external
-    mineNotLocked
-    onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    function replaceLostShipment(
+        uint tokenId,
+        DiamondCertificate calldata diamond
+    ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
         DiamondDawnMetadata storage metadata = _tokenIdToMetadata[tokenId];
-        require(metadata.type_ == DiamondDawnType.REBORN || metadata.type_ == DiamondDawnType.BURNED, "Diamond isn't in shipping stage");
+        require(
+            metadata.type_ == DiamondDawnType.REBORN ||
+                metadata.type_ == DiamondDawnType.BURNED,
+            "Diamond isn't in shipping stage"
+        );
         metadata.certificate = diamond;
     }
 
-
-    function enterMine(uint tokenId) external
-    onlyDiamondDawn {
+    function enterMine(uint tokenId) external onlyDiamondDawn {
         _tokenIdToMetadata[tokenId] = DiamondDawnMetadata({
             type_: DiamondDawnType.ENTER_MINE,
             rough: RoughDiamondMetadata({

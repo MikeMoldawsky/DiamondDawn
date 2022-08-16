@@ -32,6 +32,7 @@ contract DiamondDawn is
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
 
+    bool public isDiamondDawnLocked = false; // diamond dawn is locked forever when the project ends (immutable).
     uint public constant MAX_MINE_ENTRANCE = 333;
     uint public constant MINING_PRICE = 0.002 ether;
     IDiamondDawnMine public diamondDawnMine;
@@ -60,6 +61,11 @@ contract DiamondDawn is
     }
 
     /**********************          Modifiers          ************************/
+
+    modifier diamondDawnNotLocked() {
+        require(!isDiamondDawnLocked, "Diamond Dawn is locked forever");
+        _;
+    }
 
     modifier onlySystemStage(SystemStage _stage) {
         require(
@@ -153,6 +159,7 @@ contract DiamondDawn is
     /**********************     External Functions     ************************/
     function allowMineEntrance(bytes32[] calldata passwordsHash)
         external
+        diamondDawnNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
         onlySystemStage(SystemStage.INVITATIONS)
     {
@@ -235,13 +242,24 @@ contract DiamondDawn is
 
     function setDiamondDawnMine(address diamondDawnMine_)
         external
+        diamondDawnNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         diamondDawnMine = IDiamondDawnMine(diamondDawnMine_);
     }
 
+    function lockDiamondDawn()
+        external
+        diamondDawnNotLocked
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _diamondDawnMineContract.lockMine();
+        isDiamondDawnLocked = true;
+    }
+
     function setSystemStage(uint systemStage_)
         external
+        diamondDawnNotLocked
         validSystemStage(systemStage_)
         isDiamondDawnMineReady(SystemStage(systemStage_))
         onlyRole(DEFAULT_ADMIN_ROLE)
@@ -275,11 +293,15 @@ contract DiamondDawn is
     /**********************     Public Functions     ************************/
     // TODO: Add withdraw funds method
 
-    function pause() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    function pause() public diamondDawnNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
         _pause();
     }
 
-    function unpause() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    function unpause()
+        public
+        diamondDawnNotLocked
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         _unpause();
     }
 
