@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import classNames from "classnames";
 import "css/common.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -22,13 +22,16 @@ import SideMenu from "components/SideMenu";
 const MainLayout = () => {
   useMountLogger("MainLayout");
 
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <div className={classNames("main-layout", { 'drawer-open': drawerOpen })}>
+    <div className={classNames("main-layout", { "drawer-open": drawerOpen })}>
       <WagmiWrapper>
         <Router>
-          <Header isMenuOpen={drawerOpen} toggleMenu={() => setDrawerOpen(!drawerOpen)} />
+          <Header
+            isMenuOpen={drawerOpen}
+            toggleMenu={() => setDrawerOpen(!drawerOpen)}
+          />
           <Routes>
             <Route path="/" exact element={<Homepage />} />
             <Route path="/">
@@ -61,7 +64,10 @@ const MainLayout = () => {
               <Route path="faq" element={<FAQPage />} />
             </Route>
           </Routes>
-          <SideMenu isOpen={drawerOpen} closeMenu={() => setDrawerOpen(false)} />
+          <SideMenu
+            isOpen={drawerOpen}
+            closeMenu={() => setDrawerOpen(false)}
+          />
           <ContractProvider>
             <AppLoader />
           </ContractProvider>

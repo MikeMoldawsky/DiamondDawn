@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const TeamPage = () => {
   return (
@@ -7,7 +7,7 @@ const TeamPage = () => {
         <div className="leading-text">OUR TEAM</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TeamPage
+export default TeamPage;

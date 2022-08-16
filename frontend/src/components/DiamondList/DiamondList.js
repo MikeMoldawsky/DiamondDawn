@@ -48,7 +48,7 @@ const DiamondItem = ({ diamond }) => {
 
 const DiamondList = () => {
   const accountTokens = useSelector(tokensSelector);
-  const hasDiamonds = _.size(accountTokens) > 0
+  const hasDiamonds = _.size(accountTokens) > 0;
   return (
     <div className="diamond-list">
       {hasDiamonds && <div className="vertical-sep" />}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const FAQPage = () => {
   return (
@@ -7,7 +7,7 @@ const FAQPage = () => {
         <div className="leading-text">FAQ</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FAQPage
+export default FAQPage;
