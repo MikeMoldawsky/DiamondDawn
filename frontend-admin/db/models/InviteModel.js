@@ -1,16 +1,16 @@
-const Chance = require("chance");
+// const Chance = require("chance");
 const mongoose = require("mongoose");
 const db = require("../db");
 
-const chance = new Chance();
+// const chance = new Chance();
 
 const InviteSchema = new mongoose.Schema({
   twitter: { type: String },
-  password: {
-    type: Number,
-    required: true,
-    default: () => chance.integer({ min: 1000000000, max: 9999999999 }),
-  },
+  // password: {
+  //   type: Number,
+  //   required: true,
+  //   default: () => chance.integer({ min: 1000000000, max: 9999999999 }),
+  // },
   created: { type: Date, required: true, default: Date.now },
   revoked: { type: Boolean, required: true, default: false },
   opened: { type: Date },
