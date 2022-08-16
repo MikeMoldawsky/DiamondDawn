@@ -70,8 +70,6 @@ contract DiamondDawnMine is
     }
 
     /**********************     Modifiers     ************************/
-    // TODO: Make the contract immutable by adding 2 functions (mine closed, mine dried).
-
     modifier onlyDiamondDawn() {
         require(msg.sender == _diamondDawnContract, "OnlyDiamondDawn allowed");
         _;
