@@ -5,21 +5,16 @@
   align-items: center;
   justify-content: flex-end;
   margin-right: 40px;
-  border-right: solid 1px white;
 
   .diamond-item {
     position: relative;
 
     .token-icon {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
       margin-right: 16px;
       cursor: pointer;
       border: solid 1px transparent;
       border-radius: 4px;
-      padding: 7px 12px 3px;
+      padding: 5px 8px;
       opacity: 0.7;
 
       svg {
@@ -29,7 +24,7 @@
 
       .token-id {
         font-size: 0.8em;
-        margin-top: 2px;
+        margin-left: 5px;
       }
     }
 

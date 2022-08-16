@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import classNames from "classnames";
 import "css/common.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -14,16 +14,21 @@ import ProcessPage from "pages/ProcessPage";
 import NFTPage from "pages/NFTPage";
 import RebirthPage from "pages/RebirthPage";
 import InvitePage from "pages/InvitePage";
+import TeamPage from "pages/TeamPage";
+import FAQPage from "pages/FAQPage";
 import Header from "components/Header";
+import SideMenu from "components/SideMenu";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
 
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
   return (
-    <div className={classNames("main-layout")}>
+    <div className={classNames("main-layout", { 'drawer-open': drawerOpen })}>
       <WagmiWrapper>
         <Router>
-          <Header />
+          <Header isMenuOpen={drawerOpen} toggleMenu={() => setDrawerOpen(!drawerOpen)} />
           <Routes>
             <Route path="/" exact element={<Homepage />} />
             <Route path="/">
@@ -52,8 +57,11 @@ const MainLayout = () => {
                   </TokensProvider>
                 }
               />
+              <Route path="team" element={<TeamPage />} />
+              <Route path="faq" element={<FAQPage />} />
             </Route>
           </Routes>
+          <SideMenu isOpen={drawerOpen} closeMenu={() => setDrawerOpen(false)} />
           <ContractProvider>
             <AppLoader />
           </ContractProvider>
