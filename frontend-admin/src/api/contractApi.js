@@ -1,7 +1,7 @@
-import { DIAMOND_DAWN_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
+import {DIAMOND_DAWN_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE} from "consts";
 import _ from "lodash";
-import { getVideoUrlParamName } from "utils";
-import { utils as ethersUtils } from "ethers";
+import {getVideoUrlParamName} from "utils";
+import {utils as ethersUtils} from "ethers";
 
 // ADMIN CONTROL API
 export const getSystemStageApi = async (contract) => {
@@ -88,10 +88,7 @@ export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
 export const toPasswordHash = (password) => {
   // password must be string type, not number.
   const packed = ethersUtils.solidityPack(["string"], [password]);
-  console.log("Packed", packed);
-  let keccak256 = ethersUtils.keccak256(packed);
-  console.log("Keccak", keccak256);
-  return keccak256;
+  return ethersUtils.keccak256(packed);
 };
 
 // DIAMONDS API
