@@ -158,7 +158,7 @@ contract DiamondDawnMine is
         roughMakeableVideoUrl = makeable;
     }
 
-    function setCutVideoUrl(
+    function setCutVideoUrls(
         string calldata pear,
         string calldata round,
         string calldata oval,
@@ -170,7 +170,7 @@ contract DiamondDawnMine is
         cutRadiantVideoUrl = radiant;
     }
 
-    function setPolishVideoUrl(
+    function setPolishVideoUrls(
         string calldata pear,
         string calldata round,
         string calldata oval,
@@ -182,7 +182,7 @@ contract DiamondDawnMine is
         polishRadiantVideoUrl = radiant;
     }
 
-    function setRebirthVideoUrls(string calldata rebirth_)
+    function setRebirthVideoUrl(string calldata rebirth_)
         external
         mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)

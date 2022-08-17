@@ -39,19 +39,19 @@ interface IDiamondDawnMineAdmin {
         DiamondCertificate calldata diamond
     ) external;
 
-    function setCutVideoUrl(
+    function setCutVideoUrls(
         string calldata pear,
         string calldata round,
         string calldata oval,
         string calldata radiant
     ) external;
 
-    function setPolishVideoUrl(
+    function setPolishVideoUrls(
         string calldata pear,
         string calldata round,
         string calldata oval,
         string calldata radiant
     ) external;
 
-    function setRebirthVideoUrls(string calldata rebirth) external;
+    function setRebirthVideoUrl(string calldata rebirth) external;
 }
