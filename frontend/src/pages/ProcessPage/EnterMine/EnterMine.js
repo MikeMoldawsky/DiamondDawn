@@ -73,8 +73,7 @@ const EnterMine = () => {
     );
   };
 
-  const bytesPassword = ethersUtils.formatBytes32String("201854");
-  // console.log({ bytesPassword })
+  const bytesPassword = "5599488762";
 
   return (
     <ActionView
