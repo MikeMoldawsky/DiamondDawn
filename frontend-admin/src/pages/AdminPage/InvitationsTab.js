@@ -8,15 +8,14 @@ import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch } from "react-redux";
-import {ethers, utils as ethersUtils} from "ethers";
+import {utils as ethersUtils} from "ethers";
 import {
   getInvitesApi,
   createInviteApi,
   updateInviteApi,
   deleteInviteApi,
 } from "api/serverApi";
-import keccak256 from "keccak256";
-import { allowMineEntranceApi, populateDiamondsApi } from "api/contractApi";
+import {allowMineEntranceApi, toPasswordHash} from "api/contractApi";
 
 const INVITATION_COLUMNS = [
   { field: "twitter", headerName: "Twitter", width: 150, editable: true },
@@ -95,8 +94,7 @@ const InvitationsTab = () => {
         invites.map((invite) => {
           return {
             ...invite,
-            // hash: keccak256(ethersUtils.formatBytes32String(invite.password)),
-            hash: keccak256(invite.password).toString("hex"),
+            hash: toPasswordHash(invite.password),
           };
         })
       );
@@ -110,13 +108,11 @@ const InvitationsTab = () => {
     delete: deleteInviteApi,
   };
 
-  ethers.utils.solidityPack()
   const renderDeployButton = (selectedRows) => (
     <div
       className="button link save-button"
       onClick={() =>{
-        //keccak256(abi.encodePacked(password)
-         allowMineEntranceApi(contract, _.map(selectedRows, "hash"));
+         allowMineEntranceApi(contract, _.map(selectedRows, "password"));
       }
       }
     >
