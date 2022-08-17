@@ -157,7 +157,6 @@ contract DiamondDawn is
         require(success, "Transfer failed.");
     }
 
-
     function allowMineEntrance(bytes32[] calldata passwordsHash)
         external
         diamondDawnNotLocked

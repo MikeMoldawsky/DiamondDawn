@@ -70,10 +70,7 @@ async function main() {
   deployerBalance = deployerNewBalance;
 
   const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
-  const diamondDawn = await DiamondDawn.deploy(
-    diamondDawnMine.address,
-    admins
-  );
+  const diamondDawn = await DiamondDawn.deploy(diamondDawnMine.address, admins);
   await diamondDawn.deployed();
   deployerNewBalance = await deployer.getBalance();
 
