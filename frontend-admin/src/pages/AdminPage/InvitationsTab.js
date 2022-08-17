@@ -15,8 +15,7 @@ import {
   updateInviteApi,
   deleteInviteApi,
 } from "api/serverApi";
-import keccak256 from "keccak256";
-import { allowMineEntranceApi, populateDiamondsApi } from "api/contractApi";
+import { allowMineEntranceApi, toPasswordHash } from "api/contractApi";
 
 const INVITATION_COLUMNS = [
   { field: "twitter", headerName: "Twitter", width: 150, editable: true },
@@ -95,8 +94,7 @@ const InvitationsTab = () => {
         invites.map((invite) => {
           return {
             ...invite,
-            // hash: keccak256(ethersUtils.formatBytes32String(invite.password)),
-            hash: keccak256(invite.password).toString("hex"),
+            hash: toPasswordHash(invite.password),
           };
         })
       );
@@ -113,9 +111,9 @@ const InvitationsTab = () => {
   const renderDeployButton = (selectedRows) => (
     <div
       className="button link save-button"
-      onClick={() =>
-        allowMineEntranceApi(contract, _.map(selectedRows, "hash"))
-      }
+      onClick={() => {
+        allowMineEntranceApi(contract, _.map(selectedRows, "password"));
+      }}
     >
       <FontAwesomeIcon icon={faUpload} /> Deploy
     </div>
