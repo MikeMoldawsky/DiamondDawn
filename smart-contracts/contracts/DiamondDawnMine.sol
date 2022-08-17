@@ -554,6 +554,162 @@ contract DiamondDawnMine is
         return metadataAttributes;
     }
 
+    function _getRoughJsonAttributes(RoughDiamondMetadata memory rough)
+        private
+        pure
+        returns (ERC721MetadataAttribute[] memory)
+    {
+        // TODO: check about fix sized array in returns type (returns (ERC721MetadataAttribute[3] memory)).
+        ERC721MetadataAttribute[]
+            memory roughMetadataAttributes = new ERC721MetadataAttribute[](3);
+        roughMetadataAttributes[0] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Color",
+            "CAPE"
+        );
+        roughMetadataAttributes[1] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Shape",
+            _toRoughDiamondShapeString(rough.shape)
+        );
+        roughMetadataAttributes[2] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Mine",
+            "Underground"
+        );
+        return roughMetadataAttributes;
+    }
+
+    function _getCutJsonAttributes(DiamondCertificate memory certificate)
+        private
+        pure
+        returns (ERC721MetadataAttribute[] memory)
+    {
+        // TODO: check about fix sized array in returns type (returns (ERC721MetadataAttribute[5] memory)).
+        ERC721MetadataAttribute[]
+            memory cutMetadataAttributes = new ERC721MetadataAttribute[](5);
+        cutMetadataAttributes[0] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Color",
+            certificate.color
+        );
+        cutMetadataAttributes[1] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Cut",
+            certificate.cut
+        );
+        cutMetadataAttributes[2] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Fluorescence",
+            certificate.fluorescence
+        );
+        cutMetadataAttributes[3] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Measurements",
+            certificate.measurements
+        );
+        cutMetadataAttributes[4] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Shape",
+            _toDiamondShapeString(certificate.shape)
+        );
+        return cutMetadataAttributes;
+    }
+
+    function _getPolishJsonAttributes(DiamondCertificate memory certificate)
+        private
+        pure
+        returns (ERC721MetadataAttribute[] memory)
+    {
+        // TODO: check about fix sized array in returns type (returns (ERC721MetadataAttribute[5] memory)).
+        ERC721MetadataAttribute[]
+            memory polishMetadataAttributes = new ERC721MetadataAttribute[](3);
+        polishMetadataAttributes[0] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Clarity",
+            certificate.clarity
+        );
+        polishMetadataAttributes[1] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Polish",
+            certificate.polish
+        );
+        polishMetadataAttributes[2] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Symmetry",
+            certificate.symmetry
+        );
+        return polishMetadataAttributes;
+    }
+
+    function _getRebirthJsonAttributes(DiamondCertificate memory certificate)
+        private
+        pure
+        returns (ERC721MetadataAttribute[] memory)
+    {
+        // TODO: check about fix sized array in returns type (returns (ERC721MetadataAttribute[5] memory)).
+        ERC721MetadataAttribute[]
+            memory rebirthMetadataAttributes = new ERC721MetadataAttribute[](3);
+        rebirthMetadataAttributes[0] = getERC721MetadataAttribute(
+            false,
+            true,
+            true,
+            "",
+            "Laboratory",
+            "GIA"
+        );
+        rebirthMetadataAttributes[1] = getERC721MetadataAttribute(
+            false,
+            true,
+            false,
+            "",
+            "Report Date",
+            Strings.toString(certificate.reportDate)
+        );
+        rebirthMetadataAttributes[2] = getERC721MetadataAttribute(
+            false,
+            true,
+            false,
+            "",
+            "Report Number",
+            Strings.toString(certificate.reportNumber)
+        );
+        return rebirthMetadataAttributes;
+    }
+
     function _getRoughDiamondJsonAttributes(
         RoughDiamondMetadata memory rough,
         DiamondCertificate memory certificate
@@ -566,39 +722,22 @@ contract DiamondDawnMine is
                 DiamondDawnType.ROUGH,
                 certificate.points + rough.pointsReduction
             );
+
+        ERC721MetadataAttribute[]
+            memory roughAttributes = _getRoughJsonAttributes(rough);
+
         ERC721MetadataAttribute[]
             memory metadataAttributes = new ERC721MetadataAttribute[](7);
         // TODO make it more generic
+        // Base
         metadataAttributes[0] = baseAttributes[0];
         metadataAttributes[1] = baseAttributes[1];
         metadataAttributes[2] = baseAttributes[2];
         metadataAttributes[3] = baseAttributes[3];
-
-        // TODO: validate that the rough carat exists
-        metadataAttributes[4] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Color",
-            "CAPE"
-        );
-        metadataAttributes[5] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Shape",
-            _toRoughDiamondShapeString(rough.shape)
-        );
-        metadataAttributes[6] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Mine",
-            "Underground"
-        );
+        // Rough
+        metadataAttributes[4] = roughAttributes[0];
+        metadataAttributes[5] = roughAttributes[1];
+        metadataAttributes[6] = roughAttributes[2];
         return metadataAttributes;
     }
 
@@ -614,54 +753,24 @@ contract DiamondDawnMine is
                 DiamondDawnType.CUT,
                 certificate.points + cutMetadata.pointsReduction
             );
+        ERC721MetadataAttribute[] memory cutAttributes = _getCutJsonAttributes(
+            certificate
+        );
         ERC721MetadataAttribute[]
             memory metadataAttributes = new ERC721MetadataAttribute[](9);
+
         // TODO make it more generic
+        // Base
         metadataAttributes[0] = baseAttributes[0];
         metadataAttributes[1] = baseAttributes[1];
         metadataAttributes[2] = baseAttributes[2];
         metadataAttributes[3] = baseAttributes[3];
-
-        metadataAttributes[4] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Color",
-            certificate.color
-        );
-        metadataAttributes[5] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Cut",
-            certificate.cut
-        );
-        metadataAttributes[6] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Fluorescence",
-            certificate.fluorescence
-        );
-        metadataAttributes[7] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Measurements",
-            certificate.measurements
-        );
-        metadataAttributes[8] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Shape",
-            _toDiamondShapeString(certificate.shape)
-        );
+        // Cut
+        metadataAttributes[4] = cutAttributes[1];
+        metadataAttributes[5] = cutAttributes[2];
+        metadataAttributes[6] = cutAttributes[3];
+        metadataAttributes[7] = cutAttributes[4];
+        metadataAttributes[8] = cutAttributes[5];
         return metadataAttributes;
     }
 
@@ -675,79 +784,30 @@ contract DiamondDawnMine is
                 DiamondDawnType.POLISHED,
                 certificate.points
             );
+        ERC721MetadataAttribute[] memory cutAttributes = _getCutJsonAttributes(
+            certificate
+        );
+        ERC721MetadataAttribute[]
+            memory polishAttributes = _getPolishJsonAttributes(certificate);
+
         ERC721MetadataAttribute[]
             memory metadataAttributes = new ERC721MetadataAttribute[](12);
         // TODO make it more generic
+        // Base
         metadataAttributes[0] = baseAttributes[0];
         metadataAttributes[1] = baseAttributes[1];
         metadataAttributes[2] = baseAttributes[2];
         metadataAttributes[3] = baseAttributes[3];
-
-        metadataAttributes[4] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Color",
-            certificate.color
-        );
-        metadataAttributes[5] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Cut",
-            certificate.cut
-        );
-        metadataAttributes[6] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Fluorescence",
-            certificate.fluorescence
-        );
-        metadataAttributes[7] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Measurements",
-            certificate.measurements
-        );
-        metadataAttributes[8] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Shape",
-            _toDiamondShapeString(certificate.shape)
-        );
+        // Cut
+        metadataAttributes[4] = cutAttributes[1];
+        metadataAttributes[5] = cutAttributes[2];
+        metadataAttributes[6] = cutAttributes[3];
+        metadataAttributes[7] = cutAttributes[4];
+        metadataAttributes[8] = cutAttributes[5];
         // Polish
-        metadataAttributes[9] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Clarity",
-            certificate.clarity
-        );
-        metadataAttributes[10] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Polish",
-            certificate.polish
-        );
-        metadataAttributes[11] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Symmetry",
-            certificate.symmetry
-        );
+        metadataAttributes[9] = polishAttributes[0];
+        metadataAttributes[10] = polishAttributes[1];
+        metadataAttributes[11] = polishAttributes[2];
         return metadataAttributes;
     }
 
@@ -761,105 +821,35 @@ contract DiamondDawnMine is
                 DiamondDawnType.REBORN,
                 certificate.points
             );
+        ERC721MetadataAttribute[] memory cutAttributes = _getCutJsonAttributes(
+            certificate
+        );
+        ERC721MetadataAttribute[]
+            memory polishAttributes = _getPolishJsonAttributes(certificate);
+        ERC721MetadataAttribute[]
+            memory rebirthAttributes = _getRebirthJsonAttributes(certificate);
         ERC721MetadataAttribute[]
             memory metadataAttributes = new ERC721MetadataAttribute[](15);
         // TODO make it more generic
+        // Base
         metadataAttributes[0] = baseAttributes[0];
         metadataAttributes[1] = baseAttributes[1];
         metadataAttributes[2] = baseAttributes[2];
         metadataAttributes[3] = baseAttributes[3];
-
-        metadataAttributes[4] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Color",
-            certificate.color
-        );
-        metadataAttributes[5] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Cut",
-            certificate.cut
-        );
-        metadataAttributes[6] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Fluorescence",
-            certificate.fluorescence
-        );
-        metadataAttributes[7] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Measurements",
-            certificate.measurements
-        );
-        metadataAttributes[8] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Shape",
-            _toDiamondShapeString(certificate.shape)
-        );
+        // Cut
+        metadataAttributes[4] = cutAttributes[1];
+        metadataAttributes[5] = cutAttributes[2];
+        metadataAttributes[6] = cutAttributes[3];
+        metadataAttributes[7] = cutAttributes[4];
+        metadataAttributes[8] = cutAttributes[5];
         // Polish
-        metadataAttributes[9] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Clarity",
-            certificate.clarity
-        );
-        metadataAttributes[10] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Polish",
-            certificate.polish
-        );
-        metadataAttributes[11] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Symmetry",
-            certificate.symmetry
-        );
-
+        metadataAttributes[9] = polishAttributes[0];
+        metadataAttributes[10] = polishAttributes[1];
+        metadataAttributes[11] = polishAttributes[2];
         // Rebirth
-        metadataAttributes[12] = getERC721MetadataAttribute(
-            false,
-            true,
-            true,
-            "",
-            "Laboratory",
-            "GIA"
-        );
-        metadataAttributes[13] = getERC721MetadataAttribute(
-            false,
-            true,
-            false,
-            "",
-            "Report Date",
-            Strings.toString(certificate.reportDate)
-        );
-        metadataAttributes[14] = getERC721MetadataAttribute(
-            false,
-            true,
-            false,
-            "",
-            "Report Number",
-            Strings.toString(certificate.reportNumber)
-        );
+        metadataAttributes[12] = rebirthAttributes[0];
+        metadataAttributes[13] = rebirthAttributes[1];
+        metadataAttributes[14] = rebirthAttributes[2];
         return metadataAttributes;
     }
 
