@@ -1,7 +1,7 @@
-import {DIAMOND_DAWN_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE} from "consts";
+import { DIAMOND_DAWN_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
 import _ from "lodash";
-import {getVideoUrlParamName} from "utils";
-import {utils as ethersUtils} from "ethers";
+import { getVideoUrlParamName } from "utils";
+import { utils as ethersUtils } from "ethers";
 
 // ADMIN CONTROL API
 export const getSystemStageApi = async (contract) => {
