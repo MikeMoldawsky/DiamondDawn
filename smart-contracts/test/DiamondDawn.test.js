@@ -22,7 +22,6 @@ describe("DiamondDawn", () => {
     const diamondDawnMine = await DiamondDawnMine.deploy([]);
     const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
     const diamondDawn = await DiamondDawn.deploy(
-      "1000",
       diamondDawnMine.address,
       []
     ); // royality as 10 %

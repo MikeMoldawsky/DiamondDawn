@@ -39,7 +39,6 @@ async function main() {
   if (!admins.includes(deployerAddress)) {
     admins.push(deployerAddress);
   }
-  const royalty = 1000; // 1000/10000 = 10/100 = 10 %
 
   let deployerBalance = await deployer.getBalance();
   let deployerNewBalance;
@@ -47,7 +46,6 @@ async function main() {
   console.log("Deploying DiamondDawn contracts", {
     deployerAddress,
     admins,
-    royalty,
     deployerBalance: deployerBalance.toString(),
     deployerEthBalance: ethers.utils.formatEther(deployerBalance),
     network: hre.network.name,
@@ -73,7 +71,6 @@ async function main() {
 
   const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
   const diamondDawn = await DiamondDawn.deploy(
-    royalty,
     diamondDawnMine.address,
     admins
   );
@@ -180,7 +177,7 @@ async function main() {
       console.log("Verifying DiamondDawn contract");
       await hre.run("verify:verify", {
         address: diamondDawn.address,
-        constructorArguments: [royalty, diamondDawnMine.address, admins],
+        constructorArguments: [diamondDawnMine.address, admins],
       });
       console.log("Successfully verified the contract");
     } catch (e) {
