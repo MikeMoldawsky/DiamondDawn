@@ -7,9 +7,9 @@ const chance = new Chance();
 const InviteSchema = new mongoose.Schema({
   twitter: { type: String },
   password: {
-    type: Number,
+    type: String,
     required: true,
-    default: () => chance.integer({ min: 100000, max: 999999 }),
+    default: () => chance.integer({ min: 100000, max: 999999 }).toString(),
   },
   created: { type: Date, required: true, default: Date.now },
   revoked: { type: Boolean, required: true, default: false },
