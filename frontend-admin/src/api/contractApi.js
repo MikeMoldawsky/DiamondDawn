@@ -86,8 +86,12 @@ export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
 
 // Enter Mine API
 export const toPasswordHash = (password) => {
+  // password must be string type, not number.
   const packed = ethersUtils.solidityPack(["string"], [password]);
-  return ethersUtils.keccak256(packed);
+  console.log("Packed", packed);
+  let keccak256 = ethersUtils.keccak256(packed);
+  console.log("Keccak", keccak256);
+  return keccak256;
 };
 
 // DIAMONDS API
