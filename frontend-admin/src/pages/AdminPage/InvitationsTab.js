@@ -92,7 +92,6 @@ const InvitationsTab = () => {
       const invites = await getInvitesApi();
       setInvitations(
         invites.map((invite) => {
-          console.log(invite);
           return {
             ...invite,
             hash: toPasswordHash(invite.password),
