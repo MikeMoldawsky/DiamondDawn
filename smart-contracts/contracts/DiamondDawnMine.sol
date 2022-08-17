@@ -182,7 +182,11 @@ contract DiamondDawnMine is
         polishRadiantVideoUrl = radiant;
     }
 
-    function setRebirthVideoUrls(string calldata rebirth_) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
+    function setRebirthVideoUrls(string calldata rebirth_)
+        external
+        mineNotLocked
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         rebirthVideoUrl = rebirth_;
     }
 
@@ -192,7 +196,8 @@ contract DiamondDawnMine is
     ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
         DiamondDawnMetadata storage metadata = _tokenIdToMetadata[tokenId];
         require(
-            metadata.type_ == DiamondDawnType.POLISHED || metadata.type_ == DiamondDawnType.REBORN,
+            metadata.type_ == DiamondDawnType.POLISHED ||
+                metadata.type_ == DiamondDawnType.REBORN,
             "Diamond isn't in shipping stage"
         );
         metadata.certificate = diamond;
@@ -323,13 +328,19 @@ contract DiamondDawnMine is
     }
 
     function isCutReady() external view returns (bool) {
-        return bytes(cutPearVideoUrl).length > 0 && bytes(cutRoundVideoUrl).length > 0 &&
-        bytes(cutOvalVideoUrl).length > 0 && bytes(cutRadiantVideoUrl).length > 0;
+        return
+            bytes(cutPearVideoUrl).length > 0 &&
+            bytes(cutRoundVideoUrl).length > 0 &&
+            bytes(cutOvalVideoUrl).length > 0 &&
+            bytes(cutRadiantVideoUrl).length > 0;
     }
 
     function isPolishReady() external view returns (bool) {
-        return bytes(polishPearVideoUrl).length > 0 && bytes(polishRoundVideoUrl).length > 0 &&
-        bytes(polishOvalVideoUrl).length > 0 && bytes(polishRadiantVideoUrl).length > 0;
+        return
+            bytes(polishPearVideoUrl).length > 0 &&
+            bytes(polishRoundVideoUrl).length > 0 &&
+            bytes(polishOvalVideoUrl).length > 0 &&
+            bytes(polishRadiantVideoUrl).length > 0;
     }
 
     function isShipReady() external view returns (bool) {
@@ -375,7 +386,9 @@ contract DiamondDawnMine is
         } else if (DiamondDawnType.CUT == diamondDawnType) {
             videoUrl = _getCutVideoUrl(diamondDawnMetadata.certificate.shape);
         } else if (DiamondDawnType.POLISHED == diamondDawnType) {
-            videoUrl = _getPolishedVideoUrl(diamondDawnMetadata.certificate.shape);
+            videoUrl = _getPolishedVideoUrl(
+                diamondDawnMetadata.certificate.shape
+            );
         } else if (DiamondDawnType.REBORN == diamondDawnType) {
             videoUrl = rebirthVideoUrl;
         } else {
@@ -384,7 +397,11 @@ contract DiamondDawnMine is
         return string.concat(_videoBaseURI(), videoUrl);
     }
 
-    function _getCutVideoUrl(DiamondShape shape) private view returns (string memory) {
+    function _getCutVideoUrl(DiamondShape shape)
+        private
+        view
+        returns (string memory)
+    {
         if (shape == DiamondShape.PEAR) {
             return cutPearVideoUrl;
         } else if (shape == DiamondShape.ROUND) {
@@ -397,7 +414,11 @@ contract DiamondDawnMine is
         revert("Unknown diamond shape");
     }
 
-    function _getPolishedVideoUrl(DiamondShape shape) private view returns (string memory) {
+    function _getPolishedVideoUrl(DiamondShape shape)
+        private
+        view
+        returns (string memory)
+    {
         if (shape == DiamondShape.PEAR) {
             return polishPearVideoUrl;
         } else if (shape == DiamondShape.ROUND) {
@@ -439,8 +460,6 @@ contract DiamondDawnMine is
     function _getDiamondDawnJsonAttributes(
         DiamondDawnMetadata memory diamondDawnMetadata
     ) private pure returns (ERC721MetadataAttribute[] memory) {
-        //assert(diamondDawnMetadata.certificate.points > 0);
-
         DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
         if (DiamondDawnType.ENTER_MINE == diamondDawnType) {
             return _getMineEntranceJsonAttributes();
@@ -456,8 +475,7 @@ contract DiamondDawnMine is
                     diamondDawnMetadata.cut,
                     diamondDawnMetadata.certificate
                 );
-        } else if (
-            DiamondDawnType.POLISHED == diamondDawnType) {
+        } else if (DiamondDawnType.POLISHED == diamondDawnType) {
             return
                 _getPolishedDiamondJsonAttributes(
                     diamondDawnMetadata.certificate
@@ -468,7 +486,9 @@ contract DiamondDawnMine is
                     diamondDawnMetadata.certificate
                 );
         }
-        revert("Failed fetching DiamondDawn json attributes - unknown type");
+        revert(
+            "Failed to extract json attributes from metadata - unknown type"
+        );
     }
 
     function _getTypeAttribute(DiamondDawnType diamondDawnType)
@@ -859,7 +879,7 @@ contract DiamondDawnMine is
         } else if (type_ == DiamondDawnType.REBORN) {
             return "Reborn";
         }
-        revert("Failed to convert DiamondDawnType");
+        revert("Failed to convert diamond dawn type");
     }
 
     function _toRoughDiamondShapeString(RoughDiamondShape shape)
@@ -870,7 +890,7 @@ contract DiamondDawnMine is
         if (shape == RoughDiamondShape.MAKEABLE) {
             return "Makeable";
         }
-        revert("Failed to convert RoughDiamondShape");
+        revert("Failed to convert rough diamond shape to string");
     }
 
     function _toDiamondShapeString(DiamondShape shape)
