@@ -11,19 +11,17 @@ interface IDiamondDawnMineAdmin {
     }
 
     struct DiamondCertificate {
-        uint points;
         string clarity;
         string color;
         string cut;
-        string depth;
         string fluorescence;
-        string length;
+        string measurements;
+        uint points;
         string polish;
         uint reportDate;
         uint reportNumber;
         DiamondShape shape;
         string symmetry;
-        string width;
     }
 
     function initialize(address diamondDawnContract) external;
@@ -34,7 +32,7 @@ interface IDiamondDawnMineAdmin {
 
     function setMineEntranceVideoUrl(string calldata mineEntranceUrl) external;
 
-    function setRoughVideoUrl(string calldata roughUrl) external;
+    function setRoughVideoUrl(string calldata makeable) external;
 
     function replaceLostShipment(
         uint tokenId,
@@ -42,21 +40,18 @@ interface IDiamondDawnMineAdmin {
     ) external;
 
     function setCutVideoUrl(
-        string calldata pearUrl,
-        string calldata roundUrl,
-        string calldata ovalUrl,
-        string calldata radiantUrl
+        string calldata pear,
+        string calldata round,
+        string calldata oval,
+        string calldata radiant
     ) external;
 
     function setPolishVideoUrl(
-        string calldata pearUrl,
-        string calldata roundUrl,
-        string calldata ovalUrl,
-        string calldata radiantUrl
+        string calldata pear,
+        string calldata round,
+        string calldata oval,
+        string calldata radiant
     ) external;
 
-    function setShipVideoUrls(
-        string calldata burnUrl,
-        string calldata rebirthUrl
-    ) external;
+    function setRebirthVideoUrls(string calldata rebirth) external;
 }
