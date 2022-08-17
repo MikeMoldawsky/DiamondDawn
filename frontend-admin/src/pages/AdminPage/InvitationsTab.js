@@ -8,14 +8,14 @@ import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch } from "react-redux";
-import {utils as ethersUtils} from "ethers";
+import { utils as ethersUtils } from "ethers";
 import {
   getInvitesApi,
   createInviteApi,
   updateInviteApi,
   deleteInviteApi,
 } from "api/serverApi";
-import {allowMineEntranceApi, toPasswordHash} from "api/contractApi";
+import { allowMineEntranceApi, toPasswordHash } from "api/contractApi";
 
 const INVITATION_COLUMNS = [
   { field: "twitter", headerName: "Twitter", width: 150, editable: true },
@@ -111,10 +111,9 @@ const InvitationsTab = () => {
   const renderDeployButton = (selectedRows) => (
     <div
       className="button link save-button"
-      onClick={() =>{
-         allowMineEntranceApi(contract, _.map(selectedRows, "password"));
-      }
-      }
+      onClick={() => {
+        allowMineEntranceApi(contract, _.map(selectedRows, "password"));
+      }}
     >
       <FontAwesomeIcon icon={faUpload} /> Deploy
     </div>
