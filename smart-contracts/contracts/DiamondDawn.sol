@@ -22,9 +22,10 @@ import "./interface/IDiamondDawnMine.sol";
  */
 contract DiamondDawn is
     ERC721,
-    ERC2981,
     // TODO: Should we change from ERC2981 to ERC721Royalty or use both?
+    ERC2981,
     Pausable,
+    // TODO: Should we change from AccessControl to Ownable or use both?
     AccessControl,
     ERC721Burnable,
     ERC721Enumerable,
