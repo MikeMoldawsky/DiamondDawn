@@ -87,15 +87,13 @@ const prepareDiamondForPopulate = (diamond) => ({
   clarity: diamond.clarity,
   color: diamond.color,
   cut: diamond.cut,
-  depth: diamond.depth.$numberDecimal,
   fluorescence: diamond.fluorescence,
-  length: diamond.length.$numberDecimal,
   polish: diamond.polish,
   reportDate: parseInt(diamond.reportDate),
   reportNumber: parseInt(diamond.reportNumber),
+  measurements: `${diamond.length} - ${diamond.width} x ${diamond.depth}`,
   shape: diamond.shape,
   symmetry: diamond.symmetry,
-  width: diamond.width.$numberDecimal,
 });
 
 export const populateDiamondsApi = async (mineContract, diamonds) => {
