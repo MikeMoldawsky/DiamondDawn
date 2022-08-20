@@ -7,20 +7,21 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import useDDContract from "hooks/useDDContract";
-import { useDispatch } from "react-redux";
 import { utils as ethersUtils } from "ethers";
 import {
   getInvitesApi,
   createInviteApi,
   updateInviteApi,
   deleteInviteApi,
+  createPasswordsApi,
+  countPasswordsApi,
 } from "api/serverApi";
-import { allowMineEntranceApi, toPasswordHash } from "api/contractApi";
+import { allowMineEntranceApi } from "api/contractApi";
 
 const INVITATION_COLUMNS = [
   { field: "twitter", headerName: "Twitter", width: 150, editable: true },
-  { field: "password", headerName: "Password", width: 150 },
-  { field: "hash", headerName: "Hash", width: 600 },
+  // { field: "password", headerName: "Password", width: 150 },
+  // { field: "hash", headerName: "Hash", width: 600 },
   {
     field: "created",
     headerName: "Created At",
@@ -84,23 +85,37 @@ const ClipboardButton = ({ inviteId }) => {
 
 const InvitationsTab = () => {
   const [invitations, setInvitations] = useState([]);
+  const [passwordCount, setPasswordCount] = useState({});
   const contract = useDDContract();
-  const dispatch = useDispatch();
+
+  const fetchInvites = async () => {
+    setInvitations(await getInvitesApi());
+  };
+
+  const fetchPasswordCount = async () => {
+    const [available, pending, used] = await Promise.all([
+      countPasswordsApi("available"),
+      countPasswordsApi("pending"),
+      countPasswordsApi("used"),
+    ]);
+    setPasswordCount({
+      available,
+      pending,
+      used,
+      total: available + pending + used,
+    });
+  };
+
+  const createPasswords = async () => {
+    const hashes = await createPasswordsApi(10);
+    await allowMineEntranceApi(contract, hashes);
+    fetchPasswordCount();
+  };
 
   useEffect(() => {
-    const fetch = async () => {
-      const invites = await getInvitesApi();
-      setInvitations(
-        invites.map((invite) => {
-          return {
-            ...invite,
-            hash: toPasswordHash(invite.password),
-          };
-        })
-      );
-    };
-    fetch();
-  }, [contract, dispatch]);
+    fetchInvites();
+    fetchPasswordCount();
+  }, []);
 
   const CRUD = {
     create: createInviteApi,
@@ -134,6 +149,14 @@ const InvitationsTab = () => {
         renderActions={({ id }) => [<ClipboardButton inviteId={id} />]}
         renderButtons={renderDeployButton}
       />
+      <h1>Passwords</h1>
+      <div>Available Password: {passwordCount.available}</div>
+      <div>Pending Password: {passwordCount.pending}</div>
+      <div>Used Password: {passwordCount.used}</div>
+      <div>Total Password: {passwordCount.total}</div>
+      <div className="button link" onClick={createPasswords}>
+        CREATE PASSWORDS
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { logApiError } from "utils";
+import { utils as ethersUtils } from "ethers";
 
 // STATE/STORAGE
 export const getSystemStageApi = async (contract) => {
@@ -22,7 +23,14 @@ export const getMinePriceApi = async (contract) => {
 // PROCESS
 export const enterMineApi = async (contract, password, minePrice) => {
   try {
-    return await contract.enterMine(password, { value: minePrice });
+    console.log("enterMineApi", {
+      password,
+      bytes32Password: ethersUtils.formatBytes32String(password),
+      minePrice,
+    });
+    return await contract.enterMine(ethersUtils.formatBytes32String(password), {
+      value: minePrice,
+    });
   } catch (e) {
     logApiError(e, "enterMineApi");
     throw new Error(e);

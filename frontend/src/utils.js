@@ -12,6 +12,9 @@ import { faGem } from "@fortawesome/free-solid-svg-icons";
 export const parseError = (e) => {
   let message = _.get(e, "error.data.message", "");
   if (!message) {
+    message = _.get(e, "error.message", "");
+  }
+  if (!message) {
     message = _.get(e, "message", "");
     try {
       const startJson = message.indexOf("{");
@@ -27,6 +30,10 @@ export const parseError = (e) => {
   if (!message) return "Unknown error";
 
   console.log("ERROR BEFORE PARSE: ", { message });
+
+  if (_.includes(message, "You can't enter the mine, you're not invited")) {
+    return "You can't enter the mine, you're not invited";
+  }
 
   message = message
     .replace(

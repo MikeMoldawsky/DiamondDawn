@@ -2,8 +2,8 @@ const InviteModel = require("./models/InviteModel");
 
 async function createInvite() {
   try {
-    const guildCommunityBotModel = new InviteModel({});
-    return await guildCommunityBotModel.save();
+    const invite = new InviteModel({});
+    return await invite.save();
   } catch (e) {
     console.log(`Failed to create invite`, e);
   }

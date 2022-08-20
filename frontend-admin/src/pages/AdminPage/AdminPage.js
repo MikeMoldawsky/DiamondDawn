@@ -20,6 +20,7 @@ import {
 } from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch } from "react-redux";
+import _ from "lodash";
 
 const TABS = [
   {
@@ -49,12 +50,16 @@ const AdminPage = () => {
 
   const dispatch = useDispatch();
 
+  const contractReady = !_.isNil(contract) && !_.isNil(mineContract);
+
   useEffect(() => {
-    dispatch(loadSystemStage(contract));
-    dispatch(loadSystemPaused(contract));
-    dispatch(loadDiamondCount(mineContract));
-    dispatch(loadSchedule());
-  }, [contract, dispatch]);
+    if (contractReady) {
+      dispatch(loadSystemStage(contract));
+      dispatch(loadSystemPaused(contract));
+      dispatch(loadDiamondCount(mineContract));
+      dispatch(loadSchedule());
+    }
+  }, [contractReady]);
 
   return (
     <div className={classNames("page admin-page")}>
@@ -62,7 +67,7 @@ const AdminPage = () => {
         <Wallet />
       </Header>
       <main>
-        <Tabs tabs={TABS} activeTab={0} />
+        <Tabs tabs={TABS} activeTab={5} />
       </main>
     </div>
   );

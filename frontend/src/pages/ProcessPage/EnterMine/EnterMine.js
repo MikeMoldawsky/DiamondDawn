@@ -29,7 +29,7 @@ const PackageBox = ({ selected, select, index, text, cost }) => {
   );
 };
 
-const EnterMine = () => {
+const EnterMine = ({ password }) => {
   const [selectedPackage, setSelectedPackage] = useState(0);
   const { minePrice } = useSelector(systemSelector);
   const account = useAccount();
@@ -73,12 +73,10 @@ const EnterMine = () => {
     );
   };
 
-  const bytesPassword = "5599488762";
-
   return (
     <ActionView
       watch={watchTokenMinedBy(account.address, maxTokenId)}
-      transact={() => enterMineApi(contract, bytesPassword, minePrice)}
+      transact={() => enterMineApi(contract, password, minePrice)}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <EnterMineContent />

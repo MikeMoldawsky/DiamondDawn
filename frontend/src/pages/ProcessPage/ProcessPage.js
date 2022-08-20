@@ -30,8 +30,8 @@ const ProcessPage = () => {
 
   const renderByStage = useCallback(() => {
     switch (systemStage) {
-      case SYSTEM_STAGE.INVITATIONS:
-        return <EnterMine />;
+      // case SYSTEM_STAGE.INVITATIONS:
+      //   return <EnterMine />;
       case SYSTEM_STAGE.MINE_OPEN:
         return <Mine />;
       case SYSTEM_STAGE.CUT_OPEN:

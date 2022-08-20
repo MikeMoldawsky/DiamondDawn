@@ -42,7 +42,7 @@ const ContractProvider = ({ children }) => {
     if (!ddContractData) {
       getContracts();
     }
-  }, [ddContractData, dispatch]);
+  }, [ddContractData]);
 
   return ddContractData ? children : null;
 };

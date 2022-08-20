@@ -75,6 +75,29 @@ export const deleteDiamondApi = async (diamondId) => {
   }
 };
 
+// PASSWORDS
+export const createPasswordsApi = async (numPasswords) => {
+  try {
+    const { data } = await axios.post(`/api/create_passwords`, {
+      numPasswords,
+    });
+    return data;
+  } catch (e) {
+    return null;
+  }
+};
+
+export const countPasswordsApi = async (status) => {
+  try {
+    const { data: passwordCount } = await axios.post(`/api/count_passwords`, {
+      status,
+    });
+    return passwordCount;
+  } catch (e) {
+    return null;
+  }
+};
+
 // INVITATIONS
 export const getInvitesApi = async () => {
   try {
