@@ -176,12 +176,12 @@ contract DiamondDawn is
         isDiamondDawnMineReady(SystemStage.INVITATIONS)
         costs(MINING_PRICE)
     {
-        bytes32 passwordHash = keccak256(abi.encodePacked(password));
-        require(
-            _invitations[passwordHash],
-            "You can't enter the mine, you're not invited"
-        );
-        delete _invitations[passwordHash];
+//        bytes32 passwordHash = keccak256(abi.encodePacked(password));
+//        require(
+//            _invitations[passwordHash],
+//            "You can't enter the mine, you're not invited"
+//        );
+//        delete _invitations[passwordHash];
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(_msgSender(), tokenId);
