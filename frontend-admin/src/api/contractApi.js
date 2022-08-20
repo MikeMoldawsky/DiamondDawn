@@ -1,6 +1,7 @@
 import { DIAMOND_DAWN_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
 import _ from "lodash";
-import { getShapeName, getVideoUrlParamName } from "utils";
+import { getVideoUrlParamName } from "utils";
+import { utils as ethersUtils } from "ethers";
 
 // ADMIN CONTROL API
 export const getSystemStageApi = async (contract) => {
@@ -83,6 +84,13 @@ export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
   return receipt.transactionHash;
 };
 
+// Enter Mine API
+export const toPasswordHash = (password) => {
+  // password must be string type, not number.
+  const packed = ethersUtils.solidityPack(["string"], [password]);
+  return ethersUtils.keccak256(packed);
+};
+
 // DIAMONDS API
 const prepareDiamondForPopulate = (diamond) => ({
   points: parseInt((parseFloat(diamond.carat.$numberDecimal) * 100).toString()),
@@ -113,12 +121,11 @@ export const populateDiamondsApi = async (mineContract, diamonds) => {
   return receipt.transactionHash;
 };
 
-export const allowMineEntranceApi = async (contract, hashes) => {
-  // const processedDiamonds = diamonds.map(prepareDiamondForPopulate);
+export const allowMineEntranceApi = async (contract, passwords) => {
+  const passwordHashes = passwords.map(toPasswordHash);
+  console.log("Pushing password hashes to contract", { passwordHashes });
 
-  console.log("PUSHING HASHES TO CONTRACT", { hashes });
-
-  const tx = await contract.allowMineEntrance(hashes);
+  const tx = await contract.allowMineEntrance(passwordHashes);
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };

@@ -1,16 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "./interface/IDiamondDawn.sol";
 import "./interface/IDiamondDawnAdmin.sol";
 import "./interface/IDiamondDawnMine.sol";
@@ -21,13 +22,16 @@ import "./interface/IDiamondDawnMine.sol";
  */
 contract DiamondDawn is
     ERC721,
+    // TODO: Should we change from ERC2981 to ERC721Royalty or use both?
     ERC2981,
     Pausable,
+    // TODO: Should we change from AccessControl to Ownable or use both?
     AccessControl,
     ERC721Burnable,
     ERC721Enumerable,
     IDiamondDawn,
-    IDiamondDawnAdmin
+    IDiamondDawnAdmin,
+    ReentrancyGuard
 {
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
@@ -38,19 +42,19 @@ contract DiamondDawn is
     IDiamondDawnMine public diamondDawnMine;
     SystemStage public systemStage;
 
+    uint96 private constant _royalty = 1000; // 10 %
     mapping(address => EnumerableSet.UintSet) private _ownerToShippingTokenIds;
     mapping(uint256 => address) private _shippedTokenIdToOwner;
     mapping(bytes32 => bool) private _invitations;
     Counters.Counter private _tokenIdCounter;
 
     constructor(
-        uint96 _royaltyFeesInBips,
         address _diamondDawnMineContract,
         address[] memory adminAddresses
     ) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         systemStage = SystemStage.INVITATIONS;
-        setRoyaltyInfo(_msgSender(), _royaltyFeesInBips);
+        setRoyaltyInfo(_msgSender(), _royalty);
         diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
         _tokenIdCounter.increment();
         _pause();
@@ -146,17 +150,13 @@ contract DiamondDawn is
         _;
     }
 
-    modifier useInvite(bytes32 password) {
-        bytes32 passwordHash = keccak256(abi.encodePacked(password));
-        require(
-            _invitations[passwordHash],
-            "You can't enter the mine, you're not invited"
-        );
-        delete _invitations[passwordHash];
-        _;
+    /**********************     External Functions     ************************/
+
+    function withdraw() external onlyRole(DEFAULT_ADMIN_ROLE) nonReentrant {
+        (bool success, ) = msg.sender.call{value: address(this).balance}("");
+        require(success, "Transfer failed.");
     }
 
-    /**********************     External Functions     ************************/
     function allowMineEntrance(bytes32[] calldata passwordsHash)
         external
         diamondDawnNotLocked
@@ -168,15 +168,20 @@ contract DiamondDawn is
         }
     }
 
-    function enterMine(bytes32 password)
+    function enterMine(string calldata password)
         external
         payable
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.INVITATIONS)
         isDiamondDawnMineReady(SystemStage.INVITATIONS)
         costs(MINING_PRICE)
-    //        useInvite(password)
     {
+        bytes32 passwordHash = keccak256(abi.encodePacked(password));
+        require(
+            _invitations[passwordHash],
+            "You can't enter the mine, you're not invited"
+        );
+        delete _invitations[passwordHash];
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(_msgSender(), tokenId);
