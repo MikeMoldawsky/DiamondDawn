@@ -32,7 +32,7 @@ export const parseError = (e) => {
   console.log("ERROR BEFORE PARSE: ", { message });
 
   if (_.includes(message, "You can't enter the mine, you're not invited")) {
-    return "You can't enter the mine, you're not invited"
+    return "You can't enter the mine, you're not invited";
   }
 
   message = message

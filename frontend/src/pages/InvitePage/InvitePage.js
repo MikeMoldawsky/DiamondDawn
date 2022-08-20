@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import {openInvite} from "api/serverApi";
+import { openInvite } from "api/serverApi";
 import EnterMine from "pages/ProcessPage/EnterMine";
 import ActionButton from "components/ActionButton";
 
@@ -69,24 +69,22 @@ const InvitePage = () => {
   }, [inviteId]);
 
   const onOpenInviteClick = async () => {
-    const { invite: _invite, password: _password } = await openInvite(inviteId)
+    const { invite: _invite, password: _password } = await openInvite(inviteId);
     setInvite(_invite);
-    setPassword(_password + '')
+    setPassword(_password + "");
   };
 
   const renderInviteContent = () => {
     if (isRevoked === null) return null;
     if (isRevoked) return <InvitationRevoked />;
     if (!invite) return <InviteIntro open={onOpenInviteClick} />;
-    if (password) return (<EnterMine password={password} />)
-    return null
+    if (password) return <EnterMine password={password} />;
+    return null;
   };
 
   return (
     <div className={classNames("page process-page invite-page")}>
-      <div className="inner-page">
-        {renderInviteContent()}
-      </div>
+      <div className="inner-page">{renderInviteContent()}</div>
     </div>
   );
 };

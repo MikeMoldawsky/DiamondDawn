@@ -44,7 +44,8 @@ export const EVENTS = {
 export const DUMMY_VIDEO_URL =
   "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/final.mp4";
 
-export const PRIVATE_TWITTER_URL = "https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20"
+export const PRIVATE_TWITTER_URL =
+  "https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20";
 
 export const TRAIT = {
   carat: "Carat",
