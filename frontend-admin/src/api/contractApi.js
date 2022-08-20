@@ -48,19 +48,19 @@ const ART_MAPPING = {
     getterArgs: [ROUGH_SHAPE.MAKEABLE],
   },
   [SYSTEM_STAGE.CUT_OPEN]: {
-    setter: "setCutVideoUrl",
+    setter: "setCutVideoUrls",
     getter: "cutShapeToVideoUrls",
     getterArgs: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.POLISH_OPEN]: {
-    setter: "setPolishVideoUrl",
+    setter: "setPolishVideoUrls",
     getter: "polishShapeToVideoUrls",
     getterArgs: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.SHIP]: {
-    setter: "setShipVideoUrls",
+    setter: "setRebirthVideoUrl",
     getter: "diamondDawnTypeToShipVideoUrls",
-    getterArgs: [DIAMOND_DAWN_TYPE.BURNED, DIAMOND_DAWN_TYPE.REBORN],
+    getterArgs: [DIAMOND_DAWN_TYPE.REBORN],
   },
 };
 

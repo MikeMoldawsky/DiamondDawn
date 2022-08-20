@@ -21,8 +21,7 @@ export const DIAMOND_DAWN_TYPE = {
   ROUGH: 1,
   CUT: 2,
   POLISHED: 3,
-  BURNED: 4,
-  REBORN: 5,
+  REBORN: 4,
 };
 
 export const ROUGH_SHAPE = {

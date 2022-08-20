@@ -101,9 +101,7 @@ async function main() {
         polish: "EXCELLENT",
         symmetry: "EXCELLENT",
         fluorescence: "EXCELLENT",
-        length: "5.1",
-        width: "5.12",
-        depth: "35",
+        measurements: "5.1 - 5.12 x 35",
       },
       {
         reportNumber: 2222222222,
@@ -116,9 +114,7 @@ async function main() {
         polish: "EXCELLENT",
         symmetry: "EXCELLENT",
         fluorescence: "EXCELLENT",
-        length: "5.1",
-        width: "5.12",
-        depth: "35",
+        measurements: "5.1 - 5.12 x 35",
       },
       {
         reportNumber: 3333333333,
@@ -131,26 +127,24 @@ async function main() {
         polish: "EXCELLENT",
         symmetry: "EXCELLENT",
         fluorescence: "EXCELLENT",
-        length: "5.1",
-        width: "5.12",
-        depth: "35",
+        measurements: "5.1 - 5.12 x 35",
       },
     ]);
     await diamondDawnMine.setMineEntranceVideoUrl("infinity.mp4");
     await diamondDawnMine.setRoughVideoUrl("rough.mp4");
-    await diamondDawnMine.setCutVideoUrl(
+    await diamondDawnMine.setCutVideoUrls(
       "cut.mp4",
       "cut.mp4",
       "cut.mp4",
       "cut.mp4"
     );
-    await diamondDawnMine.setPolishVideoUrl(
+    await diamondDawnMine.setPolishVideoUrls(
       "polish.mp4",
       "polish.mp4",
       "polish.mp4",
       "polish.mp4"
     );
-    await diamondDawnMine.setShipVideoUrls("burn.mp4", "final.mp4");
+    await diamondDawnMine.setShipVideoUrl("final.mp4");
     await diamondDawn.unpause();
   }
 
