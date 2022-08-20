@@ -84,13 +84,6 @@ export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
   return receipt.transactionHash;
 };
 
-// Enter Mine API
-export const toPasswordHash = (password) => {
-  // password must be string type, not number.
-  const packed = ethersUtils.solidityPack(["string"], [password]);
-  return ethersUtils.keccak256(packed);
-};
-
 // DIAMONDS API
 const prepareDiamondForPopulate = (diamond) => ({
   points: parseInt((parseFloat(diamond.carat.$numberDecimal) * 100).toString()),
@@ -121,10 +114,9 @@ export const populateDiamondsApi = async (mineContract, diamonds) => {
   return receipt.transactionHash;
 };
 
-export const allowMineEntranceApi = async (contract, passwords) => {
-  const passwordHashes = passwords.map(toPasswordHash);
+// Enter Mine API
+export const allowMineEntranceApi = async (contract, passwordHashes) => {
   console.log("Pushing password hashes to contract", { passwordHashes });
-
   const tx = await contract.allowMineEntrance(passwordHashes);
   const receipt = await tx.wait();
   return receipt.transactionHash;

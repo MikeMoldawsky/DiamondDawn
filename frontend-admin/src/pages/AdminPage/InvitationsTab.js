@@ -7,7 +7,6 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import useDDContract from "hooks/useDDContract";
-import { useDispatch } from "react-redux";
 import { utils as ethersUtils } from "ethers";
 import {
   getInvitesApi,
@@ -16,7 +15,7 @@ import {
   deleteInviteApi,
   createPasswordsApi, countPasswordsApi,
 } from "api/serverApi";
-import { allowMineEntranceApi, toPasswordHash } from "api/contractApi";
+import { allowMineEntranceApi } from "api/contractApi";
 
 const INVITATION_COLUMNS = [
   { field: "twitter", headerName: "Twitter", width: 150, editable: true },
@@ -87,20 +86,9 @@ const InvitationsTab = () => {
   const [invitations, setInvitations] = useState([]);
   const [passwordCount, setPasswordCount] = useState({});
   const contract = useDDContract();
-  const dispatch = useDispatch();
 
   const fetchInvites = async () => {
     setInvitations(await getInvitesApi())
-    // const invites = await getInvitesApi();
-    // setInvitations(
-    //   invites.map((invite) => {
-    //     return {
-    //       ...invite,
-    //       // hash: keccak256(ethersUtils.formatBytes32String(invite.password)),
-    //       hash: keccak256(invite.password).toString("hex"),
-    //     };
-    //   })
-    // );
   };
 
   const fetchPasswordCount = async () => {
@@ -118,7 +106,8 @@ const InvitationsTab = () => {
   };
 
   const createPasswords = async () => {
-    await createPasswordsApi(333)
+    const hashes = await createPasswordsApi(10)
+    await allowMineEntranceApi(contract, hashes);
     fetchPasswordCount()
   }
 
