@@ -2,6 +2,7 @@ import axios from "axios";
 import _ from "lodash";
 import { SYSTEM_STAGE } from "consts";
 import { logApiError } from "utils";
+import getLocation from "utils/getLocation";
 
 // CONTRACT INFO
 export const getContractInfoApi = async () => {
@@ -31,13 +32,17 @@ export const getSystemScheduleApi = async () => {
   }
 };
 
-// ON-BOARDING
-export const getPasswordApi = async (inviteId) => {
+// INVITATION
+export const openInvite = async (inviteId) => {
   try {
-    const { data: password } = await axios.post(`/api/get_pwd`, { inviteId });
-    return password;
+    const { country, state } = getLocation();
+    const res = await axios.post(`/api/open_invite`, {
+      inviteId,
+      country,
+      state,
+    });
+    return res.data;
   } catch (e) {
-    logApiError(e, "getPasswordApi");
     return null;
   }
 };

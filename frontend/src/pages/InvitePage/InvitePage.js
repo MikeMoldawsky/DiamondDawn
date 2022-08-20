@@ -5,22 +5,8 @@ import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import getLocation from "utils/getLocation";
-import {getPasswordApi} from "api/serverApi";
-
-const openInvite = async (inviteId) => {
-  try {
-    const { country, state } = getLocation();
-    const res = await axios.post(`/api/open_invite`, {
-      inviteId,
-      country,
-      state,
-    });
-    return res.data;
-  } catch (e) {
-    return null;
-  }
-};
+import {openInvite} from "api/serverApi";
+import EnterMine from "pages/ProcessPage/EnterMine";
 
 const isInviteRevoked = async (inviteId) => {
   try {
@@ -30,22 +16,6 @@ const isInviteRevoked = async (inviteId) => {
     return true;
   }
 };
-
-const InvitationNotFound = () => (
-  <>
-    <h1>Invitation not found</h1>
-    <div className="text-center">
-      For another invitation please DM Diamonds Dawn on twitter
-    </div>
-    <a
-      target="_blank"
-      rel="noreferrer"
-      href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20"
-    >
-      <div className="button">Request Invitation</div>
-    </a>
-  </>
-);
 
 const InvitationRevoked = () => (
   <>
@@ -87,48 +57,35 @@ const InvitePage = () => {
   const [password, setPassword] = useState(null);
   const [isRevoked, setIsRevoked] = useState(null);
 
-  const getPasswordForInvite = async () => {
-    setPassword(await getPasswordApi(inviteId))
-  }
+  const fetchIsRevoked = async () => {
+    setIsRevoked(await isInviteRevoked(inviteId));
+  };
 
   useEffect(() => {
-    const fetch = async () => {
-      setIsRevoked(await isInviteRevoked(inviteId));
-    };
     if (inviteId) {
-      fetch();
-      getPasswordForInvite()
+      fetchIsRevoked();
     }
   }, [inviteId]);
 
   const onOpenInviteClick = async () => {
-    setInvite(await openInvite(inviteId));
+    const { invite: _invite, password: _password } = await openInvite(inviteId)
+    setInvite(_invite);
+    setPassword(_password + '')
   };
 
   const renderInviteContent = () => {
     if (isRevoked === null) return null;
-
     if (isRevoked) return <InvitationRevoked />;
-    // if (_.isNil(invite)) return (<InvitationNotFound />)
     if (!invite) return <InviteIntro open={onOpenInviteClick} />;
-    return (
-      <>
-        <h1>You Are Invited to Diamonds Dawn!</h1>
-        <div>Your Password is {password}</div>
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20"
-        >
-          <div className="button">Join Waiting List</div>
-        </a>
-      </>
-    );
+    if (password) return (<EnterMine password={password} />)
+    return null
   };
 
   return (
-    <div className={classNames("page invite-page")}>
-      {renderInviteContent()}
+    <div className={classNames("page process-page invite-page")}>
+      <div className="inner-page">
+        {renderInviteContent()}
+      </div>
     </div>
   );
 };
