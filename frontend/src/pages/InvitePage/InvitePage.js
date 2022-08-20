@@ -7,6 +7,7 @@ import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import {openInvite} from "api/serverApi";
 import EnterMine from "pages/ProcessPage/EnterMine";
+import ActionButton from "components/ActionButton";
 
 const isInviteRevoked = async (inviteId) => {
   try {
@@ -45,9 +46,9 @@ const InviteIntro = ({ open }) => (
         Please make sure you have the time before opening the invitation
       </div>
     </div>
-    <div className="button" onClick={open}>
+    <ActionButton actionKey={`Open Invite`} onClick={open}>
       OPEN INVITATION
-    </div>
+    </ActionButton>
   </>
 );
 
