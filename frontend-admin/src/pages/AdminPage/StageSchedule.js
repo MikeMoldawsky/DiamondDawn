@@ -23,7 +23,9 @@ const StageSchedule = ({ stage }) => {
   };
 
   useEffect(() => {
-    fetchSchedule();
+    if (stage > -1) {
+      fetchSchedule();
+    }
   }, [stage]);
 
   const onStartTimeChange = (_stage) => async (_startTime) => {

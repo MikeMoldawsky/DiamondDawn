@@ -105,9 +105,11 @@ const InvitationsTab = () => {
   };
 
   const fetchPasswordCount = async () => {
-    const available = await countPasswordsApi('available')
-    const pending = await countPasswordsApi('pending')
-    const used = await countPasswordsApi('used')
+    const [available, pending, used] = await Promise.all([
+      countPasswordsApi('available'),
+      countPasswordsApi('pending'),
+      countPasswordsApi('used'),
+    ])
     setPasswordCount({
       available,
       pending,
@@ -124,7 +126,7 @@ const InvitationsTab = () => {
   useEffect(() => {
     fetchInvites();
     fetchPasswordCount()
-  }, [contract, dispatch]);
+  }, []);
 
   const CRUD = {
     create: createInviteApi,

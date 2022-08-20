@@ -8,5 +8,5 @@ module.exports = async function (req, res) {
     getDiamondDawnContract(),
     getDiamondDawnMineContract(),
   ]);
-  res.send(JSON.stringify({ ddContract, ddMineContract }));
+  res.send({ ddContract, ddMineContract });
 };
