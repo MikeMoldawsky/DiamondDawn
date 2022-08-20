@@ -2,26 +2,20 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import useDDContract from "hooks/useDDContract";
 import { utils as ethersUtils } from "ethers";
 import {
   getInvitesApi,
   createInviteApi,
   updateInviteApi,
   deleteInviteApi,
-  createPasswordsApi,
-  countPasswordsApi,
 } from "api/serverApi";
-import { allowMineEntranceApi } from "api/contractApi";
 
 const INVITATION_COLUMNS = [
   { field: "twitter", headerName: "Twitter", width: 150, editable: true },
-  // { field: "password", headerName: "Password", width: 150 },
-  // { field: "hash", headerName: "Hash", width: 600 },
   {
     field: "created",
     headerName: "Created At",
@@ -85,36 +79,13 @@ const ClipboardButton = ({ inviteId }) => {
 
 const InvitationsTab = () => {
   const [invitations, setInvitations] = useState([]);
-  const [passwordCount, setPasswordCount] = useState({});
-  const contract = useDDContract();
 
   const fetchInvites = async () => {
     setInvitations(await getInvitesApi());
   };
 
-  const fetchPasswordCount = async () => {
-    const [available, pending, used] = await Promise.all([
-      countPasswordsApi("available"),
-      countPasswordsApi("pending"),
-      countPasswordsApi("used"),
-    ]);
-    setPasswordCount({
-      available,
-      pending,
-      used,
-      total: available + pending + used,
-    });
-  };
-
-  const createPasswords = async () => {
-    const hashes = await createPasswordsApi(10);
-    await allowMineEntranceApi(contract, hashes);
-    fetchPasswordCount();
-  };
-
   useEffect(() => {
     fetchInvites();
-    fetchPasswordCount();
   }, []);
 
   const CRUD = {
@@ -122,17 +93,6 @@ const InvitationsTab = () => {
     update: updateInviteApi,
     delete: deleteInviteApi,
   };
-
-  const renderDeployButton = (selectedRows) => (
-    <div
-      className="button link save-button"
-      onClick={() => {
-        allowMineEntranceApi(contract, _.map(selectedRows, "password"));
-      }}
-    >
-      <FontAwesomeIcon icon={faUpload} /> Deploy
-    </div>
-  );
 
   return (
     <div className={classNames("tab-content invitations")}>
@@ -147,16 +107,7 @@ const InvitationsTab = () => {
         getNewItem={createInviteApi}
         newCreatedOnServer
         renderActions={({ id }) => [<ClipboardButton inviteId={id} />]}
-        renderButtons={renderDeployButton}
       />
-      <h1>Passwords</h1>
-      <div>Available Password: {passwordCount.available}</div>
-      <div>Pending Password: {passwordCount.pending}</div>
-      <div>Used Password: {passwordCount.used}</div>
-      <div>Total Password: {passwordCount.total}</div>
-      <div className="button link" onClick={createPasswords}>
-        CREATE PASSWORDS
-      </div>
     </div>
   );
 };
