@@ -13,7 +13,8 @@ import {
   createInviteApi,
   updateInviteApi,
   deleteInviteApi,
-  createPasswordsApi, countPasswordsApi,
+  createPasswordsApi,
+  countPasswordsApi,
 } from "api/serverApi";
 import { allowMineEntranceApi } from "api/contractApi";
 
@@ -88,32 +89,32 @@ const InvitationsTab = () => {
   const contract = useDDContract();
 
   const fetchInvites = async () => {
-    setInvitations(await getInvitesApi())
+    setInvitations(await getInvitesApi());
   };
 
   const fetchPasswordCount = async () => {
     const [available, pending, used] = await Promise.all([
-      countPasswordsApi('available'),
-      countPasswordsApi('pending'),
-      countPasswordsApi('used'),
-    ])
+      countPasswordsApi("available"),
+      countPasswordsApi("pending"),
+      countPasswordsApi("used"),
+    ]);
     setPasswordCount({
       available,
       pending,
       used,
       total: available + pending + used,
-    })
+    });
   };
 
   const createPasswords = async () => {
-    const hashes = await createPasswordsApi(10)
+    const hashes = await createPasswordsApi(10);
     await allowMineEntranceApi(contract, hashes);
-    fetchPasswordCount()
-  }
+    fetchPasswordCount();
+  };
 
   useEffect(() => {
     fetchInvites();
-    fetchPasswordCount()
+    fetchPasswordCount();
   }, []);
 
   const CRUD = {
@@ -153,7 +154,9 @@ const InvitationsTab = () => {
       <div>Pending Password: {passwordCount.pending}</div>
       <div>Used Password: {passwordCount.used}</div>
       <div>Total Password: {passwordCount.total}</div>
-      <div className="button link" onClick={createPasswords}>CREATE PASSWORDS</div>
+      <div className="button link" onClick={createPasswords}>
+        CREATE PASSWORDS
+      </div>
     </div>
   );
 };

@@ -20,7 +20,7 @@ import {
 } from "store/systemReducer";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch } from "react-redux";
-import _ from 'lodash'
+import _ from "lodash";
 
 const TABS = [
   {
@@ -50,7 +50,7 @@ const AdminPage = () => {
 
   const dispatch = useDispatch();
 
-  const contractReady = !_.isNil(contract) && !_.isNil(mineContract)
+  const contractReady = !_.isNil(contract) && !_.isNil(mineContract);
 
   useEffect(() => {
     if (contractReady) {

@@ -10,7 +10,7 @@ const PasswordSchema = new mongoose.Schema({
     required: true,
     default: () => chance.integer({ min: 1000000000, max: 9999999999 }),
   },
-  status: { type: String, of: ['available', 'pending', 'used'] },
+  status: { type: String, of: ["available", "pending", "used"] },
 });
 
 const PasswordModel = db.model("Password", PasswordSchema);
