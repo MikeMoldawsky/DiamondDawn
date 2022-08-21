@@ -8,8 +8,8 @@ async function createPasswords(numPasswords) {
     const bdPasswords = await PasswordModel.insertMany(passwords);
     console.log("createPasswords - added passwords to db", { bdPasswords });
     const hashes = bdPasswords.map(({ password }) => {
-      const packed = ethersUtils.solidityPack(["uint"], [password]);
-      return ethersUtils.solidityKeccak256(["string"], [packed]);
+      const packed = ethersUtils.solidityPack(["string"], [password + '']);
+      return ethersUtils.keccak256(packed);
     });
     console.log("createPasswords - generated hashes", { bdPasswords });
     return hashes;
