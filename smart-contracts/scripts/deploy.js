@@ -89,7 +89,7 @@ async function main() {
   //                  DEV ONLY                        //
   //////////////////////////////////////////////////////
   if (hre.network.name === "localhost") {
-    await diamondDawnMine.populateDiamonds([
+    const diamonds = [
       {
         reportNumber: 1111111111,
         reportDate: 1659254421,
@@ -129,7 +129,9 @@ async function main() {
         fluorescence: "EXCELLENT",
         measurements: "5.1 - 5.12 x 35",
       },
-    ]);
+    ];
+    console.log(`populating ${diamonds.length} diamonds`, diamonds);
+    await diamondDawnMine.populateDiamonds(diamonds);
     await diamondDawnMine.setMineEntranceVideoUrl("infinity.mp4");
     await diamondDawnMine.setRoughVideoUrl("rough.mp4");
     await diamondDawnMine.setCutVideoUrls(

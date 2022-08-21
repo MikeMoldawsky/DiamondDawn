@@ -766,11 +766,11 @@ contract DiamondDawnMine is
         metadataAttributes[2] = baseAttributes[2];
         metadataAttributes[3] = baseAttributes[3];
         // Cut
-        metadataAttributes[4] = cutAttributes[1];
-        metadataAttributes[5] = cutAttributes[2];
-        metadataAttributes[6] = cutAttributes[3];
-        metadataAttributes[7] = cutAttributes[4];
-        metadataAttributes[8] = cutAttributes[5];
+        metadataAttributes[4] = cutAttributes[0];
+        metadataAttributes[5] = cutAttributes[1];
+        metadataAttributes[6] = cutAttributes[2];
+        metadataAttributes[7] = cutAttributes[3];
+        metadataAttributes[8] = cutAttributes[4];
         return metadataAttributes;
     }
 
@@ -799,11 +799,11 @@ contract DiamondDawnMine is
         metadataAttributes[2] = baseAttributes[2];
         metadataAttributes[3] = baseAttributes[3];
         // Cut
-        metadataAttributes[4] = cutAttributes[1];
-        metadataAttributes[5] = cutAttributes[2];
-        metadataAttributes[6] = cutAttributes[3];
-        metadataAttributes[7] = cutAttributes[4];
-        metadataAttributes[8] = cutAttributes[5];
+        metadataAttributes[4] = cutAttributes[0];
+        metadataAttributes[5] = cutAttributes[1];
+        metadataAttributes[6] = cutAttributes[2];
+        metadataAttributes[7] = cutAttributes[3];
+        metadataAttributes[8] = cutAttributes[4];
         // Polish
         metadataAttributes[9] = polishAttributes[0];
         metadataAttributes[10] = polishAttributes[1];
@@ -837,11 +837,11 @@ contract DiamondDawnMine is
         metadataAttributes[2] = baseAttributes[2];
         metadataAttributes[3] = baseAttributes[3];
         // Cut
-        metadataAttributes[4] = cutAttributes[1];
-        metadataAttributes[5] = cutAttributes[2];
-        metadataAttributes[6] = cutAttributes[3];
-        metadataAttributes[7] = cutAttributes[4];
-        metadataAttributes[8] = cutAttributes[5];
+        metadataAttributes[4] = cutAttributes[0];
+        metadataAttributes[5] = cutAttributes[1];
+        metadataAttributes[6] = cutAttributes[2];
+        metadataAttributes[7] = cutAttributes[3];
+        metadataAttributes[8] = cutAttributes[4];
         // Polish
         metadataAttributes[9] = polishAttributes[0];
         metadataAttributes[10] = polishAttributes[1];
