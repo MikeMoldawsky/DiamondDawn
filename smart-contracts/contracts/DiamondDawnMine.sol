@@ -446,7 +446,7 @@ contract DiamondDawnMine is
         // TODO: Add real description
         ERC721MetadataStructure memory metadata = ERC721MetadataStructure({
             name: string(
-                abi.encodePacked("Diamond Dawn #", Strings.toString(tokenId))
+                abi.encodePacked("Diamond #", Strings.toString(tokenId))
             ),
             description: "Diamond Dawn tokens description",
             createdBy: "Diamond Dawn",
