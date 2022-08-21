@@ -183,22 +183,22 @@ export const getDiamondIcon = (token) => {
   }
 };
 
-export const isTokenInStage = (token, stage) =>
-  getTokenTrait(token, TRAIT.stage) === stage;
-
 export const isTokenOfType = (token, type) =>
   token && getTokenTrait(token, TRAIT.type) === type;
 
 export const isTokenActionable = (token, systemStage) => {
   if (!token) return false;
 
-  switch (systemStage) {
-    case SYSTEM_STAGE.COMPLETE:
-      return false;
-    default:
-      const prevTokenType = getTypeByStage(systemStage - 1);
-      return isTokenOfType(token, prevTokenType);
+  if (systemStage === SYSTEM_STAGE.COMPLETE) return false
+
+  const prevTokenType = getTypeByStage(systemStage - 1);
+  const isActionableType = isTokenOfType(token, prevTokenType);
+
+  if (systemStage === SYSTEM_STAGE.SHIP) {
+    return isActionableType && !token.isBurned
   }
+
+  return isActionableType
 };
 
 export const isTokenDone = (token, systemStage) => {

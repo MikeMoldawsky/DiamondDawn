@@ -93,12 +93,15 @@ export const getTokenUriApi = async (contract, tokenId) => {
   }
 };
 
-const tokenIdsToUris = async (contract, tokenIds) => {
+const tokenIdsToUris = async (contract, tokenIds, isBurned) => {
   return Promise.all(
     tokenIds.map(async (element) => {
       const tokenId = element.toNumber();
       const tokenUri = await getTokenUriApi(contract, tokenId);
-      return { tokenId, tokenUri };
+      return {
+        tokenId,
+        tokenUri: { ...tokenUri, isBurned },
+      };
     })
   );
 };
@@ -116,7 +119,7 @@ export const getAccountNftsApi = async (contract, address) => {
 export const getShippingTokensApi = async (contract, address) => {
   try {
     const shippingTokenIds = await contract.getShippingTokenIds(address);
-    return await tokenIdsToUris(contract, shippingTokenIds);
+    return await tokenIdsToUris(contract, shippingTokenIds, true);
   } catch (e) {
     logApiError(e, "getShippingTokensApi");
     return [];
