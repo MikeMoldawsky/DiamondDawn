@@ -48,12 +48,22 @@ const ART_MAPPING = {
   },
   [SYSTEM_STAGE.CUT_OPEN]: {
     setter: "setCutVideoUrls",
-    getters: ["cutPearVideoUrl", "cutRoundVideoUrl", "cutOvalVideoUrl", "cutRadiantVideoUrl"],
+    getters: [
+      "cutPearVideoUrl",
+      "cutRoundVideoUrl",
+      "cutOvalVideoUrl",
+      "cutRadiantVideoUrl",
+    ],
     keys: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.POLISH_OPEN]: {
     setter: "setPolishVideoUrls",
-    getters: ["polishPearVideoUrl", "polishRoundVideoUrl", "polishOvalVideoUrl", "polishRadiantVideoUrl"],
+    getters: [
+      "polishPearVideoUrl",
+      "polishRoundVideoUrl",
+      "polishOvalVideoUrl",
+      "polishRadiantVideoUrl",
+    ],
     keys: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.SHIP]: {
@@ -68,9 +78,7 @@ export const getVideoUrlsByStageApi = async (mineContract, stage) => {
   const urls = await Promise.all(
     _.map(getters, (getter) => mineContract[getter]())
   );
-  const names = _.map(keys, (key) =>
-    getVideoUrlParamName(key, stage)
-  );
+  const names = _.map(keys, (key) => getVideoUrlParamName(key, stage));
   return _.zipObject(names, urls);
 };
 
