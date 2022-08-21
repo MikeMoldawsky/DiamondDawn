@@ -160,6 +160,7 @@ contract DiamondDawn is
     function allowMineEntrance(bytes32[] calldata passwordsHash)
         external
         diamondDawnNotLocked
+        mineEntranceLeft
         onlyRole(DEFAULT_ADMIN_ROLE)
         onlySystemStage(SystemStage.INVITATIONS)
     {

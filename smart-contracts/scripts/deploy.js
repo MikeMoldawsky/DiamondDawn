@@ -85,9 +85,9 @@ async function main() {
 
   // call DiamondDawnMine.initialize
   await diamondDawnMine.initialize(diamondDawn.address);
-  //////////////////////////////////////////////////////
+  /// ///////////////////////////////////////////////////
   //                  DEV ONLY                        //
-  //////////////////////////////////////////////////////
+  /// ///////////////////////////////////////////////////
   if (hre.network.name === "localhost") {
     const diamonds = [
       {
@@ -129,24 +129,76 @@ async function main() {
         fluorescence: "EXCELLENT",
         measurements: "5.1 - 5.12 x 35",
       },
+      {
+        reportNumber: 3333333333,
+        reportDate: 1659254421,
+        shape: 4,
+        points: 66,
+        color: "D",
+        clarity: "FLAWLESS",
+        cut: "EXCELLENT",
+        polish: "EXCELLENT",
+        symmetry: "EXCELLENT",
+        fluorescence: "EXCELLENT",
+        measurements: "5.1 - 5.12 x 35",
+      },
+      {
+        reportNumber: 3333333333,
+        reportDate: 1659254421,
+        shape: 2,
+        points: 35,
+        color: "J",
+        clarity: "FLAWLESS",
+        cut: "EXCELLENT",
+        polish: "EXCELLENT",
+        symmetry: "EXCELLENT",
+        fluorescence: "EXCELLENT",
+        measurements: "5.1 - 5.12 x 35",
+      },
+      {
+        reportNumber: 3333333333,
+        reportDate: 1659254421,
+        shape: 1,
+        points: 49,
+        color: "J",
+        clarity: "FLAWLESS",
+        cut: "EXCELLENT",
+        polish: "EXCELLENT",
+        symmetry: "EXCELLENT",
+        fluorescence: "EXCELLENT",
+        measurements: "5.1 - 5.12 x 35",
+      },
+      {
+        reportNumber: 3333333333,
+        reportDate: 1659254421,
+        shape: 4,
+        points: 59,
+        color: "J",
+        clarity: "FLAWLESS",
+        cut: "EXCELLENT",
+        polish: "EXCELLENT",
+        symmetry: "EXCELLENT",
+        fluorescence: "EXCELLENT",
+        measurements: "5.1 - 5.12 x 35",
+      },
     ];
     console.log(`populating ${diamonds.length} diamonds`, diamonds);
     await diamondDawnMine.populateDiamonds(diamonds);
     await diamondDawnMine.setMineEntranceVideoUrl("infinity.mp4");
     await diamondDawnMine.setRoughVideoUrl("rough.mp4");
     await diamondDawnMine.setCutVideoUrls(
-      "cut.mp4",
-      "cut.mp4",
-      "cut.mp4",
-      "cut.mp4"
+      "cut_pear.mp4",
+      "cut_round.mp4",
+      "cut_oval.mp4",
+      "cut_radiant.mp4"
     );
     await diamondDawnMine.setPolishVideoUrls(
-      "polish.mp4",
-      "polish.mp4",
-      "polish.mp4",
-      "polish.mp4"
+      "polished_pear.mp4",
+      "polished_round.mp4",
+      "polished_oval.mp4",
+      "polished_radiant.mp4"
     );
-    await diamondDawnMine.setRebirthVideoUrl("final.mp4");
+    await diamondDawnMine.setRebirthVideoUrl("diamond_dawn.mp4");
     await diamondDawn.unpause();
   }
 

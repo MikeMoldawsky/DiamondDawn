@@ -165,8 +165,8 @@ contract DiamondDawnMine is
         string calldata radiant
     ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
         cutPearVideoUrl = pear;
-        cutOvalVideoUrl = round;
-        cutRoundVideoUrl = oval;
+        cutRoundVideoUrl = round;
+        cutOvalVideoUrl = oval;
         cutRadiantVideoUrl = radiant;
     }
 
@@ -177,8 +177,8 @@ contract DiamondDawnMine is
         string calldata radiant
     ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
         polishPearVideoUrl = pear;
-        polishOvalVideoUrl = round;
-        polishRoundVideoUrl = oval;
+        polishOvalVideoUrl = oval;
+        polishRoundVideoUrl = round;
         polishRadiantVideoUrl = radiant;
     }
 
