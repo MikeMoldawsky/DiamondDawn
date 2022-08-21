@@ -12,7 +12,14 @@ import _ from "lodash";
 import { uiSelector } from "store/uiReducer";
 import { getTokenUriApi } from "api/contractApi";
 
-const ActionView = ({ children, className, videoUrl, watch, transact, isBurn }) => {
+const ActionView = ({
+  children,
+  className,
+  videoUrl,
+  watch,
+  transact,
+  isBurn,
+}) => {
   const [actionTxId, setActionTxId] = useState(false);
   const [showCompleteVideo, setShowCompleteVideo] = useState(false);
   const [completeVideoEnded, setCompleteVideoEnded] = useState(false);

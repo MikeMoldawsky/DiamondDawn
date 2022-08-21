@@ -5,7 +5,9 @@ import ReactPlayer from "react-player";
 const Diamond = ({ diamond }) => {
   const { image, isBurned } = diamond;
 
-  const imageUrl = isBurned ? 'https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/burn.mp4' : image
+  const imageUrl = isBurned
+    ? "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/burn.mp4"
+    : image;
 
   return (
     <div className="diamond-art">

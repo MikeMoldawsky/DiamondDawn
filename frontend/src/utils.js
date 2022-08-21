@@ -189,16 +189,16 @@ export const isTokenOfType = (token, type) =>
 export const isTokenActionable = (token, systemStage) => {
   if (!token) return false;
 
-  if (systemStage === SYSTEM_STAGE.COMPLETE) return false
+  if (systemStage === SYSTEM_STAGE.COMPLETE) return false;
 
   const prevTokenType = getTypeByStage(systemStage - 1);
   const isActionableType = isTokenOfType(token, prevTokenType);
 
   if (systemStage === SYSTEM_STAGE.SHIP) {
-    return isActionableType && !token.isBurned
+    return isActionableType && !token.isBurned;
   }
 
-  return isActionableType
+  return isActionableType;
 };
 
 export const isTokenDone = (token, systemStage) => {

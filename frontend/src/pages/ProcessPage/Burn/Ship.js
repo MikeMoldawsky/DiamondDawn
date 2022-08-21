@@ -84,7 +84,8 @@ const Ship = () => {
           </>
         );
 
-      return isTokenOfType(token, DIAMOND_DAWN_TYPE.POLISHED) && !token.isBurned ? (
+      return isTokenOfType(token, DIAMOND_DAWN_TYPE.POLISHED) &&
+        !token.isBurned ? (
         <>
           <DiamondPicker />
           <div className="leading-text">BUT... IS THERE MORE?</div>

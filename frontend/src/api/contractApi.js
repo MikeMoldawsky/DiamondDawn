@@ -87,7 +87,7 @@ export const getTokenUriApi = async (contract, tokenId, isBurned) => {
   try {
     const tokenUriString = await contract.tokenURI(tokenId);
     const tokenUri = JSON.parse(atob(tokenUriString.split(",")[1]));
-    return { ...tokenUri, isBurned }
+    return { ...tokenUri, isBurned };
   } catch (e) {
     logApiError(e, "getTokenUriApi");
     return null;
