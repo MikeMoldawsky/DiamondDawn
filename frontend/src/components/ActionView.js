@@ -12,7 +12,7 @@ import _ from "lodash";
 import { uiSelector } from "store/uiReducer";
 import { getTokenUriApi } from "api/contractApi";
 
-const ActionView = ({ children, className, videoUrl, watch, transact }) => {
+const ActionView = ({ children, className, videoUrl, watch, transact, isBurn }) => {
   const [actionTxId, setActionTxId] = useState(false);
   const [showCompleteVideo, setShowCompleteVideo] = useState(false);
   const [completeVideoEnded, setCompleteVideoEnded] = useState(false);
@@ -47,7 +47,7 @@ const ActionView = ({ children, className, videoUrl, watch, transact }) => {
 
   const onSuccess = async (tokenId) => {
     // fetch and store tokenUri in local state until video has ended
-    const tokenUri = await getTokenUriApi(contract, tokenId);
+    const tokenUri = await getTokenUriApi(contract, tokenId, isBurn);
     setProcessedTokenId(tokenId);
     setProcessedTokenUri(tokenUri);
   };

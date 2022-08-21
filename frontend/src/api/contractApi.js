@@ -83,10 +83,11 @@ export const rebirthApi = async (contract, tokenId) => {
 };
 
 // TOKEN URI
-export const getTokenUriApi = async (contract, tokenId) => {
+export const getTokenUriApi = async (contract, tokenId, isBurned) => {
   try {
-    const tokenUri = await contract.tokenURI(tokenId);
-    return JSON.parse(atob(tokenUri.split(",")[1]));
+    const tokenUriString = await contract.tokenURI(tokenId);
+    const tokenUri = JSON.parse(atob(tokenUriString.split(",")[1]));
+    return { ...tokenUri, isBurned }
   } catch (e) {
     logApiError(e, "getTokenUriApi");
     return null;
@@ -97,7 +98,7 @@ const tokenIdsToUris = async (contract, tokenIds, isBurned) => {
   return Promise.all(
     tokenIds.map(async (element) => {
       const tokenId = element.toNumber();
-      const tokenUri = await getTokenUriApi(contract, tokenId);
+      const tokenUri = await getTokenUriApi(contract, tokenId, isBurned);
       return {
         tokenId,
         tokenUri: { ...tokenUri, isBurned },

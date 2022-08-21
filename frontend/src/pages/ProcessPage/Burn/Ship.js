@@ -113,6 +113,7 @@ const Ship = () => {
     <ActionView
       transact={() => shipApi(contract, selectedTokenId)}
       videoUrl={DUMMY_VIDEO_URL}
+      isBurn
     >
       <BurnContent />
     </ActionView>
