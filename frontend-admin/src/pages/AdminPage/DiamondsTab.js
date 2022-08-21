@@ -33,7 +33,7 @@ const greaterThenZeroValidation = (params) => {
 const getEmptyDiamond = () => ({
   reportNumber: "",
   reportDate: "",
-  shape: 2,
+  shape: 0,
   carat: 0,
   color: "",
   clarity: "",

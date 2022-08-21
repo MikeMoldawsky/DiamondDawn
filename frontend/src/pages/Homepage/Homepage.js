@@ -20,7 +20,7 @@ import { setSelectedTokenId } from "store/uiReducer";
 
 const EnterButton = () => {
   const { systemStage } = useSelector(systemSelector);
-  const canEnter = systemStage >= 0;
+  const canEnter = systemStage >= 1;
 
   return canEnter ? (
     <NavLink to={`/process`}>

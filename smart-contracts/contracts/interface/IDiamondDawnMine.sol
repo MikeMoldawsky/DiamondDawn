@@ -7,7 +7,6 @@ interface IDiamondDawnMine {
         ROUGH,
         CUT,
         POLISHED,
-        BURNED,
         REBORN
     }
 
@@ -20,8 +19,6 @@ interface IDiamondDawnMine {
     function cut(uint tokenId) external;
 
     function polish(uint tokenId) external;
-
-    function burn(uint tokenId) external;
 
     function rebirth(uint tokenId) external;
 

@@ -25,7 +25,6 @@ async function openInvite(inviteId, country, state) {
     const updatedInvite = await InviteModel.findOneAndUpdate(
       { _id: inviteId },
       {
-        // TODO - uncomment this
         // revoked: true,
         opened: Date.now(),
         location: `${state}, ${country}`,

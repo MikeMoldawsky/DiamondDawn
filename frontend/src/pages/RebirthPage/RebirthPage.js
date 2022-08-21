@@ -34,7 +34,7 @@ function RebirthPage() {
       const intTokenId = parseInt(tokenId);
       if (!_.isEmpty(tokens)) {
         const token = _.find(tokens, (t) => t.id === intTokenId);
-        if (!token || !isTokenOfType(token, DIAMOND_DAWN_TYPE.BURNED)) {
+        if (!token) {
           navigate("/");
         } else {
           dispatch(setSelectedTokenId(intTokenId));

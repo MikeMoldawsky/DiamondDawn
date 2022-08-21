@@ -44,7 +44,7 @@ const Mine = () => {
         <NoDiamondView stageName="mine" />
       );
     },
-    [tokenType]
+    [tokenType, selectedTokenId]
   );
 
   return (

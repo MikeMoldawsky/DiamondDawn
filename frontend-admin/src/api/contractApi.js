@@ -38,43 +38,48 @@ export const unpauseApi = async (contract) => {
 const ART_MAPPING = {
   [SYSTEM_STAGE.INVITATIONS]: {
     setter: "setMineEntranceVideoUrl",
-    getter: "mineEntranceVideoUrl",
-    getterArgs: [ROUGH_SHAPE.NO_SHAPE],
-    isNotMap: true,
+    getters: ["mineEntranceVideoUrl"],
+    keys: [ROUGH_SHAPE.NO_SHAPE],
   },
   [SYSTEM_STAGE.MINE_OPEN]: {
     setter: "setRoughVideoUrl",
-    getter: "roughShapeToVideoUrls",
-    getterArgs: [ROUGH_SHAPE.MAKEABLE],
+    getters: ["roughMakeableVideoUrl"],
+    keys: [ROUGH_SHAPE.MAKEABLE],
   },
   [SYSTEM_STAGE.CUT_OPEN]: {
-    setter: "setCutVideoUrl",
-    getter: "cutShapeToVideoUrls",
-    getterArgs: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
+    setter: "setCutVideoUrls",
+    getters: [
+      "cutPearVideoUrl",
+      "cutRoundVideoUrl",
+      "cutOvalVideoUrl",
+      "cutRadiantVideoUrl",
+    ],
+    keys: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.POLISH_OPEN]: {
-    setter: "setPolishVideoUrl",
-    getter: "polishShapeToVideoUrls",
-    getterArgs: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
+    setter: "setPolishVideoUrls",
+    getters: [
+      "polishPearVideoUrl",
+      "polishRoundVideoUrl",
+      "polishOvalVideoUrl",
+      "polishRadiantVideoUrl",
+    ],
+    keys: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.SHIP]: {
-    setter: "setShipVideoUrls",
-    getter: "diamondDawnTypeToShipVideoUrls",
-    getterArgs: [DIAMOND_DAWN_TYPE.BURNED, DIAMOND_DAWN_TYPE.REBORN],
+    setter: "setRebirthVideoUrl",
+    getters: ["rebirthVideoUrl"],
+    keys: [DIAMOND_DAWN_TYPE.REBORN],
   },
 };
 
 export const getVideoUrlsByStageApi = async (mineContract, stage) => {
-  const { getter, getterArgs, isNotMap } = ART_MAPPING[stage];
+  const { getters, keys } = ART_MAPPING[stage];
   const urls = await Promise.all(
-    _.map(getterArgs, (getterArg) =>
-      isNotMap ? mineContract[getter]() : mineContract[getter](getterArg)
-    )
+    _.map(getters, (getter) => mineContract[getter]())
   );
-  const getterParamNames = _.map(getterArgs, (getterArg) =>
-    getVideoUrlParamName(getterArg, stage)
-  );
-  return _.zipObject(getterParamNames, urls);
+  const names = _.map(keys, (key) => getVideoUrlParamName(key, stage));
+  return _.zipObject(names, urls);
 };
 
 export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
@@ -90,15 +95,13 @@ const prepareDiamondForPopulate = (diamond) => ({
   clarity: diamond.clarity,
   color: diamond.color,
   cut: diamond.cut,
-  depth: diamond.depth.$numberDecimal,
   fluorescence: diamond.fluorescence,
-  length: diamond.length.$numberDecimal,
   polish: diamond.polish,
   reportDate: parseInt(diamond.reportDate),
   reportNumber: parseInt(diamond.reportNumber),
+  measurements: `${diamond.length} - ${diamond.width} x ${diamond.depth}`,
   shape: diamond.shape,
   symmetry: diamond.symmetry,
-  width: diamond.width.$numberDecimal,
 });
 
 export const populateDiamondsApi = async (mineContract, diamonds) => {

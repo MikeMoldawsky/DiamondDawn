@@ -38,7 +38,7 @@ contract DiamondDawn is
 
     bool public isDiamondDawnLocked = false; // diamond dawn is locked forever when the project ends (immutable).
     uint public constant MAX_MINE_ENTRANCE = 333;
-    uint public constant MINING_PRICE = 0.002 ether;
+    uint public constant MINING_PRICE = 0.002 ether; // TODO: change to 3.33eth
     IDiamondDawnMine public diamondDawnMine;
     SystemStage public systemStage;
 
@@ -160,6 +160,7 @@ contract DiamondDawn is
     function allowMineEntrance(bytes32[] calldata passwordsHash)
         external
         diamondDawnNotLocked
+        mineEntranceLeft
         onlyRole(DEFAULT_ADMIN_ROLE)
         onlySystemStage(SystemStage.INVITATIONS)
     {
@@ -225,8 +226,7 @@ contract DiamondDawn is
         onlySystemStage(SystemStage.SHIP)
         isDiamondDawnMineReady(SystemStage.SHIP)
     {
-        super.burn(tokenId);
-        diamondDawnMine.burn(tokenId);
+        super.burn(tokenId); // Disable NFT transfer while diamond is in transit.
         _shippedTokenIdToOwner[tokenId] = _msgSender();
         _ownerToShippingTokenIds[_msgSender()].add(tokenId);
         emit Ship(tokenId);

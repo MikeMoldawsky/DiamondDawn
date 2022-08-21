@@ -75,8 +75,6 @@ export const getTypeByStage = (stage) => {
       return DIAMOND_DAWN_TYPE.CUT;
     case SYSTEM_STAGE.POLISH_OPEN:
       return DIAMOND_DAWN_TYPE.POLISHED;
-    case SYSTEM_STAGE.SHIP:
-      return DIAMOND_DAWN_TYPE.BURNED;
     case SYSTEM_STAGE.COMPLETE:
       return DIAMOND_DAWN_TYPE.REBORN;
     default:
@@ -94,8 +92,6 @@ export const getStageByTokenType = (type) => {
       return SYSTEM_STAGE.CUT_OPEN;
     case DIAMOND_DAWN_TYPE.POLISHED:
       return SYSTEM_STAGE.POLISH_OPEN;
-    case DIAMOND_DAWN_TYPE.BURNED:
-      return SYSTEM_STAGE.SHIP;
     case DIAMOND_DAWN_TYPE.REBORN:
       return SYSTEM_STAGE.COMPLETE;
     default:
@@ -113,8 +109,6 @@ export const getTypeByDisplayType = (displayType) => {
       return DIAMOND_DAWN_TYPE.CUT;
     case "Polished":
       return DIAMOND_DAWN_TYPE.POLISHED;
-    case "Burned":
-      return DIAMOND_DAWN_TYPE.BURNED;
     case "Reborn":
       return DIAMOND_DAWN_TYPE.REBORN;
     default:
@@ -182,8 +176,6 @@ export const getDiamondIcon = (token) => {
         default:
           return null;
       }
-    case DIAMOND_DAWN_TYPE.BURNED:
-      return faGem;
     case DIAMOND_DAWN_TYPE.REBORN:
       return faGem;
     default:
@@ -191,22 +183,22 @@ export const getDiamondIcon = (token) => {
   }
 };
 
-export const isTokenInStage = (token, stage) =>
-  getTokenTrait(token, TRAIT.stage) === stage;
-
 export const isTokenOfType = (token, type) =>
   token && getTokenTrait(token, TRAIT.type) === type;
 
 export const isTokenActionable = (token, systemStage) => {
   if (!token) return false;
 
-  switch (systemStage) {
-    case SYSTEM_STAGE.COMPLETE:
-      return false;
-    default:
-      const prevTokenType = getTypeByStage(systemStage - 1);
-      return isTokenOfType(token, prevTokenType);
+  if (systemStage === SYSTEM_STAGE.COMPLETE) return false;
+
+  const prevTokenType = getTypeByStage(systemStage - 1);
+  const isActionableType = isTokenOfType(token, prevTokenType);
+
+  if (systemStage === SYSTEM_STAGE.SHIP) {
+    return isActionableType && !token.isBurned;
   }
+
+  return isActionableType;
 };
 
 export const isTokenDone = (token, systemStage) => {

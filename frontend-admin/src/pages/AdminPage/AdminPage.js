@@ -3,13 +3,11 @@ import classNames from "classnames";
 import "../App/App.scss";
 import "./AdminPage.scss";
 import InvitationsTab from "./InvitationsTab";
-// import ControlTab from "./ControlTab";
 import Tabs from "components/Tabs";
 import Header from "components/Header/Header";
 import Wallet from "components/Wallet";
+import PasswordsTab from "./PasswordsTab";
 import DiamondsTab from "./DiamondsTab";
-// import ScheduleTab from "./ScheduleTab";
-// import ArtTab from "pages/AdminPage/ArtTab";
 import StageTab from "./StageTab";
 import { CONTRACTS, SYSTEM_STAGE } from "consts";
 import {
@@ -37,10 +35,8 @@ const TABS = [
     component: () => <StageTab stage={SYSTEM_STAGE.POLISH_OPEN} />,
   },
   { title: "Ship", component: () => <StageTab stage={SYSTEM_STAGE.SHIP} /> },
-  // { title: "Control", component: () => <ControlTab /> },
-  // { title: "Art", component: () => <ArtTab /> },
-  // { title: "Schedule", component: () => <ScheduleTab /> },
   { title: "Invitations", component: () => <InvitationsTab /> },
+  { title: "Passwords", component: () => <PasswordsTab /> },
   { title: "Diamonds", component: () => <DiamondsTab /> },
 ];
 
@@ -67,7 +63,7 @@ const AdminPage = () => {
         <Wallet />
       </Header>
       <main>
-        <Tabs tabs={TABS} activeTab={5} />
+        <Tabs tabs={TABS} activeTab={0} />
       </main>
     </div>
   );

@@ -3,13 +3,17 @@ import "./Diamond.scss";
 import ReactPlayer from "react-player";
 
 const Diamond = ({ diamond }) => {
-  const { image } = diamond;
+  const { image, isBurned } = diamond;
+
+  const imageUrl = isBurned
+    ? "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/burn.mp4"
+    : image;
 
   return (
     <div className="diamond-art">
-      {image.endsWith(".mp4") ? (
+      {imageUrl.endsWith(".mp4") ? (
         <ReactPlayer
-          url={image}
+          url={imageUrl}
           playing
           playsinline
           controls={false}
@@ -18,7 +22,7 @@ const Diamond = ({ diamond }) => {
           className="react-player"
         />
       ) : (
-        <img src={image} alt="Diamond art" />
+        <img src={imageUrl} alt="Diamond art" />
       )}
     </div>
   );
