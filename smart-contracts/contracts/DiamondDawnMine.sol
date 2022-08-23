@@ -66,6 +66,20 @@ contract DiamondDawnMine is
     mapping(uint => DiamondDawnMetadata) private _tokenIdToMetadata;
     address private _diamondDawnContract;
     DiamondCertificate[] private _mineDiamonds;
+    DiamondCertificate private NO_DIAMOND =
+        DiamondCertificate({
+            clarity: "",
+            color: "",
+            cut: "",
+            fluorescence: "",
+            measurements: "",
+            points: 0,
+            polish: "",
+            reportDate: 0,
+            reportNumber: 0,
+            shape: DiamondShape.NO_SHAPE,
+            symmetry: ""
+        });
 
     constructor(address[] memory adminAddresses) {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -81,34 +95,42 @@ contract DiamondDawnMine is
         _;
     }
 
+    modifier onlyExistingTokens(uint tokenId) {
+        require(
+            _tokenIdToMetadata[tokenId].type_ != DiamondDawnType.NO_TYPE,
+            "No token id"
+        );
+        _;
+    }
+
     modifier onlyDiamondDawnType(
         uint tokenId,
         DiamondDawnType diamondDawnType
     ) {
         require(
             diamondDawnType == _tokenIdToMetadata[tokenId].type_,
-            "Invalid diamond dawn type"
+            "Invalid type"
         );
         _;
     }
 
     modifier mineClosed() {
-        require(!isMineOpen, "Diamond Dawn Mine should be closed");
+        require(!isMineOpen, "Mine is open");
         _;
     }
 
     modifier mineOpen() {
-        require(isMineOpen, "Diamond Dawn Mine should be open");
+        require(isMineOpen, "Mine is closed");
         _;
     }
 
     modifier mineNotLocked() {
-        require(!isMineLocked, "Diamond Dawn Mine is locked forever");
+        require(!isMineLocked, "Mine is locked forever");
         _;
     }
 
     modifier mineNotDry() {
-        require(_mineDiamonds.length > 0, "Diamond Dawn Mine is empty");
+        require(_mineDiamonds.length > 0, "Mine is empty");
         _;
     }
 
@@ -211,19 +233,7 @@ contract DiamondDawnMine is
                 pointsReduction: 0
             }),
             cut: CutDiamondMetadata({pointsReduction: 0}),
-            certificate: DiamondCertificate({
-                clarity: "",
-                color: "",
-                cut: "",
-                fluorescence: "",
-                measurements: "",
-                points: 0,
-                polish: "",
-                reportDate: 0,
-                reportNumber: 0,
-                shape: DiamondShape.NO_SHAPE,
-                symmetry: ""
-            })
+            certificate: NO_DIAMOND
         });
     }
 
@@ -293,6 +303,7 @@ contract DiamondDawnMine is
         external
         view
         onlyDiamondDawn
+        onlyExistingTokens(tokenId)
         returns (string memory)
     {
         DiamondDawnMetadata memory diamondDawnMetadata = _tokenIdToMetadata[
@@ -369,8 +380,8 @@ contract DiamondDawnMine is
         returns (uint)
     {
         _randNonce++;
-        uint randomNumber = rand(_randNonce);
         uint range = maxNumber - minNumber + 1;
+        uint randomNumber = rand(_randNonce);
         return (randomNumber % range) + minNumber;
     }
 
@@ -383,52 +394,50 @@ contract DiamondDawnMine is
             videoUrl = mineEntranceVideoUrl;
         } else if (DiamondDawnType.ROUGH == diamondDawnType) {
             videoUrl = roughMakeableVideoUrl;
-        } else if (DiamondDawnType.CUT == diamondDawnType) {
-            videoUrl = _getCutVideoUrl(diamondDawnMetadata.certificate.shape);
-        } else if (DiamondDawnType.POLISHED == diamondDawnType) {
-            videoUrl = _getPolishedVideoUrl(
+        } else if (
+            DiamondDawnType.CUT == diamondDawnType ||
+            DiamondDawnType.POLISHED == diamondDawnType
+        ) {
+            videoUrl = _getVideoUrlForShape(
+                diamondDawnType,
                 diamondDawnMetadata.certificate.shape
             );
         } else if (DiamondDawnType.REBORN == diamondDawnType) {
             videoUrl = rebirthVideoUrl;
         } else {
-            revert("No video url - unknown type");
+            revert("Unknown type");
         }
         return string.concat(_videoBaseURI(), videoUrl);
     }
 
-    function _getCutVideoUrl(DiamondShape shape)
+    function _getVideoUrlForShape(DiamondDawnType type_, DiamondShape shape)
         private
         view
         returns (string memory)
     {
+        // TODO: assert type cut or polished
         if (shape == DiamondShape.PEAR) {
-            return cutPearVideoUrl;
+            return
+                type_ == DiamondDawnType.CUT
+                    ? cutPearVideoUrl
+                    : polishPearVideoUrl;
         } else if (shape == DiamondShape.ROUND) {
-            return cutRoundVideoUrl;
+            return
+                type_ == DiamondDawnType.CUT
+                    ? cutRoundVideoUrl
+                    : polishRoundVideoUrl;
         } else if (shape == DiamondShape.OVAL) {
-            return cutOvalVideoUrl;
+            return
+                type_ == DiamondDawnType.CUT
+                    ? cutOvalVideoUrl
+                    : polishOvalVideoUrl;
         } else if (shape == DiamondShape.RADIANT) {
-            return cutRadiantVideoUrl;
+            return
+                type_ == DiamondDawnType.CUT
+                    ? cutRadiantVideoUrl
+                    : polishRadiantVideoUrl;
         }
-        revert("Unknown diamond shape");
-    }
-
-    function _getPolishedVideoUrl(DiamondShape shape)
-        private
-        view
-        returns (string memory)
-    {
-        if (shape == DiamondShape.PEAR) {
-            return polishPearVideoUrl;
-        } else if (shape == DiamondShape.ROUND) {
-            return polishRoundVideoUrl;
-        } else if (shape == DiamondShape.OVAL) {
-            return polishOvalVideoUrl;
-        } else if (shape == DiamondShape.RADIANT) {
-            return polishRadiantVideoUrl;
-        }
-        revert("Unknown diamond shape");
+        revert("Unknown shape");
     }
 
     function _videoBaseURI() private pure returns (string memory) {
@@ -486,9 +495,7 @@ contract DiamondDawnMine is
                     diamondDawnMetadata.certificate
                 );
         }
-        revert(
-            "Failed to extract json attributes from metadata - unknown type"
-        );
+        revert("Unknown type");
     }
 
     function _getTypeAttribute(DiamondDawnType diamondDawnType)
@@ -869,7 +876,7 @@ contract DiamondDawnMine is
         } else if (type_ == DiamondDawnType.REBORN) {
             return "Reborn";
         }
-        revert("Failed to convert diamond dawn type");
+        revert("Unknown type");
     }
 
     function _toRoughDiamondShapeString(RoughDiamondShape shape)
@@ -880,7 +887,7 @@ contract DiamondDawnMine is
         if (shape == RoughDiamondShape.MAKEABLE) {
             return "Makeable";
         }
-        revert("Failed to convert rough diamond shape to string");
+        revert("Unknown rough shape");
     }
 
     function _toDiamondShapeString(DiamondShape shape)
@@ -897,7 +904,7 @@ contract DiamondDawnMine is
         } else if (shape == DiamondShape.RADIANT) {
             return "Radiant";
         }
-        revert("Unknown diamond shape");
+        revert("Unknown shape");
     }
 
     function _pointsToCaratString(uint points)

@@ -17,11 +17,12 @@ export const SYSTEM_STAGE_NAME = {
 };
 
 export const DIAMOND_DAWN_TYPE = {
-  ENTER_MINE: 0,
-  ROUGH: 1,
-  CUT: 2,
-  POLISHED: 3,
-  REBORN: 4,
+  NO_TYPE: 0,
+  ENTER_MINE: 1,
+  ROUGH: 2,
+  CUT: 3,
+  POLISHED: 4,
+  REBORN: 5,
 };
 
 export const ROUGH_SHAPE = {
