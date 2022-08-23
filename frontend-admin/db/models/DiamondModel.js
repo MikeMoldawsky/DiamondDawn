@@ -1,12 +1,7 @@
 const mongoose = require("mongoose");
 const db = require("../db");
 
-const SHAPES = [
-  "Pear",
-  "Round",
-  "Oval",
-  "Radiant",
-];
+const SHAPES = ["Pear", "Round", "Oval", "Radiant"];
 
 const COLOR_GRADES = [
   "M",
@@ -25,14 +20,7 @@ const COLOR_GRADES = [
   "Z",
 ];
 
-const CLARITY_GRADES = [
-  "VS2",
-  "VS1",
-  "VVS2",
-  "VVS1",
-  "IF",
-  "FL",
-];
+const CLARITY_GRADES = ["VS2", "VS1", "VVS2", "VVS1", "IF", "FL"];
 
 const FLUORESCENCE_GRADES = ["Faint", "None"];
 
@@ -51,8 +39,20 @@ const DiamondSchema = new mongoose.Schema({
   cut: { type: Number, required: true, min: 1, max: COMMON_GRADES.length },
   polish: { type: Number, required: true, min: 1, max: COMMON_GRADES.length },
   symmetry: { type: Number, required: true, min: 1, max: COMMON_GRADES.length },
-  fluorescence: { type: Number, required: true, min: 1, max: FLUORESCENCE_GRADES.length },
-  measurements: { type: String, required: true, match: [/\d\.\d\d - \d\.\d\d x \d\.\d\d/, 'Please fill a valid email address'] },
+  fluorescence: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: FLUORESCENCE_GRADES.length,
+  },
+  measurements: {
+    type: String,
+    required: true,
+    match: [
+      /\d\.\d\d - \d\.\d\d x \d\.\d\d/,
+      "Please fill a valid email address",
+    ],
+  },
 });
 
 const DiamondModel = db.model("Diamond", DiamondSchema);

@@ -4,9 +4,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import CRUDTable from "components/CRUDTable";
-import {
-  CONTRACTS,
-} from "consts";
+import { CONTRACTS } from "consts";
 import useDDContract from "hooks/useDDContract";
 import { diamondEruptionApi } from "api/contractApi";
 import {
@@ -17,9 +15,10 @@ import {
 } from "api/serverApi";
 import {
   ENUM_TO_CLARITY,
-  ENUM_TO_COLOR, ENUM_TO_FLUORESCENCE,
+  ENUM_TO_COLOR,
+  ENUM_TO_FLUORESCENCE,
   ENUM_TO_GRADE,
-  ENUM_TO_SHAPE
+  ENUM_TO_SHAPE,
 } from "../../utils/diamondConverterApi";
 
 const requiredValidation = (params) => {
@@ -42,7 +41,7 @@ const getEmptyDiamond = () => ({
   polish: 0,
   symmetry: 0,
   fluorescence: 0,
-  measurements: ""
+  measurements: "",
 });
 
 const DIAMOND_COLUMNS = [
@@ -73,7 +72,7 @@ const DIAMOND_COLUMNS = [
     valueOptions: Object.keys(ENUM_TO_SHAPE),
     width: 150,
     editable: true,
-    valueFormatter: (params) => ENUM_TO_SHAPE[params.value]
+    valueFormatter: (params) => ENUM_TO_SHAPE[params.value],
   },
   {
     field: "points",
@@ -145,14 +144,14 @@ const DIAMOND_COLUMNS = [
     preProcessEditCellProps: requiredValidation,
   },
   {
-    field: 'measurements',
-    headerName: 'Measurements',
+    field: "measurements",
+    headerName: "Measurements",
     width: 250,
     editable: true,
     preProcessEditCellProps: (params) => {
-      const regex = new RegExp('^\\d\.\\d\\d - \\d\.\\d\\d x \\d\.\\d\\d$')
-      return {...params.props, error: !regex.test(params.props.value)};
-    }
+      const regex = new RegExp("^\\d.\\d\\d - \\d.\\d\\d x \\d.\\d\\d$");
+      return { ...params.props, error: !regex.test(params.props.value) };
+    },
   },
   { field: "", headerName: "", flex: 1 },
 ];
