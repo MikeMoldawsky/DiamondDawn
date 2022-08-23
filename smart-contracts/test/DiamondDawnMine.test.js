@@ -1,7 +1,7 @@
 require("dotenv").config();
 require("@nomicfoundation/hardhat-chai-matchers");
 const { expect } = require("chai");
-const { ethers, waffle } = require("hardhat");
+const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const parseDataUrl = require("parse-data-url");
 const _ = require("lodash");
@@ -16,7 +16,6 @@ describe("Diamond Dawn Mine", () => {
       await ethers.getSigners();
     const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
     const diamondDawnMine = await DiamondDawnMine.deploy([]);
-    const provider = waffle.provider;
     await diamondDawnMine.deployed();
     await diamondDawnMine.initialize(owner.address);
     return {
@@ -30,7 +29,6 @@ describe("Diamond Dawn Mine", () => {
       user6,
       user7,
       user8,
-      provider,
     };
   }
 
