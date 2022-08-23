@@ -68,17 +68,17 @@ contract DiamondDawnMine is
     Certificate[] private _diamonds;
     Certificate private NO_DIAMOND =
         Certificate({
-            clarity: "",
-            color: "",
-            cut: "",
-            fluorescence: "",
-            measurements: "",
             points: 0,
-            polish: "",
             reportDate: 0,
             reportNumber: 0,
-            shape: Shape.NO_SHAPE,
-            symmetry: ""
+            measurements: "",
+            clarity: Clarity.NO_CLARITY,
+            color: Color.NO_COLOR,
+            cut: Grade.NO_GRADE,
+            symmetry: Grade.NO_GRADE,
+            polish: Grade.NO_GRADE,
+            fluorescence: Fluorescence.NO_FLUORESCENCE,
+            shape: Shape.NO_SHAPE
         });
 
     constructor(address[] memory adminAddresses) {
@@ -91,37 +91,37 @@ contract DiamondDawnMine is
 
     /**********************     Modifiers     ************************/
     modifier onlyDiamondDawn() {
-        require(msg.sender == _diamondDawn, "OnlyDiamondDawn allowed");
+        require(msg.sender == _diamondDawn, "DiamondDawn");
         _;
     }
 
     modifier onlyExistingTokens(uint tokenId) {
-        require(_metadata[tokenId].type_ != Type.NO_TYPE, "No token id");
+        require(_metadata[tokenId].type_ != Type.NO_TYPE, "No token");
         _;
     }
 
     modifier onlyDiamondDawnType(uint tokenId, Type diamondDawnType) {
-        require(diamondDawnType == _metadata[tokenId].type_, "Invalid type");
+        require(diamondDawnType == _metadata[tokenId].type_, "Type");
         _;
     }
 
     modifier mineClosed() {
-        require(!isMineOpen, "Mine is open");
+        require(!isMineOpen, "Open");
         _;
     }
 
     modifier mineOpen() {
-        require(isMineOpen, "Mine is closed");
+        require(isMineOpen, "Closed");
         _;
     }
 
     modifier mineNotLocked() {
-        require(!isMineLocked, "Mine is locked forever");
+        require(!isMineLocked, "Locked");
         _;
     }
 
     modifier mineNotDry() {
-        require(_diamonds.length > 0, "Mine is empty");
+        require(_diamonds.length > 0, "Empty");
         _;
     }
 
@@ -458,8 +458,6 @@ contract DiamondDawnMine is
     {
         return
             getERC721Attribute(
-                false,
-                true,
                 true,
                 "",
                 "Type",
@@ -488,8 +486,6 @@ contract DiamondDawnMine is
         assert(points > 0);
         ERC721Attribute[] memory baseAttributes = new ERC721Attribute[](4);
         baseAttributes[0] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Origin",
@@ -497,16 +493,12 @@ contract DiamondDawnMine is
         );
         baseAttributes[1] = _getTypeAttribute(diamondDawnType);
         baseAttributes[2] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Identification",
             "Natural"
         );
         baseAttributes[3] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Carat",
@@ -523,24 +515,18 @@ contract DiamondDawnMine is
         // TODO: check about fix sized array in returns type (returns (ERC721Attribute[3] memory)).
         ERC721Attribute[] memory roughAttributes = new ERC721Attribute[](3);
         roughAttributes[0] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Color",
-            "CAPE"
+            "Cape"
         );
         roughAttributes[1] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Shape",
             _toRoughShapeString(rough.shape)
         );
         roughAttributes[2] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Mine",
@@ -557,40 +543,30 @@ contract DiamondDawnMine is
         // TODO: check about fix sized array in returns type (returns (ERC721Attribute[5] memory)).
         ERC721Attribute[] memory cutAttributes = new ERC721Attribute[](5);
         cutAttributes[0] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Color",
-            certificate.color
+            _toColorString(certificate.color)
         );
         cutAttributes[1] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Cut",
-            certificate.cut
+            _toGradeString(certificate.cut)
         );
         cutAttributes[2] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Fluorescence",
-            certificate.fluorescence
+            _toFluorescenceString(certificate.fluorescence)
         );
         cutAttributes[3] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Measurements",
             certificate.measurements
         );
         cutAttributes[4] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Shape",
@@ -607,28 +583,22 @@ contract DiamondDawnMine is
         // TODO: check about fix sized array in returns type (returns (ERC721Attribute[5] memory)).
         ERC721Attribute[] memory polishedAttributes = new ERC721Attribute[](3);
         polishedAttributes[0] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Clarity",
-            certificate.clarity
+            _toClarityString(certificate.clarity)
         );
         polishedAttributes[1] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Polish",
-            certificate.polish
+            _toGradeString(certificate.polish)
         );
         polishedAttributes[2] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Symmetry",
-            certificate.symmetry
+            _toGradeString(certificate.symmetry)
         );
         return polishedAttributes;
     }
@@ -641,8 +611,6 @@ contract DiamondDawnMine is
         // TODO: check about fix sized array in returns type (returns (ERC721Attribute[5] memory)).
         ERC721Attribute[] memory rebirthAttributes = new ERC721Attribute[](3);
         rebirthAttributes[0] = getERC721Attribute(
-            false,
-            true,
             true,
             "",
             "Laboratory",
@@ -650,15 +618,11 @@ contract DiamondDawnMine is
         );
         rebirthAttributes[1] = getERC721Attribute(
             false,
-            true,
-            false,
             "",
             "Report Date",
             Strings.toString(certificate.reportDate)
         );
         rebirthAttributes[2] = getERC721Attribute(
-            false,
-            true,
             false,
             "",
             "Report Number",
@@ -814,6 +778,47 @@ contract DiamondDawnMine is
     {
         if (shape == RoughShape.MAKEABLE) return "Makeable";
         revert("Unknown shape");
+    }
+
+    function _toColorString(Color color) private pure returns (string memory) {
+        if(color == Color.M) return "M";
+        else if(color == Color.N) return "N";
+        else if(color == Color.O) return "O";
+        else if(color == Color.P) return "P";
+        else if(color == Color.Q) return "Q";
+        else if(color == Color.R) return "R";
+        else if(color == Color.S) return "S";
+        else if(color == Color.T) return "T";
+        else if(color == Color.U) return "U";
+        else if(color == Color.V) return "V";
+        else if(color == Color.W) return "W";
+        else if(color == Color.X) return "X";
+        else if(color == Color.Y) return "Y";
+        else if(color == Color.Z) return "Z";
+        revert("Unknown color");
+    }
+
+    function _toGradeString(Grade grade) private pure returns (string memory) {
+        if (grade == Grade.GOOD) return "Good";
+        else if (grade == Grade.VERY_GOOD) return "Very Good";
+        else if (grade == Grade.EXCELLENT) return "Excellent";
+        revert("Unknown grade");
+    }
+
+    function _toClarityString(Clarity clarity) private pure returns (string memory) {
+        if (clarity == Clarity.VS2) return "VS2";
+        else if (clarity == Clarity.VS1) return "VS1";
+        else if (clarity == Clarity.VVS2) return "VVS2";
+        else if (clarity == Clarity.VVS1) return "VVS1";
+        else if (clarity == Clarity.IF) return "IF";
+        else if (clarity == Clarity.FL) return "FL";
+        revert("Unknown clarity");
+    }
+
+    function _toFluorescenceString(Fluorescence fluorescence) private pure returns (string memory) {
+        if (fluorescence == Fluorescence.FAINT) return "Faint";
+        else if (fluorescence == Fluorescence.NONE) return "None";
+        revert("Unknown fluorescence");
     }
 
     function _toShapeString(Shape shape) private pure returns (string memory) {

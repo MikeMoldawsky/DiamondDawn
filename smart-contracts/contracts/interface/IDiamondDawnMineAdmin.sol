@@ -10,18 +10,59 @@ interface IDiamondDawnMineAdmin {
         RADIANT
     }
 
+    enum Grade {
+        NO_GRADE,
+        GOOD,
+        VERY_GOOD,
+        EXCELLENT
+    }
+
+    enum Clarity {
+        NO_CLARITY,
+        VS2,
+        VS1,
+        VVS2,
+        VVS1,
+        IF,
+        FL
+    }
+
+    enum Fluorescence {
+        NO_FLUORESCENCE,
+        FAINT,
+        NONE
+    }
+
+    enum Color {
+        NO_COLOR,
+        M,
+        N,
+        O,
+        P,
+        Q,
+        R,
+        S,
+        T,
+        U,
+        V,
+        W,
+        X,
+        Y,
+        Z
+    }
+
     struct Certificate {
-        string clarity;
-        string color;
-        string cut;
-        string fluorescence;
-        string measurements;
         uint points;
-        string polish;
         uint reportDate;
         uint reportNumber;
+        string measurements;
+        Clarity clarity;
+        Color color;
+        Grade cut;
+        Grade symmetry;
+        Grade polish;
+        Fluorescence fluorescence;
         Shape shape;
-        string symmetry;
     }
 
     function initialize(address diamondDawn) external;
