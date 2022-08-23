@@ -1,16 +1,14 @@
 const mongoose = require("mongoose");
 const db = require("../db");
 
+const SHAPES = [
+  "Pear",
+  "Round",
+  "Oval",
+  "Radiant",
+];
+
 const COLOR_GRADES = [
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-  "I",
-  "J",
-  "K",
-  "L",
   "M",
   "N",
   "O",
@@ -26,35 +24,35 @@ const COLOR_GRADES = [
   "Y",
   "Z",
 ];
+
 const CLARITY_GRADES = [
-  "FLAWLESS",
-  "INTERNALLY FLAWLESS",
-  "VVS1",
-  "VVS2",
-  "VS1",
   "VS2",
-  "SI1",
-  "SI2",
-  "I1",
-  "I2",
-  "I3",
+  "VS1",
+  "VVS2",
+  "VVS1",
+  "IF",
+  "FL",
 ];
-const COMMON_GRADES = ["EXCELLENT", "VERY GOOD", "GOOD", "FAIR", "POOR"];
+
+const FLUORESCENCE_GRADES = ["Faint", "None"];
+
+const COMMON_GRADES = ["Good", "Very Good", "Excellent"];
+
+const MIN_POINTS = 30;
+const MAX_POINTS = 70;
 
 const DiamondSchema = new mongoose.Schema({
   reportNumber: { type: Number, required: true },
   reportDate: { type: Number, required: true },
-  shape: { type: Number, required: true, min: 0, max: 3 },
-  carat: { type: mongoose.Types.Decimal128, required: true },
-  color: { type: String, enum: COLOR_GRADES, required: true },
-  clarity: { type: String, enum: CLARITY_GRADES, required: true },
-  cut: { type: String, enum: COMMON_GRADES, required: true },
-  polish: { type: String, enum: COMMON_GRADES, required: true },
-  symmetry: { type: String, enum: COMMON_GRADES, required: true },
-  fluorescence: { type: String, enum: COMMON_GRADES, required: true },
-  length: { type: mongoose.Types.Decimal128, required: true },
-  width: { type: mongoose.Types.Decimal128, required: true },
-  depth: { type: mongoose.Types.Decimal128, required: true },
+  shape: { type: Number, required: true, min: 1, max: SHAPES.length },
+  points: { type: Number, required: true, min: MIN_POINTS, max: MAX_POINTS },
+  color: { type: Number, required: true, min: 1, max: COLOR_GRADES.length },
+  clarity: { type: Number, required: true, min: 1, max: CLARITY_GRADES.length },
+  cut: { type: Number, required: true, min: 1, max: COMMON_GRADES.length },
+  polish: { type: Number, required: true, min: 1, max: COMMON_GRADES.length },
+  symmetry: { type: Number, required: true, min: 1, max: COMMON_GRADES.length },
+  fluorescence: { type: Number, required: true, min: 1, max: FLUORESCENCE_GRADES.length },
+  measurements: { type: String, required: true, match: [/\d\.\d\d - \d\.\d\d x \d\.\d\d/, 'Please fill a valid email address'] },
 });
 
 const DiamondModel = db.model("Diamond", DiamondSchema);
