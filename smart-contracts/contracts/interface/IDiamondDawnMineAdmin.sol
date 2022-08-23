@@ -10,7 +10,7 @@ interface IDiamondDawnMineAdmin {
         RADIANT
     }
 
-    struct DiamondCertificate {
+    struct Certificate {
         string clarity;
         string color;
         string cut;
@@ -26,7 +26,7 @@ interface IDiamondDawnMineAdmin {
 
     function initialize(address diamondDawn) external;
 
-    function populateDiamonds(DiamondCertificate[] calldata diamonds) external;
+    function diamondEruption(Certificate[] calldata diamonds) external;
 
     function setMineEntranceVideoUrl(string calldata mineEntranceUrl) external;
 
@@ -50,10 +50,8 @@ interface IDiamondDawnMineAdmin {
 
     function setIsMineOpen(bool isMineOpen) external;
 
-    function replaceLostShipment(
-        uint tokenId,
-        DiamondCertificate calldata diamond
-    ) external;
+    function replaceLostShipment(uint tokenId, Certificate calldata diamond)
+        external;
 
     // TODO: delete this function
     function getDiamondCount() external view returns (uint);

@@ -18,25 +18,25 @@ contract DiamondDawnMine is
     IDiamondDawnMine,
     IDiamondDawnMineAdmin
 {
-    enum RoughDiamondShape {
+    enum RoughShape {
         NO_SHAPE,
         MAKEABLE
     }
 
-    struct RoughDiamondMetadata {
-        RoughDiamondShape shape;
+    struct RoughMetadata {
+        RoughShape shape;
         uint pointsReduction;
     }
 
-    struct CutDiamondMetadata {
+    struct CutMetadata {
         uint pointsReduction;
     }
 
-    struct DiamondDawnMetadata {
-        DiamondDawnType type_;
-        RoughDiamondMetadata rough;
-        CutDiamondMetadata cut;
-        DiamondCertificate certificate;
+    struct Metadata {
+        Type type_;
+        RoughMetadata rough;
+        CutMetadata cut;
+        Certificate certificate;
     }
 
     bool public isMineOpen = false; // mine is closed until it's initialized.
@@ -56,18 +56,18 @@ contract DiamondDawnMine is
     string public rebirthVideoUrl;
 
     // Carat loss of ~35% to ~65% from rough stone to the polished diamond.
-    uint private constant MIN_ROUGH_TO_DIAMOND_POINTS_REDUCTION = 38;
-    uint private constant MAX_ROUGH_TO_DIAMOND_POINTS_REDUCTION = 74;
+    uint private constant MIN_ROUGH_POINTS_REDUCTION = 38;
+    uint private constant MAX_ROUGH_POINTS_REDUCTION = 74;
     // Carat loss from ~2% to ~8% in the polish process.
-    uint private constant MIN_POLISH_PROCESS_POINTS_REDUCTION = 1;
-    uint private constant MAX_POLISH_PROCESS_POINTS_REDUCTION = 4;
+    uint private constant MIN_POLISH_POINTS_REDUCTION = 1;
+    uint private constant MAX_POLISH_POINTS_REDUCTION = 4;
 
     uint private _randNonce = 0;
-    mapping(uint => DiamondDawnMetadata) private _metadata;
+    mapping(uint => Metadata) private _metadata;
     address private _diamondDawn;
-    DiamondCertificate[] private _diamonds;
-    DiamondCertificate private NO_DIAMOND =
-        DiamondCertificate({
+    Certificate[] private _diamonds;
+    Certificate private NO_DIAMOND =
+        Certificate({
             clarity: "",
             color: "",
             cut: "",
@@ -96,17 +96,11 @@ contract DiamondDawnMine is
     }
 
     modifier onlyExistingTokens(uint tokenId) {
-        require(
-            _metadata[tokenId].type_ != DiamondDawnType.NO_TYPE,
-            "No token id"
-        );
+        require(_metadata[tokenId].type_ != Type.NO_TYPE, "No token id");
         _;
     }
 
-    modifier onlyDiamondDawnType(
-        uint tokenId,
-        DiamondDawnType diamondDawnType
-    ) {
+    modifier onlyDiamondDawnType(uint tokenId, Type diamondDawnType) {
         require(diamondDawnType == _metadata[tokenId].type_, "Invalid type");
         _;
     }
@@ -142,7 +136,7 @@ contract DiamondDawnMine is
         isMineOpen = true;
     }
 
-    function populateDiamonds(DiamondCertificate[] calldata diamonds)
+    function diamondEruption(Certificate[] calldata diamonds)
         external
         mineNotLocked
         //        mineClosed
@@ -209,40 +203,40 @@ contract DiamondDawnMine is
         rebirthVideoUrl = rebirth_;
     }
 
-    function replaceLostShipment(
-        uint tokenId,
-        DiamondCertificate calldata diamond
-    ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
-        DiamondDawnMetadata storage metadata = _metadata[tokenId];
+    function replaceLostShipment(uint tokenId, Certificate calldata diamond)
+        external
+        mineNotLocked
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        Metadata storage metadata = _metadata[tokenId];
         require(
-            metadata.type_ == DiamondDawnType.POLISHED ||
-                metadata.type_ == DiamondDawnType.REBORN,
+            metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN,
             "Not in ship stage"
         );
         metadata.certificate = diamond;
     }
 
     function enterMine(uint tokenId) external onlyDiamondDawn mineOpen {
-        _metadata[tokenId] = DiamondDawnMetadata({
-            type_: DiamondDawnType.ENTER_MINE,
-            rough: RoughDiamondMetadata({
-                shape: RoughDiamondShape.NO_SHAPE,
+        _metadata[tokenId] = Metadata({
+            type_: Type.ENTER_MINE,
+            rough: RoughMetadata({
+                shape: RoughShape.NO_SHAPE,
                 pointsReduction: 0
             }),
-            cut: CutDiamondMetadata({pointsReduction: 0}),
+            cut: CutMetadata({pointsReduction: 0}),
             certificate: NO_DIAMOND
         });
     }
 
     function mine(uint tokenId) external onlyDiamondDawn mineOpen mineNotDry {
         uint pointsReduction = _getRandomNumberInRange(
-            MIN_ROUGH_TO_DIAMOND_POINTS_REDUCTION,
-            MAX_ROUGH_TO_DIAMOND_POINTS_REDUCTION
+            MIN_ROUGH_POINTS_REDUCTION,
+            MAX_ROUGH_POINTS_REDUCTION
         );
-        DiamondDawnMetadata storage metadata = _metadata[tokenId];
-        metadata.type_ = DiamondDawnType.ROUGH;
-        metadata.rough = RoughDiamondMetadata({
-            shape: RoughDiamondShape.MAKEABLE,
+        Metadata storage metadata = _metadata[tokenId];
+        metadata.type_ = Type.ROUGH;
+        metadata.rough = RoughMetadata({
+            shape: RoughShape.MAKEABLE,
             pointsReduction: pointsReduction
         });
         metadata.certificate = _mineDiamond();
@@ -252,32 +246,32 @@ contract DiamondDawnMine is
         external
         onlyDiamondDawn
         mineOpen
-        onlyDiamondDawnType(tokenId, DiamondDawnType.ROUGH)
+        onlyDiamondDawnType(tokenId, Type.ROUGH)
     {
         uint pointsReduction = _getRandomNumberInRange(
-            MIN_POLISH_PROCESS_POINTS_REDUCTION,
-            MAX_POLISH_PROCESS_POINTS_REDUCTION
+            MIN_POLISH_POINTS_REDUCTION,
+            MAX_POLISH_POINTS_REDUCTION
         );
-        DiamondDawnMetadata storage diamondDawnMetadata = _metadata[tokenId];
+        Metadata storage diamondDawnMetadata = _metadata[tokenId];
         diamondDawnMetadata.cut.pointsReduction = pointsReduction;
-        diamondDawnMetadata.type_ = DiamondDawnType.CUT;
+        diamondDawnMetadata.type_ = Type.CUT;
     }
 
     function polish(uint256 tokenId)
         external
         onlyDiamondDawn
         mineOpen
-        onlyDiamondDawnType(tokenId, DiamondDawnType.CUT)
+        onlyDiamondDawnType(tokenId, Type.CUT)
     {
-        _metadata[tokenId].type_ = DiamondDawnType.POLISHED;
+        _metadata[tokenId].type_ = Type.POLISHED;
     }
 
     function rebirth(uint256 tokenId)
         external
         onlyDiamondDawn
-        onlyDiamondDawnType(tokenId, DiamondDawnType.POLISHED)
+        onlyDiamondDawnType(tokenId, Type.POLISHED)
     {
-        _metadata[tokenId].type_ = DiamondDawnType.REBORN;
+        _metadata[tokenId].type_ = Type.REBORN;
     }
 
     function lockMine() external onlyDiamondDawn mineClosed {
@@ -300,7 +294,7 @@ contract DiamondDawnMine is
         onlyExistingTokens(tokenId)
         returns (string memory)
     {
-        DiamondDawnMetadata memory metadata = _metadata[tokenId];
+        Metadata memory metadata = _metadata[tokenId];
         string memory videoUrl = _getVideoUrl(metadata);
         string memory base64Json = Base64.encode(
             bytes(
@@ -348,10 +342,10 @@ contract DiamondDawnMine is
 
     /**********************     Private Functions     ************************/
 
-    function _mineDiamond() private returns (DiamondCertificate memory) {
+    function _mineDiamond() private returns (Certificate memory) {
         // TODO: check if there's a library that pops a random element from the list.
         uint randomIndex = _getRandomNumberInRange(0, _diamonds.length - 1);
-        DiamondCertificate memory diamond = _diamonds[randomIndex];
+        Certificate memory diamond = _diamonds[randomIndex];
 
         // TODO: Move the last element into the place to delete
         if (_diamonds.length > 1) {
@@ -371,26 +365,25 @@ contract DiamondDawnMine is
         return (randomNumber % range) + minNumber;
     }
 
-    function _getVideoUrl(DiamondDawnMetadata memory metadata)
+    function _getVideoUrl(Metadata memory metadata)
         private
         view
         returns (string memory)
     {
-        DiamondDawnType diamondDawnType = metadata.type_;
+        Type diamondDawnType = metadata.type_;
         string memory videoUrl;
-        if (DiamondDawnType.ENTER_MINE == diamondDawnType) {
+        if (Type.ENTER_MINE == diamondDawnType) {
             videoUrl = mineEntranceVideoUrl;
-        } else if (DiamondDawnType.ROUGH == diamondDawnType) {
+        } else if (Type.ROUGH == diamondDawnType) {
             videoUrl = roughMakeableVideoUrl;
         } else if (
-            DiamondDawnType.CUT == diamondDawnType ||
-            DiamondDawnType.POLISHED == diamondDawnType
+            Type.CUT == diamondDawnType || Type.POLISHED == diamondDawnType
         ) {
             videoUrl = _getVideoUrlForShape(
                 diamondDawnType,
                 metadata.certificate.shape
             );
-        } else if (DiamondDawnType.REBORN == diamondDawnType) {
+        } else if (Type.REBORN == diamondDawnType) {
             videoUrl = rebirthVideoUrl;
         } else {
             revert("Unknown type");
@@ -398,32 +391,21 @@ contract DiamondDawnMine is
         return string.concat(_videoBaseURI(), videoUrl);
     }
 
-    function _getVideoUrlForShape(DiamondDawnType type_, DiamondShape shape)
+    function _getVideoUrlForShape(Type type_, DiamondShape shape)
         private
         view
         returns (string memory)
     {
         // TODO: assert type cut or polished
         if (shape == DiamondShape.PEAR) {
-            return
-                type_ == DiamondDawnType.CUT
-                    ? cutPearVideoUrl
-                    : polishPearVideoUrl;
+            return type_ == Type.CUT ? cutPearVideoUrl : polishPearVideoUrl;
         } else if (shape == DiamondShape.ROUND) {
-            return
-                type_ == DiamondDawnType.CUT
-                    ? cutRoundVideoUrl
-                    : polishRoundVideoUrl;
+            return type_ == Type.CUT ? cutRoundVideoUrl : polishRoundVideoUrl;
         } else if (shape == DiamondShape.OVAL) {
-            return
-                type_ == DiamondDawnType.CUT
-                    ? cutOvalVideoUrl
-                    : polishOvalVideoUrl;
+            return type_ == Type.CUT ? cutOvalVideoUrl : polishOvalVideoUrl;
         } else if (shape == DiamondShape.RADIANT) {
             return
-                type_ == DiamondDawnType.CUT
-                    ? cutRadiantVideoUrl
-                    : polishRadiantVideoUrl;
+                type_ == Type.CUT ? cutRadiantVideoUrl : polishRadiantVideoUrl;
         }
         revert("Unknown shape");
     }
@@ -437,7 +419,7 @@ contract DiamondDawnMine is
 
     function _getMetadataJson(
         uint tokenId,
-        DiamondDawnMetadata memory metadata,
+        Metadata memory metadata,
         string memory videoUrl
     ) private pure returns (string memory) {
         // TODO: Add real description
@@ -454,35 +436,35 @@ contract DiamondDawnMine is
         return generateERC721Metadata(erc721Metadata);
     }
 
-    function _getJsonAttributes(DiamondDawnMetadata memory metadata)
+    function _getJsonAttributes(Metadata memory metadata)
         private
         pure
         returns (ERC721MetadataAttribute[] memory)
     {
-        DiamondDawnType diamondDawnType = metadata.type_;
-        if (DiamondDawnType.ENTER_MINE == diamondDawnType) {
+        Type diamondDawnType = metadata.type_;
+        if (Type.ENTER_MINE == diamondDawnType) {
             return _getMineEntranceJsonAttributes();
-        } else if (DiamondDawnType.ROUGH == diamondDawnType) {
+        } else if (Type.ROUGH == diamondDawnType) {
             return
                 _getRoughDiamondJsonAttributes(
                     metadata.rough,
                     metadata.certificate
                 );
-        } else if (DiamondDawnType.CUT == diamondDawnType) {
+        } else if (Type.CUT == diamondDawnType) {
             return
                 _getCutDiamondJsonAttributes(
                     metadata.cut,
                     metadata.certificate
                 );
-        } else if (DiamondDawnType.POLISHED == diamondDawnType) {
+        } else if (Type.POLISHED == diamondDawnType) {
             return _getPolishedDiamondJsonAttributes(metadata.certificate);
-        } else if (DiamondDawnType.REBORN == diamondDawnType) {
+        } else if (Type.REBORN == diamondDawnType) {
             return _getRebornDiamondJsonAttributes(metadata.certificate);
         }
         revert("Unknown type");
     }
 
-    function _getTypeAttribute(DiamondDawnType diamondDawnType)
+    function _getTypeAttribute(Type diamondDawnType)
         private
         pure
         returns (ERC721MetadataAttribute memory)
@@ -505,14 +487,15 @@ contract DiamondDawnMine is
     {
         ERC721MetadataAttribute[]
             memory metadataAttributes = new ERC721MetadataAttribute[](1);
-        metadataAttributes[0] = _getTypeAttribute(DiamondDawnType.ENTER_MINE);
+        metadataAttributes[0] = _getTypeAttribute(Type.ENTER_MINE);
         return metadataAttributes;
     }
 
-    function _getBaseJsonAttributes(
-        DiamondDawnType diamondDawnType,
-        uint points
-    ) private pure returns (ERC721MetadataAttribute[] memory) {
+    function _getBaseJsonAttributes(Type diamondDawnType, uint points)
+        private
+        pure
+        returns (ERC721MetadataAttribute[] memory)
+    {
         // TODO: check about fix sized array in returns type (returns (ERC721MetadataAttribute[3] memory)).
         assert(points > 0);
         ERC721MetadataAttribute[]
@@ -545,7 +528,7 @@ contract DiamondDawnMine is
         return metadataAttributes;
     }
 
-    function _getRoughJsonAttributes(RoughDiamondMetadata memory rough)
+    function _getRoughJsonAttributes(RoughMetadata memory rough)
         private
         pure
         returns (ERC721MetadataAttribute[] memory)
@@ -580,7 +563,7 @@ contract DiamondDawnMine is
         return roughMetadataAttributes;
     }
 
-    function _getCutJsonAttributes(DiamondCertificate memory certificate)
+    function _getCutJsonAttributes(Certificate memory certificate)
         private
         pure
         returns (ERC721MetadataAttribute[] memory)
@@ -631,7 +614,7 @@ contract DiamondDawnMine is
         return cutMetadataAttributes;
     }
 
-    function _getPolishJsonAttributes(DiamondCertificate memory certificate)
+    function _getPolishJsonAttributes(Certificate memory certificate)
         private
         pure
         returns (ERC721MetadataAttribute[] memory)
@@ -666,7 +649,7 @@ contract DiamondDawnMine is
         return polishMetadataAttributes;
     }
 
-    function _getRebirthJsonAttributes(DiamondCertificate memory certificate)
+    function _getRebirthJsonAttributes(Certificate memory certificate)
         private
         pure
         returns (ERC721MetadataAttribute[] memory)
@@ -702,15 +685,15 @@ contract DiamondDawnMine is
     }
 
     function _getRoughDiamondJsonAttributes(
-        RoughDiamondMetadata memory rough,
-        DiamondCertificate memory certificate
+        RoughMetadata memory rough,
+        Certificate memory certificate
     ) private pure returns (ERC721MetadataAttribute[] memory) {
         assert(rough.pointsReduction > 0);
         assert(certificate.points > 0);
 
         ERC721MetadataAttribute[]
             memory baseAttributes = _getBaseJsonAttributes(
-                DiamondDawnType.ROUGH,
+                Type.ROUGH,
                 certificate.points + rough.pointsReduction
             );
 
@@ -733,15 +716,15 @@ contract DiamondDawnMine is
     }
 
     function _getCutDiamondJsonAttributes(
-        CutDiamondMetadata memory cutMetadata,
-        DiamondCertificate memory certificate
+        CutMetadata memory cutMetadata,
+        Certificate memory certificate
     ) private pure returns (ERC721MetadataAttribute[] memory) {
         assert(cutMetadata.pointsReduction > 0);
         assert(certificate.points > 0);
 
         ERC721MetadataAttribute[]
             memory baseAttributes = _getBaseJsonAttributes(
-                DiamondDawnType.CUT,
+                Type.CUT,
                 certificate.points + cutMetadata.pointsReduction
             );
         ERC721MetadataAttribute[] memory cutAttributes = _getCutJsonAttributes(
@@ -765,14 +748,16 @@ contract DiamondDawnMine is
         return metadataAttributes;
     }
 
-    function _getPolishedDiamondJsonAttributes(
-        DiamondCertificate memory certificate
-    ) private pure returns (ERC721MetadataAttribute[] memory) {
+    function _getPolishedDiamondJsonAttributes(Certificate memory certificate)
+        private
+        pure
+        returns (ERC721MetadataAttribute[] memory)
+    {
         assert(certificate.points > 0);
 
         ERC721MetadataAttribute[]
             memory baseAttributes = _getBaseJsonAttributes(
-                DiamondDawnType.POLISHED,
+                Type.POLISHED,
                 certificate.points
             );
         ERC721MetadataAttribute[] memory cutAttributes = _getCutJsonAttributes(
@@ -802,14 +787,16 @@ contract DiamondDawnMine is
         return metadataAttributes;
     }
 
-    function _getRebornDiamondJsonAttributes(
-        DiamondCertificate memory certificate
-    ) private pure returns (ERC721MetadataAttribute[] memory) {
+    function _getRebornDiamondJsonAttributes(Certificate memory certificate)
+        private
+        pure
+        returns (ERC721MetadataAttribute[] memory)
+    {
         assert(certificate.points > 0);
 
         ERC721MetadataAttribute[]
             memory baseAttributes = _getBaseJsonAttributes(
-                DiamondDawnType.REBORN,
+                Type.REBORN,
                 certificate.points
             );
         ERC721MetadataAttribute[] memory cutAttributes = _getCutJsonAttributes(
@@ -844,31 +831,31 @@ contract DiamondDawnMine is
         return metadataAttributes;
     }
 
-    function _toDiamondDawnTypeString(DiamondDawnType type_)
+    function _toDiamondDawnTypeString(Type type_)
         private
         pure
         returns (string memory)
     {
-        if (type_ == DiamondDawnType.ENTER_MINE) {
+        if (type_ == Type.ENTER_MINE) {
             return "Mine Entrance";
-        } else if (type_ == DiamondDawnType.ROUGH) {
+        } else if (type_ == Type.ROUGH) {
             return "Rough";
-        } else if (type_ == DiamondDawnType.CUT) {
+        } else if (type_ == Type.CUT) {
             return "Cut";
-        } else if (type_ == DiamondDawnType.POLISHED) {
+        } else if (type_ == Type.POLISHED) {
             return "Polished";
-        } else if (type_ == DiamondDawnType.REBORN) {
+        } else if (type_ == Type.REBORN) {
             return "Reborn";
         }
         revert("Unknown type");
     }
 
-    function _toRoughShapeString(RoughDiamondShape shape)
+    function _toRoughShapeString(RoughShape shape)
         private
         pure
         returns (string memory)
     {
-        if (shape == RoughDiamondShape.MAKEABLE) {
+        if (shape == RoughShape.MAKEABLE) {
             return "Makeable";
         }
         revert("Unknown shape");
