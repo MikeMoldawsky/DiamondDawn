@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 require("dotenv").config();
 const { expect } = require("chai");
 const { parseEther } = require("ethers/lib/utils");
