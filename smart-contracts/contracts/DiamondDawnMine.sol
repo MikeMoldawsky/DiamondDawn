@@ -25,11 +25,11 @@ contract DiamondDawnMine is
 
     struct RoughMetadata {
         RoughShape shape;
-        uint pointsReduction;
+        uint extraPoints;
     }
 
     struct CutMetadata {
-        uint pointsReduction;
+        uint extraPoints;
     }
 
     struct Metadata {
@@ -56,11 +56,11 @@ contract DiamondDawnMine is
     string public rebirthVideoUrl;
 
     // Carat loss of ~35% to ~65% from rough stone to the polished diamond.
-    uint private constant MIN_ROUGH_POINTS_REDUCTION = 38;
-    uint private constant MAX_ROUGH_POINTS_REDUCTION = 74;
-    // Carat loss from ~2% to ~8% in the polish process.
-    uint private constant MIN_POLISH_POINTS_REDUCTION = 1;
-    uint private constant MAX_POLISH_POINTS_REDUCTION = 4;
+    uint private constant MIN_ROUGH_EXTRA_POINTS = 38;
+    uint private constant MAX_ROUGH_EXTRA_POINTS = 74;
+    // Carat loss of ~2% to ~8% in the polish process.
+    uint private constant MIN_POLISH_EXTRA_POINTS = 1;
+    uint private constant MAX_POLISH_EXTRA_POINTS = 4;
 
     uint private _randNonce = 0;
     mapping(uint => Metadata) private _metadata;
@@ -219,25 +219,22 @@ contract DiamondDawnMine is
     function enterMine(uint tokenId) external onlyDiamondDawn mineOpen {
         _metadata[tokenId] = Metadata({
             type_: Type.ENTER_MINE,
-            rough: RoughMetadata({
-                shape: RoughShape.NO_SHAPE,
-                pointsReduction: 0
-            }),
-            cut: CutMetadata({pointsReduction: 0}),
+            rough: RoughMetadata({shape: RoughShape.NO_SHAPE, extraPoints: 0}),
+            cut: CutMetadata({extraPoints: 0}),
             certificate: NO_DIAMOND
         });
     }
 
     function mine(uint tokenId) external onlyDiamondDawn mineOpen mineNotDry {
-        uint pointsReduction = _getRandomNumberInRange(
-            MIN_ROUGH_POINTS_REDUCTION,
-            MAX_ROUGH_POINTS_REDUCTION
+        uint extraPoints = _getRandomNumberInRange(
+            MIN_ROUGH_EXTRA_POINTS,
+            MAX_ROUGH_EXTRA_POINTS
         );
         Metadata storage metadata = _metadata[tokenId];
         metadata.type_ = Type.ROUGH;
         metadata.rough = RoughMetadata({
             shape: RoughShape.MAKEABLE,
-            pointsReduction: pointsReduction
+            extraPoints: extraPoints
         });
         metadata.certificate = _mineDiamond();
     }
@@ -248,12 +245,12 @@ contract DiamondDawnMine is
         mineOpen
         onlyDiamondDawnType(tokenId, Type.ROUGH)
     {
-        uint pointsReduction = _getRandomNumberInRange(
-            MIN_POLISH_POINTS_REDUCTION,
-            MAX_POLISH_POINTS_REDUCTION
+        uint extraPoints = _getRandomNumberInRange(
+            MIN_POLISH_EXTRA_POINTS,
+            MAX_POLISH_EXTRA_POINTS
         );
         Metadata storage diamondDawnMetadata = _metadata[tokenId];
-        diamondDawnMetadata.cut.pointsReduction = pointsReduction;
+        diamondDawnMetadata.cut.extraPoints = extraPoints;
         diamondDawnMetadata.type_ = Type.CUT;
     }
 
@@ -471,7 +468,7 @@ contract DiamondDawnMine is
                 true,
                 "",
                 "Type",
-                _toDiamondDawnTypeString(diamondDawnType)
+                _toTypeString(diamondDawnType)
             );
     }
 
@@ -679,57 +676,57 @@ contract DiamondDawnMine is
         RoughMetadata memory rough,
         Certificate memory certificate
     ) private pure returns (ERC721Attribute[] memory) {
-        assert(rough.pointsReduction > 0);
+        assert(rough.extraPoints > 0);
         assert(certificate.points > 0);
 
-        ERC721Attribute[] memory baseAttributes = _getBaseAttributes(
+        ERC721Attribute[] memory base = _getBaseAttributes(
             Type.ROUGH,
-            certificate.points + rough.pointsReduction
+            certificate.points + rough.extraPoints
         );
 
         ERC721Attribute[] memory roughAttributes = _getRoughAttributes(rough);
 
-        ERC721Attribute[] memory metadataAttributes = new ERC721Attribute[](7);
+        ERC721Attribute[] memory attributes = new ERC721Attribute[](7);
         // TODO make it more generic
         // Base
-        metadataAttributes[0] = baseAttributes[0];
-        metadataAttributes[1] = baseAttributes[1];
-        metadataAttributes[2] = baseAttributes[2];
-        metadataAttributes[3] = baseAttributes[3];
+        attributes[0] = base[0];
+        attributes[1] = base[1];
+        attributes[2] = base[2];
+        attributes[3] = base[3];
         // Rough
-        metadataAttributes[4] = roughAttributes[0];
-        metadataAttributes[5] = roughAttributes[1];
-        metadataAttributes[6] = roughAttributes[2];
-        return metadataAttributes;
+        attributes[4] = roughAttributes[0];
+        attributes[5] = roughAttributes[1];
+        attributes[6] = roughAttributes[2];
+        return attributes;
     }
 
     function _getCutDiamondAttributes(
         CutMetadata memory cutMetadata,
         Certificate memory certificate
     ) private pure returns (ERC721Attribute[] memory) {
-        assert(cutMetadata.pointsReduction > 0);
+        assert(cutMetadata.extraPoints > 0);
         assert(certificate.points > 0);
 
-        ERC721Attribute[] memory baseAttributes = _getBaseAttributes(
+        ERC721Attribute[] memory base = _getBaseAttributes(
             Type.CUT,
-            certificate.points + cutMetadata.pointsReduction
+            certificate.points + cutMetadata.extraPoints
         );
         ERC721Attribute[] memory cutAttributes = _getCutAttributes(certificate);
-        ERC721Attribute[] memory metadataAttributes = new ERC721Attribute[](9);
+        ERC721Attribute[] memory attributes = new ERC721Attribute[](9);
 
         // TODO make it more generic
         // Base
-        metadataAttributes[0] = baseAttributes[0];
-        metadataAttributes[1] = baseAttributes[1];
-        metadataAttributes[2] = baseAttributes[2];
-        metadataAttributes[3] = baseAttributes[3];
+        attributes[0] = base[0];
+        attributes[1] = base[1];
+        attributes[2] = base[2];
+        attributes[3] = base[3];
         // Cut
-        metadataAttributes[4] = cutAttributes[0];
-        metadataAttributes[5] = cutAttributes[1];
-        metadataAttributes[6] = cutAttributes[2];
-        metadataAttributes[7] = cutAttributes[3];
-        metadataAttributes[8] = cutAttributes[4];
-        return metadataAttributes;
+        attributes[4] = cutAttributes[0];
+        attributes[5] = cutAttributes[1];
+        attributes[6] = cutAttributes[2];
+        attributes[7] = cutAttributes[3];
+        attributes[8] = cutAttributes[4];
+        return attributes;
     }
 
     function _getPolishedDiamondAttributes(Certificate memory certificate)
@@ -739,33 +736,31 @@ contract DiamondDawnMine is
     {
         assert(certificate.points > 0);
 
-        ERC721Attribute[] memory baseAttributes = _getBaseAttributes(
+        ERC721Attribute[] memory base = _getBaseAttributes(
             Type.POLISHED,
             certificate.points
         );
         ERC721Attribute[] memory cutAttributes = _getCutAttributes(certificate);
-        ERC721Attribute[] memory polishAttributes = _getPolishedAttributes(
-            certificate
-        );
+        ERC721Attribute[] memory polished = _getPolishedAttributes(certificate);
 
-        ERC721Attribute[] memory metadataAttributes = new ERC721Attribute[](12);
+        ERC721Attribute[] memory attributes = new ERC721Attribute[](12);
         // TODO make it more generic
         // Base
-        metadataAttributes[0] = baseAttributes[0];
-        metadataAttributes[1] = baseAttributes[1];
-        metadataAttributes[2] = baseAttributes[2];
-        metadataAttributes[3] = baseAttributes[3];
+        attributes[0] = base[0];
+        attributes[1] = base[1];
+        attributes[2] = base[2];
+        attributes[3] = base[3];
         // Cut
-        metadataAttributes[4] = cutAttributes[0];
-        metadataAttributes[5] = cutAttributes[1];
-        metadataAttributes[6] = cutAttributes[2];
-        metadataAttributes[7] = cutAttributes[3];
-        metadataAttributes[8] = cutAttributes[4];
+        attributes[4] = cutAttributes[0];
+        attributes[5] = cutAttributes[1];
+        attributes[6] = cutAttributes[2];
+        attributes[7] = cutAttributes[3];
+        attributes[8] = cutAttributes[4];
         // Polish
-        metadataAttributes[9] = polishAttributes[0];
-        metadataAttributes[10] = polishAttributes[1];
-        metadataAttributes[11] = polishAttributes[2];
-        return metadataAttributes;
+        attributes[9] = polished[0];
+        attributes[10] = polished[1];
+        attributes[11] = polished[2];
+        return attributes;
     }
 
     function _getRebornDiamondAttributes(Certificate memory certificate)
@@ -775,46 +770,40 @@ contract DiamondDawnMine is
     {
         assert(certificate.points > 0);
 
-        ERC721Attribute[] memory baseAttributes = _getBaseAttributes(
+        ERC721Attribute[] memory base = _getBaseAttributes(
             Type.REBORN,
             certificate.points
         );
         ERC721Attribute[] memory cutAttributes = _getCutAttributes(certificate);
-        ERC721Attribute[] memory polishAttributes = _getPolishedAttributes(
-            certificate
-        );
+        ERC721Attribute[] memory polished = _getPolishedAttributes(certificate);
         ERC721Attribute[] memory rebirthAttributes = _getRebirthAttributes(
             certificate
         );
-        ERC721Attribute[] memory metadataAttributes = new ERC721Attribute[](15);
+        ERC721Attribute[] memory attributes = new ERC721Attribute[](15);
         // TODO make it more generic
         // Base
-        metadataAttributes[0] = baseAttributes[0];
-        metadataAttributes[1] = baseAttributes[1];
-        metadataAttributes[2] = baseAttributes[2];
-        metadataAttributes[3] = baseAttributes[3];
+        attributes[0] = base[0];
+        attributes[1] = base[1];
+        attributes[2] = base[2];
+        attributes[3] = base[3];
         // Cut
-        metadataAttributes[4] = cutAttributes[0];
-        metadataAttributes[5] = cutAttributes[1];
-        metadataAttributes[6] = cutAttributes[2];
-        metadataAttributes[7] = cutAttributes[3];
-        metadataAttributes[8] = cutAttributes[4];
+        attributes[4] = cutAttributes[0];
+        attributes[5] = cutAttributes[1];
+        attributes[6] = cutAttributes[2];
+        attributes[7] = cutAttributes[3];
+        attributes[8] = cutAttributes[4];
         // Polish
-        metadataAttributes[9] = polishAttributes[0];
-        metadataAttributes[10] = polishAttributes[1];
-        metadataAttributes[11] = polishAttributes[2];
+        attributes[9] = polished[0];
+        attributes[10] = polished[1];
+        attributes[11] = polished[2];
         // Rebirth
-        metadataAttributes[12] = rebirthAttributes[0];
-        metadataAttributes[13] = rebirthAttributes[1];
-        metadataAttributes[14] = rebirthAttributes[2];
-        return metadataAttributes;
+        attributes[12] = rebirthAttributes[0];
+        attributes[13] = rebirthAttributes[1];
+        attributes[14] = rebirthAttributes[2];
+        return attributes;
     }
 
-    function _toDiamondDawnTypeString(Type type_)
-        private
-        pure
-        returns (string memory)
-    {
+    function _toTypeString(Type type_) private pure returns (string memory) {
         if (type_ == Type.ENTER_MINE) return "Mine Entrance";
         else if (type_ == Type.ROUGH) return "Rough";
         else if (type_ == Type.CUT) return "Cut";
