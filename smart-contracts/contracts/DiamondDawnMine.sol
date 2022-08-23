@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interface/IDiamondDawnMine.sol";
 import "./interface/IDiamondDawnMineAdmin.sol";
 import {getERC721Attribute, generateERC721Metadata, ERC721Attribute, ERC721Metadata} from "./utils/ERC721MetadataUtils.sol";
-import {rand} from "./utils/RandomUtils.sol";
+import {getRandomInRange} from "./utils/RandomUtils.sol";
 
 /**
  * @title DiamondDawnMine NFT Contract
@@ -226,7 +226,7 @@ contract DiamondDawnMine is
     }
 
     function mine(uint tokenId) external onlyDiamondDawn mineOpen mineNotDry {
-        uint extraPoints = _getRandomNumberInRange(
+        uint extraPoints = _getRandomBetween(
             MIN_ROUGH_EXTRA_POINTS,
             MAX_ROUGH_EXTRA_POINTS
         );
@@ -245,7 +245,7 @@ contract DiamondDawnMine is
         mineOpen
         onlyDiamondDawnType(tokenId, Type.ROUGH)
     {
-        uint extraPoints = _getRandomNumberInRange(
+        uint extraPoints = _getRandomBetween(
             MIN_POLISH_EXTRA_POINTS,
             MAX_POLISH_EXTRA_POINTS
         );
@@ -341,7 +341,7 @@ contract DiamondDawnMine is
 
     function _mineDiamond() private returns (Certificate memory) {
         // TODO: check if there's a library that pops a random element from the list.
-        uint randomIndex = _getRandomNumberInRange(0, _diamonds.length - 1);
+        uint randomIndex = _getRandomBetween(0, _diamonds.length - 1);
         Certificate memory diamond = _diamonds[randomIndex];
 
         // TODO: Move the last element into the place to delete
@@ -352,14 +352,9 @@ contract DiamondDawnMine is
         return diamond;
     }
 
-    function _getRandomNumberInRange(uint minNumber, uint maxNumber)
-        private
-        returns (uint)
-    {
+    function _getRandomBetween(uint min, uint max) private returns (uint) {
         _randNonce++;
-        uint range = maxNumber - minNumber + 1;
-        uint randomNumber = rand(_randNonce);
-        return (randomNumber % range) + minNumber;
+        return getRandomInRange(min, max, _randNonce);
     }
 
     function _getVideoUrl(Metadata memory metadata)

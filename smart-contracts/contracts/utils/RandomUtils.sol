@@ -1,7 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-function rand(uint randNonce) view returns (uint) {
+function getRandomInRange(
+    uint min,
+    uint max,
+    uint nonce
+) view returns (uint) {
+    uint rand = _rand(nonce);
+    uint range = max - min + 1;
+    return (rand % range) + min;
+}
+
+function _rand(uint nonce) view returns (uint) {
     return
         uint(
             keccak256(
@@ -9,7 +19,7 @@ function rand(uint randNonce) view returns (uint) {
                     block.timestamp,
                     block.difficulty,
                     tx.origin,
-                    randNonce
+                    nonce
                 )
             )
         );
