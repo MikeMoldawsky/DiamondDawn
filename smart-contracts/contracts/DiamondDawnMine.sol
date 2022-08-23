@@ -96,7 +96,7 @@ contract DiamondDawnMine is
     }
 
     modifier onlyExistingTokens(uint tokenId) {
-        require(_metadata[tokenId].type_ != Type.NO_TYPE);
+        require(_metadata[tokenId].type_ != Type.NO_TYPE, "No token");
         _;
     }
 
@@ -210,8 +210,7 @@ contract DiamondDawnMine is
     {
         Metadata storage metadata = _metadata[tokenId];
         require(
-            metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN,
-            "Not in ship stage"
+            metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN
         );
         metadata.certificate = diamond;
     }
@@ -480,9 +479,11 @@ contract DiamondDawnMine is
         baseAttributes[0] = getStringNFTAttribute("Origin", "Metaverse");
         baseAttributes[1] = _getTypeAttribute(diamondDawnType);
         baseAttributes[2] = getStringNFTAttribute("Identification", "Natural");
-        baseAttributes[3] = getStringNFTAttribute(
+        baseAttributes[3] = getNFTAttribute(
             "Carat",
-            _toCaratString(points)
+            _toCaratString(points),
+            "",
+            false
         );
         return baseAttributes;
     }
@@ -566,7 +567,7 @@ contract DiamondDawnMine is
         rebirthAttributes[1] = getNFTAttribute(
             "Report Date",
             Strings.toString(certificate.reportDate),
-            "",
+            "date",
             false
         );
         rebirthAttributes[2] = getNFTAttribute(

@@ -5,12 +5,33 @@ const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const parseDataUrl = require("parse-data-url");
 const _ = require("lodash");
+const {
+  enumToColor,
+  enumToGrade,
+  enumToFluorescence,
+  enumToShape,
+  enumToClarity,
+} = require("./constants/consts");
 
 // constants
 const MIN_ROUGH_EXTRA_POINTS = 38;
 const MAX_ROUGH_EXTRA_POINTS = 74;
 const MIN_POLISH_EXTRA_POINTS = 1;
 const MAX_POLISH_EXTRA_POINTS = 4;
+
+const DIAMOND = {
+  reportNumber: 1111111111,
+  reportDate: 1659254421,
+  shape: 1,
+  points: 45,
+  color: 2,
+  clarity: 1,
+  cut: 1,
+  polish: 1,
+  symmetry: 1,
+  fluorescence: 1,
+  measurements: "5.1 - 5.12 x 35",
+};
 
 describe("Diamond Dawn Mine", () => {
   async function deployDiamondDawnMineContractsFixture() {
@@ -40,7 +61,7 @@ describe("Diamond Dawn Mine", () => {
         deployDiamondDawnMineContractsFixture
       );
       await expect(diamondDawnMine.getDiamondMetadata(1)).to.be.revertedWith(
-        "No token id"
+        "No token"
       );
     });
 
@@ -48,17 +69,18 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine } = await loadFixture(
         deployDiamondDawnMineContractsFixture
       );
+      const videoSuffix = "suffix.mp4";
       const expectedMetadata = {
         name: "Diamond #1",
         description: "description",
         created_by: "dd",
-        image:
-          "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/",
+        image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
         attributes: [{ trait_type: "Type", value: "Mine Entrance" }],
       };
       // Token 1 enters mine
       const tokenId = 1;
       await diamondDawnMine.enterMine(tokenId);
+      await diamondDawnMine.setMineEntranceVideoUrl(videoSuffix);
       // fetch metadata for token 1
       const metadata = await diamondDawnMine.getDiamondMetadata(tokenId);
       const parsedData = parseDataUrl(metadata); // parse data-url (data:[<mediatype>][;base64],<data>)
@@ -75,39 +97,25 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine } = await loadFixture(
         deployDiamondDawnMineContractsFixture
       );
-      const diamonds = [
-        {
-          reportNumber: 1111111111,
-          reportDate: 1659254421,
-          shape: 1,
-          points: 45,
-          color: "J",
-          clarity: "FLAWLESS",
-          cut: "EXCELLENT",
-          polish: "EXCELLENT",
-          symmetry: "EXCELLENT",
-          fluorescence: "EXCELLENT",
-          measurements: "5.1 - 5.12 x 35",
-        },
-      ];
-
-      await diamondDawnMine.diamondEruption(diamonds);
-
+      const videoSuffix = "suffix.mp4";
       const expectedMetadataWithoutCarat = {
         name: "Diamond #1",
         description: "description",
         created_by: "dd",
-        image:
-          "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/",
+        image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
         attributes: [
           { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Type", value: "Rough" },
           { trait_type: "Identification", value: "Natural" },
-          { trait_type: "Color", value: "CAPE" },
+          { trait_type: "Color", value: "Cape" },
           { trait_type: "Shape", value: "Makeable" },
           { trait_type: "Mine", value: "Underground" },
         ],
       };
+
+      await diamondDawnMine.setRoughVideoUrl(videoSuffix);
+      await diamondDawnMine.diamondEruption([DIAMOND]);
+
       // Token 1 enters mine
       const tokenId = 1;
       await diamondDawnMine.enterMine(tokenId);
@@ -132,10 +140,9 @@ describe("Diamond Dawn Mine", () => {
         const [actualCaratAttribute] = arr;
         expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
         expect(actualCaratAttribute.trait_type).equal("Carat");
-        expect(actualCaratAttribute.value).to.match(/\d\.\d\d/);
-        expect(Number(actualCaratAttribute.value)).to.be.within(
-          (diamonds[0].points + MIN_ROUGH_EXTRA_POINTS) / 100,
-          (diamonds[0].points + MAX_ROUGH_EXTRA_POINTS) / 100
+        expect(actualCaratAttribute.value).to.be.within(
+          (DIAMOND.points + MIN_ROUGH_EXTRA_POINTS) / 100,
+          (DIAMOND.points + MAX_ROUGH_EXTRA_POINTS) / 100
         );
         return true;
       });
@@ -147,41 +154,29 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine } = await loadFixture(
         deployDiamondDawnMineContractsFixture
       );
-      const diamonds = [
-        {
-          reportNumber: 1111111111,
-          reportDate: 1659254421,
-          shape: 1,
-          points: 45,
-          color: "J",
-          clarity: "FLAWLESS",
-          cut: "EXCELLENT",
-          polish: "EXCELLENT",
-          symmetry: "EXCELLENT",
-          fluorescence: "EXCELLENT",
-          measurements: "5.1 - 5.12 x 35",
-        },
-      ];
-
-      await diamondDawnMine.diamondEruption(diamonds);
-
+      const videoSuffix = "suffix.mp4";
       const expectedMetadataWithoutCarat = {
         name: "Diamond #1",
         description: "description",
         created_by: "dd",
-        image:
-          "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/",
+        image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
         attributes: [
           { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Type", value: "Cut" },
           { trait_type: "Identification", value: "Natural" },
-          { trait_type: "Color", value: diamonds[0].color },
-          { trait_type: "Cut", value: diamonds[0].cut },
-          { trait_type: "Fluorescence", value: diamonds[0].fluorescence },
-          { trait_type: "Measurements", value: diamonds[0].measurements },
-          { trait_type: "Shape", value: "Pear" },
+          { trait_type: "Color", value: enumToColor(DIAMOND.color) },
+          { trait_type: "Cut", value: enumToGrade(DIAMOND.cut) },
+          {
+            trait_type: "Fluorescence",
+            value: enumToFluorescence(DIAMOND.fluorescence),
+          },
+          { trait_type: "Measurements", value: DIAMOND.measurements },
+          { trait_type: "Shape", value: enumToShape(DIAMOND.shape) },
         ],
       };
+      await diamondDawnMine.setCutVideoUrls(videoSuffix, "", "", ""); // TODO: test all urls
+      await diamondDawnMine.diamondEruption([DIAMOND]);
+
       // Token 1 enters mine
       const tokenId = 1;
       await diamondDawnMine.enterMine(tokenId);
@@ -207,10 +202,9 @@ describe("Diamond Dawn Mine", () => {
         const [actualCaratAttribute] = arr;
         expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
         expect(actualCaratAttribute.trait_type).equal("Carat");
-        expect(actualCaratAttribute.value).to.match(/\d\.\d\d/);
-        expect(Number(actualCaratAttribute.value)).to.be.within(
-          (diamonds[0].points + MIN_POLISH_EXTRA_POINTS) / 100,
-          (diamonds[0].points + MAX_POLISH_EXTRA_POINTS) / 100
+        expect(actualCaratAttribute.value).to.be.within(
+          (DIAMOND.points + MIN_POLISH_EXTRA_POINTS) / 100,
+          (DIAMOND.points + MAX_POLISH_EXTRA_POINTS) / 100
         );
         return true;
       });
@@ -222,44 +216,33 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine } = await loadFixture(
         deployDiamondDawnMineContractsFixture
       );
-      const diamonds = [
-        {
-          reportNumber: 1111111111,
-          reportDate: 1659254421,
-          shape: 1,
-          points: 45,
-          color: "J",
-          clarity: "FLAWLESS",
-          cut: "EXCELLENT",
-          polish: "EXCELLENT",
-          symmetry: "EXCELLENT",
-          fluorescence: "EXCELLENT",
-          measurements: "5.1 - 5.12 x 35",
-        },
-      ];
-
-      await diamondDawnMine.diamondEruption(diamonds);
-
+      const videoSuffix = "suffix.mp4";
       const expectedMetadataWithoutCarat = {
         name: "Diamond #1",
         description: "description",
         created_by: "dd",
-        image:
-          "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/",
+        image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
         attributes: [
           { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Type", value: "Polished" },
           { trait_type: "Identification", value: "Natural" },
-          { trait_type: "Color", value: diamonds[0].color },
-          { trait_type: "Cut", value: diamonds[0].cut },
-          { trait_type: "Fluorescence", value: diamonds[0].fluorescence },
-          { trait_type: "Measurements", value: diamonds[0].measurements },
-          { trait_type: "Shape", value: "Pear" },
-          { trait_type: "Clarity", value: diamonds[0].clarity },
-          { trait_type: "Polish", value: diamonds[0].polish },
-          { trait_type: "Symmetry", value: diamonds[0].symmetry },
+          { trait_type: "Color", value: enumToColor(DIAMOND.color) },
+          { trait_type: "Cut", value: enumToGrade(DIAMOND.cut) },
+          {
+            trait_type: "Fluorescence",
+            value: enumToFluorescence(DIAMOND.fluorescence),
+          },
+          { trait_type: "Measurements", value: DIAMOND.measurements },
+          { trait_type: "Shape", value: enumToShape(DIAMOND.shape) },
+          { trait_type: "Clarity", value: enumToClarity(DIAMOND.clarity) },
+          { trait_type: "Polish", value: enumToGrade(DIAMOND.polish) },
+          { trait_type: "Symmetry", value: enumToGrade(DIAMOND.symmetry) },
         ],
       };
+
+      await diamondDawnMine.setPolishVideoUrls(videoSuffix, "", "", ""); // TODO: test all urls
+      await diamondDawnMine.diamondEruption([DIAMOND]);
+
       // Token 1 enters mine
       const tokenId = 1;
       await diamondDawnMine.enterMine(tokenId);
@@ -286,10 +269,7 @@ describe("Diamond Dawn Mine", () => {
         const [actualCaratAttribute] = arr;
         expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
         expect(actualCaratAttribute.trait_type).equal("Carat");
-        expect(actualCaratAttribute.value).to.match(/\d\.\d\d/);
-        expect(Number(actualCaratAttribute.value)).equal(
-          diamonds[0].points / 100
-        );
+        expect(actualCaratAttribute.value).equal(DIAMOND.points / 100);
         return true;
       });
       // Validate all attributes except carat
@@ -300,47 +280,40 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine } = await loadFixture(
         deployDiamondDawnMineContractsFixture
       );
-      const diamonds = [
-        {
-          reportNumber: 1111111111,
-          reportDate: 1659254421,
-          shape: 1,
-          points: 45,
-          color: "J",
-          clarity: "FLAWLESS",
-          cut: "EXCELLENT",
-          polish: "EXCELLENT",
-          symmetry: "EXCELLENT",
-          fluorescence: "EXCELLENT",
-          measurements: "5.1 - 5.12 x 35",
-        },
-      ];
-
-      await diamondDawnMine.diamondEruption(diamonds);
-
+      const videoSuffix = "suffix.mp4";
       const expectedMetadataWithoutCarat = {
         name: "Diamond #1",
         description: "description",
         created_by: "dd",
-        image:
-          "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/",
+        image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
         attributes: [
           { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Type", value: "Reborn" },
           { trait_type: "Identification", value: "Natural" },
-          { trait_type: "Color", value: diamonds[0].color },
-          { trait_type: "Cut", value: diamonds[0].cut },
-          { trait_type: "Fluorescence", value: diamonds[0].fluorescence },
-          { trait_type: "Measurements", value: diamonds[0].measurements },
-          { trait_type: "Shape", value: "Pear" },
-          { trait_type: "Clarity", value: diamonds[0].clarity },
-          { trait_type: "Polish", value: diamonds[0].polish },
-          { trait_type: "Symmetry", value: diamonds[0].symmetry },
+          { trait_type: "Color", value: enumToColor(DIAMOND.color) },
+          { trait_type: "Cut", value: enumToGrade(DIAMOND.cut) },
+          {
+            trait_type: "Fluorescence",
+            value: enumToFluorescence(DIAMOND.fluorescence),
+          },
+          { trait_type: "Measurements", value: DIAMOND.measurements },
+          { trait_type: "Shape", value: enumToShape(DIAMOND.shape) },
+          { trait_type: "Clarity", value: enumToClarity(DIAMOND.clarity) },
+          { trait_type: "Polish", value: enumToGrade(DIAMOND.polish) },
+          { trait_type: "Symmetry", value: enumToGrade(DIAMOND.symmetry) },
           { trait_type: "Laboratory", value: "GIA" },
-          { trait_type: "Report Date", value: diamonds[0].reportDate },
-          { trait_type: "Report Number", value: diamonds[0].reportNumber },
+          {
+            trait_type: "Report Date",
+            value: DIAMOND.reportDate,
+            display_type: "date",
+          },
+          { trait_type: "Report Number", value: DIAMOND.reportNumber },
         ],
       };
+
+      await diamondDawnMine.setRebirthVideoUrl(videoSuffix);
+      await diamondDawnMine.diamondEruption([DIAMOND]);
+
       // Token 1 enters mine
       const tokenId = 1;
       await diamondDawnMine.enterMine(tokenId);
@@ -368,10 +341,7 @@ describe("Diamond Dawn Mine", () => {
         const [actualCaratAttribute] = arr;
         expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
         expect(actualCaratAttribute.trait_type).equal("Carat");
-        expect(actualCaratAttribute.value).to.match(/\d\.\d\d/);
-        expect(Number(actualCaratAttribute.value)).equal(
-          diamonds[0].points / 100
-        );
+        expect(actualCaratAttribute.value).equal(DIAMOND.points / 100);
         return true;
       });
       // Validate all attributes except carat

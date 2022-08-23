@@ -16,7 +16,10 @@ struct Attribute {
     bool isValueAString;
 }
 
-function getStringNFTAttribute(string memory traitType, string memory value) pure returns (Attribute memory) {
+function getStringNFTAttribute(string memory traitType, string memory value)
+    pure
+    returns (Attribute memory)
+{
     return getNFTAttribute(traitType, value, "", true);
 }
 
