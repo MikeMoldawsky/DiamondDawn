@@ -77,7 +77,7 @@ contract DiamondDawnMine is
             polish: "",
             reportDate: 0,
             reportNumber: 0,
-            shape: DiamondShape.NO_SHAPE,
+            shape: Shape.NO_SHAPE,
             symmetry: ""
         });
 
@@ -391,19 +391,19 @@ contract DiamondDawnMine is
         return string.concat(_videoBaseURI(), videoUrl);
     }
 
-    function _getVideoUrlForShape(Type type_, DiamondShape shape)
+    function _getVideoUrlForShape(Type type_, Shape shape)
         private
         view
         returns (string memory)
     {
         // TODO: assert type cut or polished
-        if (shape == DiamondShape.PEAR) {
+        if (shape == Shape.PEAR) {
             return type_ == Type.CUT ? cutPearVideoUrl : polishPearVideoUrl;
-        } else if (shape == DiamondShape.ROUND) {
+        } else if (shape == Shape.ROUND) {
             return type_ == Type.CUT ? cutRoundVideoUrl : polishRoundVideoUrl;
-        } else if (shape == DiamondShape.OVAL) {
+        } else if (shape == Shape.OVAL) {
             return type_ == Type.CUT ? cutOvalVideoUrl : polishOvalVideoUrl;
-        } else if (shape == DiamondShape.RADIANT) {
+        } else if (shape == Shape.RADIANT) {
             return
                 type_ == Type.CUT ? cutRadiantVideoUrl : polishRadiantVideoUrl;
         }
@@ -861,18 +861,18 @@ contract DiamondDawnMine is
         revert("Unknown shape");
     }
 
-    function _toShapeString(DiamondShape shape)
+    function _toShapeString(Shape shape)
         private
         pure
         returns (string memory)
     {
-        if (shape == DiamondShape.PEAR) {
+        if (shape == Shape.PEAR) {
             return "Pear";
-        } else if (shape == DiamondShape.ROUND) {
+        } else if (shape == Shape.ROUND) {
             return "Round";
-        } else if (shape == DiamondShape.OVAL) {
+        } else if (shape == Shape.OVAL) {
             return "Oval";
-        } else if (shape == DiamondShape.RADIANT) {
+        } else if (shape == Shape.RADIANT) {
             return "Radiant";
         }
         revert("Unknown shape");

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.15;
 
 interface IDiamondDawnMineAdmin {
-    enum DiamondShape {
+    enum Shape {
         NO_SHAPE,
         PEAR,
         ROUND,
@@ -20,7 +20,7 @@ interface IDiamondDawnMineAdmin {
         string polish;
         uint reportDate;
         uint reportNumber;
-        DiamondShape shape;
+        Shape shape;
         string symmetry;
     }
 
