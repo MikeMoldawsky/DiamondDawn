@@ -1,38 +1,41 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-struct ERC721Metadata {
+struct NFTMetadata {
     string name;
     string description;
     string createdBy;
     string image;
-    ERC721Attribute[] attributes;
+    Attribute[] attributes;
 }
 
-struct ERC721Attribute {
-    bool isValueAString;
-    string displayType;
+struct Attribute {
     string traitType;
     string value;
+    string displayType;
+    bool isValueAString;
 }
 
-function getERC721Attribute(
-    bool isValueAString,
-    string memory displayType,
+function getStringNFTAttribute(string memory traitType, string memory value) pure returns (Attribute memory) {
+    return getNFTAttribute(traitType, value, "", true);
+}
+
+function getNFTAttribute(
     string memory traitType,
-    string memory value
-) pure returns (ERC721Attribute memory) {
-    ERC721Attribute memory attribute = ERC721Attribute({
-        isValueAString: isValueAString,
-        displayType: displayType,
-        traitType: traitType,
-        value: value
-    });
-
-    return attribute;
+    string memory value,
+    string memory displayType,
+    bool isValueAString
+) pure returns (Attribute memory) {
+    return
+        Attribute({
+            isValueAString: isValueAString,
+            displayType: displayType,
+            traitType: traitType,
+            value: value
+        });
 }
 
-function generateERC721Metadata(ERC721Metadata memory metadata)
+function toJsonMetadata(NFTMetadata memory metadata)
     pure
     returns (string memory)
 {
@@ -44,19 +47,11 @@ function generateERC721Metadata(ERC721Metadata memory metadata)
     );
     byteString = abi.encodePacked(
         byteString,
-        _pushStringAttribute(
-            "description",
-            metadata.description,
-            true
-        )
+        _pushStringAttribute("description", metadata.description, true)
     );
     byteString = abi.encodePacked(
         byteString,
-        _pushStringAttribute(
-            "created_by",
-            metadata.createdBy,
-            true
-        )
+        _pushStringAttribute("created_by", metadata.createdBy, true)
     );
     byteString = abi.encodePacked(
         byteString,
@@ -75,14 +70,14 @@ function generateERC721Metadata(ERC721Metadata memory metadata)
     return string(byteString);
 }
 
-function _getAttributes(ERC721Attribute[] memory attributes)
+function _getAttributes(Attribute[] memory attributes)
     pure
     returns (string memory)
 {
     bytes memory byteString;
     byteString = abi.encodePacked(byteString, _openArray());
     for (uint i = 0; i < attributes.length; i++) {
-        ERC721Attribute memory attribute = attributes[i];
+        Attribute memory attribute = attributes[i];
         byteString = abi.encodePacked(
             byteString,
             _pushArrayElement(
@@ -95,7 +90,7 @@ function _getAttributes(ERC721Attribute[] memory attributes)
     return string(byteString);
 }
 
-function _getAttribute(ERC721Attribute memory attribute)
+function _getAttribute(Attribute memory attribute)
     pure
     returns (string memory)
 {
@@ -106,30 +101,23 @@ function _getAttribute(ERC721Attribute memory attribute)
     if (bytes(attribute.displayType).length > 0) {
         byteString = abi.encodePacked(
             byteString,
-            _pushStringAttribute(
-                "display_type",
-                attribute.displayType,
-                true
-            )
+            _pushStringAttribute("display_type", attribute.displayType, true)
         );
     }
-    byteString = abi.encodePacked(byteString, _pushStringAttribute("trait_type", attribute.traitType, true));
+    byteString = abi.encodePacked(
+        byteString,
+        _pushStringAttribute("trait_type", attribute.traitType, true)
+    );
 
-    if (attribute.isValueAString) {
-        byteString = abi.encodePacked(
+    byteString = attribute.isValueAString
+        ? abi.encodePacked(
             byteString,
             _pushStringAttribute("value", attribute.value, false)
-        );
-    } else {
-        byteString = abi.encodePacked(
+        )
+        : abi.encodePacked(
             byteString,
-            _pushNonStringAttribute(
-                "value",
-                attribute.value,
-                false
-            )
+            _pushNonStringAttribute("value", attribute.value, false)
         );
-    }
 
     byteString = abi.encodePacked(byteString, _closeObject());
 
@@ -158,7 +146,16 @@ function _pushStringAttribute(
     bool insertComma
 ) pure returns (string memory) {
     return
-        string(abi.encodePacked('"', key, '": "', value, '"', insertComma ? "," : ""));
+        string(
+            abi.encodePacked(
+                '"',
+                key,
+                '": "',
+                value,
+                '"',
+                insertComma ? "," : ""
+            )
+        );
 }
 
 function _pushNonStringAttribute(

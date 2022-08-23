@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interface/IDiamondDawnMine.sol";
 import "./interface/IDiamondDawnMineAdmin.sol";
-import {getERC721Attribute, generateERC721Metadata, ERC721Attribute, ERC721Metadata} from "./utils/ERC721MetadataUtils.sol";
+import {getStringNFTAttribute, getNFTAttribute, toJsonMetadata, Attribute, NFTMetadata} from "./utils/NFTMetadataUtils.sol";
 import {getRandomInRange} from "./utils/RandomUtils.sol";
 
 /**
@@ -91,37 +91,37 @@ contract DiamondDawnMine is
 
     /**********************     Modifiers     ************************/
     modifier onlyDiamondDawn() {
-        require(msg.sender == _diamondDawn, "DiamondDawn");
+        require(msg.sender == _diamondDawn);
         _;
     }
 
     modifier onlyExistingTokens(uint tokenId) {
-        require(_metadata[tokenId].type_ != Type.NO_TYPE, "No token");
+        require(_metadata[tokenId].type_ != Type.NO_TYPE);
         _;
     }
 
     modifier onlyDiamondDawnType(uint tokenId, Type diamondDawnType) {
-        require(diamondDawnType == _metadata[tokenId].type_, "Type");
+        require(diamondDawnType == _metadata[tokenId].type_);
         _;
     }
 
     modifier mineClosed() {
-        require(!isMineOpen, "Open");
+        require(!isMineOpen);
         _;
     }
 
     modifier mineOpen() {
-        require(isMineOpen, "Closed");
+        require(isMineOpen);
         _;
     }
 
     modifier mineNotLocked() {
-        require(!isMineLocked, "Locked");
+        require(!isMineLocked);
         _;
     }
 
     modifier mineNotDry() {
-        require(_diamonds.length > 0, "Empty");
+        require(_diamonds.length > 0);
         _;
     }
 
@@ -378,7 +378,7 @@ contract DiamondDawnMine is
         } else if (Type.REBORN == diamondDawnType) {
             videoUrl = rebirthVideoUrl;
         } else {
-            revert("Unknown type");
+            revert();
         }
         return string.concat(_videoBaseURI(), videoUrl);
     }
@@ -399,7 +399,7 @@ contract DiamondDawnMine is
             return
                 type_ == Type.CUT ? cutRadiantVideoUrl : polishRadiantVideoUrl;
         }
-        revert("Unknown shape");
+        revert();
     }
 
     function _videoBaseURI() private pure returns (string memory) {
@@ -415,7 +415,7 @@ contract DiamondDawnMine is
         string memory videoUrl
     ) private pure returns (string memory) {
         // TODO: Add real description
-        ERC721Metadata memory erc721Metadata = ERC721Metadata({
+        NFTMetadata memory nftMetadata = NFTMetadata({
             name: string(
                 abi.encodePacked("Diamond #", Strings.toString(tokenId))
             ),
@@ -424,13 +424,13 @@ contract DiamondDawnMine is
             image: videoUrl,
             attributes: _getAttributes(metadata)
         });
-        return generateERC721Metadata(erc721Metadata);
+        return toJsonMetadata(nftMetadata);
     }
 
     function _getAttributes(Metadata memory metadata)
         private
         pure
-        returns (ERC721Attribute[] memory)
+        returns (Attribute[] memory)
     {
         Type diamondDawnType = metadata.type_;
         if (Type.ENTER_MINE == diamondDawnType) {
@@ -448,31 +448,23 @@ contract DiamondDawnMine is
         } else if (Type.REBORN == diamondDawnType) {
             return _getRebornDiamondAttributes(metadata.certificate);
         }
-        revert("Unknown type");
+        revert();
     }
 
     function _getTypeAttribute(Type diamondDawnType)
         private
         pure
-        returns (ERC721Attribute memory)
+        returns (Attribute memory)
     {
-        return
-            getERC721Attribute(
-                true,
-                "",
-                "Type",
-                _toTypeString(diamondDawnType)
-            );
+        return getStringNFTAttribute("Type", _toTypeString(diamondDawnType));
     }
 
     function _getMineEntranceAttributes()
         private
         pure
-        returns (ERC721Attribute[] memory)
+        returns (Attribute[] memory)
     {
-        ERC721Attribute[] memory mineEntranceAttributes = new ERC721Attribute[](
-            1
-        );
+        Attribute[] memory mineEntranceAttributes = new Attribute[](1);
         mineEntranceAttributes[0] = _getTypeAttribute(Type.ENTER_MINE);
         return mineEntranceAttributes;
     }
@@ -480,27 +472,15 @@ contract DiamondDawnMine is
     function _getBaseAttributes(Type diamondDawnType, uint points)
         private
         pure
-        returns (ERC721Attribute[] memory)
+        returns (Attribute[] memory)
     {
-        // TODO: check about fix sized array in returns type (returns (ERC721Attribute[3] memory)).
+        // TODO: check about fix sized array in returns type (returns (Attribute[3] memory)).
         assert(points > 0);
-        ERC721Attribute[] memory baseAttributes = new ERC721Attribute[](4);
-        baseAttributes[0] = getERC721Attribute(
-            true,
-            "",
-            "Origin",
-            "Metaverse"
-        );
+        Attribute[] memory baseAttributes = new Attribute[](4);
+        baseAttributes[0] = getStringNFTAttribute("Origin", "Metaverse");
         baseAttributes[1] = _getTypeAttribute(diamondDawnType);
-        baseAttributes[2] = getERC721Attribute(
-            true,
-            "",
-            "Identification",
-            "Natural"
-        );
-        baseAttributes[3] = getERC721Attribute(
-            true,
-            "",
+        baseAttributes[2] = getStringNFTAttribute("Identification", "Natural");
+        baseAttributes[3] = getStringNFTAttribute(
             "Carat",
             _toCaratString(points)
         );
@@ -510,65 +490,43 @@ contract DiamondDawnMine is
     function _getRoughAttributes(RoughMetadata memory rough)
         private
         pure
-        returns (ERC721Attribute[] memory)
+        returns (Attribute[] memory)
     {
-        // TODO: check about fix sized array in returns type (returns (ERC721Attribute[3] memory)).
-        ERC721Attribute[] memory roughAttributes = new ERC721Attribute[](3);
-        roughAttributes[0] = getERC721Attribute(
-            true,
-            "",
-            "Color",
-            "Cape"
-        );
-        roughAttributes[1] = getERC721Attribute(
-            true,
-            "",
+        // TODO: check about fix sized array in returns type (returns (Attribute[3] memory)).
+        Attribute[] memory roughAttributes = new Attribute[](3);
+        roughAttributes[0] = getStringNFTAttribute("Color", "Cape");
+        roughAttributes[1] = getStringNFTAttribute(
             "Shape",
             _toRoughShapeString(rough.shape)
         );
-        roughAttributes[2] = getERC721Attribute(
-            true,
-            "",
-            "Mine",
-            "Underground"
-        );
+        roughAttributes[2] = getStringNFTAttribute("Mine", "Underground");
         return roughAttributes;
     }
 
     function _getCutAttributes(Certificate memory certificate)
         private
         pure
-        returns (ERC721Attribute[] memory)
+        returns (Attribute[] memory)
     {
-        // TODO: check about fix sized array in returns type (returns (ERC721Attribute[5] memory)).
-        ERC721Attribute[] memory cutAttributes = new ERC721Attribute[](5);
-        cutAttributes[0] = getERC721Attribute(
-            true,
-            "",
+        // TODO: check about fix sized array in returns type (returns (Attribute[5] memory)).
+        Attribute[] memory cutAttributes = new Attribute[](5);
+        cutAttributes[0] = getStringNFTAttribute(
             "Color",
             _toColorString(certificate.color)
         );
-        cutAttributes[1] = getERC721Attribute(
-            true,
-            "",
+        cutAttributes[1] = getStringNFTAttribute(
             "Cut",
             _toGradeString(certificate.cut)
         );
-        cutAttributes[2] = getERC721Attribute(
-            true,
-            "",
+        cutAttributes[2] = getStringNFTAttribute(
             "Fluorescence",
             _toFluorescenceString(certificate.fluorescence)
         );
-        cutAttributes[3] = getERC721Attribute(
-            true,
-            "",
+        cutAttributes[3] = getStringNFTAttribute(
             "Measurements",
             certificate.measurements
         );
-        cutAttributes[4] = getERC721Attribute(
-            true,
-            "",
+        cutAttributes[4] = getStringNFTAttribute(
             "Shape",
             _toShapeString(certificate.shape)
         );
@@ -578,25 +536,19 @@ contract DiamondDawnMine is
     function _getPolishedAttributes(Certificate memory certificate)
         private
         pure
-        returns (ERC721Attribute[] memory)
+        returns (Attribute[] memory)
     {
-        // TODO: check about fix sized array in returns type (returns (ERC721Attribute[5] memory)).
-        ERC721Attribute[] memory polishedAttributes = new ERC721Attribute[](3);
-        polishedAttributes[0] = getERC721Attribute(
-            true,
-            "",
+        // TODO: check about fix sized array in returns type (returns (Attribute[5] memory)).
+        Attribute[] memory polishedAttributes = new Attribute[](3);
+        polishedAttributes[0] = getStringNFTAttribute(
             "Clarity",
             _toClarityString(certificate.clarity)
         );
-        polishedAttributes[1] = getERC721Attribute(
-            true,
-            "",
+        polishedAttributes[1] = getStringNFTAttribute(
             "Polish",
             _toGradeString(certificate.polish)
         );
-        polishedAttributes[2] = getERC721Attribute(
-            true,
-            "",
+        polishedAttributes[2] = getStringNFTAttribute(
             "Symmetry",
             _toGradeString(certificate.symmetry)
         );
@@ -606,27 +558,22 @@ contract DiamondDawnMine is
     function _getRebirthAttributes(Certificate memory certificate)
         private
         pure
-        returns (ERC721Attribute[] memory)
+        returns (Attribute[] memory)
     {
-        // TODO: check about fix sized array in returns type (returns (ERC721Attribute[5] memory)).
-        ERC721Attribute[] memory rebirthAttributes = new ERC721Attribute[](3);
-        rebirthAttributes[0] = getERC721Attribute(
-            true,
-            "",
-            "Laboratory",
-            "GIA"
-        );
-        rebirthAttributes[1] = getERC721Attribute(
-            false,
-            "",
+        // TODO: check about fix sized array in returns type (returns (Attribute[5] memory)).
+        Attribute[] memory rebirthAttributes = new Attribute[](3);
+        rebirthAttributes[0] = getStringNFTAttribute("Laboratory", "GIA");
+        rebirthAttributes[1] = getNFTAttribute(
             "Report Date",
-            Strings.toString(certificate.reportDate)
-        );
-        rebirthAttributes[2] = getERC721Attribute(
-            false,
+            Strings.toString(certificate.reportDate),
             "",
+            false
+        );
+        rebirthAttributes[2] = getNFTAttribute(
             "Report Number",
-            Strings.toString(certificate.reportNumber)
+            Strings.toString(certificate.reportNumber),
+            "",
+            false
         );
         return rebirthAttributes;
     }
@@ -634,18 +581,18 @@ contract DiamondDawnMine is
     function _getRoughDiamondAttributes(
         RoughMetadata memory rough,
         Certificate memory certificate
-    ) private pure returns (ERC721Attribute[] memory) {
+    ) private pure returns (Attribute[] memory) {
         assert(rough.extraPoints > 0);
         assert(certificate.points > 0);
 
-        ERC721Attribute[] memory base = _getBaseAttributes(
+        Attribute[] memory base = _getBaseAttributes(
             Type.ROUGH,
             certificate.points + rough.extraPoints
         );
 
-        ERC721Attribute[] memory roughAttributes = _getRoughAttributes(rough);
+        Attribute[] memory roughAttributes = _getRoughAttributes(rough);
 
-        ERC721Attribute[] memory attributes = new ERC721Attribute[](7);
+        Attribute[] memory attributes = new Attribute[](7);
         // TODO make it more generic
         // Base
         attributes[0] = base[0];
@@ -662,16 +609,16 @@ contract DiamondDawnMine is
     function _getCutDiamondAttributes(
         CutMetadata memory cutMetadata,
         Certificate memory certificate
-    ) private pure returns (ERC721Attribute[] memory) {
+    ) private pure returns (Attribute[] memory) {
         assert(cutMetadata.extraPoints > 0);
         assert(certificate.points > 0);
 
-        ERC721Attribute[] memory base = _getBaseAttributes(
+        Attribute[] memory base = _getBaseAttributes(
             Type.CUT,
             certificate.points + cutMetadata.extraPoints
         );
-        ERC721Attribute[] memory cutAttributes = _getCutAttributes(certificate);
-        ERC721Attribute[] memory attributes = new ERC721Attribute[](9);
+        Attribute[] memory cutAttributes = _getCutAttributes(certificate);
+        Attribute[] memory attributes = new Attribute[](9);
 
         // TODO make it more generic
         // Base
@@ -691,18 +638,18 @@ contract DiamondDawnMine is
     function _getPolishedDiamondAttributes(Certificate memory certificate)
         private
         pure
-        returns (ERC721Attribute[] memory)
+        returns (Attribute[] memory)
     {
         assert(certificate.points > 0);
 
-        ERC721Attribute[] memory base = _getBaseAttributes(
+        Attribute[] memory base = _getBaseAttributes(
             Type.POLISHED,
             certificate.points
         );
-        ERC721Attribute[] memory cutAttributes = _getCutAttributes(certificate);
-        ERC721Attribute[] memory polished = _getPolishedAttributes(certificate);
+        Attribute[] memory cutAttributes = _getCutAttributes(certificate);
+        Attribute[] memory polished = _getPolishedAttributes(certificate);
 
-        ERC721Attribute[] memory attributes = new ERC721Attribute[](12);
+        Attribute[] memory attributes = new Attribute[](12);
         // TODO make it more generic
         // Base
         attributes[0] = base[0];
@@ -725,20 +672,20 @@ contract DiamondDawnMine is
     function _getRebornDiamondAttributes(Certificate memory certificate)
         private
         pure
-        returns (ERC721Attribute[] memory)
+        returns (Attribute[] memory)
     {
         assert(certificate.points > 0);
 
-        ERC721Attribute[] memory base = _getBaseAttributes(
+        Attribute[] memory base = _getBaseAttributes(
             Type.REBORN,
             certificate.points
         );
-        ERC721Attribute[] memory cutAttributes = _getCutAttributes(certificate);
-        ERC721Attribute[] memory polished = _getPolishedAttributes(certificate);
-        ERC721Attribute[] memory rebirthAttributes = _getRebirthAttributes(
+        Attribute[] memory cutAttributes = _getCutAttributes(certificate);
+        Attribute[] memory polished = _getPolishedAttributes(certificate);
+        Attribute[] memory rebirthAttributes = _getRebirthAttributes(
             certificate
         );
-        ERC721Attribute[] memory attributes = new ERC721Attribute[](15);
+        Attribute[] memory attributes = new Attribute[](15);
         // TODO make it more generic
         // Base
         attributes[0] = base[0];
@@ -768,7 +715,7 @@ contract DiamondDawnMine is
         else if (type_ == Type.CUT) return "Cut";
         else if (type_ == Type.POLISHED) return "Polished";
         else if (type_ == Type.REBORN) return "Reborn";
-        revert("Unknown type");
+        revert();
     }
 
     function _toRoughShapeString(RoughShape shape)
@@ -777,48 +724,56 @@ contract DiamondDawnMine is
         returns (string memory)
     {
         if (shape == RoughShape.MAKEABLE) return "Makeable";
-        revert("Unknown shape");
+        revert();
     }
 
     function _toColorString(Color color) private pure returns (string memory) {
-        if(color == Color.M) return "M";
-        else if(color == Color.N) return "N";
-        else if(color == Color.O) return "O";
-        else if(color == Color.P) return "P";
-        else if(color == Color.Q) return "Q";
-        else if(color == Color.R) return "R";
-        else if(color == Color.S) return "S";
-        else if(color == Color.T) return "T";
-        else if(color == Color.U) return "U";
-        else if(color == Color.V) return "V";
-        else if(color == Color.W) return "W";
-        else if(color == Color.X) return "X";
-        else if(color == Color.Y) return "Y";
-        else if(color == Color.Z) return "Z";
-        revert("Unknown color");
+        if (color == Color.M) return "M";
+        else if (color == Color.N) return "N";
+        else if (color == Color.O) return "O";
+        else if (color == Color.P) return "P";
+        else if (color == Color.Q) return "Q";
+        else if (color == Color.R) return "R";
+        else if (color == Color.S) return "S";
+        else if (color == Color.T) return "T";
+        else if (color == Color.U) return "U";
+        else if (color == Color.V) return "V";
+        else if (color == Color.W) return "W";
+        else if (color == Color.X) return "X";
+        else if (color == Color.Y) return "Y";
+        else if (color == Color.Z) return "Z";
+        revert();
     }
 
     function _toGradeString(Grade grade) private pure returns (string memory) {
         if (grade == Grade.GOOD) return "Good";
         else if (grade == Grade.VERY_GOOD) return "Very Good";
         else if (grade == Grade.EXCELLENT) return "Excellent";
-        revert("Unknown grade");
+        revert();
     }
 
-    function _toClarityString(Clarity clarity) private pure returns (string memory) {
+    function _toClarityString(Clarity clarity)
+        private
+        pure
+        returns (string memory)
+    {
         if (clarity == Clarity.VS2) return "VS2";
         else if (clarity == Clarity.VS1) return "VS1";
         else if (clarity == Clarity.VVS2) return "VVS2";
         else if (clarity == Clarity.VVS1) return "VVS1";
         else if (clarity == Clarity.IF) return "IF";
         else if (clarity == Clarity.FL) return "FL";
-        revert("Unknown clarity");
+        revert();
     }
 
-    function _toFluorescenceString(Fluorescence fluorescence) private pure returns (string memory) {
+    function _toFluorescenceString(Fluorescence fluorescence)
+        private
+        pure
+        returns (string memory)
+    {
         if (fluorescence == Fluorescence.FAINT) return "Faint";
         else if (fluorescence == Fluorescence.NONE) return "None";
-        revert("Unknown fluorescence");
+        revert();
     }
 
     function _toShapeString(Shape shape) private pure returns (string memory) {
@@ -826,7 +781,7 @@ contract DiamondDawnMine is
         else if (shape == Shape.ROUND) return "Round";
         else if (shape == Shape.OVAL) return "Oval";
         else if (shape == Shape.RADIANT) return "Radiant";
-        revert("Unknown shape");
+        revert();
     }
 
     function _toCaratString(uint points) private pure returns (string memory) {
