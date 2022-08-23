@@ -2,7 +2,7 @@
 pragma solidity ^0.8.15;
 
 interface IDiamondDawnMineAdmin {
-    enum DiamondShape {
+    enum Shape {
         NO_SHAPE,
         PEAR,
         ROUND,
@@ -10,7 +10,7 @@ interface IDiamondDawnMineAdmin {
         RADIANT
     }
 
-    struct DiamondCertificate {
+    struct Certificate {
         string clarity;
         string color;
         string cut;
@@ -20,24 +20,17 @@ interface IDiamondDawnMineAdmin {
         string polish;
         uint reportDate;
         uint reportNumber;
-        DiamondShape shape;
+        Shape shape;
         string symmetry;
     }
 
-    function initialize(address diamondDawnContract) external;
+    function initialize(address diamondDawn) external;
 
-    function populateDiamonds(DiamondCertificate[] calldata diamonds) external;
-
-    function setIsMineOpen(bool isMineOpen) external;
+    function diamondEruption(Certificate[] calldata diamonds) external;
 
     function setMineEntranceVideoUrl(string calldata mineEntranceUrl) external;
 
     function setRoughVideoUrl(string calldata makeable) external;
-
-    function replaceLostShipment(
-        uint tokenId,
-        DiamondCertificate calldata diamond
-    ) external;
 
     function setCutVideoUrls(
         string calldata pear,
@@ -54,4 +47,12 @@ interface IDiamondDawnMineAdmin {
     ) external;
 
     function setRebirthVideoUrl(string calldata rebirth) external;
+
+    function setIsMineOpen(bool isMineOpen) external;
+
+    function replaceLostShipment(uint tokenId, Certificate calldata diamond)
+        external;
+
+    // TODO: delete this function
+    function getDiamondCount() external view returns (uint);
 }

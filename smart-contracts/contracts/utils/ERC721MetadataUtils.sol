@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-struct ERC721MetadataStructure {
+struct ERC721Metadata {
     string name;
     string description;
     string createdBy;
     string image;
-    ERC721MetadataAttribute[] attributes;
+    ERC721Attribute[] attributes;
 }
 
-struct ERC721MetadataAttribute {
+struct ERC721Attribute {
     bool includeDisplayType;
     bool includeTraitType;
     bool isValueAString;
@@ -18,15 +18,15 @@ struct ERC721MetadataAttribute {
     string value;
 }
 
-function getERC721MetadataAttribute(
+function getERC721Attribute(
     bool includeDisplayType,
     bool includeTraitType,
     bool isValueAString,
     string memory displayType,
     string memory traitType,
     string memory value
-) pure returns (ERC721MetadataAttribute memory) {
-    ERC721MetadataAttribute memory attribute = ERC721MetadataAttribute({
+) pure returns (ERC721Attribute memory) {
+    ERC721Attribute memory attribute = ERC721Attribute({
         includeDisplayType: includeDisplayType,
         includeTraitType: includeTraitType,
         isValueAString: isValueAString,
@@ -38,7 +38,7 @@ function getERC721MetadataAttribute(
     return attribute;
 }
 
-function generateERC721Metadata(ERC721MetadataStructure memory metadata)
+function generateERC721Metadata(ERC721Metadata memory metadata)
     pure
     returns (string memory)
 {
@@ -81,14 +81,14 @@ function generateERC721Metadata(ERC721MetadataStructure memory metadata)
     return string(byteString);
 }
 
-function _getAttributes(ERC721MetadataAttribute[] memory attributes)
+function _getAttributes(ERC721Attribute[] memory attributes)
     pure
     returns (string memory)
 {
     bytes memory byteString;
     byteString = abi.encodePacked(byteString, _openJsonArray());
     for (uint i = 0; i < attributes.length; i++) {
-        ERC721MetadataAttribute memory attribute = attributes[i];
+        ERC721Attribute memory attribute = attributes[i];
         byteString = abi.encodePacked(
             byteString,
             _pushJsonArrayElement(
@@ -102,7 +102,7 @@ function _getAttributes(ERC721MetadataAttribute[] memory attributes)
     return string(byteString);
 }
 
-function _getAttribute(ERC721MetadataAttribute memory attribute)
+function _getAttribute(ERC721Attribute memory attribute)
     pure
     returns (string memory)
 {

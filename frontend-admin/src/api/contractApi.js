@@ -104,7 +104,7 @@ const prepareDiamondForPopulate = (diamond) => ({
   symmetry: diamond.symmetry,
 });
 
-export const populateDiamondsApi = async (mineContract, diamonds) => {
+export const diamondEruptionApi = async (mineContract, diamonds) => {
   const processedDiamonds = diamonds.map(prepareDiamondForPopulate);
 
   console.log("PUSHING DIAMONDS TO MINE CONTRACT", {
@@ -112,7 +112,7 @@ export const populateDiamondsApi = async (mineContract, diamonds) => {
     processedDiamonds,
   });
 
-  const tx = await mineContract.populateDiamonds(processedDiamonds);
+  const tx = await mineContract.diamondEruption(processedDiamonds);
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };

@@ -2,7 +2,8 @@
 pragma solidity ^0.8.15;
 
 interface IDiamondDawnMine {
-    enum DiamondDawnType {
+    enum Type {
+        NO_TYPE,
         ENTER_MINE,
         ROUGH,
         CUT,

@@ -13,7 +13,7 @@ import {
   SYSTEM_STAGE,
 } from "consts";
 import useDDContract from "hooks/useDDContract";
-import { populateDiamondsApi } from "api/contractApi";
+import { diamondEruptionApi } from "api/contractApi";
 import {
   getDiamondsApi,
   addDiamondApi,
@@ -190,7 +190,7 @@ const DiamondsTab = () => {
   const renderDeployButton = (selectedRows) => (
     <div
       className="button link save-button"
-      onClick={() => populateDiamondsApi(ddMineContract, selectedRows)}
+      onClick={() => diamondEruptionApi(ddMineContract, selectedRows)}
     >
       <FontAwesomeIcon icon={faUpload} /> Deploy
     </div>

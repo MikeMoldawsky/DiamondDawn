@@ -1,22 +1,14 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 require("dotenv").config();
 const { expect } = require("chai");
-const { parseEther, parseUnits, formatEther } = require("ethers/lib/utils");
-const { ethers, waffle } = require("hardhat");
+const { parseEther } = require("ethers/lib/utils");
+const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
-const { BigNumber } = ethers;
-const {
-  advanceBlockTo,
-  advanceTimeAndBlock,
-  latest,
-} = require("./utilities/time.js");
+
+// constants
+const ADMIN_ROLE =
+  "0x0000000000000000000000000000000000000000000000000000000000000000";
 
 describe("DiamondDawn", () => {
-  // constants
-  const ADMIN_ROLE =
-    "0x0000000000000000000000000000000000000000000000000000000000000000";
-
   async function deployDiamondDawnContractsFixture() {
     const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
     const diamondDawnMine = await DiamondDawnMine.deploy([]);
@@ -24,7 +16,6 @@ describe("DiamondDawn", () => {
     const diamondDawn = await DiamondDawn.deploy(diamondDawnMine.address, []); // royality as 10 %
     const [owner, user1, user2, user3, user4, user5, user6, user7, user8] =
       await ethers.getSigners();
-    const provider = waffle.provider;
     await diamondDawn.deployed();
     // Fixtures can return anything you consider useful for your tests
     return {
@@ -39,7 +30,6 @@ describe("DiamondDawn", () => {
       user6,
       user7,
       user8,
-      provider,
     };
   }
 

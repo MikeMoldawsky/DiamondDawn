@@ -183,7 +183,7 @@ async function main() {
       },
     ];
     console.log(`populating ${diamonds.length} diamonds`, diamonds);
-    await diamondDawnMine.populateDiamonds(diamonds);
+    await diamondDawnMine.diamondEruption(diamonds);
     await diamondDawnMine.setMineEntranceVideoUrl("infinity.mp4");
     await diamondDawnMine.setRoughVideoUrl("rough.mp4");
     await diamondDawnMine.setCutVideoUrls(
