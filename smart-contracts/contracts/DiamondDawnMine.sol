@@ -64,7 +64,7 @@ contract DiamondDawnMine is
 
     uint private _randNonce = 0;
     mapping(uint => DiamondDawnMetadata) private _metadata;
-    address private _diamondDawnContract;
+    address private _diamondDawn;
     DiamondCertificate[] private _diamonds;
     DiamondCertificate private NO_DIAMOND =
         DiamondCertificate({
@@ -91,7 +91,7 @@ contract DiamondDawnMine is
 
     /**********************     Modifiers     ************************/
     modifier onlyDiamondDawn() {
-        require(msg.sender == _diamondDawnContract, "OnlyDiamondDawn allowed");
+        require(msg.sender == _diamondDawn, "OnlyDiamondDawn allowed");
         _;
     }
 
@@ -107,10 +107,7 @@ contract DiamondDawnMine is
         uint tokenId,
         DiamondDawnType diamondDawnType
     ) {
-        require(
-            diamondDawnType == _metadata[tokenId].type_,
-            "Invalid type"
-        );
+        require(diamondDawnType == _metadata[tokenId].type_, "Invalid type");
         _;
     }
 
@@ -136,12 +133,12 @@ contract DiamondDawnMine is
 
     /**********************     External Functions     ************************/
 
-    function initialize(address diamondDawnContract)
+    function initialize(address diamondDawn)
         external
         mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        _diamondDawnContract = diamondDawnContract;
+        _diamondDawn = diamondDawn;
         isMineOpen = true;
     }
 
@@ -220,7 +217,7 @@ contract DiamondDawnMine is
         require(
             metadata.type_ == DiamondDawnType.POLISHED ||
                 metadata.type_ == DiamondDawnType.REBORN,
-            "Diamond isn't in shipping stage"
+            "Not in ship stage"
         );
         metadata.certificate = diamond;
     }
@@ -257,14 +254,11 @@ contract DiamondDawnMine is
         mineOpen
         onlyDiamondDawnType(tokenId, DiamondDawnType.ROUGH)
     {
-        // TODO: fix random points creation
         uint pointsReduction = _getRandomNumberInRange(
             MIN_POLISH_PROCESS_POINTS_REDUCTION,
             MAX_POLISH_PROCESS_POINTS_REDUCTION
         );
-        DiamondDawnMetadata storage diamondDawnMetadata = _metadata[
-            tokenId
-        ];
+        DiamondDawnMetadata storage diamondDawnMetadata = _metadata[tokenId];
         diamondDawnMetadata.cut.pointsReduction = pointsReduction;
         diamondDawnMetadata.type_ = DiamondDawnType.CUT;
     }
@@ -306,19 +300,13 @@ contract DiamondDawnMine is
         onlyExistingTokens(tokenId)
         returns (string memory)
     {
-        DiamondDawnMetadata memory diamondDawnMetadata = _metadata[
-            tokenId
-        ];
-        string memory videoUrl = _getDiamondDawnVideoUrl(diamondDawnMetadata);
+        DiamondDawnMetadata memory metadata = _metadata[tokenId];
+        string memory videoUrl = _getVideoUrl(metadata);
         string memory base64Json = Base64.encode(
             bytes(
                 string(
                     abi.encodePacked(
-                        _getDiamondDawnMetadataJson(
-                            diamondDawnMetadata,
-                            tokenId,
-                            videoUrl
-                        )
+                        _getMetadataJson(tokenId, metadata, videoUrl)
                     )
                 )
             )
@@ -367,9 +355,7 @@ contract DiamondDawnMine is
 
         // TODO: Move the last element into the place to delete
         if (_diamonds.length > 1) {
-            _diamonds[randomIndex] = _diamonds[
-                _diamonds.length - 1
-            ];
+            _diamonds[randomIndex] = _diamonds[_diamonds.length - 1];
         }
         _diamonds.pop();
         return diamond;
@@ -385,10 +371,12 @@ contract DiamondDawnMine is
         return (randomNumber % range) + minNumber;
     }
 
-    function _getDiamondDawnVideoUrl(
-        DiamondDawnMetadata memory diamondDawnMetadata
-    ) private view returns (string memory) {
-        DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
+    function _getVideoUrl(DiamondDawnMetadata memory metadata)
+        private
+        view
+        returns (string memory)
+    {
+        DiamondDawnType diamondDawnType = metadata.type_;
         string memory videoUrl;
         if (DiamondDawnType.ENTER_MINE == diamondDawnType) {
             videoUrl = mineEntranceVideoUrl;
@@ -400,7 +388,7 @@ contract DiamondDawnMine is
         ) {
             videoUrl = _getVideoUrlForShape(
                 diamondDawnType,
-                diamondDawnMetadata.certificate.shape
+                metadata.certificate.shape
             );
         } else if (DiamondDawnType.REBORN == diamondDawnType) {
             videoUrl = rebirthVideoUrl;
@@ -447,53 +435,49 @@ contract DiamondDawnMine is
             "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
     }
 
-    function _getDiamondDawnMetadataJson(
-        DiamondDawnMetadata memory diamondDawnMetadata,
+    function _getMetadataJson(
         uint tokenId,
+        DiamondDawnMetadata memory metadata,
         string memory videoUrl
     ) private pure returns (string memory) {
         // TODO: Add real description
-        ERC721MetadataStructure memory metadata = ERC721MetadataStructure({
-            name: string(
-                abi.encodePacked("Diamond #", Strings.toString(tokenId))
-            ),
-            description: "Diamond Dawn tokens description",
-            createdBy: "Diamond Dawn",
-            image: videoUrl,
-            attributes: _getDiamondDawnJsonAttributes(diamondDawnMetadata)
-        });
-
-        return generateERC721Metadata(metadata);
+        ERC721MetadataStructure
+            memory erc721Metadata = ERC721MetadataStructure({
+                name: string(
+                    abi.encodePacked("Diamond #", Strings.toString(tokenId))
+                ),
+                description: "description",
+                createdBy: "dd",
+                image: videoUrl,
+                attributes: _getJsonAttributes(metadata)
+            });
+        return generateERC721Metadata(erc721Metadata);
     }
 
-    function _getDiamondDawnJsonAttributes(
-        DiamondDawnMetadata memory diamondDawnMetadata
-    ) private pure returns (ERC721MetadataAttribute[] memory) {
-        DiamondDawnType diamondDawnType = diamondDawnMetadata.type_;
+    function _getJsonAttributes(DiamondDawnMetadata memory metadata)
+        private
+        pure
+        returns (ERC721MetadataAttribute[] memory)
+    {
+        DiamondDawnType diamondDawnType = metadata.type_;
         if (DiamondDawnType.ENTER_MINE == diamondDawnType) {
             return _getMineEntranceJsonAttributes();
         } else if (DiamondDawnType.ROUGH == diamondDawnType) {
             return
                 _getRoughDiamondJsonAttributes(
-                    diamondDawnMetadata.rough,
-                    diamondDawnMetadata.certificate
+                    metadata.rough,
+                    metadata.certificate
                 );
         } else if (DiamondDawnType.CUT == diamondDawnType) {
             return
                 _getCutDiamondJsonAttributes(
-                    diamondDawnMetadata.cut,
-                    diamondDawnMetadata.certificate
+                    metadata.cut,
+                    metadata.certificate
                 );
         } else if (DiamondDawnType.POLISHED == diamondDawnType) {
-            return
-                _getPolishedDiamondJsonAttributes(
-                    diamondDawnMetadata.certificate
-                );
+            return _getPolishedDiamondJsonAttributes(metadata.certificate);
         } else if (DiamondDawnType.REBORN == diamondDawnType) {
-            return
-                _getRebornDiamondJsonAttributes(
-                    diamondDawnMetadata.certificate
-                );
+            return _getRebornDiamondJsonAttributes(metadata.certificate);
         }
         revert("Unknown type");
     }
@@ -525,7 +509,7 @@ contract DiamondDawnMine is
         return metadataAttributes;
     }
 
-    function _getBaseDiamondDawnJsonAttributes(
+    function _getBaseJsonAttributes(
         DiamondDawnType diamondDawnType,
         uint points
     ) private pure returns (ERC721MetadataAttribute[] memory) {
@@ -556,7 +540,7 @@ contract DiamondDawnMine is
             true,
             "",
             "Carat",
-            _pointsToCaratString(points)
+            _toCaratString(points)
         );
         return metadataAttributes;
     }
@@ -583,7 +567,7 @@ contract DiamondDawnMine is
             true,
             "",
             "Shape",
-            _toRoughDiamondShapeString(rough.shape)
+            _toRoughShapeString(rough.shape)
         );
         roughMetadataAttributes[2] = getERC721MetadataAttribute(
             false,
@@ -642,7 +626,7 @@ contract DiamondDawnMine is
             true,
             "",
             "Shape",
-            _toDiamondShapeString(certificate.shape)
+            _toShapeString(certificate.shape)
         );
         return cutMetadataAttributes;
     }
@@ -725,7 +709,7 @@ contract DiamondDawnMine is
         assert(certificate.points > 0);
 
         ERC721MetadataAttribute[]
-            memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
+            memory baseAttributes = _getBaseJsonAttributes(
                 DiamondDawnType.ROUGH,
                 certificate.points + rough.pointsReduction
             );
@@ -756,7 +740,7 @@ contract DiamondDawnMine is
         assert(certificate.points > 0);
 
         ERC721MetadataAttribute[]
-            memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
+            memory baseAttributes = _getBaseJsonAttributes(
                 DiamondDawnType.CUT,
                 certificate.points + cutMetadata.pointsReduction
             );
@@ -787,7 +771,7 @@ contract DiamondDawnMine is
         assert(certificate.points > 0);
 
         ERC721MetadataAttribute[]
-            memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
+            memory baseAttributes = _getBaseJsonAttributes(
                 DiamondDawnType.POLISHED,
                 certificate.points
             );
@@ -824,7 +808,7 @@ contract DiamondDawnMine is
         assert(certificate.points > 0);
 
         ERC721MetadataAttribute[]
-            memory baseAttributes = _getBaseDiamondDawnJsonAttributes(
+            memory baseAttributes = _getBaseJsonAttributes(
                 DiamondDawnType.REBORN,
                 certificate.points
             );
@@ -879,7 +863,7 @@ contract DiamondDawnMine is
         revert("Unknown type");
     }
 
-    function _toRoughDiamondShapeString(RoughDiamondShape shape)
+    function _toRoughShapeString(RoughDiamondShape shape)
         private
         pure
         returns (string memory)
@@ -887,10 +871,10 @@ contract DiamondDawnMine is
         if (shape == RoughDiamondShape.MAKEABLE) {
             return "Makeable";
         }
-        revert("Unknown rough shape");
+        revert("Unknown shape");
     }
 
-    function _toDiamondShapeString(DiamondShape shape)
+    function _toShapeString(DiamondShape shape)
         private
         pure
         returns (string memory)
@@ -907,16 +891,12 @@ contract DiamondDawnMine is
         revert("Unknown shape");
     }
 
-    function _pointsToCaratString(uint points)
-        private
-        pure
-        returns (string memory)
-    {
-        return
-            string.concat(
-                Strings.toString(points / 100),
-                ".",
-                Strings.toString(points % 100)
-            );
+    function _toCaratString(uint points) private pure returns (string memory) {
+        uint pointsRemainder = points % 100;
+        string memory pointsRemainderString = pointsRemainder < 10
+            ? string.concat("0", Strings.toString(pointsRemainder))
+            : Strings.toString(pointsRemainder);
+        string memory caratString = Strings.toString(points / 100);
+        return string.concat(caratString, ".", pointsRemainderString);
     }
 }

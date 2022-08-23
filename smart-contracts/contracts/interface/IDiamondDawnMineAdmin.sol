@@ -24,7 +24,7 @@ interface IDiamondDawnMineAdmin {
         string symmetry;
     }
 
-    function initialize(address diamondDawnContract) external;
+    function initialize(address diamondDawn) external;
 
     function populateDiamonds(DiamondCertificate[] calldata diamonds) external;
 
@@ -54,4 +54,7 @@ interface IDiamondDawnMineAdmin {
         uint tokenId,
         DiamondCertificate calldata diamond
     ) external;
+
+    // TODO: delete this function
+    function getDiamondCount() external view returns (uint);
 }
