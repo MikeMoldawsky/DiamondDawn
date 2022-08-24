@@ -48,10 +48,7 @@ const DiamondSchema = new mongoose.Schema({
   measurements: {
     type: String,
     required: true,
-    match: [
-      /\d\.\d\d - \d\.\d\d x \d\.\d\d/,
-      "Please fill valid measurements",
-    ],
+    match: [/\d\.\d\d - \d\.\d\d x \d\.\d\d/, "Please fill valid measurements"],
   },
 });
 
