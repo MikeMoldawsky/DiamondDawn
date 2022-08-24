@@ -16,14 +16,14 @@ struct Attribute {
     bool isValueAString;
 }
 
-function getStringNFTAttribute(string memory traitType, string memory value)
+function getStringAttribute(string memory traitType, string memory value)
     pure
     returns (Attribute memory)
 {
-    return getNFTAttribute(traitType, value, "", true);
+    return getAttribute(traitType, value, "", true);
 }
 
-function getNFTAttribute(
+function getAttribute(
     string memory traitType,
     string memory value,
     string memory displayType,
