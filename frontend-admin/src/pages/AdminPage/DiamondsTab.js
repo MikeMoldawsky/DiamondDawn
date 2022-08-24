@@ -3,15 +3,8 @@ import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
-import { getShapeName } from "utils";
 import CRUDTable from "components/CRUDTable";
-import {
-  COLOR_GRADES,
-  CLARITY_GRADES,
-  COMMON_GRADES,
-  CONTRACTS,
-  SYSTEM_STAGE,
-} from "consts";
+import { CONTRACTS } from "consts";
 import useDDContract from "hooks/useDDContract";
 import { diamondEruptionApi } from "api/contractApi";
 import {
@@ -20,14 +13,21 @@ import {
   updateDiamondApi,
   deleteDiamondApi,
 } from "api/serverApi";
+import {
+  ENUM_TO_CLARITY,
+  ENUM_TO_COLOR,
+  ENUM_TO_FLUORESCENCE,
+  ENUM_TO_GRADE,
+  ENUM_TO_SHAPE,
+} from "../../utils/diamondConverterApi";
 
 const requiredValidation = (params) => {
   return { ...params.props, error: _.isEmpty(params.props.value) };
 };
 
-const greaterThenZeroValidation = (params) => {
+const pointsValidation = (params) => {
   const { value } = params.props;
-  return { ...params.props, error: !value || value <= 0 };
+  return { ...params.props, error: !value || value < 30 || value > 70 };
 };
 
 const getEmptyDiamond = () => ({
@@ -35,22 +35,20 @@ const getEmptyDiamond = () => ({
   reportDate: "",
   shape: 0,
   carat: 0,
-  color: "",
-  clarity: "",
-  cut: "",
-  polish: "",
-  symmetry: "",
-  fluorescence: "",
-  length: 0,
-  width: 0,
-  depth: 0,
+  color: 0,
+  clarity: 0,
+  cut: 0,
+  polish: 0,
+  symmetry: 0,
+  fluorescence: 0,
+  measurements: "",
 });
 
 const DIAMOND_COLUMNS = [
   {
-    field: "reportNumber",
-    headerName: "GIA #",
-    width: 150,
+    field: "reportDate",
+    headerName: "Date",
+    width: 110,
     editable: true,
     preProcessEditCellProps: (params) => {
       const regex = new RegExp("^\\d{10}$");
@@ -58,9 +56,9 @@ const DIAMOND_COLUMNS = [
     },
   },
   {
-    field: "reportDate",
-    headerName: "Date",
-    width: 150,
+    field: "reportNumber",
+    headerName: "GIA #",
+    width: 110,
     editable: true,
     preProcessEditCellProps: (params) => {
       const regex = new RegExp("^\\d{10}$");
@@ -71,101 +69,89 @@ const DIAMOND_COLUMNS = [
     field: "shape",
     headerName: "Shape",
     type: "singleSelect",
-    valueOptions: [0, 1, 2, 3],
-    width: 150,
+    valueOptions: Object.keys(ENUM_TO_SHAPE),
+    width: 75,
     editable: true,
-    valueFormatter: (params) =>
-      getShapeName(params.value, SYSTEM_STAGE.CUT_OPEN),
+    valueFormatter: (params) => ENUM_TO_SHAPE[params.value],
   },
   {
-    field: "carat",
-    headerName: "Carat",
-    type: "number",
-    width: 150,
+    field: "measurements",
+    headerName: "Measurements",
+    width: 125,
     editable: true,
-    valueGetter: ({ value }) => value.$numberDecimal,
-    preProcessEditCellProps: greaterThenZeroValidation,
+    preProcessEditCellProps: (params) => {
+      const regex = new RegExp("^\\d.\\d\\d - \\d.\\d\\d x \\d.\\d\\d$");
+      return { ...params.props, error: !regex.test(params.props.value) };
+    },
+  },
+  {
+    field: "points",
+    headerName: "Points",
+    type: "number",
+    width: 60,
+    editable: true,
+    valueGetter: ({ value }) => value,
+    preProcessEditCellProps: pointsValidation,
   },
   {
     field: "color",
     headerName: "Color",
     type: "singleSelect",
-    valueOptions: COLOR_GRADES,
-    width: 150,
+    valueOptions: Object.keys(ENUM_TO_COLOR),
+    width: 70,
     editable: true,
+    valueFormatter: (params) => ENUM_TO_COLOR[params.value],
     preProcessEditCellProps: requiredValidation,
   },
   {
     field: "clarity",
     headerName: "Clarity",
     type: "singleSelect",
-    valueOptions: CLARITY_GRADES,
-    width: 150,
+    valueOptions: Object.keys(ENUM_TO_CLARITY),
+    width: 80,
     editable: true,
+    valueFormatter: (params) => ENUM_TO_CLARITY[params.value],
     preProcessEditCellProps: requiredValidation,
   },
   {
     field: "cut",
     headerName: "Cut",
     type: "singleSelect",
-    valueOptions: COMMON_GRADES,
-    width: 150,
+    valueOptions: Object.keys(ENUM_TO_GRADE),
+    width: 100,
     editable: true,
+    valueFormatter: (params) => ENUM_TO_GRADE[params.value],
     preProcessEditCellProps: requiredValidation,
   },
   {
     field: "polish",
     headerName: "Polish",
     type: "singleSelect",
-    valueOptions: COMMON_GRADES,
-    width: 150,
+    valueOptions: Object.keys(ENUM_TO_GRADE),
+    width: 100,
     editable: true,
+    valueFormatter: (params) => ENUM_TO_GRADE[params.value],
     preProcessEditCellProps: requiredValidation,
   },
   {
     field: "symmetry",
     headerName: "Symmetry",
     type: "singleSelect",
-    valueOptions: COMMON_GRADES,
-    width: 150,
+    valueOptions: Object.keys(ENUM_TO_GRADE),
+    width: 100,
     editable: true,
+    valueFormatter: (params) => ENUM_TO_GRADE[params.value],
     preProcessEditCellProps: requiredValidation,
   },
   {
     field: "fluorescence",
     headerName: "Fluorescence",
     type: "singleSelect",
-    valueOptions: COMMON_GRADES,
-    width: 150,
+    valueOptions: Object.keys(ENUM_TO_FLUORESCENCE),
+    width: 105,
     editable: true,
+    valueFormatter: (params) => ENUM_TO_FLUORESCENCE[params.value],
     preProcessEditCellProps: requiredValidation,
-  },
-  {
-    field: "length",
-    headerName: "Length",
-    type: "number",
-    width: 150,
-    editable: true,
-    valueGetter: ({ value }) => value.$numberDecimal,
-    preProcessEditCellProps: greaterThenZeroValidation,
-  },
-  {
-    field: "width",
-    headerName: "Width",
-    type: "number",
-    width: 150,
-    editable: true,
-    valueGetter: ({ value }) => value.$numberDecimal,
-    preProcessEditCellProps: greaterThenZeroValidation,
-  },
-  {
-    field: "depth",
-    headerName: "Depth",
-    type: "number",
-    width: 150,
-    editable: true,
-    valueGetter: ({ value }) => value.$numberDecimal,
-    preProcessEditCellProps: greaterThenZeroValidation,
   },
   { field: "", headerName: "", flex: 1 },
 ];
