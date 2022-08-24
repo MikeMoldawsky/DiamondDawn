@@ -48,7 +48,7 @@ const DIAMOND_COLUMNS = [
   {
     field: "reportDate",
     headerName: "Date",
-    width: 100,
+    width: 110,
     editable: true,
     preProcessEditCellProps: (params) => {
       const regex = new RegExp("^\\d{10}$");
@@ -58,7 +58,7 @@ const DIAMOND_COLUMNS = [
   {
     field: "reportNumber",
     headerName: "GIA #",
-    width: 100,
+    width: 110,
     editable: true,
     preProcessEditCellProps: (params) => {
       const regex = new RegExp("^\\d{10}$");
@@ -88,7 +88,7 @@ const DIAMOND_COLUMNS = [
     field: "points",
     headerName: "Points",
     type: "number",
-    width: 75,
+    width: 60,
     editable: true,
     valueGetter: ({ value }) => value,
     preProcessEditCellProps: pointsValidation,
@@ -148,7 +148,7 @@ const DIAMOND_COLUMNS = [
     headerName: "Fluorescence",
     type: "singleSelect",
     valueOptions: Object.keys(ENUM_TO_FLUORESCENCE),
-    width: 110,
+    width: 105,
     editable: true,
     valueFormatter: (params) => ENUM_TO_FLUORESCENCE[params.value],
     preProcessEditCellProps: requiredValidation,
