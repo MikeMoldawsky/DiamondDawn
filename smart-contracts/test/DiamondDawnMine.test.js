@@ -80,7 +80,7 @@ describe("Diamond Dawn Mine", () => {
       // Token 1 enters mine
       const tokenId = 1;
       await diamondDawnMine.enterMine(tokenId);
-      await diamondDawnMine.setMineEntranceVideoUrl(videoSuffix);
+      await diamondDawnMine.setMineEntranceVideo(videoSuffix);
       // fetch metadata for token 1
       const metadata = await diamondDawnMine.getDiamondMetadata(tokenId);
       const parsedData = parseDataUrl(metadata); // parse data-url (data:[<mediatype>][;base64],<data>)
@@ -113,7 +113,7 @@ describe("Diamond Dawn Mine", () => {
         ],
       };
 
-      await diamondDawnMine.setRoughVideoUrl(videoSuffix);
+      await diamondDawnMine.setRoughVideo(videoSuffix);
       await diamondDawnMine.diamondEruption([DIAMOND]);
 
       // Token 1 enters mine
@@ -174,7 +174,7 @@ describe("Diamond Dawn Mine", () => {
           { trait_type: "Shape", value: enumToShape(DIAMOND.shape) },
         ],
       };
-      await diamondDawnMine.setCutVideoUrls(videoSuffix, "", "", ""); // TODO: test all urls
+      await diamondDawnMine.setCutVideos(videoSuffix, "", "", ""); // TODO: test all urls
       await diamondDawnMine.diamondEruption([DIAMOND]);
 
       // Token 1 enters mine
@@ -240,7 +240,7 @@ describe("Diamond Dawn Mine", () => {
         ],
       };
 
-      await diamondDawnMine.setPolishVideoUrls(videoSuffix, "", "", ""); // TODO: test all urls
+      await diamondDawnMine.setPolishVideos(videoSuffix, "", "", ""); // TODO: test all urls
       await diamondDawnMine.diamondEruption([DIAMOND]);
 
       // Token 1 enters mine
@@ -311,7 +311,7 @@ describe("Diamond Dawn Mine", () => {
         ],
       };
 
-      await diamondDawnMine.setRebirthVideoUrl(videoSuffix);
+      await diamondDawnMine.setRebirthVideo(videoSuffix);
       await diamondDawnMine.diamondEruption([DIAMOND]);
 
       // Token 1 enters mine

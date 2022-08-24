@@ -11,6 +11,7 @@ import "./objects/DiamondObjects.sol";
 import "./utils/NFTMetadataUtils.sol";
 import "./utils/StringUtils.sol";
 import "./utils/RandomUtils.sol";
+import "./objects/MineObjects.sol";
 
 /**
  * @title DiamondDawnMine NFT Contract
@@ -23,20 +24,9 @@ contract DiamondDawnMine is
 {
     bool public isMineOpen = false; // mine is closed until it's initialized.
     bool public isMineLocked = false; // mine is locked forever when the project ends (immutable).
+    mapping(uint => mapping(uint => string)) public typeToShapeVideo;
 
-    // Video Urls
-    string public mineEntranceVideoUrl;
-    string public roughMakeableVideoUrl;
-    string public cutPearVideoUrl;
-    string public cutRoundVideoUrl;
-    string public cutOvalVideoUrl;
-    string public cutRadiantVideoUrl;
-    string public polishPearVideoUrl;
-    string public polishRoundVideoUrl;
-    string public polishOvalVideoUrl;
-    string public polishRadiantVideoUrl;
-    string public rebirthVideoUrl;
-
+    uint private constant NO_SHAPE_NUM = 0;
     // Carat loss of ~35% to ~65% from rough stone to the polished diamond.
     uint private constant MIN_ROUGH_EXTRA_POINTS = 38;
     uint private constant MAX_ROUGH_EXTRA_POINTS = 74;
@@ -137,52 +127,52 @@ contract DiamondDawnMine is
         isMineOpen = isMineOpen_;
     }
 
-    function setMineEntranceVideoUrl(string calldata mineEntranceUrl)
+    function setMineEntranceVideo(string calldata mineEntrance)
         external
         mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        mineEntranceVideoUrl = mineEntranceUrl;
+        _setVideo(Type.ENTER_MINE, NO_SHAPE_NUM, mineEntrance);
     }
 
-    function setRoughVideoUrl(string calldata makeable)
+    function setRoughVideo(string calldata makeable)
         external
         mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        roughMakeableVideoUrl = makeable;
+        _setVideo(Type.ROUGH, uint(RoughShape.MAKEABLE), makeable);
     }
 
-    function setCutVideoUrls(
+    function setCutVideos(
         string calldata pear,
         string calldata round,
         string calldata oval,
         string calldata radiant
     ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
-        cutPearVideoUrl = pear;
-        cutRoundVideoUrl = round;
-        cutOvalVideoUrl = oval;
-        cutRadiantVideoUrl = radiant;
+        _setVideo(Type.CUT, uint(Shape.PEAR), pear);
+        _setVideo(Type.CUT, uint(Shape.ROUND), round);
+        _setVideo(Type.CUT, uint(Shape.OVAL), oval);
+        _setVideo(Type.CUT, uint(Shape.RADIANT), radiant);
     }
 
-    function setPolishVideoUrls(
+    function setPolishVideos(
         string calldata pear,
         string calldata round,
         string calldata oval,
         string calldata radiant
     ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
-        polishPearVideoUrl = pear;
-        polishOvalVideoUrl = oval;
-        polishRoundVideoUrl = round;
-        polishRadiantVideoUrl = radiant;
+        _setVideo(Type.POLISHED, uint(Shape.PEAR), pear);
+        _setVideo(Type.POLISHED, uint(Shape.ROUND), round);
+        _setVideo(Type.POLISHED, uint(Shape.OVAL), oval);
+        _setVideo(Type.POLISHED, uint(Shape.RADIANT), radiant);
     }
 
-    function setRebirthVideoUrl(string calldata rebirth_)
+    function setRebirthVideo(string calldata rebirth_)
         external
         mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        rebirthVideoUrl = rebirth_;
+        _setVideo(Type.REBORN, NO_SHAPE_NUM, rebirth_);
     }
 
     function replaceLostShipment(uint tokenId, Certificate calldata diamond)
@@ -273,7 +263,7 @@ contract DiamondDawnMine is
         returns (string memory)
     {
         Metadata memory metadata = _metadata[tokenId];
-        string memory videoUrl = _getVideoUrl(metadata);
+        string memory videoUrl = _getVideoURI(metadata);
         string memory base64Json = Base64.encode(
             bytes(
                 string(
@@ -291,31 +281,31 @@ contract DiamondDawnMine is
     }
 
     function isMineEntranceReady() external view returns (bool) {
-        return bytes(mineEntranceVideoUrl).length > 0;
+        return _isVideoExist(Type.ENTER_MINE, NO_SHAPE_NUM);
     }
 
     function isMineReady() external view returns (bool) {
-        return bytes(roughMakeableVideoUrl).length > 0;
+        return _isVideoExist(Type.ROUGH, uint(RoughShape.MAKEABLE));
     }
 
     function isCutReady() external view returns (bool) {
         return
-            bytes(cutPearVideoUrl).length > 0 &&
-            bytes(cutRoundVideoUrl).length > 0 &&
-            bytes(cutOvalVideoUrl).length > 0 &&
-            bytes(cutRadiantVideoUrl).length > 0;
+            _isVideoExist(Type.CUT, uint(Shape.PEAR)) &&
+            _isVideoExist(Type.CUT, uint(Shape.ROUND)) &&
+            _isVideoExist(Type.CUT, uint(Shape.OVAL)) &&
+            _isVideoExist(Type.CUT, uint(Shape.RADIANT));
     }
 
     function isPolishReady() external view returns (bool) {
         return
-            bytes(polishPearVideoUrl).length > 0 &&
-            bytes(polishRoundVideoUrl).length > 0 &&
-            bytes(polishOvalVideoUrl).length > 0 &&
-            bytes(polishRadiantVideoUrl).length > 0;
+            _isVideoExist(Type.POLISHED, uint(Shape.PEAR)) &&
+            _isVideoExist(Type.POLISHED, uint(Shape.ROUND)) &&
+            _isVideoExist(Type.POLISHED, uint(Shape.OVAL)) &&
+            _isVideoExist(Type.POLISHED, uint(Shape.RADIANT));
     }
 
     function isShipReady() external view returns (bool) {
-        return bytes(rebirthVideoUrl).length > 0;
+        return _isVideoExist(Type.REBORN, NO_SHAPE_NUM);
     }
 
     /**********************     Private Functions     ************************/
@@ -338,49 +328,36 @@ contract DiamondDawnMine is
         return getRandomInRange(min, max, _randNonce);
     }
 
-    function _getVideoUrl(Metadata memory metadata)
+    function _setVideo(
+        Type type_,
+        uint shape,
+        string memory videoUrl
+    ) private {
+        typeToShapeVideo[uint(type_)][shape] = videoUrl;
+    }
+
+    function _getVideoURI(Metadata memory metadata)
         private
         view
         returns (string memory)
     {
-        Type diamondDawnType = metadata.type_;
-        string memory videoUrl;
-        if (Type.ENTER_MINE == diamondDawnType) {
-            videoUrl = mineEntranceVideoUrl;
-        } else if (Type.ROUGH == diamondDawnType) {
-            videoUrl = roughMakeableVideoUrl;
-        } else if (
-            Type.CUT == diamondDawnType || Type.POLISHED == diamondDawnType
-        ) {
-            videoUrl = _getVideoUrlForShape(
-                diamondDawnType,
-                metadata.certificate.shape
-            );
-        } else if (Type.REBORN == diamondDawnType) {
-            videoUrl = rebirthVideoUrl;
-        } else {
-            revert();
-        }
+        string memory videoUrl = _getVideo(
+            metadata.type_,
+            _getShapeNumber(metadata)
+        );
         return string.concat(_videoBaseURI(), videoUrl);
     }
 
-    function _getVideoUrlForShape(Type type_, Shape shape)
+    function _isVideoExist(Type type_, uint shape) private view returns (bool) {
+        return bytes(_getVideo(type_, shape)).length > 0;
+    }
+
+    function _getVideo(Type type_, uint shape)
         private
         view
         returns (string memory)
     {
-        // TODO: assert type cut or polished
-        if (shape == Shape.PEAR) {
-            return type_ == Type.CUT ? cutPearVideoUrl : polishPearVideoUrl;
-        } else if (shape == Shape.ROUND) {
-            return type_ == Type.CUT ? cutRoundVideoUrl : polishRoundVideoUrl;
-        } else if (shape == Shape.OVAL) {
-            return type_ == Type.CUT ? cutOvalVideoUrl : polishOvalVideoUrl;
-        } else if (shape == Shape.RADIANT) {
-            return
-                type_ == Type.CUT ? cutRadiantVideoUrl : polishRadiantVideoUrl;
-        }
-        revert();
+        return typeToShapeVideo[uint(type_)][shape];
     }
 
     function _videoBaseURI() private pure returns (string memory) {
@@ -388,6 +365,20 @@ contract DiamondDawnMine is
         // TODO: galk to check what's the best approach
         return
             "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
+    }
+
+    function _getShapeNumber(Metadata memory metadata)
+        private
+        pure
+        returns (uint)
+    {
+        Type type_ = metadata.type_;
+        if (type_ == Type.CUT || type_ == Type.POLISHED)
+            return uint(metadata.certificate.shape);
+        if (type_ == Type.ROUGH) return uint(metadata.rough.shape);
+        if (type_ == Type.ENTER_MINE || type_ == Type.REBORN)
+            return NO_SHAPE_NUM;
+        revert();
     }
 
     function _getMetadataJson(
