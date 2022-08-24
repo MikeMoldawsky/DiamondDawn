@@ -104,8 +104,8 @@ describe("Diamond Dawn Mine", () => {
         created_by: "dd",
         image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
         attributes: [
-          { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Type", value: "Rough" },
+          { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Identification", value: "Natural" },
           { trait_type: "Color", value: "Cape" },
           { trait_type: "Shape", value: "Makeable" },
@@ -161,8 +161,8 @@ describe("Diamond Dawn Mine", () => {
         created_by: "dd",
         image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
         attributes: [
-          { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Type", value: "Cut" },
+          { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Identification", value: "Natural" },
           { trait_type: "Color", value: enumToColor(DIAMOND.color) },
           { trait_type: "Cut", value: enumToGrade(DIAMOND.cut) },
@@ -223,8 +223,8 @@ describe("Diamond Dawn Mine", () => {
         created_by: "dd",
         image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
         attributes: [
-          { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Type", value: "Polished" },
+          { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Identification", value: "Natural" },
           { trait_type: "Color", value: enumToColor(DIAMOND.color) },
           { trait_type: "Cut", value: enumToGrade(DIAMOND.cut) },
@@ -287,8 +287,8 @@ describe("Diamond Dawn Mine", () => {
         created_by: "dd",
         image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
         attributes: [
-          { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Type", value: "Reborn" },
+          { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Identification", value: "Natural" },
           { trait_type: "Color", value: enumToColor(DIAMOND.color) },
           { trait_type: "Cut", value: enumToGrade(DIAMOND.cut) },

@@ -432,22 +432,89 @@ contract DiamondDawnMine is
         returns (Attribute[] memory)
     {
         Type diamondDawnType = metadata.type_;
+        Certificate memory certificate = metadata.certificate;
+        Attribute[] memory attributes = new Attribute[](
+            _getNumAttributes(diamondDawnType)
+        );
+        attributes[0] = _getTypeAttribute(diamondDawnType);
         if (Type.ENTER_MINE == diamondDawnType) {
-            return _getMineEntranceAttributes();
-        } else if (Type.ROUGH == diamondDawnType) {
-            return
-                _getRoughDiamondAttributes(
-                    metadata.rough,
-                    metadata.certificate
-                );
-        } else if (Type.CUT == diamondDawnType) {
-            return _getCutDiamondAttributes(metadata.cut, metadata.certificate);
-        } else if (Type.POLISHED == diamondDawnType) {
-            return _getPolishedDiamondAttributes(metadata.certificate);
-        } else if (Type.REBORN == diamondDawnType) {
-            return _getRebornDiamondAttributes(metadata.certificate);
+            return attributes;
         }
-        revert();
+        // Base
+        attributes[1] = getStringNFTAttribute("Origin", "Metaverse");
+        attributes[2] = getStringNFTAttribute("Identification", "Natural");
+        attributes[3] = getNFTAttribute(
+            "Carat",
+            _toCaratString(_getPoints(metadata)),
+            "",
+            false
+        );
+        if (Type.ROUGH == diamondDawnType) {
+            assert(metadata.rough.extraPoints > 0);
+            assert(certificate.points > 0);
+            // Rough
+            attributes[4] = getStringNFTAttribute("Color", "Cape");
+            attributes[5] = getStringNFTAttribute(
+                "Shape",
+                _toRoughShapeString(metadata.rough.shape)
+            );
+            attributes[6] = getStringNFTAttribute("Mine", "Underground");
+            return attributes;
+        }
+
+        if (uint(Type.CUT) <= uint(diamondDawnType)) {
+            // Cut
+            attributes[4] = getStringNFTAttribute(
+                "Color",
+                _toColorString(certificate.color)
+            );
+            attributes[5] = getStringNFTAttribute(
+                "Cut",
+                _toGradeString(certificate.cut)
+            );
+            attributes[6] = getStringNFTAttribute(
+                "Fluorescence",
+                _toFluorescenceString(certificate.fluorescence)
+            );
+            attributes[7] = getStringNFTAttribute(
+                "Measurements",
+                certificate.measurements
+            );
+            attributes[8] = getStringNFTAttribute(
+                "Shape",
+                _toShapeString(certificate.shape)
+            );
+        }
+        if (uint(Type.POLISHED) <= uint(diamondDawnType)) {
+            attributes[9] = getStringNFTAttribute(
+                "Clarity",
+                _toClarityString(certificate.clarity)
+            );
+            attributes[10] = getStringNFTAttribute(
+                "Polish",
+                _toGradeString(certificate.polish)
+            );
+            attributes[11] = getStringNFTAttribute(
+                "Symmetry",
+                _toGradeString(certificate.symmetry)
+            );
+        }
+        if (uint(Type.REBORN) <= uint(diamondDawnType)) {
+            attributes[12] = getStringNFTAttribute("Laboratory", "GIA");
+            attributes[13] = getNFTAttribute(
+                "Report Date",
+                Strings.toString(certificate.reportDate),
+                "date",
+                false
+            );
+            attributes[14] = getNFTAttribute(
+                "Report Number",
+                Strings.toString(certificate.reportNumber),
+                "",
+                false
+            );
+        }
+        return attributes;
     }
 
     function _getTypeAttribute(Type diamondDawnType)
@@ -456,258 +523,6 @@ contract DiamondDawnMine is
         returns (Attribute memory)
     {
         return getStringNFTAttribute("Type", _toTypeString(diamondDawnType));
-    }
-
-    function _getMineEntranceAttributes()
-        private
-        pure
-        returns (Attribute[] memory)
-    {
-        Attribute[] memory mineEntranceAttributes = new Attribute[](1);
-        mineEntranceAttributes[0] = _getTypeAttribute(Type.ENTER_MINE);
-        return mineEntranceAttributes;
-    }
-
-    function _getBaseAttributes(Type diamondDawnType, uint points)
-        private
-        pure
-        returns (Attribute[] memory)
-    {
-        // TODO: check about fix sized array in returns type (returns (Attribute[3] memory)).
-        assert(points > 0);
-        Attribute[] memory baseAttributes = new Attribute[](4);
-        baseAttributes[0] = getStringNFTAttribute("Origin", "Metaverse");
-        baseAttributes[1] = _getTypeAttribute(diamondDawnType);
-        baseAttributes[2] = getStringNFTAttribute("Identification", "Natural");
-        baseAttributes[3] = getNFTAttribute(
-            "Carat",
-            _toCaratString(points),
-            "",
-            false
-        );
-        return baseAttributes;
-    }
-
-    function _getRoughAttributes(RoughMetadata memory rough)
-        private
-        pure
-        returns (Attribute[] memory)
-    {
-        // TODO: check about fix sized array in returns type (returns (Attribute[3] memory)).
-        Attribute[] memory roughAttributes = new Attribute[](3);
-        roughAttributes[0] = getStringNFTAttribute("Color", "Cape");
-        roughAttributes[1] = getStringNFTAttribute(
-            "Shape",
-            _toRoughShapeString(rough.shape)
-        );
-        roughAttributes[2] = getStringNFTAttribute("Mine", "Underground");
-        return roughAttributes;
-    }
-
-    function _getCutAttributes(Certificate memory certificate)
-        private
-        pure
-        returns (Attribute[] memory)
-    {
-        // TODO: check about fix sized array in returns type (returns (Attribute[5] memory)).
-        Attribute[] memory cutAttributes = new Attribute[](5);
-        cutAttributes[0] = getStringNFTAttribute(
-            "Color",
-            _toColorString(certificate.color)
-        );
-        cutAttributes[1] = getStringNFTAttribute(
-            "Cut",
-            _toGradeString(certificate.cut)
-        );
-        cutAttributes[2] = getStringNFTAttribute(
-            "Fluorescence",
-            _toFluorescenceString(certificate.fluorescence)
-        );
-        cutAttributes[3] = getStringNFTAttribute(
-            "Measurements",
-            certificate.measurements
-        );
-        cutAttributes[4] = getStringNFTAttribute(
-            "Shape",
-            _toShapeString(certificate.shape)
-        );
-        return cutAttributes;
-    }
-
-    function _getPolishedAttributes(Certificate memory certificate)
-        private
-        pure
-        returns (Attribute[] memory)
-    {
-        // TODO: check about fix sized array in returns type (returns (Attribute[5] memory)).
-        Attribute[] memory polishedAttributes = new Attribute[](3);
-        polishedAttributes[0] = getStringNFTAttribute(
-            "Clarity",
-            _toClarityString(certificate.clarity)
-        );
-        polishedAttributes[1] = getStringNFTAttribute(
-            "Polish",
-            _toGradeString(certificate.polish)
-        );
-        polishedAttributes[2] = getStringNFTAttribute(
-            "Symmetry",
-            _toGradeString(certificate.symmetry)
-        );
-        return polishedAttributes;
-    }
-
-    function _getRebirthAttributes(Certificate memory certificate)
-        private
-        pure
-        returns (Attribute[] memory)
-    {
-        // TODO: check about fix sized array in returns type (returns (Attribute[5] memory)).
-        Attribute[] memory rebirthAttributes = new Attribute[](3);
-        rebirthAttributes[0] = getStringNFTAttribute("Laboratory", "GIA");
-        rebirthAttributes[1] = getNFTAttribute(
-            "Report Date",
-            Strings.toString(certificate.reportDate),
-            "date",
-            false
-        );
-        rebirthAttributes[2] = getNFTAttribute(
-            "Report Number",
-            Strings.toString(certificate.reportNumber),
-            "",
-            false
-        );
-        return rebirthAttributes;
-    }
-
-    function _getRoughDiamondAttributes(
-        RoughMetadata memory rough,
-        Certificate memory certificate
-    ) private pure returns (Attribute[] memory) {
-        assert(rough.extraPoints > 0);
-        assert(certificate.points > 0);
-
-        Attribute[] memory base = _getBaseAttributes(
-            Type.ROUGH,
-            certificate.points + rough.extraPoints
-        );
-
-        Attribute[] memory roughAttributes = _getRoughAttributes(rough);
-
-        Attribute[] memory attributes = new Attribute[](7);
-        // TODO make it more generic
-        // Base
-        attributes[0] = base[0];
-        attributes[1] = base[1];
-        attributes[2] = base[2];
-        attributes[3] = base[3];
-        // Rough
-        attributes[4] = roughAttributes[0];
-        attributes[5] = roughAttributes[1];
-        attributes[6] = roughAttributes[2];
-        return attributes;
-    }
-
-    function _getCutDiamondAttributes(
-        CutMetadata memory cutMetadata,
-        Certificate memory certificate
-    ) private pure returns (Attribute[] memory) {
-        assert(cutMetadata.extraPoints > 0);
-        assert(certificate.points > 0);
-
-        Attribute[] memory base = _getBaseAttributes(
-            Type.CUT,
-            certificate.points + cutMetadata.extraPoints
-        );
-        Attribute[] memory cutAttributes = _getCutAttributes(certificate);
-        Attribute[] memory attributes = new Attribute[](9);
-
-        // TODO make it more generic
-        // Base
-        attributes[0] = base[0];
-        attributes[1] = base[1];
-        attributes[2] = base[2];
-        attributes[3] = base[3];
-        // Cut
-        attributes[4] = cutAttributes[0];
-        attributes[5] = cutAttributes[1];
-        attributes[6] = cutAttributes[2];
-        attributes[7] = cutAttributes[3];
-        attributes[8] = cutAttributes[4];
-        return attributes;
-    }
-
-    function _getPolishedDiamondAttributes(Certificate memory certificate)
-        private
-        pure
-        returns (Attribute[] memory)
-    {
-        assert(certificate.points > 0);
-
-        Attribute[] memory base = _getBaseAttributes(
-            Type.POLISHED,
-            certificate.points
-        );
-        Attribute[] memory cutAttributes = _getCutAttributes(certificate);
-        Attribute[] memory polished = _getPolishedAttributes(certificate);
-
-        Attribute[] memory attributes = new Attribute[](12);
-        // TODO make it more generic
-        // Base
-        attributes[0] = base[0];
-        attributes[1] = base[1];
-        attributes[2] = base[2];
-        attributes[3] = base[3];
-        // Cut
-        attributes[4] = cutAttributes[0];
-        attributes[5] = cutAttributes[1];
-        attributes[6] = cutAttributes[2];
-        attributes[7] = cutAttributes[3];
-        attributes[8] = cutAttributes[4];
-        // Polish
-        attributes[9] = polished[0];
-        attributes[10] = polished[1];
-        attributes[11] = polished[2];
-        return attributes;
-    }
-
-    function _getRebornDiamondAttributes(Certificate memory certificate)
-        private
-        pure
-        returns (Attribute[] memory)
-    {
-        assert(certificate.points > 0);
-
-        Attribute[] memory base = _getBaseAttributes(
-            Type.REBORN,
-            certificate.points
-        );
-        Attribute[] memory cutAttributes = _getCutAttributes(certificate);
-        Attribute[] memory polished = _getPolishedAttributes(certificate);
-        Attribute[] memory rebirthAttributes = _getRebirthAttributes(
-            certificate
-        );
-        Attribute[] memory attributes = new Attribute[](15);
-        // TODO make it more generic
-        // Base
-        attributes[0] = base[0];
-        attributes[1] = base[1];
-        attributes[2] = base[2];
-        attributes[3] = base[3];
-        // Cut
-        attributes[4] = cutAttributes[0];
-        attributes[5] = cutAttributes[1];
-        attributes[6] = cutAttributes[2];
-        attributes[7] = cutAttributes[3];
-        attributes[8] = cutAttributes[4];
-        // Polish
-        attributes[9] = polished[0];
-        attributes[10] = polished[1];
-        attributes[11] = polished[2];
-        // Rebirth
-        attributes[12] = rebirthAttributes[0];
-        attributes[13] = rebirthAttributes[1];
-        attributes[14] = rebirthAttributes[2];
-        return attributes;
     }
 
     function _toTypeString(Type type_) private pure returns (string memory) {
@@ -785,6 +600,15 @@ contract DiamondDawnMine is
         revert();
     }
 
+    function _getNumAttributes(Type type_) private pure returns (uint) {
+        if (type_ == Type.ENTER_MINE) return 1;
+        else if (type_ == Type.ROUGH) return 7;
+        else if (type_ == Type.CUT) return 9;
+        else if (type_ == Type.POLISHED) return 12;
+        else if (type_ == Type.REBORN) return 15;
+        revert();
+    }
+
     function _toCaratString(uint points) private pure returns (string memory) {
         uint remainder = points % 100;
         string memory caratRemainder = remainder < 10
@@ -792,5 +616,17 @@ contract DiamondDawnMine is
             : Strings.toString(remainder);
         string memory carat = Strings.toString(points / 100);
         return string.concat(carat, ".", caratRemainder);
+    }
+
+    function _getPoints(Metadata memory metadata) private pure returns (uint) {
+        assert(metadata.certificate.points > 0);
+        // TODO add assertion for extraPoints
+        if (metadata.type_ == Type.ROUGH)
+            return metadata.certificate.points + metadata.rough.extraPoints;
+        else if (metadata.type_ == Type.CUT)
+            return metadata.certificate.points + metadata.cut.extraPoints;
+        else if (metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN)
+            return metadata.certificate.points;
+        revert();
     }
 }
