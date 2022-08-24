@@ -25,9 +25,9 @@ const requiredValidation = (params) => {
   return { ...params.props, error: _.isEmpty(params.props.value) };
 };
 
-const greaterThenZeroValidation = (params) => {
+const pointsValidation = (params) => {
   const { value } = params.props;
-  return { ...params.props, error: !value || value <= 0 };
+  return { ...params.props, error: !value || value < 30 || value > 70 };
 };
 
 const getEmptyDiamond = () => ({
@@ -70,7 +70,7 @@ const DIAMOND_COLUMNS = [
     headerName: "Shape",
     type: "singleSelect",
     valueOptions: Object.keys(ENUM_TO_SHAPE),
-    width: 150,
+    width: 100,
     editable: true,
     valueFormatter: (params) => ENUM_TO_SHAPE[params.value],
   },
@@ -78,17 +78,17 @@ const DIAMOND_COLUMNS = [
     field: "points",
     headerName: "Points",
     type: "number",
-    width: 150,
+    width: 50,
     editable: true,
     valueGetter: ({ value }) => value,
-    preProcessEditCellProps: greaterThenZeroValidation,
+    preProcessEditCellProps: pointsValidation,
   },
   {
     field: "color",
     headerName: "Color",
     type: "singleSelect",
     valueOptions: Object.keys(ENUM_TO_COLOR),
-    width: 150,
+    width: 100,
     editable: true,
     valueFormatter: (params) => ENUM_TO_COLOR[params.value],
     preProcessEditCellProps: requiredValidation,
@@ -98,7 +98,7 @@ const DIAMOND_COLUMNS = [
     headerName: "Clarity",
     type: "singleSelect",
     valueOptions: Object.keys(ENUM_TO_CLARITY),
-    width: 150,
+    width: 100,
     editable: true,
     valueFormatter: (params) => ENUM_TO_CLARITY[params.value],
     preProcessEditCellProps: requiredValidation,
@@ -108,7 +108,7 @@ const DIAMOND_COLUMNS = [
     headerName: "Cut",
     type: "singleSelect",
     valueOptions: Object.keys(ENUM_TO_GRADE),
-    width: 150,
+    width: 100,
     editable: true,
     valueFormatter: (params) => ENUM_TO_GRADE[params.value],
     preProcessEditCellProps: requiredValidation,
@@ -118,7 +118,7 @@ const DIAMOND_COLUMNS = [
     headerName: "Polish",
     type: "singleSelect",
     valueOptions: Object.keys(ENUM_TO_GRADE),
-    width: 150,
+    width: 100,
     editable: true,
     valueFormatter: (params) => ENUM_TO_GRADE[params.value],
     preProcessEditCellProps: requiredValidation,
@@ -128,7 +128,7 @@ const DIAMOND_COLUMNS = [
     headerName: "Symmetry",
     type: "singleSelect",
     valueOptions: Object.keys(ENUM_TO_GRADE),
-    width: 150,
+    width: 100,
     editable: true,
     valueFormatter: (params) => ENUM_TO_GRADE[params.value],
     preProcessEditCellProps: requiredValidation,
@@ -138,7 +138,7 @@ const DIAMOND_COLUMNS = [
     headerName: "Fluorescence",
     type: "singleSelect",
     valueOptions: Object.keys(ENUM_TO_FLUORESCENCE),
-    width: 150,
+    width: 100,
     editable: true,
     valueFormatter: (params) => ENUM_TO_FLUORESCENCE[params.value],
     preProcessEditCellProps: requiredValidation,
@@ -146,7 +146,7 @@ const DIAMOND_COLUMNS = [
   {
     field: "measurements",
     headerName: "Measurements",
-    width: 250,
+    width: 150,
     editable: true,
     preProcessEditCellProps: (params) => {
       const regex = new RegExp("^\\d.\\d\\d - \\d.\\d\\d x \\d.\\d\\d$");
