@@ -6,8 +6,11 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interface/IDiamondDawnMine.sol";
 import "./interface/IDiamondDawnMineAdmin.sol";
-import {getStringNFTAttribute, getNFTAttribute, toJsonMetadata, Attribute, NFTMetadata} from "./utils/NFTMetadataUtils.sol";
-import {getRandomInRange} from "./utils/RandomUtils.sol";
+import "./objects/MineObjects.sol";
+import "./objects/DiamondObjects.sol";
+import "./utils/NFTMetadataUtils.sol";
+import "./utils/StringUtils.sol";
+import "./utils/RandomUtils.sol";
 
 /**
  * @title DiamondDawnMine NFT Contract
@@ -18,27 +21,6 @@ contract DiamondDawnMine is
     IDiamondDawnMine,
     IDiamondDawnMineAdmin
 {
-    enum RoughShape {
-        NO_SHAPE,
-        MAKEABLE
-    }
-
-    struct RoughMetadata {
-        RoughShape shape;
-        uint extraPoints;
-    }
-
-    struct CutMetadata {
-        uint extraPoints;
-    }
-
-    struct Metadata {
-        Type type_;
-        RoughMetadata rough;
-        CutMetadata cut;
-        Certificate certificate;
-    }
-
     bool public isMineOpen = false; // mine is closed until it's initialized.
     bool public isMineLocked = false; // mine is locked forever when the project ends (immutable).
 
@@ -421,12 +403,12 @@ contract DiamondDawnMine is
             description: "description",
             createdBy: "dd",
             image: videoUrl,
-            attributes: _getAttributes(metadata)
+            attributes: _getJsonAttributes(metadata)
         });
         return toJsonMetadata(nftMetadata);
     }
 
-    function _getAttributes(Metadata memory metadata)
+    function _getJsonAttributes(Metadata memory metadata)
         private
         pure
         returns (Attribute[] memory)
@@ -436,78 +418,77 @@ contract DiamondDawnMine is
         Attribute[] memory attributes = new Attribute[](
             _getNumAttributes(diamondDawnType)
         );
-        attributes[0] = _getTypeAttribute(diamondDawnType);
+        attributes[0] = getStringAttribute(
+            "Type",
+            toTypeString(diamondDawnType)
+        );
         if (Type.ENTER_MINE == diamondDawnType) {
             return attributes;
         }
-        // Base
-        attributes[1] = getStringNFTAttribute("Origin", "Metaverse");
-        attributes[2] = getStringNFTAttribute("Identification", "Natural");
-        attributes[3] = getNFTAttribute(
+
+        attributes[1] = getStringAttribute("Origin", "Metaverse");
+        attributes[2] = getStringAttribute("Identification", "Natural");
+        attributes[3] = getAttribute(
             "Carat",
-            _toCaratString(_getPoints(metadata)),
+            getCaratString(_getPoints(metadata)),
             "",
             false
         );
         if (Type.ROUGH == diamondDawnType) {
-            assert(metadata.rough.extraPoints > 0);
-            assert(certificate.points > 0);
-            // Rough
-            attributes[4] = getStringNFTAttribute("Color", "Cape");
-            attributes[5] = getStringNFTAttribute(
+            attributes[4] = getStringAttribute("Color", "Cape");
+            attributes[5] = getStringAttribute(
                 "Shape",
-                _toRoughShapeString(metadata.rough.shape)
+                toRoughShapeString(metadata.rough.shape)
             );
-            attributes[6] = getStringNFTAttribute("Mine", "Underground");
+            attributes[6] = getStringAttribute("Mine", "Underground");
             return attributes;
         }
 
         if (uint(Type.CUT) <= uint(diamondDawnType)) {
-            // Cut
-            attributes[4] = getStringNFTAttribute(
+            attributes[4] = getStringAttribute(
                 "Color",
-                _toColorString(certificate.color)
+                toColorString(certificate.color)
             );
-            attributes[5] = getStringNFTAttribute(
+            attributes[5] = getStringAttribute(
                 "Cut",
-                _toGradeString(certificate.cut)
+                toGradeString(certificate.cut)
             );
-            attributes[6] = getStringNFTAttribute(
+            attributes[6] = getStringAttribute(
                 "Fluorescence",
-                _toFluorescenceString(certificate.fluorescence)
+                toFluorescenceString(certificate.fluorescence)
             );
-            attributes[7] = getStringNFTAttribute(
+            attributes[7] = getStringAttribute(
                 "Measurements",
                 certificate.measurements
             );
-            attributes[8] = getStringNFTAttribute(
+            attributes[8] = getStringAttribute(
                 "Shape",
-                _toShapeString(certificate.shape)
+                toShapeString(certificate.shape)
             );
         }
         if (uint(Type.POLISHED) <= uint(diamondDawnType)) {
-            attributes[9] = getStringNFTAttribute(
+            attributes[9] = getStringAttribute(
                 "Clarity",
-                _toClarityString(certificate.clarity)
+                toClarityString(certificate.clarity)
             );
-            attributes[10] = getStringNFTAttribute(
+            attributes[10] = getStringAttribute(
                 "Polish",
-                _toGradeString(certificate.polish)
+                toGradeString(certificate.polish)
             );
-            attributes[11] = getStringNFTAttribute(
+            attributes[11] = getStringAttribute(
                 "Symmetry",
-                _toGradeString(certificate.symmetry)
+                toGradeString(certificate.symmetry)
             );
         }
         if (uint(Type.REBORN) <= uint(diamondDawnType)) {
-            attributes[12] = getStringNFTAttribute("Laboratory", "GIA");
-            attributes[13] = getNFTAttribute(
+            attributes[12] = getStringAttribute("Laboratory", "GIA");
+            attributes[13] = getAttribute(
                 "Report Date",
                 Strings.toString(certificate.reportDate),
                 "date",
                 false
             );
-            attributes[14] = getNFTAttribute(
+            attributes[14] = getAttribute(
                 "Report Number",
                 Strings.toString(certificate.reportNumber),
                 "",
@@ -515,89 +496,6 @@ contract DiamondDawnMine is
             );
         }
         return attributes;
-    }
-
-    function _getTypeAttribute(Type diamondDawnType)
-        private
-        pure
-        returns (Attribute memory)
-    {
-        return getStringNFTAttribute("Type", _toTypeString(diamondDawnType));
-    }
-
-    function _toTypeString(Type type_) private pure returns (string memory) {
-        if (type_ == Type.ENTER_MINE) return "Mine Entrance";
-        else if (type_ == Type.ROUGH) return "Rough";
-        else if (type_ == Type.CUT) return "Cut";
-        else if (type_ == Type.POLISHED) return "Polished";
-        else if (type_ == Type.REBORN) return "Reborn";
-        revert();
-    }
-
-    function _toRoughShapeString(RoughShape shape)
-        private
-        pure
-        returns (string memory)
-    {
-        if (shape == RoughShape.MAKEABLE) return "Makeable";
-        revert();
-    }
-
-    function _toColorString(Color color) private pure returns (string memory) {
-        if (color == Color.M) return "M";
-        else if (color == Color.N) return "N";
-        else if (color == Color.O) return "O";
-        else if (color == Color.P) return "P";
-        else if (color == Color.Q) return "Q";
-        else if (color == Color.R) return "R";
-        else if (color == Color.S) return "S";
-        else if (color == Color.T) return "T";
-        else if (color == Color.U) return "U";
-        else if (color == Color.V) return "V";
-        else if (color == Color.W) return "W";
-        else if (color == Color.X) return "X";
-        else if (color == Color.Y) return "Y";
-        else if (color == Color.Z) return "Z";
-        revert();
-    }
-
-    function _toGradeString(Grade grade) private pure returns (string memory) {
-        if (grade == Grade.GOOD) return "Good";
-        else if (grade == Grade.VERY_GOOD) return "Very Good";
-        else if (grade == Grade.EXCELLENT) return "Excellent";
-        revert();
-    }
-
-    function _toClarityString(Clarity clarity)
-        private
-        pure
-        returns (string memory)
-    {
-        if (clarity == Clarity.VS2) return "VS2";
-        else if (clarity == Clarity.VS1) return "VS1";
-        else if (clarity == Clarity.VVS2) return "VVS2";
-        else if (clarity == Clarity.VVS1) return "VVS1";
-        else if (clarity == Clarity.IF) return "IF";
-        else if (clarity == Clarity.FL) return "FL";
-        revert();
-    }
-
-    function _toFluorescenceString(Fluorescence fluorescence)
-        private
-        pure
-        returns (string memory)
-    {
-        if (fluorescence == Fluorescence.FAINT) return "Faint";
-        else if (fluorescence == Fluorescence.NONE) return "None";
-        revert();
-    }
-
-    function _toShapeString(Shape shape) private pure returns (string memory) {
-        if (shape == Shape.PEAR) return "Pear";
-        else if (shape == Shape.ROUND) return "Round";
-        else if (shape == Shape.OVAL) return "Oval";
-        else if (shape == Shape.RADIANT) return "Radiant";
-        revert();
     }
 
     function _getNumAttributes(Type type_) private pure returns (uint) {
@@ -609,24 +507,17 @@ contract DiamondDawnMine is
         revert();
     }
 
-    function _toCaratString(uint points) private pure returns (string memory) {
-        uint remainder = points % 100;
-        string memory caratRemainder = remainder < 10
-            ? string.concat("0", Strings.toString(remainder))
-            : Strings.toString(remainder);
-        string memory carat = Strings.toString(points / 100);
-        return string.concat(carat, ".", caratRemainder);
-    }
-
     function _getPoints(Metadata memory metadata) private pure returns (uint) {
         assert(metadata.certificate.points > 0);
-        // TODO add assertion for extraPoints
-        if (metadata.type_ == Type.ROUGH)
+        if (metadata.type_ == Type.ROUGH) {
+            assert(metadata.rough.extraPoints > 0);
             return metadata.certificate.points + metadata.rough.extraPoints;
-        else if (metadata.type_ == Type.CUT)
+        } else if (metadata.type_ == Type.CUT) {
+            assert(metadata.cut.extraPoints > 0);
             return metadata.certificate.points + metadata.cut.extraPoints;
-        else if (metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN)
-            return metadata.certificate.points;
+        } else if (
+            metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN
+        ) return metadata.certificate.points;
         revert();
     }
 }
