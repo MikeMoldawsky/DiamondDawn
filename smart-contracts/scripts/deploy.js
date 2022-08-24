@@ -183,22 +183,22 @@ async function main() {
       },
     ];
     console.log(`populating ${diamonds.length} diamonds`, diamonds);
-    await diamondDawnMine.diamondEruption(diamonds);
-    await diamondDawnMine.setMineEntranceVideoUrl("infinity.mp4");
-    await diamondDawnMine.setRoughVideoUrl("rough.mp4");
-    await diamondDawnMine.setCutVideoUrls(
+    // await diamondDawnMine.diamondEruption(diamonds);
+    await diamondDawnMine.setMineEntranceVideo("infinity.mp4");
+    await diamondDawnMine.setRoughVideo("rough.mp4");
+    await diamondDawnMine.setCutVideos(
       "cut_pear.mp4",
       "cut_round.mp4",
       "cut_oval.mp4",
       "cut_radiant.mp4"
     );
-    await diamondDawnMine.setPolishVideoUrls(
+    await diamondDawnMine.setPolishVideos(
       "polished_pear.mp4",
       "polished_round.mp4",
       "polished_oval.mp4",
       "polished_radiant.mp4"
     );
-    await diamondDawnMine.setRebirthVideoUrl("diamond_dawn.mp4");
+    await diamondDawnMine.setRebirthVideo("diamond_dawn.mp4");
     await diamondDawn.unpause();
   }
 

@@ -38,7 +38,7 @@ contract DiamondDawnMine is
     mapping(uint => Metadata) private _metadata;
     address private _diamondDawn;
     Certificate[] private _diamonds;
-    Certificate private NO_DIAMOND =
+    Certificate private EMPTY_DIAMOND =
         Certificate({
             points: 0,
             reportDate: 0,
@@ -192,7 +192,7 @@ contract DiamondDawnMine is
             type_: Type.ENTER_MINE,
             rough: RoughMetadata({shape: RoughShape.NO_SHAPE, extraPoints: 0}),
             cut: CutMetadata({extraPoints: 0}),
-            certificate: NO_DIAMOND
+            certificate: EMPTY_DIAMOND
         });
     }
 
@@ -360,27 +360,6 @@ contract DiamondDawnMine is
         return typeToShapeVideo[uint(type_)][shape];
     }
 
-    function _videoBaseURI() private pure returns (string memory) {
-        // TODO: in production we'll get the full ipfs/arweave url - base URI will change.
-        // TODO: galk to check what's the best approach
-        return
-            "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
-    }
-
-    function _getShapeNumber(Metadata memory metadata)
-        private
-        pure
-        returns (uint)
-    {
-        Type type_ = metadata.type_;
-        if (type_ == Type.CUT || type_ == Type.POLISHED)
-            return uint(metadata.certificate.shape);
-        if (type_ == Type.ROUGH) return uint(metadata.rough.shape);
-        if (type_ == Type.ENTER_MINE || type_ == Type.REBORN)
-            return NO_SHAPE_NUM;
-        revert();
-    }
-
     function _getMetadataJson(
         uint tokenId,
         Metadata memory metadata,
@@ -404,16 +383,12 @@ contract DiamondDawnMine is
         pure
         returns (Attribute[] memory)
     {
-        Type diamondDawnType = metadata.type_;
-        Certificate memory certificate = metadata.certificate;
+        Type type_ = metadata.type_;
         Attribute[] memory attributes = new Attribute[](
-            _getNumAttributes(diamondDawnType)
+            _getNumAttributes(type_)
         );
-        attributes[0] = getStringAttribute(
-            "Type",
-            toTypeString(diamondDawnType)
-        );
-        if (Type.ENTER_MINE == diamondDawnType) {
+        attributes[0] = getStringAttribute("Type", toTypeString(type_));
+        if (type_ == Type.ENTER_MINE) {
             return attributes;
         }
 
@@ -425,7 +400,7 @@ contract DiamondDawnMine is
             "",
             false
         );
-        if (Type.ROUGH == diamondDawnType) {
+        if (type_ == Type.ROUGH) {
             attributes[4] = getStringAttribute("Color", "Cape");
             attributes[5] = getStringAttribute(
                 "Shape",
@@ -435,7 +410,8 @@ contract DiamondDawnMine is
             return attributes;
         }
 
-        if (uint(Type.CUT) <= uint(diamondDawnType)) {
+        Certificate memory certificate = metadata.certificate;
+        if (uint(Type.CUT) <= uint(type_)) {
             attributes[4] = getStringAttribute(
                 "Color",
                 toColorString(certificate.color)
@@ -457,7 +433,7 @@ contract DiamondDawnMine is
                 toShapeString(certificate.shape)
             );
         }
-        if (uint(Type.POLISHED) <= uint(diamondDawnType)) {
+        if (uint(Type.POLISHED) <= uint(type_)) {
             attributes[9] = getStringAttribute(
                 "Clarity",
                 toClarityString(certificate.clarity)
@@ -471,7 +447,7 @@ contract DiamondDawnMine is
                 toGradeString(certificate.symmetry)
             );
         }
-        if (uint(Type.REBORN) <= uint(diamondDawnType)) {
+        if (uint(Type.REBORN) <= uint(type_)) {
             attributes[12] = getStringAttribute("Laboratory", "GIA");
             attributes[13] = getAttribute(
                 "Report Date",
@@ -487,6 +463,27 @@ contract DiamondDawnMine is
             );
         }
         return attributes;
+    }
+
+    function _videoBaseURI() private pure returns (string memory) {
+        // TODO: in production we'll get the full ipfs/arweave url - base URI will change.
+        // TODO: galk to check what's the best approach
+        return
+            "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
+    }
+
+    function _getShapeNumber(Metadata memory metadata)
+        private
+        pure
+        returns (uint)
+    {
+        Type type_ = metadata.type_;
+        if (type_ == Type.CUT || type_ == Type.POLISHED)
+            return uint(metadata.certificate.shape);
+        if (type_ == Type.ROUGH) return uint(metadata.rough.shape);
+        if (type_ == Type.ENTER_MINE || type_ == Type.REBORN)
+            return NO_SHAPE_NUM;
+        revert();
     }
 
     function _getNumAttributes(Type type_) private pure returns (uint) {

@@ -1,7 +1,12 @@
-import { DIAMOND_DAWN_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
+import {
+  DIAMOND_DAWN_TYPE,
+  NO_SHAPE_NUM,
+  ROUGH_SHAPE,
+  SHAPE,
+  SYSTEM_STAGE,
+} from "consts";
 import _ from "lodash";
 import { getVideoUrlParamName } from "utils";
-import { utils as ethersUtils } from "ethers";
 
 // ADMIN CONTROL API
 export const getSystemStageApi = async (contract) => {
@@ -37,48 +42,42 @@ export const unpauseApi = async (contract) => {
 // ART URLS API
 const ART_MAPPING = {
   [SYSTEM_STAGE.INVITATIONS]: {
-    setter: "setMineEntranceVideoUrl",
-    getters: ["mineEntranceVideoUrl"],
-    keys: [ROUGH_SHAPE.NO_SHAPE],
+    setter: "setMineEntranceVideo",
+    type: DIAMOND_DAWN_TYPE.ENTER_MINE,
+    shapes: [NO_SHAPE_NUM],
   },
   [SYSTEM_STAGE.MINE_OPEN]: {
-    setter: "setRoughVideoUrl",
-    getters: ["roughMakeableVideoUrl"],
-    keys: [ROUGH_SHAPE.MAKEABLE],
+    setter: "setRoughVideo",
+    type: DIAMOND_DAWN_TYPE.ROUGH,
+    shapes: [ROUGH_SHAPE.MAKEABLE],
   },
   [SYSTEM_STAGE.CUT_OPEN]: {
-    setter: "setCutVideoUrls",
-    getters: [
-      "cutPearVideoUrl",
-      "cutRoundVideoUrl",
-      "cutOvalVideoUrl",
-      "cutRadiantVideoUrl",
-    ],
-    keys: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
+    setter: "setCutVideos",
+    type: DIAMOND_DAWN_TYPE.CUT,
+    shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.POLISH_OPEN]: {
-    setter: "setPolishVideoUrls",
-    getters: [
-      "polishPearVideoUrl",
-      "polishRoundVideoUrl",
-      "polishOvalVideoUrl",
-      "polishRadiantVideoUrl",
-    ],
-    keys: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
+    setter: "setPolishVideos",
+    type: DIAMOND_DAWN_TYPE.POLISHED,
+    shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.SHIP]: {
-    setter: "setRebirthVideoUrl",
-    getters: ["rebirthVideoUrl"],
-    keys: [DIAMOND_DAWN_TYPE.REBORN],
+    setter: "setRebirthVideo",
+    type: DIAMOND_DAWN_TYPE.REBORN,
+    shapes: [NO_SHAPE_NUM],
   },
 };
 
 export const getVideoUrlsByStageApi = async (mineContract, stage) => {
-  const { getters, keys } = ART_MAPPING[stage];
+  // TODO: fix
+  const { type, shapes } = ART_MAPPING[stage];
+  console.log("MIKE $$$$");
+  console.log(mineContract);
+  console.log({ type, shapes });
   const urls = await Promise.all(
-    _.map(getters, (getter) => mineContract[getter]())
+    _.map(shapes, (shape) => mineContract["typeToShapeVideo"](type, shape))
   );
-  const names = _.map(keys, (key) => getVideoUrlParamName(key, stage));
+  const names = _.map(shapes, (shape) => getVideoUrlParamName(shape, stage));
   return _.zipObject(names, urls);
 };
 
