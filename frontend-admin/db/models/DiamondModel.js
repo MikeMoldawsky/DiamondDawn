@@ -50,7 +50,7 @@ const DiamondSchema = new mongoose.Schema({
     required: true,
     match: [
       /\d\.\d\d - \d\.\d\d x \d\.\d\d/,
-      "Please fill a valid email address",
+      "Please fill valid measurements",
     ],
   },
 });
