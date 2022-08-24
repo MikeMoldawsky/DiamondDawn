@@ -263,12 +263,12 @@ contract DiamondDawnMine is
         returns (string memory)
     {
         Metadata memory metadata = _metadata[tokenId];
-        string memory videoUrl = _getVideoURI(metadata);
+        string memory videoURI = _getVideoURI(metadata);
         string memory base64Json = Base64.encode(
             bytes(
                 string(
                     abi.encodePacked(
-                        _getMetadataJson(tokenId, metadata, videoUrl)
+                        _getMetadataJson(tokenId, metadata, videoURI)
                     )
                 )
             )
@@ -384,7 +384,7 @@ contract DiamondDawnMine is
     function _getMetadataJson(
         uint tokenId,
         Metadata memory metadata,
-        string memory videoUrl
+        string memory videoURI
     ) private pure returns (string memory) {
         // TODO: Add real description
         NFTMetadata memory nftMetadata = NFTMetadata({
@@ -393,7 +393,7 @@ contract DiamondDawnMine is
             ),
             description: "description",
             createdBy: "dd",
-            image: videoUrl,
+            image: videoURI,
             attributes: _getJsonAttributes(metadata)
         });
         return toJsonMetadata(nftMetadata);
