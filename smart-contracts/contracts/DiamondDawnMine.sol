@@ -247,44 +247,16 @@ contract DiamondDawnMine is
     function isMineReady(Type type_) external view returns (bool) {
         // TODO - for mine check that 333 diamonds were inserted
         if (type_ == Type.ENTER_MINE || type_ == Type.REBORN) {
-            return _isVideoExist(Type.ENTER_MINE, NO_SHAPE_NUM);
+            return _isVideoExist(type_, NO_SHAPE_NUM);
         }
         uint maxShape = type_ == Type.ROUGH
             ? uint(type(RoughShape).max)
             : uint(type(Shape).max);
         // skipping 0 - no shape
         for (uint i = 1; i <= maxShape; i++) {
-            if (!_isVideoExist(Type.CUT, maxShape)) return false;
+            if (!_isVideoExist(type_, maxShape)) return false;
         }
         return true;
-    }
-
-    function isMineEntranceReady() external view returns (bool) {
-        return _isVideoExist(Type.ENTER_MINE, NO_SHAPE_NUM);
-    }
-
-    function isMineReady() external view returns (bool) {
-        return _isVideoExist(Type.ROUGH, uint(RoughShape.MAKEABLE));
-    }
-
-    function isCutReady() external view returns (bool) {
-        return
-            _isVideoExist(Type.CUT, uint(Shape.PEAR)) &&
-            _isVideoExist(Type.CUT, uint(Shape.ROUND)) &&
-            _isVideoExist(Type.CUT, uint(Shape.OVAL)) &&
-            _isVideoExist(Type.CUT, uint(Shape.RADIANT));
-    }
-
-    function isPolishReady() external view returns (bool) {
-        return
-            _isVideoExist(Type.POLISHED, uint(Shape.PEAR)) &&
-            _isVideoExist(Type.POLISHED, uint(Shape.ROUND)) &&
-            _isVideoExist(Type.POLISHED, uint(Shape.OVAL)) &&
-            _isVideoExist(Type.POLISHED, uint(Shape.RADIANT));
-    }
-
-    function isShipReady() external view returns (bool) {
-        return _isVideoExist(Type.REBORN, NO_SHAPE_NUM);
     }
 
     /**********************     Private Functions     ************************/

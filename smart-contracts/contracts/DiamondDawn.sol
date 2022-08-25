@@ -86,27 +86,27 @@ contract DiamondDawn is
     modifier isDiamondDawnMineReady(SystemStage systemStage_) {
         if (systemStage_ == SystemStage.INVITATIONS) {
             require(
-                diamondDawnMine.isMineEntranceReady(),
+                diamondDawnMine.isMineReady(Type.ENTER_MINE),
                 "DiamondDawnMine entrance isn't ready"
             );
         } else if (systemStage_ == SystemStage.MINE_OPEN) {
             require(
-                diamondDawnMine.isMineReady(),
+                diamondDawnMine.isMineReady(Type.ROUGH),
                 "DiamondDawnMine mine isn't ready"
             );
         } else if (systemStage_ == SystemStage.CUT_OPEN) {
             require(
-                diamondDawnMine.isCutReady(),
+                diamondDawnMine.isMineReady(Type.CUT),
                 "DiamondDawnMine cut isn't ready"
             );
         } else if (systemStage_ == SystemStage.POLISH_OPEN) {
             require(
-                diamondDawnMine.isPolishReady(),
+                diamondDawnMine.isMineReady(Type.POLISHED),
                 "DiamondDawnMine polish isn't ready"
             );
         } else if (systemStage_ == SystemStage.SHIP) {
             require(
-                diamondDawnMine.isShipReady(),
+                diamondDawnMine.isMineReady(Type.REBORN),
                 "DiamondDawnMine burn isn't ready"
             );
         }
