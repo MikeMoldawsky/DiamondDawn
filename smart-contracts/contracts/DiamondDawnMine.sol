@@ -22,8 +22,8 @@ contract DiamondDawnMine is
     IDiamondDawnMine,
     IDiamondDawnMineAdmin
 {
-    bool public isMineOpen = false; // mine is closed until it's initialized.
-    bool public isMineLocked = false; // mine is locked forever when the project ends (immutable).
+    bool public isClosed = true; // mine is closed until it's initialized.
+    bool public isLocked = false; // mine is locked forever when the project ends (immutable).
     mapping(uint => mapping(uint => string)) public typeToShapeVideo;
 
     uint private constant NO_SHAPE_NUM = 0;
@@ -63,12 +63,17 @@ contract DiamondDawnMine is
 
     /**********************     Modifiers     ************************/
     modifier onlyDiamondDawn() {
-        require(msg.sender == _diamondDawn);
+        require(msg.sender == _diamondDawn, "Only DD");
         _;
     }
 
-    modifier onlyExistingTokens(uint tokenId) {
-        require(_metadata[tokenId].type_ != Type.NO_TYPE, "No token");
+    modifier notExists(uint tokenId) {
+        require(_metadata[tokenId].type_ == Type.NO_TYPE, "Exists");
+        _;
+    }
+
+    modifier exists(uint tokenId) {
+        require(_metadata[tokenId].type_ != Type.NO_TYPE, "Don't exist");
         _;
     }
 
@@ -78,17 +83,17 @@ contract DiamondDawnMine is
     }
 
     modifier mineClosed() {
-        require(!isMineOpen);
+        require(isClosed, "Open mine");
         _;
     }
 
     modifier mineOpen() {
-        require(isMineOpen);
+        require(!isClosed, "Closed mine");
         _;
     }
 
     modifier mineNotLocked() {
-        require(!isMineLocked);
+        require(!isLocked);
         _;
     }
 
@@ -99,59 +104,12 @@ contract DiamondDawnMine is
 
     /**********************     External Functions     ************************/
 
-    function initialize(address diamondDawn)
+    function enter(uint tokenId)
         external
-        mineNotLocked
-        onlyRole(DEFAULT_ADMIN_ROLE)
+        onlyDiamondDawn
+        mineOpen
+        notExists(tokenId)
     {
-        _diamondDawn = diamondDawn;
-        isMineOpen = true;
-    }
-
-    function diamondEruption(Certificate[] calldata diamonds)
-        external
-        mineNotLocked
-        //        mineClosed
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        for (uint i = 0; i < diamonds.length; i++) {
-            _diamonds.push(diamonds[i]);
-        }
-    }
-
-    function setIsMineOpen(bool isMineOpen_)
-        external
-        mineNotLocked
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        isMineOpen = isMineOpen_;
-    }
-
-    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos)
-        external
-        mineNotLocked
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        require(type_ != Type.NO_TYPE);
-        for (uint i = 0; i < shapeVideos.length; i++) {
-            require(bytes(shapeVideos[i].video).length > 0);
-            _setVideo(type_, shapeVideos[i].shape, shapeVideos[i].video);
-        }
-    }
-
-    function replaceLostShipment(uint tokenId, Certificate calldata diamond)
-        external
-        mineNotLocked
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        Metadata storage metadata = _metadata[tokenId];
-        require(
-            metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN
-        );
-        metadata.certificate = diamond;
-    }
-
-    function enterMine(uint tokenId) external onlyDiamondDawn mineOpen {
         _metadata[tokenId] = Metadata({
             type_: Type.ENTER_MINE,
             rough: RoughMetadata({shape: RoughShape.NO_SHAPE, extraPoints: 0}),
@@ -206,8 +164,60 @@ contract DiamondDawnMine is
         _metadata[tokenId].type_ = Type.REBORN;
     }
 
+    function initialize(address diamondDawn)
+        external
+        mineNotLocked
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _diamondDawn = diamondDawn;
+        isClosed = false;
+    }
+
+    function eruption(Certificate[] calldata diamonds)
+        external
+        mineNotLocked
+        //        mineClosed
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        for (uint i = 0; i < diamonds.length; i++) {
+            _diamonds.push(diamonds[i]);
+        }
+    }
+
+    function replaceLostShipment(uint tokenId, Certificate calldata diamond)
+        external
+        mineNotLocked
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        Metadata storage metadata = _metadata[tokenId];
+        require(
+            metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN
+        );
+        metadata.certificate = diamond;
+    }
+
+    function setClosed(bool isClosed_)
+        external
+        mineNotLocked
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        isClosed = isClosed_;
+    }
+
+    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos)
+        external
+        mineNotLocked
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        require(type_ != Type.NO_TYPE);
+        for (uint i = 0; i < shapeVideos.length; i++) {
+            require(bytes(shapeVideos[i].video).length > 0);
+            _setVideo(type_, shapeVideos[i].shape, shapeVideos[i].video);
+        }
+    }
+
     function lockMine() external onlyDiamondDawn mineClosed {
-        isMineLocked = true;
+        isLocked = true;
     }
 
     function getDiamondCount()
@@ -223,7 +233,7 @@ contract DiamondDawnMine is
         external
         view
         onlyDiamondDawn
-        onlyExistingTokens(tokenId)
+        exists(tokenId)
         returns (string memory)
     {
         Metadata memory metadata = _metadata[tokenId];

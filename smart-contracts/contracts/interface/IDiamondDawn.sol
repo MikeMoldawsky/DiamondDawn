@@ -2,14 +2,14 @@
 pragma solidity ^0.8.15;
 
 interface IDiamondDawn {
-    event EnterMine(uint tokenId);
+    event Enter(uint tokenId);
     event Mine(uint tokenId);
     event Cut(uint tokenId);
     event Polish(uint tokenId);
     event Ship(uint tokenId);
     event Rebirth(uint tokenId);
 
-    function enterMine(string calldata password) external payable;
+    function enter(string calldata password) external payable;
 
     function mine(uint tokenId) external;
 

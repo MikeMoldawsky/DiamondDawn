@@ -6,7 +6,7 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import CRUDTable from "components/CRUDTable";
 import { CONTRACTS } from "consts";
 import useDDContract from "hooks/useDDContract";
-import { diamondEruptionApi } from "api/contractApi";
+import { eruptionApi } from "api/contractApi";
 import {
   getDiamondsApi,
   addDiamondApi,
@@ -176,7 +176,7 @@ const DiamondsTab = () => {
   const renderDeployButton = (selectedRows) => (
     <div
       className="button link save-button"
-      onClick={() => diamondEruptionApi(ddMineContract, selectedRows)}
+      onClick={() => eruptionApi(ddMineContract, selectedRows)}
     >
       <FontAwesomeIcon icon={faUpload} /> Deploy
     </div>

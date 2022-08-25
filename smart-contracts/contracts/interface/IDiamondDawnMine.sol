@@ -4,9 +4,7 @@ pragma solidity ^0.8.15;
 import "../objects/MineObjects.sol";
 
 interface IDiamondDawnMine {
-    function lockMine() external;
-
-    function enterMine(uint tokenId) external;
+    function enter(uint tokenId) external;
 
     function mine(uint tokenId) external;
 
@@ -15,6 +13,8 @@ interface IDiamondDawnMine {
     function polish(uint tokenId) external;
 
     function rebirth(uint tokenId) external;
+
+    function lockMine() external;
 
     function getDiamondMetadata(uint tokenId)
         external

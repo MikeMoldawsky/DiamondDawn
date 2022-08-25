@@ -21,18 +21,18 @@ export const getMinePriceApi = async (contract) => {
 };
 
 // PROCESS
-export const enterMineApi = async (contract, password, minePrice) => {
+export const enterApi = async (contract, password, minePrice) => {
   try {
-    console.log("enterMineApi", {
+    console.log("enterApi", {
       password,
       bytes32Password: ethersUtils.formatBytes32String(password),
       minePrice,
     });
-    return await contract.enterMine(ethersUtils.formatBytes32String(password), {
+    return await contract.enter(ethersUtils.formatBytes32String(password), {
       value: minePrice,
     });
   } catch (e) {
-    logApiError(e, "enterMineApi");
+    logApiError(e, "enterApi");
     throw new Error(e);
   }
 };
