@@ -146,7 +146,7 @@ async function main() {
         reportNumber: 3333333333,
         reportDate: 1659254421,
         shape: 2,
-        points: 3.5,
+        points: 35,
         color: 5,
         clarity: 1,
         cut: 1,
@@ -182,8 +182,9 @@ async function main() {
         measurements: "5.12 - 5.12 x 3.50",
       },
     ];
+
     console.log(`populating ${diamonds.length} diamonds`, diamonds);
-    // await diamondDawnMine.diamondEruption(diamonds);
+    await diamondDawnMine.diamondEruption(diamonds);
     await diamondDawnMine.setMineEntranceVideo("infinity.mp4");
     await diamondDawnMine.setRoughVideo("rough.mp4");
     await diamondDawnMine.setCutVideos(
