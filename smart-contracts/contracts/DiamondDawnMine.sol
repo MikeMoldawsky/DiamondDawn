@@ -272,14 +272,10 @@ contract DiamondDawnMine is
     /**********************     Private Functions     ************************/
 
     function _mineDiamond() private returns (Certificate memory) {
-        // TODO: check if there's a library that pops a random element from the list.
-        uint randomIndex = _getRandomBetween(0, _mine.length - 1);
-        Certificate memory diamond = _mine[randomIndex];
-
-        // TODO: Move the last element into the place to delete
-        if (_mine.length > 1) {
-            _mine[randomIndex] = _mine[_mine.length - 1];
-        }
+        assert(_mine.length > 0);
+        uint index = _getRandomBetween(0, _mine.length - 1);
+        Certificate memory diamond = _mine[index];
+        _mine[index] = _mine[_mine.length - 1]; // swap last diamond with mined diamond
         _mine.pop();
         return diamond;
     }
