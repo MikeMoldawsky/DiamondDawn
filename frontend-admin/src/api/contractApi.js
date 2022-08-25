@@ -64,7 +64,6 @@ const ART_MAPPING = {
 };
 
 export const getVideoUrlsByStageApi = async (mineContract, stage) => {
-  // TODO: fix
   const { type, shapes } = ART_MAPPING[stage];
   console.log("MIKE $$$$");
   console.log(mineContract);
