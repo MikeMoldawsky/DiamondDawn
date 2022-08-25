@@ -18,7 +18,7 @@ const {
 } = require("./utils/EnumConverterUtils");
 const {
   setVideoAndAssertEnterMineMetadata,
-  setVideoAndAssertRoughMetadata,
+  setVideoAndAssertRoughMetadata, setVideoAndAssertCutMetadata,
 } = require("./utils/MetadataTestUtils");
 
 // constants
@@ -180,6 +180,75 @@ describe("Diamond Dawn Mine", () => {
             i,
             DIAMOND.points,
             videoSuffix
+          );
+        })
+      );
+    });
+  });
+
+  describe("cut", function () {
+    const tokenId = 1;
+    let mineContract;
+    let user;
+
+    beforeEach(async () => {
+      const { diamondDawnMine, owner, user1 } = await loadFixture(
+        deployMineContract
+      );
+      diamondDawnMine.initialize(owner.address, 333);
+      mineContract = diamondDawnMine;
+      user = user1;
+    });
+
+    it("should REVERT when NOT DiamondDawn", async () => {
+      await expect(mineContract.connect(user).cut(tokenId)).to.be.revertedWith(
+        "Only DD"
+      );
+    });
+
+    it("should REVERT when mine is CLOSED", async () => {
+      await mineContract.setClosed(true);
+      await expect(mineContract.cut(tokenId)).to.be.revertedWith("Closed mine");
+    });
+
+    it("should REVERT when token is NOT rough type", async () => {
+      await mineContract.eruption([DIAMOND]);
+      await mineContract.enter(tokenId);
+      await expect(mineContract.cut(tokenId)).to.be.revertedWith("Wrong type");
+      await mineContract.mine(tokenId);
+      await mineContract.cut(tokenId);
+      await expect(mineContract.cut(tokenId)).to.be.revertedWith("Wrong type");
+    });
+
+    it("should mine 4 tokens and generate metadata", async () => {
+      // Prepare diamonds and invitations
+      await Promise.all(
+        _.range(1, 5).map(async (i) => {
+          await mineContract.eruption([DIAMOND]);
+        })
+      );
+      await Promise.all(
+        _.range(1, 5).map(async (i) => await mineContract.enter(i))
+      );
+
+      await Promise.all(
+        _.range(1, 5).map(async (i) => await mineContract.mine(i))
+      );
+
+      // Mine diamonds
+      const videoSuffix = "rough.mp4";
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
+        { shape: SHAPE.PEAR, video: videoSuffix },
+      ]);
+      await Promise.all(
+        _.range(1, 5).map(async (i) => {
+          await mineContract.cut(i);
+          await setVideoAndAssertCutMetadata(
+            mineContract,
+            i,
+            DIAMOND.points,
+            videoSuffix,
+            DIAMOND
           );
         })
       );
