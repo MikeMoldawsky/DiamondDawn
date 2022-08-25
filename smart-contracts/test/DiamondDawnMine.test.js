@@ -11,7 +11,10 @@ const {
   enumToFluorescence,
   enumToShape,
   enumToClarity,
-} = require("./constants/consts");
+  NO_SHAPE_NUM,
+  DIAMOND_DAWN_TYPE,
+  SHAPE,
+} = require("./utils/EnumConverterUtils");
 
 // constants
 const MIN_ROUGH_EXTRA_POINTS = 38;
@@ -80,7 +83,9 @@ describe("Diamond Dawn Mine", () => {
       // Token 1 enters mine
       const tokenId = 1;
       await diamondDawnMine.enterMine(tokenId);
-      await diamondDawnMine.setMineEntranceVideo(videoSuffix);
+      await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
+        { shape: NO_SHAPE_NUM, video: videoSuffix },
+      ]);
       // fetch metadata for token 1
       const metadata = await diamondDawnMine.getDiamondMetadata(tokenId);
       const parsedData = parseDataUrl(metadata); // parse data-url (data:[<mediatype>][;base64],<data>)
@@ -113,7 +118,9 @@ describe("Diamond Dawn Mine", () => {
         ],
       };
 
-      await diamondDawnMine.setRoughVideo(videoSuffix);
+      await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
+        { shape: SHAPE.PEAR, video: videoSuffix },
+      ]);
       await diamondDawnMine.diamondEruption([DIAMOND]);
 
       // Token 1 enters mine
@@ -174,7 +181,10 @@ describe("Diamond Dawn Mine", () => {
           { trait_type: "Shape", value: enumToShape(DIAMOND.shape) },
         ],
       };
-      await diamondDawnMine.setCutVideos(videoSuffix, "", "", ""); // TODO: test all urls
+      // TODO: test all urls
+      await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
+        { shape: SHAPE.PEAR, video: videoSuffix },
+      ]);
       await diamondDawnMine.diamondEruption([DIAMOND]);
 
       // Token 1 enters mine
@@ -239,8 +249,9 @@ describe("Diamond Dawn Mine", () => {
           { trait_type: "Symmetry", value: enumToGrade(DIAMOND.symmetry) },
         ],
       };
-
-      await diamondDawnMine.setPolishVideos(videoSuffix, "", "", ""); // TODO: test all urls
+      await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+        { shape: SHAPE.PEAR, video: videoSuffix },
+      ]);
       await diamondDawnMine.diamondEruption([DIAMOND]);
 
       // Token 1 enters mine
@@ -311,7 +322,9 @@ describe("Diamond Dawn Mine", () => {
         ],
       };
 
-      await diamondDawnMine.setRebirthVideo(videoSuffix);
+      await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
+        { shape: NO_SHAPE_NUM, video: videoSuffix },
+      ]);
       await diamondDawnMine.diamondEruption([DIAMOND]);
 
       // Token 1 enters mine

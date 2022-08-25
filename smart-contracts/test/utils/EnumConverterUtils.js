@@ -116,6 +116,39 @@ const enumToFluorescence = (i) => {
   }
 };
 
+const NO_SHAPE_NUM = 0;
+
+const SYSTEM_STAGE = {
+  INVITATIONS: 0,
+  MINE_OPEN: 1,
+  CUT_OPEN: 2,
+  POLISH_OPEN: 3,
+  SHIP: 4,
+  COMPLETE: 5,
+};
+
+const DIAMOND_DAWN_TYPE = {
+  NO_TYPE: 0,
+  ENTER_MINE: 1,
+  ROUGH: 2,
+  CUT: 3,
+  POLISHED: 4,
+  REBORN: 5,
+};
+
+const ROUGH_SHAPE = {
+  NO_SHAPE: 0,
+  MAKEABLE: 1,
+};
+
+const SHAPE = {
+  NO_SHAPE: 0,
+  PEAR: 1,
+  ROUND: 2,
+  OVAL: 3,
+  RADIANT: 4,
+};
+
 module.exports = {
   enumToType,
   enumToRoughShape,
@@ -124,4 +157,9 @@ module.exports = {
   enumToClarity,
   enumToGrade,
   enumToFluorescence,
+  NO_SHAPE_NUM,
+  SYSTEM_STAGE,
+  DIAMOND_DAWN_TYPE,
+  ROUGH_SHAPE,
+  SHAPE,
 };

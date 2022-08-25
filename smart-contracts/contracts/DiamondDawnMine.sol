@@ -127,7 +127,11 @@ contract DiamondDawnMine is
         isMineOpen = isMineOpen_;
     }
 
-    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos) external  mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE){
+    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos)
+        external
+        mineNotLocked
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         require(type_ != Type.NO_TYPE);
         for (uint i = 0; i < shapeVideos.length; i++) {
             require(bytes(shapeVideos[i].video).length > 0);
@@ -240,14 +244,16 @@ contract DiamondDawnMine is
             );
     }
 
-    function isMineReady(Type type_) external view returns (bool){
-        if(type_ == Type.ENTER_MINE || type_ == Type.REBORN){
+    function isMineReady(Type type_) external view returns (bool) {
+        if (type_ == Type.ENTER_MINE || type_ == Type.REBORN) {
             return _isVideoExist(Type.ENTER_MINE, NO_SHAPE_NUM);
         }
-        uint shapesNum = type_ == Type.ROUGH ? type(RoughShape).max : type(Shape).max;
+        uint maxShape = type_ == Type.ROUGH
+            ? uint(type(RoughShape).max)
+            : uint(type(Shape).max);
         // skipping 0 - no shape
-        for (uint i = 1; i < shapesNum; i++) {
-            if(!_isVideoExist(Type.CUT, shapesNum)) return false;
+        for (uint i = 1; i <= maxShape; i++) {
+            if (!_isVideoExist(Type.CUT, maxShape)) return false;
         }
         return true;
     }
