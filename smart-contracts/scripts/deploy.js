@@ -190,7 +190,7 @@ async function main() {
     ];
 
     console.log(`populating ${diamonds.length} diamonds`, diamonds);
-    await diamondDawnMine.diamondEruption(diamonds);
+    await diamondDawnMine.eruption(diamonds);
     await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
       { shape: NO_SHAPE_NUM, video: "infinity.mp4" },
     ]);

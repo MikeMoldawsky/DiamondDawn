@@ -169,7 +169,7 @@ contract DiamondDawn is
         }
     }
 
-    function enterMine(string calldata password)
+    function enter(string calldata password)
         external
         payable
         assignedDiamondDawnMine
@@ -186,8 +186,8 @@ contract DiamondDawn is
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(_msgSender(), tokenId);
-        diamondDawnMine.enterMine(tokenId);
-        emit EnterMine(tokenId);
+        diamondDawnMine.enter(tokenId);
+        emit Enter(tokenId);
     }
 
     function mine(uint tokenId)

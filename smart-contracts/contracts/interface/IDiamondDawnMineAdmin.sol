@@ -7,14 +7,14 @@ import "../objects/MineObjects.sol";
 interface IDiamondDawnMineAdmin {
     function initialize(address diamondDawn) external;
 
-    function diamondEruption(Certificate[] calldata diamonds) external;
-
-    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos)
-        external;
-
-    function setIsMineOpen(bool isMineOpen) external;
+    function eruption(Certificate[] calldata diamonds) external;
 
     function replaceLostShipment(uint tokenId, Certificate calldata diamond)
+        external;
+
+    function setClosed(bool isClosed) external;
+
+    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos)
         external;
 
     // TODO: delete this function
