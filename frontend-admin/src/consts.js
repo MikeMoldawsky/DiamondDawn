@@ -1,3 +1,5 @@
+export const NO_SHAPE_NUM = 0;
+
 export const SYSTEM_STAGE = {
   INVITATIONS: 0,
   MINE_OPEN: 1,

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import {Certificate} from "./DiamondObjects.sol";
+import "./DiamondObjects.sol";
 
 enum RoughShape {
     NO_SHAPE,
@@ -31,4 +31,9 @@ struct Metadata {
     RoughMetadata rough;
     CutMetadata cut;
     Certificate certificate;
+}
+
+struct ShapeVideo {
+    uint shape;
+    string video;
 }
