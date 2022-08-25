@@ -19,6 +19,10 @@ interface IDiamondDawnMine {
         view
         returns (string memory);
 
+    function isMineReady(Type type_) external view returns (bool);
+
+    // TODO: delete the following functions
+
     function isMineEntranceReady() external view returns (bool);
 
     function isMineReady() external view returns (bool);

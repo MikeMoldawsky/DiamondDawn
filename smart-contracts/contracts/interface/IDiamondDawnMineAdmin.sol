@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import {Certificate} from "../objects/DiamondObjects.sol";
+import "../objects/DiamondObjects.sol";
+import "../objects/MineObjects.sol";
 
 interface IDiamondDawnMineAdmin {
     function initialize(address diamondDawn) external;
@@ -27,6 +28,8 @@ interface IDiamondDawnMineAdmin {
     ) external;
 
     function setRebirthVideo(string calldata rebirth) external;
+
+    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos) external;
 
     function setIsMineOpen(bool isMineOpen) external;
 

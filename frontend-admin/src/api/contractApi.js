@@ -42,27 +42,22 @@ export const unpauseApi = async (contract) => {
 // ART URLS API
 const ART_MAPPING = {
   [SYSTEM_STAGE.INVITATIONS]: {
-    setter: "setMineEntranceVideo",
     type: DIAMOND_DAWN_TYPE.ENTER_MINE,
     shapes: [NO_SHAPE_NUM],
   },
   [SYSTEM_STAGE.MINE_OPEN]: {
-    setter: "setRoughVideo",
     type: DIAMOND_DAWN_TYPE.ROUGH,
     shapes: [ROUGH_SHAPE.MAKEABLE],
   },
   [SYSTEM_STAGE.CUT_OPEN]: {
-    setter: "setCutVideos",
     type: DIAMOND_DAWN_TYPE.CUT,
     shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.POLISH_OPEN]: {
-    setter: "setPolishVideos",
     type: DIAMOND_DAWN_TYPE.POLISHED,
     shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
   },
   [SYSTEM_STAGE.SHIP]: {
-    setter: "setRebirthVideo",
     type: DIAMOND_DAWN_TYPE.REBORN,
     shapes: [NO_SHAPE_NUM],
   },
@@ -82,8 +77,12 @@ export const getVideoUrlsByStageApi = async (mineContract, stage) => {
 };
 
 export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
-  const { setter } = ART_MAPPING[stage];
-  const tx = await mineContract[setter](...urls);
+  const { type, shapes } = ART_MAPPING[stage];
+  const shapeVideos = _.zipWith(shapes, urls, (shape, url) => ({
+    shape: shape,
+    video: url,
+  }));
+  const tx = await mineContract["setTypeVideos"](type, shapeVideos);
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };

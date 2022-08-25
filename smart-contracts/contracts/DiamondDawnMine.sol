@@ -127,52 +127,12 @@ contract DiamondDawnMine is
         isMineOpen = isMineOpen_;
     }
 
-    function setMineEntranceVideo(string calldata mineEntrance)
-        external
-        mineNotLocked
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        _setVideo(Type.ENTER_MINE, NO_SHAPE_NUM, mineEntrance);
-    }
-
-    function setRoughVideo(string calldata makeable)
-        external
-        mineNotLocked
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        _setVideo(Type.ROUGH, uint(RoughShape.MAKEABLE), makeable);
-    }
-
-    function setCutVideos(
-        string calldata pear,
-        string calldata round,
-        string calldata oval,
-        string calldata radiant
-    ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
-        _setVideo(Type.CUT, uint(Shape.PEAR), pear);
-        _setVideo(Type.CUT, uint(Shape.ROUND), round);
-        _setVideo(Type.CUT, uint(Shape.OVAL), oval);
-        _setVideo(Type.CUT, uint(Shape.RADIANT), radiant);
-    }
-
-    function setPolishVideos(
-        string calldata pear,
-        string calldata round,
-        string calldata oval,
-        string calldata radiant
-    ) external mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
-        _setVideo(Type.POLISHED, uint(Shape.PEAR), pear);
-        _setVideo(Type.POLISHED, uint(Shape.ROUND), round);
-        _setVideo(Type.POLISHED, uint(Shape.OVAL), oval);
-        _setVideo(Type.POLISHED, uint(Shape.RADIANT), radiant);
-    }
-
-    function setRebirthVideo(string calldata rebirth_)
-        external
-        mineNotLocked
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        _setVideo(Type.REBORN, NO_SHAPE_NUM, rebirth_);
+    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos) external  mineNotLocked onlyRole(DEFAULT_ADMIN_ROLE){
+        require(type_ != Type.NO_TYPE);
+        for (uint i = 0; i < shapeVideos.length; i++) {
+            require(bytes(shapeVideos[i].video).length > 0);
+            _setVideo(type_, shapeVideos[i].shape, shapeVideos[i].video);
+        }
     }
 
     function replaceLostShipment(uint tokenId, Certificate calldata diamond)
@@ -278,6 +238,18 @@ contract DiamondDawnMine is
             string(
                 abi.encodePacked("data:application/json;base64,", base64Json)
             );
+    }
+
+    function isMineReady(Type type_) external view returns (bool){
+        if(type_ == Type.ENTER_MINE || type_ == Type.REBORN){
+            return _isVideoExist(Type.ENTER_MINE, NO_SHAPE_NUM);
+        }
+        uint shapesNum = type_ == Type.ROUGH ? type(RoughShape).max : type(Shape).max;
+        // skipping 0 - no shape
+        for (uint i = 1; i < shapesNum; i++) {
+            if(!_isVideoExist(Type.CUT, shapesNum)) return false;
+        }
+        return true;
     }
 
     function isMineEntranceReady() external view returns (bool) {
