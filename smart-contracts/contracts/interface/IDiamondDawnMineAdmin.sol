@@ -5,7 +5,7 @@ import "../objects/DiamondObjects.sol";
 import "../objects/MineObjects.sol";
 
 interface IDiamondDawnMineAdmin {
-    function initialize(address diamondDawn) external;
+    function initialize(address diamondDawn, uint maxDiamond) external;
 
     function eruption(Certificate[] calldata diamonds) external;
 

@@ -89,11 +89,6 @@ async function main() {
     ),
   });
 
-  // call DiamondDawnMine.initialize
-  await diamondDawnMine.initialize(diamondDawn.address);
-  /// ///////////////////////////////////////////////////
-  //                  DEV ONLY                        //
-  /// ///////////////////////////////////////////////////
   if (hre.network.name === "localhost") {
     const diamonds = [
       {
@@ -190,6 +185,7 @@ async function main() {
     ];
 
     console.log(`populating ${diamonds.length} diamonds`, diamonds);
+    await diamondDawnMine.initialize(diamondDawn.address, diamonds.length);
     await diamondDawnMine.eruption(diamonds);
     await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
       { shape: NO_SHAPE_NUM, video: "infinity.mp4" },
@@ -213,6 +209,9 @@ async function main() {
       { shape: NO_SHAPE_NUM, video: "diamond_dawn.mp4" },
     ]);
     await diamondDawn.unpause();
+  } else {
+    // not localhost
+    await diamondDawnMine.initialize(diamondDawn.address, 333);
   }
 
   const DiamondDawnMineArtifact =
