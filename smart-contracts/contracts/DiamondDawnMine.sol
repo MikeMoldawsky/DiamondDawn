@@ -245,6 +245,7 @@ contract DiamondDawnMine is
     }
 
     function isMineReady(Type type_) external view returns (bool) {
+        // TODO - for mine check that 333 diamonds were inserted
         if (type_ == Type.ENTER_MINE || type_ == Type.REBORN) {
             return _isVideoExist(Type.ENTER_MINE, NO_SHAPE_NUM);
         }
