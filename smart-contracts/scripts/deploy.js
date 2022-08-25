@@ -10,6 +10,12 @@ const {
   updateDiamondDawnContract,
   updateDiamondDawnMineContract,
 } = require("../db/contract-db-manager");
+const {
+  DIAMOND_DAWN_TYPE,
+  NO_SHAPE_NUM,
+  SHAPE,
+  ROUGH_SHAPE,
+} = require("./utils/EnumConverterUtils");
 
 async function main() {
   if (!hre.network.name) {
@@ -185,21 +191,27 @@ async function main() {
 
     console.log(`populating ${diamonds.length} diamonds`, diamonds);
     await diamondDawnMine.diamondEruption(diamonds);
-    await diamondDawnMine.setMineEntranceVideo("infinity.mp4");
-    await diamondDawnMine.setRoughVideo("rough.mp4");
-    await diamondDawnMine.setCutVideos(
-      "cut_pear.mp4",
-      "cut_round.mp4",
-      "cut_oval.mp4",
-      "cut_radiant.mp4"
-    );
-    await diamondDawnMine.setPolishVideos(
-      "polished_pear.mp4",
-      "polished_round.mp4",
-      "polished_oval.mp4",
-      "polished_radiant.mp4"
-    );
-    await diamondDawnMine.setRebirthVideo("diamond_dawn.mp4");
+    await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
+      { shape: NO_SHAPE_NUM, video: "infinity.mp4" },
+    ]);
+    await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
+      { shape: ROUGH_SHAPE.MAKEABLE, video: "rough.mp4" },
+    ]);
+    await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
+      { shape: SHAPE.PEAR, video: "cut_pear.mp4" },
+      { shape: SHAPE.ROUND, video: "cut_round.mp4" },
+      { shape: SHAPE.OVAL, video: "cut_oval.mp4" },
+      { shape: SHAPE.RADIANT, video: "cut_radiant.mp4" },
+    ]);
+    await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+      { shape: SHAPE.PEAR, video: "polished_pear.mp4" },
+      { shape: SHAPE.ROUND, video: "polished_round.mp4" },
+      { shape: SHAPE.OVAL, video: "polished_oval.mp4" },
+      { shape: SHAPE.RADIANT, video: "polished_radiant.mp4" },
+    ]);
+    await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
+      { shape: NO_SHAPE_NUM, video: "diamond_dawn.mp4" },
+    ]);
     await diamondDawn.unpause();
   }
 
