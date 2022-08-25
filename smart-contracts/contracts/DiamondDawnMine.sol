@@ -120,7 +120,13 @@ contract DiamondDawnMine is
         });
     }
 
-    function mine(uint tokenId) external onlyDiamondDawn mineOpen mineNotDry onlyType(tokenId, Type.ENTER_MINE) {
+    function mine(uint tokenId)
+        external
+        onlyDiamondDawn
+        mineOpen
+        mineNotDry
+        onlyType(tokenId, Type.ENTER_MINE)
+    {
         uint extraPoints = _getRandomBetween(
             MIN_ROUGH_EXTRA_POINTS,
             MAX_ROUGH_EXTRA_POINTS
@@ -259,9 +265,12 @@ contract DiamondDawnMine is
     }
 
     function isMineReady(Type type_) external view returns (bool) {
-        if (type_ == Type.ENTER_MINE || type_ == Type.REBORN) return _isVideoExist(type_, NO_SHAPE_NUM);
+        if (type_ == Type.ENTER_MINE || type_ == Type.REBORN)
+            return _isVideoExist(type_, NO_SHAPE_NUM);
         if (type_ == Type.ROUGH && _diamondsCnt != _maxDiamonds) return false;
-        uint maxShape = type_ == Type.ROUGH ? uint(type(RoughShape).max) : uint(type(Shape).max);
+        uint maxShape = type_ == Type.ROUGH
+            ? uint(type(RoughShape).max)
+            : uint(type(Shape).max);
         for (uint i = 1; i <= maxShape; i++) {
             // skipping 0 - no shape
             if (!_isVideoExist(type_, maxShape)) return false;

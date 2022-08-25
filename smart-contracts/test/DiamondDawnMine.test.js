@@ -464,7 +464,9 @@ describe("Diamond Dawn Mine", () => {
       ]);
       expect(await diamondDawnMine.isMineReady(type)).to.be.false;
       // add diamonds emitting 1
-      await diamondDawnMine.eruption(_.range(numDiamonds - 1).map(() => DIAMOND));
+      await diamondDawnMine.eruption(
+        _.range(numDiamonds - 1).map(() => DIAMOND)
+      );
       expect(await diamondDawnMine.isMineReady(type)).to.be.false;
       // add last diamond
       await diamondDawnMine.eruption([DIAMOND]);
