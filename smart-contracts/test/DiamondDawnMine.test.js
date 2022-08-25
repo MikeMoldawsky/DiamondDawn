@@ -18,12 +18,10 @@ const {
 } = require("./utils/EnumConverterUtils");
 const {
   setVideoAndAssertEnterMineMetadata,
-  setVideoAndAssertRoughMetadata, setVideoAndAssertCutMetadata,
+  setVideoAndAssertRoughMetadata,
+  setVideoAndAssertCutMetadata,
+  setVideoAndAssertPolishedMetadata,
 } = require("./utils/MetadataTestUtils");
-
-// constants
-const MIN_POLISH_EXTRA_POINTS = 1;
-const MAX_POLISH_EXTRA_POINTS = 4;
 
 const DIAMOND = {
   reportNumber: 1111111111,
@@ -255,6 +253,89 @@ describe("Diamond Dawn Mine", () => {
     });
   });
 
+  describe("polish", function () {
+    const tokenId = 1;
+    let mineContract;
+    let user;
+
+    beforeEach(async () => {
+      const { diamondDawnMine, owner, user1 } = await loadFixture(
+        deployMineContract
+      );
+      diamondDawnMine.initialize(owner.address, 333);
+      mineContract = diamondDawnMine;
+      user = user1;
+    });
+
+    it("should REVERT when NOT DiamondDawn", async () => {
+      await expect(
+        mineContract.connect(user).polish(tokenId)
+      ).to.be.revertedWith("Only DD");
+    });
+
+    it("should REVERT when mine is CLOSED", async () => {
+      await mineContract.setClosed(true);
+      await expect(mineContract.polish(tokenId)).to.be.revertedWith(
+        "Closed mine"
+      );
+    });
+
+    it("should REVERT when token is NOT cut type", async () => {
+      await mineContract.eruption([DIAMOND]);
+      await mineContract.enter(tokenId);
+      await expect(mineContract.polish(tokenId)).to.be.revertedWith(
+        "Wrong type"
+      );
+      await mineContract.mine(tokenId);
+      await expect(mineContract.polish(tokenId)).to.be.revertedWith(
+        "Wrong type"
+      );
+      await mineContract.cut(tokenId);
+      await mineContract.polish(tokenId);
+      await expect(mineContract.polish(tokenId)).to.be.revertedWith(
+        "Wrong type"
+      );
+    });
+
+    it("should mine 4 tokens and generate metadata", async () => {
+      // Prepare diamonds and invitations
+      await Promise.all(
+        _.range(1, 5).map(async (i) => {
+          await mineContract.eruption([DIAMOND]);
+        })
+      );
+      await Promise.all(
+        _.range(1, 5).map(async (i) => await mineContract.enter(i))
+      );
+
+      await Promise.all(
+        _.range(1, 5).map(async (i) => await mineContract.mine(i))
+      );
+
+      await Promise.all(
+        _.range(1, 5).map(async (i) => await mineContract.cut(i))
+      );
+
+      // Mine diamonds
+      const videoSuffix = "polish.mp4";
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+        { shape: SHAPE.PEAR, video: videoSuffix },
+      ]);
+      await Promise.all(
+        _.range(1, 5).map(async (i) => {
+          await mineContract.polish(i);
+          await setVideoAndAssertPolishedMetadata(
+            mineContract,
+            i,
+            DIAMOND.points,
+            videoSuffix,
+            DIAMOND
+          );
+        })
+      );
+    });
+  });
+
   describe("getDiamondMetadata", function () {
     let mineContract;
     beforeEach(async () => {
@@ -302,25 +383,6 @@ describe("Diamond Dawn Mine", () => {
 
     it("is correct for cut", async () => {
       const videoSuffix = "suffix.mp4";
-      const expectedMetadataWithoutCarat = {
-        name: "Diamond #1",
-        description: "description",
-        created_by: "dd",
-        image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
-        attributes: [
-          { trait_type: "Type", value: "Cut" },
-          { trait_type: "Origin", value: "Metaverse" },
-          { trait_type: "Identification", value: "Natural" },
-          { trait_type: "Color", value: enumToColor(DIAMOND.color) },
-          { trait_type: "Cut", value: enumToGrade(DIAMOND.cut) },
-          {
-            trait_type: "Fluorescence",
-            value: enumToFluorescence(DIAMOND.fluorescence),
-          },
-          { trait_type: "Measurements", value: DIAMOND.measurements },
-          { trait_type: "Shape", value: enumToShape(DIAMOND.shape) },
-        ],
-      };
       // TODO: test all urls
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
         { shape: SHAPE.PEAR, video: videoSuffix },
@@ -334,58 +396,17 @@ describe("Diamond Dawn Mine", () => {
       await mineContract.cut(tokenId);
 
       // fetch metadata for token 1
-      const actualMetadata = await mineContract.getDiamondMetadata(tokenId);
-      const actualParsedUrlData = parseDataUrl(actualMetadata); // parse data-url (data:[<mediatype>][;base64],<data>)
-      // validate data-url format
-      expect(actualParsedUrlData.base64).to.be.true;
-      expect(actualParsedUrlData.mediaType).to.equal("application/json");
-      expect(actualParsedUrlData.contentType).to.equal("application/json");
-      // validate actual data
-      const actualParsedMetadata = JSON.parse(atob(actualParsedUrlData.data));
-      // Validate carat attribute
-      const actualCaratAttributeList = _.remove(
-        actualParsedMetadata.attributes,
-        (currentObject) => currentObject.trait_type === "Carat"
+      await setVideoAndAssertCutMetadata(
+        mineContract,
+        tokenId,
+        DIAMOND.points,
+        videoSuffix,
+        DIAMOND
       );
-      expect(actualCaratAttributeList).to.satisfy((arr) => {
-        expect(arr).to.have.lengthOf(1);
-        const [actualCaratAttribute] = arr;
-        expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
-        expect(actualCaratAttribute.trait_type).equal("Carat");
-        expect(actualCaratAttribute.value).to.be.within(
-          (DIAMOND.points + MIN_POLISH_EXTRA_POINTS) / 100,
-          (DIAMOND.points + MAX_POLISH_EXTRA_POINTS) / 100
-        );
-        return true;
-      });
-      // Validate all attributes except carat
-      expect(actualParsedMetadata).to.deep.equal(expectedMetadataWithoutCarat);
     });
 
     it("is correct for polish", async () => {
       const videoSuffix = "suffix.mp4";
-      const expectedMetadataWithoutCarat = {
-        name: "Diamond #1",
-        description: "description",
-        created_by: "dd",
-        image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
-        attributes: [
-          { trait_type: "Type", value: "Polished" },
-          { trait_type: "Origin", value: "Metaverse" },
-          { trait_type: "Identification", value: "Natural" },
-          { trait_type: "Color", value: enumToColor(DIAMOND.color) },
-          { trait_type: "Cut", value: enumToGrade(DIAMOND.cut) },
-          {
-            trait_type: "Fluorescence",
-            value: enumToFluorescence(DIAMOND.fluorescence),
-          },
-          { trait_type: "Measurements", value: DIAMOND.measurements },
-          { trait_type: "Shape", value: enumToShape(DIAMOND.shape) },
-          { trait_type: "Clarity", value: enumToClarity(DIAMOND.clarity) },
-          { trait_type: "Polish", value: enumToGrade(DIAMOND.polish) },
-          { trait_type: "Symmetry", value: enumToGrade(DIAMOND.symmetry) },
-        ],
-      };
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
         { shape: SHAPE.PEAR, video: videoSuffix },
       ]);
@@ -399,29 +420,13 @@ describe("Diamond Dawn Mine", () => {
       await mineContract.polish(tokenId);
 
       // fetch metadata for token 1
-      const actualMetadata = await mineContract.getDiamondMetadata(tokenId);
-      const actualParsedUrlData = parseDataUrl(actualMetadata); // parse data-url (data:[<mediatype>][;base64],<data>)
-      // validate data-url format
-      expect(actualParsedUrlData.base64).to.be.true;
-      expect(actualParsedUrlData.mediaType).to.equal("application/json");
-      expect(actualParsedUrlData.contentType).to.equal("application/json");
-      // validate actual data
-      const actualParsedMetadata = JSON.parse(atob(actualParsedUrlData.data));
-      // Validate carat attribute
-      const actualCaratAttributeList = _.remove(
-        actualParsedMetadata.attributes,
-        (currentObject) => currentObject.trait_type === "Carat"
+      await setVideoAndAssertPolishedMetadata(
+        mineContract,
+        tokenId,
+        DIAMOND.points,
+        videoSuffix,
+        DIAMOND
       );
-      expect(actualCaratAttributeList).to.satisfy((arr) => {
-        expect(arr).to.have.lengthOf(1);
-        const [actualCaratAttribute] = arr;
-        expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
-        expect(actualCaratAttribute.trait_type).equal("Carat");
-        expect(actualCaratAttribute.value).equal(DIAMOND.points / 100);
-        return true;
-      });
-      // Validate all attributes except carat
-      expect(actualParsedMetadata).to.deep.equal(expectedMetadataWithoutCarat);
     });
 
     it("is correct for rebirth", async () => {
