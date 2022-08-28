@@ -12,6 +12,8 @@ import "./utils/NFTMetadataUtils.sol";
 import "./utils/StringUtils.sol";
 import "./utils/RandomUtils.sol";
 import "./objects/MineObjects.sol";
+import "./objects/MineObjects.sol";
+import "./objects/MineObjects.sol";
 
 /**
  * @title DiamondDawnMine NFT Contract
@@ -27,7 +29,7 @@ contract DiamondDawnMine is
     mapping(uint => mapping(uint => string)) public typeToShapeVideo;
 
     // Carat loss of ~35% to ~65% from rough stone to the polished diamond.
-    uint8 private constant MIN_ROUGH_EXTRA_POINTS = 38;
+    uint8 private constant MIN_ROUGH_EXTRA_POINTS = 37;
     uint8 private constant MAX_ROUGH_EXTRA_POINTS = 74;
     // Carat loss of ~2% to ~8% in the polish process.
     uint8 private constant MIN_POLISH_EXTRA_POINTS = 1;
@@ -115,7 +117,9 @@ contract DiamondDawnMine is
         Metadata storage metadata = _metadata[tokenId];
         metadata.type_ = Type.ROUGH;
         metadata.rough = RoughMetadata({
-            shape: RoughShape.MAKEABLE,
+            shape: extraPoints % 2 == 0
+                ? RoughShape.MAKEABLE_1
+                : RoughShape.MAKEABLE_2,
             extraPoints: extraPoints
         });
         metadata.certificate = _mineDiamond();

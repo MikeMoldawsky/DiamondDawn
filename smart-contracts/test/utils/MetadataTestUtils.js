@@ -10,10 +10,12 @@ const {
 } = require("./EnumConverterUtils");
 
 // constants
-const MIN_ROUGH_EXTRA_POINTS = 38;
+const MIN_ROUGH_EXTRA_POINTS = 37;
 const MAX_ROUGH_EXTRA_POINTS = 74;
 const MIN_POLISH_EXTRA_POINTS = 1;
 const MAX_POLISH_EXTRA_POINTS = 4;
+const BASE_URI =
+  "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
 
 async function setVideoAndAssertEnterMineMetadata(
   mineContract,
@@ -30,12 +32,11 @@ async function setVideoAndAssertRoughMetadata(
   mineContract,
   tokenId,
   points,
-  videoSuffix
+  videoSuffix1,
+  videoSuffix2
 ) {
-  const expectedMetadataWithoutCarat = getRoughMetadataWithoutCarat(
-    tokenId,
-    videoSuffix
-  );
+  const roughMetadataWithoutCaratShapeAndImage =
+    getRoughMetadataWithoutCaratShapeAndImage(tokenId);
   const actualMetadata = await mineContract.getDiamondMetadata(tokenId);
   const actualParsedMetadata = await assertBase64AndGetParsed(actualMetadata);
   // Validate carat attribute
@@ -54,8 +55,32 @@ async function setVideoAndAssertRoughMetadata(
     );
     return true;
   });
-  // Validate all attributes except carat
-  expect(actualParsedMetadata).to.deep.equal(expectedMetadataWithoutCarat);
+  // Validate Shape and Image
+  const actualShapeAttributeList = _.remove(
+    actualParsedMetadata.attributes,
+    (currentObject) => currentObject.trait_type === "Shape"
+  );
+
+  expect(actualShapeAttributeList).to.satisfy((arr) => {
+    expect(arr).to.have.lengthOf(1);
+    const [actualShapeAttribute] = arr;
+    expect(actualShapeAttribute).to.have.all.keys("trait_type", "value");
+    expect(actualShapeAttribute.trait_type).equal("Shape");
+    if (actualShapeAttribute.value === "Makeable 1") {
+      expect(actualParsedMetadata.image).to.be.equal(BASE_URI + videoSuffix1);
+    } else if (actualShapeAttribute.value === "Makeable 2") {
+      expect(actualParsedMetadata.image).to.be.equal(BASE_URI + videoSuffix2);
+    } else {
+      return false;
+    }
+    return true;
+  });
+
+  _.unset(actualParsedMetadata, "image");
+  // Validate all attributes except carat, shape and image.
+  expect(actualParsedMetadata).to.deep.equal(
+    roughMetadataWithoutCaratShapeAndImage
+  );
 }
 
 async function setVideoAndAssertCutMetadata(
@@ -142,18 +167,16 @@ function getExpectedMetadataEnterMine(tokenId, videoSuffix) {
   };
 }
 
-function getRoughMetadataWithoutCarat(tokenId, videoSuffix) {
+function getRoughMetadataWithoutCaratShapeAndImage(tokenId) {
   return {
     name: `Diamond #${tokenId}`,
     description: "description",
     created_by: "dd",
-    image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
     attributes: [
       { trait_type: "Type", value: "Rough" },
       { trait_type: "Origin", value: "Metaverse" },
       { trait_type: "Identification", value: "Natural" },
       { trait_type: "Color", value: "Cape" },
-      { trait_type: "Shape", value: "Makeable" },
       { trait_type: "Mine", value: "Underground" },
     ],
   };

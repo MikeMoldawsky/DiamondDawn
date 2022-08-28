@@ -166,9 +166,11 @@ describe("Diamond Dawn Mine", () => {
       );
 
       // Mine diamonds
-      const videoSuffix = "rough.mp4";
+      const videoSuffix1 = "rough1.mp4";
+      const videoSuffix2 = "rough2.mp4";
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
-        { shape: SHAPE.PEAR, video: videoSuffix },
+        { shape: ROUGH_SHAPE.MAKEABLE_1, video: videoSuffix1 },
+        { shape: ROUGH_SHAPE.MAKEABLE_2, video: videoSuffix2 },
       ]);
       await Promise.all(
         _.range(1, 5).map(async (i) => {
@@ -177,7 +179,8 @@ describe("Diamond Dawn Mine", () => {
             mineContract,
             i,
             DIAMOND.points,
-            videoSuffix
+            videoSuffix1,
+            videoSuffix2
           );
         })
       );
@@ -362,10 +365,12 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("is correct for mine", async () => {
-      const videoSuffix = "suffix.mp4";
+      const videoSuffix1 = "suffix1.mp4";
+      const videoSuffix2 = "suffix2.mp4";
       await mineContract.eruption([DIAMOND]);
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
-        { shape: SHAPE.PEAR, video: videoSuffix },
+        { shape: ROUGH_SHAPE.MAKEABLE_1, video: videoSuffix1 },
+        { shape: ROUGH_SHAPE.MAKEABLE_2, video: videoSuffix2 },
       ]);
 
       // Token 1 enters mine
@@ -377,7 +382,8 @@ describe("Diamond Dawn Mine", () => {
         mineContract,
         tokenId,
         DIAMOND.points,
-        videoSuffix
+        videoSuffix1,
+        videoSuffix2
       );
     });
 
@@ -534,7 +540,8 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine } = await loadFixture(deployMineContract);
       const type = DIAMOND_DAWN_TYPE.ROUGH;
       await diamondDawnMine.setTypeVideos(type, [
-        { shape: ROUGH_SHAPE.MAKEABLE, video: "video" },
+        { shape: ROUGH_SHAPE.MAKEABLE_1, video: "video1" },
+        { shape: ROUGH_SHAPE.MAKEABLE_2, video: "video2" },
       ]);
       expect(await diamondDawnMine.isMineReady(type)).to.be.false;
       // add diamonds emitting 1
