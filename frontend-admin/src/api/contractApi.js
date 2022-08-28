@@ -18,7 +18,7 @@ export const getSystemPausedApi = async (contract) => {
 };
 
 export const getMineDiamondCountApi = async (mineContract) => {
-  return await mineContract.getDiamondCount();
+  return await mineContract.diamondCount();
 };
 
 export const setSystemStageApi = async (contract, systemStage) => {

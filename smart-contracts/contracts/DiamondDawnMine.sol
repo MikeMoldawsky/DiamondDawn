@@ -26,6 +26,9 @@ contract DiamondDawnMine is
 {
     bool public isOpen; // mine is closed until it's initialized.
     bool public isLocked; // mine is locked forever when the project ends (immutable).
+    uint16 public maxDiamonds; // 333 max
+    uint16 public diamondCount; // 333 max
+    address public diamondDawn;
     mapping(uint => mapping(uint => string)) public typeToShapeVideo;
 
     // Carat loss of ~35% to ~65% from rough stone to the polished diamond.
@@ -36,10 +39,6 @@ contract DiamondDawnMine is
     uint8 private constant MAX_POLISH_EXTRA_POINTS = 4;
 
     uint16 private _randNonce = 0; // 999 max
-    uint16 private _diamondsCnt = 0; // 333 max
-    uint16 private _maxDiamonds; // 333 max
-
-    address private _diamondDawn;
     Certificate[] private _mine;
     mapping(uint => Metadata) private _metadata;
 
@@ -53,7 +52,7 @@ contract DiamondDawnMine is
 
     /**********************     Modifiers     ************************/
     modifier onlyDiamondDawn() {
-        require(msg.sender == _diamondDawn, "Only DD");
+        require(msg.sender == diamondDawn, "Only DD");
         _;
     }
 
@@ -67,13 +66,11 @@ contract DiamondDawnMine is
         _;
     }
 
-    modifier mineClosed() {
-        require(!isOpen, "Open mine");
-        _;
-    }
-
-    modifier mineOpen() {
-        require(isOpen, "Closed mine");
+    modifier isMineOpen(bool isOpen_) {
+        require(
+            isOpen == isOpen_,
+            string.concat("Mine ", isOpen ? "Open" : "Closed")
+        );
         _;
     }
 
@@ -83,7 +80,7 @@ contract DiamondDawnMine is
     }
 
     modifier mineOverflow(uint cnt) {
-        require((_diamondsCnt + cnt) <= _maxDiamonds, "Mine overflow");
+        require((diamondCount + cnt) <= maxDiamonds, "Mine overflow");
         _;
     }
 
@@ -97,7 +94,7 @@ contract DiamondDawnMine is
     function enter(uint tokenId)
         external
         onlyDiamondDawn
-        mineOpen
+        isMineOpen(true)
         onlyType(tokenId, Type.NO_TYPE)
     {
         _metadata[tokenId].type_ = Type.ENTER_MINE;
@@ -106,7 +103,7 @@ contract DiamondDawnMine is
     function mine(uint tokenId)
         external
         onlyDiamondDawn
-        mineOpen
+        isMineOpen(true)
         mineNotDry
         onlyType(tokenId, Type.ENTER_MINE)
     {
@@ -128,7 +125,7 @@ contract DiamondDawnMine is
     function cut(uint256 tokenId)
         external
         onlyDiamondDawn
-        mineOpen
+        isMineOpen(true)
         onlyType(tokenId, Type.ROUGH)
     {
         uint extraPoints = _getRandomBetween(
@@ -143,7 +140,7 @@ contract DiamondDawnMine is
     function polish(uint256 tokenId)
         external
         onlyDiamondDawn
-        mineOpen
+        isMineOpen(true)
         onlyType(tokenId, Type.CUT)
     {
         _metadata[tokenId].type_ = Type.POLISHED;
@@ -157,13 +154,13 @@ contract DiamondDawnMine is
         _metadata[tokenId].type_ = Type.REBORN;
     }
 
-    function initialize(address diamondDawn, uint16 maxDiamonds)
+    function initialize(address diamondDawn_, uint16 maxDiamonds_)
         external
         mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        _diamondDawn = diamondDawn;
-        _maxDiamonds = maxDiamonds;
+        diamondDawn = diamondDawn_;
+        maxDiamonds = maxDiamonds_;
         isOpen = true;
     }
 
@@ -176,7 +173,7 @@ contract DiamondDawnMine is
         for (uint i = 0; i < diamonds.length; i++) {
             _mine.push(diamonds[i]);
         }
-        _diamondsCnt += uint16(diamonds.length);
+        diamondCount += uint16(diamonds.length);
     }
 
     function lostShipment(uint tokenId, Certificate calldata diamond)
@@ -186,7 +183,8 @@ contract DiamondDawnMine is
     {
         Metadata storage metadata = _metadata[tokenId];
         require(
-            metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN
+            metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN,
+            "Wrong type"
         );
         metadata.certificate = diamond;
     }
@@ -211,18 +209,9 @@ contract DiamondDawnMine is
         }
     }
 
-    function lockMine() external onlyDiamondDawn mineClosed {
+    function lockMine() external onlyDiamondDawn isMineOpen(false) {
         // lock mine forever
         isLocked = true;
-    }
-
-    function getDiamondCount()
-        external
-        view
-        onlyRole(DEFAULT_ADMIN_ROLE)
-        returns (uint)
-    {
-        return _diamondsCnt;
     }
 
     function getDiamondMetadata(uint tokenId)
@@ -253,7 +242,7 @@ contract DiamondDawnMine is
     function isMineReady(Type type_) external view returns (bool) {
         if (type_ == Type.ENTER_MINE || type_ == Type.REBORN)
             return _isVideoExist(type_, 0);
-        if (type_ == Type.ROUGH && _diamondsCnt != _maxDiamonds) return false;
+        if (type_ == Type.ROUGH && diamondCount != maxDiamonds) return false;
         uint maxShape = type_ == Type.ROUGH
             ? uint(type(RoughShape).max)
             : uint(type(Shape).max);

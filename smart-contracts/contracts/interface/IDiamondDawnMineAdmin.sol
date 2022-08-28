@@ -9,14 +9,10 @@ interface IDiamondDawnMineAdmin {
 
     function eruption(Certificate[] calldata diamonds) external;
 
-    function lostShipment(uint tokenId, Certificate calldata diamond)
-        external;
+    function lostShipment(uint tokenId, Certificate calldata diamond) external;
 
     function setOpen(bool isOpen) external;
 
     function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos)
         external;
-
-    // TODO: delete this function
-    function getDiamondCount() external view returns (uint);
 }
