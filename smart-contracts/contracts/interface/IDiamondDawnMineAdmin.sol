@@ -9,7 +9,7 @@ interface IDiamondDawnMineAdmin {
 
     function eruption(Certificate[] calldata diamonds) external;
 
-    function replaceLostShipment(uint tokenId, Certificate calldata diamond)
+    function lostShipment(uint tokenId, Certificate calldata diamond)
         external;
 
     function setOpen(bool isOpen) external;

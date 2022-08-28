@@ -179,7 +179,7 @@ contract DiamondDawnMine is
         _diamondsCnt += uint16(diamonds.length);
     }
 
-    function replaceLostShipment(uint tokenId, Certificate calldata diamond)
+    function lostShipment(uint tokenId, Certificate calldata diamond)
         external
         mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
@@ -212,6 +212,7 @@ contract DiamondDawnMine is
     }
 
     function lockMine() external onlyDiamondDawn mineClosed {
+        // lock mine forever
         isLocked = true;
     }
 

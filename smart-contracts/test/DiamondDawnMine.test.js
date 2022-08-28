@@ -115,7 +115,7 @@ describe("Diamond Dawn Mine", () => {
     });
   });
 
-  describe("mine", function () {
+  describe("mine", () => {
     const tokenId = 1;
     let mineContract;
     let user;
@@ -187,7 +187,7 @@ describe("Diamond Dawn Mine", () => {
     });
   });
 
-  describe("cut", function () {
+  describe("cut", () => {
     const tokenId = 1;
     let mineContract;
     let user;
@@ -256,7 +256,7 @@ describe("Diamond Dawn Mine", () => {
     });
   });
 
-  describe("polish", function () {
+  describe("polish", () => {
     const tokenId = 1;
     let mineContract;
     let user;
@@ -339,7 +339,186 @@ describe("Diamond Dawn Mine", () => {
     });
   });
 
-  describe("getDiamondMetadata", function () {
+  describe("getDiamondMetadata", () => {
+    const tokenId = 1;
+    let mineContract;
+    let user;
+    beforeEach(async () => {
+      const { diamondDawnMine, owner, user1 } = await loadFixture(
+        deployMineContract
+      );
+      diamondDawnMine.initialize(owner.address, 333);
+      mineContract = diamondDawnMine;
+      user = user1;
+    });
+
+    it("should REVERT when NOT diamond dawn", async () => {
+      await expect(
+        mineContract.connect(user).getDiamondMetadata(tokenId)
+      ).to.be.revertedWith("Only DD");
+    });
+
+    it("should REVERT when token doesn't exist", async () => {
+      await expect(mineContract.getDiamondMetadata(1)).to.be.revertedWith(
+        "Don't exist"
+      );
+    });
+
+    it("is correct for enter mine", async () => {
+      const videoSuffix = "suffix.mp4";
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
+        { shape: NO_SHAPE_NUM, video: videoSuffix },
+      ]);
+      // Token 1 enters mine
+      const tokenId = 1;
+      await mineContract.enter(tokenId);
+      setVideoAndAssertEnterMineMetadata(mineContract, tokenId, videoSuffix);
+    });
+
+    it("is correct for mine", async () => {
+      const videoSuffix1 = "suffix1.mp4";
+      const videoSuffix2 = "suffix2.mp4";
+      await mineContract.eruption([DIAMOND]);
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
+        { shape: ROUGH_SHAPE.MAKEABLE_1, video: videoSuffix1 },
+        { shape: ROUGH_SHAPE.MAKEABLE_2, video: videoSuffix2 },
+      ]);
+
+      // Token 1 enters mine
+      const tokenId = 1;
+      await mineContract.enter(tokenId);
+      await mineContract.mine(tokenId);
+
+      await setVideoAndAssertRoughMetadata(
+        mineContract,
+        tokenId,
+        DIAMOND.points,
+        videoSuffix1,
+        videoSuffix2
+      );
+    });
+
+    it("is correct for cut", async () => {
+      const videoSuffix = "suffix.mp4";
+      // TODO: test all urls
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
+        { shape: SHAPE.PEAR, video: videoSuffix },
+      ]);
+      await mineContract.eruption([DIAMOND]);
+
+      // Token 1 enters mine
+      const tokenId = 1;
+      await mineContract.enter(tokenId);
+      await mineContract.mine(tokenId);
+      await mineContract.cut(tokenId);
+
+      // fetch metadata for token 1
+      await setVideoAndAssertCutMetadata(
+        mineContract,
+        tokenId,
+        DIAMOND.points,
+        videoSuffix,
+        DIAMOND
+      );
+    });
+
+    it("is correct for polish", async () => {
+      const videoSuffix = "suffix.mp4";
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+        { shape: SHAPE.PEAR, video: videoSuffix },
+      ]);
+      await mineContract.eruption([DIAMOND]);
+
+      // Token 1 enters mine
+      const tokenId = 1;
+      await mineContract.enter(tokenId);
+      await mineContract.mine(tokenId);
+      await mineContract.cut(tokenId);
+      await mineContract.polish(tokenId);
+
+      // fetch metadata for token 1
+      await setVideoAndAssertPolishedMetadata(
+        mineContract,
+        tokenId,
+        DIAMOND.points,
+        videoSuffix,
+        DIAMOND
+      );
+    });
+
+    it("is correct for rebirth", async () => {
+      const videoSuffix = "suffix.mp4";
+      const expectedMetadataWithoutCarat = {
+        name: "Diamond #1",
+        description: "description",
+        created_by: "dd",
+        image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
+        attributes: [
+          { trait_type: "Type", value: "Reborn" },
+          { trait_type: "Origin", value: "Metaverse" },
+          { trait_type: "Identification", value: "Natural" },
+          { trait_type: "Color", value: enumToColor(DIAMOND.color) },
+          { trait_type: "Cut", value: enumToGrade(DIAMOND.cut) },
+          {
+            trait_type: "Fluorescence",
+            value: enumToFluorescence(DIAMOND.fluorescence),
+          },
+          { trait_type: "Measurements", value: DIAMOND.measurements },
+          { trait_type: "Shape", value: enumToShape(DIAMOND.shape) },
+          { trait_type: "Clarity", value: enumToClarity(DIAMOND.clarity) },
+          { trait_type: "Polish", value: enumToGrade(DIAMOND.polish) },
+          { trait_type: "Symmetry", value: enumToGrade(DIAMOND.symmetry) },
+          { trait_type: "Laboratory", value: "GIA" },
+          {
+            trait_type: "Report Date",
+            value: DIAMOND.date,
+            display_type: "date",
+          },
+          { trait_type: "Report Number", value: DIAMOND.number },
+        ],
+      };
+
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
+        { shape: NO_SHAPE_NUM, video: videoSuffix },
+      ]);
+      await mineContract.eruption([DIAMOND]);
+
+      // Token 1 enters mine
+      const tokenId = 1;
+      await mineContract.enter(tokenId);
+      await mineContract.mine(tokenId);
+      await mineContract.cut(tokenId);
+      await mineContract.polish(tokenId);
+      await mineContract.rebirth(tokenId);
+
+      // fetch metadata for token 1
+      const actualMetadata = await mineContract.getDiamondMetadata(tokenId);
+      const actualParsedUrlData = parseDataUrl(actualMetadata); // parse data-url (data:[<mediatype>][;base64],<data>)
+      // validate data-url format
+      expect(actualParsedUrlData.base64).to.be.true;
+      expect(actualParsedUrlData.mediaType).to.equal("application/json");
+      expect(actualParsedUrlData.contentType).to.equal("application/json");
+      // validate actual data
+      const actualParsedMetadata = JSON.parse(atob(actualParsedUrlData.data));
+      // Validate carat attribute
+      const actualCaratAttributeList = _.remove(
+        actualParsedMetadata.attributes,
+        (currentObject) => currentObject.trait_type === "Carat"
+      );
+      expect(actualCaratAttributeList).to.satisfy((arr) => {
+        expect(arr).to.have.lengthOf(1);
+        const [actualCaratAttribute] = arr;
+        expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
+        expect(actualCaratAttribute.trait_type).equal("Carat");
+        expect(actualCaratAttribute.value).equal(DIAMOND.points / 100);
+        return true;
+      });
+      // Validate all attributes except carat
+      expect(actualParsedMetadata).to.deep.equal(expectedMetadataWithoutCarat);
+    });
+  });
+
+  describe("getDiamondMetadata", () => {
     let mineContract;
     beforeEach(async () => {
       const { diamondDawnMine, owner } = await loadFixture(deployMineContract);
@@ -507,16 +686,64 @@ describe("Diamond Dawn Mine", () => {
     });
   });
 
-  describe("isMineReady", function () {
-    const numDiamonds = 5;
+  describe("lockMine", () => {
     let mineContract;
+    let user;
+    beforeEach(async () => {
+      const { diamondDawnMine, owner, user1 } = await loadFixture(
+        deployMineContract
+      );
+      diamondDawnMine.initialize(owner.address, 5);
+      mineContract = diamondDawnMine;
+      user = user1;
+    });
+
+    it("should REVERT when NOT diamond dawn", async () => {
+      await expect(mineContract.connect(user).lockMine()).to.be.revertedWith(
+        "Only DD"
+      );
+    });
+
+    it("should REVERT when mine is open", async () => {
+      await mineContract.setOpen(true);
+      await expect(mineContract.lockMine()).to.be.revertedWith("Open mine");
+    });
+
+    it("should LOCK all setters", async () => {
+      expect(await mineContract.isLocked()).to.be.false;
+
+      await mineContract.setOpen(false);
+      await mineContract.lockMine();
+      expect(await mineContract.isLocked()).to.be.true;
+
+      await expect(
+        mineContract.initialize(mineContract.address, 333)
+      ).to.be.revertedWith("Locked mine");
+      await expect(mineContract.eruption([])).to.be.revertedWith("Locked mine");
+      await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
+        "Locked mine"
+      );
+      await expect(mineContract.setOpen(true)).to.be.revertedWith(
+        "Locked mine"
+      );
+      await expect(mineContract.setTypeVideos(0, [])).to.be.revertedWith(
+        "Locked mine"
+      );
+    });
+  });
+
+  describe("isMineReady", () => {
+    let mineContract;
+    const numDiamonds = 5;
     beforeEach(async () => {
       const { diamondDawnMine, owner } = await loadFixture(deployMineContract);
       diamondDawnMine.initialize(owner.address, numDiamonds);
       mineContract = diamondDawnMine;
     });
 
-    it("should be NOT READY before videos are configured", async () => {
+    it("should be FALSE for all types by default", async () => {
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
+        .false;
       expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
         .false;
       expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
@@ -528,84 +755,130 @@ describe("Diamond Dawn Mine", () => {
         .false;
     });
 
-    it("for mineEntrance should be READY when videos are configured", async () => {
-      const type = DIAMOND_DAWN_TYPE.ENTER_MINE;
-      await mineContract.setTypeVideos(type, [
-        { shape: NO_SHAPE_NUM, video: "video" },
+    it("should be TRUE only for ENTER_MINE", async () => {
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
+        { shape: NO_SHAPE_NUM, video: "hi.mp4" },
       ]);
-      expect(await mineContract.isMineReady(type)).to.be.true;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
+        .true;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.REBORN)).to.be
+        .false;
     });
 
-    it("for MINE should be READY when mine is full and videos are configured", async () => {
-      const { diamondDawnMine } = await loadFixture(deployMineContract);
-      const type = DIAMOND_DAWN_TYPE.ROUGH;
-      await diamondDawnMine.setTypeVideos(type, [
-        { shape: ROUGH_SHAPE.MAKEABLE_1, video: "video1" },
-        { shape: ROUGH_SHAPE.MAKEABLE_2, video: "video2" },
+    it("should be TRUE only for ROUGH when video set and mine populated", async () => {
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
+        { shape: ROUGH_SHAPE.MAKEABLE_1, video: "1.mp4" },
       ]);
-      expect(await diamondDawnMine.isMineReady(type)).to.be.false;
-      // add diamonds emitting 1
-      await diamondDawnMine.eruption(
-        _.range(numDiamonds - 1).map(() => DIAMOND)
-      );
-      expect(await diamondDawnMine.isMineReady(type)).to.be.false;
-      // add last diamond
-      await diamondDawnMine.eruption([DIAMOND]);
-      expect(await diamondDawnMine.isMineReady(type)).to.be.true;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
+        .false;
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
+        { shape: ROUGH_SHAPE.MAKEABLE_2, video: "2.mp4" },
+      ]);
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
+        .false;
+      const diamonds = _.range(numDiamonds - 1).map((_) => DIAMOND);
+      await mineContract.eruption(diamonds);
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
+        .false;
+
+      await mineContract.eruption([DIAMOND]); // now mine has all diamonds
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
+        .true;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.REBORN)).to.be
+        .false;
     });
 
-    it("for CUT should be READY when videos are configured", async () => {
-      const type = DIAMOND_DAWN_TYPE.CUT;
-      await mineContract.setTypeVideos(type, [
-        { shape: SHAPE.PEAR, video: "video" },
-      ]);
-      expect(await mineContract.isMineReady(type)).to.be.false;
-
-      await mineContract.setTypeVideos(type, [
-        { shape: SHAPE.ROUND, video: "video" },
-      ]);
-      expect(await mineContract.isMineReady(type)).to.be.false;
-
+    it("should be TRUE only for CUT", async () => {
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
-        { shape: SHAPE.OVAL, video: "video" },
+        { shape: SHAPE.PEAR, video: "1.mp4" },
       ]);
-      expect(await mineContract.isMineReady(type)).to.be.false;
-
-      await mineContract.setTypeVideos(type, [
-        { shape: SHAPE.RADIANT, video: "video" },
-      ]);
-      expect(await mineContract.isMineReady(type)).to.be.true;
-    });
-
-    it("for POLISHED should be READY when videos are configured", async () => {
-      const type = DIAMOND_DAWN_TYPE.POLISHED;
-      await mineContract.setTypeVideos(type, [
-        { shape: SHAPE.PEAR, video: "video" },
-      ]);
-      expect(await mineContract.isMineReady(type)).to.be.false;
-
-      await mineContract.setTypeVideos(type, [
-        { shape: SHAPE.ROUND, video: "video" },
-      ]);
-      expect(await mineContract.isMineReady(type)).to.be.false;
-
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
-        { shape: SHAPE.OVAL, video: "video" },
+        { shape: SHAPE.ROUND, video: "2.mp4" },
       ]);
-      expect(await mineContract.isMineReady(type)).to.be.false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
+        { shape: SHAPE.OVAL, video: "3.mp4" },
+      ]);
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
+        { shape: SHAPE.RADIANT, video: "4.mp4" },
+      ]);
 
-      await mineContract.setTypeVideos(type, [
-        { shape: SHAPE.RADIANT, video: "video" },
-      ]);
-      expect(await mineContract.isMineReady(type)).to.be.true;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.true;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.REBORN)).to.be
+        .false;
     });
 
-    it("for REBORN should be READY when videos are configured", async () => {
-      const type = DIAMOND_DAWN_TYPE.REBORN;
-      await mineContract.setTypeVideos(type, [
-        { shape: NO_SHAPE_NUM, video: "video" },
+    it("should be TRUE only for POLISHED", async () => {
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+        { shape: SHAPE.PEAR, video: "1.mp4" },
       ]);
-      expect(await mineContract.isMineReady(type)).to.be.true;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
+        .false;
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+        { shape: SHAPE.ROUND, video: "2.mp4" },
+      ]);
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
+        .false;
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+        { shape: SHAPE.OVAL, video: "3.mp4" },
+      ]);
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
+        .false;
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+        { shape: SHAPE.RADIANT, video: "4.mp4" },
+      ]);
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
+        .true;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.REBORN)).to.be
+        .false;
+    });
+
+    it("should be TRUE only for REBORN", async () => {
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
+        { shape: NO_SHAPE_NUM, video: "hi.mp4" },
+      ]);
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
+        .false;
+      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.REBORN)).to.be
+        .true;
     });
   });
 });
