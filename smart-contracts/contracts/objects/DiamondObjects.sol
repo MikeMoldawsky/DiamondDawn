@@ -51,9 +51,9 @@ enum Color {
 }
 
 struct Certificate {
-    uint points;
-    uint reportDate;
-    uint reportNumber;
+    uint64 date;
+    uint64 number;
+    uint8 points;
     string measurements;
     Clarity clarity;
     Color color;

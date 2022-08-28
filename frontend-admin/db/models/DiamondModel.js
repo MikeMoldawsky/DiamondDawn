@@ -30,8 +30,8 @@ const MIN_POINTS = 30;
 const MAX_POINTS = 70;
 
 const DiamondSchema = new mongoose.Schema({
-  reportNumber: { type: Number, required: true },
-  reportDate: { type: Number, required: true },
+  number: { type: Number, required: true },
+  date: { type: Number, required: true },
   shape: { type: Number, required: true, min: 1, max: SHAPES.length },
   points: { type: Number, required: true, min: MIN_POINTS, max: MAX_POINTS },
   color: { type: Number, required: true, min: 1, max: COLOR_GRADES.length },

@@ -34,6 +34,6 @@ struct Metadata {
 }
 
 struct ShapeVideo {
-    uint shape;
+    uint8 shape;
     string video;
 }

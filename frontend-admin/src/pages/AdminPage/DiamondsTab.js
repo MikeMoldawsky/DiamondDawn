@@ -31,8 +31,8 @@ const pointsValidation = (params) => {
 };
 
 const getEmptyDiamond = () => ({
-  reportNumber: "",
-  reportDate: "",
+  number: "",
+  date: "",
   shape: 0,
   carat: 0,
   color: 0,
@@ -46,7 +46,7 @@ const getEmptyDiamond = () => ({
 
 const DIAMOND_COLUMNS = [
   {
-    field: "reportDate",
+    field: "date",
     headerName: "Date",
     width: 110,
     editable: true,
@@ -56,7 +56,7 @@ const DIAMOND_COLUMNS = [
     },
   },
   {
-    field: "reportNumber",
+    field: "number",
     headerName: "GIA #",
     width: 110,
     editable: true,

@@ -5,14 +5,14 @@ import "../objects/DiamondObjects.sol";
 import "../objects/MineObjects.sol";
 
 interface IDiamondDawnMineAdmin {
-    function initialize(address diamondDawn, uint maxDiamond) external;
+    function initialize(address diamondDawn, uint16 maxDiamond) external;
 
     function eruption(Certificate[] calldata diamonds) external;
 
     function replaceLostShipment(uint tokenId, Certificate calldata diamond)
         external;
 
-    function setClosed(bool isClosed) external;
+    function setOpen(bool isOpen) external;
 
     function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos)
         external;
