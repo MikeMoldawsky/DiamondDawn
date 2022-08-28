@@ -185,6 +185,7 @@ contract DiamondDawn is
         //        delete _invitations[passwordHash];
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
+        // TODO: check if safeMint after or before mint.
         _safeMint(_msgSender(), tokenId);
         diamondDawnMine.enter(tokenId);
         emit Enter(tokenId);

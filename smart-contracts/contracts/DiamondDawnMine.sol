@@ -22,38 +22,24 @@ contract DiamondDawnMine is
     IDiamondDawnMine,
     IDiamondDawnMineAdmin
 {
-    bool public isClosed = true; // mine is closed until it's initialized.
-    bool public isLocked = false; // mine is locked forever when the project ends (immutable).
+    bool public isOpen; // mine is closed until it's initialized.
+    bool public isLocked; // mine is locked forever when the project ends (immutable).
     mapping(uint => mapping(uint => string)) public typeToShapeVideo;
 
-    uint private constant NO_SHAPE_NUM = 0;
     // Carat loss of ~35% to ~65% from rough stone to the polished diamond.
-    uint private constant MIN_ROUGH_EXTRA_POINTS = 38;
-    uint private constant MAX_ROUGH_EXTRA_POINTS = 74;
+    uint8 private constant MIN_ROUGH_EXTRA_POINTS = 38;
+    uint8 private constant MAX_ROUGH_EXTRA_POINTS = 74;
     // Carat loss of ~2% to ~8% in the polish process.
-    uint private constant MIN_POLISH_EXTRA_POINTS = 1;
-    uint private constant MAX_POLISH_EXTRA_POINTS = 4;
+    uint8 private constant MIN_POLISH_EXTRA_POINTS = 1;
+    uint8 private constant MAX_POLISH_EXTRA_POINTS = 4;
 
-    uint private _maxDiamonds;
-    uint private _diamondsCnt = 0;
-    uint private _randNonce = 0;
-    mapping(uint => Metadata) private _metadata;
+    uint16 private _randNonce = 0; // 999 max
+    uint16 private _diamondsCnt = 0; // 333 max
+    uint16 private _maxDiamonds; // 333 max
+
     address private _diamondDawn;
     Certificate[] private _mine;
-    Certificate private EMPTY_DIAMOND =
-        Certificate({
-            points: 0,
-            reportDate: 0,
-            reportNumber: 0,
-            measurements: "",
-            clarity: Clarity.NO_CLARITY,
-            color: Color.NO_COLOR,
-            cut: Grade.NO_GRADE,
-            symmetry: Grade.NO_GRADE,
-            polish: Grade.NO_GRADE,
-            fluorescence: Fluorescence.NO_FLUORESCENCE,
-            shape: Shape.NO_SHAPE
-        });
+    mapping(uint => Metadata) private _metadata;
 
     constructor(address[] memory adminAddresses) {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -80,12 +66,12 @@ contract DiamondDawnMine is
     }
 
     modifier mineClosed() {
-        require(isClosed, "Open mine");
+        require(!isOpen, "Open mine");
         _;
     }
 
     modifier mineOpen() {
-        require(!isClosed, "Closed mine");
+        require(isOpen, "Closed mine");
         _;
     }
 
@@ -112,12 +98,7 @@ contract DiamondDawnMine is
         mineOpen
         onlyType(tokenId, Type.NO_TYPE)
     {
-        _metadata[tokenId] = Metadata({
-            type_: Type.ENTER_MINE,
-            rough: RoughMetadata({shape: RoughShape.NO_SHAPE, extraPoints: 0}),
-            cut: CutMetadata({extraPoints: 0}),
-            certificate: EMPTY_DIAMOND
-        });
+        _metadata[tokenId].type_ = Type.ENTER_MINE;
     }
 
     function mine(uint tokenId)
@@ -172,14 +153,14 @@ contract DiamondDawnMine is
         _metadata[tokenId].type_ = Type.REBORN;
     }
 
-    function initialize(address diamondDawn, uint maxDiamonds)
+    function initialize(address diamondDawn, uint16 maxDiamonds)
         external
         mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _diamondDawn = diamondDawn;
         _maxDiamonds = maxDiamonds;
-        isClosed = false;
+        isOpen = true;
     }
 
     function eruption(Certificate[] calldata diamonds)
@@ -191,7 +172,7 @@ contract DiamondDawnMine is
         for (uint i = 0; i < diamonds.length; i++) {
             _mine.push(diamonds[i]);
         }
-        _diamondsCnt += diamonds.length;
+        _diamondsCnt += uint16(diamonds.length);
     }
 
     function replaceLostShipment(uint tokenId, Certificate calldata diamond)
@@ -206,12 +187,12 @@ contract DiamondDawnMine is
         metadata.certificate = diamond;
     }
 
-    function setClosed(bool isClosed_)
+    function setOpen(bool isOpen_)
         external
         mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        isClosed = isClosed_;
+        isOpen = isOpen_;
     }
 
     function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos)
@@ -266,7 +247,7 @@ contract DiamondDawnMine is
 
     function isMineReady(Type type_) external view returns (bool) {
         if (type_ == Type.ENTER_MINE || type_ == Type.REBORN)
-            return _isVideoExist(type_, NO_SHAPE_NUM);
+            return _isVideoExist(type_, 0);
         if (type_ == Type.ROUGH && _diamondsCnt != _maxDiamonds) return false;
         uint maxShape = type_ == Type.ROUGH
             ? uint(type(RoughShape).max)
@@ -417,13 +398,13 @@ contract DiamondDawnMine is
             attributes[12] = getStringAttribute("Laboratory", "GIA");
             attributes[13] = getAttribute(
                 "Report Date",
-                Strings.toString(certificate.reportDate),
+                Strings.toString(certificate.date),
                 "date",
                 false
             );
             attributes[14] = getAttribute(
                 "Report Number",
-                Strings.toString(certificate.reportNumber),
+                Strings.toString(certificate.number),
                 "",
                 false
             );
@@ -447,8 +428,7 @@ contract DiamondDawnMine is
         if (type_ == Type.CUT || type_ == Type.POLISHED)
             return uint(metadata.certificate.shape);
         if (type_ == Type.ROUGH) return uint(metadata.rough.shape);
-        if (type_ == Type.ENTER_MINE || type_ == Type.REBORN)
-            return NO_SHAPE_NUM;
+        if (type_ == Type.ENTER_MINE || type_ == Type.REBORN) return 0;
         revert();
     }
 

@@ -92,8 +92,8 @@ async function main() {
   if (hre.network.name === "localhost") {
     const diamonds = [
       {
-        reportNumber: 1111111111,
-        reportDate: 1659254421,
+        number: 1111111111,
+        date: 1659254421,
         shape: 1,
         points: 55,
         color: 4,
@@ -105,8 +105,8 @@ async function main() {
         measurements: "5.12 - 5.12 x 3.50",
       },
       {
-        reportNumber: 2222222222,
-        reportDate: 1659254421,
+        number: 2222222222,
+        date: 1659254421,
         shape: 2,
         points: 70,
         color: 14,
@@ -118,8 +118,8 @@ async function main() {
         measurements: "5.12 - 5.12 x 3.50",
       },
       {
-        reportNumber: 3333333333,
-        reportDate: 1659254421,
+        number: 3333333333,
+        date: 1659254421,
         shape: 3,
         points: 45,
         color: 11,
@@ -131,8 +131,8 @@ async function main() {
         measurements: "5.12 - 5.12 x 3.50",
       },
       {
-        reportNumber: 3333333333,
-        reportDate: 1659254421,
+        number: 3333333333,
+        date: 1659254421,
         shape: 4,
         points: 66,
         color: 8,
@@ -144,8 +144,8 @@ async function main() {
         measurements: "5.12 - 5.12 x 3.50",
       },
       {
-        reportNumber: 3333333333,
-        reportDate: 1659254421,
+        number: 3333333333,
+        date: 1659254421,
         shape: 2,
         points: 35,
         color: 5,
@@ -157,8 +157,8 @@ async function main() {
         measurements: "5.12 - 5.12 x 3.50",
       },
       {
-        reportNumber: 3333333333,
-        reportDate: 1659254421,
+        number: 3333333333,
+        date: 1659254421,
         shape: 1,
         points: 49,
         color: 3,
@@ -170,8 +170,8 @@ async function main() {
         measurements: "5.12 - 5.12 x 3.50",
       },
       {
-        reportNumber: 3333333333,
-        reportDate: 1659254421,
+        number: 3333333333,
+        date: 1659254421,
         shape: 4,
         points: 59,
         color: 2,

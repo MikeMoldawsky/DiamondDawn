@@ -6,7 +6,7 @@ import { TRAIT } from "consts";
 
 const formatTraitValue = (trait_type, value) => {
   switch (trait_type) {
-    case TRAIT.reportDate:
+    case TRAIT.date:
       const d = new Date(0);
       d.setUTCSeconds(value);
       return d.toDateString();

@@ -24,8 +24,8 @@ const {
 } = require("./utils/MetadataTestUtils");
 
 const DIAMOND = {
-  reportNumber: 1111111111,
-  reportDate: 1659254421,
+  number: 1111111111,
+  date: 1659254421,
   shape: 1,
   points: 45,
   color: 2,
@@ -84,7 +84,7 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should REVERT when mine is CLOSED", async () => {
-      await mineContract.setClosed(true);
+      await mineContract.setOpen(false);
       await expect(mineContract.enter(tokenId)).to.be.revertedWith(
         "Closed mine"
       );
@@ -136,7 +136,7 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should REVERT when mine is CLOSED", async () => {
-      await mineContract.setClosed(true);
+      await mineContract.setOpen(false);
       await expect(mineContract.mine(tokenId)).to.be.revertedWith(
         "Closed mine"
       );
@@ -205,7 +205,7 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should REVERT when mine is CLOSED", async () => {
-      await mineContract.setClosed(true);
+      await mineContract.setOpen(false);
       await expect(mineContract.cut(tokenId)).to.be.revertedWith("Closed mine");
     });
 
@@ -274,7 +274,7 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should REVERT when mine is CLOSED", async () => {
-      await mineContract.setClosed(true);
+      await mineContract.setOpen(false);
       await expect(mineContract.polish(tokenId)).to.be.revertedWith(
         "Closed mine"
       );
@@ -454,10 +454,10 @@ describe("Diamond Dawn Mine", () => {
           { trait_type: "Laboratory", value: "GIA" },
           {
             trait_type: "Report Date",
-            value: DIAMOND.reportDate,
+            value: DIAMOND.date,
             display_type: "date",
           },
-          { trait_type: "Report Number", value: DIAMOND.reportNumber },
+          { trait_type: "Report Number", value: DIAMOND.number },
         ],
       };
 
