@@ -5,7 +5,8 @@ import "./DiamondObjects.sol";
 
 enum RoughShape {
     NO_SHAPE,
-    MAKEABLE
+    MAKEABLE_1,
+    MAKEABLE_2
 }
 
 struct RoughMetadata {

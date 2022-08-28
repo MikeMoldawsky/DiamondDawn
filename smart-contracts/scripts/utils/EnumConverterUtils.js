@@ -18,7 +18,9 @@ const enumToType = (i) => {
 const enumToRoughShape = (i) => {
   switch (i) {
     case 1:
-      return "Makeable";
+      return "Makeable 1";
+    case 2:
+      return "Makeable 2";
     default:
       throw new Error("No rough shape");
   }
@@ -138,7 +140,8 @@ const DIAMOND_DAWN_TYPE = {
 
 const ROUGH_SHAPE = {
   NO_SHAPE: 0,
-  MAKEABLE: 1,
+  MAKEABLE_1: 1,
+  MAKEABLE_2: 2,
 };
 
 const SHAPE = {

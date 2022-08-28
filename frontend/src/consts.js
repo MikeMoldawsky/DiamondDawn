@@ -27,7 +27,8 @@ export const DIAMOND_DAWN_TYPE = {
 
 export const ROUGH_SHAPE = {
   NO_SHAPE: 0,
-  MAKEABLE: 1,
+  MAKEABLE_1: 1,
+  MAKEABLE_2: 2,
 };
 
 export const SHAPE = {
