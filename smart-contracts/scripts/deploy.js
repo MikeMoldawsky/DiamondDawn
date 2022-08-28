@@ -231,6 +231,12 @@ async function main() {
 
   if (hre.network.name === "goerli") {
     try {
+      console.log("Verifying DiamondDawnMine contract");
+      await hre.run("verify:verify", {
+        address: diamondDawnMine.address,
+        constructorArguments: [admins],
+      });
+
       console.log("Verifying DiamondDawn contract");
       await hre.run("verify:verify", {
         address: diamondDawn.address,
