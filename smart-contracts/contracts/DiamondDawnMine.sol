@@ -117,7 +117,9 @@ contract DiamondDawnMine is
         Metadata storage metadata = _metadata[tokenId];
         metadata.type_ = Type.ROUGH;
         metadata.rough = RoughMetadata({
-            shape: extraPoints % 2 == 0 ? RoughShape.MAKEABLE_1 : RoughShape.MAKEABLE_2,
+            shape: extraPoints % 2 == 0
+                ? RoughShape.MAKEABLE_1
+                : RoughShape.MAKEABLE_2,
             extraPoints: extraPoints
         });
         metadata.certificate = _mineDiamond();
