@@ -214,7 +214,7 @@ contract DiamondDawnMine is
         isLocked = true;
     }
 
-    function getDiamondMetadata(uint tokenId)
+    function getMetadata(uint tokenId)
         external
         view
         onlyDiamondDawn
