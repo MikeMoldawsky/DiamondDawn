@@ -1,0 +1,452 @@
+require("dotenv").config();
+require("@nomicfoundation/hardhat-chai-matchers");
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
+const _ = require("lodash");
+const {
+  NO_SHAPE_NUM,
+  DIAMOND_DAWN_TYPE,
+  SHAPE,
+  ROUGH_SHAPE,
+} = require("./utils/EnumConverterUtils");
+const {
+  setVideoAndAssertPolishedMetadata,
+} = require("./utils/MetadataTestUtils");
+
+const DIAMOND = {
+  number: 1111111111,
+  date: 1659254421,
+  shape: 1,
+  points: 45,
+  color: 2,
+  clarity: 1,
+  cut: 1,
+  polish: 1,
+  symmetry: 1,
+  fluorescence: 1,
+  measurements: "5.1 - 5.12 x 35",
+};
+
+async function assertOnlyAdmin(unAuthUser, mineContract, unAuthFunction) {
+  const adminRole = await mineContract.DEFAULT_ADMIN_ROLE();
+  return expect(
+    unAuthFunction(mineContract.connect(unAuthUser))
+  ).to.be.revertedWith(
+    `AccessControl: account ${unAuthUser.address.toLowerCase()} is missing role ${adminRole}`
+  );
+}
+
+describe("Diamond Dawn Mine", () => {
+  async function deployMineContract() {
+    const [owner, user1, user2, user3, user4, user5, user6, user7, user8] =
+      await ethers.getSigners();
+    const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
+    const diamondDawnMine = await DiamondDawnMine.deploy([]);
+    await diamondDawnMine.deployed();
+    return {
+      diamondDawnMine,
+      owner,
+      user1,
+      user2,
+      user3,
+      user4,
+      user5,
+      user6,
+      user7,
+      user8,
+    };
+  }
+
+  describe("initialized", () => {
+    const maxDiamonds = 333;
+    let mineContract;
+    let userA;
+    let userB;
+
+    beforeEach(async () => {
+      const { diamondDawnMine, user2, user1 } = await loadFixture(
+        deployMineContract
+      );
+      mineContract = diamondDawnMine;
+      userA = user1;
+      userB = user2;
+    });
+
+    it("should correctly set DiamondDawn and maxDiamonds", async () => {
+      mineContract.initialize(userA.address, maxDiamonds);
+      expect(await mineContract.diamondDawn()).to.be.equal(userA.address);
+      expect(await mineContract.maxDiamonds()).to.be.equal(maxDiamonds);
+
+      mineContract.initialize(userB.address, maxDiamonds - 10);
+      expect(await mineContract.diamondDawn()).to.be.equal(userB.address);
+      expect(await mineContract.maxDiamonds()).to.be.equal(maxDiamonds - 10);
+    });
+  });
+
+  describe("eruption", () => {
+    const maxDiamonds = 15;
+    let mineContract;
+    let diamondDawn;
+    let user;
+
+    beforeEach(async () => {
+      const { diamondDawnMine, user1, user2 } = await loadFixture(
+        deployMineContract
+      );
+      mineContract = diamondDawnMine;
+      diamondDawn = user1;
+      user = user2;
+      await mineContract.initialize(diamondDawn.address, maxDiamonds);
+    });
+
+    it("should REVERT when NOT owner", async () => {
+      const unAuthUsers = [diamondDawn, user];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, mineContract, (contract) =>
+            contract.eruption([])
+          )
+        )
+      );
+    });
+
+    it("should REVERT when EXCEEDS max diamonds", async () => {
+      const maxDiamondsArray = _.range(maxDiamonds).map(() => DIAMOND);
+      await mineContract.eruption(maxDiamondsArray);
+      await expect(mineContract.eruption([DIAMOND])).to.be.revertedWith(
+        "Mine overflow"
+      );
+      expect(await mineContract.diamondCount()).to.be.equal(maxDiamonds);
+    });
+
+    it("should REVERT when mine is locked", async () => {
+      await mineContract.setOpen(false);
+      await mineContract.connect(diamondDawn).lockMine();
+      await expect(mineContract.eruption([DIAMOND])).to.be.revertedWith(
+        "Locked mine"
+      );
+    });
+
+    it("should SUCCESSFULLY insert 333 diamonds", async () => {
+      // TODO - check if we can make it to 333 after optimizations (currently the txn gas limit is 30,395,800)
+      const prodDiamondsSize = 200;
+      await mineContract.initialize(diamondDawn.address, prodDiamondsSize);
+      const maxDiamondsArray = _.range(prodDiamondsSize).map(() => DIAMOND);
+      await mineContract.eruption(maxDiamondsArray);
+      expect(await mineContract.diamondCount()).to.be.equal(prodDiamondsSize);
+    });
+  });
+
+  describe("lostShipment", () => {
+    const tokenId = 1;
+    let mineContract;
+    let diamondDawn;
+    let user;
+
+    beforeEach(async () => {
+      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
+        deployMineContract
+      );
+      await diamondDawnMine.initialize(owner.address, 333);
+      mineContract = diamondDawnMine;
+      diamondDawn = user1;
+      user = user2;
+    });
+
+    it("should REVERT when NOT owner", async () => {
+      const unAuthUsers = [diamondDawn, user];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, mineContract, (contract) =>
+            contract.lostShipment(1, DIAMOND)
+          )
+        )
+      );
+    });
+
+    it("should REVERT when token doesn't exist", async () => {
+      await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
+        "Wrong type"
+      );
+    });
+
+    it("should REVERT when mine is locked", async () => {
+      await mineContract.setOpen(false);
+      await mineContract.lockMine();
+      await expect(
+        mineContract.lostShipment(tokenId, DIAMOND)
+      ).to.be.revertedWith("Locked mine");
+    });
+
+    it("should REVERT when NOT POLISHED or REBORN, otherwise SUCCESS", async () => {
+      await mineContract.eruption([DIAMOND]);
+      await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
+        "Wrong type"
+      );
+      await mineContract.enter(tokenId);
+      await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
+        "Wrong type"
+      );
+      await mineContract.mine(tokenId);
+      await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
+        "Wrong type"
+      );
+      await mineContract.cut(tokenId);
+      await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
+        "Wrong type"
+      );
+      await mineContract.polish(tokenId);
+      await setVideoAndAssertPolishedMetadata(
+        mineContract,
+        tokenId,
+        DIAMOND.points,
+        "",
+        DIAMOND
+      );
+      const replacedDiamond = { ...DIAMOND, points: DIAMOND.points + 10 };
+      await mineContract.lostShipment(tokenId, replacedDiamond);
+      await setVideoAndAssertPolishedMetadata(
+        mineContract,
+        tokenId,
+        replacedDiamond.points,
+        "",
+        replacedDiamond
+      );
+      const replacedDiamond2 = {
+        ...DIAMOND,
+        points: DIAMOND.points + 20,
+        shape: DIAMOND.shape + 1,
+      };
+      await mineContract.lostShipment(tokenId, replacedDiamond2);
+      await setVideoAndAssertPolishedMetadata(
+        mineContract,
+        tokenId,
+        replacedDiamond2.points,
+        "",
+        replacedDiamond2
+      );
+    });
+  });
+
+  describe("setOpen", () => {
+    let mineContract;
+    let diamondDawn;
+    let user;
+
+    beforeEach(async () => {
+      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
+        deployMineContract
+      );
+      await diamondDawnMine.initialize(owner.address, 333);
+      mineContract = diamondDawnMine;
+      diamondDawn = user1;
+      user = user2;
+    });
+
+    it("should REVERT when NOT owner", async () => {
+      const unAuthUsers = [diamondDawn, user];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, mineContract, (contract) =>
+            contract.setOpen(true)
+          )
+        )
+      );
+    });
+
+    it("should REVERT when mine is locked", async () => {
+      await mineContract.setOpen(false);
+      await mineContract.lockMine();
+      await expect(mineContract.setOpen(true)).to.be.revertedWith(
+        "Locked mine"
+      );
+      await expect(mineContract.setOpen(false)).to.be.revertedWith(
+        "Locked mine"
+      );
+    });
+
+    it("should SUCCESSFULLY set isOpen", async () => {
+      await mineContract.setOpen(true);
+      expect(await mineContract.isOpen()).to.be.true;
+      await mineContract.setOpen(false);
+      expect(await mineContract.isOpen()).to.be.false;
+      await mineContract.setOpen(true);
+      expect(await mineContract.isOpen()).to.be.true;
+    });
+  });
+
+  describe("setTypeVideos", () => {
+    let mineContract;
+    let diamondDawn;
+    let user;
+
+    beforeEach(async () => {
+      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
+        deployMineContract
+      );
+      await diamondDawnMine.initialize(owner.address, 333);
+      mineContract = diamondDawnMine;
+      diamondDawn = user1;
+      user = user2;
+    });
+
+    it("should REVERT when NOT owner", async () => {
+      const unAuthUsers = [diamondDawn, user];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, mineContract, (contract) =>
+            contract.setTypeVideos(DIAMOND_DAWN_TYPE.NO_TYPE, [])
+          )
+        )
+      );
+    });
+
+    it("should REVERT when mine is locked", async () => {
+      await mineContract.setOpen(false);
+      await mineContract.lockMine();
+      await expect(
+        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.NO_TYPE, [])
+      ).to.be.revertedWith("Locked mine");
+      await expect(
+        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [])
+      ).to.be.revertedWith("Locked mine");
+      await expect(
+        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [])
+      ).to.be.revertedWith("Locked mine");
+      await expect(
+        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [])
+      ).to.be.revertedWith("Locked mine");
+      await expect(
+        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [])
+      ).to.be.revertedWith("Locked mine");
+      await expect(
+        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [])
+      ).to.be.revertedWith("Locked mine");
+    });
+
+    it("should REVERT when no type url is locked", async () => {
+      await expect(
+        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.NO_TYPE, [])
+      ).to.be.revertedWithoutReason();
+    });
+    it("should REVERT when video is empty", async () => {
+      await expect(
+        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
+          { shape: NO_SHAPE_NUM, video: "" },
+        ])
+      ).to.be.revertedWithoutReason();
+      await expect(
+        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
+          { shape: ROUGH_SHAPE.MAKEABLE_1, video: "a" },
+          { shape: ROUGH_SHAPE.MAKEABLE_2, video: "" },
+        ])
+      ).to.be.revertedWithoutReason();
+    });
+
+    it("should SUCCESSFULLY set videos", async () => {
+      const enterMine = "infinity.mp4";
+      const roughMakeable1 = "rough_1.mp4";
+      const roughMakeable2 = "rough_2.mp4";
+      // cut
+      const cutPear = "cut_pear.mp4";
+      const cutRound = "cut_round.mp4";
+      const cutOval = "cut_oval.mp4";
+      const cutRadiant = "cut_radiant.mp4";
+      // polished
+      const polishedPear = "polished_pear.mp4";
+      const polishedRound = "polished_round.mp4";
+      const polishedOval = "polished_oval.mp4";
+      const polishedRadiant = "polished_radiant.mp4";
+      // reborn
+      const rebornVideo = "diamond_dawn.mp4";
+
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
+        { shape: NO_SHAPE_NUM, video: enterMine },
+      ]);
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
+        { shape: ROUGH_SHAPE.MAKEABLE_1, video: roughMakeable1 },
+        { shape: ROUGH_SHAPE.MAKEABLE_2, video: roughMakeable2 },
+      ]);
+
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
+        { shape: SHAPE.PEAR, video: cutPear },
+        { shape: SHAPE.ROUND, video: cutRound },
+        { shape: SHAPE.OVAL, video: cutOval },
+        { shape: SHAPE.RADIANT, video: cutRadiant },
+      ]);
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+        { shape: SHAPE.PEAR, video: polishedPear },
+        { shape: SHAPE.ROUND, video: polishedRound },
+        { shape: SHAPE.OVAL, video: polishedOval },
+        { shape: SHAPE.RADIANT, video: polishedRadiant },
+      ]);
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
+        { shape: NO_SHAPE_NUM, video: rebornVideo },
+      ]);
+
+      // await mineContract.setOpen(true);
+      expect(
+        await mineContract.typeToShapeVideo(DIAMOND_DAWN_TYPE.ENTER_MINE, 0)
+      ).to.be.equal(enterMine);
+
+      expect(
+        await mineContract.typeToShapeVideo(
+          DIAMOND_DAWN_TYPE.ROUGH,
+          ROUGH_SHAPE.MAKEABLE_1
+        )
+      ).to.be.equal(roughMakeable1);
+      expect(
+        await mineContract.typeToShapeVideo(
+          DIAMOND_DAWN_TYPE.ROUGH,
+          ROUGH_SHAPE.MAKEABLE_2
+        )
+      ).to.be.equal(roughMakeable2);
+
+      expect(
+        await mineContract.typeToShapeVideo(DIAMOND_DAWN_TYPE.CUT, SHAPE.PEAR)
+      ).to.be.equal(cutPear);
+      expect(
+        await mineContract.typeToShapeVideo(DIAMOND_DAWN_TYPE.CUT, SHAPE.ROUND)
+      ).to.be.equal(cutRound);
+      expect(
+        await mineContract.typeToShapeVideo(DIAMOND_DAWN_TYPE.CUT, SHAPE.OVAL)
+      ).to.be.equal(cutOval);
+      expect(
+        await mineContract.typeToShapeVideo(
+          DIAMOND_DAWN_TYPE.CUT,
+          SHAPE.RADIANT
+        )
+      ).to.be.equal(cutRadiant);
+
+      expect(
+        await mineContract.typeToShapeVideo(
+          DIAMOND_DAWN_TYPE.POLISHED,
+          SHAPE.PEAR
+        )
+      ).to.be.equal(polishedPear);
+      expect(
+        await mineContract.typeToShapeVideo(
+          DIAMOND_DAWN_TYPE.POLISHED,
+          SHAPE.ROUND
+        )
+      ).to.be.equal(polishedRound);
+      expect(
+        await mineContract.typeToShapeVideo(
+          DIAMOND_DAWN_TYPE.POLISHED,
+          SHAPE.OVAL
+        )
+      ).to.be.equal(polishedOval);
+      expect(
+        await mineContract.typeToShapeVideo(
+          DIAMOND_DAWN_TYPE.POLISHED,
+          SHAPE.RADIANT
+        )
+      ).to.be.equal(polishedRadiant);
+
+      expect(
+        await mineContract.typeToShapeVideo(DIAMOND_DAWN_TYPE.REBORN, 0)
+      ).to.be.equal(rebornVideo);
+    });
+  });
+});

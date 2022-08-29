@@ -328,7 +328,7 @@ contract DiamondDawn is
         // TODO - this require blocks getting the tokenURI of burnt tokens
         // require(_exists(tokenId), "ERC721: URI query for nonexistent token");
         // TODO! shouldn't we add a require that checks for "tokenId is (burned or exists)"?
-        return diamondDawnMine.getDiamondMetadata(tokenId);
+        return diamondDawnMine.getMetadata(tokenId);
     }
 
     function supportsInterface(bytes4 interfaceId)

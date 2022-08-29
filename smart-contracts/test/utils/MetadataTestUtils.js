@@ -23,7 +23,7 @@ async function setVideoAndAssertEnterMineMetadata(
   videoSuffix
 ) {
   const expectedMetadata = getExpectedMetadataEnterMine(tokenId, videoSuffix);
-  const actualMetadata = await mineContract.getDiamondMetadata(tokenId);
+  const actualMetadata = await mineContract.getMetadata(tokenId);
   const actualParsedMetadata = await assertBase64AndGetParsed(actualMetadata);
   expect(actualParsedMetadata).to.deep.equal(expectedMetadata);
 }
@@ -37,7 +37,7 @@ async function setVideoAndAssertRoughMetadata(
 ) {
   const roughMetadataWithoutCaratShapeAndImage =
     getRoughMetadataWithoutCaratShapeAndImage(tokenId);
-  const actualMetadata = await mineContract.getDiamondMetadata(tokenId);
+  const actualMetadata = await mineContract.getMetadata(tokenId);
   const actualParsedMetadata = await assertBase64AndGetParsed(actualMetadata);
   // Validate carat attribute
   const actualCaratAttributeList = _.remove(
@@ -95,7 +95,7 @@ async function setVideoAndAssertCutMetadata(
     videoSuffix,
     diamond
   );
-  const actualMetadata = await mineContract.getDiamondMetadata(tokenId);
+  const actualMetadata = await mineContract.getMetadata(tokenId);
   const actualParsedMetadata = await assertBase64AndGetParsed(actualMetadata);
   // Validate carat attribute
   const actualCaratAttributeList = _.remove(
@@ -129,7 +129,7 @@ async function setVideoAndAssertPolishedMetadata(
     videoSuffix,
     diamond
   );
-  const actualMetadata = await mineContract.getDiamondMetadata(tokenId);
+  const actualMetadata = await mineContract.getMetadata(tokenId);
   const actualParsedMetadata = await assertBase64AndGetParsed(actualMetadata);
   // Validate carat attribute
   const actualCaratAttributeList = _.remove(

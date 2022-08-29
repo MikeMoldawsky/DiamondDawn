@@ -16,10 +16,7 @@ interface IDiamondDawnMine {
 
     function lockMine() external;
 
-    function getDiamondMetadata(uint tokenId)
-        external
-        view
-        returns (string memory);
+    function getMetadata(uint tokenId) external view returns (string memory);
 
     function isMineReady(Type type_) external view returns (bool);
 }
