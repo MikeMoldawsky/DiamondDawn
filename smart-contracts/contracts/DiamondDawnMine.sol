@@ -25,7 +25,6 @@ contract DiamondDawnMine is
     IDiamondDawnMineAdmin
 {
     bool public isOpen; // mine is closed until it's initialized.
-    bool public isLocked; // mine is locked forever when the project ends (immutable).
     uint16 public maxDiamonds; // 333 max
     uint16 public diamondCount; // 333 max
     address public diamondDawn;
@@ -71,11 +70,6 @@ contract DiamondDawnMine is
             isOpen == isOpen_,
             string.concat("Mine ", isOpen ? "Open" : "Closed")
         );
-        _;
-    }
-
-    modifier mineNotLocked() {
-        require(!isLocked, "Locked mine");
         _;
     }
 
@@ -156,7 +150,6 @@ contract DiamondDawnMine is
 
     function initialize(address diamondDawn_, uint16 maxDiamonds_)
         external
-        mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         diamondDawn = diamondDawn_;
@@ -166,9 +159,8 @@ contract DiamondDawnMine is
 
     function eruption(Certificate[] calldata diamonds)
         external
-        mineNotLocked
-        mineOverflow(diamonds.length)
         onlyRole(DEFAULT_ADMIN_ROLE)
+        mineOverflow(diamonds.length)
     {
         for (uint i = 0; i < diamonds.length; i++) {
             _mine.push(diamonds[i]);
@@ -178,7 +170,6 @@ contract DiamondDawnMine is
 
     function lostShipment(uint tokenId, Certificate calldata diamond)
         external
-        mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         Metadata storage metadata = _metadata[tokenId];
@@ -189,17 +180,12 @@ contract DiamondDawnMine is
         metadata.certificate = diamond;
     }
 
-    function setOpen(bool isOpen_)
-        external
-        mineNotLocked
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    function setOpen(bool isOpen_) external onlyRole(DEFAULT_ADMIN_ROLE) {
         isOpen = isOpen_;
     }
 
     function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos)
         external
-        mineNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         require(type_ != Type.NO_TYPE);
@@ -209,9 +195,13 @@ contract DiamondDawnMine is
         }
     }
 
-    function lockMine() external onlyDiamondDawn isMineOpen(false) {
+    function lockMine()
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        isMineOpen(false)
+    {
         // lock mine forever
-        isLocked = true;
+        renounceRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
 
     function getMetadata(uint tokenId)

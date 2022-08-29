@@ -259,7 +259,6 @@ contract DiamondDawn is
         diamondDawnNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        diamondDawnMine.lockMine();
         isDiamondDawnLocked = true;
     }
 

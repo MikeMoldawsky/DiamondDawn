@@ -87,20 +87,22 @@ describe("Diamond Dawn Mine", () => {
   describe("eruption", () => {
     const maxDiamonds = 15;
     let mineContract;
+    let admin;
     let diamondDawn;
     let user;
 
     beforeEach(async () => {
-      const { diamondDawnMine, user1, user2 } = await loadFixture(
+      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
         deployMineContract
       );
       mineContract = diamondDawnMine;
+      admin = owner;
       diamondDawn = user1;
       user = user2;
       await mineContract.initialize(diamondDawn.address, maxDiamonds);
     });
 
-    it("should REVERT when NOT owner", async () => {
+    it("should REVERT when NOT admin", async () => {
       const unAuthUsers = [diamondDawn, user];
       await Promise.all(
         unAuthUsers.map((unAuth) =>
@@ -122,9 +124,9 @@ describe("Diamond Dawn Mine", () => {
 
     it("should REVERT when mine is locked", async () => {
       await mineContract.setOpen(false);
-      await mineContract.connect(diamondDawn).lockMine();
-      await expect(mineContract.eruption([DIAMOND])).to.be.revertedWith(
-        "Locked mine"
+      await mineContract.lockMine();
+      await assertOnlyAdmin(admin, mineContract, (contract) =>
+        contract.eruption([DIAMOND])
       );
     });
 
@@ -138,9 +140,67 @@ describe("Diamond Dawn Mine", () => {
     });
   });
 
+  describe("lockMine", () => {
+    let mineContract;
+    let admin;
+    let diamondDawn;
+    let user;
+    beforeEach(async () => {
+      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
+        deployMineContract
+      );
+      diamondDawnMine.initialize(user2.address, 5);
+      mineContract = diamondDawnMine;
+      admin = owner;
+      user = user1;
+      diamondDawn = user2;
+    });
+
+    it("should REVERT when NOT admin", async () => {
+      const unAuthUsers = [diamondDawn, user];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, mineContract, (contract) =>
+            contract.lockMine()
+          )
+        )
+      );
+    });
+
+    it("should REVERT when mine is open", async () => {
+      await mineContract.setOpen(true);
+      await expect(mineContract.lockMine()).to.be.revertedWith("Mine Open");
+    });
+
+    it("should LOCK all setters", async () => {
+      await mineContract.setOpen(false);
+      await mineContract.lockMine();
+
+      await assertOnlyAdmin(admin, mineContract, (contract) =>
+        contract.initialize(mineContract.address, 333)
+      );
+      await assertOnlyAdmin(admin, mineContract, (contract) =>
+        contract.eruption([])
+      );
+      await assertOnlyAdmin(admin, mineContract, (contract) =>
+        contract.lockMine()
+      );
+      await assertOnlyAdmin(admin, mineContract, (contract) =>
+        contract.lostShipment(1, DIAMOND)
+      );
+      await assertOnlyAdmin(admin, mineContract, (contract) =>
+        contract.setOpen(true)
+      );
+      await assertOnlyAdmin(admin, mineContract, (contract) =>
+        contract.setTypeVideos(0, [])
+      );
+    });
+  });
+
   describe("lostShipment", () => {
     const tokenId = 1;
     let mineContract;
+    let admin;
     let diamondDawn;
     let user;
 
@@ -150,11 +210,12 @@ describe("Diamond Dawn Mine", () => {
       );
       await diamondDawnMine.initialize(owner.address, 333);
       mineContract = diamondDawnMine;
+      admin = owner;
       diamondDawn = user1;
       user = user2;
     });
 
-    it("should REVERT when NOT owner", async () => {
+    it("should REVERT when NOT admin", async () => {
       const unAuthUsers = [diamondDawn, user];
       await Promise.all(
         unAuthUsers.map((unAuth) =>
@@ -174,9 +235,9 @@ describe("Diamond Dawn Mine", () => {
     it("should REVERT when mine is locked", async () => {
       await mineContract.setOpen(false);
       await mineContract.lockMine();
-      await expect(
-        mineContract.lostShipment(tokenId, DIAMOND)
-      ).to.be.revertedWith("Locked mine");
+      await assertOnlyAdmin(admin, mineContract, (contract) =>
+        contract.lostShipment(tokenId, DIAMOND)
+      );
     });
 
     it("should REVERT when NOT POLISHED or REBORN, otherwise SUCCESS", async () => {
@@ -231,6 +292,7 @@ describe("Diamond Dawn Mine", () => {
 
   describe("setOpen", () => {
     let mineContract;
+    let admin;
     let diamondDawn;
     let user;
 
@@ -239,12 +301,13 @@ describe("Diamond Dawn Mine", () => {
         deployMineContract
       );
       await diamondDawnMine.initialize(owner.address, 333);
+      admin = owner;
       mineContract = diamondDawnMine;
       diamondDawn = user1;
       user = user2;
     });
 
-    it("should REVERT when NOT owner", async () => {
+    it("should REVERT when NOT admin", async () => {
       const unAuthUsers = [diamondDawn, user];
       await Promise.all(
         unAuthUsers.map((unAuth) =>
@@ -258,11 +321,11 @@ describe("Diamond Dawn Mine", () => {
     it("should REVERT when mine is locked", async () => {
       await mineContract.setOpen(false);
       await mineContract.lockMine();
-      await expect(mineContract.setOpen(true)).to.be.revertedWith(
-        "Locked mine"
+      await assertOnlyAdmin(admin, mineContract, (contract) =>
+        contract.setOpen(true)
       );
-      await expect(mineContract.setOpen(false)).to.be.revertedWith(
-        "Locked mine"
+      await assertOnlyAdmin(admin, mineContract, (contract) =>
+        contract.setOpen(false)
       );
     });
 
@@ -278,6 +341,7 @@ describe("Diamond Dawn Mine", () => {
 
   describe("setTypeVideos", () => {
     let mineContract;
+    let admin;
     let diamondDawn;
     let user;
 
@@ -287,11 +351,12 @@ describe("Diamond Dawn Mine", () => {
       );
       await diamondDawnMine.initialize(owner.address, 333);
       mineContract = diamondDawnMine;
+      admin = owner;
       diamondDawn = user1;
       user = user2;
     });
 
-    it("should REVERT when NOT owner", async () => {
+    it("should REVERT when NOT admin", async () => {
       const unAuthUsers = [diamondDawn, user];
       await Promise.all(
         unAuthUsers.map((unAuth) =>
@@ -305,24 +370,22 @@ describe("Diamond Dawn Mine", () => {
     it("should REVERT when mine is locked", async () => {
       await mineContract.setOpen(false);
       await mineContract.lockMine();
-      await expect(
-        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.NO_TYPE, [])
-      ).to.be.revertedWith("Locked mine");
-      await expect(
-        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [])
-      ).to.be.revertedWith("Locked mine");
-      await expect(
-        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [])
-      ).to.be.revertedWith("Locked mine");
-      await expect(
-        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [])
-      ).to.be.revertedWith("Locked mine");
-      await expect(
-        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [])
-      ).to.be.revertedWith("Locked mine");
-      await expect(
-        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [])
-      ).to.be.revertedWith("Locked mine");
+      const types = [
+        DIAMOND_DAWN_TYPE.NO_TYPE,
+        DIAMOND_DAWN_TYPE.ENTER_MINE,
+        DIAMOND_DAWN_TYPE.ROUGH,
+        DIAMOND_DAWN_TYPE.CUT,
+        DIAMOND_DAWN_TYPE.POLISHED,
+        DIAMOND_DAWN_TYPE.REBORN,
+      ];
+
+      await Promise.all(
+        types.map((type) =>
+          assertOnlyAdmin(admin, mineContract, (contract) =>
+            contract.setTypeVideos(type, [])
+          )
+        )
+      );
     });
 
     it("should REVERT when no type url is locked", async () => {
