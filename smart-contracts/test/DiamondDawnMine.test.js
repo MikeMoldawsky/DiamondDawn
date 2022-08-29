@@ -532,52 +532,6 @@ describe("Diamond Dawn Mine", () => {
     });
   });
 
-  describe("lockMine", () => {
-    let mineContract;
-    let user;
-    beforeEach(async () => {
-      const { diamondDawnMine, owner, user1 } = await loadFixture(
-        deployMineContract
-      );
-      diamondDawnMine.initialize(owner.address, 5);
-      mineContract = diamondDawnMine;
-      user = user1;
-    });
-
-    it("should REVERT when NOT diamond dawn", async () => {
-      await expect(mineContract.connect(user).lockMine()).to.be.revertedWith(
-        "Only DD"
-      );
-    });
-
-    it("should REVERT when mine is open", async () => {
-      await mineContract.setOpen(true);
-      await expect(mineContract.lockMine()).to.be.revertedWith("Mine Open");
-    });
-
-    it("should LOCK all setters", async () => {
-      expect(await mineContract.isLocked()).to.be.false;
-
-      await mineContract.setOpen(false);
-      await mineContract.lockMine();
-      expect(await mineContract.isLocked()).to.be.true;
-
-      await expect(
-        mineContract.initialize(mineContract.address, 333)
-      ).to.be.revertedWith("Locked mine");
-      await expect(mineContract.eruption([])).to.be.revertedWith("Locked mine");
-      await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
-        "Locked mine"
-      );
-      await expect(mineContract.setOpen(true)).to.be.revertedWith(
-        "Locked mine"
-      );
-      await expect(mineContract.setTypeVideos(0, [])).to.be.revertedWith(
-        "Locked mine"
-      );
-    });
-  });
-
   describe("isMineReady", () => {
     let mineContract;
     const numDiamonds = 5;
