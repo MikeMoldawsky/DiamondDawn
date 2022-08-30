@@ -144,10 +144,10 @@ contract DiamondDawnMine is
     }
 
     function ship(uint256 tokenId)
-    external
-    onlyDiamondDawn
-    isMineOpen(true)
-    onlyType(tokenId, Type.POLISHED)
+        external
+        onlyDiamondDawn
+        isMineOpen(true)
+        onlyType(tokenId, Type.POLISHED)
     {
         Metadata storage metadata = _metadata[tokenId];
         require(metadata.reborn.physicalId == 0);
@@ -155,10 +155,7 @@ contract DiamondDawnMine is
         metadata.reborn.physicalId = _physicalIdCounter;
     }
 
-    function rebirth(uint256 tokenId)
-        external
-        onlyDiamondDawn
-    {
+    function rebirth(uint256 tokenId) external onlyDiamondDawn {
         require(_metadata[tokenId].reborn.physicalId > 0, "Not shipped");
         _metadata[tokenId].type_ = Type.REBORN;
     }
@@ -419,7 +416,8 @@ contract DiamondDawnMine is
 
     function _videoBaseURI() private pure returns (string memory) {
         // TODO: in production we'll get the full ipfs/arweave url - base URI will change.
-        return "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
+        return
+            "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
     }
 
     function _getShapeNumber(Metadata memory metadata)
