@@ -3,7 +3,8 @@
     {
       "files": "*.sol",
       "options": {
-        "explicitTypes": "preserve"
+        "explicitTypes": "preserve",
+        "printWidth": 110
       }
     }
   ]

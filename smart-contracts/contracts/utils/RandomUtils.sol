@@ -12,15 +12,5 @@ function getRandomInRange(
 }
 
 function _rand(uint nonce) view returns (uint) {
-    return
-        uint(
-            keccak256(
-                abi.encodePacked(
-                    block.timestamp,
-                    block.difficulty,
-                    tx.origin,
-                    nonce
-                )
-            )
-        );
+    return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, tx.origin, nonce)));
 }

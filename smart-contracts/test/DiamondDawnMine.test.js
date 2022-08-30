@@ -37,7 +37,7 @@ describe("Diamond Dawn Mine", () => {
   async function deployMineContract() {
     const [owner, user1, user2] = await ethers.getSigners();
     const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
-    const diamondDawnMine = await DiamondDawnMine.deploy([]);
+    const diamondDawnMine = await DiamondDawnMine.deploy();
     await diamondDawnMine.deployed();
     await diamondDawnMine.initialize(owner.address, 333);
     return {

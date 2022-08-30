@@ -16,87 +16,52 @@ struct Attribute {
     bool isValueAString;
 }
 
-function getStringAttribute(string memory traitType, string memory value)
-    pure
-    returns (Attribute memory)
-{
-    return getAttribute(traitType, value, "", true);
+function getStringAttribute(string memory traitType, string memory value) pure returns (Attribute memory) {
+    return Attribute({traitType: traitType, value: value, displayType: "", isValueAString: true});
 }
 
 function getAttribute(
     string memory traitType,
     string memory value,
-    string memory displayType,
-    bool isValueAString
+    string memory displayType
 ) pure returns (Attribute memory) {
-    return
-        Attribute({
-            isValueAString: isValueAString,
-            displayType: displayType,
-            traitType: traitType,
-            value: value
-        });
+    return Attribute({traitType: traitType, value: value, displayType: displayType, isValueAString: false});
 }
 
-function toJsonMetadata(NFTMetadata memory metadata)
-    pure
-    returns (string memory)
-{
+function toJsonMetadata(NFTMetadata memory metadata) pure returns (string memory) {
     bytes memory byteString;
     byteString = abi.encodePacked(byteString, _openObject());
-    byteString = abi.encodePacked(
-        byteString,
-        _pushStringAttribute("name", metadata.name, true)
-    );
+    byteString = abi.encodePacked(byteString, _pushStringAttribute("name", metadata.name, true));
     byteString = abi.encodePacked(
         byteString,
         _pushStringAttribute("description", metadata.description, true)
     );
+    byteString = abi.encodePacked(byteString, _pushStringAttribute("created_by", metadata.createdBy, true));
+    byteString = abi.encodePacked(byteString, _pushStringAttribute("image", metadata.image, true));
     byteString = abi.encodePacked(
         byteString,
-        _pushStringAttribute("created_by", metadata.createdBy, true)
-    );
-    byteString = abi.encodePacked(
-        byteString,
-        _pushStringAttribute("image", metadata.image, true)
-    );
-    byteString = abi.encodePacked(
-        byteString,
-        _pushComplexAttribute(
-            "attributes",
-            _getAttributes(metadata.attributes),
-            false
-        )
+        _pushComplexAttribute("attributes", _getAttributes(metadata.attributes), false)
     );
     byteString = abi.encodePacked(byteString, _closeObject());
 
     return string(byteString);
 }
 
-function _getAttributes(Attribute[] memory attributes)
-    pure
-    returns (string memory)
-{
+function _getAttributes(Attribute[] memory attributes) pure returns (string memory) {
     bytes memory byteString;
     byteString = abi.encodePacked(byteString, _openArray());
     for (uint i = 0; i < attributes.length; i++) {
         Attribute memory attribute = attributes[i];
         byteString = abi.encodePacked(
             byteString,
-            _pushArrayElement(
-                _getAttribute(attribute),
-                i < (attributes.length - 1)
-            )
+            _pushArrayElement(_getAttribute(attribute), i < (attributes.length - 1))
         );
     }
     byteString = abi.encodePacked(byteString, _closeArray());
     return string(byteString);
 }
 
-function _getAttribute(Attribute memory attribute)
-    pure
-    returns (string memory)
-{
+function _getAttribute(Attribute memory attribute) pure returns (string memory) {
     bytes memory byteString;
 
     byteString = abi.encodePacked(byteString, _openObject());
@@ -107,20 +72,11 @@ function _getAttribute(Attribute memory attribute)
             _pushStringAttribute("display_type", attribute.displayType, true)
         );
     }
-    byteString = abi.encodePacked(
-        byteString,
-        _pushStringAttribute("trait_type", attribute.traitType, true)
-    );
+    byteString = abi.encodePacked(byteString, _pushStringAttribute("trait_type", attribute.traitType, true));
 
     byteString = attribute.isValueAString
-        ? abi.encodePacked(
-            byteString,
-            _pushStringAttribute("value", attribute.value, false)
-        )
-        : abi.encodePacked(
-            byteString,
-            _pushNonStringAttribute("value", attribute.value, false)
-        );
+        ? abi.encodePacked(byteString, _pushStringAttribute("value", attribute.value, false))
+        : abi.encodePacked(byteString, _pushNonStringAttribute("value", attribute.value, false));
 
     byteString = abi.encodePacked(byteString, _closeObject());
 
@@ -148,17 +104,7 @@ function _pushStringAttribute(
     string memory value,
     bool insertComma
 ) pure returns (string memory) {
-    return
-        string(
-            abi.encodePacked(
-                '"',
-                key,
-                '": "',
-                value,
-                '"',
-                insertComma ? "," : ""
-            )
-        );
+    return string(abi.encodePacked('"', key, '": "', value, '"', insertComma ? "," : ""));
 }
 
 function _pushNonStringAttribute(
@@ -166,10 +112,7 @@ function _pushNonStringAttribute(
     string memory value,
     bool insertComma
 ) pure returns (string memory) {
-    return
-        string(
-            abi.encodePacked('"', key, '": ', value, insertComma ? "," : "")
-        );
+    return string(abi.encodePacked('"', key, '": ', value, insertComma ? "," : ""));
 }
 
 function _pushComplexAttribute(
@@ -177,15 +120,9 @@ function _pushComplexAttribute(
     string memory value,
     bool insertComma
 ) pure returns (string memory) {
-    return
-        string(
-            abi.encodePacked('"', key, '": ', value, insertComma ? "," : "")
-        );
+    return string(abi.encodePacked('"', key, '": ', value, insertComma ? "," : ""));
 }
 
-function _pushArrayElement(string memory value, bool insertComma)
-    pure
-    returns (string memory)
-{
+function _pushArrayElement(string memory value, bool insertComma) pure returns (string memory) {
     return string(abi.encodePacked(value, insertComma ? "," : ""));
 }

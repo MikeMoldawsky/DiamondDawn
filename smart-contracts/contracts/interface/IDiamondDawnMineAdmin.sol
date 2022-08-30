@@ -15,6 +15,5 @@ interface IDiamondDawnMineAdmin {
 
     function setOpen(bool isOpen) external;
 
-    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos)
-        external;
+    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos) external;
 }
