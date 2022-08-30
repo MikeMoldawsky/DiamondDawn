@@ -14,6 +14,8 @@ import "./utils/RandomUtils.sol";
 import "./objects/MineObjects.sol";
 import "./objects/MineObjects.sol";
 import "./objects/MineObjects.sol";
+import "./objects/MineObjects.sol";
+import "./objects/MineObjects.sol";
 
 /**
  * @title DiamondDawnMine NFT Contract
@@ -37,6 +39,7 @@ contract DiamondDawnMine is
     uint8 private constant MIN_POLISH_EXTRA_POINTS = 1;
     uint8 private constant MAX_POLISH_EXTRA_POINTS = 4;
 
+    uint16 private _physicalIdCounter; // max 333
     uint16 private _randNonce = 0; // 999 max
     Certificate[] private _mine;
     mapping(uint => Metadata) private _metadata;
@@ -111,7 +114,7 @@ contract DiamondDawnMine is
             shape: extraPoints % 2 == 0
                 ? RoughShape.MAKEABLE_1
                 : RoughShape.MAKEABLE_2,
-            extraPoints: extraPoints
+            extraPoints: uint8(extraPoints)
         });
         metadata.certificate = _mineDiamond();
     }
@@ -127,7 +130,7 @@ contract DiamondDawnMine is
             MAX_POLISH_EXTRA_POINTS
         );
         Metadata storage diamondDawnMetadata = _metadata[tokenId];
-        diamondDawnMetadata.cut.extraPoints = extraPoints;
+        diamondDawnMetadata.cut.extraPoints = uint8(extraPoints);
         diamondDawnMetadata.type_ = Type.CUT;
     }
 
@@ -140,11 +143,23 @@ contract DiamondDawnMine is
         _metadata[tokenId].type_ = Type.POLISHED;
     }
 
+    function ship(uint256 tokenId)
+    external
+    onlyDiamondDawn
+    isMineOpen(true)
+    onlyType(tokenId, Type.POLISHED)
+    {
+        Metadata storage metadata = _metadata[tokenId];
+        require(metadata.reborn.physicalId == 0);
+        _physicalIdCounter++;
+        metadata.reborn.physicalId = _physicalIdCounter;
+    }
+
     function rebirth(uint256 tokenId)
         external
         onlyDiamondDawn
-        onlyType(tokenId, Type.POLISHED)
     {
+        require(_metadata[tokenId].reborn.physicalId > 0, "Not shipped");
         _metadata[tokenId].type_ = Type.REBORN;
     }
 
@@ -392,15 +407,19 @@ contract DiamondDawnMine is
                 "",
                 false
             );
+            attributes[15] = getAttribute(
+                "Physical Id",
+                Strings.toString(metadata.reborn.physicalId),
+                "",
+                false
+            );
         }
         return attributes;
     }
 
     function _videoBaseURI() private pure returns (string memory) {
         // TODO: in production we'll get the full ipfs/arweave url - base URI will change.
-        // TODO: galk to check what's the best approach
-        return
-            "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
+        return "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
     }
 
     function _getShapeNumber(Metadata memory metadata)
@@ -413,7 +432,7 @@ contract DiamondDawnMine is
             return uint(metadata.certificate.shape);
         if (type_ == Type.ROUGH) return uint(metadata.rough.shape);
         if (type_ == Type.ENTER_MINE || type_ == Type.REBORN) return 0;
-        revert();
+        revert("Shape number");
     }
 
     function _getNumAttributes(Type type_) private pure returns (uint) {
@@ -421,8 +440,8 @@ contract DiamondDawnMine is
         else if (type_ == Type.ROUGH) return 7;
         else if (type_ == Type.CUT) return 9;
         else if (type_ == Type.POLISHED) return 12;
-        else if (type_ == Type.REBORN) return 15;
-        revert();
+        else if (type_ == Type.REBORN) return 16;
+        revert("Attributes number");
     }
 
     function _getPoints(Metadata memory metadata) private pure returns (uint) {
@@ -436,6 +455,6 @@ contract DiamondDawnMine is
         } else if (
             metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN
         ) return metadata.certificate.points;
-        revert();
+        revert("Points");
     }
 }

@@ -51,8 +51,8 @@ enum Color {
 }
 
 struct Certificate {
-    uint64 date;
-    uint64 number;
+    uint32 date; // TODO: check that all dates fits
+    uint32 number; // TODO: check that all dates fits
     uint8 points;
     string measurements;
     Clarity clarity;

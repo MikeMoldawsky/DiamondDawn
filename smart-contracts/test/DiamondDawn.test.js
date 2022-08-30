@@ -13,7 +13,7 @@ describe("DiamondDawn", () => {
     const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
     const diamondDawnMine = await DiamondDawnMine.deploy([]);
     const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
-    const diamondDawn = await DiamondDawn.deploy(diamondDawnMine.address, []); // royality as 10 %
+    const diamondDawn = await DiamondDawn.deploy(diamondDawnMine.address, []);
     const [owner, user1, user2, user3, user4, user5, user6, user7, user8] =
       await ethers.getSigners();
     await diamondDawn.deployed();
@@ -33,7 +33,7 @@ describe("DiamondDawn", () => {
     };
   }
 
-  describe("Deployment", function () {
+  describe("Deployment", () => {
     it("Should be matching some configurations", async () => {
       const { diamondDawn } = await loadFixture(
         deployDiamondDawnContractsFixture
@@ -51,7 +51,7 @@ describe("DiamondDawn", () => {
     });
   });
 
-  describe("Transactions", function () {
+  describe("Transactions", () => {
     xit("Should mint correctly", async function () {
       const { owner, diamondDawn } = await loadFixture(
         deployDiamondDawnContractsFixture

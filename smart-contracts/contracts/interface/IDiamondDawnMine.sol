@@ -12,6 +12,8 @@ interface IDiamondDawnMine {
 
     function polish(uint tokenId) external;
 
+    function ship(uint tokenId) external;
+
     function rebirth(uint tokenId) external;
 
     function getMetadata(uint tokenId) external view returns (string memory);

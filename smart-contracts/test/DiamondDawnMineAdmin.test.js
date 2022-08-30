@@ -11,7 +11,9 @@ const {
   ROUGH_SHAPE,
 } = require("./utils/EnumConverterUtils");
 const {
-  setVideoAndAssertPolishedMetadata,
+  assertPolishedMetadata,
+  assertRebornMetadata,
+  setAllVideoUrls,
 } = require("./utils/MetadataTestUtils");
 
 const DIAMOND = {
@@ -37,7 +39,7 @@ async function assertOnlyAdmin(unAuthUser, mineContract, unAuthFunction) {
   );
 }
 
-describe("Diamond Dawn Mine", () => {
+describe("Diamond Dawn Mine Admin", () => {
   async function deployMineContract() {
     const [owner, user1, user2, user3, user4, user5, user6, user7, user8] =
       await ethers.getSigners();
@@ -149,7 +151,7 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
         deployMineContract
       );
-      diamondDawnMine.initialize(user2.address, 5);
+      await diamondDawnMine.initialize(user2.address, 5);
       mineContract = diamondDawnMine;
       admin = owner;
       user = user1;
@@ -209,6 +211,7 @@ describe("Diamond Dawn Mine", () => {
         deployMineContract
       );
       await diamondDawnMine.initialize(owner.address, 333);
+      await setAllVideoUrls(diamondDawnMine);
       mineContract = diamondDawnMine;
       admin = owner;
       diamondDawn = user1;
@@ -240,7 +243,7 @@ describe("Diamond Dawn Mine", () => {
       );
     });
 
-    it("should REVERT when NOT POLISHED or REBORN, otherwise SUCCESS", async () => {
+    it("should REVERT when NOT POLISHED or REBORN", async () => {
       await mineContract.eruption([DIAMOND]);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
         "Wrong type"
@@ -258,34 +261,25 @@ describe("Diamond Dawn Mine", () => {
         "Wrong type"
       );
       await mineContract.polish(tokenId);
-      await setVideoAndAssertPolishedMetadata(
-        mineContract,
-        tokenId,
-        DIAMOND.points,
-        "",
-        DIAMOND
-      );
+      await assertPolishedMetadata(mineContract, tokenId, DIAMOND);
+      await mineContract.ship(tokenId);
+      await assertPolishedMetadata(mineContract, tokenId, DIAMOND);
       const replacedDiamond = { ...DIAMOND, points: DIAMOND.points + 10 };
       await mineContract.lostShipment(tokenId, replacedDiamond);
-      await setVideoAndAssertPolishedMetadata(
-        mineContract,
-        tokenId,
-        replacedDiamond.points,
-        "",
-        replacedDiamond
-      );
+      await assertPolishedMetadata(mineContract, tokenId, replacedDiamond);
       const replacedDiamond2 = {
         ...DIAMOND,
         points: DIAMOND.points + 20,
         shape: DIAMOND.shape + 1,
       };
+      const physicalTokenId = 1;
+      await mineContract.rebirth(tokenId);
       await mineContract.lostShipment(tokenId, replacedDiamond2);
-      await setVideoAndAssertPolishedMetadata(
+      await assertRebornMetadata(
         mineContract,
         tokenId,
-        replacedDiamond2.points,
-        "",
-        replacedDiamond2
+        replacedDiamond2,
+        physicalTokenId
       );
     });
   });

@@ -11,11 +11,15 @@ enum RoughShape {
 
 struct RoughMetadata {
     RoughShape shape;
-    uint extraPoints;
+    uint8 extraPoints;
 }
 
 struct CutMetadata {
-    uint extraPoints;
+    uint8 extraPoints;
+}
+
+struct RebornMetadata {
+    uint16 physicalId;
 }
 
 enum Type {
@@ -31,6 +35,7 @@ struct Metadata {
     Type type_;
     RoughMetadata rough;
     CutMetadata cut;
+    RebornMetadata reborn;
     Certificate certificate;
 }
 

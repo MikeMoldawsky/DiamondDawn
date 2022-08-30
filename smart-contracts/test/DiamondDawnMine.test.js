@@ -17,10 +17,11 @@ const {
   ROUGH_SHAPE,
 } = require("./utils/EnumConverterUtils");
 const {
-  setVideoAndAssertEnterMineMetadata,
-  setVideoAndAssertRoughMetadata,
-  setVideoAndAssertCutMetadata,
-  setVideoAndAssertPolishedMetadata,
+  assertEnterMineMetadata,
+  assertRoughMetadata,
+  assertCutMetadata,
+  assertPolishedMetadata,
+  setAllVideoUrls,
 } = require("./utils/MetadataTestUtils");
 
 const DIAMOND = {
@@ -86,7 +87,8 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine, owner, user1 } = await loadFixture(
         deployMineContract
       );
-      diamondDawnMine.initialize(owner.address, 333);
+      await diamondDawnMine.initialize(owner.address, 333);
+      await setAllVideoUrls(diamondDawnMine);
       mineContract = diamondDawnMine;
       user = user1;
     });
@@ -112,18 +114,10 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should enter 4 tokens and generate metadata", async () => {
-      const videoSuffix = "kuku.mp4";
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
-        { shape: NO_SHAPE_NUM, video: videoSuffix },
-      ]);
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           await mineContract.enter(i);
-          await setVideoAndAssertEnterMineMetadata(
-            mineContract,
-            i,
-            videoSuffix
-          );
+          await assertEnterMineMetadata(mineContract, i);
         })
       );
     });
@@ -138,7 +132,8 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine, owner, user1 } = await loadFixture(
         deployMineContract
       );
-      diamondDawnMine.initialize(owner.address, 333);
+      await diamondDawnMine.initialize(owner.address, 333);
+      await setAllVideoUrls(diamondDawnMine);
       mineContract = diamondDawnMine;
       user = user1;
     });
@@ -178,24 +173,10 @@ describe("Diamond Dawn Mine", () => {
       await Promise.all(
         _.range(1, 5).map(async (i) => await mineContract.enter(i))
       );
-
-      // Mine diamonds
-      const videoSuffix1 = "rough1.mp4";
-      const videoSuffix2 = "rough2.mp4";
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
-        { shape: ROUGH_SHAPE.MAKEABLE_1, video: videoSuffix1 },
-        { shape: ROUGH_SHAPE.MAKEABLE_2, video: videoSuffix2 },
-      ]);
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           await mineContract.mine(i);
-          await setVideoAndAssertRoughMetadata(
-            mineContract,
-            i,
-            DIAMOND.points,
-            videoSuffix1,
-            videoSuffix2
-          );
+          await assertRoughMetadata(mineContract, i, DIAMOND);
         })
       );
     });
@@ -210,7 +191,8 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine, owner, user1 } = await loadFixture(
         deployMineContract
       );
-      diamondDawnMine.initialize(owner.address, 333);
+      await setAllVideoUrls(diamondDawnMine);
+      await diamondDawnMine.initialize(owner.address, 333);
       mineContract = diamondDawnMine;
       user = user1;
     });
@@ -249,20 +231,12 @@ describe("Diamond Dawn Mine", () => {
       await Promise.all(
         _.range(1, 5).map(async (i) => await mineContract.mine(i))
       );
-
-      // Mine diamonds
-      const videoSuffix = "rough.mp4";
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
-        { shape: SHAPE.PEAR, video: videoSuffix },
-      ]);
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           await mineContract.cut(i);
-          await setVideoAndAssertCutMetadata(
+          await assertCutMetadata(
             mineContract,
             i,
-            DIAMOND.points,
-            videoSuffix,
             DIAMOND
           );
         })
@@ -279,7 +253,8 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine, owner, user1 } = await loadFixture(
         deployMineContract
       );
-      diamondDawnMine.initialize(owner.address, 333);
+      await setAllVideoUrls(diamondDawnMine);
+      await diamondDawnMine.initialize(owner.address, 333);
       mineContract = diamondDawnMine;
       user = user1;
     });
@@ -333,19 +308,12 @@ describe("Diamond Dawn Mine", () => {
         _.range(1, 5).map(async (i) => await mineContract.cut(i))
       );
 
-      // Mine diamonds
-      const videoSuffix = "polish.mp4";
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
-        { shape: SHAPE.PEAR, video: videoSuffix },
-      ]);
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           await mineContract.polish(i);
-          await setVideoAndAssertPolishedMetadata(
+          await assertPolishedMetadata(
             mineContract,
             i,
-            DIAMOND.points,
-            videoSuffix,
             DIAMOND
           );
         })
@@ -361,7 +329,8 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine, owner, user1 } = await loadFixture(
         deployMineContract
       );
-      diamondDawnMine.initialize(owner.address, 333);
+      await diamondDawnMine.initialize(owner.address, 333);
+      await setAllVideoUrls(diamondDawnMine);
       mineContract = diamondDawnMine;
       user = user1;
     });
@@ -379,45 +348,23 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("is correct for enter mine", async () => {
-      const videoSuffix = "suffix.mp4";
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
-        { shape: NO_SHAPE_NUM, video: videoSuffix },
-      ]);
       // Token 1 enters mine
       const tokenId = 1;
       await mineContract.enter(tokenId);
-      setVideoAndAssertEnterMineMetadata(mineContract, tokenId, videoSuffix);
+      await assertEnterMineMetadata(mineContract, tokenId);
     });
 
     it("is correct for mine", async () => {
-      const videoSuffix1 = "suffix1.mp4";
-      const videoSuffix2 = "suffix2.mp4";
       await mineContract.eruption([DIAMOND]);
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
-        { shape: ROUGH_SHAPE.MAKEABLE_1, video: videoSuffix1 },
-        { shape: ROUGH_SHAPE.MAKEABLE_2, video: videoSuffix2 },
-      ]);
-
       // Token 1 enters mine
       const tokenId = 1;
       await mineContract.enter(tokenId);
       await mineContract.mine(tokenId);
 
-      await setVideoAndAssertRoughMetadata(
-        mineContract,
-        tokenId,
-        DIAMOND.points,
-        videoSuffix1,
-        videoSuffix2
-      );
+      await assertRoughMetadata(mineContract, tokenId, DIAMOND);
     });
 
     it("is correct for cut", async () => {
-      const videoSuffix = "suffix.mp4";
-      // TODO: test all urls
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
-        { shape: SHAPE.PEAR, video: videoSuffix },
-      ]);
       await mineContract.eruption([DIAMOND]);
 
       // Token 1 enters mine
@@ -427,20 +374,14 @@ describe("Diamond Dawn Mine", () => {
       await mineContract.cut(tokenId);
 
       // fetch metadata for token 1
-      await setVideoAndAssertCutMetadata(
+      await assertCutMetadata(
         mineContract,
         tokenId,
-        DIAMOND.points,
-        videoSuffix,
         DIAMOND
       );
     });
 
     it("is correct for polish", async () => {
-      const videoSuffix = "suffix.mp4";
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
-        { shape: SHAPE.PEAR, video: videoSuffix },
-      ]);
       await mineContract.eruption([DIAMOND]);
 
       // Token 1 enters mine
@@ -451,11 +392,9 @@ describe("Diamond Dawn Mine", () => {
       await mineContract.polish(tokenId);
 
       // fetch metadata for token 1
-      await setVideoAndAssertPolishedMetadata(
+      await assertPolishedMetadata(
         mineContract,
         tokenId,
-        DIAMOND.points,
-        videoSuffix,
         DIAMOND
       );
     });
@@ -489,6 +428,7 @@ describe("Diamond Dawn Mine", () => {
             display_type: "date",
           },
           { trait_type: "Report Number", value: DIAMOND.number },
+          { trait_type: "Physical Id", value: 1 },
         ],
       };
 
@@ -503,6 +443,7 @@ describe("Diamond Dawn Mine", () => {
       await mineContract.mine(tokenId);
       await mineContract.cut(tokenId);
       await mineContract.polish(tokenId);
+      await mineContract.ship(tokenId);
       await mineContract.rebirth(tokenId);
 
       // fetch metadata for token 1
@@ -537,7 +478,7 @@ describe("Diamond Dawn Mine", () => {
     const numDiamonds = 5;
     beforeEach(async () => {
       const { diamondDawnMine, owner } = await loadFixture(deployMineContract);
-      diamondDawnMine.initialize(owner.address, numDiamonds);
+      await diamondDawnMine.initialize(owner.address, numDiamonds);
       mineContract = diamondDawnMine;
     });
 
