@@ -72,21 +72,13 @@ async function assertEnterMineMetadata(mineContract, tokenId) {
 async function assertRoughMetadata(mineContract, tokenId, diamond) {
   const expectedMetadataNoCaratShapeImage =
     _getRoughMetadataNoCaratShapeImage(tokenId);
-  const parsedMetadata = await _getParsedMetadata(mineContract, tokenId);
-  const noCaratMetadata = await _validateAndRemoveCaratMetadata(
-    parsedMetadata,
+  await _assertMetadataByType(
+    expectedMetadataNoCaratShapeImage,
+    mineContract,
+    tokenId,
+    DIAMOND_DAWN_TYPE.ROUGH,
     diamond.points + MIN_ROUGH_EXTRA_POINTS,
     diamond.points + MAX_ROUGH_EXTRA_POINTS
-  );
-  const noCaratShapeAndImageMetadata =
-    await _validateAndRemoveShapeAndImageMetadata(
-      noCaratMetadata,
-      DIAMOND_DAWN_TYPE.ROUGH
-    );
-
-  // Validate all attributes except carat, shape and image.
-  expect(noCaratShapeAndImageMetadata).to.deep.equal(
-    expectedMetadataNoCaratShapeImage
   );
 }
 
@@ -95,37 +87,25 @@ async function assertCutMetadata(mineContract, tokenId, diamond) {
     tokenId,
     diamond
   );
-  const actualParsedMetadata = await _getParsedMetadata(mineContract, tokenId);
-  const noCaratMetadata = await _validateAndRemoveCaratMetadata(
-    actualParsedMetadata,
+  await _assertMetadataByType(
+    expectedMetadataNoCaratShapeImage,
+    mineContract,
+    tokenId,
+    DIAMOND_DAWN_TYPE.CUT,
     diamond.points + MIN_POLISH_EXTRA_POINTS,
     diamond.points + MAX_POLISH_EXTRA_POINTS
-  );
-  const noCaratShapeAndImageMetadata =
-    await _validateAndRemoveShapeAndImageMetadata(
-      noCaratMetadata,
-      DIAMOND_DAWN_TYPE.CUT
-    );
-  expect(noCaratShapeAndImageMetadata).to.deep.equal(
-    expectedMetadataNoCaratShapeImage
   );
 }
 
 async function assertPolishedMetadata(mineContract, tokenId, diamond) {
   const expectedMetadataNoCaratShapeImage =
     _getPolishedMetadataNoCaratShapeImage(tokenId, diamond);
-  const parsedMetadata = await _getParsedMetadata(mineContract, tokenId);
-  const noCaratMetadata = await _validateAndRemoveCaratMetadata(
-    parsedMetadata,
+  await _assertMetadataByType(
+    expectedMetadataNoCaratShapeImage,
+    mineContract,
+    tokenId,
+    DIAMOND_DAWN_TYPE.POLISHED,
     diamond.points
-  );
-  const noCaratShapeImageMetadata =
-    await _validateAndRemoveShapeAndImageMetadata(
-      noCaratMetadata,
-      DIAMOND_DAWN_TYPE.POLISHED
-    );
-  expect(noCaratShapeImageMetadata).to.deep.equal(
-    expectedMetadataNoCaratShapeImage
   );
 }
 
@@ -137,16 +117,31 @@ async function assertRebornMetadata(
 ) {
   const expectedMetadataNoCaratShapeImage =
     _getRebirthMetadataNoCaratShapeAndImage(tokenId, diamond, physicalTokenId);
+  await _assertMetadataByType(
+    expectedMetadataNoCaratShapeImage,
+    mineContract,
+    tokenId,
+    DIAMOND_DAWN_TYPE.REBORN,
+    diamond.points
+  );
+}
+
+async function _assertMetadataByType(
+  expectedMetadataNoCaratShapeImage,
+  mineContract,
+  tokenId,
+  type,
+  minOrExactPoints,
+  maxPoints
+) {
   const parsedMetadata = await _getParsedMetadata(mineContract, tokenId);
   const noCaratMetadata = await _validateAndRemoveCaratMetadata(
     parsedMetadata,
-    diamond.points
+    minOrExactPoints,
+    maxPoints
   );
   const noCaratShapeImageMetadata =
-    await _validateAndRemoveShapeAndImageMetadata(
-      noCaratMetadata,
-      DIAMOND_DAWN_TYPE.REBORN
-    );
+    await _validateAndRemoveShapeAndImageMetadata(noCaratMetadata, type);
   expect(noCaratShapeImageMetadata).to.deep.equal(
     expectedMetadataNoCaratShapeImage
   );
