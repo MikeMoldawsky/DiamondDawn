@@ -3,14 +3,8 @@ require("@nomicfoundation/hardhat-chai-matchers");
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
-const parseDataUrl = require("parse-data-url");
 const _ = require("lodash");
 const {
-  enumToColor,
-  enumToGrade,
-  enumToFluorescence,
-  enumToShape,
-  enumToClarity,
   NO_SHAPE_NUM,
   DIAMOND_DAWN_TYPE,
   SHAPE,
@@ -22,6 +16,7 @@ const {
   assertCutMetadata,
   assertPolishedMetadata,
   setAllVideoUrls,
+  assertRebornMetadata,
 } = require("./utils/MetadataTestUtils");
 
 const DIAMOND = {
@@ -40,8 +35,7 @@ const DIAMOND = {
 
 describe("Diamond Dawn Mine", () => {
   async function deployMineContract() {
-    const [owner, user1, user2, user3, user4, user5, user6, user7, user8] =
-      await ethers.getSigners();
+    const [owner, user1, user2] = await ethers.getSigners();
     const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
     const diamondDawnMine = await DiamondDawnMine.deploy([]);
     await diamondDawnMine.deployed();
@@ -51,12 +45,6 @@ describe("Diamond Dawn Mine", () => {
       owner,
       user1,
       user2,
-      user3,
-      user4,
-      user5,
-      user6,
-      user7,
-      user8,
     };
   }
 
@@ -340,7 +328,6 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("is correct for enter mine", async () => {
-      // Token 1 enters mine
       const tokenId = 1;
       await mineContract.enter(tokenId);
       await assertEnterMineMetadata(mineContract, tokenId);
@@ -348,7 +335,6 @@ describe("Diamond Dawn Mine", () => {
 
     it("is correct for mine", async () => {
       await mineContract.eruption([DIAMOND]);
-      // Token 1 enters mine
       const tokenId = 1;
       await mineContract.enter(tokenId);
       await mineContract.mine(tokenId);
@@ -358,8 +344,6 @@ describe("Diamond Dawn Mine", () => {
 
     it("is correct for cut", async () => {
       await mineContract.eruption([DIAMOND]);
-
-      // Token 1 enters mine
       const tokenId = 1;
       await mineContract.enter(tokenId);
       await mineContract.mine(tokenId);
@@ -378,47 +362,10 @@ describe("Diamond Dawn Mine", () => {
       await mineContract.mine(tokenId);
       await mineContract.cut(tokenId);
       await mineContract.polish(tokenId);
-
-      // fetch metadata for token 1
       await assertPolishedMetadata(mineContract, tokenId, DIAMOND);
     });
 
     it("is correct for rebirth", async () => {
-      const videoSuffix = "suffix.mp4";
-      const expectedMetadataWithoutCarat = {
-        name: "Diamond #1",
-        description: "description",
-        created_by: "dd",
-        image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
-        attributes: [
-          { trait_type: "Type", value: "Reborn" },
-          { trait_type: "Origin", value: "Metaverse" },
-          { trait_type: "Identification", value: "Natural" },
-          { trait_type: "Color", value: enumToColor(DIAMOND.color) },
-          { trait_type: "Cut", value: enumToGrade(DIAMOND.cut) },
-          {
-            trait_type: "Fluorescence",
-            value: enumToFluorescence(DIAMOND.fluorescence),
-          },
-          { trait_type: "Measurements", value: DIAMOND.measurements },
-          { trait_type: "Shape", value: enumToShape(DIAMOND.shape) },
-          { trait_type: "Clarity", value: enumToClarity(DIAMOND.clarity) },
-          { trait_type: "Polish", value: enumToGrade(DIAMOND.polish) },
-          { trait_type: "Symmetry", value: enumToGrade(DIAMOND.symmetry) },
-          { trait_type: "Laboratory", value: "GIA" },
-          {
-            trait_type: "Report Date",
-            value: DIAMOND.date,
-            display_type: "date",
-          },
-          { trait_type: "Report Number", value: DIAMOND.number },
-          { trait_type: "Physical Id", value: 1 },
-        ],
-      };
-
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
-        { shape: NO_SHAPE_NUM, video: videoSuffix },
-      ]);
       await mineContract.eruption([DIAMOND]);
 
       // Token 1 enters mine
@@ -429,31 +376,13 @@ describe("Diamond Dawn Mine", () => {
       await mineContract.polish(tokenId);
       await mineContract.ship(tokenId);
       await mineContract.rebirth(tokenId);
-
-      // fetch metadata for token 1
-      const actualMetadata = await mineContract.getMetadata(tokenId);
-      const actualParsedUrlData = parseDataUrl(actualMetadata); // parse data-url (data:[<mediatype>][;base64],<data>)
-      // validate data-url format
-      expect(actualParsedUrlData.base64).to.be.true;
-      expect(actualParsedUrlData.mediaType).to.equal("application/json");
-      expect(actualParsedUrlData.contentType).to.equal("application/json");
-      // validate actual data
-      const actualParsedMetadata = JSON.parse(atob(actualParsedUrlData.data));
-      // Validate carat attribute
-      const actualCaratAttributeList = _.remove(
-        actualParsedMetadata.attributes,
-        (currentObject) => currentObject.trait_type === "Carat"
+      const physicalTokenId = 1;
+      await assertRebornMetadata(
+        mineContract,
+        tokenId,
+        DIAMOND,
+        physicalTokenId
       );
-      expect(actualCaratAttributeList).to.satisfy((arr) => {
-        expect(arr).to.have.lengthOf(1);
-        const [actualCaratAttribute] = arr;
-        expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
-        expect(actualCaratAttribute.trait_type).equal("Carat");
-        expect(actualCaratAttribute.value).equal(DIAMOND.points / 100);
-        return true;
-      });
-      // Validate all attributes except carat
-      expect(actualParsedMetadata).to.deep.equal(expectedMetadataWithoutCarat);
     });
   });
 

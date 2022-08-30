@@ -41,8 +41,7 @@ async function assertOnlyAdmin(unAuthUser, mineContract, unAuthFunction) {
 
 describe("Diamond Dawn Mine Admin", () => {
   async function deployMineContract() {
-    const [owner, user1, user2, user3, user4, user5, user6, user7, user8] =
-      await ethers.getSigners();
+    const [owner, user1, user2] = await ethers.getSigners();
     const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
     const diamondDawnMine = await DiamondDawnMine.deploy([]);
     await diamondDawnMine.deployed();
@@ -51,12 +50,6 @@ describe("Diamond Dawn Mine Admin", () => {
       owner,
       user1,
       user2,
-      user3,
-      user4,
-      user5,
-      user6,
-      user7,
-      user8,
     };
   }
 
