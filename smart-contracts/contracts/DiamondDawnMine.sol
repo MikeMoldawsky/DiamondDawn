@@ -17,6 +17,7 @@ import "./objects/MineObjects.sol";
 import "./objects/MineObjects.sol";
 import "./objects/MineObjects.sol";
 
+// TODO: write description
 /**
  * @title DiamondDawnMine NFT Contract
  * @author Diamond Dawn
@@ -232,7 +233,8 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         Metadata memory metadata,
         string memory videoURI
     ) private pure returns (string memory) {
-        // TODO: Add real description
+        // TODO: change to description when ready.
+        // TODO: change name according to DD type once decided.
         NFTMetadata memory nftMetadata = NFTMetadata({
             name: string(abi.encodePacked("Diamond #", Strings.toString(tokenId))),
             description: "description",
@@ -287,7 +289,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     }
 
     function _videoBaseURI() private pure returns (string memory) {
-        // TODO: in production we'll get the full ipfs/arweave url - base URI will change.
+        // TODO: change to ipfs or ar baseURL before production
         return "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
     }
 
@@ -301,10 +303,10 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
     function _getNumAttributes(Type type_) private pure returns (uint) {
         if (type_ == Type.ENTER_MINE) return 1;
-        else if (type_ == Type.ROUGH) return 7;
-        else if (type_ == Type.CUT) return 9;
-        else if (type_ == Type.POLISHED) return 12;
-        else if (type_ == Type.REBORN) return 16;
+        if (type_ == Type.ROUGH) return 7;
+        if (type_ == Type.CUT) return 9;
+        if (type_ == Type.POLISHED) return 12;
+        if (type_ == Type.REBORN) return 16;
         revert("Attributes number");
     }
 
