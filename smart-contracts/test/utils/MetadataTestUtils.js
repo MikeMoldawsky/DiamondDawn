@@ -6,42 +6,155 @@ const {
   enumToColor,
   enumToGrade,
   enumToFluorescence,
-  enumToShape,
+  DIAMOND_DAWN_TYPE,
+  NO_SHAPE_NUM,
+  ROUGH_SHAPE,
+  SHAPE,
 } = require("./EnumConverterUtils");
 
-// constants
+// constants from contract
 const MIN_ROUGH_EXTRA_POINTS = 37;
 const MAX_ROUGH_EXTRA_POINTS = 74;
 const MIN_POLISH_EXTRA_POINTS = 1;
 const MAX_POLISH_EXTRA_POINTS = 4;
 const BASE_URI =
-  "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
+  "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks";
 
-async function setVideoAndAssertEnterMineMetadata(
-  mineContract,
-  tokenId,
-  videoSuffix
-) {
-  const expectedMetadata = getExpectedMetadataEnterMine(tokenId, videoSuffix);
-  const actualMetadata = await mineContract.getMetadata(tokenId);
-  const actualParsedMetadata = await assertBase64AndGetParsed(actualMetadata);
-  expect(actualParsedMetadata).to.deep.equal(expectedMetadata);
+// constants for tests
+const ENTER_MINE_VIDEO = "enterMine.mp4";
+
+const MAKEABLE_1_VIDEO = "makeable1.mp4";
+const MAKEABLE_2_VIDEO = "makeable2.mp4";
+
+const CUT_PEAR_VIDEO = "cutPear.mp4";
+const CUT_ROUND_VIDEO = "cutRound.mp4";
+const CUT_OVAL_VIDEO = "cutOval.mp4";
+const CUT_RADIANT_VIDEO = "cutRadiant.mp4";
+
+const POLISHED_PEAR_VIDEO = "polishedPear.mp4";
+const POLISHED_ROUND_VIDEO = "polishedRound.mp4";
+const POLISHED_OVAL_VIDEO = "polishedOval.mp4";
+const POLISHED_RADIANT_VIDEO = "polishedRadiant.mp4";
+
+const REBORN_VIDEO = "reborn.mp4";
+
+async function setAllVideoUrls(mineContract) {
+  await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
+    { shape: NO_SHAPE_NUM, video: ENTER_MINE_VIDEO },
+  ]);
+  await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
+    { shape: ROUGH_SHAPE.MAKEABLE_1, video: MAKEABLE_1_VIDEO },
+    { shape: ROUGH_SHAPE.MAKEABLE_2, video: MAKEABLE_2_VIDEO },
+  ]);
+  await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
+    { shape: SHAPE.PEAR, video: CUT_PEAR_VIDEO },
+    { shape: SHAPE.ROUND, video: CUT_ROUND_VIDEO },
+    { shape: SHAPE.OVAL, video: CUT_OVAL_VIDEO },
+    { shape: SHAPE.RADIANT, video: CUT_RADIANT_VIDEO },
+  ]);
+  await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+    { shape: SHAPE.PEAR, video: POLISHED_PEAR_VIDEO },
+    { shape: SHAPE.ROUND, video: POLISHED_ROUND_VIDEO },
+    { shape: SHAPE.OVAL, video: POLISHED_OVAL_VIDEO },
+    { shape: SHAPE.RADIANT, video: POLISHED_RADIANT_VIDEO },
+  ]);
+  await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
+    { shape: NO_SHAPE_NUM, video: REBORN_VIDEO },
+  ]);
 }
 
-async function setVideoAndAssertRoughMetadata(
+async function assertEnterMineMetadata(mineContract, tokenId) {
+  const expectedMetadata = _getExpectedMetadataEnterMine(tokenId);
+  const parsedMetadata = await _getParsedMetadata(mineContract, tokenId);
+  expect(parsedMetadata).to.deep.equal(expectedMetadata);
+}
+
+async function assertRoughMetadata(mineContract, tokenId, diamond) {
+  const expectedMetadataNoCaratShapeImage =
+    _getRoughMetadataNoCaratShapeImage(tokenId);
+  await _assertMetadataByType(
+    expectedMetadataNoCaratShapeImage,
+    mineContract,
+    tokenId,
+    DIAMOND_DAWN_TYPE.ROUGH,
+    diamond.points + MIN_ROUGH_EXTRA_POINTS,
+    diamond.points + MAX_ROUGH_EXTRA_POINTS
+  );
+}
+
+async function assertCutMetadata(mineContract, tokenId, diamond) {
+  const expectedMetadataNoCaratShapeImage = _getCutMetadataNoCaratShapeImage(
+    tokenId,
+    diamond
+  );
+  await _assertMetadataByType(
+    expectedMetadataNoCaratShapeImage,
+    mineContract,
+    tokenId,
+    DIAMOND_DAWN_TYPE.CUT,
+    diamond.points + MIN_POLISH_EXTRA_POINTS,
+    diamond.points + MAX_POLISH_EXTRA_POINTS
+  );
+}
+
+async function assertPolishedMetadata(mineContract, tokenId, diamond) {
+  const expectedMetadataNoCaratShapeImage =
+    _getPolishedMetadataNoCaratShapeImage(tokenId, diamond);
+  await _assertMetadataByType(
+    expectedMetadataNoCaratShapeImage,
+    mineContract,
+    tokenId,
+    DIAMOND_DAWN_TYPE.POLISHED,
+    diamond.points
+  );
+}
+
+async function assertRebornMetadata(
   mineContract,
   tokenId,
-  points,
-  videoSuffix1,
-  videoSuffix2
+  diamond,
+  physicalTokenId
 ) {
-  const roughMetadataWithoutCaratShapeAndImage =
-    getRoughMetadataWithoutCaratShapeAndImage(tokenId);
-  const actualMetadata = await mineContract.getMetadata(tokenId);
-  const actualParsedMetadata = await assertBase64AndGetParsed(actualMetadata);
+  const expectedMetadataNoCaratShapeImage =
+    _getRebirthMetadataNoCaratShapeAndImage(tokenId, diamond, physicalTokenId);
+  await _assertMetadataByType(
+    expectedMetadataNoCaratShapeImage,
+    mineContract,
+    tokenId,
+    DIAMOND_DAWN_TYPE.REBORN,
+    diamond.points
+  );
+}
+
+async function _assertMetadataByType(
+  expectedMetadataNoCaratShapeImage,
+  mineContract,
+  tokenId,
+  type,
+  minOrExactPoints,
+  maxPoints
+) {
+  const parsedMetadata = await _getParsedMetadata(mineContract, tokenId);
+  const noCaratMetadata = await _validateAndRemoveCaratMetadata(
+    parsedMetadata,
+    minOrExactPoints,
+    maxPoints
+  );
+  const noCaratShapeImageMetadata =
+    await _validateAndRemoveShapeAndImageMetadata(noCaratMetadata, type);
+  expect(noCaratShapeImageMetadata).to.deep.equal(
+    expectedMetadataNoCaratShapeImage
+  );
+}
+
+async function _validateAndRemoveCaratMetadata(
+  parsedMetadata,
+  minOrExactPoints,
+  maxPoints
+) {
   // Validate carat attribute
   const actualCaratAttributeList = _.remove(
-    actualParsedMetadata.attributes,
+    parsedMetadata.attributes,
     (currentObject) => currentObject.trait_type === "Carat"
   );
   expect(actualCaratAttributeList).to.satisfy((arr) => {
@@ -49,12 +162,23 @@ async function setVideoAndAssertRoughMetadata(
     const [actualCaratAttribute] = arr;
     expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
     expect(actualCaratAttribute.trait_type).equal("Carat");
-    expect(actualCaratAttribute.value).to.be.within(
-      (points + MIN_ROUGH_EXTRA_POINTS) / 100,
-      (points + MAX_ROUGH_EXTRA_POINTS) / 100
-    );
+    if (maxPoints) {
+      expect(actualCaratAttribute.value).to.be.within(
+        minOrExactPoints / 100,
+        maxPoints / 100
+      );
+    } else {
+      expect(actualCaratAttribute.value).to.equal(minOrExactPoints / 100);
+    }
     return true;
   });
+  return parsedMetadata;
+}
+
+async function _validateAndRemoveShapeAndImageMetadata(
+  actualParsedMetadata,
+  type
+) {
   // Validate Shape and Image
   const actualShapeAttributeList = _.remove(
     actualParsedMetadata.attributes,
@@ -66,89 +190,87 @@ async function setVideoAndAssertRoughMetadata(
     const [actualShapeAttribute] = arr;
     expect(actualShapeAttribute).to.have.all.keys("trait_type", "value");
     expect(actualShapeAttribute.trait_type).equal("Shape");
-    if (actualShapeAttribute.value === "Makeable 1") {
-      expect(actualParsedMetadata.image).to.be.equal(BASE_URI + videoSuffix1);
-    } else if (actualShapeAttribute.value === "Makeable 2") {
-      expect(actualParsedMetadata.image).to.be.equal(BASE_URI + videoSuffix2);
-    } else {
-      return false;
-    }
-    return true;
-  });
-
-  _.unset(actualParsedMetadata, "image");
-  // Validate all attributes except carat, shape and image.
-  expect(actualParsedMetadata).to.deep.equal(
-    roughMetadataWithoutCaratShapeAndImage
-  );
-}
-
-async function setVideoAndAssertCutMetadata(
-  mineContract,
-  tokenId,
-  points,
-  videoSuffix,
-  diamond
-) {
-  const expectedMetadataWithoutCarat = getCutMetadataWithoutCarat(
-    tokenId,
-    videoSuffix,
-    diamond
-  );
-  const actualMetadata = await mineContract.getMetadata(tokenId);
-  const actualParsedMetadata = await assertBase64AndGetParsed(actualMetadata);
-  // Validate carat attribute
-  const actualCaratAttributeList = _.remove(
-    actualParsedMetadata.attributes,
-    (currentObject) => currentObject.trait_type === "Carat"
-  );
-  expect(actualCaratAttributeList).to.satisfy((arr) => {
-    expect(arr).to.have.lengthOf(1);
-    const [actualCaratAttribute] = arr;
-    expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
-    expect(actualCaratAttribute.trait_type).equal("Carat");
-    expect(actualCaratAttribute.value).to.be.within(
-      (points + MIN_POLISH_EXTRA_POINTS) / 100,
-      (points + MAX_POLISH_EXTRA_POINTS) / 100
+    _assertShapeImage(
+      type,
+      actualShapeAttribute.value,
+      actualParsedMetadata.image
     );
     return true;
   });
-  // Validate all attributes except carat
-  expect(actualParsedMetadata).to.deep.equal(expectedMetadataWithoutCarat);
+  _.unset(actualParsedMetadata, "image");
+  return actualParsedMetadata;
 }
 
-async function setVideoAndAssertPolishedMetadata(
-  mineContract,
-  tokenId,
-  points,
-  videoSuffix,
-  diamond
-) {
-  const expectedMetadataWithoutCarat = getPolishedMetadataWithoutCarat(
-    tokenId,
-    videoSuffix,
-    diamond
-  );
+function _assertShapeImage(type, shape, image) {
+  let video;
+  switch (type) {
+    case DIAMOND_DAWN_TYPE.ROUGH:
+      expect(shape).to.be.oneOf(["Makeable 1", "Makeable 2"]);
+      switch (shape) {
+        case "Makeable 1":
+          video = MAKEABLE_1_VIDEO;
+          break;
+        case "Makeable 2":
+          video = MAKEABLE_2_VIDEO;
+          break;
+        default:
+          throw new Error("Unknown shape");
+      }
+      break;
+    case DIAMOND_DAWN_TYPE.CUT:
+      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Radiant"]);
+      switch (shape) {
+        case "Pear":
+          video = CUT_PEAR_VIDEO;
+          break;
+        case "Round":
+          video = CUT_ROUND_VIDEO;
+          break;
+        case "Oval":
+          video = CUT_OVAL_VIDEO;
+          break;
+        case "Radiant":
+          video = CUT_RADIANT_VIDEO;
+          break;
+        default:
+          throw new Error("Unknown shape");
+      }
+      break;
+    case DIAMOND_DAWN_TYPE.POLISHED:
+      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Radiant"]);
+      switch (shape) {
+        case "Pear":
+          video = POLISHED_PEAR_VIDEO;
+          break;
+        case "Round":
+          video = POLISHED_ROUND_VIDEO;
+          break;
+        case "Oval":
+          video = POLISHED_OVAL_VIDEO;
+          break;
+        case "Radiant":
+          video = POLISHED_RADIANT_VIDEO;
+          break;
+        default:
+          throw new Error("Unknown shape");
+      }
+      break;
+    case DIAMOND_DAWN_TYPE.REBORN:
+      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Radiant"]);
+      video = REBORN_VIDEO;
+      break;
+    default:
+      throw new Error("Unknown type");
+  }
+  expect(image).to.be.equal(`${BASE_URI}/${video}`);
+}
+
+async function _getParsedMetadata(mineContract, tokenId) {
   const actualMetadata = await mineContract.getMetadata(tokenId);
-  const actualParsedMetadata = await assertBase64AndGetParsed(actualMetadata);
-  // Validate carat attribute
-  const actualCaratAttributeList = _.remove(
-    actualParsedMetadata.attributes,
-    (currentObject) => currentObject.trait_type === "Carat"
-  );
-  expect(actualCaratAttributeList).to.satisfy((arr) => {
-    expect(arr).to.have.lengthOf(1);
-    const [actualCaratAttribute] = arr;
-    expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
-    expect(actualCaratAttribute.trait_type).equal("Carat");
-    expect(actualCaratAttribute.value).to.be.equal(points / 100);
-    return true;
-  });
-  // Validate all attributes except carat
-  expect(actualParsedMetadata).to.deep.equal(expectedMetadataWithoutCarat);
+  return await _assertBase64AndGetParsed(actualMetadata);
 }
 
-async function assertBase64AndGetParsed(actualMetadata) {
+async function _assertBase64AndGetParsed(actualMetadata) {
   const actualParsedUrlData = parseDataUrl(actualMetadata); // parse data-url (data:[<mediatype>][;base64],<data>)
   // validate data-url format
   expect(actualParsedUrlData.base64).to.be.true;
@@ -157,17 +279,17 @@ async function assertBase64AndGetParsed(actualMetadata) {
   return JSON.parse(atob(actualParsedUrlData.data));
 }
 
-function getExpectedMetadataEnterMine(tokenId, videoSuffix) {
+function _getExpectedMetadataEnterMine(tokenId) {
   return {
     name: `Diamond #${tokenId}`,
     description: "description",
     created_by: "dd",
-    image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
+    image: `${BASE_URI}/${ENTER_MINE_VIDEO}`,
     attributes: [{ trait_type: "Type", value: "Mine Entrance" }],
   };
 }
 
-function getRoughMetadataWithoutCaratShapeAndImage(tokenId) {
+function _getRoughMetadataNoCaratShapeImage(tokenId) {
   return {
     name: `Diamond #${tokenId}`,
     description: "description",
@@ -182,12 +304,11 @@ function getRoughMetadataWithoutCaratShapeAndImage(tokenId) {
   };
 }
 
-function getCutMetadataWithoutCarat(tokenId, videoSuffix, diamond) {
+function _getCutMetadataNoCaratShapeImage(tokenId, diamond) {
   return {
     name: `Diamond #${tokenId}`,
     description: "description",
     created_by: "dd",
-    image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
     attributes: [
       { trait_type: "Type", value: "Cut" },
       { trait_type: "Origin", value: "Metaverse" },
@@ -199,17 +320,15 @@ function getCutMetadataWithoutCarat(tokenId, videoSuffix, diamond) {
         value: enumToFluorescence(diamond.fluorescence),
       },
       { trait_type: "Measurements", value: diamond.measurements },
-      { trait_type: "Shape", value: enumToShape(diamond.shape) },
     ],
   };
 }
 
-function getPolishedMetadataWithoutCarat(tokenId, videoSuffix, diamond) {
+function _getPolishedMetadataNoCaratShapeImage(tokenId, diamond) {
   return {
     name: `Diamond #${tokenId}`,
     description: "description",
     created_by: "dd",
-    image: `https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/${videoSuffix}`,
     attributes: [
       { trait_type: "Type", value: "Polished" },
       { trait_type: "Origin", value: "Metaverse" },
@@ -221,7 +340,6 @@ function getPolishedMetadataWithoutCarat(tokenId, videoSuffix, diamond) {
         value: enumToFluorescence(diamond.fluorescence),
       },
       { trait_type: "Measurements", value: diamond.measurements },
-      { trait_type: "Shape", value: enumToShape(diamond.shape) },
       { trait_type: "Clarity", value: enumToClarity(diamond.clarity) },
       { trait_type: "Polish", value: enumToGrade(diamond.polish) },
       { trait_type: "Symmetry", value: enumToGrade(diamond.symmetry) },
@@ -229,9 +347,38 @@ function getPolishedMetadataWithoutCarat(tokenId, videoSuffix, diamond) {
   };
 }
 
+function _getRebirthMetadataNoCaratShapeAndImage(tokenId, diamond, physicalId) {
+  return {
+    name: `Diamond #${tokenId}`,
+    description: "description",
+    created_by: "dd",
+    attributes: [
+      { trait_type: "Type", value: "Reborn" },
+      { trait_type: "Origin", value: "Metaverse" },
+      { trait_type: "Identification", value: "Natural" },
+      { trait_type: "Color", value: enumToColor(diamond.color) },
+      { trait_type: "Cut", value: enumToGrade(diamond.cut) },
+      {
+        trait_type: "Fluorescence",
+        value: enumToFluorescence(diamond.fluorescence),
+      },
+      { trait_type: "Measurements", value: diamond.measurements },
+      { trait_type: "Clarity", value: enumToClarity(diamond.clarity) },
+      { trait_type: "Polish", value: enumToGrade(diamond.polish) },
+      { trait_type: "Symmetry", value: enumToGrade(diamond.symmetry) },
+      { trait_type: "Laboratory", value: "GIA" },
+      { trait_type: "Report Date", value: diamond.date, display_type: "date" },
+      { trait_type: "Report Number", value: diamond.number },
+      { trait_type: "Physical Id", value: physicalId },
+    ],
+  };
+}
+
 module.exports = {
-  setVideoAndAssertEnterMineMetadata,
-  setVideoAndAssertRoughMetadata,
-  setVideoAndAssertCutMetadata,
-  setVideoAndAssertPolishedMetadata,
+  assertEnterMineMetadata,
+  assertRoughMetadata,
+  assertCutMetadata,
+  assertPolishedMetadata,
+  assertRebornMetadata,
+  setAllVideoUrls,
 };

@@ -56,7 +56,6 @@ contract DiamondDawn is
         systemStage = SystemStage.INVITATIONS;
         setRoyaltyInfo(_msgSender(), _royalty);
         diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
-        _tokenIdCounter.increment();
         _pause();
         // TODO: remove in production
         for (uint i = 0; i < adminAddresses.length; i++) {
@@ -183,8 +182,8 @@ contract DiamondDawn is
         //            "You can't enter the mine, you're not invited"
         //        );
         //        delete _invitations[passwordHash];
-        uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
+        uint256 tokenId = _tokenIdCounter.current();
         // TODO: check if safeMint after or before mint.
         _safeMint(_msgSender(), tokenId);
         diamondDawnMine.enter(tokenId);
@@ -228,6 +227,7 @@ contract DiamondDawn is
         isDiamondDawnMineReady(SystemStage.SHIP)
     {
         super.burn(tokenId); // Disable NFT transfer while diamond is in transit.
+        diamondDawnMine.ship(tokenId);
         _shippedTokenIdToOwner[tokenId] = _msgSender();
         _ownerToShippingTokenIds[_msgSender()].add(tokenId);
         emit Ship(tokenId);
