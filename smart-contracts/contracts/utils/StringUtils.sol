@@ -69,7 +69,7 @@ function getName(Metadata memory metadata, uint tokenId) pure returns (string me
     if (metadata.type_ == Type.POLISHED)
         return string.concat("Polished Diamond #", Strings.toString(metadata.polished.id));
     if (metadata.type_ == Type.REBORN)
-        return string.concat("Diamond #", Strings.toString(metadata.reborn.id));
+        return string.concat("Diamond Dawn #", Strings.toString(metadata.reborn.id));
     revert();
 }
 

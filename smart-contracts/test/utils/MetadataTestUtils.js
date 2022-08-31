@@ -349,7 +349,7 @@ function _getPolishedMetadataNoCaratShapeImage(id, diamond) {
 
 function _getRebirthMetadataNoCaratShapeAndImage(id, diamond) {
   return {
-    name: `Diamond #${id}`,
+    name: `Diamond Dawn #${id}`,
     description: "description",
     created_by: "dd",
     attributes: [
