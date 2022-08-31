@@ -16,6 +16,18 @@ struct Attribute {
     bool isString;
 }
 
+function toStrAttribute(string memory traitType, string memory value) pure returns (Attribute memory) {
+    return Attribute({traitType: traitType, value: value, displayType: "", isString: true});
+}
+
+function toAttribute(
+    string memory traitType,
+    string memory value,
+    string memory displayType
+) pure returns (Attribute memory) {
+    return Attribute({traitType: traitType, value: value, displayType: displayType, isString: false});
+}
+
 function serialize(NFTMetadata memory metadata) pure returns (string memory) {
     bytes memory bytes_;
     bytes_ = abi.encodePacked(bytes_, _openObject());
@@ -29,18 +41,6 @@ function serialize(NFTMetadata memory metadata) pure returns (string memory) {
     );
     bytes_ = abi.encodePacked(bytes_, _closeObject());
     return string(bytes_);
-}
-
-function toStrAttribute(string memory traitType, string memory value) pure returns (Attribute memory) {
-    return Attribute({traitType: traitType, value: value, displayType: "", isString: true});
-}
-
-function toAttribute(
-    string memory traitType,
-    string memory value,
-    string memory displayType
-) pure returns (Attribute memory) {
-    return Attribute({traitType: traitType, value: value, displayType: displayType, isString: false});
 }
 
 function _serializeAttrs(Attribute[] memory attributes) pure returns (string memory) {
