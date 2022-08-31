@@ -39,7 +39,6 @@ describe("Diamond Dawn Mine", () => {
     const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
     const diamondDawnMine = await DiamondDawnMine.deploy();
     await diamondDawnMine.deployed();
-    await diamondDawnMine.initialize(owner.address, 333);
     return {
       diamondDawnMine,
       owner,
@@ -63,6 +62,31 @@ describe("Diamond Dawn Mine", () => {
         .false;
       expect(await diamondDawnMine.hasRole(adminRole, user2.address)).to.be
         .false;
+    });
+  });
+
+  describe("initialized", () => {
+    const maxDiamonds = 333;
+    let mineContract;
+    let user;
+
+    beforeEach(async () => {
+      const { diamondDawnMine, user1 } = await loadFixture(deployMineContract);
+      mineContract = diamondDawnMine;
+      user = user1;
+    });
+
+    it("should correctly set DiamondDawn and maxDiamonds", async () => {
+      await mineContract.initialize(user.address, maxDiamonds);
+      expect(await mineContract.diamondDawn()).to.be.equal(user.address);
+      expect(await mineContract.maxDiamonds()).to.be.equal(maxDiamonds);
+    });
+
+    it("should REVERT when called more than once", async () => {
+      await mineContract.initialize(user.address, maxDiamonds);
+      await expect(
+        mineContract.initialize(user.address, maxDiamonds)
+      ).to.be.revertedWith("Initialized");
     });
   });
 

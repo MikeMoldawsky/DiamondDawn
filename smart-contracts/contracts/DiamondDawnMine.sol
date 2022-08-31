@@ -23,6 +23,7 @@ import "./objects/MineObjects.sol";
  * @author Diamond Dawn
  */
 contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdmin {
+    bool public isInitialized;
     bool public isOpen; // mine is closed until it's initialized.
     uint16 public maxDiamonds; // 333 max
     uint16 public diamondCount; // 333 max
@@ -48,6 +49,11 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     /**********************     Modifiers     ************************/
     modifier onlyDiamondDawn() {
         require(msg.sender == diamondDawn, "Only DD");
+        _;
+    }
+
+    modifier notInitialized() {
+        require(!isInitialized, "Initialized");
         _;
     }
 
@@ -77,6 +83,12 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     }
 
     /**********************     External Functions     ************************/
+    function initialize(address diamondDawn_, uint16 maxDiamonds_) external notInitialized {
+        diamondDawn = diamondDawn_;
+        maxDiamonds = maxDiamonds_;
+        isInitialized = true;
+        isOpen = true;
+    }
 
     function enter(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.NO_TYPE) {
         _metadata[tokenId].type_ = Type.ENTER_MINE;
@@ -125,12 +137,6 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     function rebirth(uint256 tokenId) external onlyDiamondDawn {
         require(_metadata[tokenId].reborn.physicalId > 0, "Not shipped");
         _metadata[tokenId].type_ = Type.REBORN;
-    }
-
-    function initialize(address diamondDawn_, uint16 maxDiamonds_) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        diamondDawn = diamondDawn_;
-        maxDiamonds = maxDiamonds_;
-        isOpen = true;
     }
 
     function eruption(Certificate[] calldata diamonds)
