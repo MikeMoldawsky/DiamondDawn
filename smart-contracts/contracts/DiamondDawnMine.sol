@@ -173,10 +173,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     function getMetadata(uint tokenId) external view onlyDiamondDawn exists(tokenId) returns (string memory) {
         Metadata memory metadata = _metadata[tokenId];
         string memory videoURI = _getVideoURI(metadata);
-        string memory base64Json = Base64.encode(
-            bytes(string(abi.encodePacked(_getMetadataJson(tokenId, metadata, videoURI))))
-        );
-
+        string memory base64Json = Base64.encode(bytes(_getMetadataJson(tokenId, metadata, videoURI)));
         return string(abi.encodePacked("data:application/json;base64,", base64Json));
     }
 
