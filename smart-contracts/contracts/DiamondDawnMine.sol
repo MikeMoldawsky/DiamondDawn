@@ -25,8 +25,8 @@ import "./objects/MineObjects.sol";
 contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdmin {
     bool public isInitialized;
     bool public isOpen; // mine is closed until it's initialized.
-    uint16 public maxDiamonds; // 333 max
-    uint16 public diamondCount; // 333 max
+    uint16 public maxDiamonds;
+    uint16 public diamondCount;
     address public diamondDawn;
     mapping(uint => mapping(uint => string)) public typeToShapeVideo;
 
@@ -37,8 +37,11 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     uint8 private constant MIN_POLISH_EXTRA_POINTS = 1;
     uint8 private constant MAX_POLISH_EXTRA_POINTS = 4;
 
-    uint16 private _physicalIdCounter; // max 333
-    uint16 private _randNonce = 0; // 999 max
+    uint16 private _mineCounter;
+    uint16 private _cutCounter;
+    uint16 private _polishedCounter;
+    uint16 private _rebornCounter;
+    uint16 private _randNonce = 0;
     Certificate[] private _mine;
     mapping(uint => Metadata) private _metadata;
 
@@ -104,22 +107,24 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         uint extraPoints = _getRandomBetween(MIN_ROUGH_EXTRA_POINTS, MAX_ROUGH_EXTRA_POINTS);
         Metadata storage metadata = _metadata[tokenId];
         metadata.type_ = Type.ROUGH;
-        metadata.rough = RoughMetadata({
-            shape: extraPoints % 2 == 0 ? RoughShape.MAKEABLE_1 : RoughShape.MAKEABLE_2,
-            extraPoints: uint8(extraPoints)
-        });
+        metadata.rough.id = ++_mineCounter;
+        metadata.rough.extraPoints = uint8(extraPoints);
+        metadata.rough.shape = extraPoints % 2 == 0 ? RoughShape.MAKEABLE_1 : RoughShape.MAKEABLE_2;
         metadata.certificate = _mineDiamond();
     }
 
     function cut(uint256 tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.ROUGH) {
         uint extraPoints = _getRandomBetween(MIN_POLISH_EXTRA_POINTS, MAX_POLISH_EXTRA_POINTS);
-        Metadata storage diamondDawnMetadata = _metadata[tokenId];
-        diamondDawnMetadata.cut.extraPoints = uint8(extraPoints);
-        diamondDawnMetadata.type_ = Type.CUT;
+        Metadata storage metadata = _metadata[tokenId];
+        metadata.type_ = Type.CUT;
+        metadata.cut.id = ++_cutCounter;
+        metadata.cut.extraPoints = uint8(extraPoints);
     }
 
     function polish(uint256 tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.CUT) {
-        _metadata[tokenId].type_ = Type.POLISHED;
+        Metadata storage metadata = _metadata[tokenId];
+        metadata.type_ = Type.POLISHED;
+        metadata.polished.id = ++_polishedCounter;
     }
 
     function ship(uint256 tokenId)
@@ -129,13 +134,12 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         onlyType(tokenId, Type.POLISHED)
     {
         Metadata storage metadata = _metadata[tokenId];
-        require(metadata.reborn.physicalId == 0);
-        _physicalIdCounter++;
-        metadata.reborn.physicalId = _physicalIdCounter;
+        require(metadata.reborn.id == 0);
+        metadata.reborn.id = ++_rebornCounter;
     }
 
     function rebirth(uint256 tokenId) external onlyDiamondDawn {
-        require(_metadata[tokenId].reborn.physicalId > 0, "Not shipped");
+        require(_metadata[tokenId].reborn.id > 0, "Not shipped");
         _metadata[tokenId].type_ = Type.REBORN;
     }
 
@@ -236,10 +240,10 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         Metadata memory metadata,
         string memory videoURI
     ) private pure returns (string memory) {
-        // TODO: change to description when ready.
+        // TODO: add description and created by when ready.
         // TODO: change name according to DD type once decided.
         NFTMetadata memory nftMetadata = NFTMetadata({
-            name: string(abi.encodePacked("Diamond #", Strings.toString(tokenId))),
+            name: getName(metadata, tokenId),
             description: "description",
             createdBy: "dd",
             image: videoURI,
@@ -283,7 +287,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
             attributes[12] = toStrAttribute("Laboratory", "GIA");
             attributes[13] = toAttribute("Report Date", Strings.toString(certificate.date), "date");
             attributes[14] = toAttribute("Report Number", Strings.toString(certificate.number), "");
-            attributes[15] = toAttribute("Physical Id", Strings.toString(metadata.reborn.physicalId), "");
+            attributes[15] = toAttribute("Physical Id", Strings.toString(metadata.reborn.id), "");
         }
         return attributes;
     }

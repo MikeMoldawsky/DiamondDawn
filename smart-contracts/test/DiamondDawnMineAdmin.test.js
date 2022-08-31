@@ -225,25 +225,25 @@ describe("Diamond Dawn Mine Admin", () => {
         "Wrong type"
       );
       await mineContract.polish(tokenId);
-      await assertPolishedMetadata(mineContract, tokenId, DIAMOND);
+      await assertPolishedMetadata(mineContract, tokenId, 1, DIAMOND);
       await mineContract.ship(tokenId);
-      await assertPolishedMetadata(mineContract, tokenId, DIAMOND);
+      await assertPolishedMetadata(mineContract, tokenId, 1, DIAMOND);
       const replacedDiamond = { ...DIAMOND, points: DIAMOND.points + 10 };
       await mineContract.lostShipment(tokenId, replacedDiamond);
-      await assertPolishedMetadata(mineContract, tokenId, replacedDiamond);
+      await assertPolishedMetadata(mineContract, tokenId, 1, replacedDiamond);
       const replacedDiamond2 = {
         ...DIAMOND,
         points: DIAMOND.points + 20,
         shape: DIAMOND.shape + 1,
       };
-      const physicalTokenId = 1;
+      const rebornId = 1;
       await mineContract.rebirth(tokenId);
       await mineContract.lostShipment(tokenId, replacedDiamond2);
       await assertRebornMetadata(
         mineContract,
         tokenId,
-        replacedDiamond2,
-        physicalTokenId
+        rebornId,
+        replacedDiamond2
       );
     });
   });

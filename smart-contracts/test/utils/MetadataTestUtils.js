@@ -69,9 +69,9 @@ async function assertEnterMineMetadata(mineContract, tokenId) {
   expect(parsedMetadata).to.deep.equal(expectedMetadata);
 }
 
-async function assertRoughMetadata(mineContract, tokenId, diamond) {
+async function assertRoughMetadata(mineContract, tokenId, roughId, diamond) {
   const expectedMetadataNoCaratShapeImage =
-    _getRoughMetadataNoCaratShapeImage(tokenId);
+    _getRoughMetadataNoCaratShapeImage(roughId);
   await _assertMetadataByType(
     expectedMetadataNoCaratShapeImage,
     mineContract,
@@ -82,9 +82,9 @@ async function assertRoughMetadata(mineContract, tokenId, diamond) {
   );
 }
 
-async function assertCutMetadata(mineContract, tokenId, diamond) {
+async function assertCutMetadata(mineContract, tokenId, cutId, diamond) {
   const expectedMetadataNoCaratShapeImage = _getCutMetadataNoCaratShapeImage(
-    tokenId,
+      cutId,
     diamond
   );
   await _assertMetadataByType(
@@ -97,9 +97,9 @@ async function assertCutMetadata(mineContract, tokenId, diamond) {
   );
 }
 
-async function assertPolishedMetadata(mineContract, tokenId, diamond) {
+async function assertPolishedMetadata(mineContract, tokenId, polishedId, diamond) {
   const expectedMetadataNoCaratShapeImage =
-    _getPolishedMetadataNoCaratShapeImage(tokenId, diamond);
+    _getPolishedMetadataNoCaratShapeImage(polishedId, diamond);
   await _assertMetadataByType(
     expectedMetadataNoCaratShapeImage,
     mineContract,
@@ -112,11 +112,11 @@ async function assertPolishedMetadata(mineContract, tokenId, diamond) {
 async function assertRebornMetadata(
   mineContract,
   tokenId,
+  rebornId,
   diamond,
-  physicalTokenId
 ) {
   const expectedMetadataNoCaratShapeImage =
-    _getRebirthMetadataNoCaratShapeAndImage(tokenId, diamond, physicalTokenId);
+    _getRebirthMetadataNoCaratShapeAndImage(rebornId, diamond);
   await _assertMetadataByType(
     expectedMetadataNoCaratShapeImage,
     mineContract,
@@ -281,7 +281,7 @@ async function _assertBase64AndGetParsed(actualMetadata) {
 
 function _getExpectedMetadataEnterMine(tokenId) {
   return {
-    name: `Diamond #${tokenId}`,
+    name: `Mine Entrance #${tokenId}`,
     description: "description",
     created_by: "dd",
     image: `${BASE_URI}/${ENTER_MINE_VIDEO}`,
@@ -289,9 +289,9 @@ function _getExpectedMetadataEnterMine(tokenId) {
   };
 }
 
-function _getRoughMetadataNoCaratShapeImage(tokenId) {
+function _getRoughMetadataNoCaratShapeImage(id) {
   return {
-    name: `Diamond #${tokenId}`,
+    name: `Rough Diamond #${id}`,
     description: "description",
     created_by: "dd",
     attributes: [
@@ -304,9 +304,9 @@ function _getRoughMetadataNoCaratShapeImage(tokenId) {
   };
 }
 
-function _getCutMetadataNoCaratShapeImage(tokenId, diamond) {
+function _getCutMetadataNoCaratShapeImage(id, diamond) {
   return {
-    name: `Diamond #${tokenId}`,
+    name: `Cut Diamond #${id}`,
     description: "description",
     created_by: "dd",
     attributes: [
@@ -324,9 +324,9 @@ function _getCutMetadataNoCaratShapeImage(tokenId, diamond) {
   };
 }
 
-function _getPolishedMetadataNoCaratShapeImage(tokenId, diamond) {
+function _getPolishedMetadataNoCaratShapeImage(id, diamond) {
   return {
-    name: `Diamond #${tokenId}`,
+    name: `Polished Diamond #${id}`,
     description: "description",
     created_by: "dd",
     attributes: [
@@ -347,9 +347,9 @@ function _getPolishedMetadataNoCaratShapeImage(tokenId, diamond) {
   };
 }
 
-function _getRebirthMetadataNoCaratShapeAndImage(tokenId, diamond, physicalId) {
+function _getRebirthMetadataNoCaratShapeAndImage(id, diamond) {
   return {
-    name: `Diamond #${tokenId}`,
+    name: `Diamond #${id}`,
     description: "description",
     created_by: "dd",
     attributes: [
@@ -369,7 +369,7 @@ function _getRebirthMetadataNoCaratShapeAndImage(tokenId, diamond, physicalId) {
       { trait_type: "Laboratory", value: "GIA" },
       { trait_type: "Report Date", value: diamond.date, display_type: "date" },
       { trait_type: "Report Number", value: diamond.number },
-      { trait_type: "Physical Id", value: physicalId },
+      { trait_type: "Physical Id", value: id },
     ],
   };
 }

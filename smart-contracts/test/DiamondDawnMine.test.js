@@ -187,8 +187,9 @@ describe("Diamond Dawn Mine", () => {
       );
       await Promise.all(
         _.range(1, 5).map(async (i) => {
-          await mineContract.mine(i);
-          await assertRoughMetadata(mineContract, i, DIAMOND);
+          const tokenId = 5 - i;
+          await mineContract.mine(tokenId);
+          await assertRoughMetadata(mineContract, tokenId, i, DIAMOND);
         })
       );
     });
@@ -229,7 +230,7 @@ describe("Diamond Dawn Mine", () => {
       await expect(mineContract.cut(tokenId)).to.be.revertedWith("Wrong type");
     });
 
-    it("should mine 4 tokens and generate metadata", async () => {
+    it("should cut 4 tokens and generate metadata", async () => {
       // Prepare diamonds and invitations
       await Promise.all(
         _.range(1, 5).map(async () => {
@@ -245,8 +246,9 @@ describe("Diamond Dawn Mine", () => {
       );
       await Promise.all(
         _.range(1, 5).map(async (i) => {
-          await mineContract.cut(i);
-          await assertCutMetadata(mineContract, i, DIAMOND);
+          const tokenId = 5 - i;
+          await mineContract.cut(tokenId);
+          await assertCutMetadata(mineContract, tokenId,i, DIAMOND);
         })
       );
     });
@@ -297,7 +299,7 @@ describe("Diamond Dawn Mine", () => {
       );
     });
 
-    it("should mine 4 tokens and generate metadata", async () => {
+    it("should polish 4 tokens and generate metadata", async () => {
       // Prepare diamonds and invitations
       await Promise.all(
         _.range(1, 5).map(async () => {
@@ -318,8 +320,9 @@ describe("Diamond Dawn Mine", () => {
 
       await Promise.all(
         _.range(1, 5).map(async (i) => {
-          await mineContract.polish(i);
-          await assertPolishedMetadata(mineContract, i, DIAMOND);
+          const tokenId = 5 - i;
+          await mineContract.polish(tokenId); // reverse order of polish
+          await assertPolishedMetadata(mineContract, tokenId, i, DIAMOND);
         })
       );
     });
@@ -363,7 +366,7 @@ describe("Diamond Dawn Mine", () => {
       await mineContract.enter(tokenId);
       await mineContract.mine(tokenId);
 
-      await assertRoughMetadata(mineContract, tokenId, DIAMOND);
+      await assertRoughMetadata(mineContract, tokenId, 1, DIAMOND);
     });
 
     it("is correct for cut", async () => {
@@ -374,7 +377,7 @@ describe("Diamond Dawn Mine", () => {
       await mineContract.cut(tokenId);
 
       // fetch metadata for token 1
-      await assertCutMetadata(mineContract, tokenId, DIAMOND);
+      await assertCutMetadata(mineContract, tokenId, 1, DIAMOND);
     });
 
     it("is correct for polish", async () => {
@@ -386,7 +389,7 @@ describe("Diamond Dawn Mine", () => {
       await mineContract.mine(tokenId);
       await mineContract.cut(tokenId);
       await mineContract.polish(tokenId);
-      await assertPolishedMetadata(mineContract, tokenId, DIAMOND);
+      await assertPolishedMetadata(mineContract, tokenId, 1, DIAMOND);
     });
 
     it("is correct for rebirth", async () => {
@@ -404,8 +407,8 @@ describe("Diamond Dawn Mine", () => {
       await assertRebornMetadata(
         mineContract,
         tokenId,
-        DIAMOND,
-        physicalTokenId
+        physicalTokenId,
+        DIAMOND
       );
     });
   });
