@@ -66,20 +66,13 @@ function _serializeAttr(Attribute memory attribute) pure returns (string memory)
     return string(bytes_);
 }
 
-function _openObject() pure returns (string memory) {
-    return string(abi.encodePacked("{"));
+// Objects
+function _openObject() pure returns (bytes memory) {
+    return abi.encodePacked("{");
 }
 
-function _closeObject() pure returns (string memory) {
-    return string(abi.encodePacked("}"));
-}
-
-function _openArray() pure returns (string memory) {
-    return string(abi.encodePacked("["));
-}
-
-function _closeArray() pure returns (string memory) {
-    return string(abi.encodePacked("]"));
+function _closeObject() pure returns (bytes memory) {
+    return abi.encodePacked("}");
 }
 
 function _pushAttr(
@@ -87,11 +80,20 @@ function _pushAttr(
     string memory value,
     bool isStr,
     bool isLast
-) pure returns (string memory) {
+) pure returns (bytes memory) {
     if (isStr) value = string.concat('"', value, '"');
-    return string(abi.encodePacked('"', key, '": ', value, isLast ? "" : ","));
+    return abi.encodePacked('"', key, '": ', value, isLast ? "" : ",");
 }
 
-function _pushArray(string memory value, bool isLast) pure returns (string memory) {
-    return string(abi.encodePacked(value, isLast ? "" : ","));
+// Arrays
+function _openArray() pure returns (bytes memory) {
+    return abi.encodePacked("[");
+}
+
+function _closeArray() pure returns (bytes memory) {
+    return abi.encodePacked("]");
+}
+
+function _pushArray(string memory value, bool isLast) pure returns (bytes memory) {
+    return abi.encodePacked(value, isLast ? "" : ",");
 }
