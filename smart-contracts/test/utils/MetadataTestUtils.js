@@ -84,7 +84,7 @@ async function assertRoughMetadata(mineContract, tokenId, roughId, diamond) {
 
 async function assertCutMetadata(mineContract, tokenId, cutId, diamond) {
   const expectedMetadataNoCaratShapeImage = _getCutMetadataNoCaratShapeImage(
-      cutId,
+    cutId,
     diamond
   );
   await _assertMetadataByType(
@@ -97,7 +97,12 @@ async function assertCutMetadata(mineContract, tokenId, cutId, diamond) {
   );
 }
 
-async function assertPolishedMetadata(mineContract, tokenId, polishedId, diamond) {
+async function assertPolishedMetadata(
+  mineContract,
+  tokenId,
+  polishedId,
+  diamond
+) {
   const expectedMetadataNoCaratShapeImage =
     _getPolishedMetadataNoCaratShapeImage(polishedId, diamond);
   await _assertMetadataByType(
@@ -109,12 +114,7 @@ async function assertPolishedMetadata(mineContract, tokenId, polishedId, diamond
   );
 }
 
-async function assertRebornMetadata(
-  mineContract,
-  tokenId,
-  rebornId,
-  diamond,
-) {
+async function assertRebornMetadata(mineContract, tokenId, rebornId, diamond) {
   const expectedMetadataNoCaratShapeImage =
     _getRebirthMetadataNoCaratShapeAndImage(rebornId, diamond);
   await _assertMetadataByType(

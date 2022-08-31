@@ -248,7 +248,7 @@ describe("Diamond Dawn Mine", () => {
         _.range(1, 5).map(async (i) => {
           const tokenId = 5 - i;
           await mineContract.cut(tokenId);
-          await assertCutMetadata(mineContract, tokenId,i, DIAMOND);
+          await assertCutMetadata(mineContract, tokenId, i, DIAMOND);
         })
       );
     });
