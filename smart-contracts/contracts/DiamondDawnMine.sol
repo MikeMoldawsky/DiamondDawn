@@ -267,10 +267,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         if (uint(Type.CUT) <= uint(type_)) {
             attributes[4] = toStrAttribute("Color", toColorString(certificate.color));
             attributes[5] = toStrAttribute("Cut", toGradeString(certificate.cut));
-            attributes[6] = toStrAttribute(
-                "Fluorescence",
-                toFluorescenceString(certificate.fluorescence)
-            );
+            attributes[6] = toStrAttribute("Fluorescence", toFluorescenceString(certificate.fluorescence));
             attributes[7] = toStrAttribute("Measurements", certificate.measurements);
             attributes[8] = toStrAttribute("Shape", toShapeString(certificate.shape));
         }
