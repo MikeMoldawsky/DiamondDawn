@@ -8,7 +8,7 @@ import "./interface/IDiamondDawnMine.sol";
 import "./interface/IDiamondDawnMineAdmin.sol";
 import "./objects/MineObjects.sol";
 import "./objects/DiamondObjects.sol";
-import "./utils/NFTMetadataUtils.sol";
+import "./utils/NFTSerializer.sol";
 import "./utils/StringUtils.sol";
 import "./utils/RandomUtils.sol";
 import "./objects/MineObjects.sol";
@@ -242,48 +242,48 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
             image: videoURI,
             attributes: _getJsonAttributes(metadata)
         });
-        return toJsonMetadata(nftMetadata);
+        return serialize(nftMetadata);
     }
 
     function _getJsonAttributes(Metadata memory metadata) private pure returns (Attribute[] memory) {
         Type type_ = metadata.type_;
         Attribute[] memory attributes = new Attribute[](_getNumAttributes(type_));
-        attributes[0] = getStringAttribute("Type", toTypeString(type_));
+        attributes[0] = toStrAttribute("Type", toTypeString(type_));
         if (type_ == Type.ENTER_MINE) {
             return attributes;
         }
 
-        attributes[1] = getStringAttribute("Origin", "Metaverse");
-        attributes[2] = getStringAttribute("Identification", "Natural");
-        attributes[3] = getAttribute("Carat", getCaratString(_getPoints(metadata)), "");
+        attributes[1] = toStrAttribute("Origin", "Metaverse");
+        attributes[2] = toStrAttribute("Identification", "Natural");
+        attributes[3] = toAttribute("Carat", getCaratString(_getPoints(metadata)), "");
         if (type_ == Type.ROUGH) {
-            attributes[4] = getStringAttribute("Color", "Cape");
-            attributes[5] = getStringAttribute("Shape", toRoughShapeString(metadata.rough.shape));
-            attributes[6] = getStringAttribute("Mine", "Underground");
+            attributes[4] = toStrAttribute("Color", "Cape");
+            attributes[5] = toStrAttribute("Shape", toRoughShapeString(metadata.rough.shape));
+            attributes[6] = toStrAttribute("Mine", "Underground");
             return attributes;
         }
 
         Certificate memory certificate = metadata.certificate;
         if (uint(Type.CUT) <= uint(type_)) {
-            attributes[4] = getStringAttribute("Color", toColorString(certificate.color));
-            attributes[5] = getStringAttribute("Cut", toGradeString(certificate.cut));
-            attributes[6] = getStringAttribute(
+            attributes[4] = toStrAttribute("Color", toColorString(certificate.color));
+            attributes[5] = toStrAttribute("Cut", toGradeString(certificate.cut));
+            attributes[6] = toStrAttribute(
                 "Fluorescence",
                 toFluorescenceString(certificate.fluorescence)
             );
-            attributes[7] = getStringAttribute("Measurements", certificate.measurements);
-            attributes[8] = getStringAttribute("Shape", toShapeString(certificate.shape));
+            attributes[7] = toStrAttribute("Measurements", certificate.measurements);
+            attributes[8] = toStrAttribute("Shape", toShapeString(certificate.shape));
         }
         if (uint(Type.POLISHED) <= uint(type_)) {
-            attributes[9] = getStringAttribute("Clarity", toClarityString(certificate.clarity));
-            attributes[10] = getStringAttribute("Polish", toGradeString(certificate.polish));
-            attributes[11] = getStringAttribute("Symmetry", toGradeString(certificate.symmetry));
+            attributes[9] = toStrAttribute("Clarity", toClarityString(certificate.clarity));
+            attributes[10] = toStrAttribute("Polish", toGradeString(certificate.polish));
+            attributes[11] = toStrAttribute("Symmetry", toGradeString(certificate.symmetry));
         }
         if (uint(Type.REBORN) <= uint(type_)) {
-            attributes[12] = getStringAttribute("Laboratory", "GIA");
-            attributes[13] = getAttribute("Report Date", Strings.toString(certificate.date), "date");
-            attributes[14] = getAttribute("Report Number", Strings.toString(certificate.number), "");
-            attributes[15] = getAttribute("Physical Id", Strings.toString(metadata.reborn.physicalId), "");
+            attributes[12] = toStrAttribute("Laboratory", "GIA");
+            attributes[13] = toAttribute("Report Date", Strings.toString(certificate.date), "date");
+            attributes[14] = toAttribute("Report Number", Strings.toString(certificate.number), "");
+            attributes[15] = toAttribute("Physical Id", Strings.toString(metadata.reborn.physicalId), "");
         }
         return attributes;
     }
