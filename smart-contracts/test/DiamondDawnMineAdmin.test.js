@@ -53,32 +53,6 @@ describe("Diamond Dawn Mine Admin", () => {
     };
   }
 
-  describe("initialized", () => {
-    const maxDiamonds = 333;
-    let mineContract;
-    let userA;
-    let userB;
-
-    beforeEach(async () => {
-      const { diamondDawnMine, user2, user1 } = await loadFixture(
-        deployMineContract
-      );
-      mineContract = diamondDawnMine;
-      userA = user1;
-      userB = user2;
-    });
-
-    it("should correctly set DiamondDawn and maxDiamonds", async () => {
-      mineContract.initialize(userA.address, maxDiamonds);
-      expect(await mineContract.diamondDawn()).to.be.equal(userA.address);
-      expect(await mineContract.maxDiamonds()).to.be.equal(maxDiamonds);
-
-      mineContract.initialize(userB.address, maxDiamonds - 10);
-      expect(await mineContract.diamondDawn()).to.be.equal(userB.address);
-      expect(await mineContract.maxDiamonds()).to.be.equal(maxDiamonds - 10);
-    });
-  });
-
   describe("eruption", () => {
     const maxDiamonds = 15;
     let mineContract;
@@ -94,7 +68,6 @@ describe("Diamond Dawn Mine Admin", () => {
       admin = owner;
       diamondDawn = user1;
       user = user2;
-      await mineContract.initialize(diamondDawn.address, maxDiamonds);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -109,6 +82,7 @@ describe("Diamond Dawn Mine Admin", () => {
     });
 
     it("should REVERT when EXCEEDS max diamonds", async () => {
+      await mineContract.initialize(diamondDawn.address, maxDiamonds);
       const maxDiamondsArray = _.range(maxDiamonds).map(() => DIAMOND);
       await mineContract.eruption(maxDiamondsArray);
       await expect(mineContract.eruption([DIAMOND])).to.be.revertedWith(
@@ -171,9 +145,6 @@ describe("Diamond Dawn Mine Admin", () => {
       await mineContract.setOpen(false);
       await mineContract.lockMine();
 
-      await assertOnlyAdmin(admin, mineContract, (contract) =>
-        contract.initialize(mineContract.address, 333)
-      );
       await assertOnlyAdmin(admin, mineContract, (contract) =>
         contract.eruption([])
       );
@@ -254,25 +225,25 @@ describe("Diamond Dawn Mine Admin", () => {
         "Wrong type"
       );
       await mineContract.polish(tokenId);
-      await assertPolishedMetadata(mineContract, tokenId, DIAMOND);
+      await assertPolishedMetadata(mineContract, tokenId, 1, DIAMOND);
       await mineContract.ship(tokenId);
-      await assertPolishedMetadata(mineContract, tokenId, DIAMOND);
+      await assertPolishedMetadata(mineContract, tokenId, 1, DIAMOND);
       const replacedDiamond = { ...DIAMOND, points: DIAMOND.points + 10 };
       await mineContract.lostShipment(tokenId, replacedDiamond);
-      await assertPolishedMetadata(mineContract, tokenId, replacedDiamond);
+      await assertPolishedMetadata(mineContract, tokenId, 1, replacedDiamond);
       const replacedDiamond2 = {
         ...DIAMOND,
         points: DIAMOND.points + 20,
         shape: DIAMOND.shape + 1,
       };
-      const physicalTokenId = 1;
+      const rebornId = 1;
       await mineContract.rebirth(tokenId);
       await mineContract.lostShipment(tokenId, replacedDiamond2);
       await assertRebornMetadata(
         mineContract,
         tokenId,
-        replacedDiamond2,
-        physicalTokenId
+        rebornId,
+        replacedDiamond2
       );
     });
   });

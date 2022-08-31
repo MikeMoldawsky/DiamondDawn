@@ -4,6 +4,8 @@ pragma solidity ^0.8.15;
 import "../objects/MineObjects.sol";
 
 interface IDiamondDawnMine {
+    function initialize(address diamondDawn, uint16 maxDiamond) external;
+
     function enter(uint tokenId) external;
 
     function mine(uint tokenId) external;

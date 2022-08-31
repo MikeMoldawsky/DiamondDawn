@@ -4,6 +4,7 @@ pragma solidity ^0.8.15;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "../objects/DiamondObjects.sol";
 import "../objects/MineObjects.sol";
+import "../objects/MineObjects.sol";
 
 function toColorString(Color color) pure returns (string memory) {
     if (color == Color.M) return "M";
@@ -57,6 +58,18 @@ function toShapeString(Shape shape) pure returns (string memory) {
 function toRoughShapeString(RoughShape shape) pure returns (string memory) {
     if (shape == RoughShape.MAKEABLE_1) return "Makeable 1";
     if (shape == RoughShape.MAKEABLE_2) return "Makeable 2";
+    revert();
+}
+
+function getName(Metadata memory metadata, uint tokenId) pure returns (string memory) {
+    if (metadata.type_ == Type.ENTER_MINE) return string.concat("Mine Entrance #", Strings.toString(tokenId));
+    if (metadata.type_ == Type.ROUGH)
+        return string.concat("Rough Diamond #", Strings.toString(metadata.rough.id));
+    if (metadata.type_ == Type.CUT) return string.concat("Cut Diamond #", Strings.toString(metadata.cut.id));
+    if (metadata.type_ == Type.POLISHED)
+        return string.concat("Polished Diamond #", Strings.toString(metadata.polished.id));
+    if (metadata.type_ == Type.REBORN)
+        return string.concat("Diamond Dawn #", Strings.toString(metadata.reborn.id));
     revert();
 }
 

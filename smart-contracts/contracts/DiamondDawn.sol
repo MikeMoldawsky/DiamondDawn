@@ -36,9 +36,10 @@ contract DiamondDawn is
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
 
-    bool public isDiamondDawnLocked = false; // diamond dawn is locked forever when the project ends (immutable).
+    bool public isDiamondDawnLocked; // diamond dawn is locked forever when the project ends (immutable).
     uint public constant MAX_MINE_ENTRANCE = 333;
     uint public constant MINING_PRICE = 0.002 ether; // TODO: change to 3.33eth
+
     IDiamondDawnMine public diamondDawnMine;
     SystemStage public systemStage;
 
@@ -48,11 +49,14 @@ contract DiamondDawn is
     mapping(bytes32 => bool) private _invitations;
     Counters.Counter private _tokenIdCounter;
 
-    constructor(address _diamondDawnMineContract) ERC721("DiamondDawn", "DD") {
+    constructor(address _diamondDawnMineContract, uint16 maxMineEntrance_) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         systemStage = SystemStage.INVITATIONS;
         setRoyaltyInfo(_msgSender(), _royalty);
         diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
+        // TODO - remove maxMineEntrance_ once 333 are populated on every run.
+        diamondDawnMine.initialize(address(this), maxMineEntrance_);
+        // diamondDawnMine.initialize(address(this), MAX_MINE_ENTRANCE);
         _pause();
     }
 
@@ -204,6 +208,7 @@ contract DiamondDawn is
         isDiamondDawnMineReady(SystemStage.SHIP)
         onlyShippedDiamondOwner(tokenId)
     {
+        // TODO: protect rebirth with a stupid password (keccak256(tokenId) for example.
         delete _shippedTokenIdToOwner[tokenId];
         _ownerToShippingTokenIds[_msgSender()].remove(tokenId);
         diamondDawnMine.rebirth(tokenId);
