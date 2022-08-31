@@ -40,10 +40,7 @@ function toClarityString(Clarity clarity) pure returns (string memory) {
     revert();
 }
 
-function toFluorescenceString(Fluorescence fluorescence)
-    pure
-    returns (string memory)
-{
+function toFluorescenceString(Fluorescence fluorescence) pure returns (string memory) {
     if (fluorescence == Fluorescence.FAINT) return "Faint";
     if (fluorescence == Fluorescence.NONE) return "None";
     revert();

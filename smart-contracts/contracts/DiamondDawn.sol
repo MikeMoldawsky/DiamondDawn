@@ -48,19 +48,12 @@ contract DiamondDawn is
     mapping(bytes32 => bool) private _invitations;
     Counters.Counter private _tokenIdCounter;
 
-    constructor(
-        address _diamondDawnMineContract,
-        address[] memory adminAddresses
-    ) ERC721("DiamondDawn", "DD") {
+    constructor(address _diamondDawnMineContract) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         systemStage = SystemStage.INVITATIONS;
         setRoyaltyInfo(_msgSender(), _royalty);
         diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
         _pause();
-        // TODO: remove in production
-        for (uint i = 0; i < adminAddresses.length; i++) {
-            _grantRole(DEFAULT_ADMIN_ROLE, adminAddresses[i]);
-        }
     }
 
     /**********************          Modifiers          ************************/
@@ -73,41 +66,22 @@ contract DiamondDawn is
     modifier onlySystemStage(SystemStage _stage) {
         require(
             systemStage == _stage,
-            string.concat(
-                "The stage should be ",
-                Strings.toString(uint(_stage)),
-                " to perform this action"
-            )
+            string.concat("The stage should be ", Strings.toString(uint(_stage)), " to perform this action")
         );
         _;
     }
 
     modifier isDiamondDawnMineReady(SystemStage systemStage_) {
         if (systemStage_ == SystemStage.INVITATIONS) {
-            require(
-                diamondDawnMine.isMineReady(Type.ENTER_MINE),
-                "DiamondDawnMine entrance isn't ready"
-            );
+            require(diamondDawnMine.isMineReady(Type.ENTER_MINE), "DiamondDawnMine entrance isn't ready");
         } else if (systemStage_ == SystemStage.MINE_OPEN) {
-            require(
-                diamondDawnMine.isMineReady(Type.ROUGH),
-                "DiamondDawnMine mine isn't ready"
-            );
+            require(diamondDawnMine.isMineReady(Type.ROUGH), "DiamondDawnMine mine isn't ready");
         } else if (systemStage_ == SystemStage.CUT_OPEN) {
-            require(
-                diamondDawnMine.isMineReady(Type.CUT),
-                "DiamondDawnMine cut isn't ready"
-            );
+            require(diamondDawnMine.isMineReady(Type.CUT), "DiamondDawnMine cut isn't ready");
         } else if (systemStage_ == SystemStage.POLISH_OPEN) {
-            require(
-                diamondDawnMine.isMineReady(Type.POLISHED),
-                "DiamondDawnMine polish isn't ready"
-            );
+            require(diamondDawnMine.isMineReady(Type.POLISHED), "DiamondDawnMine polish isn't ready");
         } else if (systemStage_ == SystemStage.SHIP) {
-            require(
-                diamondDawnMine.isMineReady(Type.REBORN),
-                "DiamondDawnMine burn isn't ready"
-            );
+            require(diamondDawnMine.isMineReady(Type.REBORN), "DiamondDawnMine burn isn't ready");
         }
         _;
     }
@@ -119,10 +93,7 @@ contract DiamondDawn is
     }
 
     modifier costs(uint price) {
-        require(
-            msg.value == price,
-            string.concat("Cost should be: ", Strings.toString(price))
-        );
+        require(msg.value == price, string.concat("Cost should be: ", Strings.toString(price)));
         _;
     }
 
@@ -134,18 +105,12 @@ contract DiamondDawn is
     }
 
     modifier assignedDiamondDawnMine() {
-        require(
-            address(diamondDawnMine) != address(0),
-            "DiamondDawnMine contract is not set"
-        );
+        require(address(diamondDawnMine) != address(0), "DiamondDawnMine contract is not set");
         _;
     }
 
     modifier mineEntranceLeft() {
-        require(
-            _tokenIdCounter.current() <= MAX_MINE_ENTRANCE,
-            "Diamond Dawn's mine is at max capacity."
-        );
+        require(_tokenIdCounter.current() <= MAX_MINE_ENTRANCE, "Diamond Dawn's mine is at max capacity.");
         _;
     }
 
@@ -254,11 +219,7 @@ contract DiamondDawn is
         diamondDawnMine = IDiamondDawnMine(diamondDawnMine_);
     }
 
-    function lockDiamondDawn()
-        external
-        diamondDawnNotLocked
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    function lockDiamondDawn() external diamondDawnNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
         isDiamondDawnLocked = true;
     }
 
@@ -274,11 +235,7 @@ contract DiamondDawn is
         emit SystemStageChanged(systemStage);
     }
 
-    function getTokenIdsByOwner(address owner)
-        external
-        view
-        returns (uint[] memory)
-    {
+    function getTokenIdsByOwner(address owner) external view returns (uint[] memory) {
         uint ownerTokenCount = balanceOf(owner);
         uint[] memory tokenIds = new uint256[](ownerTokenCount);
         for (uint i; i < ownerTokenCount; i++) {
@@ -287,11 +244,7 @@ contract DiamondDawn is
         return tokenIds;
     }
 
-    function getShippingTokenIds(address owner)
-        external
-        view
-        returns (uint[] memory)
-    {
+    function getShippingTokenIds(address owner) external view returns (uint[] memory) {
         return _ownerToShippingTokenIds[owner].values();
     }
 
@@ -302,11 +255,7 @@ contract DiamondDawn is
         _pause();
     }
 
-    function unpause()
-        public
-        diamondDawnNotLocked
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    function unpause() public diamondDawnNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
         _unpause();
     }
 
@@ -317,13 +266,7 @@ contract DiamondDawn is
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override
-        assignedDiamondDawnMine
-        returns (string memory)
-    {
+    function tokenURI(uint256 tokenId) public view override assignedDiamondDawnMine returns (string memory) {
         // TODO - this require blocks getting the tokenURI of burnt tokens
         // require(_exists(tokenId), "ERC721: URI query for nonexistent token");
         // TODO! shouldn't we add a require that checks for "tokenId is (burned or exists)"?

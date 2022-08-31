@@ -41,17 +41,11 @@ async function main() {
   // ethers is available in the global scope
   const [deployer] = await hre.ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
-  const admins = process.env.ADMINS?.split(" ") || [];
-  if (!admins.includes(deployerAddress)) {
-    admins.push(deployerAddress);
-  }
-
   let deployerBalance = await deployer.getBalance();
   let deployerNewBalance;
 
   console.log("Deploying DiamondDawn contracts", {
     deployerAddress,
-    admins,
     deployerBalance: deployerBalance.toString(),
     deployerEthBalance: ethers.utils.formatEther(deployerBalance),
     network: hre.network.name,
@@ -60,7 +54,7 @@ async function main() {
   const DiamondDawnMine = await hre.ethers.getContractFactory(
     "DiamondDawnMine"
   );
-  const diamondDawnMine = await DiamondDawnMine.deploy(admins);
+  const diamondDawnMine = await DiamondDawnMine.deploy();
   await diamondDawnMine.deployed();
   deployerNewBalance = await deployer.getBalance();
 
@@ -76,10 +70,9 @@ async function main() {
   deployerBalance = deployerNewBalance;
 
   const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
-  const diamondDawn = await DiamondDawn.deploy(diamondDawnMine.address, admins);
+  const diamondDawn = await DiamondDawn.deploy(diamondDawnMine.address);
   await diamondDawn.deployed();
   deployerNewBalance = await deployer.getBalance();
-
   console.log("DiamondDawn contract successfully deployed", {
     address: diamondDawn.address,
     deployerBalance: deployerNewBalance.toString(),
@@ -230,18 +223,35 @@ async function main() {
 
   console.log("Successfully updated db with DiamondDawn artifacts");
 
+  // TODO: remove in production admins
+  const admins = process.env.ADMINS?.split(" ") || [];
+  if (!admins.includes(deployerAddress)) {
+    admins.push(deployerAddress);
+  }
+  console.log("Adding admins to DD & DDM", admins);
+  const adminRole = await diamondDawn.DEFAULT_ADMIN_ROLE();
+  await Promise.all(
+    admins.map(async (admin) => await diamondDawn.grantRole(adminRole, admin))
+  );
+  const adminRoleMine = await diamondDawn.DEFAULT_ADMIN_ROLE();
+  await Promise.all(
+    admins.map(
+      async (admin) => await diamondDawnMine.grantRole(adminRoleMine, admin)
+    )
+  );
+
   if (hre.network.name === "goerli") {
     try {
       console.log("Verifying DiamondDawnMine contract");
       await hre.run("verify:verify", {
         address: diamondDawnMine.address,
-        constructorArguments: [admins],
+        constructorArguments: [],
       });
 
       console.log("Verifying DiamondDawn contract");
       await hre.run("verify:verify", {
         address: diamondDawn.address,
-        constructorArguments: [diamondDawnMine.address, admins],
+        constructorArguments: [diamondDawnMine.address],
       });
       console.log("Successfully verified the contract");
     } catch (e) {

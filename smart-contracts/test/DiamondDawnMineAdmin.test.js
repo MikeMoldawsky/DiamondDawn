@@ -43,7 +43,7 @@ describe("Diamond Dawn Mine Admin", () => {
   async function deployMineContract() {
     const [owner, user1, user2] = await ethers.getSigners();
     const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
-    const diamondDawnMine = await DiamondDawnMine.deploy([]);
+    const diamondDawnMine = await DiamondDawnMine.deploy();
     await diamondDawnMine.deployed();
     return {
       diamondDawnMine,
