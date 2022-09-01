@@ -207,10 +207,10 @@ async function main() {
 
   // TODO: remove in production admins
   const admins = process.env.ADMINS?.split(" ") || [];
-  console.log("Adding admins to DD & DDM", admins);
   const adminRole = await diamondDawn.DEFAULT_ADMIN_ROLE();
   const adminRoleMine = await diamondDawn.DEFAULT_ADMIN_ROLE();
   for (const admin of admins) {
+    console.log("Adding admin to DD & DDM", admin);
     let txn = await diamondDawn.grantRole(adminRole, admin);
     await txn.wait();
     txn = await diamondDawnMine.grantRole(adminRoleMine, admin);
