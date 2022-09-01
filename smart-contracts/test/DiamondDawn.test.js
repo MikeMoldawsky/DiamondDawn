@@ -9,53 +9,84 @@ const ADMIN_ROLE =
   "0x0000000000000000000000000000000000000000000000000000000000000000";
 
 describe("DiamondDawn", () => {
-  async function deployDiamondDawnContractsFixture() {
+  async function deployDDContract() {
     const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
     const diamondDawnMine = await DiamondDawnMine.deploy([]);
     const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
     const diamondDawn = await DiamondDawn.deploy(diamondDawnMine.address, 333);
-    const [owner, user1, user2, user3, user4, user5, user6, user7, user8] =
-      await ethers.getSigners();
+    const [owner, user1, user2] = await ethers.getSigners();
     await diamondDawn.deployed();
     // Fixtures can return anything you consider useful for your tests
-    return {
-      DiamondDawn,
-      diamondDawn,
-      owner,
-      user1,
-      user2,
-      user3,
-      user4,
-      user5,
-      user6,
-      user7,
-      user8,
-    };
+    return { diamondDawn, owner, user1, user2 };
   }
 
   describe("Deployment", () => {
-    it("Should be matching some configurations", async () => {
-      const { diamondDawn } = await loadFixture(
-        deployDiamondDawnContractsFixture
+    const maxDiamonds = 333;
+    let ddContract;
+    let admin;
+    let userA;
+    let userB;
+
+    beforeEach(async () => {
+      const { diamondDawn, owner, user1, user2 } = await loadFixture(
+        deployDDContract
       );
-      expect(await diamondDawn.name()).to.equals("DiamondDawn");
-      expect(await diamondDawn.symbol()).to.equals("DD");
+      ddContract = diamondDawn;
+      admin = owner;
+      userA = user1;
+      userB = user2;
     });
 
-    it("Should set the right admin", async function () {
-      const { owner, diamondDawn } = await loadFixture(
-        deployDiamondDawnContractsFixture
-      );
-      const isAdmin = await diamondDawn.hasRole(ADMIN_ROLE, owner.address);
-      expect(isAdmin).to.equal(true);
+    it("should grant admin permissions to deployer", async () => {
+      const adminRole = await ddContract.DEFAULT_ADMIN_ROLE();
+      expect(await ddContract.hasRole(adminRole, admin.address)).to.be.true;
+      expect(await ddContract.hasRole(adminRole, ddContract.address)).to.be
+        .false;
+      expect(await ddContract.hasRole(adminRole, userA.address)).to.be.false;
+      expect(await ddContract.hasRole(adminRole, userB.address)).to.be.false;
     });
+
+    it("Should have correct ERC721 configurations", async () => {
+      expect(await ddContract.name()).to.equals("DiamondDawn");
+      expect(await ddContract.symbol()).to.equals("DD");
+    });
+  });
+
+  describe("enter", () => {
+    // TODO: tests
+  });
+
+  describe("mine", () => {
+    // TODO: tests
+  });
+
+  describe("cut", () => {
+    // TODO: tests
+  });
+
+  describe("polish", () => {
+    // TODO: tests
+  });
+
+  describe("ship", () => {
+    // TODO: tests
+  });
+
+  describe("rebirth", () => {
+    // TODO: tests
+  });
+
+  describe("getTokenIdsByOwner", () => {
+    // TODO: tests
+  });
+
+  describe("getShippingTokenIds", () => {
+    // TODO: tests
   });
 
   describe("Transactions", () => {
     xit("Should mint correctly", async function () {
-      const { owner, diamondDawn } = await loadFixture(
-        deployDiamondDawnContractsFixture
-      );
+      const { owner, diamondDawn } = await loadFixture(deployDDContract);
       await diamondDawn.unpause();
       const tx = await diamondDawn.safeMint(owner.address);
       await tx.wait();
@@ -64,24 +95,20 @@ describe("DiamondDawn", () => {
     });
 
     xit("Should be minted by MINTER ROLE only with safemint function", async function () {
-      const { owner, user1, diamondDawn } = await loadFixture(
-        deployDiamondDawnContractsFixture
-      );
+      const { owner, user1, diamondDawn } = await loadFixture(deployDDContract);
       await diamondDawn.unpause();
       await expect(diamondDawn.connect(user1).safeMint(owner.address)).to.be
         .reverted;
     });
 
     xit("Should not able to transfer when paused", async function () {
-      const { owner, user1, diamondDawn } = await loadFixture(
-        deployDiamondDawnContractsFixture
-      );
+      const { owner, user1, diamondDawn } = await loadFixture(deployDDContract);
       await diamondDawn.unpause();
       let tx, rc, event;
       tx = await diamondDawn.safeMint(owner.address);
       rc = await tx.wait();
       event = rc.events.find((event) => event.event === "Transfer");
-      let [from, to, tokenId] = event.args;
+      const [from, to, tokenId] = event.args;
 
       tx = await diamondDawn.pause();
       await tx.wait();
@@ -102,9 +129,7 @@ describe("DiamondDawn", () => {
     });
 
     xit("should have a random shape on mined then cut", async function () {
-      const { user1, user2, diamondDawn } = await loadFixture(
-        deployDiamondDawnContractsFixture
-      );
+      const { user1, user2, diamondDawn } = await loadFixture(deployDDContract);
       await diamondDawn.unpause();
       const allowlist = [user1.address, user2.address];
       await diamondDawn.revealStage("");

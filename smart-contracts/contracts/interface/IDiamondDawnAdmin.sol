@@ -20,4 +20,8 @@ interface IDiamondDawnAdmin {
     function setDiamondDawnMine(address diamondDawnMine_) external;
 
     function allowMineEntrance(bytes32[] calldata passwordsHash) external;
+
+    function withdraw() external;
+
+    //    function royalties() external; // TODO?
 }

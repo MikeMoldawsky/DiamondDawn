@@ -140,8 +140,8 @@ async function main() {
   // TODO: remove in production admins
   if (hre.network.name === "goerli") {
     await grantAdminsForContracts(dd, mine);
-    await verifyContract(dd, ddArgs);
     await verifyContract(mine, mineArgs);
+    await verifyContract(dd, ddArgs);
   }
   // TODO(mike): check what's the best way to create & close a connection with mongoose
   await mongoose.disconnect(); // build doesn't finish without disconnect
