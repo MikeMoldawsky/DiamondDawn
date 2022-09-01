@@ -207,20 +207,15 @@ async function main() {
 
   // TODO: remove in production admins
   const admins = process.env.ADMINS?.split(" ") || [];
-  if (!admins.includes(deployerAddress)) {
-    admins.push(deployerAddress);
-  }
   console.log("Adding admins to DD & DDM", admins);
   const adminRole = await diamondDawn.DEFAULT_ADMIN_ROLE();
-  await Promise.all(
-    admins.map(async (admin) => await diamondDawn.grantRole(adminRole, admin))
-  );
   const adminRoleMine = await diamondDawn.DEFAULT_ADMIN_ROLE();
-  await Promise.all(
-    admins.map(
-      async (admin) => await diamondDawnMine.grantRole(adminRoleMine, admin)
-    )
-  );
+  for (const admin of admins) {
+    let txn = await diamondDawn.grantRole(adminRole, admin);
+    await txn.wait();
+    txn = await diamondDawnMine.grantRole(adminRoleMine, admin);
+    await txn.wait();
+  }
 
   if (hre.network.name === "goerli") {
     try {
