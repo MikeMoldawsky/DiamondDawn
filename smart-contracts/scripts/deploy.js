@@ -112,129 +112,67 @@ const DIAMONDS = [
 ];
 
 async function main() {
-  if (!hre.network.name) {
-    console.error(
-      "network name is NOT defined. It should be passed as an environment variable"
-    );
-    return;
+  if (!hre.network.name || hre.network.name === "hardhat") {
+    throw new Error(`Wrong network: ${hre.network.name}`);
   }
 
-  console.info("Deploying Diamond Dawn contract", {
-    network: hre.network.name,
-  });
-
-  // This is just a convenience check
-  if (hre.network.name === "hardhat") {
-    console.warn(
-      "You are trying to deploy a contract to the Hardhat Network, which" +
-        "gets automatically created and destroyed every time. Use the Hardhat" +
-        " option '--network localhost'"
-    );
-  }
-
-  // ethers is available in the global scope
   const [deployer] = await hre.ethers.getSigners();
-  const deployerAddress = await deployer.getAddress();
-  let deployerBalance = await deployer.getBalance();
-  let deployerNewBalance;
+  // Diamond Dawn Mine
+  const mineArgs = [];
+  const mine = await deployContract(deployer, "DiamondDawnMine", mineArgs);
+  // Diamond Dawn
+  let dd;
+  const ddArgs = [mine.address, 333];
+  if (hre.network.name === "goerli") {
+    dd = await deployContract(deployer, "DiamondDawn", ddArgs);
+  } else if (hre.network.name === "localhost") {
+    await setVideos(mine);
+    const args = [mine.address, DIAMONDS.length];
+    dd = await deployContract(deployer, "DiamondDawn", args);
+    await populateDiamonds(mine);
+    await dd.unpause();
+  }
 
-  console.log("Deploying DiamondDawn contracts", {
+  // Update FrontEnd database
+  await updateDiamondDawnMineContract(mine.address);
+  await updateDiamondDawnContract(dd.address);
+
+  // TODO: remove in production admins
+  if (hre.network.name === "goerli") {
+    await grantAdminsForContracts(dd, mine);
+    await verifyContract(dd, ddArgs);
+    await verifyContract(mine, mineArgs);
+  }
+  // TODO(mike): check what's the best way to create & close a connection with mongoose
+  await mongoose.disconnect(); // build doesn't finish without disconnect
+}
+
+async function deployContract(deployer, contractName, args) {
+  const deployerAddress = await deployer.getAddress();
+  const deployerBalance = await deployer.getBalance();
+  console.log(`Deploying ${contractName}`, {
     deployerAddress,
     deployerBalance: deployerBalance.toString(),
     deployerEthBalance: ethers.utils.formatEther(deployerBalance),
     network: hre.network.name,
+    args,
   });
-
-  const DiamondDawnMine = await hre.ethers.getContractFactory(
-    "DiamondDawnMine"
-  );
-  const diamondDawnMine = await DiamondDawnMine.deploy();
-  await diamondDawnMine.deployed();
-  deployerNewBalance = await deployer.getBalance();
-
-  console.log("DiamondDawnMine contract successfully deployed", {
-    address: diamondDawnMine.address,
+  const factory = await hre.ethers.getContractFactory(contractName);
+  const contract = await factory.deploy(...args);
+  await contract.deployed();
+  const deployerNewBalance = await deployer.getBalance();
+  console.log(`${contractName} Deployed`, {
+    address: contract.address,
+    ethLeft: ethers.utils.formatEther(deployerNewBalance),
     deployerBalance: deployerNewBalance.toString(),
-    deployerEthBalance: ethers.utils.formatEther(deployerNewBalance),
-    deploymentEthCost: ethers.utils.formatEther(
-      deployerBalance.sub(deployerNewBalance)
-    ),
+    ethCost: ethers.utils.formatEther(deployerBalance.sub(deployerNewBalance)),
   });
+  return contract;
+}
 
-  deployerBalance = deployerNewBalance;
-
-  const DiamondDawn = await hre.ethers.getContractFactory("DiamondDawn");
-  let diamondDawn;
-  if (hre.network.name === "localhost") {
-    // Populate diamonds and images in local host
-    await setVideos(diamondDawnMine);
-    diamondDawn = await DiamondDawn.deploy(
-      diamondDawnMine.address,
-      DIAMONDS.length
-    );
-    console.log(`populating ${DIAMONDS.length} diamonds`, DIAMONDS);
-    await diamondDawnMine.eruption(DIAMONDS);
-    await diamondDawn.unpause();
-  } else {
-    // Goerli
-    diamondDawn = await DiamondDawn.deploy(diamondDawnMine.address, 333);
-  }
-  await diamondDawn.deployed();
-  deployerNewBalance = await deployer.getBalance();
-  console.log("DiamondDawn contract successfully deployed", {
-    address: diamondDawn.address,
-    deployerBalance: deployerNewBalance.toString(),
-    deployerEthBalance: ethers.utils.formatEther(deployerNewBalance),
-    deploymentEthCost: ethers.utils.formatEther(
-      deployerBalance.sub(deployerNewBalance)
-    ),
-  });
-
-  const DiamondDawnMineArtifact =
-    hre.artifacts.readArtifactSync("DiamondDawnMine");
-  console.log("Updating db with DiamondDawnMine artifact");
-  await updateDiamondDawnMineContract(
-    diamondDawnMine.address,
-    DiamondDawnMineArtifact
-  );
-  const DiamondDawnArtifact = hre.artifacts.readArtifactSync("DiamondDawn");
-  console.log("Updating db with DiamondDawn artifact");
-  await updateDiamondDawnContract(diamondDawn.address, DiamondDawnArtifact);
-  // TODO(mike): check what's the best way to create & close a connection with mongoose
-  await mongoose.disconnect(); // build doesn't finish without disconnect
-
-  console.log("Successfully updated db with DiamondDawn artifacts");
-
-  // TODO: remove in production admins
-  const admins = process.env.ADMINS?.split(" ") || [];
-  const adminRole = await diamondDawn.DEFAULT_ADMIN_ROLE();
-  const adminRoleMine = await diamondDawn.DEFAULT_ADMIN_ROLE();
-  for (const admin of admins) {
-    console.log("Adding admin to DD & DDM", admin);
-    let txn = await diamondDawn.grantRole(adminRole, admin);
-    await txn.wait();
-    txn = await diamondDawnMine.grantRole(adminRoleMine, admin);
-    await txn.wait();
-  }
-
-  if (hre.network.name === "goerli") {
-    try {
-      console.log("Verifying DiamondDawnMine contract");
-      await hre.run("verify:verify", {
-        address: diamondDawnMine.address,
-        constructorArguments: [],
-      });
-
-      console.log("Verifying DiamondDawn contract");
-      await hre.run("verify:verify", {
-        address: diamondDawn.address,
-        constructorArguments: [diamondDawnMine.address],
-      });
-      console.log("Successfully verified the contract");
-    } catch (e) {
-      console.log("Failed to verify contract", e);
-    }
-  }
+async function populateDiamonds(mine) {
+  console.log(`populating ${DIAMONDS.length} diamonds`, DIAMONDS);
+  await mine.eruption(DIAMONDS);
 }
 
 async function setVideos(diamondDawnMine) {
@@ -260,6 +198,29 @@ async function setVideos(diamondDawnMine) {
   await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
     { shape: NO_SHAPE_NUM, video: "diamond_dawn.mp4" },
   ]);
+}
+
+async function verifyContract(contract, args) {
+  const taskArgs = { address: contract.address, constructorArguments: args };
+  try {
+    console.log("Verifying contract", taskArgs);
+    await hre.run("verify:verify", taskArgs);
+  } catch (e) {
+    console.log("Failed to verify contract", { taskArgs, e });
+  }
+}
+
+async function grantAdminsForContracts(diamondDawn, diamondDawnMine) {
+  const admins = process.env.ADMINS?.split(" ") || [];
+  const adminRole = await diamondDawn.DEFAULT_ADMIN_ROLE();
+  const adminRoleMine = await diamondDawn.DEFAULT_ADMIN_ROLE();
+  for (const admin of admins) {
+    console.log("Adding admin to DD & DDM", admin);
+    let txn = await diamondDawn.grantRole(adminRole, admin);
+    await txn.wait();
+    txn = await diamondDawnMine.grantRole(adminRoleMine, admin);
+    await txn.wait();
+  }
 }
 
 // We recommend this pattern to be able to use async/await everywhere
