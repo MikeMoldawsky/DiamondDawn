@@ -12,10 +12,6 @@ function getDbConnection() {
         return mongoose.createConnection(process.env.MONGODB_URI_MIKE);
       case "sniirr":
         return mongoose.createConnection(process.env.MONGODB_URI_ASAF);
-      case "galkleinman":
-        throw mongoose.createConnection(process.env.MONGODB_URI_GAL);
-      case "smarth30":
-        throw Error("Samarth send to Mike a mongo url for development");
       default:
         throw Error(
           "MongoDB url is required for preview mode that is not on develop"
