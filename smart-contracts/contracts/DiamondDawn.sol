@@ -3,11 +3,10 @@ pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/token/common/ERC2981.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -22,71 +21,60 @@ import "./interface/IDiamondDawnMine.sol";
  */
 contract DiamondDawn is
     ERC721,
-    // TODO: Should we change from ERC2981 to ERC721Royalty or use both?
-    ERC2981,
-    Pausable,
-    // TODO: Should we change from AccessControl to Ownable or use both?
-    AccessControl,
     ERC721Burnable,
     ERC721Enumerable,
+    ERC721Royalty,
+    AccessControl,
+    Pausable,
     IDiamondDawn,
-    IDiamondDawnAdmin,
-    ReentrancyGuard
+    IDiamondDawnAdmin
 {
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
 
-    bool public isDiamondDawnLocked; // diamond dawn is locked forever when the project ends (immutable).
-    uint public constant MAX_MINE_ENTRANCE = 333;
-    uint public constant MINING_PRICE = 0.002 ether; // TODO: change to 3.33eth
+    bool public isLocked; // diamond dawn is locked forever when the project ends (immutable).
+    uint public constant PRICE = 0.002 ether; // TODO: change to 3.33eth
+    uint16 public constant MAX_MINE_ENTRANCE = 333;
 
-    IDiamondDawnMine public diamondDawnMine;
+    IDiamondDawnMine public ddMine;
     SystemStage public systemStage;
 
-    uint96 private constant _royalty = 1000; // 10 %
     mapping(address => EnumerableSet.UintSet) private _ownerToShippingTokenIds;
     mapping(uint256 => address) private _shippedTokenIdToOwner;
     mapping(bytes32 => bool) private _invitations;
     Counters.Counter private _tokenIdCounter;
 
-    constructor(address _diamondDawnMineContract, uint16 maxMineEntrance_) ERC721("DiamondDawn", "DD") {
-        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        systemStage = SystemStage.INVITATIONS;
-        setRoyaltyInfo(_msgSender(), _royalty);
-        diamondDawnMine = IDiamondDawnMine(_diamondDawnMineContract);
-        // TODO - remove maxMineEntrance_ once 333 are populated on every run.
-        diamondDawnMine.initialize(address(this), maxMineEntrance_);
-        // diamondDawnMine.initialize(address(this), MAX_MINE_ENTRANCE);
+    constructor(address _mineContract, uint16 maxMineEntrance_) ERC721("DiamondDawn", "DD") {
         _pause();
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
+        _setDefaultRoyalty(_msgSender(), 1000); // 10 %
+        systemStage = SystemStage.INVITATIONS;
+        ddMine = IDiamondDawnMine(_mineContract);
+        // diamondDawnMine.initialize(address(this), MAX_MINE_ENTRANCE);
+        ddMine.initialize(address(this), maxMineEntrance_); // TODO: remove maxMineEntrance_ once 333
     }
 
     /**********************          Modifiers          ************************/
 
     modifier diamondDawnNotLocked() {
-        require(!isDiamondDawnLocked, "Diamond Dawn is locked forever");
+        require(!isLocked, "Locked forever");
         _;
     }
 
     modifier onlySystemStage(SystemStage _stage) {
-        require(
-            systemStage == _stage,
-            string.concat("The stage should be ", Strings.toString(uint(_stage)), " to perform this action")
-        );
+        require(systemStage == _stage, "Wrong stage");
         _;
     }
 
     modifier isDiamondDawnMineReady(SystemStage systemStage_) {
-        if (systemStage_ == SystemStage.INVITATIONS) {
-            require(diamondDawnMine.isMineReady(Type.ENTER_MINE), "DiamondDawnMine entrance isn't ready");
-        } else if (systemStage_ == SystemStage.MINE_OPEN) {
-            require(diamondDawnMine.isMineReady(Type.ROUGH), "DiamondDawnMine mine isn't ready");
-        } else if (systemStage_ == SystemStage.CUT_OPEN) {
-            require(diamondDawnMine.isMineReady(Type.CUT), "DiamondDawnMine cut isn't ready");
-        } else if (systemStage_ == SystemStage.POLISH_OPEN) {
-            require(diamondDawnMine.isMineReady(Type.POLISHED), "DiamondDawnMine polish isn't ready");
-        } else if (systemStage_ == SystemStage.SHIP) {
-            require(diamondDawnMine.isMineReady(Type.REBORN), "DiamondDawnMine burn isn't ready");
-        }
+        if (systemStage_ == SystemStage.INVITATIONS)
+            require(ddMine.isMineReady(Type.ENTER_MINE), "No entrance");
+        if (systemStage_ == SystemStage.MINE_OPEN) require(ddMine.isMineReady(Type.ROUGH), "Mine closed");
+        if (systemStage_ == SystemStage.CUT_OPEN) require(ddMine.isMineReady(Type.CUT), "Cut not ready");
+        if (systemStage_ == SystemStage.POLISH_OPEN)
+            require(ddMine.isMineReady(Type.POLISHED), "Polish not ready");
+        if (systemStage_ == SystemStage.SHIP) require(ddMine.isMineReady(Type.REBORN), "Ship not ready");
+
         _;
     }
 
@@ -109,7 +97,7 @@ contract DiamondDawn is
     }
 
     modifier assignedDiamondDawnMine() {
-        require(address(diamondDawnMine) != address(0), "DiamondDawnMine contract is not set");
+        require(address(ddMine) != address(0), "DiamondDawnMine contract is not set");
         _;
     }
 
@@ -120,7 +108,7 @@ contract DiamondDawn is
 
     /**********************     External Functions     ************************/
 
-    function withdraw() external onlyRole(DEFAULT_ADMIN_ROLE) nonReentrant {
+    function withdraw() external onlyRole(DEFAULT_ADMIN_ROLE) {
         (bool success, ) = msg.sender.call{value: address(this).balance}("");
         require(success, "Transfer failed.");
     }
@@ -143,8 +131,9 @@ contract DiamondDawn is
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.INVITATIONS)
         isDiamondDawnMineReady(SystemStage.INVITATIONS)
-        costs(MINING_PRICE)
+        costs(PRICE)
     {
+        // TODO: only 1 per wallet
         //        bytes32 passwordHash = keccak256(abi.encodePacked(password));
         //        require(
         //            _invitations[passwordHash],
@@ -155,7 +144,7 @@ contract DiamondDawn is
         uint256 tokenId = _tokenIdCounter.current();
         // TODO: check if safeMint after or before mint.
         _safeMint(_msgSender(), tokenId);
-        diamondDawnMine.enter(tokenId);
+        ddMine.enter(tokenId);
         emit Enter(tokenId);
     }
 
@@ -165,7 +154,7 @@ contract DiamondDawn is
         onlySystemStage(SystemStage.MINE_OPEN)
         isDiamondDawnMineReady(SystemStage.MINE_OPEN)
     {
-        diamondDawnMine.mine(tokenId);
+        ddMine.mine(tokenId);
         emit Mine(tokenId);
     }
 
@@ -175,7 +164,7 @@ contract DiamondDawn is
         onlySystemStage(SystemStage.CUT_OPEN)
         isDiamondDawnMineReady(SystemStage.CUT_OPEN)
     {
-        diamondDawnMine.cut(tokenId);
+        ddMine.cut(tokenId);
         emit Cut(tokenId);
     }
 
@@ -185,7 +174,7 @@ contract DiamondDawn is
         onlySystemStage(SystemStage.POLISH_OPEN)
         isDiamondDawnMineReady(SystemStage.POLISH_OPEN)
     {
-        diamondDawnMine.polish(tokenId);
+        ddMine.polish(tokenId);
         emit Polish(tokenId);
     }
 
@@ -195,8 +184,8 @@ contract DiamondDawn is
         onlySystemStage(SystemStage.SHIP)
         isDiamondDawnMineReady(SystemStage.SHIP)
     {
-        super.burn(tokenId); // Disable NFT transfer while diamond is in transit.
-        diamondDawnMine.ship(tokenId);
+        _burn(tokenId); // Disable NFT transfer while diamond is in transit.
+        ddMine.ship(tokenId);
         _shippedTokenIdToOwner[tokenId] = _msgSender();
         _ownerToShippingTokenIds[_msgSender()].add(tokenId);
         emit Ship(tokenId);
@@ -211,7 +200,7 @@ contract DiamondDawn is
         // TODO: protect rebirth with a stupid password (keccak256(tokenId) for example.
         delete _shippedTokenIdToOwner[tokenId];
         _ownerToShippingTokenIds[_msgSender()].remove(tokenId);
-        diamondDawnMine.rebirth(tokenId);
+        ddMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);
         emit Rebirth(tokenId);
     }
@@ -221,11 +210,11 @@ contract DiamondDawn is
         diamondDawnNotLocked
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        diamondDawnMine = IDiamondDawnMine(diamondDawnMine_);
+        ddMine = IDiamondDawnMine(diamondDawnMine_);
     }
 
     function lockDiamondDawn() external diamondDawnNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
-        isDiamondDawnLocked = true;
+        isLocked = true;
     }
 
     function setSystemStage(uint systemStage_)
@@ -265,7 +254,7 @@ contract DiamondDawn is
     }
 
     function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
-        public
+        external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
@@ -275,16 +264,15 @@ contract DiamondDawn is
         // TODO - this require blocks getting the tokenURI of burnt tokens
         // require(_exists(tokenId), "ERC721: URI query for nonexistent token");
         // TODO! shouldn't we add a require that checks for "tokenId is (burned or exists)"?
-        return diamondDawnMine.getMetadata(tokenId);
+        return ddMine.getMetadata(tokenId);
     }
 
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, ERC721Enumerable, AccessControl, ERC2981)
+        override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl)
         returns (bool)
     {
-        // EIP2981 supported for royalties
         return super.supportsInterface(interfaceId);
     }
 
@@ -295,6 +283,11 @@ contract DiamondDawn is
         address to,
         uint256 tokenId
     ) internal override(ERC721, ERC721Enumerable) whenNotPaused {
+        // TODO: there is a problem with ERC721Enumerable and burn mechanism - should implement in another way
         super._beforeTokenTransfer(from, to, tokenId);
+    }
+
+    function _burn(uint256 tokenId) internal virtual override(ERC721, ERC721Royalty) {
+        super._burn(tokenId);
     }
 }
