@@ -26,16 +26,15 @@ contract DiamondDawn is
     ERC721Royalty,
     AccessControl,
     Pausable,
-    // TODO: Should we change from AccessControl to Ownable or use both?
     IDiamondDawn,
     IDiamondDawnAdmin
 {
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
 
-    bool public isDiamondDawnLocked; // diamond dawn is locked forever when the project ends (immutable).
-    uint public constant MAX_MINE_ENTRANCE = 333;
-    uint public constant MINING_PRICE = 0.002 ether; // TODO: change to 3.33eth
+    bool public isLocked; // diamond dawn is locked forever when the project ends (immutable).
+    uint public constant PRICE = 0.002 ether; // TODO: change to 3.33eth
+    uint16 public constant MAX_MINE_ENTRANCE = 333;
 
     IDiamondDawnMine public ddMine;
     SystemStage public systemStage;
@@ -45,28 +44,25 @@ contract DiamondDawn is
     mapping(bytes32 => bool) private _invitations;
     Counters.Counter private _tokenIdCounter;
 
-    constructor(address _diamondDawnMineContract, uint16 maxMineEntrance_) ERC721("DiamondDawn", "DD") {
+    constructor(address _mineContract, uint16 maxMineEntrance_) ERC721("DiamondDawn", "DD") {
         _pause();
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setDefaultRoyalty(_msgSender(), 1000); // 10 %
-        ddMine = IDiamondDawnMine(_diamondDawnMineContract);
-        ddMine.initialize(address(this), maxMineEntrance_); // TODO: remove maxMineEntrance_ once 333
-        // diamondDawnMine.initialize(address(this), MAX_MINE_ENTRANCE);
         systemStage = SystemStage.INVITATIONS;
+        ddMine = IDiamondDawnMine(_mineContract);
+        // diamondDawnMine.initialize(address(this), MAX_MINE_ENTRANCE);
+        ddMine.initialize(address(this), maxMineEntrance_); // TODO: remove maxMineEntrance_ once 333
     }
 
     /**********************          Modifiers          ************************/
 
     modifier diamondDawnNotLocked() {
-        require(!isDiamondDawnLocked, "Diamond Dawn is locked forever");
+        require(!isLocked, "Locked forever");
         _;
     }
 
     modifier onlySystemStage(SystemStage _stage) {
-        require(
-            systemStage == _stage,
-            string.concat("The stage should be ", Strings.toString(uint(_stage)), " to perform this action")
-        );
+        require(systemStage == _stage, "Wrong stage");
         _;
     }
 
@@ -135,8 +131,9 @@ contract DiamondDawn is
         assignedDiamondDawnMine
         onlySystemStage(SystemStage.INVITATIONS)
         isDiamondDawnMineReady(SystemStage.INVITATIONS)
-        costs(MINING_PRICE)
+        costs(PRICE)
     {
+        // TODO: only 1 per wallet
         //        bytes32 passwordHash = keccak256(abi.encodePacked(password));
         //        require(
         //            _invitations[passwordHash],
@@ -217,7 +214,7 @@ contract DiamondDawn is
     }
 
     function lockDiamondDawn() external diamondDawnNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
-        isDiamondDawnLocked = true;
+        isLocked = true;
     }
 
     function setSystemStage(uint systemStage_)
