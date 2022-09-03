@@ -6,16 +6,16 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interface/IDiamondDawnMine.sol";
 import "./interface/IDiamondDawnMineAdmin.sol";
-import "./objects/MineObjects.sol";
-import "./objects/DiamondObjects.sol";
+import "./objects/Mine.sol";
+import "./objects/Diamond.sol";
 import "./utils/NFTSerializer.sol";
 import "./utils/StringUtils.sol";
 import "./utils/RandomUtils.sol";
-import "./objects/MineObjects.sol";
-import "./objects/MineObjects.sol";
-import "./objects/MineObjects.sol";
-import "./objects/MineObjects.sol";
-import "./objects/MineObjects.sol";
+import "./objects/Mine.sol";
+import "./objects/Mine.sol";
+import "./objects/Mine.sol";
+import "./objects/Mine.sol";
+import "./objects/Mine.sol";
 
 // TODO: write description
 /**
@@ -31,11 +31,11 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     mapping(uint => mapping(uint => string)) public typeToShapeVideo;
 
     // Carat loss of ~35% to ~65% from rough stone to the polished diamond.
-    uint8 private constant MIN_ROUGH_EXTRA_POINTS = 37;
-    uint8 private constant MAX_ROUGH_EXTRA_POINTS = 74;
+    uint8 private constant MIN_EXTRA_ROUGH_POINTS = 37;
+    uint8 private constant MAX_EXTRA_ROUGH_POINTS = 74;
     // Carat loss of ~2% to ~8% in the polish process.
-    uint8 private constant MIN_POLISH_EXTRA_POINTS = 1;
-    uint8 private constant MAX_POLISH_EXTRA_POINTS = 4;
+    uint8 private constant MIN_EXTRA_POLISH_POINTS = 1;
+    uint8 private constant MAX_EXTRA_POLISH_POINTS = 4;
 
     uint16 private _mineCounter;
     uint16 private _cutCounter;
@@ -95,6 +95,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
     function enter(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.NO_TYPE) {
         _metadata[tokenId].type_ = Type.ENTER_MINE;
+        emit Enter(tokenId);
     }
 
     function mine(uint tokenId)
@@ -104,43 +105,43 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         mineNotDry
         onlyType(tokenId, Type.ENTER_MINE)
     {
-        uint extraPoints = _getRandomBetween(MIN_ROUGH_EXTRA_POINTS, MAX_ROUGH_EXTRA_POINTS);
+        uint extraPoints = _getRandomBetween(MIN_EXTRA_ROUGH_POINTS, MAX_EXTRA_ROUGH_POINTS);
         Metadata storage metadata = _metadata[tokenId];
         metadata.type_ = Type.ROUGH;
         metadata.rough.id = ++_mineCounter;
         metadata.rough.extraPoints = uint8(extraPoints);
         metadata.rough.shape = extraPoints % 2 == 0 ? RoughShape.MAKEABLE_1 : RoughShape.MAKEABLE_2;
         metadata.certificate = _mineDiamond();
+        emit Mine(tokenId);
     }
 
-    function cut(uint256 tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.ROUGH) {
-        uint extraPoints = _getRandomBetween(MIN_POLISH_EXTRA_POINTS, MAX_POLISH_EXTRA_POINTS);
+    function cut(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.ROUGH) {
+        uint extraPoints = _getRandomBetween(MIN_EXTRA_POLISH_POINTS, MAX_EXTRA_POLISH_POINTS);
         Metadata storage metadata = _metadata[tokenId];
         metadata.type_ = Type.CUT;
         metadata.cut.id = ++_cutCounter;
         metadata.cut.extraPoints = uint8(extraPoints);
+        emit Cut(tokenId);
     }
 
-    function polish(uint256 tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.CUT) {
+    function polish(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.CUT) {
         Metadata storage metadata = _metadata[tokenId];
         metadata.type_ = Type.POLISHED;
         metadata.polished.id = ++_polishedCounter;
+        emit Polish(tokenId);
     }
 
-    function ship(uint256 tokenId)
-        external
-        onlyDiamondDawn
-        isMineOpen(true)
-        onlyType(tokenId, Type.POLISHED)
-    {
+    function ship(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.POLISHED) {
         Metadata storage metadata = _metadata[tokenId];
         require(metadata.reborn.id == 0);
         metadata.reborn.id = ++_rebornCounter;
+        emit Ship(tokenId);
     }
 
-    function rebirth(uint256 tokenId) external onlyDiamondDawn {
+    function rebirth(uint tokenId) external onlyDiamondDawn {
         require(_metadata[tokenId].reborn.id > 0, "Not shipped");
         _metadata[tokenId].type_ = Type.REBORN;
+        emit Rebirth(tokenId);
     }
 
     function eruption(Certificate[] calldata diamonds)
@@ -170,7 +171,6 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     {
         require(type_ != Type.NO_TYPE);
         for (uint i = 0; i < shapeVideos.length; i++) {
-            require(bytes(shapeVideos[i].video).length > 0);
             _setVideo(type_, shapeVideos[i].shape, shapeVideos[i].video);
         }
     }
@@ -193,7 +193,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         uint maxShape = type_ == Type.ROUGH ? uint(type(RoughShape).max) : uint(type(Shape).max);
         for (uint i = 1; i <= maxShape; i++) {
             // skipping 0 - no shape
-            if (!_isVideoExist(type_, maxShape)) return false;
+            if (!_isVideoExist(type_, i)) return false;
         }
         return true;
     }

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "../objects/DiamondObjects.sol";
-import "../objects/MineObjects.sol";
+import "../objects/Diamond.sol";
+import "../objects/Mine.sol";
 
 interface IDiamondDawnMineAdmin {
     function eruption(Certificate[] calldata diamonds) external;

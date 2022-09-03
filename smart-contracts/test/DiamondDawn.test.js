@@ -3,26 +3,59 @@ const { expect } = require("chai");
 const { parseEther } = require("ethers/lib/utils");
 const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
-const { SYSTEM_STAGE } = require("./utils/EnumConverterUtils");
+const {
+  SYSTEM_STAGE,
+  DIAMOND_DAWN_TYPE,
+  ROUGH_SHAPE,
+  SHAPE,
+} = require("./utils/EnumConverterUtils");
+const {
+  setRoughVideos,
+  setEnterMineVideo,
+  populateDiamonds,
+  assertRoughMetadata,
+  prepareRoughReady,
+  setCutVideos,
+  setPolishedVideos,
+  setRebornVideo,
+  prepareCutReady,
+} = require("./utils/MineTestUtils");
 
 // constants
-const MAX_TOKENS = 333;
+const MAX_TOKENS = 10;
+async function deployDD() {
+  const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
+  const diamondDawnMine = await DiamondDawnMine.deploy([]);
+  const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
+  const diamondDawn = await DiamondDawn.deploy(
+    diamondDawnMine.address,
+    MAX_TOKENS
+  );
+  const [owner, user1, user2] = await ethers.getSigners();
+  await diamondDawn.deployed();
+  // Fixtures can return anything you consider useful for your tests
+  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
+}
+
+async function deployDDWithMineRoughReady() {
+  const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+    await deployDD();
+  await prepareRoughReady(diamondDawnMine, MAX_TOKENS);
+  await diamondDawn.unpause();
+  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
+}
+
+async function deployDDWithMineCutReady() {
+  const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+    await deployDD();
+  await prepareCutReady(diamondDawnMine, MAX_TOKENS);
+  await diamondDawn.unpause();
+  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
+}
+
+const PRICE = parseEther("0.002");
 
 describe("DiamondDawn", () => {
-  async function deployDDContract(maxDiamonds) {
-    const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
-    const diamondDawnMine = await DiamondDawnMine.deploy([]);
-    const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
-    const diamondDawn = await DiamondDawn.deploy(
-      diamondDawnMine.address,
-      MAX_TOKENS
-    );
-    const [owner, user1, user2] = await ethers.getSigners();
-    await diamondDawn.deployed();
-    // Fixtures can return anything you consider useful for your tests
-    return { diamondDawn, diamondDawnMine, owner, user1, user2 };
-  }
-
   describe("Deployment", () => {
     let ddContract;
     let mineContract;
@@ -32,7 +65,7 @@ describe("DiamondDawn", () => {
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
-        await loadFixture(deployDDContract);
+        await loadFixture(deployDD);
       ddContract = diamondDawn;
       mineContract = diamondDawnMine;
       admin = owner;
@@ -81,11 +114,187 @@ describe("DiamondDawn", () => {
   });
 
   describe("mine", () => {
-    // TODO: tests
+    let ddContract;
+    let mineContract;
+    let admin;
+    let userA;
+    let userB;
+
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+        await loadFixture(deployDDWithMineRoughReady);
+      ddContract = diamondDawn;
+      mineContract = diamondDawnMine;
+      admin = owner;
+      userA = user1;
+      userB = user2;
+    });
+
+    it("Should REVERT when wrong system stage", async () => {
+      const tokenId = 1;
+      await ddContract.enter(tokenId, { value: PRICE });
+      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Wrong stage");
+
+      await setCutVideos(mineContract);
+      await ddContract.setSystemStage(SYSTEM_STAGE.CUT_OPEN);
+      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Wrong stage");
+
+      await setPolishedVideos(mineContract);
+      await ddContract.setSystemStage(SYSTEM_STAGE.POLISH_OPEN);
+      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Wrong stage");
+
+      await setRebornVideo(mineContract);
+      await ddContract.setSystemStage(SYSTEM_STAGE.SHIP);
+      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Wrong stage");
+
+      await ddContract.setSystemStage(SYSTEM_STAGE.MINE_OPEN);
+      await ddContract.mine(tokenId); // success
+    });
+
+    it("Should REVERT when mine is not ready", async () => {
+      const tokenId = 1;
+      await ddContract.enter(tokenId, { value: PRICE });
+      await ddContract.setSystemStage(SYSTEM_STAGE.MINE_OPEN);
+      // transform mine to be not ready
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
+        { shape: ROUGH_SHAPE.MAKEABLE_1, video: "" },
+      ]);
+      await expect(ddContract.mine(tokenId)).to.be.revertedWith(
+        "Rough not ready"
+      );
+    });
+
+    it("Should REVERT when token does not exist", async () => {
+      const tokenId = 1;
+      await ddContract.setSystemStage(SYSTEM_STAGE.MINE_OPEN);
+      await expect(ddContract.mine(tokenId)).to.be.revertedWith(
+        "ERC721: owner query for nonexistent token"
+      );
+    });
+
+    it("Should REVERT when not token owner", async () => {
+      const tokenId = 1;
+      await ddContract.connect(userA).enter(tokenId, { value: PRICE });
+      await ddContract.setSystemStage(SYSTEM_STAGE.MINE_OPEN);
+      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Not owner");
+      await expect(ddContract.connect(userB).mine(tokenId)).to.be.revertedWith(
+        "Not owner"
+      );
+      await ddContract.connect(userA).mine(tokenId);
+    });
+
+    it("Should REVERT when wrong token type", async () => {
+      const tokenId = 1;
+      await ddContract.enter(tokenId, { value: PRICE });
+      await ddContract.setSystemStage(SYSTEM_STAGE.MINE_OPEN);
+      await expect(ddContract.mine(tokenId));
+      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Wrong type");
+    });
+
+    it("Should delegate to mine", async () => {
+      const tokenId = 1;
+      await ddContract.enter(tokenId, { value: PRICE });
+      await ddContract.setSystemStage(SYSTEM_STAGE.MINE_OPEN);
+      await expect(ddContract.mine(tokenId))
+        .to.emit(mineContract, "Mine")
+        .withArgs(tokenId);
+    });
   });
 
   describe("cut", () => {
-    // TODO: tests
+    let ddContract;
+    let mineContract;
+    let admin;
+    let userA;
+    let userB;
+
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+        await loadFixture(deployDDWithMineCutReady);
+      ddContract = diamondDawn;
+      mineContract = diamondDawnMine;
+      admin = owner;
+      userA = user1;
+      userB = user2;
+    });
+
+    it("Should REVERT when wrong system stage", async () => {
+      const tokenId = 1;
+      await ddContract.enter(tokenId, { value: PRICE });
+      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong stage");
+
+      await ddContract.setSystemStage(SYSTEM_STAGE.MINE_OPEN);
+      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong stage");
+      await ddContract.mine(tokenId);
+
+      await setPolishedVideos(mineContract);
+      await ddContract.setSystemStage(SYSTEM_STAGE.POLISH_OPEN);
+      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong stage");
+
+      await setRebornVideo(mineContract);
+      await ddContract.setSystemStage(SYSTEM_STAGE.SHIP);
+      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong stage");
+
+      await ddContract.setSystemStage(SYSTEM_STAGE.CUT_OPEN);
+      await ddContract.cut(tokenId); // success
+    });
+
+    it("Should REVERT when mine is not ready", async () => {
+      const tokenId = 1;
+      await ddContract.enter(tokenId, { value: PRICE });
+      await ddContract.setSystemStage(SYSTEM_STAGE.CUT_OPEN);
+      // transform mine to be not ready
+      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
+        { shape: SHAPE.RADIANT, video: "" },
+      ]);
+      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Cut not ready");
+    });
+
+    it("Should REVERT when token does not exist", async () => {
+      const tokenId = 1;
+      await ddContract.setSystemStage(SYSTEM_STAGE.CUT_OPEN);
+      await expect(ddContract.cut(tokenId)).to.be.revertedWith(
+        "ERC721: owner query for nonexistent token"
+      );
+    });
+
+    it("Should REVERT when not token owner", async () => {
+      const tokenId = 1;
+      await ddContract.connect(userA).enter(tokenId, { value: PRICE });
+      await ddContract.setSystemStage(SYSTEM_STAGE.MINE_OPEN);
+      await ddContract.connect(userA).mine(tokenId);
+
+      await ddContract.setSystemStage(SYSTEM_STAGE.CUT_OPEN);
+      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Not owner");
+      await expect(ddContract.connect(userB).cut(tokenId)).to.be.revertedWith(
+        "Not owner"
+      );
+      await ddContract.connect(userA).cut(tokenId);
+    });
+
+    it("Should REVERT when wrong token type", async () => {
+      const tokenId = 1;
+      await ddContract.enter(tokenId, { value: PRICE });
+      await ddContract.setSystemStage(SYSTEM_STAGE.CUT_OPEN);
+      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong type");
+
+      await ddContract.setSystemStage(SYSTEM_STAGE.MINE_OPEN);
+      await ddContract.mine(tokenId);
+      await ddContract.setSystemStage(SYSTEM_STAGE.CUT_OPEN);
+      await ddContract.cut(tokenId);
+      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong type");
+    });
+
+    it("Should delegate to mine", async () => {
+      const tokenId = 1;
+      await ddContract.enter(tokenId, { value: PRICE });
+      await ddContract.setSystemStage(SYSTEM_STAGE.MINE_OPEN);
+      await ddContract.mine(tokenId);
+      await ddContract.setSystemStage(SYSTEM_STAGE.CUT_OPEN);
+      await expect(ddContract.cut(tokenId))
+        .to.emit(mineContract, "Cut")
+        .withArgs(tokenId);
+    });
   });
 
   describe("polish", () => {
@@ -110,7 +319,7 @@ describe("DiamondDawn", () => {
 
   describe("Transactions", () => {
     xit("Should mint correctly", async function () {
-      const { owner, diamondDawn } = await loadFixture(deployDDContract);
+      const { owner, diamondDawn } = await loadFixture(deployDD);
       await diamondDawn.unpause();
       const tx = await diamondDawn.safeMint(owner.address);
       await tx.wait();
@@ -119,14 +328,14 @@ describe("DiamondDawn", () => {
     });
 
     xit("Should be minted by MINTER ROLE only with safemint function", async function () {
-      const { owner, user1, diamondDawn } = await loadFixture(deployDDContract);
+      const { owner, user1, diamondDawn } = await loadFixture(deployDD);
       await diamondDawn.unpause();
       await expect(diamondDawn.connect(user1).safeMint(owner.address)).to.be
         .reverted;
     });
 
     xit("Should not able to transfer when paused", async function () {
-      const { owner, user1, diamondDawn } = await loadFixture(deployDDContract);
+      const { owner, user1, diamondDawn } = await loadFixture(deployDD);
       await diamondDawn.unpause();
       let tx, rc, event;
       tx = await diamondDawn.safeMint(owner.address);
@@ -153,7 +362,7 @@ describe("DiamondDawn", () => {
     });
 
     xit("should have a random shape on mined then cut", async function () {
-      const { user1, user2, diamondDawn } = await loadFixture(deployDDContract);
+      const { user1, user2, diamondDawn } = await loadFixture(deployDD);
       await diamondDawn.unpause();
       const allowlist = [user1.address, user2.address];
       await diamondDawn.revealStage("");

@@ -66,10 +66,10 @@ contract DiamondDawn is
         _;
     }
 
-    modifier isDiamondDawnMineReady(SystemStage systemStage_) {
+    modifier isMineReady(SystemStage systemStage_) {
         if (systemStage_ == SystemStage.INVITATIONS)
-            require(ddMine.isMineReady(Type.ENTER_MINE), "No entrance");
-        if (systemStage_ == SystemStage.MINE_OPEN) require(ddMine.isMineReady(Type.ROUGH), "Mine closed");
+            require(ddMine.isMineReady(Type.ENTER_MINE), "Mine entrance not ready");
+        if (systemStage_ == SystemStage.MINE_OPEN) require(ddMine.isMineReady(Type.ROUGH), "Rough not ready");
         if (systemStage_ == SystemStage.CUT_OPEN) require(ddMine.isMineReady(Type.CUT), "Cut not ready");
         if (systemStage_ == SystemStage.POLISH_OPEN)
             require(ddMine.isMineReady(Type.POLISHED), "Polish not ready");
@@ -96,8 +96,9 @@ contract DiamondDawn is
         _;
     }
 
-    modifier assignedDiamondDawnMine() {
-        require(address(ddMine) != address(0), "DiamondDawnMine contract is not set");
+    modifier isOwner(uint tokenId) {
+        address owner = ERC721.ownerOf(tokenId);
+        require(_msgSender() == owner, "Not owner");
         _;
     }
 
@@ -128,9 +129,8 @@ contract DiamondDawn is
     function enter(string calldata password)
         external
         payable
-        assignedDiamondDawnMine
         onlySystemStage(SystemStage.INVITATIONS)
-        isDiamondDawnMineReady(SystemStage.INVITATIONS)
+        isMineReady(SystemStage.INVITATIONS)
         costs(PRICE)
     {
         // TODO: only 1 per wallet
@@ -145,72 +145,59 @@ contract DiamondDawn is
         // TODO: check if safeMint after or before mint.
         _safeMint(_msgSender(), tokenId);
         ddMine.enter(tokenId);
-        emit Enter(tokenId);
     }
 
     function mine(uint tokenId)
         external
-        assignedDiamondDawnMine
         onlySystemStage(SystemStage.MINE_OPEN)
-        isDiamondDawnMineReady(SystemStage.MINE_OPEN)
+        isMineReady(SystemStage.MINE_OPEN)
+        isOwner(tokenId)
     {
         ddMine.mine(tokenId);
-        emit Mine(tokenId);
     }
 
-    function cut(uint256 tokenId)
+    function cut(uint tokenId)
         external
-        assignedDiamondDawnMine
         onlySystemStage(SystemStage.CUT_OPEN)
-        isDiamondDawnMineReady(SystemStage.CUT_OPEN)
+        isMineReady(SystemStage.CUT_OPEN)
+        isOwner(tokenId)
     {
         ddMine.cut(tokenId);
-        emit Cut(tokenId);
     }
 
-    function polish(uint256 tokenId)
+    function polish(uint tokenId)
         external
-        assignedDiamondDawnMine
         onlySystemStage(SystemStage.POLISH_OPEN)
-        isDiamondDawnMineReady(SystemStage.POLISH_OPEN)
+        isMineReady(SystemStage.POLISH_OPEN)
+        isOwner(tokenId)
     {
         ddMine.polish(tokenId);
-        emit Polish(tokenId);
     }
 
-    function ship(uint256 tokenId)
+    function ship(uint tokenId)
         external
-        assignedDiamondDawnMine
         onlySystemStage(SystemStage.SHIP)
-        isDiamondDawnMineReady(SystemStage.SHIP)
+        isMineReady(SystemStage.SHIP)
+        isOwner(tokenId)
     {
         _burn(tokenId); // Disable NFT transfer while diamond is in transit.
         ddMine.ship(tokenId);
         _shippedTokenIdToOwner[tokenId] = _msgSender();
         _ownerToShippingTokenIds[_msgSender()].add(tokenId);
-        emit Ship(tokenId);
     }
 
-    function rebirth(uint256 tokenId)
+    function rebirth(uint tokenId)
         external
-        assignedDiamondDawnMine
-        isDiamondDawnMineReady(SystemStage.SHIP)
+        isMineReady(SystemStage.SHIP)
         onlyShippedDiamondOwner(tokenId)
+    // isOwner(tokenId) TODO: check how to solve only owner
     {
+        // TODO: Only owner
         // TODO: protect rebirth with a stupid password (keccak256(tokenId) for example.
         delete _shippedTokenIdToOwner[tokenId];
         _ownerToShippingTokenIds[_msgSender()].remove(tokenId);
         ddMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);
-        emit Rebirth(tokenId);
-    }
-
-    function setDiamondDawnMine(address diamondDawnMine_)
-        external
-        diamondDawnNotLocked
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        ddMine = IDiamondDawnMine(diamondDawnMine_);
     }
 
     function lockDiamondDawn() external diamondDawnNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -221,7 +208,7 @@ contract DiamondDawn is
         external
         diamondDawnNotLocked
         validSystemStage(systemStage_)
-        isDiamondDawnMineReady(SystemStage(systemStage_))
+        isMineReady(SystemStage(systemStage_))
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         // TODO: Mine Open should be open when we had 333 diamonds at the beginning
@@ -260,7 +247,7 @@ contract DiamondDawn is
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
     }
 
-    function tokenURI(uint256 tokenId) public view override assignedDiamondDawnMine returns (string memory) {
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
         // TODO - this require blocks getting the tokenURI of burnt tokens
         // require(_exists(tokenId), "ERC721: URI query for nonexistent token");
         // TODO! shouldn't we add a require that checks for "tokenId is (burned or exists)"?

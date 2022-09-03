@@ -2,9 +2,9 @@
 pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "../objects/DiamondObjects.sol";
-import "../objects/MineObjects.sol";
-import "../objects/MineObjects.sol";
+import "../objects/Diamond.sol";
+import "../objects/Mine.sol";
+import "../objects/Mine.sol";
 
 function toColorString(Color color) pure returns (string memory) {
     if (color == Color.M) return "M";

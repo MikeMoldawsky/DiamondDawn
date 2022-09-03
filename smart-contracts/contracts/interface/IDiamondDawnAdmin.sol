@@ -17,8 +17,6 @@ interface IDiamondDawnAdmin {
 
     function setSystemStage(uint systemStage_) external;
 
-    function setDiamondDawnMine(address diamondDawnMine_) external;
-
     function allowMineEntrance(bytes32[] calldata passwordsHash) external;
 
     function withdraw() external;

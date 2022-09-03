@@ -17,21 +17,8 @@ const {
   assertPolishedMetadata,
   setAllVideoUrls,
   assertRebornMetadata,
-} = require("./utils/MetadataTestUtils");
-
-const DIAMOND = {
-  number: 1111111111,
-  date: 1659254421,
-  shape: 1,
-  points: 45,
-  color: 2,
-  clarity: 1,
-  cut: 1,
-  polish: 1,
-  symmetry: 1,
-  fluorescence: 1,
-  measurements: "5.1 - 5.12 x 35",
-};
+} = require("./utils/MineTestUtils");
+const { DIAMOND } = require("./utils/Diamonds");
 
 describe("Diamond Dawn Mine", () => {
   async function deployMineContract() {
@@ -128,7 +115,9 @@ describe("Diamond Dawn Mine", () => {
     it("should enter 4 tokens and generate metadata", async () => {
       await Promise.all(
         _.range(1, 5).map(async (i) => {
-          await mineContract.enter(i);
+          await expect(mineContract.enter(i))
+            .to.emit(mineContract, "Enter")
+            .withArgs(i);
           await assertEnterMineMetadata(mineContract, i);
         })
       );
@@ -188,7 +177,9 @@ describe("Diamond Dawn Mine", () => {
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           const tokenId = 5 - i;
-          await mineContract.mine(tokenId);
+          await expect(mineContract.mine(tokenId))
+            .to.emit(mineContract, "Mine")
+            .withArgs(tokenId);
           await assertRoughMetadata(mineContract, tokenId, i, DIAMOND);
         })
       );
@@ -247,7 +238,9 @@ describe("Diamond Dawn Mine", () => {
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           const tokenId = 5 - i;
-          await mineContract.cut(tokenId);
+          await expect(await mineContract.cut(tokenId))
+            .to.emit(mineContract, "Cut")
+            .withArgs(tokenId);
           await assertCutMetadata(mineContract, tokenId, i, DIAMOND);
         })
       );
@@ -321,11 +314,21 @@ describe("Diamond Dawn Mine", () => {
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           const tokenId = 5 - i;
-          await mineContract.polish(tokenId); // reverse order of polish
+          await expect(mineContract.polish(tokenId))
+            .to.emit(mineContract, "Polish")
+            .withArgs(tokenId);
           await assertPolishedMetadata(mineContract, tokenId, i, DIAMOND);
         })
       );
     });
+  });
+
+  describe("ship", () => {
+    // TODO: add tests
+  });
+
+  describe("rebirth", () => {
+    // TODO: add tests
   });
 
   describe("getMetadata", () => {

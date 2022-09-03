@@ -1,9 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "../objects/MineObjects.sol";
+import "../objects/Mine.sol";
 
 interface IDiamondDawnMine {
+    event Enter(uint tokenId);
+    event Mine(uint tokenId);
+    event Cut(uint tokenId);
+    event Polish(uint tokenId);
+    event Ship(uint tokenId);
+    event Rebirth(uint tokenId);
+
     function initialize(address diamondDawn, uint16 maxDiamond) external;
 
     function enter(uint tokenId) external;
