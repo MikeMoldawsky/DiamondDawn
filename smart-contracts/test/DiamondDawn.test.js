@@ -4,25 +4,40 @@ const { parseEther } = require("ethers/lib/utils");
 const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { SYSTEM_STAGE } = require("./utils/EnumConverterUtils");
+const {
+  setRoughVideos,
+  setEnterMineVideo,
+  populateDiamonds,
+  assertRoughMetadata,
+} = require("./utils/MineTestUtils");
 
 // constants
-const MAX_TOKENS = 333;
+const MAX_TOKENS = 10;
+async function deployDDContract() {
+  const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
+  const diamondDawnMine = await DiamondDawnMine.deploy([]);
+  const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
+  const diamondDawn = await DiamondDawn.deploy(
+    diamondDawnMine.address,
+    MAX_TOKENS
+  );
+  const [owner, user1, user2] = await ethers.getSigners();
+  await diamondDawn.deployed();
+  // Fixtures can return anything you consider useful for your tests
+  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
+}
+
+async function deployDDMineStageContract() {
+  const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+    await deployDDContract();
+  await diamondDawn.unpause();
+  await setEnterMineVideo(diamondDawnMine);
+  await populateDiamonds(diamondDawnMine, MAX_TOKENS);
+  await setRoughVideos(diamondDawnMine);
+  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
+}
 
 describe("DiamondDawn", () => {
-  async function deployDDContract(maxDiamonds) {
-    const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
-    const diamondDawnMine = await DiamondDawnMine.deploy([]);
-    const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
-    const diamondDawn = await DiamondDawn.deploy(
-      diamondDawnMine.address,
-      MAX_TOKENS
-    );
-    const [owner, user1, user2] = await ethers.getSigners();
-    await diamondDawn.deployed();
-    // Fixtures can return anything you consider useful for your tests
-    return { diamondDawn, diamondDawnMine, owner, user1, user2 };
-  }
-
   describe("Deployment", () => {
     let ddContract;
     let mineContract;
@@ -81,7 +96,30 @@ describe("DiamondDawn", () => {
   });
 
   describe("mine", () => {
-    // TODO: tests
+    let ddContract;
+    let mineContract;
+    let admin;
+    let userA;
+    let userB;
+
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+        await loadFixture(deployDDMineStageContract);
+      ddContract = diamondDawn;
+      mineContract = diamondDawnMine;
+      admin = owner;
+      userA = user1;
+      userB = user2;
+    });
+    it("Should enter and mine ", async () => {
+      // TODO: this is a place holder
+      await ddContract.enter("1", { value: parseEther("0.002") });
+      await ddContract.setSystemStage(1);
+      await ddContract.mine(1);
+      const newVar = await ddContract.tokenURI(1);
+      // await assertRoughMetadata()
+      expect(newVar).to.equal("1");
+    });
   });
 
   describe("cut", () => {

@@ -6,16 +6,16 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interface/IDiamondDawnMine.sol";
 import "./interface/IDiamondDawnMineAdmin.sol";
-import "./objects/MineObjects.sol";
-import "./objects/DiamondObjects.sol";
+import "./objects/Mine.sol";
+import "./objects/Diamond.sol";
 import "./utils/NFTSerializer.sol";
 import "./utils/StringUtils.sol";
 import "./utils/RandomUtils.sol";
-import "./objects/MineObjects.sol";
-import "./objects/MineObjects.sol";
-import "./objects/MineObjects.sol";
-import "./objects/MineObjects.sol";
-import "./objects/MineObjects.sol";
+import "./objects/Mine.sol";
+import "./objects/Mine.sol";
+import "./objects/Mine.sol";
+import "./objects/Mine.sol";
+import "./objects/Mine.sol";
 
 // TODO: write description
 /**
@@ -95,6 +95,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
     function enter(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.NO_TYPE) {
         _metadata[tokenId].type_ = Type.ENTER_MINE;
+        emit Enter(tokenId);
     }
 
     function mine(uint tokenId)
@@ -111,6 +112,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         metadata.rough.extraPoints = uint8(extraPoints);
         metadata.rough.shape = extraPoints % 2 == 0 ? RoughShape.MAKEABLE_1 : RoughShape.MAKEABLE_2;
         metadata.certificate = _mineDiamond();
+        emit Mine(tokenId);
     }
 
     function cut(uint256 tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.ROUGH) {
@@ -119,12 +121,14 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         metadata.type_ = Type.CUT;
         metadata.cut.id = ++_cutCounter;
         metadata.cut.extraPoints = uint8(extraPoints);
+        emit Cut(tokenId);
     }
 
     function polish(uint256 tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.CUT) {
         Metadata storage metadata = _metadata[tokenId];
         metadata.type_ = Type.POLISHED;
         metadata.polished.id = ++_polishedCounter;
+        emit Polish(tokenId);
     }
 
     function ship(uint256 tokenId)
@@ -136,11 +140,13 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         Metadata storage metadata = _metadata[tokenId];
         require(metadata.reborn.id == 0);
         metadata.reborn.id = ++_rebornCounter;
+        emit Ship(tokenId);
     }
 
     function rebirth(uint256 tokenId) external onlyDiamondDawn {
         require(_metadata[tokenId].reborn.id > 0, "Not shipped");
         _metadata[tokenId].type_ = Type.REBORN;
+        emit Rebirth(tokenId);
     }
 
     function eruption(Certificate[] calldata diamonds)

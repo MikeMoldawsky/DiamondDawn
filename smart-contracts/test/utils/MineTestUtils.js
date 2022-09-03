@@ -11,6 +11,7 @@ const {
   ROUGH_SHAPE,
   SHAPE,
 } = require("./EnumConverterUtils");
+const { DIAMOND } = require("./Diamonds");
 
 // constants from contract
 const MIN_ROUGH_EXTRA_POINTS = 37;
@@ -38,29 +39,54 @@ const POLISHED_RADIANT_VIDEO = "polishedRadiant.mp4";
 
 const REBORN_VIDEO = "reborn.mp4";
 
-async function setAllVideoUrls(mineContract) {
+async function setEnterMineVideo(mineContract) {
   await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
     { shape: NO_SHAPE_NUM, video: ENTER_MINE_VIDEO },
   ]);
+}
+
+async function setRoughVideos(mineContract) {
   await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
     { shape: ROUGH_SHAPE.MAKEABLE_1, video: MAKEABLE_1_VIDEO },
     { shape: ROUGH_SHAPE.MAKEABLE_2, video: MAKEABLE_2_VIDEO },
   ]);
+}
+
+async function setCutVideos(mineContract) {
   await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
     { shape: SHAPE.PEAR, video: CUT_PEAR_VIDEO },
     { shape: SHAPE.ROUND, video: CUT_ROUND_VIDEO },
     { shape: SHAPE.OVAL, video: CUT_OVAL_VIDEO },
     { shape: SHAPE.RADIANT, video: CUT_RADIANT_VIDEO },
   ]);
+}
+
+async function setPolishedVideos(mineContract) {
   await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
     { shape: SHAPE.PEAR, video: POLISHED_PEAR_VIDEO },
     { shape: SHAPE.ROUND, video: POLISHED_ROUND_VIDEO },
     { shape: SHAPE.OVAL, video: POLISHED_OVAL_VIDEO },
     { shape: SHAPE.RADIANT, video: POLISHED_RADIANT_VIDEO },
   ]);
+}
+
+async function setRebornVideo(mineContract) {
   await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
     { shape: NO_SHAPE_NUM, video: REBORN_VIDEO },
   ]);
+}
+
+async function setAllVideoUrls(mineContract) {
+  await setEnterMineVideo(mineContract);
+  await setRoughVideos(mineContract);
+  await setCutVideos(mineContract);
+  await setPolishedVideos(mineContract);
+  await setRebornVideo(mineContract);
+}
+
+async function populateDiamonds(mineContract, numDiamonds) {
+  const diamonds = _.range(numDiamonds).map((_) => DIAMOND);
+  await mineContract.eruption(diamonds);
 }
 
 async function assertEnterMineMetadata(mineContract, tokenId) {
@@ -381,4 +407,10 @@ module.exports = {
   assertPolishedMetadata,
   assertRebornMetadata,
   setAllVideoUrls,
+  setEnterMineVideo,
+  setRoughVideos,
+  setCutVideos,
+  setPolishedVideos,
+  setRebornVideo,
+  populateDiamonds,
 };
