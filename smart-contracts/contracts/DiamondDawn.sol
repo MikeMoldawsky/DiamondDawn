@@ -96,7 +96,7 @@ contract DiamondDawn is
         _;
     }
 
-    modifier isTokenOwner(uint tokenId) {
+    modifier isOwner(uint tokenId) {
         address owner = ERC721.ownerOf(tokenId);
         require(_msgSender() == owner, "Not owner");
         _;
@@ -151,7 +151,7 @@ contract DiamondDawn is
         external
         onlySystemStage(SystemStage.MINE_OPEN)
         isMineReady(SystemStage.MINE_OPEN)
-        isTokenOwner(tokenId)
+        isOwner(tokenId)
     {
         ddMine.mine(tokenId);
     }
@@ -160,9 +160,8 @@ contract DiamondDawn is
         external
         onlySystemStage(SystemStage.CUT_OPEN)
         isMineReady(SystemStage.CUT_OPEN)
-        isTokenOwner(tokenId)
+        isOwner(tokenId)
     {
-        // TODO: Only owner
         ddMine.cut(tokenId);
     }
 
@@ -170,7 +169,7 @@ contract DiamondDawn is
         external
         onlySystemStage(SystemStage.POLISH_OPEN)
         isMineReady(SystemStage.POLISH_OPEN)
-        isTokenOwner(tokenId)
+        isOwner(tokenId)
     {
         ddMine.polish(tokenId);
     }
@@ -179,7 +178,7 @@ contract DiamondDawn is
         external
         onlySystemStage(SystemStage.SHIP)
         isMineReady(SystemStage.SHIP)
-        isTokenOwner(tokenId)
+        isOwner(tokenId)
     {
         _burn(tokenId); // Disable NFT transfer while diamond is in transit.
         ddMine.ship(tokenId);
@@ -191,7 +190,7 @@ contract DiamondDawn is
         external
         isMineReady(SystemStage.SHIP)
         onlyShippedDiamondOwner(tokenId)
-    // isTokenOwner(tokenId) TODO: check how to solve only owner
+    // isOwner(tokenId) TODO: check how to solve only owner
     {
         // TODO: Only owner
         // TODO: protect rebirth with a stupid password (keccak256(tokenId) for example.
