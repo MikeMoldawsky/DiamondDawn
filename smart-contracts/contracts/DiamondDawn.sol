@@ -68,8 +68,8 @@ contract DiamondDawn is
 
     modifier isMineReady(SystemStage systemStage_) {
         if (systemStage_ == SystemStage.INVITATIONS)
-            require(ddMine.isMineReady(Type.ENTER_MINE), "No entrance");
-        if (systemStage_ == SystemStage.MINE_OPEN) require(ddMine.isMineReady(Type.ROUGH), "Mine closed");
+            require(ddMine.isMineReady(Type.ENTER_MINE), "Mine entrance not ready");
+        if (systemStage_ == SystemStage.MINE_OPEN) require(ddMine.isMineReady(Type.ROUGH), "Rough not ready");
         if (systemStage_ == SystemStage.CUT_OPEN) require(ddMine.isMineReady(Type.CUT), "Cut not ready");
         if (systemStage_ == SystemStage.POLISH_OPEN)
             require(ddMine.isMineReady(Type.POLISHED), "Polish not ready");
@@ -156,7 +156,7 @@ contract DiamondDawn is
         ddMine.mine(tokenId);
     }
 
-    function cut(uint256 tokenId)
+    function cut(uint tokenId)
         external
         onlySystemStage(SystemStage.CUT_OPEN)
         isMineReady(SystemStage.CUT_OPEN)
@@ -166,7 +166,7 @@ contract DiamondDawn is
         ddMine.cut(tokenId);
     }
 
-    function polish(uint256 tokenId)
+    function polish(uint tokenId)
         external
         onlySystemStage(SystemStage.POLISH_OPEN)
         isMineReady(SystemStage.POLISH_OPEN)
@@ -175,7 +175,7 @@ contract DiamondDawn is
         ddMine.polish(tokenId);
     }
 
-    function ship(uint256 tokenId)
+    function ship(uint tokenId)
         external
         onlySystemStage(SystemStage.SHIP)
         isMineReady(SystemStage.SHIP)
@@ -187,7 +187,7 @@ contract DiamondDawn is
         _ownerToShippingTokenIds[_msgSender()].add(tokenId);
     }
 
-    function rebirth(uint256 tokenId)
+    function rebirth(uint tokenId)
         external
         isMineReady(SystemStage.SHIP)
         onlyShippedDiamondOwner(tokenId)

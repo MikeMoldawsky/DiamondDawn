@@ -338,19 +338,6 @@ describe("Diamond Dawn Mine Admin", () => {
         mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.NO_TYPE, [])
       ).to.be.revertedWithoutReason();
     });
-    it("should REVERT when video is empty", async () => {
-      await expect(
-        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
-          { shape: NO_SHAPE_NUM, video: "" },
-        ])
-      ).to.be.revertedWithoutReason();
-      await expect(
-        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
-          { shape: ROUGH_SHAPE.MAKEABLE_1, video: "a" },
-          { shape: ROUGH_SHAPE.MAKEABLE_2, video: "" },
-        ])
-      ).to.be.revertedWithoutReason();
-    });
 
     it("should SUCCESSFULLY set videos", async () => {
       const enterMine = "infinity.mp4";

@@ -89,6 +89,31 @@ async function populateDiamonds(mineContract, numDiamonds) {
   await mineContract.eruption(diamonds);
 }
 
+async function prepareMineEntranceReady(mineContract) {
+  await setEnterMineVideo(mineContract);
+}
+
+async function prepareRoughReady(mineContract, numDiamonds) {
+  await prepareMineEntranceReady(mineContract);
+  await populateDiamonds(mineContract, numDiamonds);
+  await setRoughVideos(mineContract);
+}
+
+async function prepareCutReady(mineContract, numDiamonds) {
+  await prepareRoughReady(mineContract, numDiamonds);
+  await setCutVideos(mineContract);
+}
+
+async function preparePolishReady(mineContract, numDiamonds) {
+  await prepareCutReady(mineContract, numDiamonds);
+  await setPolishedVideos(mineContract);
+}
+
+async function prepareRebirthReady(mineContract, numDiamonds) {
+  await preparePolishReady(mineContract, numDiamonds);
+  await setRebornVideo(mineContract);
+}
+
 async function assertEnterMineMetadata(mineContract, tokenId) {
   const expectedMetadata = _getExpectedMetadataEnterMine(tokenId);
   const parsedMetadata = await _getParsedMetadata(mineContract, tokenId);
@@ -413,4 +438,9 @@ module.exports = {
   setPolishedVideos,
   setRebornVideo,
   populateDiamonds,
+  prepareMineEntranceReady,
+  prepareRoughReady,
+  prepareCutReady,
+  preparePolishReady,
+  prepareRebirthReady,
 };
