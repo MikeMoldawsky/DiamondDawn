@@ -9,7 +9,9 @@ const DIAMOND = {
   polish: 1,
   symmetry: 1,
   fluorescence: 1,
-  measurements: "5.1 - 5.12 x 35",
+  length: 510,
+  width: 512,
+  depth: 350,
 };
 
 module.exports = { DIAMOND };

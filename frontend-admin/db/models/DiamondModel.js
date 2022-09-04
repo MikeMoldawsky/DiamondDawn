@@ -29,6 +29,9 @@ const COMMON_GRADES = ["Good", "Very Good", "Excellent"];
 const MIN_POINTS = 30;
 const MAX_POINTS = 70;
 
+const MIN_MEASUREMENTS = 100;
+const MAX_MEASUREMENTS = 600;
+
 const DiamondSchema = new mongoose.Schema({
   number: { type: Number, required: true },
   date: { type: Number, required: true },
@@ -45,10 +48,23 @@ const DiamondSchema = new mongoose.Schema({
     min: 1,
     max: FLUORESCENCE_GRADES.length,
   },
-  measurements: {
-    type: String,
+  length: {
+    type: Number,
     required: true,
-    match: [/\d\.\d\d - \d\.\d\d x \d\.\d\d/, "Please fill valid measurements"],
+    min: MIN_MEASUREMENTS,
+    max: MAX_MEASUREMENTS,
+  },
+  width: {
+    type: Number,
+    required: true,
+    min: MIN_MEASUREMENTS,
+    max: MAX_MEASUREMENTS,
+  },
+  depth: {
+    type: Number,
+    required: true,
+    min: MIN_MEASUREMENTS,
+    max: MAX_MEASUREMENTS,
   },
 });
 

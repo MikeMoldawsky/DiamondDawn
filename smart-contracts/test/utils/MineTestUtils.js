@@ -6,6 +6,7 @@ const {
   enumToColor,
   enumToGrade,
   enumToFluorescence,
+  enumToShape,
   DIAMOND_DAWN_TYPE,
   NO_SHAPE_NUM,
   ROUGH_SHAPE,
@@ -356,6 +357,13 @@ function _getRoughMetadataNoCaratShapeImage(id) {
 }
 
 function _getCutMetadataNoCaratShapeImage(id, diamond) {
+  const separator = enumToShape(diamond.shape) === "Round" ? " - " : " x ";
+  const measurements =
+    _.padEnd((diamond.length / 100).toString(), 4, "0") +
+    separator +
+    _.padEnd((diamond.width / 100).toString(), 4, "0") +
+    " x " +
+    _.padEnd((diamond.depth / 100).toString(), 4, "0");
   return {
     name: `Cut Diamond #${id}`,
     description: "description",
@@ -370,12 +378,22 @@ function _getCutMetadataNoCaratShapeImage(id, diamond) {
         trait_type: "Fluorescence",
         value: enumToFluorescence(diamond.fluorescence),
       },
-      { trait_type: "Measurements", value: diamond.measurements },
+      {
+        trait_type: "Measurements",
+        value: measurements,
+      },
     ],
   };
 }
 
 function _getPolishedMetadataNoCaratShapeImage(id, diamond) {
+  const separator = enumToShape(diamond.shape) === "Round" ? " - " : " x ";
+  const measurements =
+    _.padEnd((diamond.length / 100).toString(), 4, "0") +
+    separator +
+    _.padEnd((diamond.width / 100).toString(), 4, "0") +
+    " x " +
+    _.padEnd((diamond.depth / 100).toString(), 4, "0");
   return {
     name: `Polished Diamond #${id}`,
     description: "description",
@@ -390,7 +408,7 @@ function _getPolishedMetadataNoCaratShapeImage(id, diamond) {
         trait_type: "Fluorescence",
         value: enumToFluorescence(diamond.fluorescence),
       },
-      { trait_type: "Measurements", value: diamond.measurements },
+      { trait_type: "Measurements", value: measurements },
       { trait_type: "Clarity", value: enumToClarity(diamond.clarity) },
       { trait_type: "Polish", value: enumToGrade(diamond.polish) },
       { trait_type: "Symmetry", value: enumToGrade(diamond.symmetry) },
@@ -399,6 +417,14 @@ function _getPolishedMetadataNoCaratShapeImage(id, diamond) {
 }
 
 function _getRebirthMetadataNoCaratShapeAndImage(id, diamond) {
+  const separator = enumToShape(diamond.shape) === "Round" ? " - " : " x ";
+  const measurements =
+    _.padEnd((diamond.length / 100).toString(), 4, "0") +
+    separator +
+    _.padEnd((diamond.width / 100).toString(), 4, "0") +
+    " x " +
+    _.padEnd((diamond.depth / 100).toString(), 4, "0");
+
   return {
     name: `Diamond Dawn #${id}`,
     description: "description",
@@ -413,7 +439,7 @@ function _getRebirthMetadataNoCaratShapeAndImage(id, diamond) {
         trait_type: "Fluorescence",
         value: enumToFluorescence(diamond.fluorescence),
       },
-      { trait_type: "Measurements", value: diamond.measurements },
+      { trait_type: "Measurements", value: measurements },
       { trait_type: "Clarity", value: enumToClarity(diamond.clarity) },
       { trait_type: "Polish", value: enumToGrade(diamond.polish) },
       { trait_type: "Symmetry", value: enumToGrade(diamond.symmetry) },

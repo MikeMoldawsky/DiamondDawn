@@ -6,7 +6,7 @@ import "../objects/Diamond.sol";
 import "../objects/Mine.sol";
 import "../objects/Mine.sol";
 
-function toColorString(Color color) pure returns (string memory) {
+function toColorStr(Color color) pure returns (string memory) {
     if (color == Color.M) return "M";
     if (color == Color.N) return "N";
     if (color == Color.O) return "O";
@@ -24,14 +24,14 @@ function toColorString(Color color) pure returns (string memory) {
     revert();
 }
 
-function toGradeString(Grade grade) pure returns (string memory) {
+function toGradeStr(Grade grade) pure returns (string memory) {
     if (grade == Grade.GOOD) return "Good";
     if (grade == Grade.VERY_GOOD) return "Very Good";
     if (grade == Grade.EXCELLENT) return "Excellent";
     revert();
 }
 
-function toClarityString(Clarity clarity) pure returns (string memory) {
+function toClarityStr(Clarity clarity) pure returns (string memory) {
     if (clarity == Clarity.VS2) return "VS2";
     if (clarity == Clarity.VS1) return "VS1";
     if (clarity == Clarity.VVS2) return "VVS2";
@@ -41,13 +41,23 @@ function toClarityString(Clarity clarity) pure returns (string memory) {
     revert();
 }
 
-function toFluorescenceString(Fluorescence fluorescence) pure returns (string memory) {
+function toFluorescenceStr(Fluorescence fluorescence) pure returns (string memory) {
     if (fluorescence == Fluorescence.FAINT) return "Faint";
     if (fluorescence == Fluorescence.NONE) return "None";
     revert();
 }
 
-function toShapeString(Shape shape) pure returns (string memory) {
+function toMeasurementsStr(
+    Shape shape,
+    uint16 length,
+    uint16 width,
+    uint16 depth
+) pure returns (string memory) {
+    string memory separator = shape == Shape.ROUND ? " - " : " x ";
+    return string.concat(toDecimalStr(length), separator, toDecimalStr(width), " x ", toDecimalStr(depth));
+}
+
+function toShapeStr(Shape shape) pure returns (string memory) {
     if (shape == Shape.PEAR) return "Pear";
     if (shape == Shape.ROUND) return "Round";
     if (shape == Shape.OVAL) return "Oval";
@@ -55,7 +65,7 @@ function toShapeString(Shape shape) pure returns (string memory) {
     revert();
 }
 
-function toRoughShapeString(RoughShape shape) pure returns (string memory) {
+function toRoughShapeStr(RoughShape shape) pure returns (string memory) {
     if (shape == RoughShape.MAKEABLE_1) return "Makeable 1";
     if (shape == RoughShape.MAKEABLE_2) return "Makeable 2";
     revert();
@@ -73,13 +83,11 @@ function getName(Metadata memory metadata, uint tokenId) pure returns (string me
     revert();
 }
 
-function getCaratString(uint points) pure returns (string memory) {
-    uint remainder = points % 100;
-    string memory caratRemainder = remainder < 10
-        ? string.concat("0", Strings.toString(remainder))
-        : Strings.toString(remainder);
-    string memory carat = Strings.toString(points / 100);
-    return string.concat(carat, ".", caratRemainder);
+function toDecimalStr(uint percentage) pure returns (string memory) {
+    uint remainder = percentage % 100;
+    string memory quotient = Strings.toString(percentage / 100);
+    if (remainder < 10) return string.concat(quotient, ".0", Strings.toString(remainder));
+    return string.concat(quotient, ".", Strings.toString(remainder));
 }
 
 function toTypeString(Type type_) pure returns (string memory) {
