@@ -47,9 +47,14 @@ function toFluorescenceStr(Fluorescence fluorescence) pure returns (string memor
     revert();
 }
 
-function toMeasurementsStr(Shape shape, uint16 length, uint16 width, uint16 depth) pure returns (string memory) {
+function toMeasurementsStr(
+    Shape shape,
+    uint16 length,
+    uint16 width,
+    uint16 depth
+) pure returns (string memory) {
     string memory separator = shape == Shape.ROUND ? " - " : " x ";
-    return string.concat(toDecimalStr(length), separator , toDecimalStr(width), " x ", toDecimalStr(depth));
+    return string.concat(toDecimalStr(length), separator, toDecimalStr(width), " x ", toDecimalStr(depth));
 }
 
 function toShapeStr(Shape shape) pure returns (string memory) {
