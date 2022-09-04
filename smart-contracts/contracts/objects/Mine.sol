@@ -37,13 +37,14 @@ enum Type {
     REBORN
 }
 
+//TODO: 34 bytes, should check if we can save 2 bytes for 1 word.
 struct Metadata {
-    Type type_;
-    RoughMetadata rough;
-    CutMetadata cut;
-    PolishedMetadata polished;
-    RebornMetadata reborn;
-    Certificate certificate;
+    Type type_; // 1 byte
+    RoughMetadata rough; // 4 bytes
+    CutMetadata cut; // 3 bytes
+    PolishedMetadata polished; // 2 bytes
+    RebornMetadata reborn; // 2 bytes
+    Certificate certificate; // 22 bytes
 }
 
 struct ShapeVideo {

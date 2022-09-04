@@ -241,7 +241,6 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         string memory videoURI
     ) private pure returns (string memory) {
         // TODO: add description and created by when ready.
-        // TODO: change name according to DD type once decided.
         NFTMetadata memory nftMetadata = NFTMetadata({
             name: getName(metadata, tokenId),
             description: "description",
@@ -262,26 +261,29 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
         attributes[1] = toStrAttribute("Origin", "Metaverse");
         attributes[2] = toStrAttribute("Identification", "Natural");
-        attributes[3] = toAttribute("Carat", getCaratString(_getPoints(metadata)), "");
+        attributes[3] = toAttribute("Carat", toDecimalStr(_getPoints(metadata)), "");
         if (type_ == Type.ROUGH) {
             attributes[4] = toStrAttribute("Color", "Cape");
-            attributes[5] = toStrAttribute("Shape", toRoughShapeString(metadata.rough.shape));
+            attributes[5] = toStrAttribute("Shape", toRoughShapeStr(metadata.rough.shape));
             attributes[6] = toStrAttribute("Mine", "Underground");
             return attributes;
         }
 
         Certificate memory certificate = metadata.certificate;
         if (uint(Type.CUT) <= uint(type_)) {
-            attributes[4] = toStrAttribute("Color", toColorString(certificate.color));
-            attributes[5] = toStrAttribute("Cut", toGradeString(certificate.cut));
-            attributes[6] = toStrAttribute("Fluorescence", toFluorescenceString(certificate.fluorescence));
-            attributes[7] = toStrAttribute("Measurements", certificate.measurements);
-            attributes[8] = toStrAttribute("Shape", toShapeString(certificate.shape));
+            attributes[4] = toStrAttribute("Color", toColorStr(certificate.color));
+            attributes[5] = toStrAttribute("Cut", toGradeStr(certificate.cut));
+            attributes[6] = toStrAttribute("Fluorescence", toFluorescenceStr(certificate.fluorescence));
+            attributes[7] = toStrAttribute(
+                "Measurements",
+                toMeasurementsStr(certificate.shape, certificate.length, certificate.width, certificate.depth)
+            );
+            attributes[8] = toStrAttribute("Shape", toShapeStr(certificate.shape));
         }
         if (uint(Type.POLISHED) <= uint(type_)) {
-            attributes[9] = toStrAttribute("Clarity", toClarityString(certificate.clarity));
-            attributes[10] = toStrAttribute("Polish", toGradeString(certificate.polish));
-            attributes[11] = toStrAttribute("Symmetry", toGradeString(certificate.symmetry));
+            attributes[9] = toStrAttribute("Clarity", toClarityStr(certificate.clarity));
+            attributes[10] = toStrAttribute("Polish", toGradeStr(certificate.polish));
+            attributes[11] = toStrAttribute("Symmetry", toGradeStr(certificate.symmetry));
         }
         if (uint(Type.REBORN) <= uint(type_)) {
             attributes[12] = toStrAttribute("Laboratory", "GIA");
