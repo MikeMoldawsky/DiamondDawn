@@ -348,11 +348,6 @@ describe("DiamondDawn", () => {
       await expect(ddContract.polish(tokenId)).to.be.revertedWith(
         "Wrong stage"
       );
-
-      await ddContract.setStage(SYSTEM_STAGE.COMPLETE);
-      await expect(ddContract.polish(tokenId)).to.be.revertedWith(
-        "Wrong stage"
-      );
     });
 
     it("Should REVERT when polish is not ready", async () => {

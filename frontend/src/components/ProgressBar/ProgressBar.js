@@ -9,8 +9,6 @@ import { SYSTEM_STAGE } from "consts";
 const ProgressBar = () => {
   const { systemStage } = useSelector(systemSelector);
 
-  if (systemStage === SYSTEM_STAGE.COMPLETE) return null;
-
   return (
     <div className={classNames("progress-bar")}>
       {_.map(SYSTEM_STAGE, (stage, stageName) => {

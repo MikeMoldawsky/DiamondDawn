@@ -32,9 +32,10 @@ contract DiamondDawn is
     uint public constant PRICE = 0.002 ether; // TODO: change to 3.33eth
     uint16 public constant MAX_MINE_ENTRANCE = 333;
 
-    bool public isLocked; // locked forever when the project ends (immutable).
-    IDiamondDawnMine public ddMine;
+    bool public isLocked; // locked forever (immutable).
+    bool public isStageActive;
     Stage public stage;
+    IDiamondDawnMine public ddMine;
 
     uint16 private _tokenIdCounter;
     mapping(address => EnumerableSet.UintSet) private _ownerToShippedIds;
@@ -45,7 +46,6 @@ contract DiamondDawn is
         _pause();
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setDefaultRoyalty(_msgSender(), 1000); // 10 %
-        stage = Stage.INVITATIONS;
         ddMine = IDiamondDawnMine(mine_);
         // TODO: remove maxMineEntrance_ once staging is deploying 333 automatically.
         // diamondDawnMine.initialize(address(this), MAX_MINE_ENTRANCE);
@@ -59,25 +59,16 @@ contract DiamondDawn is
         _;
     }
 
-    modifier onlyStage(Stage stage_) {
+    modifier isActiveReadyStage(Stage stage_) {
         require(stage == stage_, "Wrong stage");
+        require(isStageActive, string.concat("Stage is inactive"));
+        require(_isStageReady(stage_), string.concat("Not ready for type: ", Strings.toString(uint8(type_))));
         _;
     }
 
-    modifier isMineReady(Stage stage_) {
-        Type type_;
-        bool isCompleted;
-        if (stage_ == Stage.INVITATIONS) type_ = Type.ENTER_MINE;
-        else if (stage_ == Stage.MINE_OPEN) type_ = Type.ROUGH;
-        else if (stage_ == Stage.CUT_OPEN) type_ = Type.CUT;
-        else if (stage_ == Stage.POLISH_OPEN) type_ = Type.POLISHED;
-        else if (stage_ == Stage.SHIP) type_ = Type.REBORN;
-        else if (stage_ == Stage.COMPLETE) isCompleted = true;
-        else revert();
-        require(
-            isCompleted || ddMine.isMineReady(type_),
-            string.concat("Not ready for type: ", Strings.toString(uint8(type_)))
-        );
+    modifier isInactiveReadyStage(Stage stage_) {
+        require(!isStageActive, string.concat("Stage is active"));
+        require(_isStageReady(stage_), string.concat("Not ready for type: ", Strings.toString(uint8(type_))));
         _;
     }
 
@@ -97,35 +88,17 @@ contract DiamondDawn is
         _;
     }
 
-    modifier mineEntranceLeft() {
+    modifier entranceLeft() {
         require(_tokenIdCounter <= MAX_MINE_ENTRANCE, "Max capacity.");
         _;
     }
 
     /**********************     External Functions     ************************/
 
-    function withdraw() external onlyRole(DEFAULT_ADMIN_ROLE) {
-        (bool success, ) = msg.sender.call{value: address(this).balance}("");
-        require(success, "Transfer failed.");
-    }
-
-    function allowEntrance(bytes32[] calldata hashes)
-        external
-        isNotLocked
-        mineEntranceLeft
-        onlyRole(DEFAULT_ADMIN_ROLE)
-        onlyStage(Stage.INVITATIONS)
-    {
-        for (uint i = 0; i < hashes.length; i++) {
-            _invitations[hashes[i]] = true;
-        }
-    }
-
     function enter(string calldata password)
         external
         payable
-        onlyStage(Stage.INVITATIONS)
-        isMineReady(Stage.INVITATIONS)
+        isActiveReadyStage(Stage.INVITATIONS)
         costs(PRICE)
     {
         //        require(balanceOf(_msgSender()) == 0, "1 token per wallet");
@@ -138,73 +111,72 @@ contract DiamondDawn is
         _safeMint(_msgSender(), tokenId);
     }
 
-    function mine(uint tokenId)
-        external
-        onlyStage(Stage.MINE_OPEN)
-        isMineReady(Stage.MINE_OPEN)
-        isOwner(tokenId)
-    {
+    function mine(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.MINE_OPEN) {
         ddMine.mine(tokenId);
     }
 
-    function cut(uint tokenId)
-        external
-        onlyStage(Stage.CUT_OPEN)
-        isMineReady(Stage.CUT_OPEN)
-        isOwner(tokenId)
-    {
+    function cut(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.CUT_OPEN) {
         ddMine.cut(tokenId);
     }
 
-    function polish(uint tokenId)
-        external
-        onlyStage(Stage.POLISH_OPEN)
-        isMineReady(Stage.POLISH_OPEN)
-        isOwner(tokenId)
-    {
+    function polish(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.POLISH_OPEN) {
         ddMine.polish(tokenId);
     }
 
-    function ship(uint tokenId) external onlyStage(Stage.SHIP) isMineReady(Stage.SHIP) isOwner(tokenId) {
+    function ship(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.SHIP) {
         _burn(tokenId); // Disable NFT transfer while diamond is in transit.
         ddMine.ship(tokenId);
         _ownerToShippedIds[_msgSender()].add(tokenId);
     }
 
-    function rebirth(uint tokenId) external isMineReady(Stage.SHIP) isShippedOwner(tokenId) {
+    function rebirth(uint tokenId) external isShippedOwner(tokenId) {
         // TODO: protect rebirth with a stupid password. e.g. (keccak256(tokenId)).
         _ownerToShippedIds[_msgSender()].remove(tokenId);
         ddMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);
     }
 
-    function lockDiamondDawn() external isNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
-        isLocked = true;
+    function allowEntrance(bytes32[] calldata hashes)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        isNotLocked
+        entranceLeft
+    {
+        for (uint i = 0; i < hashes.length; i++) {
+            _invitations[hashes[i]] = true;
+        }
     }
 
     function setStage(uint stage_)
         external
-        isNotLocked
-        isMineReady(Stage(stage_))
         onlyRole(DEFAULT_ADMIN_ROLE)
+        isNotLocked
+        isInactiveReadyStage(Stage(stage_))
     {
         stage = Stage(stage_);
+        isStageActive = true;
         emit StageChanged(stage);
     }
 
-    function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
+    function lockDiamondDawn() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        isLocked = true;
     }
 
-    function pause() external isNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
+    function pause() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
         _pause();
     }
 
-    function unpause() external isNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
+    function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
         _unpause();
+    }
+
+    function withdraw() external onlyRole(DEFAULT_ADMIN_ROLE) {
+        (bool success, ) = msg.sender.call{value: address(this).balance}("");
+        require(success, "Transfer failed.");
+    }
+
+    function setRoyaltyInfo(address receiver, uint96 feeNumerator) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _setDefaultRoyalty(receiver, feeNumerator);
     }
 
     /**********************     Public Functions     ************************/
@@ -234,5 +206,18 @@ contract DiamondDawn is
 
     function _burn(uint256 tokenId) internal virtual override(ERC721, ERC721Royalty) {
         super._burn(tokenId);
+    }
+
+    /**********************     Private Functions     ************************/
+
+    function _isStageReady(Stage stage_) private pure returns (bool) {
+        Type type_;
+        if (stage_ == Stage.INVITATIONS) type_ = Type.ENTER_MINE;
+        else if (stage_ == Stage.MINE_OPEN) type_ = Type.ROUGH;
+        else if (stage_ == Stage.CUT_OPEN) type_ = Type.CUT;
+        else if (stage_ == Stage.POLISH_OPEN) type_ = Type.POLISHED;
+        else if (stage_ == Stage.SHIP) type_ = Type.REBORN;
+        else revert();
+        return ddMine.isMineReady(type_);
     }
 }

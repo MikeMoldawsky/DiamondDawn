@@ -5,12 +5,12 @@ interface IDiamondDawnAdmin {
     event StageChanged(Stage stage);
 
     enum Stage {
+        NO_STAGE,
         INVITATIONS,
         MINE_OPEN,
         CUT_OPEN,
         POLISH_OPEN,
-        SHIP,
-        COMPLETE
+        SHIP
     }
 
     function withdraw() external;
@@ -19,9 +19,9 @@ interface IDiamondDawnAdmin {
 
     function lockDiamondDawn() external;
 
-    function setStage(uint stage_) external;
+    function setStage(uint stage) external;
 
-    function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips) external;
+    function setRoyaltyInfo(address receiver, uint96 feeNumerator) external;
 
     function pause() external;
 
