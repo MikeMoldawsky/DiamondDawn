@@ -1,17 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
+import "../objects/System.sol";
+
 interface IDiamondDawnAdmin {
     event StageChanged(Stage stage);
-
-    enum Stage {
-        NO_STAGE,
-        INVITATIONS,
-        MINE_OPEN,
-        CUT_OPEN,
-        POLISH_OPEN,
-        SHIP
-    }
 
     function withdraw() external;
 
