@@ -141,7 +141,7 @@ export const getDiamondIcon = (token) => {
     case DIAMOND_DAWN_TYPE.ENTER_MINE:
       return faGem;
     case DIAMOND_DAWN_TYPE.ROUGH:
-      shape = ROUGH_SHAPE[_.toUpper(shapeName)];
+      shape = ROUGH_SHAPE[_.toUpper(_.snakeCase(shapeName))];
       switch (shape) {
         case ROUGH_SHAPE.MAKEABLE_1:
         case ROUGH_SHAPE.MAKEABLE_2:

@@ -1,12 +1,11 @@
 import { makeReducer } from "./reduxUtils";
 import _ from "lodash";
 import { tokenIdToURI } from "api/contractApi";
+import { constants as ethersConsts } from 'ethers'
 
 const INITIAL_STATE = {};
 
-export const readAndWatchAccountTokens = (actionDispatch, contract, address) => async (dispatch, getState) => {
-  const filter = contract.filters.Transfer();
-
+export const readAndWatchAccountTokens = (actionDispatch, contract, provider, address) => async (dispatch, getState) => {
   let tokensToFetch = {}
 
   const saveToStore = _.debounce(async () => {
@@ -27,23 +26,28 @@ export const readAndWatchAccountTokens = (actionDispatch, contract, address) => 
     tokensToFetch = {}
   }, 100)
 
-  contract.on(filter, (from, to, tokenId) => {
+  const processEvent = (from, to, tokenId) => {
+    console.log('event', { ignore: getState().ui.shouldIgnoreTokenTransferWatch, from, to, tokenId: tokenId.toNumber() })
     if (getState().ui.shouldIgnoreTokenTransferWatch) return
 
     if (from === address) {
-      const isBurned = to === null
+      const isBurned = to === ethersConsts.AddressZero
       tokensToFetch[tokenId] = { shouldFetch: isBurned, isBurned }
     }
     else if (to === address) {
       tokensToFetch[tokenId] = { shouldFetch: true, isBurned: false }
     }
     saveToStore()
-  })
-
-  const events = await contract.queryFilter(contract.filters.Transfer());
-  if (_.size(events) === 0) {
-    saveToStore()
   }
+
+  // read past transfers
+  const events = await contract.queryFilter(contract.filters.Transfer());
+  _.forEach(events, ({args: [from, to, tokenId]}) => processEvent(from, to, tokenId))
+
+  // listen to future transfers
+  provider.once("block", () => {
+    contract.on('Transfer', processEvent)
+  });
 
 }
 

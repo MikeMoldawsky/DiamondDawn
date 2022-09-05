@@ -37,7 +37,6 @@ const ActionView = ({
   useEffect(() => {
     let unwatch = null;
     if (withWatch) {
-      dispatch(setShouldIgnoreTokenTransferWatch(true))
       unwatch = watch(contract, provider, onSuccess);
     }
 
@@ -62,6 +61,8 @@ const ActionView = ({
   };
 
   const execute = async () => {
+    dispatch(setShouldIgnoreTokenTransferWatch(true))
+
     const tx = await transact();
 
     setShowCompleteVideo(true);
