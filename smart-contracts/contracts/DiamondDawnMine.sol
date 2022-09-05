@@ -187,15 +187,14 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         return string(abi.encodePacked("data:application/json;base64,", base64Json));
     }
 
-    function isMineReady(Type type_) external view onlyDiamondDawn returns (bool) {
-        if (type_ == Type.ENTER_MINE || type_ == Type.REBORN) return _isVideoExist(type_, 0);
-        if (type_ == Type.ROUGH && diamondCount != maxDiamonds) return false;
-        uint maxShape = type_ == Type.ROUGH ? uint(type(RoughShape).max) : uint(type(Shape).max);
-        for (uint i = 1; i <= maxShape; i++) {
-            // skipping 0 - no shape
-            if (!_isVideoExist(type_, i)) return false;
-        }
-        return true;
+    function isReady(Stage stage_) external view onlyDiamondDawn returns (bool) {
+        if (stage_ == Stage.INVITATIONS) return _isVideoExist(Type.ENTER_MINE, 0);
+        if (stage_ == Stage.MINE_OPEN)
+            return diamondCount == maxDiamonds && _isAllVideosExist(Type.ROUGH, uint(type(RoughShape).max));
+        if (stage_ == Stage.CUT_OPEN) return _isAllVideosExist(Type.CUT, uint(type(Shape).max));
+        if (stage_ == Stage.POLISH_OPEN) return _isAllVideosExist(Type.POLISHED, uint(type(Shape).max));
+        if (stage_ == Stage.SHIP) return _isVideoExist(Type.REBORN, 0);
+        return false;
     }
 
     /**********************     Private Functions     ************************/
@@ -225,6 +224,14 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     function _getVideoURI(Metadata memory metadata) private view returns (string memory) {
         string memory videoUrl = _getVideo(metadata.type_, _getShapeNumber(metadata));
         return string.concat(_videoBaseURI(), videoUrl);
+    }
+
+    function _isAllVideosExist(Type type_, uint maxShape) private view returns (bool) {
+        for (uint i = 1; i <= maxShape; i++) {
+            // skipping 0 - no shape
+            if (!_isVideoExist(type_, i)) return false;
+        }
+        return true;
     }
 
     function _isVideoExist(Type type_, uint shape) private view returns (bool) {

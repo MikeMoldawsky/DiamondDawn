@@ -39,7 +39,6 @@ contract DiamondDawn is
 
     uint16 private _tokenIdCounter;
     mapping(address => EnumerableSet.UintSet) private _ownerToShippedIds;
-    mapping(uint => address) private _shippedIdToOwner;
     mapping(bytes32 => bool) private _invitations;
 
     constructor(address mine_, uint16 maxEntrance_) ERC721("DiamondDawn", "DD") {
@@ -48,8 +47,8 @@ contract DiamondDawn is
         _setDefaultRoyalty(_msgSender(), 1000); // 10 %
         ddMine = IDiamondDawnMine(mine_);
         // TODO: remove maxMineEntrance_ once staging is deploying 333 automatically.
-        // diamondDawnMine.initialize(address(this), MAX_MINE_ENTRANCE);
         ddMine.initialize(address(this), maxEntrance_);
+        // diamondDawnMine.initialize(address(this), MAX_MINE_ENTRANCE);
     }
 
     /**********************          Modifiers          ************************/
@@ -62,13 +61,13 @@ contract DiamondDawn is
     modifier isActiveReadyStage(Stage stage_) {
         require(stage == stage_, "Wrong stage");
         require(isStageActive, "Stage is inactive");
-        require(_isStageReady(stage_), "Stage not ready");
+        require(ddMine.isReady(stage_), "Stage not ready");
         _;
     }
 
     modifier isInactiveReadyStage(Stage stage_) {
         require(!isStageActive, "Stage is active");
-        require(_isStageReady(stage_), "Stage not ready");
+        require(ddMine.isReady(stage_), "Stage not ready");
         _;
     }
 
@@ -97,8 +96,8 @@ contract DiamondDawn is
     function enter(string calldata password)
         external
         payable
-        isActiveReadyStage(Stage.INVITATIONS)
         costs(PRICE)
+        isActiveReadyStage(Stage.INVITATIONS)
     {
         //        require(balanceOf(_msgSender()) == 0, "1 token per wallet");
         //        bytes32 passwordHash = keccak256(abi.encodePacked(password));
@@ -210,18 +209,5 @@ contract DiamondDawn is
 
     function _burn(uint256 tokenId) internal virtual override(ERC721, ERC721Royalty) {
         super._burn(tokenId);
-    }
-
-    /**********************     Private Functions     ************************/
-
-    function _isStageReady(Stage stage_) private view returns (bool) {
-        Type type_;
-        if (stage_ == Stage.INVITATIONS) type_ = Type.ENTER_MINE;
-        else if (stage_ == Stage.MINE_OPEN) type_ = Type.ROUGH;
-        else if (stage_ == Stage.CUT_OPEN) type_ = Type.CUT;
-        else if (stage_ == Stage.POLISH_OPEN) type_ = Type.POLISHED;
-        else if (stage_ == Stage.SHIP) type_ = Type.REBORN;
-        else revert();
-        return ddMine.isMineReady(type_);
     }
 }
