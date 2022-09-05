@@ -75,10 +75,10 @@ export const getTypeByStage = (stage) => {
       return DIAMOND_DAWN_TYPE.CUT;
     case SYSTEM_STAGE.POLISH_OPEN:
       return DIAMOND_DAWN_TYPE.POLISHED;
-    case SYSTEM_STAGE.COMPLETE:
+    case SYSTEM_STAGE.SHIP:
       return DIAMOND_DAWN_TYPE.REBORN;
     default:
-      return -1;
+      return 0;
   }
 };
 
@@ -93,9 +93,9 @@ export const getStageByTokenType = (type) => {
     case DIAMOND_DAWN_TYPE.POLISHED:
       return SYSTEM_STAGE.POLISH_OPEN;
     case DIAMOND_DAWN_TYPE.REBORN:
-      return SYSTEM_STAGE.COMPLETE;
+      return SYSTEM_STAGE.SHIP;
     default:
-      return -1;
+      return 0;
   }
 };
 
@@ -190,8 +190,6 @@ export const isTokenOfType = (token, type) =>
 export const isTokenActionable = (token, systemStage) => {
   if (!token) return false;
 
-  if (systemStage === SYSTEM_STAGE.COMPLETE) return false;
-
   const prevTokenType = getTypeByStage(systemStage - 1);
   const isActionableType = isTokenOfType(token, prevTokenType);
 
@@ -210,7 +208,6 @@ export const isTokenDone = (token, systemStage) => {
   const isNotProcessedEnough = tokenStage < systemStage - 1;
 
   switch (systemStage) {
-    case SYSTEM_STAGE.COMPLETE:
     case SYSTEM_STAGE.SHIP:
       return tokenType === DIAMOND_DAWN_TYPE.REBORN || isNotProcessedEnough;
     default:

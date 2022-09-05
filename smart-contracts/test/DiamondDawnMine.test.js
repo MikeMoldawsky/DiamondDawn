@@ -9,6 +9,7 @@ const {
   DIAMOND_DAWN_TYPE,
   SHAPE,
   ROUGH_SHAPE,
+  SYSTEM_STAGE,
 } = require("./utils/EnumConverterUtils");
 const {
   assertEnterMineMetadata,
@@ -426,143 +427,107 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be FALSE for all types by default", async () => {
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.REBORN)).to.be
-        .false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.NO_STAGE)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.INVITATIONS)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.MINE_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.CUT_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.POLISH_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.SHIP)).to.be.false;
     });
 
     it("should be TRUE only for ENTER_MINE", async () => {
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
         { shape: NO_SHAPE_NUM, video: "hi.mp4" },
       ]);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
-        .true;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.REBORN)).to.be
-        .false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.NO_STAGE)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.INVITATIONS)).to.be.true;
+      expect(await mineContract.isReady(SYSTEM_STAGE.MINE_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.CUT_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.POLISH_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.SHIP)).to.be.false;
     });
 
     it("should be TRUE only for ROUGH when video set and mine populated", async () => {
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
         { shape: ROUGH_SHAPE.MAKEABLE_1, video: "1.mp4" },
       ]);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
-        .false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.MINE_OPEN)).to.be.false;
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
         { shape: ROUGH_SHAPE.MAKEABLE_2, video: "2.mp4" },
       ]);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
-        .false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.MINE_OPEN)).to.be.false;
       const diamonds = _.range(numDiamonds - 1).map((_) => DIAMOND);
       await mineContract.eruption(diamonds);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
-        .false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.MINE_OPEN)).to.be.false;
 
       await mineContract.eruption([DIAMOND]); // now mine has all diamonds
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
-        .true;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.REBORN)).to.be
-        .false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.NO_STAGE)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.INVITATIONS)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.MINE_OPEN)).to.be.true;
+      expect(await mineContract.isReady(SYSTEM_STAGE.CUT_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.POLISH_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.SHIP)).to.be.false;
     });
 
     it("should be TRUE only for CUT", async () => {
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
         { shape: SHAPE.PEAR, video: "1.mp4" },
       ]);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.CUT_OPEN)).to.be.false;
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
         { shape: SHAPE.ROUND, video: "2.mp4" },
       ]);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.CUT_OPEN)).to.be.false;
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
         { shape: SHAPE.OVAL, video: "3.mp4" },
       ]);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.CUT_OPEN)).to.be.false;
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
         { shape: SHAPE.RADIANT, video: "4.mp4" },
       ]);
 
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.true;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.REBORN)).to.be
-        .false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.NO_STAGE)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.INVITATIONS)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.MINE_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.CUT_OPEN)).to.be.true;
+      expect(await mineContract.isReady(SYSTEM_STAGE.POLISH_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.SHIP)).to.be.false;
     });
 
     it("should be TRUE only for POLISHED", async () => {
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
         { shape: SHAPE.PEAR, video: "1.mp4" },
       ]);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
-        .false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.POLISH_OPEN)).to.be.false;
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
         { shape: SHAPE.ROUND, video: "2.mp4" },
       ]);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
-        .false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.POLISH_OPEN)).to.be.false;
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
         { shape: SHAPE.OVAL, video: "3.mp4" },
       ]);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
-        .false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.POLISH_OPEN)).to.be.false;
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
         { shape: SHAPE.RADIANT, video: "4.mp4" },
       ]);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
-        .true;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.REBORN)).to.be
-        .false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.NO_STAGE)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.INVITATIONS)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.MINE_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.CUT_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.POLISH_OPEN)).to.be.true;
+      expect(await mineContract.isReady(SYSTEM_STAGE.SHIP)).to.be.false;
     });
 
     it("should be TRUE only for REBORN", async () => {
       await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
         { shape: NO_SHAPE_NUM, video: "hi.mp4" },
       ]);
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.NO_TYPE)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ENTER_MINE)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.ROUGH)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.CUT)).to.be.false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.POLISHED)).to.be
-        .false;
-      expect(await mineContract.isMineReady(DIAMOND_DAWN_TYPE.REBORN)).to.be
-        .true;
+      expect(await mineContract.isReady(SYSTEM_STAGE.NO_STAGE)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.INVITATIONS)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.MINE_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.CUT_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.POLISH_OPEN)).to.be.false;
+      expect(await mineContract.isReady(SYSTEM_STAGE.SHIP)).to.be.true;
     });
   });
 });

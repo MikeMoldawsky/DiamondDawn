@@ -2,6 +2,7 @@
 pragma solidity ^0.8.15;
 
 import "../objects/Mine.sol";
+import "../objects/System.sol";
 
 interface IDiamondDawnMine {
     event Enter(uint tokenId);
@@ -27,5 +28,5 @@ interface IDiamondDawnMine {
 
     function getMetadata(uint tokenId) external view returns (string memory);
 
-    function isMineReady(Type type_) external view returns (bool);
+    function isReady(Stage stage) external view returns (bool);
 }
