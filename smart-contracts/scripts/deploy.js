@@ -29,7 +29,10 @@ const DIAMONDS = [
     polish: 1,
     symmetry: 3,
     fluorescence: 1,
-    measurements: "5.12 - 5.12 x 3.50",
+    length: 512,
+    width: 512,
+    depth: 350,
+    // measurements: "5.12 - 5.12 x 3.50",
   },
   {
     number: 2222222222,
@@ -42,7 +45,9 @@ const DIAMONDS = [
     polish: 3,
     symmetry: 3,
     fluorescence: 1,
-    measurements: "5.12 - 5.12 x 3.50",
+    length: 512,
+    width: 512,
+    depth: 350,
   },
   {
     number: 3333333333,
@@ -55,7 +60,9 @@ const DIAMONDS = [
     polish: 2,
     symmetry: 2,
     fluorescence: 1,
-    measurements: "5.12 - 5.12 x 3.50",
+    length: 512,
+    width: 512,
+    depth: 350,
   },
   {
     number: 3333333333,
@@ -68,7 +75,9 @@ const DIAMONDS = [
     polish: 2,
     symmetry: 1,
     fluorescence: 2,
-    measurements: "5.12 - 5.12 x 3.50",
+    length: 512,
+    width: 512,
+    depth: 350,
   },
   {
     number: 3333333333,
@@ -81,7 +90,9 @@ const DIAMONDS = [
     polish: 1,
     symmetry: 1,
     fluorescence: 1,
-    measurements: "5.12 - 5.12 x 3.50",
+    length: 512,
+    width: 512,
+    depth: 350,
   },
   {
     number: 3333333333,
@@ -94,7 +105,9 @@ const DIAMONDS = [
     polish: 1,
     symmetry: 1,
     fluorescence: 1,
-    measurements: "5.12 - 5.12 x 3.50",
+    length: 512,
+    width: 512,
+    depth: 350,
   },
   {
     number: 3333333333,
@@ -107,7 +120,9 @@ const DIAMONDS = [
     polish: 1,
     symmetry: 1,
     fluorescence: 1,
-    measurements: "5.12 - 5.12 x 3.50",
+    length: 512,
+    width: 512,
+    depth: 350,
   },
 ];
 

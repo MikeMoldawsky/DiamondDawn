@@ -38,7 +38,7 @@ export const loadDiamondCount = (mineContract) => async (dispatch) => {
   const diamondCount = await getMineDiamondCountApi(mineContract);
   dispatch({
     type: "SYSTEM.SET_DIAMOND_COUNT",
-    payload: { diamondCount: diamondCount.toNumber() },
+    payload: { diamondCount },
   });
 };
 
