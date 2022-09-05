@@ -216,15 +216,6 @@ contract DiamondDawn is
         emit SystemStageChanged(systemStage);
     }
 
-    function getTokenIdsByOwner(address owner) external view returns (uint[] memory) {
-        uint ownerTokenCount = balanceOf(owner);
-        uint[] memory tokenIds = new uint256[](ownerTokenCount);
-        for (uint i; i < ownerTokenCount; i++) {
-            tokenIds[i] = tokenOfOwnerByIndex(owner, i);
-        }
-        return tokenIds;
-    }
-
     function getShippingTokenIds(address owner) external view returns (uint[] memory) {
         return _ownerToShippingTokenIds[owner].values();
     }

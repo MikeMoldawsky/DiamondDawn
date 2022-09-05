@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
+function uncheckedInc(uint x) pure returns (uint) {
+    unchecked {
+        return x + 1;
+    }
+}
+
 function getRandomInRange(
     uint min,
     uint max,

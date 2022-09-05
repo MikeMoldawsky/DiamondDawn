@@ -14,8 +14,6 @@ interface IDiamondDawn {
 
     function rebirth(uint tokenId) external;
 
-    function getTokenIdsByOwner(address owner) external view returns (uint[] memory);
-
     // TODO: check with Asaf if we need this function
     function getShippingTokenIds(address owner) external view returns (uint[] memory);
 }

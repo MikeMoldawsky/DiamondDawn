@@ -10,7 +10,7 @@ import "./objects/Mine.sol";
 import "./objects/Diamond.sol";
 import "./utils/NFTSerializer.sol";
 import "./utils/StringUtils.sol";
-import "./utils/RandomUtils.sol";
+import "./utils/MathUtils.sol";
 import "./objects/Mine.sol";
 import "./objects/Mine.sol";
 import "./objects/Mine.sol";
@@ -149,7 +149,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         onlyRole(DEFAULT_ADMIN_ROLE)
         mineOverflow(diamonds.length)
     {
-        for (uint i = 0; i < diamonds.length; i++) {
+        for (uint i = 0; i < diamonds.length; i = uncheckedInc(i)) {
             _mine.push(diamonds[i]);
         }
         diamondCount += uint16(diamonds.length);
