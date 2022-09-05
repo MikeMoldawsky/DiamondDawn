@@ -221,7 +221,6 @@ contract DiamondDawn is
     }
 
     /**********************     Public Functions     ************************/
-    // TODO: Add withdraw funds method
 
     function pause() public diamondDawnNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
         _pause();
