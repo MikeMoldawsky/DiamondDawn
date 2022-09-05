@@ -11,7 +11,7 @@ interface IDiamondDawnAdmin {
         COMPLETE
     }
 
-    event SystemStageChanged(SystemStage stage);
+    event StageChanged(SystemStage stage);
 
     function lockDiamondDawn() external;
 
