@@ -1,6 +1,5 @@
 import { logApiError } from "utils";
 import { utils as ethersUtils } from "ethers";
-import _ from "lodash";
 
 // STATE/STORAGE
 export const getSystemStageApi = async (contract) => {
@@ -14,7 +13,7 @@ export const getSystemStageApi = async (contract) => {
 
 export const getMinePriceApi = async (contract) => {
   try {
-    return await contract.MINING_PRICE();
+    return await contract.PRICE();
   } catch (e) {
     logApiError(e, "getMinePriceApi");
     return undefined;
@@ -95,42 +94,10 @@ export const getTokenUriApi = async (contract, tokenId, isBurned) => {
   }
 };
 
-const tokenIdToURI = async (contract, tokenId, isBurned) => {
+export const tokenIdToURI = async (contract, tokenId, isBurned) => {
   const tokenUri = await getTokenUriApi(contract, tokenId, isBurned);
   return {
     tokenId,
     tokenUri: { ...tokenUri, isBurned },
   };
-};
-
-export const getAccountNftsApi = async (contract, address) => {
-  try {
-    // TODO: we should probably use another API for that.
-    const numTokens = await contract.balanceOf(address);
-    return await Promise.all(
-      _.range(numTokens)
-        .map(async (i) => contract.tokenOfOwnerByIndex(address, i))
-        .map(async (tokenId) => tokenIdToURI(contract, tokenId.toNumber()))
-    );
-  } catch (e) {
-    logApiError(e, "getAccountNftsApi");
-    return [];
-  }
-};
-
-export const getShippingTokensApi = async (contract, address) => {
-  try {
-    // TODO: we should probably use another API for that.
-    // TODO: listen to Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId) Event to get shipped tokens.
-
-    const shippingTokenIds = await contract.getShippingTokenIds(address);
-    return await Promise.all(
-      _.range(shippingTokenIds).map(async (tokenId) =>
-        tokenIdToURI(contract, tokenId.toNumber(), true)
-      )
-    );
-  } catch (e) {
-    logApiError(e, "getShippingTokensApi");
-    return [];
-  }
 };

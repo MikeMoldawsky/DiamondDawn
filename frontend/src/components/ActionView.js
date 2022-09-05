@@ -9,7 +9,7 @@ import Loading from "components/Loading";
 import classNames from "classnames";
 import { systemSelector } from "store/systemReducer";
 import _ from "lodash";
-import { uiSelector } from "store/uiReducer";
+import {setShouldIgnoreTokenTransferWatch, uiSelector} from "store/uiReducer";
 import { getTokenUriApi } from "api/contractApi";
 
 const ActionView = ({
@@ -37,6 +37,7 @@ const ActionView = ({
   useEffect(() => {
     let unwatch = null;
     if (withWatch) {
+      dispatch(setShouldIgnoreTokenTransferWatch(true))
       unwatch = watch(contract, provider, onSuccess);
     }
 
@@ -53,6 +54,7 @@ const ActionView = ({
   }, [completeVideoEnded, processedTokenId, processedTokenUri]);
 
   const onSuccess = async (tokenId) => {
+    dispatch(setShouldIgnoreTokenTransferWatch(false))
     // fetch and store tokenUri in local state until video has ended
     const tokenUri = await getTokenUriApi(contract, tokenId, isBurn);
     setProcessedTokenId(tokenId);
