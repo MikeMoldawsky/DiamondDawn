@@ -1,19 +1,19 @@
 export const SYSTEM_STAGE = {
-  INVITATIONS: 0,
-  MINE_OPEN: 1,
-  CUT_OPEN: 2,
-  POLISH_OPEN: 3,
-  SHIP: 4,
-  COMPLETE: 5,
+  NO_STAGE: 0,
+  INVITATIONS: 1,
+  MINE_OPEN: 2,
+  CUT_OPEN: 3,
+  POLISH_OPEN: 4,
+  SHIP: 5,
 };
 
 export const SYSTEM_STAGE_NAME = {
+  [SYSTEM_STAGE.NO_STAGE]: "No Stage",
   [SYSTEM_STAGE.INVITATIONS]: "Invitations",
   [SYSTEM_STAGE.MINE_OPEN]: "Mine",
   [SYSTEM_STAGE.CUT_OPEN]: "Cut",
   [SYSTEM_STAGE.POLISH_OPEN]: "Polish",
   [SYSTEM_STAGE.SHIP]: "Ship",
-  [SYSTEM_STAGE.COMPLETE]: "Complete",
 };
 
 export const DIAMOND_DAWN_TYPE = {

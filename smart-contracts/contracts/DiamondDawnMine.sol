@@ -187,7 +187,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         return string(abi.encodePacked("data:application/json;base64,", base64Json));
     }
 
-    function isMineReady(Type type_) external view returns (bool) {
+    function isMineReady(Type type_) external view onlyDiamondDawn returns (bool) {
         if (type_ == Type.ENTER_MINE || type_ == Type.REBORN) return _isVideoExist(type_, 0);
         if (type_ == Type.ROUGH && diamondCount != maxDiamonds) return false;
         uint maxShape = type_ == Type.ROUGH ? uint(type(RoughShape).max) : uint(type(Shape).max);

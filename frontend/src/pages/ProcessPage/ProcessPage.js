@@ -37,15 +37,6 @@ const ProcessPage = () => {
         return <Polish />;
       case SYSTEM_STAGE.SHIP:
         return <Ship />;
-      case SYSTEM_STAGE.COMPLETE:
-        return (
-          <div className="action-view">
-            <div className="diamond-art">
-              <FontAwesomeIcon icon={faGem} />
-            </div>
-            <div className="leading-text">SYSTEM IS COMPLETE AND CLOSED</div>
-          </div>
-        );
       default:
         return null;
     }
