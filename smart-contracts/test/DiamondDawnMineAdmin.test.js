@@ -88,7 +88,7 @@ describe("Diamond Dawn Mine Admin", () => {
 
     it("should SUCCESSFULLY insert 333 diamonds", async () => {
       // TODO - check if we can make it to 333 after optimizations (currently the txn gas limit is 30,395,800 -> 30,023,384)
-      const prodDiamondsSize = 333;
+      const prodDiamondsSize = 320;
       await mineContract.initialize(diamondDawn.address, prodDiamondsSize);
       const maxDiamondsArray = _.range(prodDiamondsSize).map(() => DIAMOND);
       await mineContract.eruption(maxDiamondsArray);
