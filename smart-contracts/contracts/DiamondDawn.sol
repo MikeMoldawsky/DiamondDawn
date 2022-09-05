@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "./interface/IDiamondDawn.sol";
@@ -22,14 +21,12 @@ import "./interface/IDiamondDawnMine.sol";
 contract DiamondDawn is
     ERC721,
     ERC721Burnable,
-    ERC721Enumerable,
     ERC721Royalty,
     AccessControl,
     Pausable,
     IDiamondDawn,
     IDiamondDawnAdmin
 {
-    using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
 
     bool public isLocked; // diamond dawn is locked forever when the project ends (immutable).
@@ -42,7 +39,7 @@ contract DiamondDawn is
     mapping(address => EnumerableSet.UintSet) private _ownerToShippingTokenIds;
     mapping(uint256 => address) private _shippedTokenIdToOwner;
     mapping(bytes32 => bool) private _invitations;
-    Counters.Counter private _tokenIdCounter;
+    uint16 private _tokenIdCounter;
 
     constructor(address _mineContract, uint16 maxMineEntrance_) ERC721("DiamondDawn", "DD") {
         _pause();
@@ -89,9 +86,9 @@ contract DiamondDawn is
         _;
     }
 
-    modifier onlyShippedDiamondOwner(uint tokenId) {
+    modifier isShippedOwner(uint tokenId) {
         address shippingOwner = _shippedTokenIdToOwner[tokenId];
-        require(shippingOwner != address(0), "DiamondDawn is not shipping");
+        require(shippingOwner != address(0), "No shipping");
         require(shippingOwner == _msgSender(), "Sender isn't a diamond holder");
         _;
     }
@@ -103,7 +100,7 @@ contract DiamondDawn is
     }
 
     modifier mineEntranceLeft() {
-        require(_tokenIdCounter.current() <= MAX_MINE_ENTRANCE, "Diamond Dawn's mine is at max capacity.");
+        require(_tokenIdCounter <= MAX_MINE_ENTRANCE, "Max capacity.");
         _;
     }
 
@@ -133,18 +130,14 @@ contract DiamondDawn is
         isMineReady(SystemStage.INVITATIONS)
         costs(PRICE)
     {
-        // TODO: only 1 per wallet
+        //        require(balanceOf(_msgSender()) == 0, "1 token per wallet");
         //        bytes32 passwordHash = keccak256(abi.encodePacked(password));
-        //        require(
-        //            _invitations[passwordHash],
-        //            "You can't enter the mine, you're not invited"
-        //        );
+        //        require(_invitations[passwordHash], "Not invited");
         //        delete _invitations[passwordHash];
-        _tokenIdCounter.increment();
-        uint256 tokenId = _tokenIdCounter.current();
-        // TODO: check if safeMint after or before mint.
-        _safeMint(_msgSender(), tokenId);
+        uint256 tokenId = ++_tokenIdCounter;
+        // TODO: should _safeMint be before/after enter().
         ddMine.enter(tokenId);
+        _safeMint(_msgSender(), tokenId);
     }
 
     function mine(uint tokenId)
@@ -186,14 +179,8 @@ contract DiamondDawn is
         _ownerToShippingTokenIds[_msgSender()].add(tokenId);
     }
 
-    function rebirth(uint tokenId)
-        external
-        isMineReady(SystemStage.SHIP)
-        onlyShippedDiamondOwner(tokenId)
-    // isOwner(tokenId) TODO: check how to solve only owner
-    {
-        // TODO: Only owner
-        // TODO: protect rebirth with a stupid password (keccak256(tokenId) for example.
+    function rebirth(uint tokenId) external isMineReady(SystemStage.SHIP) isShippedOwner(tokenId) {
+        // TODO: protect rebirth with a stupid password. e.g. (keccak256(tokenId)).
         delete _shippedTokenIdToOwner[tokenId];
         _ownerToShippingTokenIds[_msgSender()].remove(tokenId);
         ddMine.rebirth(tokenId);
@@ -211,19 +198,8 @@ contract DiamondDawn is
         isMineReady(SystemStage(systemStage_))
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        // TODO: Mine Open should be open when we had 333 diamonds at the beginning
         systemStage = SystemStage(systemStage_);
         emit StageChanged(systemStage);
-    }
-
-    /**********************     Public Functions     ************************/
-
-    function pause() public diamondDawnNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
-        _pause();
-    }
-
-    function unpause() public diamondDawnNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
-        _unpause();
     }
 
     function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips)
@@ -232,6 +208,16 @@ contract DiamondDawn is
     {
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
     }
+
+    function pause() external diamondDawnNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
+        _pause();
+    }
+
+    function unpause() external diamondDawnNotLocked onlyRole(DEFAULT_ADMIN_ROLE) {
+        _unpause();
+    }
+
+    /**********************     Public Functions     ************************/
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         // TODO - this require blocks getting the tokenURI of burnt tokens
@@ -243,7 +229,7 @@ contract DiamondDawn is
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl)
+        override(ERC721, ERC721Royalty, AccessControl)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
@@ -255,8 +241,7 @@ contract DiamondDawn is
         address from,
         address to,
         uint256 tokenId
-    ) internal override(ERC721, ERC721Enumerable) whenNotPaused {
-        // TODO: there is a problem with ERC721Enumerable and burn mechanism - should implement in another way
+    ) internal override(ERC721) whenNotPaused {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
