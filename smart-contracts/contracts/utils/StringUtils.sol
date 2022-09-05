@@ -90,7 +90,7 @@ function toDecimalStr(uint percentage) pure returns (string memory) {
     return string.concat(quotient, ".", Strings.toString(remainder));
 }
 
-function toTypeString(Type type_) pure returns (string memory) {
+function toTypeStr(Type type_) pure returns (string memory) {
     if (type_ == Type.ENTER_MINE) return "Mine Entrance";
     if (type_ == Type.ROUGH) return "Rough";
     if (type_ == Type.CUT) return "Cut";

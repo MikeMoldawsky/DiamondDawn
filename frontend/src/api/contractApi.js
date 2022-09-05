@@ -5,7 +5,7 @@ import _ from "lodash";
 // STATE/STORAGE
 export const getSystemStageApi = async (contract) => {
   try {
-    return await contract.systemStage();
+    return await contract.stage();
   } catch (e) {
     logApiError(e, "getSystemStageApi");
     return -1;

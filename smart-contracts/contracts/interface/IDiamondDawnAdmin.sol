@@ -2,9 +2,9 @@
 pragma solidity ^0.8.15;
 
 interface IDiamondDawnAdmin {
-    event StageChanged(SystemStage stage);
+    event StageChanged(Stage stage);
 
-    enum SystemStage {
+    enum Stage {
         INVITATIONS,
         MINE_OPEN,
         CUT_OPEN,
@@ -15,11 +15,11 @@ interface IDiamondDawnAdmin {
 
     function withdraw() external;
 
-    function allowMineEntrance(bytes32[] calldata passwordsHash) external;
+    function allowEntrance(bytes32[] calldata hashes) external;
 
     function lockDiamondDawn() external;
 
-    function setSystemStage(uint systemStage_) external;
+    function setStage(uint stage_) external;
 
     function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips) external;
 

@@ -10,7 +10,7 @@ import { getVideoUrlParamName } from "utils";
 
 // ADMIN CONTROL API
 export const getSystemStageApi = async (contract) => {
-  return await contract.systemStage();
+  return await contract.stage();
 };
 
 export const getSystemPausedApi = async (contract) => {
@@ -22,7 +22,7 @@ export const getMineDiamondCountApi = async (mineContract) => {
 };
 
 export const setSystemStageApi = async (contract, systemStage) => {
-  const tx = await contract.setSystemStage(systemStage);
+  const tx = await contract.setStage(systemStage);
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };
@@ -117,7 +117,7 @@ export const eruptionApi = async (mineContract, diamonds) => {
 // Enter Mine API
 export const allowMineEntranceApi = async (contract, passwordHashes) => {
   console.log("Pushing password hashes to contract", { passwordHashes });
-  const tx = await contract.allowMineEntrance(passwordHashes);
+  const tx = await contract.allowEntrance(passwordHashes);
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };
