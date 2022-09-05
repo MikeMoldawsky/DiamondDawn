@@ -254,7 +254,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     function _getJsonAttributes(Metadata memory metadata) private pure returns (Attribute[] memory) {
         Type type_ = metadata.type_;
         Attribute[] memory attributes = new Attribute[](_getNumAttributes(type_));
-        attributes[0] = toStrAttribute("Type", toTypeString(type_));
+        attributes[0] = toStrAttribute("Type", toTypeStr(type_));
         if (type_ == Type.ENTER_MINE) {
             return attributes;
         }
