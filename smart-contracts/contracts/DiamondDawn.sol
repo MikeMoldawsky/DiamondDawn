@@ -61,14 +61,14 @@ contract DiamondDawn is
 
     modifier isActiveReadyStage(Stage stage_) {
         require(stage == stage_, "Wrong stage");
-        require(isStageActive, string.concat("Stage is inactive"));
-        require(_isStageReady(stage_), string.concat("Not ready for type: ", Strings.toString(uint8(type_))));
+        require(isStageActive, "Stage is inactive");
+        require(_isStageReady(stage_), "Stage not ready");
         _;
     }
 
     modifier isInactiveReadyStage(Stage stage_) {
-        require(!isStageActive, string.concat("Stage is active"));
-        require(_isStageReady(stage_), string.concat("Not ready for type: ", Strings.toString(uint8(type_))));
+        require(!isStageActive, "Stage is active");
+        require(_isStageReady(stage_), "Stage not ready");
         _;
     }
 
@@ -83,8 +83,7 @@ contract DiamondDawn is
     }
 
     modifier isOwner(uint tokenId) {
-        address owner = ERC721.ownerOf(tokenId);
-        require(_msgSender() == owner, "Not owner");
+        require(_msgSender() == ERC721.ownerOf(tokenId), "Not owner");
         _;
     }
 
@@ -147,11 +146,16 @@ contract DiamondDawn is
         }
     }
 
-    function setStage(uint stage_)
+    function completeStage(Stage stage_) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        require(stage == stage_, "Wrong stage");
+        isStageActive = false;
+    }
+
+    function setStage(Stage stage_)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
         isNotLocked
-        isInactiveReadyStage(Stage(stage_))
+        isInactiveReadyStage(stage_)
     {
         stage = Stage(stage_);
         isStageActive = true;
@@ -210,7 +214,7 @@ contract DiamondDawn is
 
     /**********************     Private Functions     ************************/
 
-    function _isStageReady(Stage stage_) private pure returns (bool) {
+    function _isStageReady(Stage stage_) private view returns (bool) {
         Type type_;
         if (stage_ == Stage.INVITATIONS) type_ = Type.ENTER_MINE;
         else if (stage_ == Stage.MINE_OPEN) type_ = Type.ROUGH;

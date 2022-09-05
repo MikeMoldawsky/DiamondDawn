@@ -19,7 +19,9 @@ interface IDiamondDawnAdmin {
 
     function lockDiamondDawn() external;
 
-    function setStage(uint stage) external;
+    function setStage(Stage stage) external;
+
+    function completeStage(Stage stage) external;
 
     function setRoyaltyInfo(address receiver, uint96 feeNumerator) external;
 
