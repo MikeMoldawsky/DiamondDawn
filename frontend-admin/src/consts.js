@@ -34,7 +34,7 @@ export const SHAPE = {
 
 export const EVENTS = {
   Transfer: "Transfer",
-  SystemStageChanged: "SystemStageChanged",
+  StageChanged: "StageChanged",
 };
 
 export const COLOR_GRADES = [

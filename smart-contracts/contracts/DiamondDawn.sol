@@ -213,11 +213,7 @@ contract DiamondDawn is
     {
         // TODO: Mine Open should be open when we had 333 diamonds at the beginning
         systemStage = SystemStage(systemStage_);
-        emit SystemStageChanged(systemStage);
-    }
-
-    function getShippingTokenIds(address owner) external view returns (uint[] memory) {
-        return _ownerToShippingTokenIds[owner].values();
+        emit StageChanged(systemStage);
     }
 
     /**********************     Public Functions     ************************/

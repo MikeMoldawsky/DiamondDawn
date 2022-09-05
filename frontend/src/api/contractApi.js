@@ -121,6 +121,8 @@ export const getAccountNftsApi = async (contract, address) => {
 export const getShippingTokensApi = async (contract, address) => {
   try {
     // TODO: we should probably use another API for that.
+    // TODO: listen to Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId) Event to get shipped tokens.
+
     const shippingTokenIds = await contract.getShippingTokenIds(address);
     return await Promise.all(
       _.range(shippingTokenIds).map(async (tokenId) =>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import useMountLogger from "hooks/useMountLogger";
 import { useAccount, useProvider } from "wagmi";
 import { useDispatch } from "react-redux";
@@ -26,8 +26,8 @@ const AppLoader = () => {
     dispatch(loadSystemSchedule());
 
     provider.once("block", () => {
-      contract.on(EVENTS.SystemStageChanged, (_stage) => {
-        console.log("EVENT SystemStageChanged fired", { _stage });
+      contract.on(EVENTS.StageChanged, (_stage) => {
+        console.log("EVENT StageChanged fired", { _stage });
         dispatch(loadSystemStage(contract));
       });
     });

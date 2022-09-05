@@ -39,7 +39,7 @@ export const SHAPE = {
   RADIANT: 4,
 };
 export const EVENTS = {
-  SystemStageChanged: "SystemStageChanged",
+  StageChanged: "StageChanged",
 };
 
 export const DUMMY_VIDEO_URL =
