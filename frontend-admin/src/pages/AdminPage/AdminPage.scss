@@ -23,6 +23,13 @@
         top: 50%;
         transform: translateY(-50%);
       }
+
+      &.complete {
+        &:after {
+          content: "\2713         COMPLETE";
+          background-color: orange;
+        }
+      }
     }
   }
 
@@ -62,6 +69,11 @@
     display: flex;
     align-self: center;
     justify-content: flex-end;
+  }
+
+  .main-button-row {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .save-button {

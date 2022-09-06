@@ -12,6 +12,7 @@ const INITIAL_STATE = {
   ddContractData: null,
   ddMineContractData: null,
   systemStage: -1,
+  isStageActive: false,
   paused: false,
   diamondCount: -1,
   schedule: {},
@@ -19,10 +20,10 @@ const INITIAL_STATE = {
 };
 
 export const loadSystemStage = (contract) => async (dispatch) => {
-  const systemStage = await getSystemStageApi(contract);
+  const { systemStage, isStageActive } = await getSystemStageApi(contract);
   dispatch({
     type: "SYSTEM.SET_STAGE",
-    payload: { systemStage },
+    payload: { systemStage, isStageActive },
   });
 };
 
