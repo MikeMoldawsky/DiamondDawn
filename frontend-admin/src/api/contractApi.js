@@ -21,6 +21,10 @@ export const getSystemPausedApi = async (contract) => {
   return await contract.paused();
 };
 
+export const getMaxDiamondsApi = async (contract) => {
+  return await contract.maxDiamonds();
+};
+
 export const getMineDiamondCountApi = async (mineContract) => {
   return await mineContract.diamondCount();
 };

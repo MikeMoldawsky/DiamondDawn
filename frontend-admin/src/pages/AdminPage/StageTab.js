@@ -18,12 +18,14 @@ import {
   unpauseApi,
 } from "api/contractApi";
 import classNames from "classnames";
+import {SYSTEM_STAGE} from "consts";
 
 const StageTab = ({ stage }) => {
   const {
     systemStage,
     isStageActive,
     paused,
+    maxDiamonds,
     diamondCount,
     schedule,
     videoArt,
@@ -56,13 +58,15 @@ const StageTab = ({ stage }) => {
   const isScheduleSet =
     stage === 0 ? isEndTimeSet : isStartTimeSet && isEndTimeSet;
   const isVideoArtSet = _.every(videoArt, (videoUrl) => !_.isEmpty(videoUrl));
+  const isCurrentStage = systemStage === stage;
 
   let canReveal = isScheduleSet && isVideoArtSet;
-  if (stage === 0) {
+  if (stage === SYSTEM_STAGE.INVITATIONS) {
     canReveal = canReveal && !paused;
-    // canReveal = canReveal && diamondCount === 333 && !paused
   }
-  const isCurrentStage = systemStage === stage;
+  else if (stage === SYSTEM_STAGE.MINE_OPEN) {
+    canReveal = canReveal && diamondCount === maxDiamonds
+  }
 
   return (
     <div className="stage-tab">
@@ -93,20 +97,8 @@ const StageTab = ({ stage }) => {
         {systemStageName} SCHEDULE
       </div>
       <StageSchedule stage={stage} />
-      {stage === 0 && (
+      {stage === SYSTEM_STAGE.INVITATIONS && (
         <>
-          <div className="separator" />
-          <div
-            className={classNames("title", {
-              success: diamondCount === 333,
-              error: diamondCount !== 333,
-            })}
-          >
-            POPULATED DIAMOND COUNT
-          </div>
-          <div className="center-aligned-row input-row">
-            <div className="stage">{diamondCount}</div>
-          </div>
           <div className="separator" />
           <div
             className={classNames("title", { success: !paused, error: paused })}
@@ -118,6 +110,22 @@ const StageTab = ({ stage }) => {
             <ActionButton actionKey="togglePause" onClick={togglePause}>
               {paused ? "UNPAUSE" : "PAUSE"}
             </ActionButton>
+          </div>
+        </>
+      )}
+      {stage === SYSTEM_STAGE.MINE_OPEN && (
+        <>
+          <div className="separator" />
+          <div
+            className={classNames("title", {
+              success: diamondCount === maxDiamonds,
+              error: diamondCount !== maxDiamonds,
+            })}
+          >
+            POPULATED DIAMOND COUNT
+          </div>
+          <div className="center-aligned-row input-row">
+            <div className="stage">{diamondCount} / {maxDiamonds}</div>
           </div>
         </>
       )}

@@ -11,7 +11,7 @@ import DiamondsTab from "./DiamondsTab";
 import StageTab from "./StageTab";
 import { CONTRACTS, SYSTEM_STAGE } from "consts";
 import {
-  loadDiamondCount,
+  loadDiamondCount, loadMaxDiamonds,
   loadSchedule,
   loadSystemPaused,
   loadSystemStage,
@@ -52,6 +52,7 @@ const AdminPage = () => {
     if (contractReady) {
       dispatch(loadSystemStage(contract));
       dispatch(loadSystemPaused(contract));
+      dispatch(loadMaxDiamonds(mineContract))
       dispatch(loadDiamondCount(mineContract));
       dispatch(loadSchedule());
     }
