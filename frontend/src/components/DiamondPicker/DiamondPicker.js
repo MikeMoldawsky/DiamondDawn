@@ -16,14 +16,14 @@ const DiamondPicker = () => {
   const { selectedTokenId } = useSelector(uiSelector);
   const [actionableTokens, setActionableTokens] = useState([]);
   const tokens = useSelector(tokensSelector);
-  const { systemStage } = useSelector(systemSelector);
+  const { systemStage, isStageActive } = useSelector(systemSelector);
 
   console.log("DiamondPicker", { actionableTokens });
 
   useMountLogger("DiamondPicker");
 
   useEffect(() => {
-    setActionableTokens(getActionableTokens(tokens, systemStage));
+    setActionableTokens(getActionableTokens(tokens, systemStage, isStageActive));
   }, []);
 
   const selectedIndex = _.findIndex(

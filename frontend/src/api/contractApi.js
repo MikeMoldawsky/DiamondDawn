@@ -4,7 +4,11 @@ import { utils as ethersUtils } from "ethers";
 // STATE/STORAGE
 export const getSystemStageApi = async (contract) => {
   try {
-    return await contract.stage();
+    const [systemStage, isStageActive] = await Promise.all([
+      contract.stage(),
+      contract.isStageActive()
+    ])
+    return { systemStage, isStageActive }
   } catch (e) {
     logApiError(e, "getSystemStageApi");
     return -1;

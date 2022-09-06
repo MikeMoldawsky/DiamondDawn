@@ -4,15 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import { getActionableTokens } from "utils";
+import {systemSelector} from "store/systemReducer";
 
 function useAutoSelectToken(systemStage) {
   const dispatch = useDispatch();
   const { selectedTokenId } = useSelector(uiSelector);
   const tokens = useSelector(tokensSelector);
+  const { isStageActive } = useSelector(systemSelector)
 
   useEffect(() => {
     if (_.size(tokens) > 0) {
-      const actionableTokens = getActionableTokens(tokens, systemStage);
+      const actionableTokens = getActionableTokens(tokens, systemStage, isStageActive);
 
       if (selectedTokenId !== -1) {
         const selectedActionable = _.find(

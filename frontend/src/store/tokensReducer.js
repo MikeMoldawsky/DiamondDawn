@@ -42,7 +42,12 @@ export const readAndWatchAccountTokens = (actionDispatch, contract, provider, ad
 
   // read past transfers
   const events = await contract.queryFilter(contract.filters.Transfer());
-  _.forEach(events, ({args: [from, to, tokenId]}) => processEvent(from, to, tokenId))
+  if (_.size(events) > 0) {
+    _.forEach(events, ({args: [from, to, tokenId]}) => processEvent(from, to, tokenId))
+  }
+  else {
+    saveToStore()
+  }
 
   // listen to future transfers
   provider.once("block", () => {

@@ -187,8 +187,8 @@ export const getDiamondIcon = (token) => {
 export const isTokenOfType = (token, type) =>
   token && getTokenTrait(token, TRAIT.type) === type;
 
-export const isTokenActionable = (token, systemStage) => {
-  if (!token) return false;
+export const isTokenActionable = (token, systemStage, isStageActive) => {
+  if (!token || !isStageActive) return false;
 
   const prevTokenType = getTypeByStage(systemStage - 1);
   const isActionableType = isTokenOfType(token, prevTokenType);
@@ -215,6 +215,6 @@ export const isTokenDone = (token, systemStage) => {
   }
 };
 
-export const getActionableTokens = (tokens, systemStage) => {
-  return _.filter(tokens, (token) => isTokenActionable(token, systemStage));
+export const getActionableTokens = (tokens, systemStage, isStageActive) => {
+  return _.filter(tokens, (token) => isTokenActionable(token, systemStage, isStageActive));
 };
