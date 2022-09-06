@@ -8,14 +8,14 @@ import Mine from "./Mine";
 import Cut from "./Cut";
 import Polish from "./Polish";
 import Ship from "./Burn";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGem } from "@fortawesome/free-solid-svg-icons";
 import { SYSTEM_STAGE } from "consts";
 import "./ProcessPage.scss";
+import { useNavigate } from "react-router-dom";
 
 const ProcessPage = () => {
   const { systemStage } = useSelector(systemSelector);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useAutoSelectToken(systemStage);
 
@@ -38,6 +38,7 @@ const ProcessPage = () => {
       case SYSTEM_STAGE.SHIP:
         return <Ship />;
       default:
+        navigate("/");
         return null;
     }
   }, [systemStage]);

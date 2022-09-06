@@ -9,8 +9,10 @@ import Loading from "components/Loading";
 import classNames from "classnames";
 import { systemSelector } from "store/systemReducer";
 import _ from "lodash";
-import {setShouldIgnoreTokenTransferWatch, uiSelector} from "store/uiReducer";
+import { setShouldIgnoreTokenTransferWatch, uiSelector } from "store/uiReducer";
 import { getTokenUriApi } from "api/contractApi";
+import { getStageName } from "utils";
+import Countdown from "components/Countdown";
 
 const ActionView = ({
   children,
@@ -29,7 +31,8 @@ const ActionView = ({
   const contract = useDDContract();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { systemStage, systemSchedule } = useSelector(systemSelector);
+  const { systemStage, isStageActive, systemSchedule } =
+    useSelector(systemSelector);
   const { selectedTokenId } = useSelector(uiSelector);
   const endTime = _.get(systemSchedule, systemStage + 1);
   const withWatch = _.isFunction(watch);
@@ -53,7 +56,7 @@ const ActionView = ({
   }, [completeVideoEnded, processedTokenId, processedTokenUri]);
 
   const onSuccess = async (tokenId) => {
-    dispatch(setShouldIgnoreTokenTransferWatch(false))
+    dispatch(setShouldIgnoreTokenTransferWatch(false));
     // fetch and store tokenUri in local state until video has ended
     const tokenUri = await getTokenUriApi(contract, tokenId, isBurn);
     setProcessedTokenId(tokenId);
@@ -61,7 +64,7 @@ const ActionView = ({
   };
 
   const execute = async () => {
-    dispatch(setShouldIgnoreTokenTransferWatch(true))
+    dispatch(setShouldIgnoreTokenTransferWatch(true));
 
     const tx = await transact();
 
@@ -93,6 +96,22 @@ const ActionView = ({
     if (completeVideoEnded) {
       return <Loading />;
     }
+
+    if (!isStageActive)
+      return (
+        <>
+          <div className="leading-text">
+            {_.upperCase(getStageName(systemStage))} STAGE IS COMPLETE
+          </div>
+          <Countdown
+            date={endTime}
+            text={[
+              "You have",
+              `until ${_.lowerCase(getStageName(systemStage + 1))}`,
+            ]}
+          />
+        </>
+      );
 
     return React.cloneElement(children, { execute, endTime });
   };

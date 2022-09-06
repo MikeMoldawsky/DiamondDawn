@@ -36,7 +36,14 @@ const AppLoader = () => {
 
   useOnConnect(
     () => {
-      dispatch(readAndWatchAccountTokens(actionDispatch, contract, provider, account?.address))
+      dispatch(
+        readAndWatchAccountTokens(
+          actionDispatch,
+          contract,
+          provider,
+          account?.address
+        )
+      );
     },
     () => {
       dispatch({ type: "RESET_STATE" });
