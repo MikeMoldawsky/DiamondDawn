@@ -6,9 +6,9 @@ export const getSystemStageApi = async (contract) => {
   try {
     const [systemStage, isStageActive] = await Promise.all([
       contract.stage(),
-      contract.isStageActive()
-    ])
-    return { systemStage, isStageActive }
+      contract.isStageActive(),
+    ]);
+    return { systemStage, isStageActive };
   } catch (e) {
     logApiError(e, "getSystemStageApi");
     return -1;

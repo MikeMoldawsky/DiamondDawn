@@ -1,60 +1,79 @@
 import { makeReducer } from "./reduxUtils";
 import _ from "lodash";
 import { tokenIdToURI } from "api/contractApi";
-import { constants as ethersConsts } from 'ethers'
+import { constants as ethersConsts } from "ethers";
 
 const INITIAL_STATE = {};
 
-export const readAndWatchAccountTokens = (actionDispatch, contract, provider, address) => async (dispatch, getState) => {
-  let tokensToFetch = {}
+export const readAndWatchAccountTokens =
+  (actionDispatch, contract, provider, address) =>
+  async (dispatch, getState) => {
+    let tokensToFetch = {};
 
-  const saveToStore = _.debounce(async () => {
-    const tokenIdsToFetch = _.reduce(tokensToFetch, (tokenIds, { shouldFetch }, tokenId) => {
-      return shouldFetch ? [...tokenIds, parseInt(tokenId)] : tokenIds
-    }, [])
-    const tokenUris = await Promise.all(
-      tokenIdsToFetch.map(tokenId => tokenIdToURI(contract, tokenId, tokensToFetch[tokenId].isBurned))
-    )
+    const saveToStore = _.debounce(async () => {
+      const tokenIdsToFetch = _.reduce(
+        tokensToFetch,
+        (tokenIds, { shouldFetch }, tokenId) => {
+          return shouldFetch ? [...tokenIds, parseInt(tokenId)] : tokenIds;
+        },
+        []
+      );
+      const tokenUris = await Promise.all(
+        tokenIdsToFetch.map((tokenId) =>
+          tokenIdToURI(contract, tokenId, tokensToFetch[tokenId].isBurned)
+        )
+      );
 
-    console.log('readAndWatchAccountTokens', { tokensToFetch, tokenIdsToFetch, tokenUris })
+      console.log("readAndWatchAccountTokens", {
+        tokensToFetch,
+        tokenIdsToFetch,
+        tokenUris,
+      });
 
-    actionDispatch({
-      type: "TOKENS.SET",
-      payload: tokenUris,
-    }, "load-nfts");
+      actionDispatch(
+        {
+          type: "TOKENS.SET",
+          payload: tokenUris,
+        },
+        "load-nfts"
+      );
 
-    tokensToFetch = {}
-  }, 100)
+      tokensToFetch = {};
+    }, 100);
 
-  const processEvent = (from, to, tokenId) => {
-    console.log('event', { ignore: getState().ui.shouldIgnoreTokenTransferWatch, from, to, tokenId: tokenId.toNumber() })
-    if (getState().ui.shouldIgnoreTokenTransferWatch) return
+    const processEvent = (from, to, tokenId) => {
+      console.log("event", {
+        ignore: getState().ui.shouldIgnoreTokenTransferWatch,
+        from,
+        to,
+        tokenId: tokenId.toNumber(),
+      });
+      if (getState().ui.shouldIgnoreTokenTransferWatch) return;
 
-    if (from === address) {
-      const isBurned = to === ethersConsts.AddressZero
-      tokensToFetch[tokenId] = { shouldFetch: isBurned, isBurned }
+      if (from === address) {
+        const isBurned = to === ethersConsts.AddressZero;
+        tokensToFetch[tokenId] = { shouldFetch: isBurned, isBurned };
+      } else if (to === address) {
+        tokensToFetch[tokenId] = { shouldFetch: true, isBurned: false };
+      }
+      saveToStore();
+    };
+
+    // read past transfers
+    const events = await contract.queryFilter(contract.filters.Transfer());
+    if (_.size(events) > 0) {
+      _.forEach(events, ({ args: [from, to, tokenId] }) =>
+        processEvent(from, to, tokenId)
+      );
+    } else {
+      saveToStore();
     }
-    else if (to === address) {
-      tokensToFetch[tokenId] = { shouldFetch: true, isBurned: false }
-    }
-    saveToStore()
-  }
 
-  // read past transfers
-  const events = await contract.queryFilter(contract.filters.Transfer());
-  if (_.size(events) > 0) {
-    _.forEach(events, ({args: [from, to, tokenId]}) => processEvent(from, to, tokenId))
-  }
-  else {
-    saveToStore()
-  }
-
-  // listen to future transfers
-  provider.once("block", () => {
-    contract.on('Transfer', processEvent)
-  });
-
-}
+    // listen to future transfers
+    provider.once("block", () => {
+      contract.on("Transfer", processEvent);
+    });
+  };
 
 export const watchTokenMinedBy =
   (address, maxAddressTokenId = -1) =>

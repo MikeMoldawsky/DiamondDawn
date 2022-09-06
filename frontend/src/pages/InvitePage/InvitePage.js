@@ -8,9 +8,9 @@ import axios from "axios";
 import { openInvite } from "api/serverApi";
 import EnterMine from "pages/ProcessPage/EnterMine";
 import ActionButton from "components/ActionButton";
-import {useSelector} from "react-redux";
-import {systemSelector} from "store/systemReducer";
-import {SYSTEM_STAGE} from "consts";
+import { useSelector } from "react-redux";
+import { systemSelector } from "store/systemReducer";
+import { SYSTEM_STAGE } from "consts";
 
 const isInviteRevoked = async (inviteId) => {
   try {
@@ -60,7 +60,7 @@ const InvitePage = () => {
   const [invite, setInvite] = useState(null);
   const [password, setPassword] = useState(null);
   const [isRevoked, setIsRevoked] = useState(null);
-  const { systemStage, isStageActive } = useSelector(systemSelector)
+  const { systemStage, isStageActive } = useSelector(systemSelector);
 
   const fetchIsRevoked = async () => {
     setIsRevoked(await isInviteRevoked(inviteId));
@@ -79,9 +79,8 @@ const InvitePage = () => {
   };
 
   const renderInviteContent = () => {
-    if (systemStage !== SYSTEM_STAGE.INVITATIONS || !isStageActive) return (
-      <h1>Invitations stage is closed</h1>
-    )
+    if (systemStage !== SYSTEM_STAGE.INVITATIONS || !isStageActive)
+      return <h1>Invitations stage is closed</h1>;
     if (isRevoked === null) return null;
     if (isRevoked) return <InvitationRevoked />;
     if (!invite) return <InviteIntro open={onOpenInviteClick} />;

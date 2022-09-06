@@ -23,7 +23,9 @@ const DiamondPicker = () => {
   useMountLogger("DiamondPicker");
 
   useEffect(() => {
-    setActionableTokens(getActionableTokens(tokens, systemStage, isStageActive));
+    setActionableTokens(
+      getActionableTokens(tokens, systemStage, isStageActive)
+    );
   }, []);
 
   const selectedIndex = _.findIndex(

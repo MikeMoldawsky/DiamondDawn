@@ -38,7 +38,7 @@ const ProcessPage = () => {
       case SYSTEM_STAGE.SHIP:
         return <Ship />;
       default:
-        navigate('/')
+        navigate("/");
         return null;
     }
   }, [systemStage]);

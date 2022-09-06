@@ -10,10 +10,12 @@ export const setSelectedTokenId = (selectedTokenId) => ({
   payload: { selectedTokenId },
 });
 
-export const setShouldIgnoreTokenTransferWatch = (shouldIgnoreTokenTransferWatch) => ({
+export const setShouldIgnoreTokenTransferWatch = (
+  shouldIgnoreTokenTransferWatch
+) => ({
   type: "UI.SET_SHOULD_IGNORE_TOKEN_TRANSFER_WATCH",
   payload: { shouldIgnoreTokenTransferWatch },
-})
+});
 
 export const uiSelector = (state) => state.ui;
 
