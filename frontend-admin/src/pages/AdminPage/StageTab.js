@@ -11,12 +11,23 @@ import {
   loadSystemStage,
   systemSelector,
 } from "store/systemReducer";
-import { pauseApi, setSystemStageApi, completeStageApi, unpauseApi } from "api/contractApi";
+import {
+  pauseApi,
+  setSystemStageApi,
+  completeStageApi,
+  unpauseApi,
+} from "api/contractApi";
 import classNames from "classnames";
 
 const StageTab = ({ stage }) => {
-  const { systemStage, isStageActive, paused, diamondCount, schedule, videoArt } =
-    useSelector(systemSelector);
+  const {
+    systemStage,
+    isStageActive,
+    paused,
+    diamondCount,
+    schedule,
+    videoArt,
+  } = useSelector(systemSelector);
   const systemStageName = getSystemStageName(stage);
 
   const contract = useDDContract();
@@ -51,11 +62,16 @@ const StageTab = ({ stage }) => {
     canReveal = canReveal && !paused;
     // canReveal = canReveal && diamondCount === 333 && !paused
   }
-  const isCurrentStage = systemStage === stage
+  const isCurrentStage = systemStage === stage;
 
   return (
     <div className="stage-tab">
-      <h1 className={classNames({ current: isCurrentStage, complete: isCurrentStage && !isStageActive })}>
+      <h1
+        className={classNames({
+          current: isCurrentStage,
+          complete: isCurrentStage && !isStageActive,
+        })}
+      >
         {systemStageName}
       </h1>
       <div

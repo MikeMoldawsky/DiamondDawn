@@ -12,9 +12,9 @@ import { getVideoUrlParamName } from "utils";
 export const getSystemStageApi = async (contract) => {
   const [systemStage, isStageActive] = await Promise.all([
     contract.stage(),
-    contract.isStageActive()
-  ])
-  return { systemStage, isStageActive }
+    contract.isStageActive(),
+  ]);
+  return { systemStage, isStageActive };
 };
 
 export const getSystemPausedApi = async (contract) => {
