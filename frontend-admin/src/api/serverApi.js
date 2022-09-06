@@ -18,9 +18,9 @@ export const getSystemScheduleApi = async () => {
   try {
     const res = await axios.get(`/api/get_stages`);
     return _.zipObject(
-      _.values(SYSTEM_STAGE),
+      _.map(_.values(SYSTEM_STAGE), (stage) => stage + 1),
       _.map(_.values(SYSTEM_STAGE), (stage) => {
-        const dbConf = _.find(res.data, { stage });
+        const dbConf = _.find(res.data, { stage: stage + 1 });
         return dbConf ? dbConf.startsAt : null;
       })
     );

@@ -11,12 +11,23 @@ import {
   loadSystemStage,
   systemSelector,
 } from "store/systemReducer";
-import { pauseApi, setSystemStageApi, unpauseApi } from "api/contractApi";
+import {
+  pauseApi,
+  setSystemStageApi,
+  completeStageApi,
+  unpauseApi,
+} from "api/contractApi";
 import classNames from "classnames";
 
 const StageTab = ({ stage }) => {
-  const { systemStage, paused, diamondCount, schedule, videoArt } =
-    useSelector(systemSelector);
+  const {
+    systemStage,
+    isStageActive,
+    paused,
+    diamondCount,
+    schedule,
+    videoArt,
+  } = useSelector(systemSelector);
   const systemStageName = getSystemStageName(stage);
 
   const contract = useDDContract();
@@ -33,6 +44,11 @@ const StageTab = ({ stage }) => {
     dispatch(loadSystemStage(contract));
   };
 
+  const completeStage = async () => {
+    await completeStageApi(contract, systemStage);
+    dispatch(loadSystemStage(contract));
+  };
+
   const startTime = _.get(schedule, stage);
   const isStartTimeSet = startTime && new Date(startTime) > new Date();
   const endTime = _.get(schedule, stage + 1);
@@ -46,10 +62,16 @@ const StageTab = ({ stage }) => {
     canReveal = canReveal && !paused;
     // canReveal = canReveal && diamondCount === 333 && !paused
   }
+  const isCurrentStage = systemStage === stage;
 
   return (
     <div className="stage-tab">
-      <h1 className={classNames({ current: systemStage === stage })}>
+      <h1
+        className={classNames({
+          current: isCurrentStage,
+          complete: isCurrentStage && !isStageActive,
+        })}
+      >
         {systemStageName}
       </h1>
       <div
@@ -100,14 +122,22 @@ const StageTab = ({ stage }) => {
         </>
       )}
       <div className="separator" />
-      <div className="center-aligned-row button-row">
+      <div className="center-aligned-row button-row main-button-row">
         <ActionButton
           className="reveal-button"
-          actionKey="Complete and Reveal Stage"
+          actionKey="Reveal Stage"
           disabled={stage === systemStage || !canReveal}
           onClick={() => setSystemStage(stage)}
         >
           REVEAL {systemStageName}
+        </ActionButton>
+        <ActionButton
+          className="reveal-button"
+          actionKey="Complete Stage"
+          disabled={stage !== systemStage || !isStageActive}
+          onClick={() => completeStage(stage)}
+        >
+          COMPLETE {systemStageName}
         </ActionButton>
       </div>
     </div>

@@ -7,10 +7,7 @@ import useDDContract from "hooks/useDDContract";
 import { loadSystemSchedule, loadSystemStage } from "store/systemReducer";
 import { EVENTS } from "consts";
 import useOnConnect from "hooks/useOnConnect";
-import {
-  loadAccountNfts,
-  loadAccountShippingTokens,
-} from "store/tokensReducer";
+import { readAndWatchAccountTokens } from "store/tokensReducer";
 
 const AppLoader = () => {
   const account = useAccount();
@@ -39,13 +36,13 @@ const AppLoader = () => {
 
   useOnConnect(
     () => {
-      actionDispatch(
-        loadAccountNfts(contract, provider, account?.address),
-        "load-nfts"
-      );
-      actionDispatch(
-        loadAccountShippingTokens(contract, account.address),
-        "load-shipping-nfts"
+      dispatch(
+        readAndWatchAccountTokens(
+          actionDispatch,
+          contract,
+          provider,
+          account?.address
+        )
       );
     },
     () => {

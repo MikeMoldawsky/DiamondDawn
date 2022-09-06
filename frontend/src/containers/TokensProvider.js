@@ -8,11 +8,7 @@ import Wallet from "components/Wallet";
 
 const TokensProvider = ({ children, withLoader }) => {
   const account = useAccount();
-  const isNftsLoaded = useSelector(isActionFirstCompleteSelector("load-nfts"));
-  const isShippingNftsLoaded = useSelector(
-    isActionFirstCompleteSelector("load-shipping-nfts")
-  );
-  const isReady = isNftsLoaded && isShippingNftsLoaded;
+  const isReady = useSelector(isActionFirstCompleteSelector("load-nfts"));
 
   const renderContent = () => {
     if (isReady) return children;

@@ -14,7 +14,7 @@ import { PageTransition } from "@steveeeie/react-page-transition";
 function NFTPage() {
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-  const { systemStage } = useSelector(systemSelector);
+  const { systemStage, isStageActive } = useSelector(systemSelector);
   const location = useLocation();
 
   useSelectTokenFromRoute();
@@ -31,7 +31,7 @@ function NFTPage() {
           </div>
         </>
       );
-    if (isTokenActionable(token, systemStage)) {
+    if (isTokenActionable(token, systemStage, isStageActive)) {
       const actionName = getTokenNextStageName(token);
       return (
         <>

@@ -14,7 +14,7 @@ import Diamond from "components/Diamond";
 
 const DiamondItem = ({ diamond }) => {
   const { selectedTokenId } = useSelector(uiSelector);
-  const { systemStage } = useSelector(systemSelector);
+  const { systemStage, isStageActive } = useSelector(systemSelector);
   const [showInfo, setShowInfo] = useState(false);
   const ref = useRef(null);
 
@@ -22,7 +22,7 @@ const DiamondItem = ({ diamond }) => {
 
   const { id } = diamond;
   const selected = selectedTokenId === id;
-  const enabled = isTokenActionable(diamond, systemStage);
+  const enabled = isTokenActionable(diamond, systemStage, isStageActive);
 
   return (
     <NavLink to={`/nft/${id}`}>

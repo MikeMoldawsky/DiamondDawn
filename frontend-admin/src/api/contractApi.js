@@ -10,7 +10,11 @@ import { getVideoUrlParamName } from "utils";
 
 // ADMIN CONTROL API
 export const getSystemStageApi = async (contract) => {
-  return await contract.stage();
+  const [systemStage, isStageActive] = await Promise.all([
+    contract.stage(),
+    contract.isStageActive(),
+  ]);
+  return { systemStage, isStageActive };
 };
 
 export const getSystemPausedApi = async (contract) => {
@@ -23,6 +27,12 @@ export const getMineDiamondCountApi = async (mineContract) => {
 
 export const setSystemStageApi = async (contract, systemStage) => {
   const tx = await contract.setStage(systemStage);
+  const receipt = await tx.wait();
+  return receipt.transactionHash;
+};
+
+export const completeStageApi = async (contract, systemStage) => {
+  const tx = await contract.completeStage(systemStage);
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };

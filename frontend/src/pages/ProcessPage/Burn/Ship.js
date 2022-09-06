@@ -2,23 +2,17 @@ import React, { useCallback, useState } from "react";
 import _ from "lodash";
 import Countdown from "components/Countdown";
 import useDDContract from "hooks/useDDContract";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import {
-  loadAccountShippingTokens,
-  tokenByIdSelector,
-} from "store/tokensReducer";
+import { tokenByIdSelector } from "store/tokensReducer";
 import { useForm } from "react-hook-form";
 import "./Ship.scss";
 import classNames from "classnames";
 import NoDiamondView from "components/NoDiamondView";
 import { DUMMY_VIDEO_URL, DIAMOND_DAWN_TYPE, TRAIT } from "consts";
-import { useAccount } from "wagmi";
-import useOnConnect from "hooks/useOnConnect";
 import ActionButton from "components/ActionButton";
 import { getTokenTrait, isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
-import useActionDispatch from "hooks/useActionDispatch";
 import { shipApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
 
@@ -27,8 +21,6 @@ const Ship = () => {
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
   const [showShippingForm, setShowShippingForm] = useState(false);
-  const account = useAccount();
-  const actionDispatch = useActionDispatch();
   const tokenType = getTokenTrait(token, TRAIT.type);
 
   const {
@@ -36,13 +28,6 @@ const Ship = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  useOnConnect(() => {
-    actionDispatch(
-      loadAccountShippingTokens(contract, account.address),
-      "load-shipping-nfts"
-    );
-  });
 
   const renderInput = (name, placeholder) => {
     return (
