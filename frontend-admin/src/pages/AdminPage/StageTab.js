@@ -18,7 +18,7 @@ import {
   unpauseApi,
 } from "api/contractApi";
 import classNames from "classnames";
-import {SYSTEM_STAGE} from "consts";
+import { SYSTEM_STAGE } from "consts";
 
 const StageTab = ({ stage }) => {
   const {
@@ -63,9 +63,8 @@ const StageTab = ({ stage }) => {
   let canReveal = isScheduleSet && isVideoArtSet;
   if (stage === SYSTEM_STAGE.INVITATIONS) {
     canReveal = canReveal && !paused;
-  }
-  else if (stage === SYSTEM_STAGE.MINE_OPEN) {
-    canReveal = canReveal && diamondCount === maxDiamonds
+  } else if (stage === SYSTEM_STAGE.MINE_OPEN) {
+    canReveal = canReveal && diamondCount === maxDiamonds;
   }
 
   return (
@@ -125,7 +124,9 @@ const StageTab = ({ stage }) => {
             POPULATED DIAMOND COUNT
           </div>
           <div className="center-aligned-row input-row">
-            <div className="stage">{diamondCount} / {maxDiamonds}</div>
+            <div className="stage">
+              {diamondCount} / {maxDiamonds}
+            </div>
           </div>
         </>
       )}

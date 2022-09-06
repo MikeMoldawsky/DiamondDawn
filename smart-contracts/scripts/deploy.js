@@ -17,7 +17,7 @@ const {
   ROUGH_SHAPE,
 } = require("./utils/EnumConverterUtils");
 
-const DIAMONDS = [
+const DIAMOND_OPTIONS = [
   {
     number: 1111111111,
     date: 1659254421,
@@ -32,7 +32,6 @@ const DIAMONDS = [
     length: 512,
     width: 512,
     depth: 350,
-    // measurements: "5.12 - 5.12 x 3.50",
   },
   {
     number: 2222222222,
@@ -79,52 +78,15 @@ const DIAMONDS = [
     width: 512,
     depth: 350,
   },
-  {
-    number: 3333333333,
-    date: 1659254421,
-    shape: 2,
-    points: 35,
-    color: 5,
-    clarity: 1,
-    cut: 1,
-    polish: 1,
-    symmetry: 1,
-    fluorescence: 1,
-    length: 512,
-    width: 512,
-    depth: 350,
-  },
-  {
-    number: 3333333333,
-    date: 1659254421,
-    shape: 1,
-    points: 49,
-    color: 3,
-    clarity: 1,
-    cut: 1,
-    polish: 1,
-    symmetry: 1,
-    fluorescence: 1,
-    length: 512,
-    width: 512,
-    depth: 350,
-  },
-  {
-    number: 3333333333,
-    date: 1659254421,
-    shape: 4,
-    points: 59,
-    color: 2,
-    clarity: 1,
-    cut: 1,
-    polish: 1,
-    symmetry: 1,
-    fluorescence: 1,
-    length: 512,
-    width: 512,
-    depth: 350,
-  },
 ];
+
+const DIAMONDS = [];
+for (let i = 0; i < 333; i++) {
+  DIAMONDS.push({
+    ...DIAMOND_OPTIONS[i % 4],
+    number: 1000000000 + i,
+  });
+}
 
 async function main() {
   if (!hre.network.name || hre.network.name === "hardhat") {
@@ -140,10 +102,10 @@ async function main() {
   const ddArgs = [mine.address, 333];
   if (hre.network.name === "goerli") {
     dd = await deployContract(deployer, "DiamondDawn", ddArgs);
+    await populateDiamonds(mine);
   } else if (hre.network.name === "localhost") {
     await setVideos(mine);
-    const args = [mine.address, DIAMONDS.length];
-    dd = await deployContract(deployer, "DiamondDawn", args);
+    dd = await deployContract(deployer, "DiamondDawn", ddArgs);
     await populateDiamonds(mine);
     await dd.unpause();
   }
