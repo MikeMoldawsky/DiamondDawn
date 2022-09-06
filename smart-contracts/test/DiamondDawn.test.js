@@ -38,7 +38,6 @@ async function deployDDWithMineRoughReady() {
   const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
     await deployDD();
   await prepareRoughReady(diamondDawnMine, MAX_TOKENS);
-  await diamondDawn.unpause();
   return { diamondDawn, diamondDawnMine, owner, user1, user2 };
 }
 
@@ -46,7 +45,6 @@ async function deployDDWithMineCutReady() {
   const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
     await deployDD();
   await prepareCutReady(diamondDawnMine, MAX_TOKENS);
-  await diamondDawn.unpause();
   return { diamondDawn, diamondDawnMine, owner, user1, user2 };
 }
 
@@ -54,7 +52,6 @@ async function deployDDWithMinePolishReady() {
   const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
     await deployDD();
   await preparePolishReady(diamondDawnMine, MAX_TOKENS);
-  await diamondDawn.unpause();
   return { diamondDawn, diamondDawnMine, owner, user1, user2 };
 }
 
@@ -446,7 +443,6 @@ describe("DiamondDawn", () => {
   describe("Transactions", () => {
     xit("Should mint correctly", async function () {
       const { owner, diamondDawn } = await loadFixture(deployDD);
-      await diamondDawn.unpause();
       const tx = await diamondDawn.safeMint(owner.address);
       await tx.wait();
       const _balance = await diamondDawn.balanceOf(owner.address);
@@ -455,14 +451,12 @@ describe("DiamondDawn", () => {
 
     xit("Should be minted by MINTER ROLE only with safemint function", async function () {
       const { owner, user1, diamondDawn } = await loadFixture(deployDD);
-      await diamondDawn.unpause();
       await expect(diamondDawn.connect(user1).safeMint(owner.address)).to.be
         .reverted;
     });
 
     xit("Should not able to transfer when paused", async function () {
       const { owner, user1, diamondDawn } = await loadFixture(deployDD);
-      await diamondDawn.unpause();
       let tx, rc, event;
       tx = await diamondDawn.safeMint(owner.address);
       rc = await tx.wait();
@@ -489,7 +483,6 @@ describe("DiamondDawn", () => {
 
     xit("should have a random shape on mined then cut", async function () {
       const { user1, user2, diamondDawn } = await loadFixture(deployDD);
-      await diamondDawn.unpause();
       const allowlist = [user1.address, user2.address];
       await diamondDawn.revealStage("");
       await diamondDawn.addToAllowList(allowlist);

@@ -51,7 +51,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
     /**********************     Modifiers     ************************/
     modifier onlyDiamondDawn() {
-        require(msg.sender == diamondDawn, "Only DD");
+        require(_msgSender() == diamondDawn, "Only DD");
         _;
     }
 
@@ -187,7 +187,8 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         return string(abi.encodePacked("data:application/json;base64,", base64Json));
     }
 
-    function isReady(Stage stage_) external view onlyDiamondDawn returns (bool) {
+    function isReady(Stage stage_) external view returns (bool) {
+        require(_msgSender() == diamondDawn || hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Only DD or admin");
         if (stage_ == Stage.INVITATIONS) return _isVideoExist(Type.ENTER_MINE, 0);
         if (stage_ == Stage.MINE_OPEN)
             return diamondCount == maxDiamonds && _isAllVideosExist(Type.ROUGH, uint(type(RoughShape).max));

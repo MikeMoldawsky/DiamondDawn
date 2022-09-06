@@ -195,8 +195,8 @@ async function setVideos(diamondDawnMine) {
     { shape: NO_SHAPE_NUM, video: "infinity.mp4" },
   ]);
   await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
-    { shape: ROUGH_SHAPE.MAKEABLE_1, video: "rough_1.mp4" },
-    { shape: ROUGH_SHAPE.MAKEABLE_2, video: "rough_2.mp4" },
+    { shape: ROUGH_SHAPE.MAKEABLE_1, video: "rough_makeable1.mp4" },
+    { shape: ROUGH_SHAPE.MAKEABLE_2, video: "rough_makeable2.mp4" },
   ]);
   await diamondDawnMine.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
     { shape: SHAPE.PEAR, video: "cut_pear.mp4" },

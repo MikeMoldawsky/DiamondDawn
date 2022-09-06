@@ -42,7 +42,6 @@ contract DiamondDawn is
     mapping(bytes32 => bool) private _invitations;
 
     constructor(address mine_, uint16 maxEntrance_) ERC721("DiamondDawn", "DD") {
-        _pause();
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setDefaultRoyalty(_msgSender(), 1000); // 10 %
         ddMine = IDiamondDawnMine(mine_);
