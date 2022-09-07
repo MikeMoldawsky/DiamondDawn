@@ -5,6 +5,7 @@ import {
   getSystemPausedApi,
   getSystemStageApi,
   getVideoUrlsByStageApi,
+  getMaxDiamondsApi,
 } from "api/contractApi";
 import { getSystemScheduleApi } from "api/serverApi";
 
@@ -17,6 +18,7 @@ const INITIAL_STATE = {
   diamondCount: -1,
   schedule: {},
   videoArt: {},
+  maxDiamonds: -1,
 };
 
 export const loadSystemStage = (contract) => async (dispatch) => {
@@ -32,6 +34,13 @@ export const loadSystemPaused = (contract) => async (dispatch) => {
   dispatch({
     type: "SYSTEM.SET_PAUSED",
     payload: { paused },
+  });
+};
+export const loadMaxDiamonds = (contract) => async (dispatch) => {
+  const maxDiamonds = await getMaxDiamondsApi(contract);
+  dispatch({
+    type: "SYSTEM.UPDATE_STATE",
+    payload: { maxDiamonds },
   });
 };
 
@@ -83,6 +92,7 @@ export const systemReducer = makeReducer(
     "SYSTEM.SET_DIAMOND_COUNT": reduceUpdateFull,
     "SYSTEM.SET_SCHEDULE": reduceUpdateFull,
     "SYSTEM.SET_VIDEO_ART": reduceUpdateFull,
+    "SYSTEM.UPDATE_STATE": reduceUpdateFull,
   },
   INITIAL_STATE
 );
