@@ -80,8 +80,10 @@ const DIAMOND_OPTIONS = [
   },
 ];
 
+const DIAMOND_COUNT = 100;
+
 const DIAMONDS = [];
-for (let i = 0; i < 333; i++) {
+for (let i = 0; i < DIAMOND_COUNT; i++) {
   DIAMONDS.push({
     ...DIAMOND_OPTIONS[i % 4],
     number: 1000000000 + i,
@@ -99,7 +101,7 @@ async function main() {
   const mine = await deployContract(deployer, "DiamondDawnMine", mineArgs);
   // Diamond Dawn
   let dd;
-  const ddArgs = [mine.address, 333];
+  const ddArgs = [mine.address, DIAMOND_COUNT];
   if (hre.network.name === "goerli") {
     dd = await deployContract(deployer, "DiamondDawn", ddArgs);
     await populateDiamonds(mine);
