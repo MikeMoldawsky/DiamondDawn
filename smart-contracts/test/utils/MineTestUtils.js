@@ -7,10 +7,10 @@ const {
   enumToGrade,
   enumToFluorescence,
   enumToShape,
-  DIAMOND_DAWN_TYPE,
   NO_SHAPE_NUM,
   ROUGH_SHAPE,
   SHAPE,
+  STAGE,
 } = require("./EnumConverterUtils");
 const { DIAMOND } = require("./Diamonds");
 
@@ -41,20 +41,20 @@ const POLISHED_RADIANT_VIDEO = "polishedRadiant.mp4";
 const REBORN_VIDEO = "reborn.mp4";
 
 async function setEnterMineVideo(mineContract) {
-  await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
+  await mineContract.setStageVideos(STAGE.INVITATIONS, [
     { shape: NO_SHAPE_NUM, video: ENTER_MINE_VIDEO },
   ]);
 }
 
 async function setRoughVideos(mineContract) {
-  await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
+  await mineContract.setStageVideos(STAGE.MINE_OPEN, [
     { shape: ROUGH_SHAPE.MAKEABLE_1, video: MAKEABLE_1_VIDEO },
     { shape: ROUGH_SHAPE.MAKEABLE_2, video: MAKEABLE_2_VIDEO },
   ]);
 }
 
 async function setCutVideos(mineContract) {
-  await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
+  await mineContract.setStageVideos(STAGE.CUT_OPEN, [
     { shape: SHAPE.PEAR, video: CUT_PEAR_VIDEO },
     { shape: SHAPE.ROUND, video: CUT_ROUND_VIDEO },
     { shape: SHAPE.OVAL, video: CUT_OVAL_VIDEO },
@@ -63,7 +63,7 @@ async function setCutVideos(mineContract) {
 }
 
 async function setPolishedVideos(mineContract) {
-  await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+  await mineContract.setStageVideos(STAGE.POLISH_OPEN, [
     { shape: SHAPE.PEAR, video: POLISHED_PEAR_VIDEO },
     { shape: SHAPE.ROUND, video: POLISHED_ROUND_VIDEO },
     { shape: SHAPE.OVAL, video: POLISHED_OVAL_VIDEO },
@@ -72,7 +72,7 @@ async function setPolishedVideos(mineContract) {
 }
 
 async function setRebornVideo(mineContract) {
-  await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
+  await mineContract.setStageVideos(STAGE.SHIP, [
     { shape: NO_SHAPE_NUM, video: REBORN_VIDEO },
   ]);
 }
@@ -128,7 +128,7 @@ async function assertRoughMetadata(mineContract, tokenId, roughId, diamond) {
     expectedMetadataNoCaratShapeImage,
     mineContract,
     tokenId,
-    DIAMOND_DAWN_TYPE.ROUGH,
+    STAGE.MINE_OPEN,
     diamond.points + MIN_ROUGH_EXTRA_POINTS,
     diamond.points + MAX_ROUGH_EXTRA_POINTS
   );
@@ -143,7 +143,7 @@ async function assertCutMetadata(mineContract, tokenId, cutId, diamond) {
     expectedMetadataNoCaratShapeImage,
     mineContract,
     tokenId,
-    DIAMOND_DAWN_TYPE.CUT,
+    STAGE.CUT_OPEN,
     diamond.points + MIN_POLISH_EXTRA_POINTS,
     diamond.points + MAX_POLISH_EXTRA_POINTS
   );
@@ -161,7 +161,7 @@ async function assertPolishedMetadata(
     expectedMetadataNoCaratShapeImage,
     mineContract,
     tokenId,
-    DIAMOND_DAWN_TYPE.POLISHED,
+    STAGE.POLISH_OPEN,
     diamond.points
   );
 }
@@ -173,7 +173,7 @@ async function assertRebornMetadata(mineContract, tokenId, rebornId, diamond) {
     expectedMetadataNoCaratShapeImage,
     mineContract,
     tokenId,
-    DIAMOND_DAWN_TYPE.REBORN,
+    STAGE.SHIP,
     diamond.points
   );
 }
@@ -256,7 +256,7 @@ async function _validateAndRemoveShapeAndImageMetadata(
 function _assertShapeImage(type, shape, image) {
   let video;
   switch (type) {
-    case DIAMOND_DAWN_TYPE.ROUGH:
+    case STAGE.MINE_OPEN:
       expect(shape).to.be.oneOf(["Makeable 1", "Makeable 2"]);
       switch (shape) {
         case "Makeable 1":
@@ -269,7 +269,7 @@ function _assertShapeImage(type, shape, image) {
           throw new Error("Unknown shape");
       }
       break;
-    case DIAMOND_DAWN_TYPE.CUT:
+    case STAGE.CUT_OPEN:
       expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Radiant"]);
       switch (shape) {
         case "Pear":
@@ -288,7 +288,7 @@ function _assertShapeImage(type, shape, image) {
           throw new Error("Unknown shape");
       }
       break;
-    case DIAMOND_DAWN_TYPE.POLISHED:
+    case STAGE.POLISH_OPEN:
       expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Radiant"]);
       switch (shape) {
         case "Pear":
@@ -307,7 +307,7 @@ function _assertShapeImage(type, shape, image) {
           throw new Error("Unknown shape");
       }
       break;
-    case DIAMOND_DAWN_TYPE.REBORN:
+    case STAGE.SHIP:
       expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Radiant"]);
       video = REBORN_VIDEO;
       break;

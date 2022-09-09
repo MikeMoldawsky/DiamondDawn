@@ -6,9 +6,9 @@ const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const _ = require("lodash");
 const {
   NO_SHAPE_NUM,
-  DIAMOND_DAWN_TYPE,
   SHAPE,
   ROUGH_SHAPE,
+  STAGE,
 } = require("./utils/EnumConverterUtils");
 const {
   assertPolishedMetadata,
@@ -145,7 +145,7 @@ describe("Diamond Dawn Mine Admin", () => {
         contract.setOpen(true)
       );
       await assertOnlyAdmin(admin, mineContract, (contract) =>
-        contract.setTypeVideos(0, [])
+        contract.setStageVideos(0, [])
       );
     });
   });
@@ -182,7 +182,7 @@ describe("Diamond Dawn Mine Admin", () => {
 
     it("should REVERT when token doesn't exist", async () => {
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
-        "Wrong type"
+        "Wrong stage"
       );
     });
 
@@ -197,19 +197,19 @@ describe("Diamond Dawn Mine Admin", () => {
     it("should REVERT when NOT POLISHED or REBORN", async () => {
       await mineContract.eruption([DIAMOND]);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
-        "Wrong type"
+        "Wrong stage"
       );
       await mineContract.enter(tokenId);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
-        "Wrong type"
+        "Wrong stage"
       );
       await mineContract.mine(tokenId);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
-        "Wrong type"
+        "Wrong stage"
       );
       await mineContract.cut(tokenId);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
-        "Wrong type"
+        "Wrong stage"
       );
       await mineContract.polish(tokenId);
       await assertPolishedMetadata(mineContract, tokenId, 1, DIAMOND);
@@ -284,7 +284,7 @@ describe("Diamond Dawn Mine Admin", () => {
     });
   });
 
-  describe("setTypeVideos", () => {
+  describe("setStageVideos", () => {
     let mineContract;
     let admin;
     let diamondDawn;
@@ -306,7 +306,7 @@ describe("Diamond Dawn Mine Admin", () => {
       await Promise.all(
         unAuthUsers.map((unAuth) =>
           assertOnlyAdmin(unAuth, mineContract, (contract) =>
-            contract.setTypeVideos(DIAMOND_DAWN_TYPE.NO_TYPE, [])
+            contract.setStageVideos(STAGE.NO_STAGE, [])
           )
         )
       );
@@ -315,19 +315,19 @@ describe("Diamond Dawn Mine Admin", () => {
     it("should REVERT when mine is locked", async () => {
       await mineContract.setOpen(false);
       await mineContract.lockMine();
-      const types = [
-        DIAMOND_DAWN_TYPE.NO_TYPE,
-        DIAMOND_DAWN_TYPE.ENTER_MINE,
-        DIAMOND_DAWN_TYPE.ROUGH,
-        DIAMOND_DAWN_TYPE.CUT,
-        DIAMOND_DAWN_TYPE.POLISHED,
-        DIAMOND_DAWN_TYPE.REBORN,
+      const stages = [
+        STAGE.NO_STAGE,
+        STAGE.INVITATIONS,
+        STAGE.MINE_OPEN,
+        STAGE.CUT_OPEN,
+        STAGE.POLISH_OPEN,
+        STAGE.SHIP,
       ];
 
       await Promise.all(
-        types.map((type) =>
+        stages.map((stage) =>
           assertOnlyAdmin(admin, mineContract, (contract) =>
-            contract.setTypeVideos(type, [])
+            contract.setStageVideos(stage, [])
           )
         )
       );
@@ -335,7 +335,7 @@ describe("Diamond Dawn Mine Admin", () => {
 
     it("should REVERT when no type url is locked", async () => {
       await expect(
-        mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.NO_TYPE, [])
+        mineContract.setStageVideos(STAGE.NO_STAGE, [])
       ).to.be.revertedWithoutReason();
     });
 
@@ -356,92 +356,77 @@ describe("Diamond Dawn Mine Admin", () => {
       // reborn
       const rebornVideo = "diamond_dawn.mp4";
 
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ENTER_MINE, [
+      await mineContract.setStageVideos(STAGE.INVITATIONS, [
         { shape: NO_SHAPE_NUM, video: enterMine },
       ]);
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.ROUGH, [
+      await mineContract.setStageVideos(STAGE.MINE_OPEN, [
         { shape: ROUGH_SHAPE.MAKEABLE_1, video: roughMakeable1 },
         { shape: ROUGH_SHAPE.MAKEABLE_2, video: roughMakeable2 },
       ]);
 
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.CUT, [
+      await mineContract.setStageVideos(STAGE.CUT_OPEN, [
         { shape: SHAPE.PEAR, video: cutPear },
         { shape: SHAPE.ROUND, video: cutRound },
         { shape: SHAPE.OVAL, video: cutOval },
         { shape: SHAPE.RADIANT, video: cutRadiant },
       ]);
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.POLISHED, [
+      await mineContract.setStageVideos(STAGE.POLISH_OPEN, [
         { shape: SHAPE.PEAR, video: polishedPear },
         { shape: SHAPE.ROUND, video: polishedRound },
         { shape: SHAPE.OVAL, video: polishedOval },
         { shape: SHAPE.RADIANT, video: polishedRadiant },
       ]);
-      await mineContract.setTypeVideos(DIAMOND_DAWN_TYPE.REBORN, [
+      await mineContract.setStageVideos(STAGE.SHIP, [
         { shape: NO_SHAPE_NUM, video: rebornVideo },
       ]);
 
       // await mineContract.setOpen(true);
       expect(
-        await mineContract.typeToShapeVideo(DIAMOND_DAWN_TYPE.ENTER_MINE, 0)
+        await mineContract.stageToShapeVideo(STAGE.INVITATIONS, 0)
       ).to.be.equal(enterMine);
 
       expect(
-        await mineContract.typeToShapeVideo(
-          DIAMOND_DAWN_TYPE.ROUGH,
+        await mineContract.stageToShapeVideo(
+          STAGE.MINE_OPEN,
           ROUGH_SHAPE.MAKEABLE_1
         )
       ).to.be.equal(roughMakeable1);
       expect(
-        await mineContract.typeToShapeVideo(
-          DIAMOND_DAWN_TYPE.ROUGH,
+        await mineContract.stageToShapeVideo(
+          STAGE.MINE_OPEN,
           ROUGH_SHAPE.MAKEABLE_2
         )
       ).to.be.equal(roughMakeable2);
 
       expect(
-        await mineContract.typeToShapeVideo(DIAMOND_DAWN_TYPE.CUT, SHAPE.PEAR)
+        await mineContract.stageToShapeVideo(STAGE.CUT_OPEN, SHAPE.PEAR)
       ).to.be.equal(cutPear);
       expect(
-        await mineContract.typeToShapeVideo(DIAMOND_DAWN_TYPE.CUT, SHAPE.ROUND)
+        await mineContract.stageToShapeVideo(STAGE.CUT_OPEN, SHAPE.ROUND)
       ).to.be.equal(cutRound);
       expect(
-        await mineContract.typeToShapeVideo(DIAMOND_DAWN_TYPE.CUT, SHAPE.OVAL)
+        await mineContract.stageToShapeVideo(STAGE.CUT_OPEN, SHAPE.OVAL)
       ).to.be.equal(cutOval);
       expect(
-        await mineContract.typeToShapeVideo(
-          DIAMOND_DAWN_TYPE.CUT,
-          SHAPE.RADIANT
-        )
+        await mineContract.stageToShapeVideo(STAGE.CUT_OPEN, SHAPE.RADIANT)
       ).to.be.equal(cutRadiant);
 
       expect(
-        await mineContract.typeToShapeVideo(
-          DIAMOND_DAWN_TYPE.POLISHED,
-          SHAPE.PEAR
-        )
+        await mineContract.stageToShapeVideo(STAGE.POLISH_OPEN, SHAPE.PEAR)
       ).to.be.equal(polishedPear);
       expect(
-        await mineContract.typeToShapeVideo(
-          DIAMOND_DAWN_TYPE.POLISHED,
-          SHAPE.ROUND
-        )
+        await mineContract.stageToShapeVideo(STAGE.POLISH_OPEN, SHAPE.ROUND)
       ).to.be.equal(polishedRound);
       expect(
-        await mineContract.typeToShapeVideo(
-          DIAMOND_DAWN_TYPE.POLISHED,
-          SHAPE.OVAL
-        )
+        await mineContract.stageToShapeVideo(STAGE.POLISH_OPEN, SHAPE.OVAL)
       ).to.be.equal(polishedOval);
       expect(
-        await mineContract.typeToShapeVideo(
-          DIAMOND_DAWN_TYPE.POLISHED,
-          SHAPE.RADIANT
-        )
+        await mineContract.stageToShapeVideo(STAGE.POLISH_OPEN, SHAPE.RADIANT)
       ).to.be.equal(polishedRadiant);
 
-      expect(
-        await mineContract.typeToShapeVideo(DIAMOND_DAWN_TYPE.REBORN, 0)
-      ).to.be.equal(rebornVideo);
+      expect(await mineContract.stageToShapeVideo(STAGE.SHIP, 0)).to.be.equal(
+        rebornVideo
+      );
     });
   });
 });

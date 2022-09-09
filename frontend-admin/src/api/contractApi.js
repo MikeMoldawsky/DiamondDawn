@@ -83,7 +83,7 @@ export const getVideoUrlsByStageApi = async (mineContract, stage) => {
   console.log(mineContract);
   console.log({ type, shapes });
   const urls = await Promise.all(
-    _.map(shapes, (shape) => mineContract["typeToShapeVideo"](type, shape))
+    _.map(shapes, (shape) => mineContract["stageToShapeVideo"](type, shape))
   );
   const names = _.map(shapes, (shape) => getVideoUrlParamName(shape, stage));
   return _.zipObject(names, urls);
@@ -95,7 +95,7 @@ export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
     shape: shape,
     video: url,
   }));
-  const tx = await mineContract["setTypeVideos"](type, shapeVideos);
+  const tx = await mineContract["setStageVideos"](type, shapeVideos);
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };

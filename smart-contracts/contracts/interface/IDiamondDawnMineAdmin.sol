@@ -3,6 +3,7 @@ pragma solidity ^0.8.15;
 
 import "../objects/Diamond.sol";
 import "../objects/Mine.sol";
+import "../objects/System.sol";
 
 interface IDiamondDawnMineAdmin {
     function eruption(Certificate[] calldata diamonds) external;
@@ -13,5 +14,5 @@ interface IDiamondDawnMineAdmin {
 
     function setOpen(bool isOpen) external;
 
-    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos) external;
+    function setStageVideos(Stage stage_, ShapeVideo[] calldata shapeVideos) external;
 }
