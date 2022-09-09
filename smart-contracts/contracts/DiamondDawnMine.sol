@@ -28,7 +28,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     uint16 public maxDiamonds;
     uint16 public diamondCount;
     address public diamondDawn;
-    mapping(uint => mapping(uint => string)) public typeToShapeVideo;
+    mapping(uint => mapping(uint => string)) public stageToShapeVideo;
 
     // Carat loss of ~35% to ~65% from rough stone to the polished diamond.
     uint8 private constant MIN_EXTRA_ROUGH_POINTS = 37;
@@ -61,12 +61,12 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     }
 
     modifier exists(uint tokenId) {
-        require(_metadata[tokenId].type_ != Type.NO_TYPE, "Don't exist");
+        require(_metadata[tokenId].stage_ != Stage.NO_STAGE, "Don't exist");
         _;
     }
 
-    modifier onlyType(uint tokenId, Type diamondDawnType) {
-        require(diamondDawnType == _metadata[tokenId].type_, "Wrong type");
+    modifier onlyStage(uint tokenId, Stage stage_) {
+        require(stage_ == _metadata[tokenId].stage_, "Wrong stage");
         _;
     }
 
@@ -93,8 +93,13 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         isOpen = true;
     }
 
-    function enter(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.NO_TYPE) {
-        _metadata[tokenId].type_ = Type.ENTER_MINE;
+    function enter(uint tokenId)
+        external
+        onlyDiamondDawn
+        isMineOpen(true)
+        onlyStage(tokenId, Stage.NO_STAGE)
+    {
+        _metadata[tokenId].stage_ = Stage.INVITATIONS;
         emit Enter(tokenId);
     }
 
@@ -103,11 +108,11 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         onlyDiamondDawn
         isMineOpen(true)
         mineNotDry
-        onlyType(tokenId, Type.ENTER_MINE)
+        onlyStage(tokenId, Stage.INVITATIONS)
     {
         uint extraPoints = _getRandomBetween(MIN_EXTRA_ROUGH_POINTS, MAX_EXTRA_ROUGH_POINTS);
         Metadata storage metadata = _metadata[tokenId];
-        metadata.type_ = Type.ROUGH;
+        metadata.stage_ = Stage.MINE_OPEN;
         metadata.rough.id = ++_mineCounter;
         metadata.rough.extraPoints = uint8(extraPoints);
         metadata.rough.shape = extraPoints % 2 == 0 ? RoughShape.MAKEABLE_1 : RoughShape.MAKEABLE_2;
@@ -115,23 +120,33 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         emit Mine(tokenId);
     }
 
-    function cut(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.ROUGH) {
+    function cut(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyStage(tokenId, Stage.MINE_OPEN) {
         uint extraPoints = _getRandomBetween(MIN_EXTRA_POLISH_POINTS, MAX_EXTRA_POLISH_POINTS);
         Metadata storage metadata = _metadata[tokenId];
-        metadata.type_ = Type.CUT;
+        metadata.stage_ = Stage.CUT_OPEN;
         metadata.cut.id = ++_cutCounter;
         metadata.cut.extraPoints = uint8(extraPoints);
         emit Cut(tokenId);
     }
 
-    function polish(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.CUT) {
+    function polish(uint tokenId)
+        external
+        onlyDiamondDawn
+        isMineOpen(true)
+        onlyStage(tokenId, Stage.CUT_OPEN)
+    {
         Metadata storage metadata = _metadata[tokenId];
-        metadata.type_ = Type.POLISHED;
+        metadata.stage_ = Stage.POLISH_OPEN;
         metadata.polished.id = ++_polishedCounter;
         emit Polish(tokenId);
     }
 
-    function ship(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyType(tokenId, Type.POLISHED) {
+    function ship(uint tokenId)
+        external
+        onlyDiamondDawn
+        isMineOpen(true)
+        onlyStage(tokenId, Stage.POLISH_OPEN)
+    {
         Metadata storage metadata = _metadata[tokenId];
         require(metadata.reborn.id == 0);
         metadata.reborn.id = ++_rebornCounter;
@@ -140,7 +155,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
     function rebirth(uint tokenId) external onlyDiamondDawn {
         require(_metadata[tokenId].reborn.id > 0, "Not shipped");
-        _metadata[tokenId].type_ = Type.REBORN;
+        _metadata[tokenId].stage_ = Stage.SHIP;
         emit Rebirth(tokenId);
     }
 
@@ -157,7 +172,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
     function lostShipment(uint tokenId, Certificate calldata diamond) external onlyRole(DEFAULT_ADMIN_ROLE) {
         Metadata storage metadata = _metadata[tokenId];
-        require(metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN, "Wrong type");
+        require(metadata.stage_ == Stage.POLISH_OPEN || metadata.stage_ == Stage.SHIP, "Wrong stage");
         metadata.certificate = diamond;
     }
 
@@ -165,13 +180,13 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         isOpen = isOpen_;
     }
 
-    function setTypeVideos(Type type_, ShapeVideo[] calldata shapeVideos)
+    function setTypeVideos(Stage stage_, ShapeVideo[] calldata shapeVideos)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        require(type_ != Type.NO_TYPE);
+        require(stage_ != Stage.NO_STAGE);
         for (uint i = 0; i < shapeVideos.length; i++) {
-            _setVideo(type_, shapeVideos[i].shape, shapeVideos[i].video);
+            _setVideo(stage_, shapeVideos[i].shape, shapeVideos[i].video);
         }
     }
 
@@ -189,12 +204,11 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
     function isReady(Stage stage_) external view returns (bool) {
         require(_msgSender() == diamondDawn || hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Only DD or admin");
-        if (stage_ == Stage.INVITATIONS) return _isVideoExist(Type.ENTER_MINE, 0);
+        if (stage_ == Stage.INVITATIONS || stage_ == Stage.SHIP) return _isVideoExist(stage_, 0);
         if (stage_ == Stage.MINE_OPEN)
-            return diamondCount == maxDiamonds && _isAllVideosExist(Type.ROUGH, uint(type(RoughShape).max));
-        if (stage_ == Stage.CUT_OPEN) return _isAllVideosExist(Type.CUT, uint(type(Shape).max));
-        if (stage_ == Stage.POLISH_OPEN) return _isAllVideosExist(Type.POLISHED, uint(type(Shape).max));
-        if (stage_ == Stage.SHIP) return _isVideoExist(Type.REBORN, 0);
+            return diamondCount == maxDiamonds && _isAllVideosExist(stage_, uint(type(RoughShape).max));
+        if (stage_ == Stage.CUT_OPEN || stage_ == Stage.POLISH_OPEN)
+            return _isAllVideosExist(stage_, uint(type(Shape).max));
         return false;
     }
 
@@ -215,32 +229,32 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     }
 
     function _setVideo(
-        Type type_,
+        Stage stage_,
         uint shape,
         string memory videoUrl
     ) private {
-        typeToShapeVideo[uint(type_)][shape] = videoUrl;
+        stageToShapeVideo[uint(stage_)][shape] = videoUrl;
     }
 
     function _getVideoURI(Metadata memory metadata) private view returns (string memory) {
-        string memory videoUrl = _getVideo(metadata.type_, _getShapeNumber(metadata));
+        string memory videoUrl = _getVideo(metadata.stage_, _getShapeNumber(metadata));
         return string.concat(_videoBaseURI(), videoUrl);
     }
 
-    function _isAllVideosExist(Type type_, uint maxShape) private view returns (bool) {
+    function _isAllVideosExist(Stage stage_, uint maxShape) private view returns (bool) {
         for (uint i = 1; i <= maxShape; i++) {
             // skipping 0 - no shape
-            if (!_isVideoExist(type_, i)) return false;
+            if (!_isVideoExist(stage_, i)) return false;
         }
         return true;
     }
 
-    function _isVideoExist(Type type_, uint shape) private view returns (bool) {
-        return bytes(_getVideo(type_, shape)).length > 0;
+    function _isVideoExist(Stage stage_, uint shape) private view returns (bool) {
+        return bytes(_getVideo(stage_, shape)).length > 0;
     }
 
-    function _getVideo(Type type_, uint shape) private view returns (string memory) {
-        return typeToShapeVideo[uint(type_)][shape];
+    function _getVideo(Stage stage_, uint shape) private view returns (string memory) {
+        return stageToShapeVideo[uint(stage_)][shape];
     }
 
     function _getMetadataJson(
@@ -260,17 +274,17 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     }
 
     function _getJsonAttributes(Metadata memory metadata) private pure returns (Attribute[] memory) {
-        Type type_ = metadata.type_;
-        Attribute[] memory attributes = new Attribute[](_getNumAttributes(type_));
-        attributes[0] = toStrAttribute("Type", toTypeStr(type_));
-        if (type_ == Type.ENTER_MINE) {
+        Stage stage_ = metadata.stage_;
+        Attribute[] memory attributes = new Attribute[](_getNumAttributes(stage_));
+        attributes[0] = toStrAttribute("Type", toStageStr(stage_));
+        if (stage_ == Stage.INVITATIONS) {
             return attributes;
         }
 
         attributes[1] = toStrAttribute("Origin", "Metaverse");
         attributes[2] = toStrAttribute("Identification", "Natural");
         attributes[3] = toAttribute("Carat", toDecimalStr(_getPoints(metadata)), "");
-        if (type_ == Type.ROUGH) {
+        if (stage_ == Stage.MINE_OPEN) {
             attributes[4] = toStrAttribute("Color", "Cape");
             attributes[5] = toStrAttribute("Shape", toRoughShapeStr(metadata.rough.shape));
             attributes[6] = toStrAttribute("Mine", "Underground");
@@ -278,7 +292,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         }
 
         Certificate memory certificate = metadata.certificate;
-        if (uint(Type.CUT) <= uint(type_)) {
+        if (uint(Stage.CUT_OPEN) <= uint(stage_)) {
             attributes[4] = toStrAttribute("Color", toColorStr(certificate.color));
             attributes[5] = toStrAttribute("Cut", toGradeStr(certificate.cut));
             attributes[6] = toStrAttribute("Fluorescence", toFluorescenceStr(certificate.fluorescence));
@@ -288,12 +302,12 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
             );
             attributes[8] = toStrAttribute("Shape", toShapeStr(certificate.shape));
         }
-        if (uint(Type.POLISHED) <= uint(type_)) {
+        if (uint(Stage.POLISH_OPEN) <= uint(stage_)) {
             attributes[9] = toStrAttribute("Clarity", toClarityStr(certificate.clarity));
             attributes[10] = toStrAttribute("Polish", toGradeStr(certificate.polish));
             attributes[11] = toStrAttribute("Symmetry", toGradeStr(certificate.symmetry));
         }
-        if (uint(Type.REBORN) <= uint(type_)) {
+        if (uint(Stage.SHIP) <= uint(stage_)) {
             attributes[12] = toStrAttribute("Laboratory", "GIA");
             attributes[13] = toAttribute("Report Date", Strings.toString(certificate.date), "date");
             attributes[14] = toAttribute("Report Number", Strings.toString(certificate.number), "");
@@ -308,31 +322,31 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     }
 
     function _getShapeNumber(Metadata memory metadata) private pure returns (uint) {
-        Type type_ = metadata.type_;
-        if (type_ == Type.CUT || type_ == Type.POLISHED) return uint(metadata.certificate.shape);
-        if (type_ == Type.ROUGH) return uint(metadata.rough.shape);
-        if (type_ == Type.ENTER_MINE || type_ == Type.REBORN) return 0;
+        Stage stage_ = metadata.stage_;
+        if (stage_ == Stage.CUT_OPEN || stage_ == Stage.POLISH_OPEN) return uint(metadata.certificate.shape);
+        if (stage_ == Stage.MINE_OPEN) return uint(metadata.rough.shape);
+        if (stage_ == Stage.INVITATIONS || stage_ == Stage.SHIP) return 0;
         revert("Shape number");
     }
 
-    function _getNumAttributes(Type type_) private pure returns (uint) {
-        if (type_ == Type.ENTER_MINE) return 1;
-        if (type_ == Type.ROUGH) return 7;
-        if (type_ == Type.CUT) return 9;
-        if (type_ == Type.POLISHED) return 12;
-        if (type_ == Type.REBORN) return 16;
+    function _getNumAttributes(Stage stage_) private pure returns (uint) {
+        if (stage_ == Stage.INVITATIONS) return 1;
+        if (stage_ == Stage.MINE_OPEN) return 7;
+        if (stage_ == Stage.CUT_OPEN) return 9;
+        if (stage_ == Stage.POLISH_OPEN) return 12;
+        if (stage_ == Stage.SHIP) return 16;
         revert("Attributes number");
     }
 
     function _getPoints(Metadata memory metadata) private pure returns (uint) {
         assert(metadata.certificate.points > 0);
-        if (metadata.type_ == Type.ROUGH) {
+        if (metadata.stage_ == Stage.MINE_OPEN) {
             assert(metadata.rough.extraPoints > 0);
             return metadata.certificate.points + metadata.rough.extraPoints;
-        } else if (metadata.type_ == Type.CUT) {
+        } else if (metadata.stage_ == Stage.CUT_OPEN) {
             assert(metadata.cut.extraPoints > 0);
             return metadata.certificate.points + metadata.cut.extraPoints;
-        } else if (metadata.type_ == Type.POLISHED || metadata.type_ == Type.REBORN)
+        } else if (metadata.stage_ == Stage.POLISH_OPEN || metadata.stage_ == Stage.SHIP)
             return metadata.certificate.points;
         revert("Points");
     }

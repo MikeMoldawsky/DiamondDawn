@@ -2,6 +2,7 @@
 pragma solidity ^0.8.15;
 
 import "./Diamond.sol";
+import "./System.sol";
 
 enum RoughShape {
     NO_SHAPE,
@@ -28,18 +29,9 @@ struct RebornMetadata {
     uint16 id;
 }
 
-enum Type {
-    NO_TYPE,
-    ENTER_MINE,
-    ROUGH,
-    CUT,
-    POLISHED,
-    REBORN
-}
-
 //TODO: 34 bytes, should check if we can save 2 bytes for 1 word.
 struct Metadata {
-    Type type_; // 1 byte
+    Stage stage_; // 1 byte
     RoughMetadata rough; // 4 bytes
     CutMetadata cut; // 3 bytes
     PolishedMetadata polished; // 2 bytes
