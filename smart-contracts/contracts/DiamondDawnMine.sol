@@ -180,7 +180,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         isOpen = isOpen_;
     }
 
-    function setTypeVideos(Stage stage_, ShapeVideo[] calldata shapeVideos)
+    function setStageVideos(Stage stage_, ShapeVideo[] calldata shapeVideos)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
     {

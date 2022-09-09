@@ -437,7 +437,7 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for ENTER_MINE", async () => {
-      await mineContract.setTypeVideos(STAGE.INVITATIONS, [
+      await mineContract.setStageVideos(STAGE.INVITATIONS, [
         { shape: NO_SHAPE_NUM, video: "hi.mp4" },
       ]);
       expect(await mineContract.isReady(STAGE.NO_STAGE)).to.be.false;
@@ -449,11 +449,11 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for ROUGH when video set and mine populated", async () => {
-      await mineContract.setTypeVideos(STAGE.MINE_OPEN, [
+      await mineContract.setStageVideos(STAGE.MINE_OPEN, [
         { shape: ROUGH_SHAPE.MAKEABLE_1, video: "1.mp4" },
       ]);
       expect(await mineContract.isReady(STAGE.MINE_OPEN)).to.be.false;
-      await mineContract.setTypeVideos(STAGE.MINE_OPEN, [
+      await mineContract.setStageVideos(STAGE.MINE_OPEN, [
         { shape: ROUGH_SHAPE.MAKEABLE_2, video: "2.mp4" },
       ]);
       expect(await mineContract.isReady(STAGE.MINE_OPEN)).to.be.false;
@@ -471,19 +471,19 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for CUT", async () => {
-      await mineContract.setTypeVideos(STAGE.CUT_OPEN, [
+      await mineContract.setStageVideos(STAGE.CUT_OPEN, [
         { shape: SHAPE.PEAR, video: "1.mp4" },
       ]);
       expect(await mineContract.isReady(STAGE.CUT_OPEN)).to.be.false;
-      await mineContract.setTypeVideos(STAGE.CUT_OPEN, [
+      await mineContract.setStageVideos(STAGE.CUT_OPEN, [
         { shape: SHAPE.ROUND, video: "2.mp4" },
       ]);
       expect(await mineContract.isReady(STAGE.CUT_OPEN)).to.be.false;
-      await mineContract.setTypeVideos(STAGE.CUT_OPEN, [
+      await mineContract.setStageVideos(STAGE.CUT_OPEN, [
         { shape: SHAPE.OVAL, video: "3.mp4" },
       ]);
       expect(await mineContract.isReady(STAGE.CUT_OPEN)).to.be.false;
-      await mineContract.setTypeVideos(STAGE.CUT_OPEN, [
+      await mineContract.setStageVideos(STAGE.CUT_OPEN, [
         { shape: SHAPE.RADIANT, video: "4.mp4" },
       ]);
 
@@ -496,19 +496,19 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for POLISHED", async () => {
-      await mineContract.setTypeVideos(STAGE.POLISH_OPEN, [
+      await mineContract.setStageVideos(STAGE.POLISH_OPEN, [
         { shape: SHAPE.PEAR, video: "1.mp4" },
       ]);
       expect(await mineContract.isReady(STAGE.POLISH_OPEN)).to.be.false;
-      await mineContract.setTypeVideos(STAGE.POLISH_OPEN, [
+      await mineContract.setStageVideos(STAGE.POLISH_OPEN, [
         { shape: SHAPE.ROUND, video: "2.mp4" },
       ]);
       expect(await mineContract.isReady(STAGE.POLISH_OPEN)).to.be.false;
-      await mineContract.setTypeVideos(STAGE.POLISH_OPEN, [
+      await mineContract.setStageVideos(STAGE.POLISH_OPEN, [
         { shape: SHAPE.OVAL, video: "3.mp4" },
       ]);
       expect(await mineContract.isReady(STAGE.POLISH_OPEN)).to.be.false;
-      await mineContract.setTypeVideos(STAGE.POLISH_OPEN, [
+      await mineContract.setStageVideos(STAGE.POLISH_OPEN, [
         { shape: SHAPE.RADIANT, video: "4.mp4" },
       ]);
       expect(await mineContract.isReady(STAGE.NO_STAGE)).to.be.false;
@@ -520,7 +520,7 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for REBORN", async () => {
-      await mineContract.setTypeVideos(STAGE.SHIP, [
+      await mineContract.setStageVideos(STAGE.SHIP, [
         { shape: NO_SHAPE_NUM, video: "hi.mp4" },
       ]);
       expect(await mineContract.isReady(STAGE.NO_STAGE)).to.be.false;

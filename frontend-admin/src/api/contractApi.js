@@ -91,7 +91,7 @@ export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
     shape: shape,
     video: url,
   }));
-  const tx = await mineContract["setTypeVideos"](type, shapeVideos);
+  const tx = await mineContract["setStageVideos"](type, shapeVideos);
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };

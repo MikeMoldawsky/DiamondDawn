@@ -159,7 +159,7 @@ describe("DiamondDawn", () => {
       await ddContract.enter(tokenId, { value: PRICE });
       await completeAndSetStage(ddContract, STAGE.MINE_OPEN);
       // transform mine to be not ready
-      await mineContract.setTypeVideos(STAGE.MINE_OPEN, [
+      await mineContract.setStageVideos(STAGE.MINE_OPEN, [
         { shape: ROUGH_SHAPE.MAKEABLE_1, video: "" },
       ]);
       await expect(ddContract.mine(tokenId)).to.be.revertedWith(
@@ -248,7 +248,7 @@ describe("DiamondDawn", () => {
       await ddContract.enter(tokenId, { value: PRICE });
       await completeAndSetStage(ddContract, STAGE.CUT_OPEN);
       // transform mine to be not ready
-      await mineContract.setTypeVideos(STAGE.CUT_OPEN, [
+      await mineContract.setStageVideos(STAGE.CUT_OPEN, [
         { shape: SHAPE.RADIANT, video: "" },
       ]);
       await expect(ddContract.cut(tokenId)).to.be.revertedWith(
@@ -355,7 +355,7 @@ describe("DiamondDawn", () => {
       await ddContract.enter(tokenId, { value: PRICE });
       await completeAndSetStage(ddContract, STAGE.POLISH_OPEN);
       // transform polish to be not ready
-      await mineContract.setTypeVideos(STAGE.POLISH_OPEN, [
+      await mineContract.setStageVideos(STAGE.POLISH_OPEN, [
         { shape: SHAPE.RADIANT, video: "" },
       ]);
       await expect(ddContract.polish(tokenId)).to.be.revertedWith(

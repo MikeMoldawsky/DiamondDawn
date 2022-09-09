@@ -191,26 +191,26 @@ async function populateDiamonds(mine) {
 }
 
 async function setVideos(diamondDawnMine) {
-  await diamondDawnMine.setTypeVideos(STAGE.INVITATIONS, [
+  await diamondDawnMine.setStageVideos(STAGE.INVITATIONS, [
     { shape: NO_SHAPE_NUM, video: "infinity.mp4" },
   ]);
-  await diamondDawnMine.setTypeVideos(STAGE.MINE_OPEN, [
+  await diamondDawnMine.setStageVideos(STAGE.MINE_OPEN, [
     { shape: ROUGH_SHAPE.MAKEABLE_1, video: "rough_makeable1.mp4" },
     { shape: ROUGH_SHAPE.MAKEABLE_2, video: "rough_makeable2.mp4" },
   ]);
-  await diamondDawnMine.setTypeVideos(STAGE.CUT_OPEN, [
+  await diamondDawnMine.setStageVideos(STAGE.CUT_OPEN, [
     { shape: SHAPE.PEAR, video: "cut_pear.mp4" },
     { shape: SHAPE.ROUND, video: "cut_round.mp4" },
     { shape: SHAPE.OVAL, video: "cut_oval.mp4" },
     { shape: SHAPE.RADIANT, video: "cut_radiant.mp4" },
   ]);
-  await diamondDawnMine.setTypeVideos(STAGE.POLISH_OPEN, [
+  await diamondDawnMine.setStageVideos(STAGE.POLISH_OPEN, [
     { shape: SHAPE.PEAR, video: "polished_pear.mp4" },
     { shape: SHAPE.ROUND, video: "polished_round.mp4" },
     { shape: SHAPE.OVAL, video: "polished_oval.mp4" },
     { shape: SHAPE.RADIANT, video: "polished_radiant.mp4" },
   ]);
-  await diamondDawnMine.setTypeVideos(STAGE.SHIP, [
+  await diamondDawnMine.setStageVideos(STAGE.SHIP, [
     { shape: NO_SHAPE_NUM, video: "diamond_dawn.mp4" },
   ]);
 }

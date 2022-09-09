@@ -41,20 +41,20 @@ const POLISHED_RADIANT_VIDEO = "polishedRadiant.mp4";
 const REBORN_VIDEO = "reborn.mp4";
 
 async function setEnterMineVideo(mineContract) {
-  await mineContract.setTypeVideos(STAGE.INVITATIONS, [
+  await mineContract.setStageVideos(STAGE.INVITATIONS, [
     { shape: NO_SHAPE_NUM, video: ENTER_MINE_VIDEO },
   ]);
 }
 
 async function setRoughVideos(mineContract) {
-  await mineContract.setTypeVideos(STAGE.MINE_OPEN, [
+  await mineContract.setStageVideos(STAGE.MINE_OPEN, [
     { shape: ROUGH_SHAPE.MAKEABLE_1, video: MAKEABLE_1_VIDEO },
     { shape: ROUGH_SHAPE.MAKEABLE_2, video: MAKEABLE_2_VIDEO },
   ]);
 }
 
 async function setCutVideos(mineContract) {
-  await mineContract.setTypeVideos(STAGE.CUT_OPEN, [
+  await mineContract.setStageVideos(STAGE.CUT_OPEN, [
     { shape: SHAPE.PEAR, video: CUT_PEAR_VIDEO },
     { shape: SHAPE.ROUND, video: CUT_ROUND_VIDEO },
     { shape: SHAPE.OVAL, video: CUT_OVAL_VIDEO },
@@ -63,7 +63,7 @@ async function setCutVideos(mineContract) {
 }
 
 async function setPolishedVideos(mineContract) {
-  await mineContract.setTypeVideos(STAGE.POLISH_OPEN, [
+  await mineContract.setStageVideos(STAGE.POLISH_OPEN, [
     { shape: SHAPE.PEAR, video: POLISHED_PEAR_VIDEO },
     { shape: SHAPE.ROUND, video: POLISHED_ROUND_VIDEO },
     { shape: SHAPE.OVAL, video: POLISHED_OVAL_VIDEO },
@@ -72,7 +72,7 @@ async function setPolishedVideos(mineContract) {
 }
 
 async function setRebornVideo(mineContract) {
-  await mineContract.setTypeVideos(STAGE.SHIP, [
+  await mineContract.setStageVideos(STAGE.SHIP, [
     { shape: NO_SHAPE_NUM, video: REBORN_VIDEO },
   ]);
 }
