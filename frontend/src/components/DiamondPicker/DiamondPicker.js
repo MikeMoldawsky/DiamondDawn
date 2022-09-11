@@ -11,6 +11,7 @@ import { tokensSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
 import useMountLogger from "hooks/useMountLogger";
 import {isActionPendingSelector} from "components/ActionButton";
+import useTimeout from "hooks/useTimeout";
 
 const DiamondPicker = ({ actionKey, disabled }) => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const DiamondPicker = ({ actionKey, disabled }) => {
   const { systemStage, isStageActive } = useSelector(systemSelector);
   const isActionPending = useSelector(isActionPendingSelector(actionKey))
   const canSelect = !disabled && !isActionPending
+  const [transitionTime, setTransitionTime] = useState(0)
 
   useMountLogger("DiamondPicker");
 
@@ -28,6 +30,10 @@ const DiamondPicker = ({ actionKey, disabled }) => {
       getActionableTokens(tokens, systemStage, isStageActive)
     );
   }, []);
+
+  useTimeout(() => {
+    setTransitionTime(150)
+  }, 1000)
 
   const selectedIndex = _.findIndex(
     actionableTokens,
@@ -48,6 +54,7 @@ const DiamondPicker = ({ actionKey, disabled }) => {
       showThumbs={false}
       showIndicators={_.size(actionableTokens) > 1 && canSelect}
       showArrows={canSelect}
+      transitionTime={transitionTime}
     >
       {actionableTokens.map((diamond) => (
         <div key={`diamond-picker-${diamond.id}`} >
