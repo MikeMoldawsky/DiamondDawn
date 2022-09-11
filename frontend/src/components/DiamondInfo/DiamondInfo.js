@@ -16,13 +16,13 @@ const formatTraitValue = (trait_type, value) => {
 };
 
 const DiamondInfo = ({ diamond }) => {
-  const { id, attributes } = diamond;
+  const { name, attributes } = diamond;
 
   return (
     <div className="diamond-info">
       <Diamond diamond={diamond} />
       <div className="text-content">
-        <div className="token-id">NFT #{id}</div>
+        <div className="token-id">{name}</div>
         {_.map(attributes, ({ trait_type, value }) => (
           <div
             key={`trait-${_.kebabCase(trait_type)}`}

@@ -35,7 +35,9 @@
     }
 
     &.selected {
-      transform: scale(1.2);
+      .token-icon {
+        transform: scale(1.2);
+      }
     }
   }
 
@@ -53,5 +55,11 @@
     top: 70px;
     z-index: 1;
     border: solid 1px $darker-gray;
+
+    .token-id {
+      text-align: center;
+      border-top: solid 1px $darker-gray;
+      padding: 10px 0;
+    }
   }
 }
