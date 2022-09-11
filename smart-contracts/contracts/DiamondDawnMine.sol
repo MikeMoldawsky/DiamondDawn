@@ -99,7 +99,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         isMineOpen(true)
         onlyStage(tokenId, Stage.NO_STAGE)
     {
-        _metadata[tokenId].stage_ = Stage.INVITATIONS;
+        _metadata[tokenId].stage_ = Stage.INVITE;
         emit Enter(tokenId);
     }
 
@@ -108,11 +108,11 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         onlyDiamondDawn
         isMineOpen(true)
         mineNotDry
-        onlyStage(tokenId, Stage.INVITATIONS)
+        onlyStage(tokenId, Stage.INVITE)
     {
         uint extraPoints = _getRandomBetween(MIN_EXTRA_ROUGH_POINTS, MAX_EXTRA_ROUGH_POINTS);
         Metadata storage metadata = _metadata[tokenId];
-        metadata.stage_ = Stage.MINE_OPEN;
+        metadata.stage_ = Stage.MINE;
         metadata.rough.id = ++_mineCounter;
         metadata.rough.extraPoints = uint8(extraPoints);
         metadata.rough.shape = extraPoints % 2 == 0 ? RoughShape.MAKEABLE_1 : RoughShape.MAKEABLE_2;
@@ -120,33 +120,23 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         emit Mine(tokenId);
     }
 
-    function cut(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyStage(tokenId, Stage.MINE_OPEN) {
+    function cut(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyStage(tokenId, Stage.MINE) {
         uint extraPoints = _getRandomBetween(MIN_EXTRA_POLISH_POINTS, MAX_EXTRA_POLISH_POINTS);
         Metadata storage metadata = _metadata[tokenId];
-        metadata.stage_ = Stage.CUT_OPEN;
+        metadata.stage_ = Stage.CUT;
         metadata.cut.id = ++_cutCounter;
         metadata.cut.extraPoints = uint8(extraPoints);
         emit Cut(tokenId);
     }
 
-    function polish(uint tokenId)
-        external
-        onlyDiamondDawn
-        isMineOpen(true)
-        onlyStage(tokenId, Stage.CUT_OPEN)
-    {
+    function polish(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyStage(tokenId, Stage.CUT) {
         Metadata storage metadata = _metadata[tokenId];
-        metadata.stage_ = Stage.POLISH_OPEN;
+        metadata.stage_ = Stage.POLISH;
         metadata.polished.id = ++_polishedCounter;
         emit Polish(tokenId);
     }
 
-    function ship(uint tokenId)
-        external
-        onlyDiamondDawn
-        isMineOpen(true)
-        onlyStage(tokenId, Stage.POLISH_OPEN)
-    {
+    function ship(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyStage(tokenId, Stage.POLISH) {
         Metadata storage metadata = _metadata[tokenId];
         require(metadata.reborn.id == 0);
         metadata.reborn.id = ++_rebornCounter;
@@ -172,7 +162,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
     function lostShipment(uint tokenId, Certificate calldata diamond) external onlyRole(DEFAULT_ADMIN_ROLE) {
         Metadata storage metadata = _metadata[tokenId];
-        require(metadata.stage_ == Stage.POLISH_OPEN || metadata.stage_ == Stage.SHIP, "Wrong stage");
+        require(metadata.stage_ == Stage.POLISH || metadata.stage_ == Stage.SHIP, "Wrong stage");
         metadata.certificate = diamond;
     }
 
@@ -204,10 +194,10 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
     function isReady(Stage stage_) external view returns (bool) {
         require(_msgSender() == diamondDawn || hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Only DD or admin");
-        if (stage_ == Stage.INVITATIONS || stage_ == Stage.SHIP) return _isVideoExist(stage_, 0);
-        if (stage_ == Stage.MINE_OPEN)
+        if (stage_ == Stage.INVITE || stage_ == Stage.SHIP) return _isVideoExist(stage_, 0);
+        if (stage_ == Stage.MINE)
             return diamondCount == maxDiamonds && _isAllVideosExist(stage_, uint(type(RoughShape).max));
-        if (stage_ == Stage.CUT_OPEN || stage_ == Stage.POLISH_OPEN)
+        if (stage_ == Stage.CUT || stage_ == Stage.POLISH)
             return _isAllVideosExist(stage_, uint(type(Shape).max));
         return false;
     }
@@ -277,14 +267,14 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         Stage stage_ = metadata.stage_;
         Attribute[] memory attributes = new Attribute[](_getNumAttributes(stage_));
         attributes[0] = toStrAttribute("Type", toStageStr(stage_));
-        if (stage_ == Stage.INVITATIONS) {
+        if (stage_ == Stage.INVITE) {
             return attributes;
         }
 
         attributes[1] = toStrAttribute("Origin", "Metaverse");
         attributes[2] = toStrAttribute("Identification", "Natural");
         attributes[3] = toAttribute("Carat", toDecimalStr(_getPoints(metadata)), "");
-        if (stage_ == Stage.MINE_OPEN) {
+        if (stage_ == Stage.MINE) {
             attributes[4] = toStrAttribute("Color", "Cape");
             attributes[5] = toStrAttribute("Shape", toRoughShapeStr(metadata.rough.shape));
             attributes[6] = toStrAttribute("Mine", "Underground");
@@ -292,7 +282,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         }
 
         Certificate memory certificate = metadata.certificate;
-        if (uint(Stage.CUT_OPEN) <= uint(stage_)) {
+        if (uint(Stage.CUT) <= uint(stage_)) {
             attributes[4] = toStrAttribute("Color", toColorStr(certificate.color));
             attributes[5] = toStrAttribute("Cut", toGradeStr(certificate.cut));
             attributes[6] = toStrAttribute("Fluorescence", toFluorescenceStr(certificate.fluorescence));
@@ -302,7 +292,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
             );
             attributes[8] = toStrAttribute("Shape", toShapeStr(certificate.shape));
         }
-        if (uint(Stage.POLISH_OPEN) <= uint(stage_)) {
+        if (uint(Stage.POLISH) <= uint(stage_)) {
             attributes[9] = toStrAttribute("Clarity", toClarityStr(certificate.clarity));
             attributes[10] = toStrAttribute("Polish", toGradeStr(certificate.polish));
             attributes[11] = toStrAttribute("Symmetry", toGradeStr(certificate.symmetry));
@@ -323,30 +313,30 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
 
     function _getShapeNumber(Metadata memory metadata) private pure returns (uint) {
         Stage stage_ = metadata.stage_;
-        if (stage_ == Stage.CUT_OPEN || stage_ == Stage.POLISH_OPEN) return uint(metadata.certificate.shape);
-        if (stage_ == Stage.MINE_OPEN) return uint(metadata.rough.shape);
-        if (stage_ == Stage.INVITATIONS || stage_ == Stage.SHIP) return 0;
+        if (stage_ == Stage.CUT || stage_ == Stage.POLISH) return uint(metadata.certificate.shape);
+        if (stage_ == Stage.MINE) return uint(metadata.rough.shape);
+        if (stage_ == Stage.INVITE || stage_ == Stage.SHIP) return 0;
         revert("Shape number");
     }
 
     function _getNumAttributes(Stage stage_) private pure returns (uint) {
-        if (stage_ == Stage.INVITATIONS) return 1;
-        if (stage_ == Stage.MINE_OPEN) return 7;
-        if (stage_ == Stage.CUT_OPEN) return 9;
-        if (stage_ == Stage.POLISH_OPEN) return 12;
+        if (stage_ == Stage.INVITE) return 1;
+        if (stage_ == Stage.MINE) return 7;
+        if (stage_ == Stage.CUT) return 9;
+        if (stage_ == Stage.POLISH) return 12;
         if (stage_ == Stage.SHIP) return 16;
         revert("Attributes number");
     }
 
     function _getPoints(Metadata memory metadata) private pure returns (uint) {
         assert(metadata.certificate.points > 0);
-        if (metadata.stage_ == Stage.MINE_OPEN) {
+        if (metadata.stage_ == Stage.MINE) {
             assert(metadata.rough.extraPoints > 0);
             return metadata.certificate.points + metadata.rough.extraPoints;
-        } else if (metadata.stage_ == Stage.CUT_OPEN) {
+        } else if (metadata.stage_ == Stage.CUT) {
             assert(metadata.cut.extraPoints > 0);
             return metadata.certificate.points + metadata.cut.extraPoints;
-        } else if (metadata.stage_ == Stage.POLISH_OPEN || metadata.stage_ == Stage.SHIP)
+        } else if (metadata.stage_ == Stage.POLISH || metadata.stage_ == Stage.SHIP)
             return metadata.certificate.points;
         revert("Points");
     }

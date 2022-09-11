@@ -317,10 +317,10 @@ describe("Diamond Dawn Mine Admin", () => {
       await mineContract.lockMine();
       const stages = [
         STAGE.NO_STAGE,
-        STAGE.INVITATIONS,
-        STAGE.MINE_OPEN,
-        STAGE.CUT_OPEN,
-        STAGE.POLISH_OPEN,
+        STAGE.INVITE,
+        STAGE.MINE,
+        STAGE.CUT,
+        STAGE.POLISH,
         STAGE.SHIP,
       ];
 
@@ -356,21 +356,21 @@ describe("Diamond Dawn Mine Admin", () => {
       // reborn
       const rebornVideo = "diamond_dawn.mp4";
 
-      await mineContract.setStageVideos(STAGE.INVITATIONS, [
+      await mineContract.setStageVideos(STAGE.INVITE, [
         { shape: NO_SHAPE_NUM, video: enterMine },
       ]);
-      await mineContract.setStageVideos(STAGE.MINE_OPEN, [
+      await mineContract.setStageVideos(STAGE.MINE, [
         { shape: ROUGH_SHAPE.MAKEABLE_1, video: roughMakeable1 },
         { shape: ROUGH_SHAPE.MAKEABLE_2, video: roughMakeable2 },
       ]);
 
-      await mineContract.setStageVideos(STAGE.CUT_OPEN, [
+      await mineContract.setStageVideos(STAGE.CUT, [
         { shape: SHAPE.PEAR, video: cutPear },
         { shape: SHAPE.ROUND, video: cutRound },
         { shape: SHAPE.OVAL, video: cutOval },
         { shape: SHAPE.RADIANT, video: cutRadiant },
       ]);
-      await mineContract.setStageVideos(STAGE.POLISH_OPEN, [
+      await mineContract.setStageVideos(STAGE.POLISH, [
         { shape: SHAPE.PEAR, video: polishedPear },
         { shape: SHAPE.ROUND, video: polishedRound },
         { shape: SHAPE.OVAL, video: polishedOval },
@@ -381,47 +381,41 @@ describe("Diamond Dawn Mine Admin", () => {
       ]);
 
       // await mineContract.setOpen(true);
-      expect(
-        await mineContract.stageToShapeVideo(STAGE.INVITATIONS, 0)
-      ).to.be.equal(enterMine);
+      expect(await mineContract.stageToShapeVideo(STAGE.INVITE, 0)).to.be.equal(
+        enterMine
+      );
 
       expect(
-        await mineContract.stageToShapeVideo(
-          STAGE.MINE_OPEN,
-          ROUGH_SHAPE.MAKEABLE_1
-        )
+        await mineContract.stageToShapeVideo(STAGE.MINE, ROUGH_SHAPE.MAKEABLE_1)
       ).to.be.equal(roughMakeable1);
       expect(
-        await mineContract.stageToShapeVideo(
-          STAGE.MINE_OPEN,
-          ROUGH_SHAPE.MAKEABLE_2
-        )
+        await mineContract.stageToShapeVideo(STAGE.MINE, ROUGH_SHAPE.MAKEABLE_2)
       ).to.be.equal(roughMakeable2);
 
       expect(
-        await mineContract.stageToShapeVideo(STAGE.CUT_OPEN, SHAPE.PEAR)
+        await mineContract.stageToShapeVideo(STAGE.CUT, SHAPE.PEAR)
       ).to.be.equal(cutPear);
       expect(
-        await mineContract.stageToShapeVideo(STAGE.CUT_OPEN, SHAPE.ROUND)
+        await mineContract.stageToShapeVideo(STAGE.CUT, SHAPE.ROUND)
       ).to.be.equal(cutRound);
       expect(
-        await mineContract.stageToShapeVideo(STAGE.CUT_OPEN, SHAPE.OVAL)
+        await mineContract.stageToShapeVideo(STAGE.CUT, SHAPE.OVAL)
       ).to.be.equal(cutOval);
       expect(
-        await mineContract.stageToShapeVideo(STAGE.CUT_OPEN, SHAPE.RADIANT)
+        await mineContract.stageToShapeVideo(STAGE.CUT, SHAPE.RADIANT)
       ).to.be.equal(cutRadiant);
 
       expect(
-        await mineContract.stageToShapeVideo(STAGE.POLISH_OPEN, SHAPE.PEAR)
+        await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.PEAR)
       ).to.be.equal(polishedPear);
       expect(
-        await mineContract.stageToShapeVideo(STAGE.POLISH_OPEN, SHAPE.ROUND)
+        await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.ROUND)
       ).to.be.equal(polishedRound);
       expect(
-        await mineContract.stageToShapeVideo(STAGE.POLISH_OPEN, SHAPE.OVAL)
+        await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.OVAL)
       ).to.be.equal(polishedOval);
       expect(
-        await mineContract.stageToShapeVideo(STAGE.POLISH_OPEN, SHAPE.RADIANT)
+        await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.RADIANT)
       ).to.be.equal(polishedRadiant);
 
       expect(await mineContract.stageToShapeVideo(STAGE.SHIP, 0)).to.be.equal(

@@ -61,9 +61,9 @@ const StageTab = ({ stage }) => {
   const isCurrentStage = systemStage === stage;
 
   let canReveal = isScheduleSet && isVideoArtSet;
-  if (stage === SYSTEM_STAGE.INVITATIONS) {
+  if (stage === SYSTEM_STAGE.INVITE) {
     canReveal = canReveal && !paused;
-  } else if (stage === SYSTEM_STAGE.MINE_OPEN) {
+  } else if (stage === SYSTEM_STAGE.MINE) {
     canReveal = canReveal && diamondCount === maxDiamonds;
   }
 
@@ -96,7 +96,7 @@ const StageTab = ({ stage }) => {
         {systemStageName} SCHEDULE
       </div>
       <StageSchedule stage={stage} />
-      {stage === SYSTEM_STAGE.INVITATIONS && (
+      {stage === SYSTEM_STAGE.INVITE && (
         <>
           <div className="separator" />
           <div
@@ -112,7 +112,7 @@ const StageTab = ({ stage }) => {
           </div>
         </>
       )}
-      {stage === SYSTEM_STAGE.MINE_OPEN && (
+      {stage === SYSTEM_STAGE.MINE && (
         <>
           <div className="separator" />
           <div
