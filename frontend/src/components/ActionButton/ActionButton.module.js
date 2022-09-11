@@ -13,8 +13,10 @@ export const clearActionStatus = (actionKey) => ({
 });
 
 // SELECTORS
-export const actionStatusSelector = (actionKey = '') => (state) =>
-  _.get(state, ["actionStatus", actionKey], {});
+export const actionStatusSelector =
+  (actionKey = "") =>
+  (state) =>
+    _.get(state, ["actionStatus", actionKey], {});
 const isActionStatusSelector = (actionKey, status) => (state) =>
   actionStatusSelector(actionKey)(state).status === status;
 export const isActionPendingSelector = (actionKey) =>

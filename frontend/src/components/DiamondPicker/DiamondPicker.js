@@ -10,7 +10,7 @@ import { getActionableTokens } from "utils";
 import { tokensSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
 import useMountLogger from "hooks/useMountLogger";
-import {isActionPendingSelector} from "components/ActionButton";
+import { isActionPendingSelector } from "components/ActionButton";
 import useTimeout from "hooks/useTimeout";
 
 const DiamondPicker = ({ actionKey, disabled }) => {
@@ -19,9 +19,9 @@ const DiamondPicker = ({ actionKey, disabled }) => {
   const [actionableTokens, setActionableTokens] = useState([]);
   const tokens = useSelector(tokensSelector);
   const { systemStage, isStageActive } = useSelector(systemSelector);
-  const isActionPending = useSelector(isActionPendingSelector(actionKey))
-  const canSelect = !disabled && !isActionPending
-  const [transitionTime, setTransitionTime] = useState(0)
+  const isActionPending = useSelector(isActionPendingSelector(actionKey));
+  const canSelect = !disabled && !isActionPending;
+  const [transitionTime, setTransitionTime] = useState(0);
 
   useMountLogger("DiamondPicker");
 
@@ -32,8 +32,8 @@ const DiamondPicker = ({ actionKey, disabled }) => {
   }, []);
 
   useTimeout(() => {
-    setTransitionTime(150)
-  }, 1000)
+    setTransitionTime(150);
+  }, 1000);
 
   const selectedIndex = _.findIndex(
     actionableTokens,
@@ -41,10 +41,10 @@ const DiamondPicker = ({ actionKey, disabled }) => {
   );
 
   const onChange = (index) => {
-    if (!canSelect) return
+    if (!canSelect) return;
 
     dispatch(setSelectedTokenId(_.get(actionableTokens, index)?.id));
-  }
+  };
 
   return (
     <Carousel
@@ -57,7 +57,7 @@ const DiamondPicker = ({ actionKey, disabled }) => {
       transitionTime={transitionTime}
     >
       {actionableTokens.map((diamond) => (
-        <div key={`diamond-picker-${diamond.id}`} >
+        <div key={`diamond-picker-${diamond.id}`}>
           <div className="token-id">{diamond.name}</div>
           <Diamond diamond={diamond} />
         </div>
