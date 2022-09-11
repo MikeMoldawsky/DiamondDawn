@@ -21,7 +21,7 @@ const Cut = () => {
   const CutContent = useCallback(
     ({ execute, endTime }) => (
       <>
-        <DiamondPicker />
+        <DiamondPicker actionKey="Cut" />
         <div className="leading-text">
           EVERYBODY WANT TO BE A DIAMOND,
           <br />

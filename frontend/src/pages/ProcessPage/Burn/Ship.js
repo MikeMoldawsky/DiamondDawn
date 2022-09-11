@@ -45,6 +45,7 @@ const Ship = () => {
       if (showShippingForm)
         return (
           <>
+            <DiamondPicker disabled />
             <div className="leading-text">ENTER A SHIPPING ADDRESS</div>
             <div className="secondary-text">
               We are committed to your privacy

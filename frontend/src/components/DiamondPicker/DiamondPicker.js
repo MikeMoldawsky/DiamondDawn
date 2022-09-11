@@ -10,15 +10,18 @@ import { getActionableTokens } from "utils";
 import { tokensSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
 import useMountLogger from "hooks/useMountLogger";
+import { isActionPendingSelector } from "components/ActionButton";
+import useTimeout from "hooks/useTimeout";
 
-const DiamondPicker = () => {
+const DiamondPicker = ({ actionKey, disabled }) => {
   const dispatch = useDispatch();
   const { selectedTokenId } = useSelector(uiSelector);
   const [actionableTokens, setActionableTokens] = useState([]);
   const tokens = useSelector(tokensSelector);
   const { systemStage, isStageActive } = useSelector(systemSelector);
-
-  console.log("DiamondPicker", { actionableTokens });
+  const isActionPending = useSelector(isActionPendingSelector(actionKey));
+  const canSelect = !disabled && !isActionPending;
+  const [transitionTime, setTransitionTime] = useState(0);
 
   useMountLogger("DiamondPicker");
 
@@ -28,13 +31,20 @@ const DiamondPicker = () => {
     );
   }, []);
 
+  useTimeout(() => {
+    setTransitionTime(150);
+  }, 1000);
+
   const selectedIndex = _.findIndex(
     actionableTokens,
     (token) => token.id === selectedTokenId
   );
 
-  const onChange = (index) =>
+  const onChange = (index) => {
+    if (!canSelect) return;
+
     dispatch(setSelectedTokenId(_.get(actionableTokens, index)?.id));
+  };
 
   return (
     <Carousel
@@ -42,10 +52,15 @@ const DiamondPicker = () => {
       onChange={onChange}
       showStatus={false}
       showThumbs={false}
-      showIndicators={_.size(actionableTokens) > 1}
+      showIndicators={_.size(actionableTokens) > 1 && canSelect}
+      showArrows={canSelect}
+      transitionTime={transitionTime}
     >
       {actionableTokens.map((diamond) => (
-        <Diamond key={`diamond-picker-${diamond.id}`} diamond={diamond} />
+        <div key={`diamond-picker-${diamond.id}`}>
+          <div className="token-id">{diamond.name}</div>
+          <Diamond diamond={diamond} />
+        </div>
       ))}
     </Carousel>
   );

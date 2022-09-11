@@ -39,6 +39,7 @@ const DiamondItem = ({ diamond }) => {
         {showInfo && (
           <div className="diamond-info-container">
             <Diamond diamond={diamond} />
+            <div className="token-id">{diamond.name}</div>
           </div>
         )}
       </div>
