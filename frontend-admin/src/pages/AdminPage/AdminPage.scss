@@ -139,6 +139,12 @@
     width: 600px;
     margin: 0 auto;
 
+    h1 {
+      flex-grow: 2;
+      text-align: left;
+      margin-top: 20px;
+    }
+
     .stage-art {
       align-items: flex-end;
 
@@ -151,17 +157,6 @@
         input {
           width: 400px;
         }
-      }
-    }
-
-    .stage-schedule {
-      .countdown {
-        width: 120px;
-        margin-left: 40px;
-      }
-
-      .input-row {
-        flex-grow: 2;
       }
     }
 
@@ -266,6 +261,22 @@
 
     input {
       width: 180px;
+    }
+  }
+
+  .config {
+    width: 700px;
+    margin: 0 auto;
+
+    .stage-time {
+      .countdown {
+        width: 120px;
+        margin-left: 40px;
+      }
+
+      .input-row {
+        flex-grow: 2;
+      }
     }
   }
 

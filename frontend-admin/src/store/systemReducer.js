@@ -7,7 +7,7 @@ import {
   getVideoUrlsByStageApi,
   getMaxDiamondsApi,
 } from "api/contractApi";
-import { getSystemScheduleApi } from "api/serverApi";
+import {getConfigApi, updateStageTimeApi} from "api/serverApi";
 
 const INITIAL_STATE = {
   ddContractData: null,
@@ -16,7 +16,7 @@ const INITIAL_STATE = {
   isStageActive: false,
   paused: false,
   diamondCount: -1,
-  schedule: {},
+  config: {},
   videoArt: {},
   maxDiamonds: -1,
 };
@@ -52,13 +52,18 @@ export const loadDiamondCount = (mineContract) => async (dispatch) => {
   });
 };
 
-export const loadSchedule = () => async (dispatch) => {
-  const schedule = await getSystemScheduleApi();
+export const loadConfig = () => async (dispatch) => {
+  const config = await getConfigApi();
   dispatch({
-    type: "SYSTEM.SET_SCHEDULE",
-    payload: { schedule },
+    type: "SYSTEM.UPDATE_STATE",
+    payload: { config },
   });
 };
+
+export const updateStageTime = timestamp => async (dispatch) => {
+  await updateStageTimeApi(timestamp)
+  dispatch(loadConfig());
+}
 
 export const loadStageArt = (mineContract, systemStage) => async (dispatch) => {
   const videoArt = await getVideoUrlsByStageApi(mineContract, systemStage);

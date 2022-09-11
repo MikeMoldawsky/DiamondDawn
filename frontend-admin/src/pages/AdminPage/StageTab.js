@@ -5,11 +5,10 @@ import useDDContract from "hooks/useDDContract";
 import ActionButton from "components/ActionButton";
 import { getSystemStageName } from "utils";
 import StageArt from "./StageArt";
-import StageSchedule from "./StageSchedule";
 import {
   loadSystemPaused,
   loadSystemStage,
-  systemSelector,
+  systemSelector, updateStageTime,
 } from "store/systemReducer";
 import {
   pauseApi,
@@ -19,6 +18,8 @@ import {
 } from "api/contractApi";
 import classNames from "classnames";
 import { SYSTEM_STAGE } from "consts";
+import add from 'date-fns/add'
+import Countdown from "react-countdown";
 
 const StageTab = ({ stage }) => {
   const {
@@ -27,8 +28,8 @@ const StageTab = ({ stage }) => {
     paused,
     maxDiamonds,
     diamondCount,
-    schedule,
     videoArt,
+    config,
   } = useSelector(systemSelector);
   const systemStageName = getSystemStageName(stage);
 
@@ -44,39 +45,58 @@ const StageTab = ({ stage }) => {
   const setSystemStage = async (systemStage) => {
     await setSystemStageApi(contract, systemStage);
     dispatch(loadSystemStage(contract));
+    const timestamp = add(new Date(), { weeks: 3, days: 3, hours: 3 })
+    dispatch(updateStageTime(timestamp))
   };
 
   const completeStage = async () => {
     await completeStageApi(contract, systemStage);
     dispatch(loadSystemStage(contract));
+    const timestamp = add(new Date(), { days: 3 })
+    dispatch(updateStageTime(timestamp))
   };
 
-  const startTime = _.get(schedule, stage);
-  const isStartTimeSet = startTime && new Date(startTime) > new Date();
-  const endTime = _.get(schedule, stage + 1);
-  const isEndTimeSet = endTime && new Date(endTime) > new Date();
-  const isScheduleSet =
-    stage === 0 ? isEndTimeSet : isStartTimeSet && isEndTimeSet;
   const isVideoArtSet = _.every(videoArt, (videoUrl) => !_.isEmpty(videoUrl));
-  const isCurrentStage = systemStage === stage;
+  const isCurrentStage = stage === systemStage;
+  const isNextStage = stage === systemStage + 1;
 
-  let canReveal = isScheduleSet && isVideoArtSet;
+  let canReveal = isVideoArtSet;
   if (stage === SYSTEM_STAGE.INVITE) {
     canReveal = canReveal && !paused;
   } else if (stage === SYSTEM_STAGE.MINE) {
     canReveal = canReveal && diamondCount === maxDiamonds;
   }
 
+  const renderCountdown = () => {
+    let text = ''
+    if (isCurrentStage) {
+      text = `${isStageActive ? 'Stage' : 'Cooldown'} ends in `
+    }
+
+    if (isNextStage && !isStageActive) {
+      text = 'Stage starts in '
+    }
+
+    return text ? (
+      <div className="countdown">
+        {text}<Countdown text={[]} date={config.stageTime} />
+      </div>
+    ) : null
+  }
+
   return (
     <div className="stage-tab">
-      <h1
-        className={classNames({
-          current: isCurrentStage,
-          complete: isCurrentStage && !isStageActive,
-        })}
-      >
-        {systemStageName}
-      </h1>
+      <div className="center-aligned-row" style={{marginTop: 20}}>
+        <h1
+          className={classNames({
+            current: isCurrentStage,
+            complete: isCurrentStage && !isStageActive,
+          })}
+        >
+          {systemStageName}
+        </h1>
+        {renderCountdown()}
+      </div>
       <div
         className={classNames("title", {
           success: isVideoArtSet,
@@ -86,16 +106,6 @@ const StageTab = ({ stage }) => {
         {systemStageName} ART
       </div>
       <StageArt systemStage={stage} />
-      <div className="separator" />
-      <div
-        className={classNames("title", {
-          success: isScheduleSet,
-          error: !isScheduleSet,
-        })}
-      >
-        {systemStageName} SCHEDULE
-      </div>
-      <StageSchedule stage={stage} />
       {stage === SYSTEM_STAGE.INVITE && (
         <>
           <div className="separator" />
