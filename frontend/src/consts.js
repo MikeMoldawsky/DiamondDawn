@@ -16,15 +16,6 @@ export const SYSTEM_STAGE_NAME = {
   [SYSTEM_STAGE.SHIP]: "Ship",
 };
 
-export const DIAMOND_DAWN_TYPE = {
-  NO_TYPE: 0,
-  ENTER_MINE: 1,
-  ROUGH: 2,
-  CUT: 3,
-  POLISHED: 4,
-  REBORN: 5,
-};
-
 export const ROUGH_SHAPE = {
   NO_SHAPE: 0,
   MAKEABLE_1: 1,

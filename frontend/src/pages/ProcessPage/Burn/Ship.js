@@ -8,10 +8,9 @@ import { tokenByIdSelector } from "store/tokensReducer";
 import { useForm } from "react-hook-form";
 import "./Ship.scss";
 import classNames from "classnames";
-import NoDiamondView from "components/NoDiamondView";
-import { DUMMY_VIDEO_URL, DIAMOND_DAWN_TYPE, TRAIT } from "consts";
+import {DUMMY_VIDEO_URL, TRAIT} from "consts";
 import ActionButton from "components/ActionButton";
-import { getTokenTrait, isTokenOfType } from "utils";
+import { getTokenTrait } from "utils";
 import ActionView from "components/ActionView";
 import { shipApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
@@ -69,8 +68,7 @@ const Ship = () => {
           </>
         );
 
-      return isTokenOfType(token, DIAMOND_DAWN_TYPE.POLISHED) &&
-        !token.isBurned ? (
+      return (
         <>
           <DiamondPicker />
           <div className="leading-text">BUT... IS THERE MORE?</div>
@@ -88,9 +86,7 @@ const Ship = () => {
           </div>
           <Countdown date={endTime} text={["You have", "to burn"]} />
         </>
-      ) : (
-        <NoDiamondView stageName="burn" />
-      );
+      )
     },
     [tokenType, showShippingForm]
   );

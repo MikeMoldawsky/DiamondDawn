@@ -62,6 +62,7 @@ function RebirthPage() {
         <ActionView
           transact={() => rebirthApi(contract, tokenId)}
           videoUrl={DUMMY_VIDEO_URL}
+          isRebirth
         >
           <RebirthContent />
         </ActionView>
