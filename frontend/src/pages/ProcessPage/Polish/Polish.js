@@ -18,7 +18,7 @@ const Polish = () => {
   const PolishContent = useCallback(
     ({ execute, endTime }) => (
       <>
-        <DiamondPicker />
+        <DiamondPicker actionKey="Polish" />
         <div className="leading-text">
           A GEM CANNOT BE POLISHED WITHOUT FRICTION,
           <br />

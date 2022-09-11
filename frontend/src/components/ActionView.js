@@ -41,6 +41,10 @@ const ActionView = ({
 
   useEffect(() => {
     dispatch(loadConfig());
+
+    return () => {
+      dispatch(setShouldIgnoreTokenTransferWatch(false));
+    }
   }, []);
 
   useEffect(() => {
