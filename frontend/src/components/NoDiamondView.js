@@ -1,7 +1,7 @@
 import React from "react";
 import Countdown from "components/Countdown";
 
-const NoDiamondView = ({ stageName, secondaryText }) => {
+const NoDiamondView = ({ stageName, secondaryText, stageTime }) => {
   const _secondaryText =
     secondaryText ||
     `You do not hold a diamond to ${stageName}, you can buy one on OpenSea`;
@@ -11,7 +11,7 @@ const NoDiamondView = ({ stageName, secondaryText }) => {
       <div className="secondary-text">{_secondaryText}</div>
       <div className="button action-button">Buy a Diamond</div>
       <Countdown
-        date={Date.now() + 10000}
+        date={stageTime}
         text={["You have", `to ${stageName}`]}
       />
     </div>

@@ -1,6 +1,4 @@
 import axios from "axios";
-import _ from "lodash";
-import { SYSTEM_STAGE } from "consts";
 import { logApiError } from "utils";
 import getLocation from "utils/getLocation";
 
@@ -15,19 +13,12 @@ export const getContractInfoApi = async () => {
   }
 };
 
-// SYSTEM SCHEDULE
-export const getSystemScheduleApi = async () => {
+// CONFIG
+export const getConfigApi = async () => {
   try {
-    const res = await axios.get(`/api/get_stages`);
-    return _.zipObject(
-      _.values(SYSTEM_STAGE),
-      _.map(_.values(SYSTEM_STAGE), (stage) => {
-        const dbConf = _.find(res.data, { stage });
-        return dbConf ? dbConf.startsAt : null;
-      })
-    );
+    const { data } = await axios.get(`/api/get_config`);
+    return data || {};
   } catch (e) {
-    logApiError(e, "getSystemScheduleApi");
     return {};
   }
 };
