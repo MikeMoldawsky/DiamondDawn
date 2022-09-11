@@ -39,7 +39,7 @@ contract DiamondDawn is
 
     uint16 private _tokenIdCounter;
     mapping(address => EnumerableSet.UintSet) private _ownerToShippedIds;
-    mapping(bytes32 => bool) private _invitations;
+    mapping(bytes32 => bool) private _invites;
 
     constructor(address mine_, uint16 maxEntrance_) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -92,12 +92,7 @@ contract DiamondDawn is
 
     /**********************     External Functions     ************************/
 
-    function enter(string calldata password)
-        external
-        payable
-        costs(PRICE)
-        isActiveReadyStage(Stage.INVITATIONS)
-    {
+    function enter(string calldata password) external payable costs(PRICE) isActiveReadyStage(Stage.INVITE) {
         //        require(balanceOf(_msgSender()) == 0, "1 token per wallet");
         //        bytes32 passwordHash = keccak256(abi.encodePacked(password));
         //        require(_invitations[passwordHash], "Not invited");
@@ -108,15 +103,15 @@ contract DiamondDawn is
         _safeMint(_msgSender(), tokenId);
     }
 
-    function mine(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.MINE_OPEN) {
+    function mine(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.MINE) {
         ddMine.mine(tokenId);
     }
 
-    function cut(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.CUT_OPEN) {
+    function cut(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.CUT) {
         ddMine.cut(tokenId);
     }
 
-    function polish(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.POLISH_OPEN) {
+    function polish(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.POLISH) {
         ddMine.polish(tokenId);
     }
 
@@ -140,7 +135,7 @@ contract DiamondDawn is
         entranceLeft
     {
         for (uint i = 0; i < hashes.length; i++) {
-            _invitations[hashes[i]] = true;
+            _invites[hashes[i]] = true;
         }
     }
 

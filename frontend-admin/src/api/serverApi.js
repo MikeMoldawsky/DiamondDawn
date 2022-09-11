@@ -98,7 +98,7 @@ export const countPasswordsApi = async (status) => {
   }
 };
 
-// INVITATIONS
+// INVITE
 export const getInvitesApi = async () => {
   try {
     const res = await axios.get(`/api/get_invites`);

@@ -79,7 +79,7 @@ const InvitePage = () => {
   };
 
   const renderInviteContent = () => {
-    if (systemStage !== SYSTEM_STAGE.INVITATIONS || !isStageActive)
+    if (systemStage !== SYSTEM_STAGE.INVITE || !isStageActive)
       return <h1>Invitations stage is closed</h1>;
     if (isRevoked === null) return null;
     if (isRevoked) return <InvitationRevoked />;

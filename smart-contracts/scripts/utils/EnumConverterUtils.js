@@ -122,20 +122,11 @@ const NO_SHAPE_NUM = 0;
 
 const SYSTEM_STAGE = {
   NO_STAGE: 0,
-  INVITATIONS: 1,
-  MINE_OPEN: 2,
-  CUT_OPEN: 3,
-  POLISH_OPEN: 4,
-  SHIP: 5,
-};
-
-const DIAMOND_DAWN_TYPE = {
-  NO_TYPE: 0,
-  ENTER_MINE: 1,
-  ROUGH: 2,
+  INVITE: 1,
+  MINE: 2,
   CUT: 3,
-  POLISHED: 4,
-  REBORN: 5,
+  POLISH: 4,
+  SHIP: 5,
 };
 
 const ROUGH_SHAPE = {
@@ -162,7 +153,6 @@ module.exports = {
   enumToFluorescence,
   NO_SHAPE_NUM,
   SYSTEM_STAGE,
-  DIAMOND_DAWN_TYPE,
   ROUGH_SHAPE,
   SHAPE,
 };

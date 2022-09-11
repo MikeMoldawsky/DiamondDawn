@@ -48,11 +48,11 @@ export const getEnumKeyByValue = (enm, value) => Object.keys(enm)[value];
 
 export const getShapeName = (shape, stage) => {
   switch (stage) {
-    case SYSTEM_STAGE.INVITATIONS:
-    case SYSTEM_STAGE.MINE_OPEN:
+    case SYSTEM_STAGE.INVITE:
+    case SYSTEM_STAGE.MINE:
       return getEnumKeyByValue(ROUGH_SHAPE, shape);
-    case SYSTEM_STAGE.CUT_OPEN:
-    case SYSTEM_STAGE.POLISH_OPEN:
+    case SYSTEM_STAGE.CUT:
+    case SYSTEM_STAGE.POLISH:
       return getEnumKeyByValue(SHAPE, shape);
     default:
       return "UNKNOWN";

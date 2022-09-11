@@ -2,10 +2,10 @@ export const NO_SHAPE_NUM = 0;
 
 export const SYSTEM_STAGE = {
   NO_STAGE: 0,
-  INVITATIONS: 1,
-  MINE_OPEN: 2,
-  CUT_OPEN: 3,
-  POLISH_OPEN: 4,
+  INVITE: 1,
+  MINE: 2,
+  CUT: 3,
+  POLISH: 4,
   SHIP: 5,
 };
 

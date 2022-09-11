@@ -29,11 +29,11 @@ const ProcessPage = () => {
 
   const renderByStage = useCallback(() => {
     switch (systemStage) {
-      case SYSTEM_STAGE.MINE_OPEN:
+      case SYSTEM_STAGE.MINE:
         return <Mine />;
-      case SYSTEM_STAGE.CUT_OPEN:
+      case SYSTEM_STAGE.CUT:
         return <Cut />;
-      case SYSTEM_STAGE.POLISH_OPEN:
+      case SYSTEM_STAGE.POLISH:
         return <Polish />;
       case SYSTEM_STAGE.SHIP:
         return <Ship />;
@@ -46,7 +46,7 @@ const ProcessPage = () => {
   return (
     <div className="page process-page">
       <div className="inner-page">
-        {systemStage >= SYSTEM_STAGE.INVITATIONS ? renderByStage() : null}
+        {systemStage >= SYSTEM_STAGE.INVITE ? renderByStage() : null}
       </div>
     </div>
   );
