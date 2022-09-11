@@ -45,7 +45,10 @@ const DiamondPicker = () => {
       showIndicators={_.size(actionableTokens) > 1}
     >
       {actionableTokens.map((diamond) => (
-        <Diamond key={`diamond-picker-${diamond.id}`} diamond={diamond} />
+        <div key={`diamond-picker-${diamond.id}`} >
+          <div className="token-id">{diamond.name}</div>
+          <Diamond diamond={diamond} />
+        </div>
       ))}
     </Carousel>
   );
