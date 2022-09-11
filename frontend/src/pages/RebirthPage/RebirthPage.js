@@ -4,7 +4,7 @@ import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
 import ActionButton from "components/ActionButton";
 import { rebirthApi } from "api/contractApi";
-import {DUMMY_VIDEO_URL, SYSTEM_STAGE} from "consts";
+import { DUMMY_VIDEO_URL, SYSTEM_STAGE } from "consts";
 import ActionView from "components/ActionView";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";

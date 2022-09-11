@@ -4,7 +4,7 @@ import useDDContract from "hooks/useDDContract";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { tokenByIdSelector } from "store/tokensReducer";
-import {DUMMY_VIDEO_URL} from "consts";
+import { DUMMY_VIDEO_URL } from "consts";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import useMountLogger from "hooks/useMountLogger";

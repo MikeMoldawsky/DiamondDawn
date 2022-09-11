@@ -3,7 +3,7 @@ import _ from "lodash";
 import { tokenIdToURI } from "api/contractApi";
 import { constants as ethersConsts } from "ethers";
 import { getTokenTrait } from "utils";
-import {SYSTEM_STAGE, TRAIT} from "consts";
+import { SYSTEM_STAGE, TRAIT } from "consts";
 
 const INITIAL_STATE = {};
 
@@ -116,7 +116,7 @@ export const tokenByIdSelector = (tokenId) => (state) =>
 
 // reducer
 const getTokenStageByTypeTrait = (token) => {
-  const displayType = getTokenTrait(token, TRAIT.type)
+  const displayType = getTokenTrait(token, TRAIT.type);
   switch (displayType) {
     case "Mine Entrance":
       return SYSTEM_STAGE.INVITE;
@@ -140,15 +140,19 @@ const reduceToken = (state, tokenId, tokenUri) => ({
     id: tokenId,
     stage: getTokenStageByTypeTrait(tokenUri),
   },
-})
+});
 
 export const tokensReducer = makeReducer(
   {
     "TOKENS.SET": (state, action) => {
       const nfts = action.payload;
-      return _.reduce(nfts, (newState, { tokenId, tokenUri }) => {
-        return reduceToken(newState, tokenId, tokenUri)
-      }, state)
+      return _.reduce(
+        nfts,
+        (newState, { tokenId, tokenUri }) => {
+          return reduceToken(newState, tokenId, tokenUri);
+        },
+        state
+      );
     },
     "TOKENS.SET_TOKEN": (state, action) => {
       const { tokenId, tokenUri } = action.payload;

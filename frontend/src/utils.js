@@ -1,11 +1,6 @@
 import _ from "lodash";
 import { toast } from "react-toastify";
-import {
-  ROUGH_SHAPE,
-  SHAPE,
-  SYSTEM_STAGE,
-  TRAIT,
-} from "consts";
+import { ROUGH_SHAPE, SHAPE, SYSTEM_STAGE, TRAIT } from "consts";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 
 export const parseError = (e) => {
@@ -127,7 +122,9 @@ export const getDiamondIcon = (token) => {
 export const isTokenDone = (token, systemStage, isStageActive) => {
   if (!token) return false;
 
-  const isNotProcessedEnough = token.stage < systemStage - 1 || (token.stage === systemStage - 1 && !isStageActive);
+  const isNotProcessedEnough =
+    token.stage < systemStage - 1 ||
+    (token.stage === systemStage - 1 && !isStageActive);
 
   switch (systemStage) {
     case SYSTEM_STAGE.SHIP:
@@ -140,7 +137,7 @@ export const isTokenDone = (token, systemStage, isStageActive) => {
 export const isTokenActionable = (token, systemStage, isStageActive) => {
   if (!token || !isStageActive) return false;
 
-  const isActionable = token.stage === systemStage - 1
+  const isActionable = token.stage === systemStage - 1;
 
   if (systemStage === SYSTEM_STAGE.SHIP) {
     return isActionable && !token.isBurned;

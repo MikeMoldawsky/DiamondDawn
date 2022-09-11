@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import VideoPlayer from "components/VideoPlayer";
-import {setTokenUri, tokenByIdSelector} from "store/tokensReducer";
+import { setTokenUri, tokenByIdSelector } from "store/tokensReducer";
 import { useProvider } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import Loading from "components/Loading";
@@ -11,7 +11,7 @@ import { systemSelector } from "store/systemReducer";
 import _ from "lodash";
 import { setShouldIgnoreTokenTransferWatch, uiSelector } from "store/uiReducer";
 import { getTokenUriApi } from "api/contractApi";
-import {getStageName, isTokenActionable} from "utils";
+import { getStageName, isTokenActionable } from "utils";
 import Countdown from "components/Countdown";
 import NoDiamondView from "components/NoDiamondView";
 
@@ -116,9 +116,11 @@ const ActionView = ({
         </>
       );
 
-    if (requireActionable && !isTokenActionable(token, systemStage, isStageActive)) return (
-      <NoDiamondView stageName={getStageName(systemStage)} />
+    if (
+      requireActionable &&
+      !isTokenActionable(token, systemStage, isStageActive)
     )
+      return <NoDiamondView stageName={getStageName(systemStage)} />;
 
     return React.cloneElement(children, { execute, endTime });
   };

@@ -8,7 +8,7 @@ import { tokenByIdSelector } from "store/tokensReducer";
 import { useForm } from "react-hook-form";
 import "./Ship.scss";
 import classNames from "classnames";
-import {DUMMY_VIDEO_URL} from "consts";
+import { DUMMY_VIDEO_URL } from "consts";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import { shipApi } from "api/contractApi";
@@ -84,7 +84,7 @@ const Ship = () => {
           </div>
           <Countdown date={endTime} text={["You have", "to burn"]} />
         </>
-      )
+      );
     },
     [token?.stage, showShippingForm]
   );

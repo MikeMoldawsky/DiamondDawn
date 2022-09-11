@@ -6,7 +6,7 @@ import Countdown from "components/Countdown";
 import { tokenByIdSelector } from "store/tokensReducer";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
-import {DUMMY_VIDEO_URL} from "consts";
+import { DUMMY_VIDEO_URL } from "consts";
 import useMountLogger from "hooks/useMountLogger";
 import { mineApi } from "api/contractApi";
 import { uiSelector } from "store/uiReducer";
