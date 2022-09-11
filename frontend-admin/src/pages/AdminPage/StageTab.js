@@ -68,6 +68,10 @@ const StageTab = ({ stage }) => {
   }
 
   const renderCountdown = () => {
+    if (!config.stageTime) {
+      return null
+    }
+    
     let text = ''
     if (isCurrentStage) {
       text = `${isStageActive ? 'Stage' : 'Cooldown'} ends in `
