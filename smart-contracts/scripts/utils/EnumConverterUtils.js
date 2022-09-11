@@ -120,7 +120,7 @@ const enumToFluorescence = (i) => {
 
 const NO_SHAPE_NUM = 0;
 
-const SYSTEM_STAGE = {
+const STAGE = {
   NO_STAGE: 0,
   INVITE: 1,
   MINE: 2,
@@ -152,7 +152,7 @@ module.exports = {
   enumToGrade,
   enumToFluorescence,
   NO_SHAPE_NUM,
-  SYSTEM_STAGE,
+  STAGE,
   ROUGH_SHAPE,
   SHAPE,
 };

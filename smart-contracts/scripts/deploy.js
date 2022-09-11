@@ -11,6 +11,7 @@ const {
   updateDiamondDawnMineContract,
 } = require("../db/contract-db-manager");
 const {
+  STAGE,
   NO_SHAPE_NUM,
   SHAPE,
   ROUGH_SHAPE,
@@ -108,7 +109,6 @@ async function main() {
     await setVideos(mine);
     dd = await deployContract(deployer, "DiamondDawn", ddArgs);
     await populateDiamonds(mine);
-    await dd.unpause();
   }
 
   // Update FrontEnd database

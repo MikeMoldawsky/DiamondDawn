@@ -1,12 +1,6 @@
 import _ from "lodash";
 import { toast } from "react-toastify";
-import {
-  DIAMOND_DAWN_TYPE,
-  ROUGH_SHAPE,
-  SHAPE,
-  SYSTEM_STAGE,
-  TRAIT,
-} from "consts";
+import { ROUGH_SHAPE, SHAPE, SYSTEM_STAGE, TRAIT } from "consts";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 
 export const parseError = (e) => {
@@ -61,86 +55,27 @@ export const logApiError = (e, funcName) =>
 
 export const getEnumKeyByValue = (enm, value) => Object.keys(enm)[value];
 
-export const getShapeName = (shape) => getEnumKeyByValue(SHAPE, shape);
-
 export const getStageName = (stage) => getEnumKeyByValue(SYSTEM_STAGE, stage);
-
-export const getTypeByStage = (stage) => {
-  switch (stage) {
-    case SYSTEM_STAGE.INVITE:
-      return DIAMOND_DAWN_TYPE.ENTER_MINE;
-    case SYSTEM_STAGE.MINE:
-      return DIAMOND_DAWN_TYPE.ROUGH;
-    case SYSTEM_STAGE.CUT:
-      return DIAMOND_DAWN_TYPE.CUT;
-    case SYSTEM_STAGE.POLISH:
-      return DIAMOND_DAWN_TYPE.POLISHED;
-    case SYSTEM_STAGE.SHIP:
-      return DIAMOND_DAWN_TYPE.REBORN;
-    default:
-      return 0;
-  }
-};
-
-export const getStageByTokenType = (type) => {
-  switch (type) {
-    case DIAMOND_DAWN_TYPE.ENTER_MINE:
-      return SYSTEM_STAGE.INVITE;
-    case DIAMOND_DAWN_TYPE.ROUGH:
-      return SYSTEM_STAGE.MINE;
-    case DIAMOND_DAWN_TYPE.CUT:
-      return SYSTEM_STAGE.CUT;
-    case DIAMOND_DAWN_TYPE.POLISHED:
-      return SYSTEM_STAGE.POLISH;
-    case DIAMOND_DAWN_TYPE.REBORN:
-      return SYSTEM_STAGE.SHIP;
-    default:
-      return 0;
-  }
-};
-
-export const getTypeByDisplayType = (displayType) => {
-  switch (displayType) {
-    case "Mine Entrance":
-      return DIAMOND_DAWN_TYPE.ENTER_MINE;
-    case "Rough":
-      return DIAMOND_DAWN_TYPE.ROUGH;
-    case "Cut":
-      return DIAMOND_DAWN_TYPE.CUT;
-    case "Polished":
-      return DIAMOND_DAWN_TYPE.POLISHED;
-    case "Reborn":
-      return DIAMOND_DAWN_TYPE.REBORN;
-    default:
-      return DIAMOND_DAWN_TYPE.ENTER_MINE;
-  }
-};
 
 export const getTokenNextStageName = (token) => {
   if (!token) return SYSTEM_STAGE.MINE;
 
-  const tokenType = getTokenTrait(token, TRAIT.type);
-  const stage = getStageByTokenType(tokenType);
-  return getStageName(stage + 1);
+  return getStageName(token.stage + 1);
 };
 
 export const getTokenTrait = (token, trait) => {
   const t = _.find(token?.attributes, { trait_type: trait });
-  if (trait === TRAIT.type) {
-    return getTypeByDisplayType(t?.value);
-  }
   return t?.value;
 };
 
 export const getDiamondIcon = (token) => {
-  const type = getTokenTrait(token, TRAIT.type);
   const shapeName = getTokenTrait(token, TRAIT.shape);
   let shape;
 
-  switch (type) {
-    case DIAMOND_DAWN_TYPE.ENTER_MINE:
+  switch (token.stage) {
+    case SYSTEM_STAGE.INVITE:
       return faGem;
-    case DIAMOND_DAWN_TYPE.ROUGH:
+    case SYSTEM_STAGE.MINE:
       shape = ROUGH_SHAPE[_.toUpper(_.snakeCase(shapeName))];
       switch (shape) {
         case ROUGH_SHAPE.MAKEABLE_1:
@@ -149,7 +84,7 @@ export const getDiamondIcon = (token) => {
         default:
           return null;
       }
-    case DIAMOND_DAWN_TYPE.CUT:
+    case SYSTEM_STAGE.CUT:
       shape = SHAPE[_.toUpper(shapeName)];
       switch (shape) {
         case SHAPE.PEAR:
@@ -163,7 +98,7 @@ export const getDiamondIcon = (token) => {
         default:
           return null;
       }
-    case DIAMOND_DAWN_TYPE.POLISHED:
+    case SYSTEM_STAGE.POLISH:
       shape = SHAPE[_.toUpper(shapeName)];
       switch (shape) {
         case SHAPE.PEAR:
@@ -177,42 +112,38 @@ export const getDiamondIcon = (token) => {
         default:
           return null;
       }
-    case DIAMOND_DAWN_TYPE.REBORN:
+    case SYSTEM_STAGE.SHIP:
       return faGem;
     default:
       return null;
   }
 };
 
-export const isTokenOfType = (token, type) =>
-  token && getTokenTrait(token, TRAIT.type) === type;
+export const isTokenDone = (token, systemStage, isStageActive) => {
+  if (!token) return false;
+
+  const isNotProcessedEnough =
+    token.stage < systemStage - 1 ||
+    (token.stage === systemStage - 1 && !isStageActive);
+
+  switch (systemStage) {
+    case SYSTEM_STAGE.SHIP:
+      return token.stage === SYSTEM_STAGE.SHIP || isNotProcessedEnough;
+    default:
+      return isNotProcessedEnough;
+  }
+};
 
 export const isTokenActionable = (token, systemStage, isStageActive) => {
   if (!token || !isStageActive) return false;
 
-  const prevTokenType = getTypeByStage(systemStage - 1);
-  const isActionableType = isTokenOfType(token, prevTokenType);
+  const isActionable = token.stage === systemStage - 1;
 
   if (systemStage === SYSTEM_STAGE.SHIP) {
-    return isActionableType && !token.isBurned;
+    return isActionable && !token.isBurned;
   }
 
-  return isActionableType;
-};
-
-export const isTokenDone = (token, systemStage) => {
-  if (!token) return false;
-
-  const tokenType = getTokenTrait(token, TRAIT.type);
-  const tokenStage = getStageByTokenType(tokenType);
-  const isNotProcessedEnough = tokenStage < systemStage - 1;
-
-  switch (systemStage) {
-    case SYSTEM_STAGE.SHIP:
-      return tokenType === DIAMOND_DAWN_TYPE.REBORN || isNotProcessedEnough;
-    default:
-      return isNotProcessedEnough;
-  }
+  return isActionable;
 };
 
 export const getActionableTokens = (tokens, systemStage, isStageActive) => {

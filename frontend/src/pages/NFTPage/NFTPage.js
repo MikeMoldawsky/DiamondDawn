@@ -22,7 +22,7 @@ function NFTPage() {
   if (!token) return null;
 
   const renderByStatusPart = () => {
-    if (isTokenDone(token, systemStage))
+    if (isTokenDone(token, systemStage, isStageActive))
       return (
         <>
           <div className="leading-text">This is Your Final Diamond NFT</div>

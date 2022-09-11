@@ -2,6 +2,8 @@ import { makeReducer } from "./reduxUtils";
 import _ from "lodash";
 import { tokenIdToURI } from "api/contractApi";
 import { constants as ethersConsts } from "ethers";
+import { getTokenTrait } from "utils";
+import { SYSTEM_STAGE, TRAIT } from "consts";
 
 const INITIAL_STATE = {};
 
@@ -106,32 +108,55 @@ export const setTokenUri = (tokenId, tokenUri) => ({
   payload: { tokenId, tokenUri },
 });
 
+// selectors
 export const tokensSelector = (state) => state.tokens;
 
 export const tokenByIdSelector = (tokenId) => (state) =>
   _.get(state.tokens, tokenId);
 
+// reducer
+const getTokenStageByTypeTrait = (token) => {
+  const displayType = getTokenTrait(token, TRAIT.type);
+  switch (displayType) {
+    case "Mine Entrance":
+      return SYSTEM_STAGE.INVITE;
+    case "Rough":
+      return SYSTEM_STAGE.MINE;
+    case "Cut":
+      return SYSTEM_STAGE.CUT;
+    case "Polished":
+      return SYSTEM_STAGE.POLISH;
+    case "Reborn":
+      return SYSTEM_STAGE.SHIP;
+    default:
+      return 0;
+  }
+};
+
+const reduceToken = (state, tokenId, tokenUri) => ({
+  ...state,
+  [tokenId]: {
+    ...tokenUri,
+    id: tokenId,
+    stage: getTokenStageByTypeTrait(tokenUri),
+  },
+});
+
 export const tokensReducer = makeReducer(
   {
     "TOKENS.SET": (state, action) => {
       const nfts = action.payload;
-      return {
-        ...state,
-        ..._.zipObject(
-          _.map(nfts, "tokenId"),
-          _.map(nfts, ({ tokenUri }, i) => ({
-            ...tokenUri,
-            id: nfts[i].tokenId,
-          }))
-        ),
-      };
+      return _.reduce(
+        nfts,
+        (newState, { tokenId, tokenUri }) => {
+          return reduceToken(newState, tokenId, tokenUri);
+        },
+        state
+      );
     },
     "TOKENS.SET_TOKEN": (state, action) => {
       const { tokenId, tokenUri } = action.payload;
-      return {
-        ...state,
-        [tokenId]: { ...tokenUri, id: tokenId },
-      };
+      return reduceToken(state, tokenId, tokenUri);
     },
   },
   INITIAL_STATE

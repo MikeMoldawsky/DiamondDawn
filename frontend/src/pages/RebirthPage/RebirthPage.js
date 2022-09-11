@@ -4,7 +4,7 @@ import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
 import ActionButton from "components/ActionButton";
 import { rebirthApi } from "api/contractApi";
-import { DUMMY_VIDEO_URL } from "consts";
+import { DUMMY_VIDEO_URL, SYSTEM_STAGE } from "consts";
 import ActionView from "components/ActionView";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
@@ -33,7 +33,7 @@ function RebirthPage() {
       const intTokenId = parseInt(tokenId);
       if (!_.isEmpty(tokens)) {
         const token = _.find(tokens, (t) => t.id === intTokenId);
-        if (!token) {
+        if (!token || !token.isBurned) {
           navigate("/");
         } else {
           dispatch(setSelectedTokenId(intTokenId));

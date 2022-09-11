@@ -4,10 +4,8 @@ import useDDContract from "hooks/useDDContract";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { tokenByIdSelector } from "store/tokensReducer";
-import { DUMMY_VIDEO_URL, DIAMOND_DAWN_TYPE, TRAIT } from "consts";
-import NoDiamondView from "components/NoDiamondView";
+import { DUMMY_VIDEO_URL } from "consts";
 import ActionButton from "components/ActionButton";
-import { getTokenTrait, isTokenOfType } from "utils";
 import ActionView from "components/ActionView";
 import { polishApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
@@ -16,42 +14,39 @@ const Polish = () => {
   const contract = useDDContract();
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-  const tokenType = getTokenTrait(token, TRAIT.type);
 
   const PolishContent = useCallback(
-    ({ execute, endTime }) =>
-      isTokenOfType(token, DIAMOND_DAWN_TYPE.CUT) ? (
-        <>
-          <DiamondPicker />
-          <div className="leading-text">
-            A GEM CANNOT BE POLISHED WITHOUT FRICTION,
-            <br />
-            NOR MAN PERFECTED WITHOUT TRIALS
-          </div>
-          <div className="secondary-text">
-            Discover the beauty, a billion years in the making
-          </div>
-          <div className="action">
-            <ActionButton
-              actionKey="Polish"
-              className="action-button"
-              onClick={execute}
-            >
-              POLISH
-            </ActionButton>
-          </div>
-          <Countdown date={endTime} text={["You have", "to polish"]} />
-        </>
-      ) : (
-        <NoDiamondView stageName="polish" />
-      ),
-    [tokenType]
+    ({ execute, endTime }) => (
+      <>
+        <DiamondPicker />
+        <div className="leading-text">
+          A GEM CANNOT BE POLISHED WITHOUT FRICTION,
+          <br />
+          NOR MAN PERFECTED WITHOUT TRIALS
+        </div>
+        <div className="secondary-text">
+          Discover the beauty, a billion years in the making
+        </div>
+        <div className="action">
+          <ActionButton
+            actionKey="Polish"
+            className="action-button"
+            onClick={execute}
+          >
+            POLISH
+          </ActionButton>
+        </div>
+        <Countdown date={endTime} text={["You have", "to polish"]} />
+      </>
+    ),
+    [token?.stage, selectedTokenId]
   );
 
   return (
     <ActionView
       transact={() => polishApi(contract, selectedTokenId)}
       videoUrl={DUMMY_VIDEO_URL}
+      requireActionable
     >
       <PolishContent />
     </ActionView>
