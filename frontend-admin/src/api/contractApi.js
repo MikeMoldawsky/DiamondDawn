@@ -1,12 +1,11 @@
 import {
-  DIAMOND_DAWN_TYPE,
   NO_SHAPE_NUM,
   ROUGH_SHAPE,
   SHAPE,
   SYSTEM_STAGE,
 } from "consts";
 import _ from "lodash";
-import { getVideoUrlParamName } from "utils";
+import {getShapeName} from "utils";
 
 // ADMIN CONTROL API
 export const getSystemStageApi = async (contract) => {
@@ -55,47 +54,31 @@ export const unpauseApi = async (contract) => {
 
 // ART URLS API
 const ART_MAPPING = {
-  [SYSTEM_STAGE.INVITATIONS]: {
-    type: DIAMOND_DAWN_TYPE.ENTER_MINE,
-    shapes: [NO_SHAPE_NUM],
-  },
-  [SYSTEM_STAGE.MINE_OPEN]: {
-    type: DIAMOND_DAWN_TYPE.ROUGH,
-    shapes: [ROUGH_SHAPE.MAKEABLE_1, ROUGH_SHAPE.MAKEABLE_2],
-  },
-  [SYSTEM_STAGE.CUT_OPEN]: {
-    type: DIAMOND_DAWN_TYPE.CUT,
-    shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
-  },
-  [SYSTEM_STAGE.POLISH_OPEN]: {
-    type: DIAMOND_DAWN_TYPE.POLISHED,
-    shapes: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
-  },
-  [SYSTEM_STAGE.SHIP]: {
-    type: DIAMOND_DAWN_TYPE.REBORN,
-    shapes: [NO_SHAPE_NUM],
-  },
+  [SYSTEM_STAGE.INVITATIONS]: [NO_SHAPE_NUM],
+  [SYSTEM_STAGE.MINE_OPEN]: [ROUGH_SHAPE.MAKEABLE_1, ROUGH_SHAPE.MAKEABLE_2],
+  [SYSTEM_STAGE.CUT_OPEN]: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
+  [SYSTEM_STAGE.POLISH_OPEN]: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.RADIANT],
+  [SYSTEM_STAGE.SHIP]: [NO_SHAPE_NUM],
 };
 
 export const getVideoUrlsByStageApi = async (mineContract, stage) => {
-  const { type, shapes } = ART_MAPPING[stage];
+  const shapes = ART_MAPPING[stage];
   console.log("MIKE $$$$");
   console.log(mineContract);
-  console.log({ type, shapes });
   const urls = await Promise.all(
-    _.map(shapes, (shape) => mineContract["stageToShapeVideo"](type, shape))
+    _.map(shapes, (shape) => mineContract["stageToShapeVideo"](stage, shape))
   );
-  const names = _.map(shapes, (shape) => getVideoUrlParamName(shape, stage));
+  const names = _.map(shapes, (shape) => getShapeName(shape, stage));
   return _.zipObject(names, urls);
 };
 
 export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
-  const { type, shapes } = ART_MAPPING[stage];
+  const shapes = ART_MAPPING[stage];
   const shapeVideos = _.zipWith(shapes, urls, (shape, url) => ({
     shape: shape,
     video: url,
   }));
-  const tx = await mineContract["setStageVideos"](type, shapeVideos);
+  const tx = await mineContract["setStageVideos"](stage, shapeVideos);
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };

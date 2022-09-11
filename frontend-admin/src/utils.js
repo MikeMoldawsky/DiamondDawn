@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { toast } from "react-toastify";
-import { DIAMOND_DAWN_TYPE, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
+import { ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
 
 export const parseError = (e) => {
   let message = _.get(e, "error.data.message", "");
@@ -56,15 +56,6 @@ export const getShapeName = (shape, stage) => {
       return getEnumKeyByValue(SHAPE, shape);
     default:
       return "UNKNOWN";
-  }
-};
-
-export const getVideoUrlParamName = (getterParam, stage) => {
-  switch (stage) {
-    case SYSTEM_STAGE.SHIP:
-      return getEnumKeyByValue(DIAMOND_DAWN_TYPE, getterParam);
-    default:
-      return getShapeName(getterParam, stage);
   }
 };
 
