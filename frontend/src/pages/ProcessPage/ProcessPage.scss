@@ -29,25 +29,6 @@
     .leading-text {
       font-size: 1.2em;
     }
-
-    .countdown {
-      font-size: 2em;
-    }
-  }
-
-  .countdown-row {
-    width: 670px;
-    margin: 0 auto;
-
-    div {
-      font-size: 1.2em;
-    }
-
-    span {
-      width: 480px;
-      font-size: 5em;
-      opacity: 0.4;
-    }
   }
 
   .video-placeholder {
@@ -61,18 +42,6 @@
 
   .action-view {
     text-align: center;
-
-    .countdown {
-      margin-top: 50px;
-
-      .countdown-text {
-        font-size: 1.5em;
-      }
-
-      span {
-        font-size: 1.8em;
-      }
-    }
   }
 
   .action-button {
