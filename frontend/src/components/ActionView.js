@@ -7,7 +7,7 @@ import { useProvider } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import Loading from "components/Loading";
 import classNames from "classnames";
-import {loadConfig, systemSelector} from "store/systemReducer";
+import { loadConfig, systemSelector } from "store/systemReducer";
 import _ from "lodash";
 import { setShouldIgnoreTokenTransferWatch, uiSelector } from "store/uiReducer";
 import { getTokenUriApi } from "api/contractApi";
@@ -33,8 +33,7 @@ const ActionView = ({
   const contract = useDDContract();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { systemStage, isStageActive, config } =
-    useSelector(systemSelector);
+  const { systemStage, isStageActive, config } = useSelector(systemSelector);
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
   const endTime = config.stageTime;
@@ -42,7 +41,7 @@ const ActionView = ({
 
   useEffect(() => {
     dispatch(loadConfig());
-  }, [])
+  }, []);
 
   useEffect(() => {
     let unwatch = null;
@@ -124,7 +123,12 @@ const ActionView = ({
       requireActionable &&
       !isTokenActionable(token, systemStage, isStageActive)
     )
-      return <NoDiamondView stageName={getStageName(systemStage)} stageTime={endTime} />;
+      return (
+        <NoDiamondView
+          stageName={getStageName(systemStage)}
+          stageTime={endTime}
+        />
+      );
 
     return React.cloneElement(children, { execute, endTime });
   };

@@ -4,7 +4,7 @@ import { useAccount, useProvider } from "wagmi";
 import { useDispatch } from "react-redux";
 import useActionDispatch from "hooks/useActionDispatch";
 import useDDContract from "hooks/useDDContract";
-import {loadConfig, loadSystemStage} from "store/systemReducer";
+import { loadConfig, loadSystemStage } from "store/systemReducer";
 import { EVENTS } from "consts";
 import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens } from "store/tokensReducer";
@@ -26,7 +26,7 @@ const AppLoader = () => {
       contract.on(EVENTS.StageChanged, (_stage) => {
         console.log("EVENT StageChanged fired", { _stage });
         dispatch(loadSystemStage(contract));
-        setTimeout(() => dispatch(loadConfig()), 5000)
+        setTimeout(() => dispatch(loadConfig()), 5000);
       });
     });
 
