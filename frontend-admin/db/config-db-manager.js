@@ -5,10 +5,7 @@ async function updateStageTime(timestamp) {
   try {
     let config = await ConfigModel.findOne({});
     if (config) {
-      return await ConfigModel.findOneAndUpdate(
-        {},
-        { stageTime: dateTime }
-      );
+      return await ConfigModel.findOneAndUpdate({}, { stageTime: dateTime });
     } else {
       return await ConfigModel.create({ stageTime: dateTime });
     }

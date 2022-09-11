@@ -8,7 +8,8 @@ import StageArt from "./StageArt";
 import {
   loadSystemPaused,
   loadSystemStage,
-  systemSelector, updateStageTime,
+  systemSelector,
+  updateStageTime,
 } from "store/systemReducer";
 import {
   pauseApi,
@@ -18,7 +19,7 @@ import {
 } from "api/contractApi";
 import classNames from "classnames";
 import { SYSTEM_STAGE } from "consts";
-import add from 'date-fns/add'
+import add from "date-fns/add";
 import Countdown from "react-countdown";
 
 const StageTab = ({ stage }) => {
@@ -45,15 +46,15 @@ const StageTab = ({ stage }) => {
   const setSystemStage = async (systemStage) => {
     await setSystemStageApi(contract, systemStage);
     dispatch(loadSystemStage(contract));
-    const timestamp = add(new Date(), { weeks: 3, days: 3, hours: 3 })
-    dispatch(updateStageTime(timestamp))
+    const timestamp = add(new Date(), { weeks: 3, days: 3, hours: 3 });
+    dispatch(updateStageTime(timestamp));
   };
 
   const completeStage = async () => {
     await completeStageApi(contract, systemStage);
     dispatch(loadSystemStage(contract));
-    const timestamp = add(new Date(), { days: 3 })
-    dispatch(updateStageTime(timestamp))
+    const timestamp = add(new Date(), { days: 3 });
+    dispatch(updateStageTime(timestamp));
   };
 
   const isVideoArtSet = _.every(videoArt, (videoUrl) => !_.isEmpty(videoUrl));
@@ -69,28 +70,29 @@ const StageTab = ({ stage }) => {
 
   const renderCountdown = () => {
     if (!config.stageTime) {
-      return null
+      return null;
     }
-    
-    let text = ''
+
+    let text = "";
     if (isCurrentStage) {
-      text = `${isStageActive ? 'Stage' : 'Cooldown'} ends in `
+      text = `${isStageActive ? "Stage" : "Cooldown"} ends in `;
     }
 
     if (isNextStage && !isStageActive) {
-      text = 'Stage starts in '
+      text = "Stage starts in ";
     }
 
     return text ? (
       <div className="countdown">
-        {text}<Countdown text={[]} date={config.stageTime} />
+        {text}
+        <Countdown text={[]} date={config.stageTime} />
       </div>
-    ) : null
-  }
+    ) : null;
+  };
 
   return (
     <div className="stage-tab">
-      <div className="center-aligned-row" style={{marginTop: 20}}>
+      <div className="center-aligned-row" style={{ marginTop: 20 }}>
         <h1
           className={classNames({
             current: isCurrentStage,

@@ -62,7 +62,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     dispatch(loadConfig());
-  }, [])
+  }, []);
 
   return (
     <div className={classNames("page admin-page")}>

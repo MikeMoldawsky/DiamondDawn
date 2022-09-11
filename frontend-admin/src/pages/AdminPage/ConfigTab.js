@@ -1,28 +1,32 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import TextField from "@mui/material/TextField";
 import ActionButton from "components/ActionButton";
 import Countdown from "react-countdown";
-import {updateStageTimeApi} from "api/serverApi";
+import { updateStageTimeApi } from "api/serverApi";
 import { useDispatch, useSelector } from "react-redux";
-import {loadConfig, systemSelector, updateStageTime} from "store/systemReducer";
+import {
+  loadConfig,
+  systemSelector,
+  updateStageTime,
+} from "store/systemReducer";
 import classNames from "classnames";
 
 const ConfigTab = () => {
   const dispatch = useDispatch();
   const { config } = useSelector(systemSelector);
-  const { stageTime } = config
+  const { stageTime } = config;
   const [displayStageTime, setDisplayStageTime] = useState(null);
 
   useEffect(() => {
     dispatch(loadConfig());
-  }, [])
+  }, []);
 
-  const time = displayStageTime || stageTime
+  const time = displayStageTime || stageTime;
 
-  const wasChanged = time && time !== stageTime
+  const wasChanged = time && time !== stageTime;
 
   return (
     <div className={classNames("tab-content config")}>

@@ -7,7 +7,7 @@ import {
   getVideoUrlsByStageApi,
   getMaxDiamondsApi,
 } from "api/contractApi";
-import {getConfigApi, updateStageTimeApi} from "api/serverApi";
+import { getConfigApi, updateStageTimeApi } from "api/serverApi";
 
 const INITIAL_STATE = {
   ddContractData: null,
@@ -60,10 +60,10 @@ export const loadConfig = () => async (dispatch) => {
   });
 };
 
-export const updateStageTime = timestamp => async (dispatch) => {
-  await updateStageTimeApi(timestamp)
+export const updateStageTime = (timestamp) => async (dispatch) => {
+  await updateStageTimeApi(timestamp);
   dispatch(loadConfig());
-}
+};
 
 export const loadStageArt = (mineContract, systemStage) => async (dispatch) => {
   const videoArt = await getVideoUrlsByStageApi(mineContract, systemStage);
