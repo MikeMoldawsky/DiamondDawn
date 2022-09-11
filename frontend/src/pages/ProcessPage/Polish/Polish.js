@@ -4,9 +4,8 @@ import useDDContract from "hooks/useDDContract";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { tokenByIdSelector } from "store/tokensReducer";
-import {DUMMY_VIDEO_URL, TRAIT} from "consts";
+import {DUMMY_VIDEO_URL} from "consts";
 import ActionButton from "components/ActionButton";
-import { getTokenTrait } from "utils";
 import ActionView from "components/ActionView";
 import { polishApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
@@ -15,7 +14,6 @@ const Polish = () => {
   const contract = useDDContract();
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-  const tokenType = getTokenTrait(token, TRAIT.type);
 
   const PolishContent = useCallback(
     ({ execute, endTime }) => (
@@ -41,13 +39,14 @@ const Polish = () => {
         <Countdown date={endTime} text={["You have", "to polish"]} />
       </>
     ),
-    [tokenType, selectedTokenId]
+    [token?.stage, selectedTokenId]
   );
 
   return (
     <ActionView
       transact={() => polishApi(contract, selectedTokenId)}
       videoUrl={DUMMY_VIDEO_URL}
+      requireActionable
     >
       <PolishContent />
     </ActionView>

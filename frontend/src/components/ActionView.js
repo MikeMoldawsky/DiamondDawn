@@ -22,7 +22,7 @@ const ActionView = ({
   watch,
   transact,
   isBurn,
-  isRebirth,
+  requireActionable,
 }) => {
   const [actionTxId, setActionTxId] = useState(false);
   const [showCompleteVideo, setShowCompleteVideo] = useState(false);
@@ -116,7 +116,7 @@ const ActionView = ({
         </>
       );
 
-    if (!isRebirth && !isTokenActionable(token, systemStage, isStageActive)) return (
+    if (requireActionable && !isTokenActionable(token, systemStage, isStageActive)) return (
       <NoDiamondView stageName={getStageName(systemStage)} />
     )
 

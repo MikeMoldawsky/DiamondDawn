@@ -124,10 +124,10 @@ export const getDiamondIcon = (token) => {
   }
 };
 
-export const isTokenDone = (token, systemStage) => {
+export const isTokenDone = (token, systemStage, isStageActive) => {
   if (!token) return false;
 
-  const isNotProcessedEnough = token.stage < systemStage - 1;
+  const isNotProcessedEnough = token.stage < systemStage - 1 || (token.stage === systemStage - 1 && !isStageActive);
 
   switch (systemStage) {
     case SYSTEM_STAGE.SHIP:

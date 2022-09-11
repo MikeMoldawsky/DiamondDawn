@@ -8,9 +8,8 @@ import { tokenByIdSelector } from "store/tokensReducer";
 import { useForm } from "react-hook-form";
 import "./Ship.scss";
 import classNames from "classnames";
-import {DUMMY_VIDEO_URL, TRAIT} from "consts";
+import {DUMMY_VIDEO_URL} from "consts";
 import ActionButton from "components/ActionButton";
-import { getTokenTrait } from "utils";
 import ActionView from "components/ActionView";
 import { shipApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
@@ -20,7 +19,6 @@ const Ship = () => {
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
   const [showShippingForm, setShowShippingForm] = useState(false);
-  const tokenType = getTokenTrait(token, TRAIT.type);
 
   const {
     register,
@@ -88,7 +86,7 @@ const Ship = () => {
         </>
       )
     },
-    [tokenType, showShippingForm]
+    [token?.stage, showShippingForm]
   );
 
   return (
@@ -96,6 +94,7 @@ const Ship = () => {
       transact={() => shipApi(contract, selectedTokenId)}
       videoUrl={DUMMY_VIDEO_URL}
       isBurn
+      requireActionable
     >
       <BurnContent />
     </ActionView>

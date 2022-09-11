@@ -6,18 +6,16 @@ import Countdown from "components/Countdown";
 import { tokenByIdSelector } from "store/tokensReducer";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
-import {DUMMY_VIDEO_URL, TRAIT} from "consts";
+import {DUMMY_VIDEO_URL} from "consts";
 import useMountLogger from "hooks/useMountLogger";
 import { mineApi } from "api/contractApi";
 import { uiSelector } from "store/uiReducer";
-import { getTokenTrait } from "utils";
 import DiamondPicker from "components/DiamondPicker";
 
 const Mine = () => {
   const contract = useDDContract();
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-  const tokenType = getTokenTrait(token, TRAIT.type);
 
   useMountLogger("Mine");
 
@@ -39,13 +37,14 @@ const Mine = () => {
         <Countdown date={endTime} text={["You have", "to mine"]} />
       </>
     ),
-    [tokenType, selectedTokenId]
+    [token?.stage, selectedTokenId]
   );
 
   return (
     <ActionView
       transact={() => mineApi(contract, selectedTokenId)}
       videoUrl={DUMMY_VIDEO_URL}
+      requireActionable
     >
       <MineContent />
     </ActionView>
