@@ -4,11 +4,10 @@ import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
 import ActionButton from "components/ActionButton";
 import { rebirthApi } from "api/contractApi";
-import { DUMMY_VIDEO_URL, DIAMOND_DAWN_TYPE } from "consts";
+import { DUMMY_VIDEO_URL } from "consts";
 import ActionView from "components/ActionView";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
-import { isTokenOfType } from "utils";
 import { setSelectedTokenId } from "store/uiReducer";
 
 function RebirthPage() {

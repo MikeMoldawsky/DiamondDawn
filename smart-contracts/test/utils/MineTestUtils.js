@@ -41,20 +41,20 @@ const POLISHED_RADIANT_VIDEO = "polishedRadiant.mp4";
 const REBORN_VIDEO = "reborn.mp4";
 
 async function setEnterMineVideo(mineContract) {
-  await mineContract.setStageVideos(STAGE.INVITATIONS, [
+  await mineContract.setStageVideos(STAGE.INVITE, [
     { shape: NO_SHAPE_NUM, video: ENTER_MINE_VIDEO },
   ]);
 }
 
 async function setRoughVideos(mineContract) {
-  await mineContract.setStageVideos(STAGE.MINE_OPEN, [
+  await mineContract.setStageVideos(STAGE.MINE, [
     { shape: ROUGH_SHAPE.MAKEABLE_1, video: MAKEABLE_1_VIDEO },
     { shape: ROUGH_SHAPE.MAKEABLE_2, video: MAKEABLE_2_VIDEO },
   ]);
 }
 
 async function setCutVideos(mineContract) {
-  await mineContract.setStageVideos(STAGE.CUT_OPEN, [
+  await mineContract.setStageVideos(STAGE.CUT, [
     { shape: SHAPE.PEAR, video: CUT_PEAR_VIDEO },
     { shape: SHAPE.ROUND, video: CUT_ROUND_VIDEO },
     { shape: SHAPE.OVAL, video: CUT_OVAL_VIDEO },
@@ -63,7 +63,7 @@ async function setCutVideos(mineContract) {
 }
 
 async function setPolishedVideos(mineContract) {
-  await mineContract.setStageVideos(STAGE.POLISH_OPEN, [
+  await mineContract.setStageVideos(STAGE.POLISH, [
     { shape: SHAPE.PEAR, video: POLISHED_PEAR_VIDEO },
     { shape: SHAPE.ROUND, video: POLISHED_ROUND_VIDEO },
     { shape: SHAPE.OVAL, video: POLISHED_OVAL_VIDEO },
@@ -128,7 +128,7 @@ async function assertRoughMetadata(mineContract, tokenId, roughId, diamond) {
     expectedMetadataNoCaratShapeImage,
     mineContract,
     tokenId,
-    STAGE.MINE_OPEN,
+    STAGE.MINE,
     diamond.points + MIN_ROUGH_EXTRA_POINTS,
     diamond.points + MAX_ROUGH_EXTRA_POINTS
   );
@@ -143,7 +143,7 @@ async function assertCutMetadata(mineContract, tokenId, cutId, diamond) {
     expectedMetadataNoCaratShapeImage,
     mineContract,
     tokenId,
-    STAGE.CUT_OPEN,
+    STAGE.CUT,
     diamond.points + MIN_POLISH_EXTRA_POINTS,
     diamond.points + MAX_POLISH_EXTRA_POINTS
   );
@@ -161,7 +161,7 @@ async function assertPolishedMetadata(
     expectedMetadataNoCaratShapeImage,
     mineContract,
     tokenId,
-    STAGE.POLISH_OPEN,
+    STAGE.POLISH,
     diamond.points
   );
 }
@@ -256,7 +256,7 @@ async function _validateAndRemoveShapeAndImageMetadata(
 function _assertShapeImage(type, shape, image) {
   let video;
   switch (type) {
-    case STAGE.MINE_OPEN:
+    case STAGE.MINE:
       expect(shape).to.be.oneOf(["Makeable 1", "Makeable 2"]);
       switch (shape) {
         case "Makeable 1":
@@ -269,7 +269,7 @@ function _assertShapeImage(type, shape, image) {
           throw new Error("Unknown shape");
       }
       break;
-    case STAGE.CUT_OPEN:
+    case STAGE.CUT:
       expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Radiant"]);
       switch (shape) {
         case "Pear":
@@ -288,7 +288,7 @@ function _assertShapeImage(type, shape, image) {
           throw new Error("Unknown shape");
       }
       break;
-    case STAGE.POLISH_OPEN:
+    case STAGE.POLISH:
       expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Radiant"]);
       switch (shape) {
         case "Pear":

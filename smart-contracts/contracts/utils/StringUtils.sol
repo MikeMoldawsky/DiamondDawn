@@ -72,13 +72,12 @@ function toRoughShapeStr(RoughShape shape) pure returns (string memory) {
 }
 
 function getName(Metadata memory metadata, uint tokenId) pure returns (string memory) {
-    if (metadata.stage_ == Stage.INVITATIONS)
-        return string.concat("Mine Entrance #", Strings.toString(tokenId));
-    if (metadata.stage_ == Stage.MINE_OPEN)
+    if (metadata.stage_ == Stage.INVITE) return string.concat("Mine Entrance #", Strings.toString(tokenId));
+    if (metadata.stage_ == Stage.MINE)
         return string.concat("Rough Diamond #", Strings.toString(metadata.rough.id));
-    if (metadata.stage_ == Stage.CUT_OPEN)
+    if (metadata.stage_ == Stage.CUT)
         return string.concat("Cut Diamond #", Strings.toString(metadata.cut.id));
-    if (metadata.stage_ == Stage.POLISH_OPEN)
+    if (metadata.stage_ == Stage.POLISH)
         return string.concat("Polished Diamond #", Strings.toString(metadata.polished.id));
     if (metadata.stage_ == Stage.SHIP)
         return string.concat("Diamond Dawn #", Strings.toString(metadata.reborn.id));
@@ -93,10 +92,10 @@ function toDecimalStr(uint percentage) pure returns (string memory) {
 }
 
 function toStageStr(Stage stage_) pure returns (string memory) {
-    if (stage_ == Stage.INVITATIONS) return "Mine Entrance";
-    if (stage_ == Stage.MINE_OPEN) return "Rough";
-    if (stage_ == Stage.CUT_OPEN) return "Cut";
-    if (stage_ == Stage.POLISH_OPEN) return "Polished";
+    if (stage_ == Stage.INVITE) return "Mine Entrance";
+    if (stage_ == Stage.MINE) return "Rough";
+    if (stage_ == Stage.CUT) return "Cut";
+    if (stage_ == Stage.POLISH) return "Polished";
     if (stage_ == Stage.SHIP) return "Reborn";
     revert();
 }

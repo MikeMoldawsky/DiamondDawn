@@ -24,16 +24,16 @@ import _ from "lodash";
 const TABS = [
   {
     title: "Invite",
-    component: () => <StageTab stage={SYSTEM_STAGE.INVITATIONS} />,
+    component: () => <StageTab stage={SYSTEM_STAGE.INVITE} />,
   },
   {
     title: "Mine",
-    component: () => <StageTab stage={SYSTEM_STAGE.MINE_OPEN} />,
+    component: () => <StageTab stage={SYSTEM_STAGE.MINE} />,
   },
-  { title: "Cut", component: () => <StageTab stage={SYSTEM_STAGE.CUT_OPEN} /> },
+  { title: "Cut", component: () => <StageTab stage={SYSTEM_STAGE.CUT} /> },
   {
     title: "Polish",
-    component: () => <StageTab stage={SYSTEM_STAGE.POLISH_OPEN} />,
+    component: () => <StageTab stage={SYSTEM_STAGE.POLISH} />,
   },
   { title: "Ship", component: () => <StageTab stage={SYSTEM_STAGE.SHIP} /> },
   { title: "Invitations", component: () => <InvitationsTab /> },

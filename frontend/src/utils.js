@@ -67,13 +67,13 @@ export const getStageName = (stage) => getEnumKeyByValue(SYSTEM_STAGE, stage);
 
 export const getTypeByStage = (stage) => {
   switch (stage) {
-    case SYSTEM_STAGE.INVITATIONS:
+    case SYSTEM_STAGE.INVITE:
       return DIAMOND_DAWN_TYPE.ENTER_MINE;
-    case SYSTEM_STAGE.MINE_OPEN:
+    case SYSTEM_STAGE.MINE:
       return DIAMOND_DAWN_TYPE.ROUGH;
-    case SYSTEM_STAGE.CUT_OPEN:
+    case SYSTEM_STAGE.CUT:
       return DIAMOND_DAWN_TYPE.CUT;
-    case SYSTEM_STAGE.POLISH_OPEN:
+    case SYSTEM_STAGE.POLISH:
       return DIAMOND_DAWN_TYPE.POLISHED;
     case SYSTEM_STAGE.SHIP:
       return DIAMOND_DAWN_TYPE.REBORN;
@@ -85,13 +85,13 @@ export const getTypeByStage = (stage) => {
 export const getStageByTokenType = (type) => {
   switch (type) {
     case DIAMOND_DAWN_TYPE.ENTER_MINE:
-      return SYSTEM_STAGE.INVITATIONS;
+      return SYSTEM_STAGE.INVITE;
     case DIAMOND_DAWN_TYPE.ROUGH:
-      return SYSTEM_STAGE.MINE_OPEN;
+      return SYSTEM_STAGE.MINE;
     case DIAMOND_DAWN_TYPE.CUT:
-      return SYSTEM_STAGE.CUT_OPEN;
+      return SYSTEM_STAGE.CUT;
     case DIAMOND_DAWN_TYPE.POLISHED:
-      return SYSTEM_STAGE.POLISH_OPEN;
+      return SYSTEM_STAGE.POLISH;
     case DIAMOND_DAWN_TYPE.REBORN:
       return SYSTEM_STAGE.SHIP;
     default:
@@ -117,7 +117,7 @@ export const getTypeByDisplayType = (displayType) => {
 };
 
 export const getTokenNextStageName = (token) => {
-  if (!token) return SYSTEM_STAGE.MINE_OPEN;
+  if (!token) return SYSTEM_STAGE.MINE;
 
   const tokenType = getTokenTrait(token, TRAIT.type);
   const stage = getStageByTokenType(tokenType);
