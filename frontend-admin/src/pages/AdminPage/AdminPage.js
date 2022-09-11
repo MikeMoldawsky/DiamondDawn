@@ -9,11 +9,12 @@ import Wallet from "components/Wallet";
 import PasswordsTab from "./PasswordsTab";
 import DiamondsTab from "./DiamondsTab";
 import StageTab from "./StageTab";
+import ConfigTab from "pages/AdminPage/ConfigTab";
 import { CONTRACTS, SYSTEM_STAGE } from "consts";
 import {
   loadDiamondCount,
   loadMaxDiamonds,
-  loadSchedule,
+  loadConfig,
   loadSystemPaused,
   loadSystemStage,
 } from "store/systemReducer";
@@ -36,6 +37,7 @@ const TABS = [
     component: () => <StageTab stage={SYSTEM_STAGE.POLISH} />,
   },
   { title: "Ship", component: () => <StageTab stage={SYSTEM_STAGE.SHIP} /> },
+  { title: "Config", component: () => <ConfigTab /> },
   { title: "Invitations", component: () => <InvitationsTab /> },
   { title: "Passwords", component: () => <PasswordsTab /> },
   { title: "Diamonds", component: () => <DiamondsTab /> },
@@ -55,9 +57,12 @@ const AdminPage = () => {
       dispatch(loadSystemPaused(contract));
       dispatch(loadMaxDiamonds(mineContract));
       dispatch(loadDiamondCount(mineContract));
-      dispatch(loadSchedule());
     }
   }, [contractReady]);
+
+  useEffect(() => {
+    dispatch(loadConfig());
+  }, []);
 
   return (
     <div className={classNames("page admin-page")}>
