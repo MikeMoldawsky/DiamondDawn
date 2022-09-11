@@ -1,11 +1,6 @@
-import {
-  NO_SHAPE_NUM,
-  ROUGH_SHAPE,
-  SHAPE,
-  SYSTEM_STAGE,
-} from "consts";
+import { NO_SHAPE_NUM, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
 import _ from "lodash";
-import {getShapeName} from "utils";
+import { getShapeName } from "utils";
 
 // ADMIN CONTROL API
 export const getSystemStageApi = async (contract) => {
