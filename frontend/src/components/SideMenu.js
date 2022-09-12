@@ -1,10 +1,16 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
 import { NavLink } from "react-router-dom";
+import TokensProvider from "containers/TokensProvider";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
   return (
     <Drawer anchor="right" open={isOpen}>
+      <TokensProvider isGated>
+        <NavLink to={"/collector"} onClick={closeMenu}>
+          <div className="menu-item">COLLECTOR'S ROOM</div>
+        </NavLink>
+      </TokensProvider>
       <NavLink to={"/team"} onClick={closeMenu}>
         <div className="menu-item">OUR TEAM</div>
       </NavLink>

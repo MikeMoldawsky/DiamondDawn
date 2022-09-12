@@ -18,6 +18,7 @@ import TeamPage from "pages/TeamPage";
 import FAQPage from "pages/FAQPage";
 import Header from "components/Header";
 import SideMenu from "components/SideMenu";
+import CollectorPage from "pages/CollectorPage";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
@@ -36,18 +37,18 @@ const MainLayout = () => {
             <Route path="/" exact element={<Homepage />} />
             <Route path="/">
               <Route
-                path="nft/:tokenId"
-                element={
-                  <TokensProvider withLoader isGated>
-                    <NFTPage />
-                  </TokensProvider>
-                }
-              />
-              <Route
                 path="invite/:inviteId"
                 element={
                   <TokensProvider withLoader>
                     <InvitePage />
+                  </TokensProvider>
+                }
+              />
+              <Route
+                path="process"
+                element={
+                  <TokensProvider withLoader isGated>
+                    <ProcessPage />
                   </TokensProvider>
                 }
               />
@@ -60,10 +61,18 @@ const MainLayout = () => {
                 }
               />
               <Route
-                path="process"
+                path="collector"
                 element={
                   <TokensProvider withLoader isGated>
-                    <ProcessPage />
+                    <CollectorPage />
+                  </TokensProvider>
+                }
+              />
+              <Route
+                path="nft/:tokenId"
+                element={
+                  <TokensProvider withLoader isGated>
+                    <NFTPage />
                   </TokensProvider>
                 }
               />
