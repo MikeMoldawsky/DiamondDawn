@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import "css/common.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -18,6 +18,7 @@ import TeamPage from "pages/TeamPage";
 import FAQPage from "pages/FAQPage";
 import Header from "components/Header";
 import SideMenu from "components/SideMenu";
+import CollectorPage from "pages/CollectorPage";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
@@ -36,14 +37,6 @@ const MainLayout = () => {
             <Route path="/" exact element={<Homepage />} />
             <Route path="/">
               <Route
-                path="nft/:tokenId"
-                element={
-                  <TokensProvider withLoader>
-                    <NFTPage />
-                  </TokensProvider>
-                }
-              />
-              <Route
                 path="invite/:inviteId"
                 element={
                   <TokensProvider withLoader>
@@ -52,18 +45,34 @@ const MainLayout = () => {
                 }
               />
               <Route
+                path="process"
+                element={
+                  <TokensProvider withLoader isGated>
+                    <ProcessPage />
+                  </TokensProvider>
+                }
+              />
+              <Route
                 path="rebirth/:tokenId"
                 element={
-                  <TokensProvider withLoader>
+                  <TokensProvider withLoader isGated>
                     <RebirthPage />
                   </TokensProvider>
                 }
               />
               <Route
-                path="process"
+                path="collector"
                 element={
-                  <TokensProvider withLoader>
-                    <ProcessPage />
+                  <TokensProvider withLoader isGated>
+                    <CollectorPage />
+                  </TokensProvider>
+                }
+              />
+              <Route
+                path="nft/:tokenId"
+                element={
+                  <TokensProvider withLoader isGated>
+                    <NFTPage />
                   </TokensProvider>
                 }
               />

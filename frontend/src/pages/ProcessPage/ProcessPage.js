@@ -45,9 +45,7 @@ const ProcessPage = () => {
 
   return (
     <div className="page process-page">
-      <div className="inner-page">
-        {systemStage >= SYSTEM_STAGE.INVITE ? renderByStage() : null}
-      </div>
+      <div className="inner-page">{renderByStage()}</div>
     </div>
   );
 };

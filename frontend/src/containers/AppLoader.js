@@ -8,6 +8,7 @@ import { loadConfig, loadSystemStage } from "store/systemReducer";
 import { EVENTS } from "consts";
 import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens } from "store/tokensReducer";
+import { useNavigate } from "react-router-dom";
 
 const AppLoader = () => {
   const account = useAccount();
@@ -15,6 +16,7 @@ const AppLoader = () => {
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
   const contract = useDDContract();
+  const navigate = useNavigate();
 
   useMountLogger("AppLoader");
 
@@ -48,6 +50,7 @@ const AppLoader = () => {
     },
     () => {
       dispatch({ type: "RESET_STATE" });
+      navigate("/");
     }
   );
 
