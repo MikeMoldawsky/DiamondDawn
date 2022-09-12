@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import ReactPlayer from "react-player";
 import { DUMMY_VIDEO_URL } from "consts";
-import {useDispatch, useSelector} from "react-redux";
-import {setMuted, uiSelector} from "store/uiReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { setMuted, uiSelector } from "store/uiReducer";
 
 const GLOBAL_SHOW_VIDEO = true;
 
@@ -16,21 +16,21 @@ const VideoPlayer = ({
   playing = true,
   ...props
 }) => {
-  const { muted } = useSelector(uiSelector)
-  const [origMuted] = useState(muted)
-  const dispatch = useDispatch()
+  const { muted } = useSelector(uiSelector);
+  const [origMuted] = useState(muted);
+  const dispatch = useDispatch();
 
   const onVideoPlay = () => {
-    dispatch(setMuted(true))
-    onPlay && onPlay()
-  }
+    dispatch(setMuted(true));
+    onPlay && onPlay();
+  };
 
   const onVideoEnd = () => {
     if (!origMuted) {
-      dispatch(setMuted(false))
+      dispatch(setMuted(false));
     }
-    onEnded && onEnded()
-  }
+    onEnded && onEnded();
+  };
 
   return (
     <div className="video-player" {...props} ref={videoPlayer}>

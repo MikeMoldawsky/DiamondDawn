@@ -6,7 +6,7 @@ import DiamondList from "components/DiamondList";
 import Wallet from "components/Wallet";
 import ContractProvider from "containers/ContractProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faBars, faX} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import AudioPlayer from "components/AudioPlayer";
 

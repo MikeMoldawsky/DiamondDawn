@@ -12,7 +12,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import teaserVideo from "assets/video/teaser.mp4";
-import {SYSTEM_STAGE, SYSTEM_STAGE_NAME} from "consts";
+import { SYSTEM_STAGE, SYSTEM_STAGE_NAME } from "consts";
 import { setSelectedTokenId } from "store/uiReducer";
 import TokensProvider from "containers/TokensProvider";
 

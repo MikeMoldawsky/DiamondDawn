@@ -1,29 +1,29 @@
 import React from "react";
 import classNames from "classnames";
-import map from 'lodash/map'
+import map from "lodash/map";
 import "./CollectorPage.scss";
-import {useDispatch, useSelector} from "react-redux";
-import {tokensSelector} from "store/tokensReducer";
-import {NavLink, useNavigate} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { tokensSelector } from "store/tokensReducer";
+import { NavLink, useNavigate } from "react-router-dom";
 import { getTokenNextStageName, isTokenActionable } from "utils";
-import {setSelectedTokenId} from "store/uiReducer";
+import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
   const { systemStage, isStageActive } = useSelector(systemSelector);
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const goToProcess = (tokenId) => e => {
-    e.stopPropagation()
-    dispatch(setSelectedTokenId(tokenId))
-    navigate('/process')
-  }
+  const goToProcess = (tokenId) => (e) => {
+    e.stopPropagation();
+    dispatch(setSelectedTokenId(tokenId));
+    navigate("/process");
+  };
 
   const renderTokenCard = (token) => {
-    const { name, id } = token
+    const { name, id } = token;
     return (
       <div key={`token-card-${id}`} className="card-container">
         <div className="token-card">
@@ -33,20 +33,20 @@ function CollectorPage() {
             <div className="card-footer" />
           </NavLink>
           {isTokenActionable(token, systemStage, isStageActive) && (
-            <div className="button" onClick={goToProcess(token.id)}>{getTokenNextStageName(token)}</div>
+            <div className="button" onClick={goToProcess(token.id)}>
+              {getTokenNextStageName(token)}
+            </div>
           )}
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
         <div className="leading-text">Collector's Room</div>
-        <div className="cards">
-          {map(tokens, renderTokenCard)}
-        </div>
+        <div className="cards">{map(tokens, renderTokenCard)}</div>
       </div>
     </div>
   );

@@ -7,8 +7,7 @@ const useOnConnect = (onConnect, onDisconnect) => {
   useEffect(() => {
     if (account?.address) {
       onConnect && onConnect();
-    }
-    else {
+    } else {
       onDisconnect && onDisconnect();
     }
   }, [account?.address]);
