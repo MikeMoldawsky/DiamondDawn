@@ -38,7 +38,7 @@ const MainLayout = () => {
               <Route
                 path="nft/:tokenId"
                 element={
-                  <TokensProvider withLoader>
+                  <TokensProvider withLoader isGated>
                     <NFTPage />
                   </TokensProvider>
                 }
@@ -54,7 +54,7 @@ const MainLayout = () => {
               <Route
                 path="rebirth/:tokenId"
                 element={
-                  <TokensProvider withLoader>
+                  <TokensProvider withLoader isGated>
                     <RebirthPage />
                   </TokensProvider>
                 }
@@ -62,7 +62,7 @@ const MainLayout = () => {
               <Route
                 path="process"
                 element={
-                  <TokensProvider withLoader>
+                  <TokensProvider withLoader isGated>
                     <ProcessPage />
                   </TokensProvider>
                 }

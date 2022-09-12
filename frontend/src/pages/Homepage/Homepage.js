@@ -2,8 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import "./Homepage.scss";
 import CommonView from "components/CommonView";
-import SVG from "components/SVG";
-import scrollMarker from "assets/images/scroll-marker.svg";
 import VideoPlayer from "components/VideoPlayer";
 import infinityLogo from "assets/images/infinity-logo.png";
 import blackStone from "assets/images/black-stone.png";
@@ -14,13 +12,13 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import teaserVideo from "assets/video/teaser.mp4";
-import ContractProvider from "containers/ContractProvider";
-import { SYSTEM_STAGE_NAME } from "consts";
+import {SYSTEM_STAGE, SYSTEM_STAGE_NAME} from "consts";
 import { setSelectedTokenId } from "store/uiReducer";
+import TokensProvider from "containers/TokensProvider";
 
 const EnterButton = () => {
   const { systemStage } = useSelector(systemSelector);
-  const canEnter = systemStage >= 1;
+  const canEnter = systemStage >= SYSTEM_STAGE.MINE;
 
   return canEnter ? (
     <NavLink to={`/process`}>
@@ -74,12 +72,9 @@ const Homepage = () => {
         >
           <img src={infinityLogo} alt={""} />
         </CommonView>
-        <ContractProvider>
+        <TokensProvider isGated>
           <EnterButton />
-        </ContractProvider>
-        <a href="#video">
-          <SVG src={scrollMarker} className="scroll-marker" />
-        </a>
+        </TokensProvider>
       </div>
       <div id="video" className="box center-aligned-column box-middle">
         <VideoPlayer
