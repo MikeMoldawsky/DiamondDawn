@@ -20,11 +20,13 @@ export const setShouldIgnoreTokenTransferWatch = (
 
 export const toggleMuted = () => (dispatch, getState) => {
   const { muted } = uiSelector(getState())
-  dispatch({
-    type: 'UI.UPDATE_STATE',
-    payload: { muted: !muted },
-  })
+  dispatch(setMuted(!muted))
 }
+
+export const setMuted = muted => ({
+  type: 'UI.UPDATE_STATE',
+  payload: { muted },
+})
 
 export const uiSelector = (state) => state.ui;
 

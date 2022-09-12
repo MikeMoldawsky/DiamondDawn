@@ -1,6 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import ReactPlayer from "react-player";
 import { DUMMY_VIDEO_URL } from "consts";
+import {useDispatch, useSelector} from "react-redux";
+import {setMuted, uiSelector} from "store/uiReducer";
 
 const GLOBAL_SHOW_VIDEO = true;
 
@@ -8,11 +10,28 @@ const VideoPlayer = ({
   children,
   src = DUMMY_VIDEO_URL,
   onEnded,
+  onPlay,
   controls,
   videoPlayer,
   playing = true,
   ...props
 }) => {
+  const { muted } = useSelector(uiSelector)
+  const [origMuted] = useState(muted)
+  const dispatch = useDispatch()
+
+  const onVideoPlay = () => {
+    dispatch(setMuted(true))
+    onPlay && onPlay()
+  }
+
+  const onVideoEnd = () => {
+    if (!origMuted) {
+      dispatch(setMuted(false))
+    }
+    onEnded && onEnded()
+  }
+
   return (
     <div className="video-player" {...props} ref={videoPlayer}>
       {GLOBAL_SHOW_VIDEO ? (
@@ -21,9 +40,9 @@ const VideoPlayer = ({
           playing={playing}
           playsinline
           controls={controls}
-          muted
           className="react-player"
-          onEnded={() => onEnded && onEnded()}
+          onPlay={onVideoPlay}
+          onEnded={onVideoEnd}
         />
       ) : (
         <div className="video-placeholder" onClick={onEnded}>
