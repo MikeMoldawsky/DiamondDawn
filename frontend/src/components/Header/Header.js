@@ -6,8 +6,9 @@ import DiamondList from "components/DiamondList";
 import Wallet from "components/Wallet";
 import ContractProvider from "containers/ContractProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
+import {faBars, faX} from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
+import AudioPlayer from "components/AudioPlayer";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const location = useLocation();
@@ -32,6 +33,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
         <div className="center-aligned-row header-side">
           <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
           <div className="vertical-sep" />
+          <AudioPlayer />
           <FontAwesomeIcon
             className="menu-icon"
             icon={isMenuOpen ? faX : faBars}
