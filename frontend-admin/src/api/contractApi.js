@@ -58,8 +58,6 @@ const ART_MAPPING = {
 
 export const getVideoUrlsByStageApi = async (mineContract, stage) => {
   const shapes = ART_MAPPING[stage];
-  console.log("MIKE $$$$");
-  console.log(mineContract);
   const urls = await Promise.all(
     _.map(shapes, (shape) => mineContract["stageToShapeVideo"](stage, shape))
   );

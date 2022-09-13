@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   getDefaultWallets,
   RainbowKitProvider,
@@ -8,9 +8,8 @@ import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/dist/index.css";
-import { useDispatch, useSelector } from "react-redux";
-import { setDDContractData, systemSelector } from "store/systemReducer";
-import { getContractDataApi } from "api/serverApi";
+import { useSelector } from "react-redux";
+import { systemSelector } from "store/systemReducer";
 
 const localChain = {
   id: 31337,
@@ -28,23 +27,8 @@ const localChain = {
 };
 
 const ContractProvider = ({ children }) => {
-  const { ddContractData } = useSelector(systemSelector);
-  const dispatch = useDispatch();
-
-  const getContracts = async () => {
-    const contractData = await getContractDataApi();
-    if (contractData) {
-      dispatch(setDDContractData(contractData));
-    }
-  };
-
-  useEffect(() => {
-    if (!ddContractData) {
-      getContracts();
-    }
-  }, [ddContractData]);
-
-  return ddContractData ? children : null;
+  const { ddContractData, ddMineContractData } = useSelector(systemSelector);
+  return ddContractData && ddMineContractData ? children : null;
 };
 
 function WagmiWrapper({ children }) {
