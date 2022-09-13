@@ -19,11 +19,18 @@ import FAQPage from "pages/FAQPage";
 import Header from "components/Header";
 import SideMenu from "components/SideMenu";
 import CollectorPage from "pages/CollectorPage";
+import useActionDispatch from "hooks/useActionDispatch";
+import {loadContractInfo} from "store/systemReducer";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const actionDispatch = useActionDispatch();
+
+  useEffect(() => {
+    actionDispatch(loadContractInfo(), "get-contract");
+  }, [])
 
   return (
     <div className={classNames("main-layout", { "drawer-open": drawerOpen })}>

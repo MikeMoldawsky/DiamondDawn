@@ -39,7 +39,7 @@ const Polish = () => {
         <Countdown date={endTime} text={["You have", "to polish"]} />
       </>
     ),
-    [token?.stage, selectedTokenId]
+    [token?.stage]
   );
 
   return (

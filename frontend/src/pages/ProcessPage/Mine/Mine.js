@@ -37,7 +37,7 @@ const Mine = () => {
         <Countdown date={endTime} text={["You have", "to mine"]} />
       </>
     ),
-    [token?.stage, selectedTokenId]
+    [token?.stage]
   );
 
   return (

@@ -40,7 +40,7 @@ const Cut = () => {
         <Countdown date={endTime} text={["You have", "to cut"]} />
       </>
     ),
-    [token?.stage, selectedTokenId]
+    [token?.stage]
   );
 
   return (
