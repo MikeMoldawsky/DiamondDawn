@@ -8,9 +8,9 @@ async function getInviteObjectById(inviteId) {
     if (
       invite
       && invite.opened
-      && process.env.DD_INVITE_TTL_SECONDS > 0) {
+      && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {
 
-      invite.expires = add(invite.opened, { seconds: process.env.DD_INVITE_TTL_SECONDS })
+      invite.expires = add(invite.opened, { seconds: process.env.REACT_APP_INVITE_TTL_SECONDS })
 
       if (invite.expires < new Date()) {
         invite.revoked = true

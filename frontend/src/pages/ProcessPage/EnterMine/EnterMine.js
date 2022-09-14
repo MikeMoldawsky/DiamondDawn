@@ -14,6 +14,7 @@ import ActionView from "components/ActionView";
 import { DUMMY_VIDEO_URL } from "consts";
 import useMountLogger from "hooks/useMountLogger";
 import { enterApi } from "api/contractApi";
+import {useNavigate} from "react-router-dom";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -29,13 +30,14 @@ const PackageBox = ({ selected, select, index, text, cost }) => {
   );
 };
 
-const EnterMine = ({ password }) => {
+const EnterMine = ({ invite, password }) => {
   const [selectedPackage, setSelectedPackage] = useState(0);
   const { minePrice } = useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
   const dispatch = useDispatch();
   const tokens = useSelector(tokensSelector);
+  const navigate = useNavigate()
 
   const maxTokenId = _.max(_.map(tokens, "id"));
 
@@ -44,6 +46,10 @@ const EnterMine = ({ password }) => {
   useEffect(() => {
     dispatch(loadMinePrice(contract));
   }, []);
+
+  if (!invite || invite.revoked) return null
+
+  const onInviteExpired = () => navigate('/')
 
   const EnterMineContent = ({ execute, endTime }) => {
     return (
@@ -68,7 +74,7 @@ const EnterMine = ({ password }) => {
             ENTER MINE
           </ActionButton>
         </div>
-        <Countdown date={endTime} text={["You have", "to enter"]} />
+        <Countdown date={invite.expires} text={["Invite Expires in"]} onComplete={onInviteExpired} renderParts={{ days: true, hours: true, minutes: true, seconds: true }} />
       </>
     );
   };

@@ -45,23 +45,31 @@ const InvitationNotFound = () => (
   </>
 );
 
-const InviteIntro = ({ open }) => (
-  <>
-    <h1>You Are Invited to Diamonds Dawn!</h1>
-    <div className="warning-message">
-      <FontAwesomeIcon icon={faExclamationTriangle} />
-      <div className="warning-text">
-        The invitation can be opened one time only and will be revoked once
-        opened.
-        <br />
-        Please make sure you have the time before opening the invitation
+const  secondsToString = (seconds) => {
+  const numDays = Math.floor((seconds % 31536000) / 86400);
+  const numHours = Math.floor(((seconds % 31536000) % 86400) / 3600);
+  const numMinutes = Math.floor((((seconds % 31536000) % 86400) % 3600) / 60);
+  return `${numDays > 0 ? numDays + " Days " : ""}${numHours > 0 ? numHours + " Hours and " : ""}${numMinutes} Minutes`
+}
+
+const InviteIntro = ({ open }) => {
+  // 3 Days, 3 Hours and 3 Minutes = 270180
+  const ttl = secondsToString(process.env.REACT_APP_INVITE_TTL_SECONDS)
+  return (
+    <>
+      <h1>You Are Invited to Diamonds Dawn!</h1>
+      <div className="warning-message">
+        <FontAwesomeIcon icon={faExclamationTriangle} />
+        <div className="warning-text">
+          Once opened, the invitation will be valid for {ttl} before it expires.
+        </div>
       </div>
-    </div>
-    <ActionButton actionKey={`Open Invite`} onClick={open}>
-      OPEN INVITATION
-    </ActionButton>
-  </>
-);
+      <ActionButton actionKey={`Open Invite`} onClick={open}>
+        OPEN INVITATION
+      </ActionButton>
+    </>
+  );
+}
 
 const InvitePage = () => {
   const { inviteId } = useParams();
@@ -92,7 +100,7 @@ const InvitePage = () => {
       if (!invite) return <InvitationNotFound />
       if (invite.revoked) return <InvitationRevoked />;
       if (!invite.opened) return <InviteIntro open={onOpenInviteClick} />;
-      return <EnterMine password={password} />
+      return <EnterMine password={password} invite={invite} />
     }
     return null
   };
