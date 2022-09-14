@@ -15,22 +15,27 @@ import {
 } from "api/serverApi";
 
 const INVITATION_COLUMNS = [
-  { field: "twitter", headerName: "Twitter", width: 150, editable: true },
   {
     field: "created",
     headerName: "Created At",
     type: "dateTime",
     width: 180,
   },
+  { field: "opened", headerName: "Opened At", type: "dateTime", width: 180 },
   {
     field: "revoked",
-    headerName: "Revoked",
+    headerName: "Expired",
     type: "boolean",
     width: 100,
-    editable: true,
   },
-  { field: "opened", headerName: "Opened At", type: "dateTime", width: 180 },
+  {
+    field: "used",
+    headerName: "Used",
+    type: "boolean",
+    width: 100,
+  },
   { field: "location", headerName: "Location", width: 150 },
+  { field: "twitter", headerName: "Twitter", width: 150, editable: true },
   {
     field: "ethAddress",
     headerName: "ETH Address",

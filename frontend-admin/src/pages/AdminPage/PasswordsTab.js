@@ -24,7 +24,7 @@ const PasswordsTab = () => {
   };
 
   const createPasswords = async () => {
-    const hashes = await createPasswordsApi(10);
+    const hashes = await createPasswordsApi(100);
     await allowMineEntranceApi(contract, hashes);
     fetchPasswordCount();
   };
