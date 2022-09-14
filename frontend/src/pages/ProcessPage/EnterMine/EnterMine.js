@@ -14,8 +14,8 @@ import ActionView from "components/ActionView";
 import { DUMMY_VIDEO_URL } from "consts";
 import useMountLogger from "hooks/useMountLogger";
 import { enterApi } from "api/contractApi";
-import {useNavigate} from "react-router-dom";
-import {confirmInviteUsedApi, setInviteForUseApi} from "api/serverApi";
+import { useNavigate } from "react-router-dom";
+import { confirmInviteUsedApi, setInviteForUseApi } from "api/serverApi";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -38,7 +38,7 @@ const EnterMine = ({ invite, password }) => {
   const contract = useDDContract();
   const dispatch = useDispatch();
   const tokens = useSelector(tokensSelector);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const maxTokenId = _.max(_.map(tokens, "id"));
 
@@ -48,17 +48,17 @@ const EnterMine = ({ invite, password }) => {
     dispatch(loadMinePrice(contract));
   }, []);
 
-  if (!invite || invite.revoked) return null
+  if (!invite || invite.revoked) return null;
 
-  const onInviteExpired = () => navigate('/')
+  const onInviteExpired = () => navigate("/");
 
   const executeEnterMine = async () => {
-    await setInviteForUseApi(invite._id, account.address)
-    const tx = await enterApi(contract, password, minePrice)
-    await tx.wait()
-    await confirmInviteUsedApi(invite._id)
-    return tx
-  }
+    await setInviteForUseApi(invite._id, account.address);
+    const tx = await enterApi(contract, password, minePrice);
+    await tx.wait();
+    await confirmInviteUsedApi(invite._id);
+    return tx;
+  };
 
   const EnterMineContent = ({ execute }) => {
     return (
@@ -83,7 +83,17 @@ const EnterMine = ({ invite, password }) => {
             ENTER MINE
           </ActionButton>
         </div>
-        <Countdown date={invite.expires} text={["Invite Expires in"]} onComplete={onInviteExpired} renderParts={{ days: true, hours: true, minutes: true, seconds: true }} />
+        <Countdown
+          date={invite.expires}
+          text={["Invite Expires in"]}
+          onComplete={onInviteExpired}
+          renderParts={{
+            days: true,
+            hours: true,
+            minutes: true,
+            seconds: true,
+          }}
+        />
       </>
     );
   };
