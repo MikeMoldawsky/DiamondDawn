@@ -13,25 +13,9 @@ import { SYSTEM_STAGE } from "consts";
 import useActionDispatch from "hooks/useActionDispatch";
 import {isActionSuccessSelector} from "components/ActionButton/ActionButton.module";
 
-const InvitationRevoked = () => (
+const InvalidInvitation = ({ title }) => (
   <>
-    <h1>Invitation Revoked</h1>
-    <div className="text-center">
-      For another invitation please DM Diamonds Dawn on twitter
-    </div>
-    <a
-      target="_blank"
-      rel="noreferrer"
-      href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20"
-    >
-      <div className="button">Request Invitation</div>
-    </a>
-  </>
-);
-
-const InvitationNotFound = () => (
-  <>
-    <h1>Invitation Not Found</h1>
+    <h1>{title}</h1>
     <div className="text-center">
       For another invitation please DM Diamonds Dawn on twitter
     </div>
@@ -97,8 +81,9 @@ const InvitePage = () => {
     if (systemStage !== SYSTEM_STAGE.INVITE || !isStageActive)
       return <h1>Invitations stage is closed</h1>;
     if (isGetInviteSuccess) {
-      if (!invite) return <InvitationNotFound />
-      if (invite.revoked) return <InvitationRevoked />;
+      if (!invite) return <InvalidInvitation title="Invitation Not Found" />
+      if (invite.used) return <InvalidInvitation title="Invitation Already Used" />;
+      if (invite.revoked) return <InvalidInvitation title="Invitation Revoked" />;
       if (!invite.opened) return <InviteIntro open={onOpenInviteClick} />;
       return <EnterMine password={password} invite={invite} />
     }

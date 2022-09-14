@@ -15,6 +15,7 @@ import { DUMMY_VIDEO_URL } from "consts";
 import useMountLogger from "hooks/useMountLogger";
 import { enterApi } from "api/contractApi";
 import {useNavigate} from "react-router-dom";
+import {confirmInviteUsedApi, setInviteForUseApi} from "api/serverApi";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -51,7 +52,14 @@ const EnterMine = ({ invite, password }) => {
 
   const onInviteExpired = () => navigate('/')
 
-  const EnterMineContent = ({ execute, endTime }) => {
+  const executeEnterMine = async () => {
+    await setInviteForUseApi(invite.id)
+    const tx = await enterApi(contract, password, minePrice)
+    await tx.wait()
+    await confirmInviteUsedApi(invite.id)
+  }
+
+  const EnterMineContent = ({ execute }) => {
     return (
       <>
         <div className="leading-text">You are invited...</div>
@@ -82,7 +90,7 @@ const EnterMine = ({ invite, password }) => {
   return (
     <ActionView
       watch={watchTokenMinedBy(account.address, maxTokenId)}
-      transact={() => enterApi(contract, password, minePrice)}
+      transact={executeEnterMine}
       videoUrl={DUMMY_VIDEO_URL}
     >
       <EnterMineContent />

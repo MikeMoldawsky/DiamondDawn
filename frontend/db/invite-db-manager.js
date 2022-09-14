@@ -59,7 +59,43 @@ async function openInvite(inviteId, country, state) {
   }
 }
 
+async function useInvite(inviteId, ethAddress) {
+  try {
+    // check that the invite exist and not revoked or expired
+    const invite = await getInviteObjectById(inviteId);
+    if (!invite || invite.revoked) {
+      console.log("useInvite - invite not found or revoked", { inviteId });
+      return null;
+    }
+
+    await InviteModel.findOneAndUpdate({ _id: inviteId }, { ethAddress});
+
+    return await getInviteObjectById(inviteId);
+  } catch (e) {
+    console.log(`Failed to create invite`, e);
+  }
+}
+
+async function confirmInviteUsed(inviteId) {
+  try {
+    // check that the invite exist and not revoked or expired
+    const invite = await getInviteObjectById(inviteId);
+    if (!invite || invite.revoked) {
+      console.log("confirmInviteUsed - invite not found or revoked", { inviteId });
+      return null;
+    }
+
+    await InviteModel.findOneAndUpdate({ _id: inviteId }, { used: true });
+
+    return await getInviteObjectById(inviteId);
+  } catch (e) {
+    console.log(`Failed to create invite`, e);
+  }
+}
+
 module.exports = {
   getInviteObjectById,
   openInvite,
+  useInvite,
+  confirmInviteUsed,
 };

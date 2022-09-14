@@ -47,6 +47,24 @@ export const openInviteApi = async (inviteId) => {
   }
 };
 
+export const setInviteForUseApi = async (inviteId, ethAddress) => {
+  try {
+    const res = await axios.post(`/api/use_invite`, { inviteId, ethAddress });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+};
+
+export const confirmInviteUsedApi = async (inviteId) => {
+  try {
+    const res = await axios.post(`/api/confirm_invite_used`, { inviteId });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+};
+
 export const checkPasswordApi = async (password) => {
   try {
     const { data: isCorrect } = await axios.post(`/api/check_pwd`, {
