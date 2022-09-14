@@ -53,10 +53,11 @@ const EnterMine = ({ invite, password }) => {
   const onInviteExpired = () => navigate('/')
 
   const executeEnterMine = async () => {
-    await setInviteForUseApi(invite.id)
+    await setInviteForUseApi(invite._id, account.address)
     const tx = await enterApi(contract, password, minePrice)
     await tx.wait()
-    await confirmInviteUsedApi(invite.id)
+    await confirmInviteUsedApi(invite._id)
+    return tx
   }
 
   const EnterMineContent = ({ execute }) => {
