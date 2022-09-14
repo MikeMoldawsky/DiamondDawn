@@ -4,26 +4,34 @@ import "./InvitePage.scss";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
-import { openInvite } from "api/serverApi";
+import {getInviteApi, openInviteApi} from "api/serverApi";
 import EnterMine from "pages/ProcessPage/EnterMine";
 import ActionButton from "components/ActionButton";
 import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import { SYSTEM_STAGE } from "consts";
-
-const isInviteRevoked = async (inviteId) => {
-  try {
-    const res = await axios.post(`/api/is_invite_revoked`, { inviteId });
-    return res.data;
-  } catch (e) {
-    return true;
-  }
-};
+import useActionDispatch from "hooks/useActionDispatch";
+import {isActionSuccessSelector} from "components/ActionButton/ActionButton.module";
 
 const InvitationRevoked = () => (
   <>
     <h1>Invitation Revoked</h1>
+    <div className="text-center">
+      For another invitation please DM Diamonds Dawn on twitter
+    </div>
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href="https://twitter.com/messages/compose?recipient_id=1441153449328996359&text=I%20would%20like%20to%20join%20the%20Vanguards%20"
+    >
+      <div className="button">Request Invitation</div>
+    </a>
+  </>
+);
+
+const InvitationNotFound = () => (
+  <>
+    <h1>Invitation Not Found</h1>
     <div className="text-center">
       For another invitation please DM Diamonds Dawn on twitter
     </div>
@@ -59,21 +67,20 @@ const InvitePage = () => {
   const { inviteId } = useParams();
   const [invite, setInvite] = useState(null);
   const [password, setPassword] = useState(null);
-  const [isRevoked, setIsRevoked] = useState(null);
   const { systemStage, isStageActive } = useSelector(systemSelector);
-
-  const fetchIsRevoked = async () => {
-    setIsRevoked(await isInviteRevoked(inviteId));
-  };
+  const isGetInviteSuccess = useSelector(isActionSuccessSelector("get-invite"))
+  const actionDispatch = useActionDispatch()
 
   useEffect(() => {
     if (inviteId) {
-      fetchIsRevoked();
+      actionDispatch(async () => {
+        setInvite(await getInviteApi(inviteId));
+      }, "get-invite")
     }
   }, [inviteId]);
 
   const onOpenInviteClick = async () => {
-    const { invite: _invite, password: _password } = await openInvite(inviteId);
+    const { invite: _invite, password: _password } = await openInviteApi(inviteId);
     setInvite(_invite);
     setPassword(_password + "");
   };
@@ -81,11 +88,13 @@ const InvitePage = () => {
   const renderInviteContent = () => {
     if (systemStage !== SYSTEM_STAGE.INVITE || !isStageActive)
       return <h1>Invitations stage is closed</h1>;
-    if (isRevoked === null) return null;
-    if (isRevoked) return <InvitationRevoked />;
-    if (!invite) return <InviteIntro open={onOpenInviteClick} />;
-    if (password) return <EnterMine password={password} />;
-    return null;
+    if (isGetInviteSuccess) {
+      if (!invite) return <InvitationNotFound />
+      if (invite.revoked) return <InvitationRevoked />;
+      if (!invite.opened) return <InviteIntro open={onOpenInviteClick} />;
+      return <EnterMine password={password} />
+    }
+    return null
   };
 
   return (
