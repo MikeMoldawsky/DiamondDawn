@@ -1,5 +1,5 @@
 const InviteModel = require("./models/InviteModel");
-const _ = require('lodash')
+const _ = require("lodash");
 const add = require("date-fns/add");
 
 async function createInvite() {
@@ -14,22 +14,17 @@ async function createInvite() {
 function getInviteObject(inviteModel) {
   try {
     const invite = inviteModel.toObject();
-    const ttl = parseInt(process.env.REACT_APP_INVITE_TTL_SECONDS)
-    if (
-      invite
-      && invite.opened
-      && ttl > 0) {
-
-      invite.expires = add(invite.opened, { seconds: ttl })
+    const ttl = parseInt(process.env.REACT_APP_INVITE_TTL_SECONDS);
+    if (invite && invite.opened && ttl > 0) {
+      invite.expires = add(invite.opened, { seconds: ttl });
 
       if (invite.expires < new Date()) {
-        invite.revoked = true
+        invite.revoked = true;
       }
     }
 
-    return invite
-  }
-  catch (e) {
+    return invite;
+  } catch (e) {
     console.log(`Failed to get invite ${getInviteObject._id}`, e);
   }
 }
@@ -37,7 +32,7 @@ function getInviteObject(inviteModel) {
 async function getInvites() {
   try {
     const invites = await InviteModel.find();
-    return _.map(invites, getInviteObject)
+    return _.map(invites, getInviteObject);
   } catch (e) {
     console.log(`Failed to get all invites`, e);
   }

@@ -5,16 +5,15 @@ import AdminPage from "pages/AdminPage";
 import WagmiWrapper from "layout/WagmiWrapper";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useActionDispatch from 'hooks/useActionDispatch'
-import { loadContractInfo } from 'store/systemReducer'
+import useActionDispatch from "hooks/useActionDispatch";
+import { loadContractInfo } from "store/systemReducer";
 
 const MainLayout = () => {
-
   const actionDispatch = useActionDispatch();
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");
-  }, [])
+  }, []);
 
   return (
     <div className={classNames("main-layout")}>

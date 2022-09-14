@@ -7,7 +7,11 @@ import {
   getVideoUrlsByStageApi,
   getMaxDiamondsApi,
 } from "api/contractApi";
-import {getConfigApi, getContractDataApi, updateStageTimeApi} from "api/serverApi";
+import {
+  getConfigApi,
+  getContractDataApi,
+  updateStageTimeApi,
+} from "api/serverApi";
 
 const INITIAL_STATE = {
   ddContractData: null,
