@@ -7,7 +7,11 @@ import {
   getVideoUrlsByStageApi,
   getMaxDiamondsApi,
 } from "api/contractApi";
-import { getConfigApi, updateStageTimeApi } from "api/serverApi";
+import {
+  getConfigApi,
+  getContractDataApi,
+  updateStageTimeApi,
+} from "api/serverApi";
 
 const INITIAL_STATE = {
   ddContractData: null,
@@ -73,10 +77,14 @@ export const loadStageArt = (mineContract, systemStage) => async (dispatch) => {
   });
 };
 
-export const setDDContractData = ({ ddContract, ddMineContract }) => ({
-  type: "SYSTEM.SET_DD_CONTRACT_DATA",
-  payload: { ddContractData: ddContract, ddMineContractData: ddMineContract },
-});
+export const loadContractInfo = () => async (dispatch) => {
+  const { ddContract, ddMineContract } = await getContractDataApi();
+
+  dispatch({
+    type: "SYSTEM.SET_DD_CONTRACT_INFO",
+    payload: { ddContractData: ddContract, ddMineContractData: ddMineContract },
+  });
+};
 
 export const systemSelector = (state) => state.system;
 
@@ -93,7 +101,7 @@ export const systemReducer = makeReducer(
     "SYSTEM.SET_STAGE": reduceUpdateFull,
     "SYSTEM.SET_PAUSED": reduceUpdateFull,
     "SYSTEM.SET_STAGES_CONFIG": reduceUpdateFull,
-    "SYSTEM.SET_DD_CONTRACT_DATA": reduceUpdateFull,
+    "SYSTEM.SET_DD_CONTRACT_INFO": reduceUpdateFull,
     "SYSTEM.SET_DIAMOND_COUNT": reduceUpdateFull,
     "SYSTEM.SET_SCHEDULE": reduceUpdateFull,
     "SYSTEM.SET_VIDEO_ART": reduceUpdateFull,

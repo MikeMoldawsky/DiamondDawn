@@ -32,7 +32,7 @@ export const enterApi = async (contract, password, minePrice) => {
       bytes32Password: ethersUtils.formatBytes32String(password),
       minePrice,
     });
-    return await contract.enter(ethersUtils.formatBytes32String(password), {
+    return contract.enter(ethersUtils.formatBytes32String(password), {
       value: minePrice,
     });
   } catch (e) {

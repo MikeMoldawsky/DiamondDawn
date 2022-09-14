@@ -2,19 +2,43 @@ const InviteModel = require("./models/InviteModel");
 const PasswordModel = require("./models/PasswordModel");
 const add = require("date-fns/add");
 
+async function getInviteObjectById(inviteId) {
+  try {
+    const invite = (await InviteModel.findById(inviteId)).toObject();
+    if (
+      invite &&
+      invite.opened &&
+      process.env.REACT_APP_INVITE_TTL_SECONDS > 0
+    ) {
+      invite.expires = add(invite.opened, {
+        seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
+      });
+
+      if (invite.expires < new Date()) {
+        invite.revoked = true;
+        console.log("Invite expired", { invite });
+      }
+    }
+
+    return invite;
+  } catch (e) {
+    console.log(`Failed to get invite ${inviteId}`, e);
+  }
+}
+
 async function openInvite(inviteId, country, state) {
   try {
     // check that the invite exist and not revoked or expired
-    let invite = await InviteModel.findById(inviteId);
+    const invite = await getInviteObjectById(inviteId);
     if (!invite) {
       console.log("openInvite - invite not found", { inviteId });
       return null;
     }
+
     if (invite.revoked) {
       console.log("openInvite - invite revoked", { invite });
       return { invite };
     }
-    // TODO - handle invite expiration
 
     // get password
     const password = await PasswordModel.findOneAndUpdate(
@@ -22,65 +46,62 @@ async function openInvite(inviteId, country, state) {
       { status: "pending" }
     );
 
-    const updatedInvite = await InviteModel.findOneAndUpdate(
+    await InviteModel.findOneAndUpdate(
       { _id: inviteId },
       {
-        // revoked: true,
-        opened: Date.now(),
+        opened: invite.opened || Date.now(),
         location: `${state}, ${country}`,
       }
     );
 
-    return { invite: updatedInvite, password: password.password };
+    return {
+      invite: await getInviteObjectById(inviteId),
+      password: password.password,
+    };
   } catch (e) {
     console.log(`Failed to create invite`, e);
   }
 }
 
-async function isInviteRevoked(inviteId) {
+async function useInvite(inviteId, ethAddress) {
   try {
-    const invite = await InviteModel.findById(inviteId).exec();
-    return invite.revoked;
-  } catch (e) {
-    console.log(`Failed to create invite`, e);
-  }
-}
-
-async function isCorrectPwd(password) {
-  try {
-    const invite = await InviteModel.findOne({ password: parseInt(password) });
-    return !!invite;
-  } catch (e) {
-    console.log(`Failed to check password`, e);
-  }
-}
-
-async function getPassword(inviteId) {
-  try {
-    const invite = await InviteModel.findById(inviteId);
-    console.log("Getting password for invite", { invite });
-    if (
-      invite &&
-      !invite.revoked &&
-      invite.opened &&
-      add(invite.opened, { hours: 12 }) > new Date()
-    ) {
-      const password = await PasswordModel.findOneAndUpdate(
-        { status: "available" },
-        { status: "pending" }
-      );
-      console.log(`Got password for invite`, { invite, password });
-      return password;
+    // check that the invite exist and not revoked or expired
+    const invite = await getInviteObjectById(inviteId);
+    if (!invite || invite.revoked) {
+      console.log("useInvite - invite not found or revoked", { inviteId });
+      return null;
     }
+
+    await InviteModel.findOneAndUpdate({ _id: inviteId }, { ethAddress });
+
+    return await getInviteObjectById(inviteId);
   } catch (e) {
-    console.log(`Failed to check password`, e);
+    console.log(`Failed to create invite`, e);
   }
-  return null;
+}
+
+async function confirmInviteUsed(inviteId) {
+  try {
+    // check that the invite exist and not revoked or expired
+    const invite = await getInviteObjectById(inviteId);
+    if (!invite || invite.revoked) {
+      console.log("confirmInviteUsed - invite not found or revoked", {
+        inviteId,
+      });
+      return null;
+    }
+
+    await InviteModel.findOneAndUpdate({ _id: inviteId }, { used: true });
+
+    return await getInviteObjectById(inviteId);
+  } catch (e) {
+    console.log(`Failed to create invite`, e);
+  }
 }
 
 module.exports = {
+  getInviteObjectById,
   openInvite,
-  isInviteRevoked,
-  isCorrectPwd,
-  getPassword,
+  useInvite,
+  confirmInviteUsed,
 };
