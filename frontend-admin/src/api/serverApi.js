@@ -1,10 +1,14 @@
 import axios from "axios";
-import _ from "lodash";
-import { SYSTEM_STAGE } from "consts";
 
 // CONTRACTS
 export const getContractDataApi = async () => {
   try {
+    if (process.env.REACT_APP_USE_LOCAL_CONTRACT === "true") {
+      return {
+        ddContract: await import('contracts/DiamondDawn.json'),
+        ddMineContract: await import('contracts/DiamondDawnMine.json'),
+      }
+    }
     const { data } = await axios.get(`/api/get_contract`);
     return data;
   } catch (e) {
