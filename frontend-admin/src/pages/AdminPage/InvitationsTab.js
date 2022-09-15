@@ -60,7 +60,7 @@ const ClipboardButton = ({ inviteId }) => {
     }
   }, [isCopied]);
 
-  const link = `${process.env.REACT_APP_INVITE_BASE_URL}/invite/${inviteId}`
+  const link = `${process.env.REACT_APP_INVITE_BASE_URL}/invite/${inviteId}`;
 
   return (
     <GridActionsCellItem
