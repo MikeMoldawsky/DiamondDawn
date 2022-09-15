@@ -6,7 +6,7 @@ import getLocation from "utils/getLocation";
 export const getContractInfoApi = async () => {
   try {
     if (process.env.REACT_APP_USE_LOCAL_CONTRACT === "true") {
-      return await import('contracts/DiamondDawn.json')
+      return await import("contracts/DiamondDawn.json");
     }
     const { data } = await axios.get(`/api/get_contract`);
     return data;

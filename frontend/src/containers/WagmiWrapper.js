@@ -8,7 +8,7 @@ import {
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
-import '@rainbow-me/rainbowkit/styles.css';
+import "@rainbow-me/rainbowkit/styles.css";
 
 const localChain = {
   id: 31337,
@@ -47,12 +47,18 @@ function WagmiWrapper({ children }) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} theme={midnightTheme({ accentColor: 'transparent', accentColorForeground: 'white' })} modalSize="compact">
+      <RainbowKitProvider
+        chains={chains}
+        theme={midnightTheme({
+          accentColor: "transparent",
+          accentColorForeground: "white",
+        })}
+        modalSize="compact"
+      >
         {children}
       </RainbowKitProvider>
     </WagmiConfig>
   );
 }
-
 
 export default WagmiWrapper;
