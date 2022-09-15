@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import { SYSTEM_STAGE } from "consts";
 import useActionDispatch from "hooks/useActionDispatch";
-import { isActionSuccessSelector } from "components/ActionButton/ActionButton.module";
+import { isActionSuccessSelector } from "store/actionStatusReducer";
 
 const InvalidInvitation = ({ title }) => (
   <>

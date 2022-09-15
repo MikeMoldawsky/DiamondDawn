@@ -5,7 +5,7 @@ import {
   clearActionStatus,
   isActionPendingSelector,
   setActionPending,
-} from "./ActionButton.module";
+} from "store/actionStatusReducer";
 import BeatLoader from "react-spinners/BeatLoader";
 import { showError } from "utils";
 

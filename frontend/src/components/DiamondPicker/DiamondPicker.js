@@ -10,7 +10,7 @@ import { getActionableTokens } from "utils";
 import { tokensSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
 import useMountLogger from "hooks/useMountLogger";
-import { isActionPendingSelector } from "components/ActionButton";
+import { isActionPendingSelector } from "store/actionStatusReducer";
 import useTimeout from "hooks/useTimeout";
 
 const DiamondPicker = ({ actionKey, disabled }) => {
