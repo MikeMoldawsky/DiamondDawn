@@ -217,6 +217,7 @@ const DiamondsTab = () => {
         itemName="Diamond"
         getNewItem={getEmptyDiamond}
         renderButtons={renderDeployButton}
+        checkboxSelection
       />
     </div>
   );
