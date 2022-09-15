@@ -3,6 +3,7 @@ import {
   getDefaultWallets,
   RainbowKitProvider,
   darkTheme,
+  midnightTheme,
 } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
@@ -46,7 +47,7 @@ function WagmiWrapper({ children }) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} theme={darkTheme()} modalSize="compact">
+      <RainbowKitProvider chains={chains} theme={midnightTheme({ accentColor: 'transparent', accentColorForeground: 'white' })} modalSize="compact">
         {children}
       </RainbowKitProvider>
     </WagmiConfig>
