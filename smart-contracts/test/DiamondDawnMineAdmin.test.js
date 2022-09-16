@@ -95,7 +95,7 @@ describe("Diamond Dawn Mine Admin", () => {
     });
 
     it("should REVERT when EXCEEDS max diamonds", async () => {
-      await mineContract.initialize(diamondDawn.address, maxDiamonds);
+      await mineContract.connect(diamondDawn).initialize(maxDiamonds);
       const maxDiamondsArray = _.range(maxDiamonds).map(() => DIAMOND);
       await mineContract.eruption(maxDiamondsArray);
       await expect(mineContract.eruption([DIAMOND])).to.be.revertedWith(
@@ -115,7 +115,7 @@ describe("Diamond Dawn Mine Admin", () => {
     it("should SUCCESSFULLY insert 333 diamonds", async () => {
       // TODO - check if we can make it to 333 after optimizations (currently the txn gas limit is 30,395,800 -> 30,023,384)
       const prodDiamondsSize = 320;
-      await mineContract.initialize(diamondDawn.address, prodDiamondsSize);
+      await mineContract.connect(diamondDawn).initialize(prodDiamondsSize);
       const maxDiamondsArray = _.range(prodDiamondsSize).map(() => DIAMOND);
       await mineContract.eruption(maxDiamondsArray);
       expect(await mineContract.diamondCount()).to.be.equal(prodDiamondsSize);
@@ -131,7 +131,7 @@ describe("Diamond Dawn Mine Admin", () => {
       const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
         deployMineContract
       );
-      await diamondDawnMine.initialize(user2.address, 5);
+      await diamondDawnMine.initialize(5);
       mineContract = diamondDawnMine;
       admin = owner;
       user = user1;
@@ -187,7 +187,7 @@ describe("Diamond Dawn Mine Admin", () => {
       const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
         deployMineContract
       );
-      await diamondDawnMine.initialize(owner.address, 333);
+      await diamondDawnMine.initialize(333);
       await setAllVideoUrls(diamondDawnMine);
       mineContract = diamondDawnMine;
       admin = owner;
@@ -271,7 +271,7 @@ describe("Diamond Dawn Mine Admin", () => {
       const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
         deployMineContract
       );
-      await diamondDawnMine.initialize(owner.address, 333);
+      await diamondDawnMine.initialize(333);
       admin = owner;
       mineContract = diamondDawnMine;
       diamondDawn = user1;
@@ -320,7 +320,7 @@ describe("Diamond Dawn Mine Admin", () => {
       const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
         deployMineContract
       );
-      await diamondDawnMine.initialize(owner.address, 333);
+      await diamondDawnMine.initialize(333);
       mineContract = diamondDawnMine;
       admin = owner;
       diamondDawn = user1;

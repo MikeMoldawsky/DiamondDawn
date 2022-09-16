@@ -45,16 +45,18 @@ describe("Diamond Dawn Mine", () => {
       user = user1;
     });
 
-    it("should correctly set DiamondDawn and maxDiamonds", async () => {
-      await mineContract.initialize(user.address, maxDiamonds);
+    it("should correctly set dd, maxDiamonds, init & open", async () => {
+      await mineContract.initialize(maxDiamonds);
       expect(await mineContract.diamondDawn()).to.be.equal(user.address);
       expect(await mineContract.maxDiamonds()).to.be.equal(maxDiamonds);
+      expect(await mineContract.isInitialized()).to.be.true;
+      expect(await mineContract.isOpen()).to.be.true;
     });
 
     it("should REVERT when called more than once", async () => {
-      await mineContract.initialize(user.address, maxDiamonds);
+      await mineContract.connect(user).initialize(maxDiamonds);
       await expect(
-        mineContract.initialize(user.address, maxDiamonds)
+        mineContract.connect(user).initialize(maxDiamonds)
       ).to.be.revertedWith("Initialized");
     });
   });
@@ -68,7 +70,7 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine, owner, user1 } = await loadFixture(
         deployMineContract
       );
-      await diamondDawnMine.initialize(owner.address, 333);
+      await diamondDawnMine.initialize(333);
       await setAllVideoUrls(diamondDawnMine);
       mineContract = diamondDawnMine;
       user = user1;
@@ -115,7 +117,7 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine, owner, user1 } = await loadFixture(
         deployMineContract
       );
-      await diamondDawnMine.initialize(owner.address, 333);
+      await diamondDawnMine.initialize(333);
       await setAllVideoUrls(diamondDawnMine);
       mineContract = diamondDawnMine;
       user = user1;
@@ -180,7 +182,7 @@ describe("Diamond Dawn Mine", () => {
         deployMineContract
       );
       await setAllVideoUrls(diamondDawnMine);
-      await diamondDawnMine.initialize(owner.address, 333);
+      await diamondDawnMine.initialize(333);
       mineContract = diamondDawnMine;
       user = user1;
     });
@@ -241,7 +243,7 @@ describe("Diamond Dawn Mine", () => {
         deployMineContract
       );
       await setAllVideoUrls(diamondDawnMine);
-      await diamondDawnMine.initialize(owner.address, 333);
+      await diamondDawnMine.initialize(333);
       mineContract = diamondDawnMine;
       user = user1;
     });
@@ -323,7 +325,7 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine, owner, user1 } = await loadFixture(
         deployMineContract
       );
-      await diamondDawnMine.initialize(owner.address, 333);
+      await diamondDawnMine.initialize(333);
       await setAllVideoUrls(diamondDawnMine);
       mineContract = diamondDawnMine;
       user = user1;
@@ -400,12 +402,12 @@ describe("Diamond Dawn Mine", () => {
     });
   });
 
-  describe("isMineReady", () => {
+  describe("isReady", () => {
     let mineContract;
     const numDiamonds = 5;
     beforeEach(async () => {
       const { diamondDawnMine, owner } = await loadFixture(deployMineContract);
-      await diamondDawnMine.initialize(owner.address, numDiamonds);
+      await diamondDawnMine.initialize(numDiamonds);
       mineContract = diamondDawnMine;
     });
 

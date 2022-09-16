@@ -86,8 +86,8 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     }
 
     /**********************     External Functions     ************************/
-    function initialize(address diamondDawn_, uint16 maxDiamonds_) external notInitialized {
-        diamondDawn = diamondDawn_;
+    function initialize(uint16 maxDiamonds_) external notInitialized {
+        diamondDawn = _msgSender();
         maxDiamonds = maxDiamonds_;
         isInitialized = true;
         isOpen = true;

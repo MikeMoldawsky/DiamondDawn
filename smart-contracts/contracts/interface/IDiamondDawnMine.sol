@@ -12,7 +12,7 @@ interface IDiamondDawnMine {
     event Ship(uint tokenId, uint16 physicalId, uint32 number);
     event Rebirth(uint tokenId);
 
-    function initialize(address diamondDawn, uint16 maxDiamond) external;
+    function initialize(uint16 maxDiamond) external;
 
     function enter(uint tokenId) external;
 

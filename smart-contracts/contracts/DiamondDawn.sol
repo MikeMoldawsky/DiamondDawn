@@ -46,7 +46,7 @@ contract DiamondDawn is
         _setDefaultRoyalty(_msgSender(), 1000); // 10 %
         ddMine = IDiamondDawnMine(mine_);
         // TODO: remove maxMineEntrance_ once staging is deploying 333 automatically.
-        ddMine.initialize(address(this), maxEntrance_);
+        ddMine.initialize(maxEntrance_);
         // diamondDawnMine.initialize(address(this), MAX_MINE_ENTRANCE);
     }
 
