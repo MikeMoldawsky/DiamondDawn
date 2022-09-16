@@ -26,6 +26,8 @@ async function assertOnlyAdmin(unAuthUser, mineContract, unAuthFunction) {
   );
 }
 
+// TODO: add admin permissions test (hasRole)
+
 describe("Diamond Dawn Mine Admin", () => {
   async function deployMineContract() {
     const [owner, user1, user2] = await ethers.getSigners();
@@ -39,6 +41,30 @@ describe("Diamond Dawn Mine Admin", () => {
       user2,
     };
   }
+
+  describe("Deployed", () => {
+    it("should grant admin permissions to deployer and set correct public defaults", async () => {
+      const [owner, user1, user2] = await ethers.getSigners();
+      const DiamondDawnMine = await ethers.getContractFactory(
+        "DiamondDawnMine"
+      );
+      const diamondDawnMine = await DiamondDawnMine.deploy([]);
+      await diamondDawnMine.deployed();
+      const adminRole = await diamondDawnMine.DEFAULT_ADMIN_ROLE();
+      expect(await diamondDawnMine.hasRole(adminRole, owner.address)).to.be
+        .true;
+      expect(await diamondDawnMine.hasRole(adminRole, user1.address)).to.be
+        .false;
+      expect(await diamondDawnMine.hasRole(adminRole, user2.address)).to.be
+        .false;
+
+      expect(await diamondDawnMine.isInitialized()).to.be.false;
+      expect(await diamondDawnMine.isOpen()).to.be.false;
+      expect(await diamondDawnMine.maxDiamonds()).equal(0);
+      expect(await diamondDawnMine.diamondCount()).equal(0);
+      expect(await diamondDawnMine.diamondDawn()).to.be.a.properAddress;
+    });
+  });
 
   describe("eruption", () => {
     const maxDiamonds = 15;

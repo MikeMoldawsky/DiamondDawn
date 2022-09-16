@@ -20,38 +20,20 @@ const {
 } = require("./utils/MineTestUtils");
 const { DIAMOND } = require("./utils/Diamonds");
 
+async function deployMineContract() {
+  const [owner, user1, user2] = await ethers.getSigners();
+  const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
+  const diamondDawnMine = await DiamondDawnMine.deploy();
+  await diamondDawnMine.deployed();
+  return {
+    diamondDawnMine,
+    owner,
+    user1,
+    user2,
+  };
+}
+
 describe("Diamond Dawn Mine", () => {
-  async function deployMineContract() {
-    const [owner, user1, user2] = await ethers.getSigners();
-    const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
-    const diamondDawnMine = await DiamondDawnMine.deploy();
-    await diamondDawnMine.deployed();
-    return {
-      diamondDawnMine,
-      owner,
-      user1,
-      user2,
-    };
-  }
-
-  describe("Deployed", () => {
-    it("should grant admin permissions", async () => {
-      const [owner, user1, user2] = await ethers.getSigners();
-      const DiamondDawnMine = await ethers.getContractFactory(
-        "DiamondDawnMine"
-      );
-      const diamondDawnMine = await DiamondDawnMine.deploy([]);
-      await diamondDawnMine.deployed();
-      const adminRole = await diamondDawnMine.DEFAULT_ADMIN_ROLE();
-      expect(await diamondDawnMine.hasRole(adminRole, owner.address)).to.be
-        .true;
-      expect(await diamondDawnMine.hasRole(adminRole, user1.address)).to.be
-        .false;
-      expect(await diamondDawnMine.hasRole(adminRole, user2.address)).to.be
-        .false;
-    });
-  });
-
   describe("initialized", () => {
     const maxDiamonds = 333;
     let mineContract;

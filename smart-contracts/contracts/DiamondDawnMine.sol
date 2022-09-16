@@ -140,7 +140,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         Metadata storage metadata = _metadata[tokenId];
         require(metadata.reborn.id == 0);
         metadata.reborn.id = ++_rebornCounter;
-        emit Ship(tokenId);
+        emit Ship(tokenId, metadata.reborn.id, metadata.certificate.number);
     }
 
     function rebirth(uint tokenId) external onlyDiamondDawn {
