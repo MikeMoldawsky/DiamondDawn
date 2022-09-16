@@ -59,7 +59,7 @@ describe("Diamond Dawn Mine Admin", () => {
         .false;
 
       expect(await diamondDawnMine.isInitialized()).to.be.false;
-      expect(await diamondDawnMine.isOpen()).to.be.false;
+      expect(await diamondDawnMine.isLocked()).to.be.false;
       expect(await diamondDawnMine.maxDiamonds()).equal(0);
       expect(await diamondDawnMine.diamondCount()).equal(0);
       expect(await diamondDawnMine.diamondDawn()).to.be.a.properAddress;
@@ -105,7 +105,6 @@ describe("Diamond Dawn Mine Admin", () => {
     });
 
     it("should REVERT when mine is locked", async () => {
-      await mineContract.setOpen(false);
       await mineContract.lockMine();
       await assertOnlyAdmin(admin, mineContract, (contract) =>
         contract.eruption([DIAMOND])
@@ -149,13 +148,7 @@ describe("Diamond Dawn Mine Admin", () => {
       );
     });
 
-    it("should REVERT when mine is open", async () => {
-      await mineContract.setOpen(true);
-      await expect(mineContract.lockMine()).to.be.revertedWith("Mine Open");
-    });
-
     it("should LOCK all setters", async () => {
-      await mineContract.setOpen(false);
       await mineContract.lockMine();
 
       await assertOnlyAdmin(admin, mineContract, (contract) =>
@@ -166,9 +159,6 @@ describe("Diamond Dawn Mine Admin", () => {
       );
       await assertOnlyAdmin(admin, mineContract, (contract) =>
         contract.lostShipment(1, DIAMOND)
-      );
-      await assertOnlyAdmin(admin, mineContract, (contract) =>
-        contract.setOpen(true)
       );
       await assertOnlyAdmin(admin, mineContract, (contract) =>
         contract.setStageVideos(0, [])
@@ -213,7 +203,6 @@ describe("Diamond Dawn Mine Admin", () => {
     });
 
     it("should REVERT when mine is locked", async () => {
-      await mineContract.setOpen(false);
       await mineContract.lockMine();
       await assertOnlyAdmin(admin, mineContract, (contract) =>
         contract.lostShipment(tokenId, DIAMOND)
@@ -261,55 +250,6 @@ describe("Diamond Dawn Mine Admin", () => {
     });
   });
 
-  describe("setOpen", () => {
-    let mineContract;
-    let admin;
-    let diamondDawn;
-    let user;
-
-    beforeEach(async () => {
-      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
-        deployMineContract
-      );
-      await diamondDawnMine.initialize(333);
-      admin = owner;
-      mineContract = diamondDawnMine;
-      diamondDawn = user1;
-      user = user2;
-    });
-
-    it("should REVERT when NOT admin", async () => {
-      const unAuthUsers = [diamondDawn, user];
-      await Promise.all(
-        unAuthUsers.map((unAuth) =>
-          assertOnlyAdmin(unAuth, mineContract, (contract) =>
-            contract.setOpen(true)
-          )
-        )
-      );
-    });
-
-    it("should REVERT when mine is locked", async () => {
-      await mineContract.setOpen(false);
-      await mineContract.lockMine();
-      await assertOnlyAdmin(admin, mineContract, (contract) =>
-        contract.setOpen(true)
-      );
-      await assertOnlyAdmin(admin, mineContract, (contract) =>
-        contract.setOpen(false)
-      );
-    });
-
-    it("should SUCCESSFULLY set isOpen", async () => {
-      await mineContract.setOpen(true);
-      expect(await mineContract.isOpen()).to.be.true;
-      await mineContract.setOpen(false);
-      expect(await mineContract.isOpen()).to.be.false;
-      await mineContract.setOpen(true);
-      expect(await mineContract.isOpen()).to.be.true;
-    });
-  });
-
   describe("setStageVideos", () => {
     let mineContract;
     let admin;
@@ -339,7 +279,6 @@ describe("Diamond Dawn Mine Admin", () => {
     });
 
     it("should REVERT when mine is locked", async () => {
-      await mineContract.setOpen(false);
       await mineContract.lockMine();
       const stages = [
         STAGE.NO_STAGE,
@@ -406,7 +345,6 @@ describe("Diamond Dawn Mine Admin", () => {
         { shape: NO_SHAPE_NUM, video: rebornVideo },
       ]);
 
-      // await mineContract.setOpen(true);
       expect(await mineContract.stageToShapeVideo(STAGE.INVITE, 0)).to.be.equal(
         enterMine
       );

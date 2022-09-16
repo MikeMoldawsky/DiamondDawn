@@ -46,11 +46,11 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should correctly set dd, maxDiamonds, init & open", async () => {
-      await mineContract.initialize(maxDiamonds);
+      await mineContract.connect(user).initialize(maxDiamonds);
       expect(await mineContract.diamondDawn()).to.be.equal(user.address);
       expect(await mineContract.maxDiamonds()).to.be.equal(maxDiamonds);
       expect(await mineContract.isInitialized()).to.be.true;
-      expect(await mineContract.isOpen()).to.be.true;
+      expect(await mineContract.isLocked()).to.be.false;
     });
 
     it("should REVERT when called more than once", async () => {
@@ -58,6 +58,9 @@ describe("Diamond Dawn Mine", () => {
       await expect(
         mineContract.connect(user).initialize(maxDiamonds)
       ).to.be.revertedWith("Initialized");
+      await expect(mineContract.initialize(maxDiamonds)).to.be.revertedWith(
+        "Initialized"
+      );
     });
   });
 
@@ -82,11 +85,9 @@ describe("Diamond Dawn Mine", () => {
       ).to.be.revertedWith("Only DD");
     });
 
-    it("should REVERT when mine is CLOSED", async () => {
-      await mineContract.setOpen(false);
-      await expect(mineContract.enter(tokenId)).to.be.revertedWith(
-        "Mine Closed"
-      );
+    it("should REVERT when mine is LOCKED", async () => {
+      await mineContract.lockMine();
+      await expect(mineContract.enter(tokenId)).to.be.revertedWith("Locked");
     });
 
     it("should REVERT when token EXISTS", async () => {
@@ -129,11 +130,10 @@ describe("Diamond Dawn Mine", () => {
       );
     });
 
-    it("should REVERT when mine is CLOSED", async () => {
-      await mineContract.setOpen(false);
-      await expect(mineContract.mine(tokenId)).to.be.revertedWith(
-        "Mine Closed"
-      );
+    it("should REVERT when mine is locked", async () => {
+      await mineContract.eruption([DIAMOND]);
+      await mineContract.lockMine();
+      await expect(mineContract.mine(tokenId)).to.be.revertedWith("Locked");
     });
 
     it("should REVERT when mine is DRY", async () => {
@@ -193,9 +193,9 @@ describe("Diamond Dawn Mine", () => {
       );
     });
 
-    it("should REVERT when mine is CLOSED", async () => {
-      await mineContract.setOpen(false);
-      await expect(mineContract.cut(tokenId)).to.be.revertedWith("Mine Closed");
+    it("should REVERT when mine is Locked", async () => {
+      await mineContract.lockMine();
+      await expect(mineContract.cut(tokenId)).to.be.revertedWith("Locked");
     });
 
     it("should REVERT when token is NOT rough type", async () => {
@@ -255,10 +255,8 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should REVERT when mine is CLOSED", async () => {
-      await mineContract.setOpen(false);
-      await expect(mineContract.polish(tokenId)).to.be.revertedWith(
-        "Mine Closed"
-      );
+      await mineContract.lockMine();
+      await expect(mineContract.polish(tokenId)).to.be.revertedWith("Locked");
     });
 
     it("should REVERT when token is NOT cut type", async () => {

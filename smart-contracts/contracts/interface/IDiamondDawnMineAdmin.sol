@@ -12,7 +12,5 @@ interface IDiamondDawnMineAdmin {
 
     function lostShipment(uint tokenId, Certificate calldata diamond) external;
 
-    function setOpen(bool isOpen) external;
-
     function setStageVideos(Stage stage_, ShapeVideo[] calldata shapeVideos) external;
 }
