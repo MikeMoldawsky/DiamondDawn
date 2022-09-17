@@ -174,14 +174,10 @@ describe("Diamond Dawn Mine", () => {
     it("should mine 4 tokens and generate metadata", async () => {
       // Prepare diamonds and invitations
       await Promise.all(
-        _.range(1, 5).map(async () => {
+        _.range(1, 5).map(async (i) => {
           await mineContract.eruption([DIAMOND]);
+          await mineContract.connect(diamondDawn).enter(i);
         })
-      );
-      await Promise.all(
-        _.range(1, 5).map(
-          async (i) => await mineContract.connect(diamondDawn).enter(i)
-        )
       );
       await Promise.all(
         _.range(1, 5).map(async (i) => {
@@ -249,21 +245,13 @@ describe("Diamond Dawn Mine", () => {
     it("should cut 4 tokens and generate metadata", async () => {
       // Prepare diamonds and invitations
       await Promise.all(
-        _.range(1, 5).map(async () => {
+        _.range(1, 5).map(async (i) => {
           await mineContract.eruption([DIAMOND]);
+          await mineContract.connect(diamondDawn).enter(i);
+          await mineContract.connect(diamondDawn).mine(i);
         })
       );
-      await Promise.all(
-        _.range(1, 5).map(
-          async (i) => await mineContract.connect(diamondDawn).enter(i)
-        )
-      );
 
-      await Promise.all(
-        _.range(1, 5).map(
-          async (i) => await mineContract.connect(diamondDawn).mine(i)
-        )
-      );
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           const tokenId = 5 - i;
@@ -307,7 +295,7 @@ describe("Diamond Dawn Mine", () => {
       ).to.be.revertedWith("Only DD");
     });
 
-    it("should REVERT when mine is Locked", async () => {
+    it("should REVERT when Locked", async () => {
       await mineContract.connect(diamondDawn).lockMine();
       await expect(
         mineContract.connect(diamondDawn).polish(tokenId)
@@ -334,28 +322,13 @@ describe("Diamond Dawn Mine", () => {
     it("should polish 4 tokens and generate metadata", async () => {
       // Prepare diamonds and invitations
       await Promise.all(
-        _.range(1, 5).map(async () => {
+        _.range(1, 5).map(async (i) => {
           await mineContract.eruption([DIAMOND]);
+          await mineContract.connect(diamondDawn).enter(i);
+          await mineContract.connect(diamondDawn).mine(i);
+          await mineContract.connect(diamondDawn).cut(i);
         })
       );
-      await Promise.all(
-        _.range(1, 5).map(
-          async (i) => await mineContract.connect(diamondDawn).enter(i)
-        )
-      );
-
-      await Promise.all(
-        _.range(1, 5).map(
-          async (i) => await mineContract.connect(diamondDawn).mine(i)
-        )
-      );
-
-      await Promise.all(
-        _.range(1, 5).map(
-          async (i) => await mineContract.connect(diamondDawn).cut(i)
-        )
-      );
-
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           const tokenId = 5 - i;
@@ -375,7 +348,84 @@ describe("Diamond Dawn Mine", () => {
   });
 
   describe("ship", () => {
-    // TODO: add tests
+    const tokenId = 1;
+    let mineContract;
+    let user;
+    let admin;
+    let diamondDawn;
+
+    beforeEach(async () => {
+      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
+        deployMineContract
+      );
+      mineContract = diamondDawnMine;
+      user = user1;
+      admin = owner;
+      diamondDawn = user2;
+      await setAllVideoUrls(diamondDawnMine);
+      await diamondDawnMine.connect(diamondDawn).initialize(333);
+    });
+
+    it("should REVERT when NOT DiamondDawn", async () => {
+      await expect(mineContract.connect(user).ship(tokenId)).to.be.revertedWith(
+        "Only DD"
+      );
+    });
+
+    it("should REVERT when mine is Locked", async () => {
+      await mineContract.connect(diamondDawn).lockMine();
+      await expect(
+        mineContract.connect(diamondDawn).ship(tokenId)
+      ).to.be.revertedWith("Locked");
+    });
+
+    it("should REVERT when token is NOT polish type", async () => {
+      await mineContract.eruption([DIAMOND]);
+      await mineContract.connect(diamondDawn).enter(tokenId);
+      await expect(
+        mineContract.connect(diamondDawn).ship(tokenId)
+      ).to.be.revertedWith("Wrong stage");
+      await mineContract.connect(diamondDawn).mine(tokenId);
+      await expect(
+        mineContract.connect(diamondDawn).ship(tokenId)
+      ).to.be.revertedWith("Wrong stage");
+      await mineContract.connect(diamondDawn).cut(tokenId);
+      await expect(
+        mineContract.connect(diamondDawn).ship(tokenId)
+      ).to.be.revertedWith("Wrong stage");
+      await mineContract.connect(diamondDawn).polish(tokenId);
+      await mineContract.connect(diamondDawn).ship(tokenId);
+      await expect(
+        mineContract.connect(diamondDawn).ship(tokenId)
+      ).to.be.revertedWith("Shipped");
+    });
+
+    it("should ship 4 tokens and generate metadata", async () => {
+      await Promise.all(
+        _.range(1, 5).map(async (i) => {
+          await mineContract.eruption([DIAMOND]);
+          await mineContract.connect(diamondDawn).enter(i);
+          await mineContract.connect(diamondDawn).mine(i);
+          await mineContract.connect(diamondDawn).cut(i);
+        })
+      );
+      await Promise.all(
+        _.range(1, 5).map(async (i) => {
+          const tokenId = 5 - i;
+          await mineContract.connect(diamondDawn).polish(tokenId);
+          await expect(mineContract.connect(diamondDawn).ship(tokenId))
+            .to.emit(mineContract, "Ship")
+            .withArgs(tokenId, i, DIAMOND.number);
+          await assertPolishedMetadata(
+            diamondDawn,
+            mineContract,
+            tokenId,
+            i,
+            DIAMOND
+          );
+        })
+      );
+    });
   });
 
   describe("rebirth", () => {

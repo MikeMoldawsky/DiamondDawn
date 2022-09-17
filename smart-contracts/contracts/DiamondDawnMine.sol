@@ -122,7 +122,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
 
     function ship(uint tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.POLISH) {
         Metadata storage metadata = _metadata[tokenId];
-        require(metadata.reborn.id == 0);
+        require(metadata.reborn.id == 0, "Shipped");
         metadata.reborn.id = ++_rebornCounter;
         emit Ship(tokenId, metadata.reborn.id, metadata.certificate.number);
     }
