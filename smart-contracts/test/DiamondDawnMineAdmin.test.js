@@ -18,8 +18,6 @@ const {
 const { DIAMOND } = require("./utils/Diamonds");
 const { assertOnlyAdmin } = require("./utils/AdminUtils");
 
-// TODO: add admin permissions test (hasRole)
-
 describe("Diamond Dawn Mine Admin", () => {
   async function deployMineContract() {
     const [owner, user1, user2] = await ethers.getSigners();
