@@ -133,6 +133,13 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         emit Rebirth(tokenId);
     }
 
+    function lockMine() external onlyDiamondDawn {
+        while (0 < getRoleMemberCount(DEFAULT_ADMIN_ROLE)) {
+            _revokeRole(DEFAULT_ADMIN_ROLE, getRoleMember(DEFAULT_ADMIN_ROLE, 0));
+        }
+        isLocked = true;
+    }
+
     function eruption(Certificate[] calldata diamonds)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
@@ -158,13 +165,6 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         for (uint i = 0; i < shapeVideos.length; i++) {
             _setVideo(stage_, shapeVideos[i].shape, shapeVideos[i].video);
         }
-    }
-
-    function lockMine() external onlyRole(DEFAULT_ADMIN_ROLE) {
-        while (0 < getRoleMemberCount(DEFAULT_ADMIN_ROLE)) {
-            renounceRole(DEFAULT_ADMIN_ROLE, getRoleMember(DEFAULT_ADMIN_ROLE, 0));
-        }
-        isLocked = true;
     }
 
     function getMetadata(uint tokenId) external view onlyDiamondDawn exists(tokenId) returns (string memory) {

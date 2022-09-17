@@ -16,15 +16,7 @@ const {
   setAllVideoUrls,
 } = require("./utils/MineTestUtils");
 const { DIAMOND } = require("./utils/Diamonds");
-
-async function assertOnlyAdmin(unAuthUser, mineContract, unAuthFunction) {
-  const adminRole = await mineContract.DEFAULT_ADMIN_ROLE();
-  return expect(
-    unAuthFunction(mineContract.connect(unAuthUser))
-  ).to.be.revertedWith(
-    `AccessControl: account ${unAuthUser.address.toLowerCase()} is missing role ${adminRole}`
-  );
-}
+const { assertOnlyAdmin } = require("./utils/AdminUtils");
 
 // TODO: add admin permissions test (hasRole)
 
@@ -104,10 +96,16 @@ describe("Diamond Dawn Mine Admin", () => {
       expect(await mineContract.diamondCount()).to.be.equal(maxDiamonds);
     });
 
-    it("should REVERT when mine is locked", async () => {
-      await mineContract.lockMine();
-      await assertOnlyAdmin(admin, mineContract, (contract) =>
-        contract.eruption([DIAMOND])
+    it("should REVERT after mine is locked", async () => {
+      await mineContract.connect(diamondDawn).initialize(maxDiamonds);
+      await mineContract.connect(diamondDawn).lockMine();
+      const unAuthUsers = [diamondDawn, admin, user];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, mineContract, (contract) =>
+            contract.eruption([DIAMOND])
+          )
+        )
       );
     });
 
@@ -118,51 +116,6 @@ describe("Diamond Dawn Mine Admin", () => {
       const maxDiamondsArray = _.range(prodDiamondsSize).map(() => DIAMOND);
       await mineContract.eruption(maxDiamondsArray);
       expect(await mineContract.diamondCount()).to.be.equal(prodDiamondsSize);
-    });
-  });
-
-  describe("lockMine", () => {
-    let mineContract;
-    let admin;
-    let diamondDawn;
-    let user;
-    beforeEach(async () => {
-      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
-        deployMineContract
-      );
-      await diamondDawnMine.initialize(5);
-      mineContract = diamondDawnMine;
-      admin = owner;
-      user = user1;
-      diamondDawn = user2;
-    });
-
-    it("should REVERT when NOT admin", async () => {
-      const unAuthUsers = [diamondDawn, user];
-      await Promise.all(
-        unAuthUsers.map((unAuth) =>
-          assertOnlyAdmin(unAuth, mineContract, (contract) =>
-            contract.lockMine()
-          )
-        )
-      );
-    });
-
-    it("should LOCK all setters", async () => {
-      await mineContract.lockMine();
-
-      await assertOnlyAdmin(admin, mineContract, (contract) =>
-        contract.eruption([])
-      );
-      await assertOnlyAdmin(admin, mineContract, (contract) =>
-        contract.lockMine()
-      );
-      await assertOnlyAdmin(admin, mineContract, (contract) =>
-        contract.lostShipment(1, DIAMOND)
-      );
-      await assertOnlyAdmin(admin, mineContract, (contract) =>
-        contract.setStageVideos(0, [])
-      );
     });
   });
 
@@ -177,12 +130,12 @@ describe("Diamond Dawn Mine Admin", () => {
       const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
         deployMineContract
       );
-      await diamondDawnMine.initialize(333);
-      await setAllVideoUrls(diamondDawnMine);
       mineContract = diamondDawnMine;
       admin = owner;
       diamondDawn = user1;
       user = user2;
+      await diamondDawnMine.connect(diamondDawn).initialize(333);
+      await setAllVideoUrls(diamondDawnMine);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -203,7 +156,7 @@ describe("Diamond Dawn Mine Admin", () => {
     });
 
     it("should REVERT when mine is locked", async () => {
-      await mineContract.lockMine();
+      await mineContract.connect(diamondDawn).lockMine();
       await assertOnlyAdmin(admin, mineContract, (contract) =>
         contract.lostShipment(tokenId, DIAMOND)
       );
@@ -214,34 +167,53 @@ describe("Diamond Dawn Mine Admin", () => {
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
         "Wrong stage"
       );
-      await mineContract.enter(tokenId);
+      await mineContract.connect(diamondDawn).enter(tokenId);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
         "Wrong stage"
       );
-      await mineContract.mine(tokenId);
+      await mineContract.connect(diamondDawn).mine(tokenId);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
         "Wrong stage"
       );
-      await mineContract.cut(tokenId);
+      await mineContract.connect(diamondDawn).cut(tokenId);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
         "Wrong stage"
       );
-      await mineContract.polish(tokenId);
-      await assertPolishedMetadata(mineContract, tokenId, 1, DIAMOND);
-      await mineContract.ship(tokenId);
-      await assertPolishedMetadata(mineContract, tokenId, 1, DIAMOND);
+      await mineContract.connect(diamondDawn).polish(tokenId);
+      await assertPolishedMetadata(
+        diamondDawn,
+        mineContract,
+        tokenId,
+        1,
+        DIAMOND
+      );
+      await mineContract.connect(diamondDawn).ship(tokenId);
+      await assertPolishedMetadata(
+        diamondDawn,
+        mineContract,
+        tokenId,
+        1,
+        DIAMOND
+      );
       const replacedDiamond = { ...DIAMOND, points: DIAMOND.points + 10 };
       await mineContract.lostShipment(tokenId, replacedDiamond);
-      await assertPolishedMetadata(mineContract, tokenId, 1, replacedDiamond);
+      await assertPolishedMetadata(
+        diamondDawn,
+        mineContract,
+        tokenId,
+        1,
+        replacedDiamond
+      );
       const replacedDiamond2 = {
         ...DIAMOND,
         points: DIAMOND.points + 20,
         shape: DIAMOND.shape + 1,
       };
       const rebornId = 1;
-      await mineContract.rebirth(tokenId);
+      await mineContract.connect(diamondDawn).rebirth(tokenId);
       await mineContract.lostShipment(tokenId, replacedDiamond2);
       await assertRebornMetadata(
+        diamondDawn,
         mineContract,
         tokenId,
         rebornId,
@@ -260,11 +232,11 @@ describe("Diamond Dawn Mine Admin", () => {
       const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
         deployMineContract
       );
-      await diamondDawnMine.initialize(333);
       mineContract = diamondDawnMine;
       admin = owner;
       diamondDawn = user1;
       user = user2;
+      await diamondDawnMine.connect(diamondDawn).initialize(333);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -279,7 +251,7 @@ describe("Diamond Dawn Mine Admin", () => {
     });
 
     it("should REVERT when mine is locked", async () => {
-      await mineContract.lockMine();
+      await mineContract.connect(diamondDawn).lockMine();
       const stages = [
         STAGE.NO_STAGE,
         STAGE.INVITE,

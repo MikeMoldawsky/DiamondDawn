@@ -8,8 +8,6 @@ import "../objects/System.sol";
 interface IDiamondDawnMineAdmin {
     function eruption(Certificate[] calldata diamonds) external;
 
-    function lockMine() external;
-
     function lostShipment(uint tokenId, Certificate calldata diamond) external;
 
     function setStageVideos(Stage stage_, ShapeVideo[] calldata shapeVideos) external;

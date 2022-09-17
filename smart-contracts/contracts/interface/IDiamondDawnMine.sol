@@ -26,6 +26,8 @@ interface IDiamondDawnMine {
 
     function rebirth(uint tokenId) external;
 
+    function lockMine() external;
+
     function getMetadata(uint tokenId) external view returns (string memory);
 
     function isReady(Stage stage) external view returns (bool);
