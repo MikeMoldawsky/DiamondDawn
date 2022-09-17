@@ -429,7 +429,95 @@ describe("Diamond Dawn Mine", () => {
   });
 
   describe("rebirth", () => {
-    // TODO: add tests
+    const tokenId = 1;
+    let mineContract;
+    let user;
+    let admin;
+    let diamondDawn;
+
+    beforeEach(async () => {
+      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
+        deployMineContract
+      );
+      mineContract = diamondDawnMine;
+      user = user1;
+      admin = owner;
+      diamondDawn = user2;
+      await setAllVideoUrls(diamondDawnMine);
+      await diamondDawnMine.connect(diamondDawn).initialize(333);
+    });
+
+    it("should REVERT when NOT DiamondDawn", async () => {
+      await expect(
+        mineContract.connect(user).rebirth(tokenId)
+      ).to.be.revertedWith("Only DD");
+    });
+
+    it("should work when mine is locked", async () => {
+      await mineContract.eruption([DIAMOND]);
+      await mineContract.connect(diamondDawn).enter(1);
+      await mineContract.connect(diamondDawn).mine(1);
+      await mineContract.connect(diamondDawn).cut(1);
+      await mineContract.connect(diamondDawn).polish(1);
+      await mineContract.connect(diamondDawn).ship(1);
+      await mineContract.connect(diamondDawn).lockMine();
+      await mineContract.connect(diamondDawn).rebirth(tokenId);
+    });
+
+    it("should REVERT when not shipped", async () => {
+      await mineContract.eruption([DIAMOND]);
+      await mineContract.connect(diamondDawn).enter(tokenId);
+      await expect(
+        mineContract.connect(diamondDawn).rebirth(tokenId)
+      ).to.be.revertedWith("Not shipped");
+      await mineContract.connect(diamondDawn).mine(tokenId);
+      await expect(
+        mineContract.connect(diamondDawn).rebirth(tokenId)
+      ).to.be.revertedWith("Not shipped");
+      await mineContract.connect(diamondDawn).cut(tokenId);
+      await expect(
+        mineContract.connect(diamondDawn).rebirth(tokenId)
+      ).to.be.revertedWith("Not shipped");
+      await mineContract.connect(diamondDawn).polish(tokenId);
+      await expect(
+        mineContract.connect(diamondDawn).rebirth(tokenId)
+      ).to.be.revertedWith("Not shipped");
+
+      await mineContract.connect(diamondDawn).ship(tokenId);
+      await mineContract.connect(diamondDawn).rebirth(tokenId);
+
+      await expect(
+        mineContract.connect(diamondDawn).rebirth(tokenId)
+      ).to.be.revertedWith("Wrong stage");
+    });
+
+    it("should ship 4 tokens and generate metadata", async () => {
+      await Promise.all(
+        _.range(1, 5).map(async (i) => {
+          await mineContract.eruption([DIAMOND]);
+          await mineContract.connect(diamondDawn).enter(i);
+          await mineContract.connect(diamondDawn).mine(i);
+          await mineContract.connect(diamondDawn).cut(i);
+          await mineContract.connect(diamondDawn).polish(i);
+        })
+      );
+      await Promise.all(
+        _.range(1, 5).map(async (i) => {
+          const tokenId = 5 - i;
+          await mineContract.connect(diamondDawn).ship(tokenId);
+          await expect(mineContract.connect(diamondDawn).rebirth(tokenId))
+            .to.emit(mineContract, "Rebirth")
+            .withArgs(tokenId);
+          await assertRebornMetadata(
+            diamondDawn,
+            mineContract,
+            tokenId,
+            i,
+            DIAMOND
+          );
+        })
+      );
+    });
   });
 
   describe("lockMine", () => {

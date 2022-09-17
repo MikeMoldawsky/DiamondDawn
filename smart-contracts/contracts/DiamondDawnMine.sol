@@ -129,6 +129,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
 
     function rebirth(uint tokenId) external onlyDiamondDawn {
         require(_metadata[tokenId].reborn.id > 0, "Not shipped");
+        require(_metadata[tokenId].stage_ == Stage.POLISH, "Wrong stage");
         _metadata[tokenId].stage_ = Stage.SHIP;
         emit Rebirth(tokenId);
     }
