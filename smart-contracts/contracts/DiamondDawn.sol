@@ -157,6 +157,7 @@ contract DiamondDawn is
     }
 
     function lockDiamondDawn() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        ddMine.lockMine();
         isLocked = true;
     }
 

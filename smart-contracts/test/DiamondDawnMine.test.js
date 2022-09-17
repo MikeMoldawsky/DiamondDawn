@@ -423,6 +423,31 @@ describe("Diamond Dawn Mine", () => {
         contract.setStageVideos(0, [])
       );
     });
+
+    it("should Remove all admins and set isLocked", async () => {
+      const adminRole = await mineContract.DEFAULT_ADMIN_ROLE();
+      expect(await mineContract.isLocked()).to.be.false;
+      expect(await mineContract.hasRole(adminRole, admin.address)).to.be.true;
+      const newAdminUsers = [user, diamondDawn];
+      await Promise.all(
+        newAdminUsers.map(async (user) => {
+          await mineContract.grantRole(adminRole, user.address);
+          expect(await mineContract.hasRole(adminRole, user.address)).to.be
+            .true;
+        })
+      );
+      expect(await mineContract.getRoleMemberCount(adminRole)).to.equal(3); // remove admins
+      await mineContract.connect(diamondDawn).lockMine(); // remove admins
+      expect(await mineContract.getRoleMemberCount(adminRole)).to.equal(0); // remove admins
+      await Promise.all(
+        [...newAdminUsers, admin].map(
+          async (user) =>
+            expect(await mineContract.hasRole(adminRole, user.address)).to.be
+              .false
+        )
+      );
+      expect(await mineContract.isLocked()).to.be.true;
+    });
   });
 
   describe("getMetadata", () => {
