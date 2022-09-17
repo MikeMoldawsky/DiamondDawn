@@ -94,7 +94,7 @@ describe("DiamondDawn", () => {
       expect(await mineContract.diamondDawn()).to.equal(ddContract.address);
       expect(await mineContract.maxDiamonds()).to.equal(MAX_TOKENS);
       expect(await mineContract.isInitialized()).to.be.true;
-      expect(await mineContract.isOpen()).to.be.true;
+      expect(await mineContract.isLocked()).to.be.false;
     });
 
     it("Should set system stage to NO STAGE", async () => {

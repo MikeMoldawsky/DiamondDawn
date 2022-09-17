@@ -9,10 +9,10 @@ interface IDiamondDawnMine {
     event Mine(uint tokenId);
     event Cut(uint tokenId);
     event Polish(uint tokenId);
-    event Ship(uint tokenId);
+    event Ship(uint tokenId, uint16 physicalId, uint32 number);
     event Rebirth(uint tokenId);
 
-    function initialize(address diamondDawn, uint16 maxDiamond) external;
+    function initialize(uint16 maxDiamond) external;
 
     function enter(uint tokenId) external;
 
@@ -25,6 +25,8 @@ interface IDiamondDawnMine {
     function ship(uint tokenId) external;
 
     function rebirth(uint tokenId) external;
+
+    function lockMine() external;
 
     function getMetadata(uint tokenId) external view returns (string memory);
 

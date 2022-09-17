@@ -115,17 +115,28 @@ async function prepareRebirthReady(mineContract, numDiamonds) {
   await setRebornVideo(mineContract);
 }
 
-async function assertEnterMineMetadata(mineContract, tokenId) {
+async function assertEnterMineMetadata(ddUser, mineContract, tokenId) {
   const expectedMetadata = _getExpectedMetadataEnterMine(tokenId);
-  const parsedMetadata = await _getParsedMetadata(mineContract, tokenId);
+  const parsedMetadata = await _getParsedMetadata(
+    ddUser,
+    mineContract,
+    tokenId
+  );
   expect(parsedMetadata).to.deep.equal(expectedMetadata);
 }
 
-async function assertRoughMetadata(mineContract, tokenId, roughId, diamond) {
+async function assertRoughMetadata(
+  ddUser,
+  mineContract,
+  tokenId,
+  roughId,
+  diamond
+) {
   const expectedMetadataNoCaratShapeImage =
     _getRoughMetadataNoCaratShapeImage(roughId);
   await _assertMetadataByType(
     expectedMetadataNoCaratShapeImage,
+    ddUser,
     mineContract,
     tokenId,
     STAGE.MINE,
@@ -134,13 +145,20 @@ async function assertRoughMetadata(mineContract, tokenId, roughId, diamond) {
   );
 }
 
-async function assertCutMetadata(mineContract, tokenId, cutId, diamond) {
+async function assertCutMetadata(
+  ddUser,
+  mineContract,
+  tokenId,
+  cutId,
+  diamond
+) {
   const expectedMetadataNoCaratShapeImage = _getCutMetadataNoCaratShapeImage(
     cutId,
     diamond
   );
   await _assertMetadataByType(
     expectedMetadataNoCaratShapeImage,
+    ddUser,
     mineContract,
     tokenId,
     STAGE.CUT,
@@ -150,6 +168,7 @@ async function assertCutMetadata(mineContract, tokenId, cutId, diamond) {
 }
 
 async function assertPolishedMetadata(
+  ddUser,
   mineContract,
   tokenId,
   polishedId,
@@ -159,6 +178,7 @@ async function assertPolishedMetadata(
     _getPolishedMetadataNoCaratShapeImage(polishedId, diamond);
   await _assertMetadataByType(
     expectedMetadataNoCaratShapeImage,
+    ddUser,
     mineContract,
     tokenId,
     STAGE.POLISH,
@@ -166,11 +186,18 @@ async function assertPolishedMetadata(
   );
 }
 
-async function assertRebornMetadata(mineContract, tokenId, rebornId, diamond) {
+async function assertRebornMetadata(
+  ddUser,
+  mineContract,
+  tokenId,
+  rebornId,
+  diamond
+) {
   const expectedMetadataNoCaratShapeImage =
     _getRebirthMetadataNoCaratShapeAndImage(rebornId, diamond);
   await _assertMetadataByType(
     expectedMetadataNoCaratShapeImage,
+    ddUser,
     mineContract,
     tokenId,
     STAGE.SHIP,
@@ -180,13 +207,18 @@ async function assertRebornMetadata(mineContract, tokenId, rebornId, diamond) {
 
 async function _assertMetadataByType(
   expectedMetadataNoCaratShapeImage,
+  ddUser,
   mineContract,
   tokenId,
   type,
   minOrExactPoints,
   maxPoints
 ) {
-  const parsedMetadata = await _getParsedMetadata(mineContract, tokenId);
+  const parsedMetadata = await _getParsedMetadata(
+    ddUser,
+    mineContract,
+    tokenId
+  );
   const noCaratMetadata = await _validateAndRemoveCaratMetadata(
     parsedMetadata,
     minOrExactPoints,
@@ -317,8 +349,10 @@ function _assertShapeImage(type, shape, image) {
   expect(image).to.be.equal(`${BASE_URI}/${video}`);
 }
 
-async function _getParsedMetadata(mineContract, tokenId) {
-  const actualMetadata = await mineContract.getMetadata(tokenId);
+async function _getParsedMetadata(ddUser, mineContract, tokenId) {
+  const actualMetadata = await mineContract
+    .connect(ddUser)
+    .getMetadata(tokenId);
   return await _assertBase64AndGetParsed(actualMetadata);
 }
 

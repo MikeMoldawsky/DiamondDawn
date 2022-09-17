@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interface/IDiamondDawnMine.sol";
@@ -22,9 +22,9 @@ import "./objects/Mine.sol";
  * @title DiamondDawnMine NFT Contract
  * @author Diamond Dawn
  */
-contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdmin {
+contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondDawnMineAdmin {
+    bool public isLocked; // mine is locked forever.
     bool public isInitialized;
-    bool public isOpen; // mine is closed until it's initialized.
     uint16 public maxDiamonds;
     uint16 public diamondCount;
     address public diamondDawn;
@@ -65,13 +65,9 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         _;
     }
 
-    modifier onlyStage(uint tokenId, Stage stage_) {
+    modifier canProcess(uint tokenId, Stage stage_) {
+        require(!isLocked, "Locked");
         require(stage_ == _metadata[tokenId].stage_, "Wrong stage");
-        _;
-    }
-
-    modifier isMineOpen(bool isOpen_) {
-        require(isOpen == isOpen_, string.concat("Mine ", isOpen ? "Open" : "Closed"));
         _;
     }
 
@@ -86,30 +82,18 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
     }
 
     /**********************     External Functions     ************************/
-    function initialize(address diamondDawn_, uint16 maxDiamonds_) external notInitialized {
-        diamondDawn = diamondDawn_;
+    function initialize(uint16 maxDiamonds_) external notInitialized {
+        diamondDawn = _msgSender();
         maxDiamonds = maxDiamonds_;
         isInitialized = true;
-        isOpen = true;
     }
 
-    function enter(uint tokenId)
-        external
-        onlyDiamondDawn
-        isMineOpen(true)
-        onlyStage(tokenId, Stage.NO_STAGE)
-    {
+    function enter(uint tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.NO_STAGE) {
         _metadata[tokenId].stage_ = Stage.INVITE;
         emit Enter(tokenId);
     }
 
-    function mine(uint tokenId)
-        external
-        onlyDiamondDawn
-        isMineOpen(true)
-        mineNotDry
-        onlyStage(tokenId, Stage.INVITE)
-    {
+    function mine(uint tokenId) external onlyDiamondDawn mineNotDry canProcess(tokenId, Stage.INVITE) {
         uint extraPoints = _getRandomBetween(MIN_EXTRA_ROUGH_POINTS, MAX_EXTRA_ROUGH_POINTS);
         Metadata storage metadata = _metadata[tokenId];
         metadata.stage_ = Stage.MINE;
@@ -120,7 +104,7 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         emit Mine(tokenId);
     }
 
-    function cut(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyStage(tokenId, Stage.MINE) {
+    function cut(uint tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.MINE) {
         uint extraPoints = _getRandomBetween(MIN_EXTRA_POLISH_POINTS, MAX_EXTRA_POLISH_POINTS);
         Metadata storage metadata = _metadata[tokenId];
         metadata.stage_ = Stage.CUT;
@@ -129,24 +113,31 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         emit Cut(tokenId);
     }
 
-    function polish(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyStage(tokenId, Stage.CUT) {
+    function polish(uint tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.CUT) {
         Metadata storage metadata = _metadata[tokenId];
         metadata.stage_ = Stage.POLISH;
         metadata.polished.id = ++_polishedCounter;
         emit Polish(tokenId);
     }
 
-    function ship(uint tokenId) external onlyDiamondDawn isMineOpen(true) onlyStage(tokenId, Stage.POLISH) {
+    function ship(uint tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.POLISH) {
         Metadata storage metadata = _metadata[tokenId];
         require(metadata.reborn.id == 0);
         metadata.reborn.id = ++_rebornCounter;
-        emit Ship(tokenId);
+        emit Ship(tokenId, metadata.reborn.id, metadata.certificate.number);
     }
 
     function rebirth(uint tokenId) external onlyDiamondDawn {
         require(_metadata[tokenId].reborn.id > 0, "Not shipped");
         _metadata[tokenId].stage_ = Stage.SHIP;
         emit Rebirth(tokenId);
+    }
+
+    function lockMine() external onlyDiamondDawn {
+        while (0 < getRoleMemberCount(DEFAULT_ADMIN_ROLE)) {
+            _revokeRole(DEFAULT_ADMIN_ROLE, getRoleMember(DEFAULT_ADMIN_ROLE, 0));
+        }
+        isLocked = true;
     }
 
     function eruption(Certificate[] calldata diamonds)
@@ -166,10 +157,6 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         metadata.certificate = diamond;
     }
 
-    function setOpen(bool isOpen_) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        isOpen = isOpen_;
-    }
-
     function setStageVideos(Stage stage_, ShapeVideo[] calldata shapeVideos)
         external
         onlyRole(DEFAULT_ADMIN_ROLE)
@@ -178,11 +165,6 @@ contract DiamondDawnMine is AccessControl, IDiamondDawnMine, IDiamondDawnMineAdm
         for (uint i = 0; i < shapeVideos.length; i++) {
             _setVideo(stage_, shapeVideos[i].shape, shapeVideos[i].video);
         }
-    }
-
-    function lockMine() external onlyRole(DEFAULT_ADMIN_ROLE) isMineOpen(false) {
-        // lock mine forever
-        renounceRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
 
     function getMetadata(uint tokenId) external view onlyDiamondDawn exists(tokenId) returns (string memory) {
