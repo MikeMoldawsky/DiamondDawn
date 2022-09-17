@@ -461,7 +461,7 @@ describe("Diamond Dawn Mine", () => {
       await mineContract.connect(diamondDawn).polish(1);
       await mineContract.connect(diamondDawn).ship(1);
       await mineContract.connect(diamondDawn).lockMine();
-      await mineContract.connect(diamondDawn).rebirth(tokenId);
+      await mineContract.connect(diamondDawn).rebirth(1);
     });
 
     it("should REVERT when not shipped", async () => {
