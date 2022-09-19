@@ -18,7 +18,10 @@ async function logEruptionTx(txHash) {
   try {
     let config = await ConfigModel.findOne({});
     if (config) {
-      return await ConfigModel.findOneAndUpdate({}, { $push: { eruptionTxs: txHash } });
+      return await ConfigModel.findOneAndUpdate(
+        {},
+        { $push: { eruptionTxs: txHash } }
+      );
     } else {
       return await ConfigModel.create({ eruptionTxs: [txHash] });
     }

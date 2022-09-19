@@ -24,40 +24,40 @@ export const SHAPE = {
 };
 
 export const COLOR_GRADES = {
-  "M": 1,
-  "N": 2,
-  "O": 3,
-  "P": 4,
-  "Q": 5,
-  "R": 6,
-  "S": 7,
-  "T": 8,
-  "U": 9,
-  "V": 10,
-  "W": 11,
-  "X": 12,
-  "Y": 13,
-  "Z": 14,
+  M: 1,
+  N: 2,
+  O: 3,
+  P: 4,
+  Q: 5,
+  R: 6,
+  S: 7,
+  T: 8,
+  U: 9,
+  V: 10,
+  W: 11,
+  X: 12,
+  Y: 13,
+  Z: 14,
 };
 
 export const CLARITY_GRADES = {
-  "VS2": 1,
-  "VS1": 2,
-  "VVS2": 3,
-  "VVS1": 4,
-  "IF": 5,
-  "FL": 6,
+  VS2: 1,
+  VS1: 2,
+  VVS2: 3,
+  VVS1: 4,
+  IF: 5,
+  FL: 6,
 };
 
 export const COMMON_GRADES = {
-  "Good": 1,
+  Good: 1,
   "Very Good": 2,
-  "Excellent": 3,
+  Excellent: 3,
 };
 
 export const FLUORESCENCE_GRADES = {
-  "Faint": 1,
-  "None": 2,
+  Faint: 1,
+  None: 2,
 };
 
 export const CONTRACTS = {

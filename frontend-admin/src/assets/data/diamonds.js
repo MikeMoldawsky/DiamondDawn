@@ -1,4 +1,10 @@
-import { SHAPE, COLOR_GRADES, CLARITY_GRADES, COMMON_GRADES, FLUORESCENCE_GRADES } from 'consts'
+import {
+  SHAPE,
+  COLOR_GRADES,
+  CLARITY_GRADES,
+  COMMON_GRADES,
+  FLUORESCENCE_GRADES,
+} from "consts";
 
 const DIAMONDS_INFO = [
   {
@@ -301,6 +307,6 @@ const DIAMONDS_INFO = [
     width: 512,
     depth: 350,
   },
-]
+];
 
-export default DIAMONDS_INFO
+export default DIAMONDS_INFO;

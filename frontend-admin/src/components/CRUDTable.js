@@ -25,7 +25,7 @@ const CRUDTable = ({
   const [rowModesModel, setRowModesModel] = useState({});
   const [selectionModel, setSelectionModel] = useState([]);
 
-  const additionalColumns = []
+  const additionalColumns = [];
   if (!readonly) {
     additionalColumns.push({
       field: "actions",
@@ -71,12 +71,9 @@ const CRUDTable = ({
           />,
         ];
       },
-    })
+    });
   }
-  const _columns = [
-    ...columns,
-    ...additionalColumns,
-  ];
+  const _columns = [...columns, ...additionalColumns];
 
   const onAddClick = async () => {
     const newItem = await getNewItem();
@@ -171,7 +168,9 @@ const CRUDTable = ({
           <div className="button link add-button" onClick={onAddClick}>
             <FontAwesomeIcon icon={faPlus} /> Add {itemName}
           </div>
-        ) : <div />}
+        ) : (
+          <div />
+        )}
         {renderCustomButtons()}
       </div>
     </>

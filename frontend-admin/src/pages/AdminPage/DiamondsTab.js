@@ -1,23 +1,39 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faExclamationTriangle, faUpload} from "@fortawesome/free-solid-svg-icons";
+import {
+  faExclamationTriangle,
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
 import CRUDTable from "components/CRUDTable";
-import {SHAPE, CLARITY_GRADES, COLOR_GRADES, COMMON_GRADES, CONTRACTS, FLUORESCENCE_GRADES} from "consts";
+import {
+  SHAPE,
+  CLARITY_GRADES,
+  COLOR_GRADES,
+  COMMON_GRADES,
+  CONTRACTS,
+  FLUORESCENCE_GRADES,
+} from "consts";
 import useDDContract from "hooks/useDDContract";
 import { eruptionApi } from "api/contractApi";
 import {
   addDiamondApi,
   updateDiamondApi,
-  deleteDiamondApi, logEruptionTxApi, clearEruptionTxsApi,
+  deleteDiamondApi,
+  logEruptionTxApi,
+  clearEruptionTxsApi,
 } from "api/serverApi";
-import {getEnumKeyByValue} from "utils";
+import { getEnumKeyByValue } from "utils";
 import DIAMONDS_INFO from "assets/data/diamonds";
-import {useProvider} from "wagmi";
-import {useDispatch, useSelector} from "react-redux";
-import {loadConfig, loadDiamondCount, systemSelector} from "store/systemReducer";
-import { utils as ethersUtils } from 'ethers'
+import { useProvider } from "wagmi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loadConfig,
+  loadDiamondCount,
+  systemSelector,
+} from "store/systemReducer";
+import { utils as ethersUtils } from "ethers";
 import ActionButton from "components/ActionButton";
 
 const requiredValidation = (params) => {
@@ -173,49 +189,50 @@ const DIAMOND_COLUMNS = [
     valueOptions: Object.values(FLUORESCENCE_GRADES),
     width: 105,
     editable: true,
-    valueFormatter: (params) => getEnumKeyByValue(FLUORESCENCE_GRADES, params.value),
+    valueFormatter: (params) =>
+      getEnumKeyByValue(FLUORESCENCE_GRADES, params.value),
     preProcessEditCellProps: requiredValidation,
   },
 ];
 
 const DiamondsTab = () => {
   const ddMineContract = useDDContract(CONTRACTS.DiamondDawnMine);
-  const { ddMineContractData, config, diamondCount } = useSelector(systemSelector)
-  const [deployedGIAs, setDeployedGIAs] = useState([])
-  const provider = useProvider()
-  const dispatch = useDispatch()
+  const { ddMineContractData, config, diamondCount } =
+    useSelector(systemSelector);
+  const [deployedGIAs, setDeployedGIAs] = useState([]);
+  const provider = useProvider();
+  const dispatch = useDispatch();
 
   const readEruptionTx = async (txHash) => {
     try {
       const eruptionTx = await provider.getTransaction(txHash);
       const iface = new ethersUtils.Interface(ddMineContractData.artifact.abi);
-      const decodedData = iface.parseTransaction({data: eruptionTx.data});
-      return _.map(decodedData.args.diamonds, d => d.number)
+      const decodedData = iface.parseTransaction({ data: eruptionTx.data });
+      return _.map(decodedData.args.diamonds, (d) => d.number);
+    } catch (e) {
+      console.error(`readEruptionTx Failed`, { txHash, e });
     }
-    catch (e) {
-      console.error(`readEruptionTx Failed`, { txHash, e })
-    }
-  }
+  };
 
   const readEruptionTxs = async () => {
     const numbers = await Promise.all(
       _.map(config.eruptionTxs, readEruptionTx)
-    )
-    setDeployedGIAs(_.flatten(numbers))
-  }
+    );
+    setDeployedGIAs(_.flatten(numbers));
+  };
 
-  const eruptionTxCount = _.get(config, 'eruptionTxs', []).length
+  const eruptionTxCount = _.get(config, "eruptionTxs", []).length;
 
   useEffect(() => {
     if (eruptionTxCount > 0) {
-      readEruptionTxs()
+      readEruptionTxs();
     }
-  }, [eruptionTxCount])
+  }, [eruptionTxCount]);
 
   useEffect(() => {
     dispatch(loadDiamondCount(ddMineContract));
-    dispatch(loadConfig())
-  }, [])
+    dispatch(loadConfig());
+  }, []);
 
   const CRUD = {
     create: addDiamondApi,
@@ -225,43 +242,46 @@ const DiamondsTab = () => {
 
   const populateDiamonds = async (diamonds) => {
     try {
-      const txHash = await eruptionApi(ddMineContract, diamonds)
-      await logEruptionTxApi(txHash)
+      const txHash = await eruptionApi(ddMineContract, diamonds);
+      await logEruptionTxApi(txHash);
       dispatch(loadDiamondCount(ddMineContract));
-      dispatch(loadConfig())
-    }
-    catch (e) {
-
-    }
-  }
+      dispatch(loadConfig());
+    } catch (e) {}
+  };
 
   const clearEruptionTxs = async () => {
-    await clearEruptionTxsApi()
-    dispatch(loadConfig())
-    setDeployedGIAs([])
-  }
+    await clearEruptionTxsApi();
+    dispatch(loadConfig());
+    setDeployedGIAs([]);
+  };
 
   const renderDeployButton = (selectedRows, clearSelection) => (
     <div
       className="button link save-button"
       onClick={async () => {
-        await populateDiamonds(selectedRows)
-        clearSelection()
+        await populateDiamonds(selectedRows);
+        clearSelection();
       }}
     >
       <FontAwesomeIcon icon={faUpload} /> Deploy
     </div>
   );
 
-  const isRowDeployed = (row) => _.includes(deployedGIAs, row.number)
+  const isRowDeployed = (row) => _.includes(deployedGIAs, row.number);
 
   return (
     <div className={classNames("tab-content diamonds")}>
       <h1>Diamonds</h1>
-      { config?.eruptionTxs?.length > 0 && diamondCount === 0 && (
+      {config?.eruptionTxs?.length > 0 && diamondCount === 0 && (
         <div className="center-aligned-row clear-db-message">
           <FontAwesomeIcon icon={faExclamationTriangle} />
-          DB contains eruptionTxs but diamondCount on the contract is 0 <ActionButton actionKey="clear-config-tx-hashes" onClick={clearEruptionTxs}>CLEAR TXS</ActionButton>
+          DB contains eruptionTxs but diamondCount on the contract is 0{" "}
+          <ActionButton
+            actionKey="clear-config-tx-hashes"
+            onClick={clearEruptionTxs}
+          >
+            CLEAR TXS
+          </ActionButton>
         </div>
       )}
       <CRUDTable
@@ -272,10 +292,12 @@ const DiamondsTab = () => {
         getNewItem={getEmptyDiamond}
         renderButtons={renderDeployButton}
         checkboxSelection
-        getRowId={row => row.number}
+        getRowId={(row) => row.number}
         readonly
-        getRowClassName={params => isRowDeployed(params.row) ? 'deployed' : ''}
-        isRowSelectable={params => !isRowDeployed(params.row)}
+        getRowClassName={(params) =>
+          isRowDeployed(params.row) ? "deployed" : ""
+        }
+        isRowSelectable={(params) => !isRowDeployed(params.row)}
       />
     </div>
   );
