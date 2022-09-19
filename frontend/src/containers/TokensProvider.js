@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import isEmpty from "lodash/isEmpty";
 import size from "lodash/size";
 import { useSelector } from "react-redux";
-import { isActionFirstCompleteSelector } from "components/ActionButton/ActionButton.module";
+import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import Loading from "components/Loading";
 import ContractProvider from "containers/ContractProvider";
 import { useAccount } from "wagmi";

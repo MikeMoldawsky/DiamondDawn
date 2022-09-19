@@ -60,10 +60,7 @@ const ClipboardButton = ({ inviteId }) => {
     }
   }, [isCopied]);
 
-  const hostname = window.location.hostname;
-  const link = `http://${hostname}${
-    hostname === "localhost" ? ":3000" : ""
-  }/invite/${inviteId}`;
+  const link = `${process.env.REACT_APP_INVITE_BASE_URL}/invite/${inviteId}`;
 
   return (
     <GridActionsCellItem
@@ -107,7 +104,6 @@ const InvitationsTab = () => {
         columns={INVITATION_COLUMNS}
         rows={invitations}
         setRows={setInvitations}
-        isRowSelectable={({ row }) => !!row.ethAddress}
         itemName="Invitation"
         getNewItem={createInviteApi}
         newCreatedOnServer

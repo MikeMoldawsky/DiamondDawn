@@ -143,7 +143,6 @@ const CRUDTable = ({
           rows={rows}
           columns={_columns}
           autoHeight
-          checkboxSelection
           onSelectionModelChange={(newSelectionModel) => {
             setSelectionModel(newSelectionModel);
           }}

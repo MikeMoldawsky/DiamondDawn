@@ -18,7 +18,9 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
     <header>
       <div className="header-internal">
         <div className="center-aligned-row header-side">
-          <Wallet />
+          <div className="wallet">
+            <Wallet />
+          </div>
           <ContractProvider>
             <DiamondList />
           </ContractProvider>

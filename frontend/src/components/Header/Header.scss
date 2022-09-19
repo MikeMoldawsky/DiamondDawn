@@ -14,6 +14,12 @@ header {
     justify-content: space-between;
     position: relative;
 
+    .wallet {
+      button {
+        letter-spacing: 0.1em;
+      }
+    }
+
     .vertical-sep {
       width: 1px;
       margin: 0 20px;

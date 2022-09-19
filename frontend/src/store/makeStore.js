@@ -4,7 +4,7 @@ import { composeWithDevTools } from "@redux-devtools/extension";
 import { systemReducer } from "./systemReducer";
 import { uiReducer } from "./uiReducer";
 import { tokensReducer } from "./tokensReducer";
-import { actionStatusReducer } from "components/ActionButton";
+import { actionStatusReducer } from "./actionStatusReducer";
 
 const rootReducer = combineReducers({
   system: systemReducer,
