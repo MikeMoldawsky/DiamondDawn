@@ -35,11 +35,9 @@ function RebirthPage() {
         const token = _.find(tokens, (t) => t.id === intTokenId);
         if (token.stage === SYSTEM_STAGE.SHIP) {
           navigate(`/nft/${tokenId}`);
-        }
-        else if (!token || !token.isBurned) {
+        } else if (!token || !token.isBurned) {
           navigate("/");
-        }
-        else {
+        } else {
           dispatch(setSelectedTokenId(intTokenId));
           setIsReady(true);
         }

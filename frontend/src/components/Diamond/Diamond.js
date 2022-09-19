@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import "./Diamond.scss";
 import ReactPlayer from "react-player";
 
@@ -20,17 +20,16 @@ const Diamond = ({ diamond }) => {
         loop
         className="react-player"
       />
-    )
-  }, [imageUrl])
+    );
+  }, [imageUrl]);
 
   return (
     <div className="diamond-art">
-      {imageUrl.endsWith(".mp4")
-        ? renderPlayer()
-        : (
-          <img src={imageUrl} alt="Diamond art" />
-        )
-      }
+      {imageUrl.endsWith(".mp4") ? (
+        renderPlayer()
+      ) : (
+        <img src={imageUrl} alt="Diamond art" />
+      )}
     </div>
   );
 };

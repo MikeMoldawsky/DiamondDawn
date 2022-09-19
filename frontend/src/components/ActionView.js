@@ -90,7 +90,7 @@ const ActionView = ({
     setActionTxId(receipt.transactionHash);
   };
 
-  const stageNameUpper = _.upperCase(getStageName(systemStage))
+  const stageNameUpper = _.upperCase(getStageName(systemStage));
 
   const renderContent = () => {
     if (showCompleteVideo)
@@ -113,9 +113,7 @@ const ActionView = ({
     if (!isStageActive && !isRebirth)
       return (
         <>
-          <div className="leading-text">
-            {stageNameUpper} STAGE IS COMPLETE
-          </div>
+          <div className="leading-text">{stageNameUpper} STAGE IS COMPLETE</div>
           <Countdown
             date={endTime}
             text={[
