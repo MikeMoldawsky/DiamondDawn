@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,10 +10,14 @@ import { eruptionApi } from "api/contractApi";
 import {
   addDiamondApi,
   updateDiamondApi,
-  deleteDiamondApi,
+  deleteDiamondApi, logEruptionTxApi,
 } from "api/serverApi";
 import {getEnumKeyByValue} from "utils";
 import DIAMONDS_INFO from "assets/data/diamonds";
+import {useProvider} from "wagmi";
+import {useDispatch, useSelector} from "react-redux";
+import {loadConfig, systemSelector} from "store/systemReducer";
+import { utils as ethersUtils } from 'ethers'
 
 const requiredValidation = (params) => {
   return { ...params.props, error: _.isEmpty(params.props.value) };
@@ -175,6 +179,41 @@ const DIAMOND_COLUMNS = [
 
 const DiamondsTab = () => {
   const ddMineContract = useDDContract(CONTRACTS.DiamondDawnMine);
+  const { ddMineContractData, config } = useSelector(systemSelector)
+  const [deployedGIAs, setDeployedGIAs] = useState([])
+  const provider = useProvider()
+  const dispatch = useDispatch()
+
+  const readEruptionTx = async (txHash) => {
+    try {
+      const eruptionTx = await provider.getTransaction(txHash);
+      const iface = new ethersUtils.Interface(ddMineContractData.artifact.abi);
+      const decodedData = iface.parseTransaction({data: eruptionTx.data});
+      return _.map(decodedData.args.diamonds, d => d.number)
+    }
+    catch (e) {
+      console.error(`readEruptionTx Failed`, { txHash, e })
+    }
+  }
+
+  const readEruptionTxs = async () => {
+    const numbers = await Promise.all(
+      _.map(config.eruptionTxs, readEruptionTx)
+    )
+    setDeployedGIAs(_.flatten(numbers))
+  }
+
+  const eruptionTxCount = _.get(config, 'eruptionTxs', []).length
+
+  useEffect(() => {
+    if (eruptionTxCount > 0) {
+      readEruptionTxs()
+    }
+  }, [eruptionTxCount])
+
+  useEffect(() => {
+    dispatch(loadConfig())
+  }, [])
 
   const CRUD = {
     create: addDiamondApi,
@@ -182,14 +221,30 @@ const DiamondsTab = () => {
     delete: deleteDiamondApi,
   };
 
-  const renderDeployButton = (selectedRows) => (
+  const populateDiamonds = async (diamonds) => {
+    try {
+      const txHash = await eruptionApi(ddMineContract, diamonds)
+      await logEruptionTxApi(txHash)
+      dispatch(loadConfig())
+    }
+    catch (e) {
+
+    }
+  }
+
+  const renderDeployButton = (selectedRows, clearSelection) => (
     <div
       className="button link save-button"
-      onClick={() => eruptionApi(ddMineContract, selectedRows)}
+      onClick={async () => {
+        await populateDiamonds(selectedRows)
+        clearSelection()
+      }}
     >
       <FontAwesomeIcon icon={faUpload} /> Deploy
     </div>
   );
+
+  const isRowDeployed = (row) => _.includes(deployedGIAs, row.number)
 
   return (
     <div className={classNames("tab-content diamonds")}>
@@ -204,6 +259,8 @@ const DiamondsTab = () => {
         checkboxSelection
         getRowId={row => row.number}
         readonly
+        getRowClassName={params => isRowDeployed(params.row) ? 'deployed' : ''}
+        isRowSelectable={params => !isRowDeployed(params.row)}
       />
     </div>
   );

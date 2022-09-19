@@ -19,6 +19,7 @@ const CRUDTable = ({
   renderButtons,
   renderActions,
   readonly,
+  getRowId = (row) => row._id,
   ...gridProps
 }) => {
   const [rowModesModel, setRowModesModel] = useState({});
@@ -136,9 +137,9 @@ const CRUDTable = ({
     if (!renderButtons) return null;
 
     const selectedRows = rows.filter((row) => {
-      return selectionModel.includes(row._id);
+      return selectionModel.includes(getRowId(row));
     });
-    return renderButtons(selectedRows);
+    return renderButtons(selectedRows, () => setSelectionModel([]));
   };
 
   return (
@@ -157,7 +158,7 @@ const CRUDTable = ({
           editMode="row"
           experimentalFeatures={{ newEditingApi: true }}
           disableColumnMenu
-          getRowId={(row) => row._id}
+          getRowId={getRowId}
           rowModesModel={rowModesModel}
           onRowEditStart={handleRowEditStart}
           onRowEditStop={handleRowEditStop}

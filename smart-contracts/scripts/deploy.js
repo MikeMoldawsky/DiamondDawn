@@ -80,7 +80,7 @@ const DIAMOND_OPTIONS = [
   },
 ];
 
-const DIAMOND_COUNT = 100;
+const DIAMOND_COUNT = 20;
 
 const DIAMONDS = [];
 for (let i = 0; i < DIAMOND_COUNT; i++) {
@@ -104,11 +104,11 @@ async function main() {
   const ddArgs = [mine.address, DIAMOND_COUNT];
   if (hre.network.name === "goerli") {
     dd = await deployContract(deployer, "DiamondDawn", ddArgs);
-    await populateDiamonds(mine);
+    // await populateDiamonds(mine);
   } else if (hre.network.name === "localhost") {
     await setVideos(mine);
     dd = await deployContract(deployer, "DiamondDawn", ddArgs);
-    await populateDiamonds(mine);
+    // await populateDiamonds(mine);
   }
 
   // Update FrontEnd database
