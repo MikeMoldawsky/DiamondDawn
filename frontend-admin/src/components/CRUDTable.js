@@ -18,14 +18,15 @@ const CRUDTable = ({
   newCreatedOnServer,
   renderButtons,
   renderActions,
+  readonly,
   ...gridProps
 }) => {
   const [rowModesModel, setRowModesModel] = useState({});
   const [selectionModel, setSelectionModel] = useState([]);
 
-  const _columns = [
-    ...columns,
-    {
+  const additionalColumns = []
+  if (!readonly) {
+    additionalColumns.push({
       field: "actions",
       type: "actions",
       headerName: "Actions",
@@ -69,7 +70,11 @@ const CRUDTable = ({
           />,
         ];
       },
-    },
+    })
+  }
+  const _columns = [
+    ...columns,
+    ...additionalColumns,
   ];
 
   const onAddClick = async () => {
