@@ -61,7 +61,7 @@ const StageTab = ({ stage }) => {
   const isCurrentStage = stage === systemStage;
   const isNextStage = stage === systemStage + 1;
 
-  let canReveal = isVideoArtSet;
+  let canReveal = isVideoArtSet && !isStageActive;
   if (stage === SYSTEM_STAGE.INVITE) {
     canReveal = canReveal && !paused;
   } else if (stage === SYSTEM_STAGE.MINE) {
@@ -151,7 +151,7 @@ const StageTab = ({ stage }) => {
         <ActionButton
           className="reveal-button"
           actionKey="Reveal Stage"
-          disabled={stage === systemStage || !canReveal}
+          disabled={stage !== systemStage + 1 || !canReveal}
           onClick={() => setSystemStage(stage)}
         >
           REVEAL {systemStageName}

@@ -22,6 +22,7 @@ const ActionView = ({
   watch,
   transact,
   isBurn,
+  isRebirth,
   requireActionable,
 }) => {
   const [actionTxId, setActionTxId] = useState(false);
@@ -61,12 +62,12 @@ const ActionView = ({
   useEffect(() => {
     if (completeVideoEnded && processedTokenId > -1 && processedTokenUri) {
       dispatch(setTokenUri(processedTokenId, processedTokenUri));
+      dispatch(setShouldIgnoreTokenTransferWatch(false));
       navigate(`/nft/${processedTokenId}`);
     }
   }, [completeVideoEnded, processedTokenId, processedTokenUri]);
 
   const onSuccess = async (tokenId) => {
-    dispatch(setShouldIgnoreTokenTransferWatch(false));
     // fetch and store tokenUri in local state until video has ended
     const tokenUri = await getTokenUriApi(contract, tokenId, isBurn);
     setProcessedTokenId(tokenId);
@@ -89,6 +90,8 @@ const ActionView = ({
     setActionTxId(receipt.transactionHash);
   };
 
+  const stageNameUpper = _.upperCase(getStageName(systemStage));
+
   const renderContent = () => {
     if (showCompleteVideo)
       return (
@@ -99,7 +102,7 @@ const ActionView = ({
           }}
           src={videoUrl}
         >
-          03 - MINE VIDEO
+          03 - {stageNameUpper} VIDEO
         </VideoPlayer>
       );
 
@@ -107,12 +110,10 @@ const ActionView = ({
       return <Loading />;
     }
 
-    if (!isStageActive)
+    if (!isStageActive && !isRebirth)
       return (
         <>
-          <div className="leading-text">
-            {_.upperCase(getStageName(systemStage))} STAGE IS COMPLETE
-          </div>
+          <div className="leading-text">{stageNameUpper} STAGE IS COMPLETE</div>
           <Countdown
             date={endTime}
             text={[

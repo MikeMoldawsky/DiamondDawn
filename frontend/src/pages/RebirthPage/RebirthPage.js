@@ -33,7 +33,9 @@ function RebirthPage() {
       const intTokenId = parseInt(tokenId);
       if (!_.isEmpty(tokens)) {
         const token = _.find(tokens, (t) => t.id === intTokenId);
-        if (!token || !token.isBurned) {
+        if (token.stage === SYSTEM_STAGE.SHIP) {
+          navigate(`/nft/${tokenId}`);
+        } else if (!token || !token.isBurned) {
           navigate("/");
         } else {
           dispatch(setSelectedTokenId(intTokenId));
@@ -60,6 +62,7 @@ function RebirthPage() {
     <div className="page rebirth-page">
       <div className="inner-page">
         <ActionView
+          isRebirth
           transact={() => rebirthApi(contract, tokenId)}
           videoUrl={DUMMY_VIDEO_URL}
         >
