@@ -14,6 +14,30 @@ async function updateStageTime(timestamp) {
   }
 }
 
+async function logEruptionTx(txHash) {
+  try {
+    let config = await ConfigModel.findOne({});
+    if (config) {
+      return await ConfigModel.findOneAndUpdate(
+        {},
+        { $push: { eruptionTxs: txHash } }
+      );
+    } else {
+      return await ConfigModel.create({ eruptionTxs: [txHash] });
+    }
+  } catch (e) {
+    console.log(`Failed to updateStageTime`, e);
+  }
+}
+
+async function clearEruptionTxs() {
+  try {
+    return await ConfigModel.findOneAndUpdate({}, { eruptionTxs: [] });
+  } catch (e) {
+    console.log(`Failed to clearEruptionTxs`, e);
+  }
+}
+
 async function getConfig() {
   try {
     return await ConfigModel.findOne({});
@@ -24,5 +48,7 @@ async function getConfig() {
 
 module.exports = {
   updateStageTime,
+  logEruptionTx,
+  clearEruptionTxs,
   getConfig,
 };

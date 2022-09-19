@@ -44,7 +44,7 @@ export const showError = (e, prefix = "Error") => {
 
 export const showSuccess = toast.success;
 
-export const getEnumKeyByValue = (enm, value) => Object.keys(enm)[value];
+export const getEnumKeyByValue = (enm, value) => _.invert(enm)[value];
 
 export const getShapeName = (shape, stage) => {
   switch (stage) {

@@ -18,14 +18,16 @@ const CRUDTable = ({
   newCreatedOnServer,
   renderButtons,
   renderActions,
+  readonly,
+  getRowId = (row) => row._id,
   ...gridProps
 }) => {
   const [rowModesModel, setRowModesModel] = useState({});
   const [selectionModel, setSelectionModel] = useState([]);
 
-  const _columns = [
-    ...columns,
-    {
+  const additionalColumns = [];
+  if (!readonly) {
+    additionalColumns.push({
       field: "actions",
       type: "actions",
       headerName: "Actions",
@@ -69,8 +71,9 @@ const CRUDTable = ({
           />,
         ];
       },
-    },
-  ];
+    });
+  }
+  const _columns = [...columns, ...additionalColumns];
 
   const onAddClick = async () => {
     const newItem = await getNewItem();
@@ -131,9 +134,9 @@ const CRUDTable = ({
     if (!renderButtons) return null;
 
     const selectedRows = rows.filter((row) => {
-      return selectionModel.includes(row._id);
+      return selectionModel.includes(getRowId(row));
     });
-    return renderButtons(selectedRows);
+    return renderButtons(selectedRows, () => setSelectionModel([]));
   };
 
   return (
@@ -152,7 +155,7 @@ const CRUDTable = ({
           editMode="row"
           experimentalFeatures={{ newEditingApi: true }}
           disableColumnMenu
-          getRowId={(row) => row._id}
+          getRowId={getRowId}
           rowModesModel={rowModesModel}
           onRowEditStart={handleRowEditStart}
           onRowEditStop={handleRowEditStop}
@@ -161,9 +164,13 @@ const CRUDTable = ({
         />
       </div>
       <div className="center-aligned-row">
-        <div className="button link add-button" onClick={onAddClick}>
-          <FontAwesomeIcon icon={faPlus} /> Add {itemName}
-        </div>
+        {!readonly ? (
+          <div className="button link add-button" onClick={onAddClick}>
+            <FontAwesomeIcon icon={faPlus} /> Add {itemName}
+          </div>
+        ) : (
+          <div />
+        )}
         {renderCustomButtons()}
       </div>
     </>

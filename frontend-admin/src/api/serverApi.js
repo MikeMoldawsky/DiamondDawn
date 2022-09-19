@@ -27,6 +27,24 @@ export const getConfigApi = async () => {
   }
 };
 
+export const logEruptionTxApi = async (txHash) => {
+  try {
+    const res = await axios.post(`/api/log_eruption_tx`, { txHash });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+};
+
+export const clearEruptionTxsApi = async () => {
+  try {
+    const res = await axios.post(`/api/clear_eruption_txs`);
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+};
+
 export const updateStageTimeApi = async (timestamp) => {
   try {
     const res = await axios.post(`/api/update_stage_time`, { timestamp });

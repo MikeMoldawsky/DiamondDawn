@@ -2,24 +2,39 @@ import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import {
+  faExclamationTriangle,
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
 import CRUDTable from "components/CRUDTable";
-import { CONTRACTS } from "consts";
+import {
+  SHAPE,
+  CLARITY_GRADES,
+  COLOR_GRADES,
+  COMMON_GRADES,
+  CONTRACTS,
+  FLUORESCENCE_GRADES,
+} from "consts";
 import useDDContract from "hooks/useDDContract";
 import { eruptionApi } from "api/contractApi";
 import {
-  getDiamondsApi,
   addDiamondApi,
   updateDiamondApi,
   deleteDiamondApi,
+  logEruptionTxApi,
+  clearEruptionTxsApi,
 } from "api/serverApi";
+import { getEnumKeyByValue } from "utils";
+import DIAMONDS_INFO from "assets/data/diamonds";
+import { useProvider } from "wagmi";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  ENUM_TO_CLARITY,
-  ENUM_TO_COLOR,
-  ENUM_TO_FLUORESCENCE,
-  ENUM_TO_GRADE,
-  ENUM_TO_SHAPE,
-} from "../../utils/diamondConverterApi";
+  loadConfig,
+  loadDiamondCount,
+  systemSelector,
+} from "store/systemReducer";
+import { utils as ethersUtils } from "ethers";
+import ActionButton from "components/ActionButton";
 
 const requiredValidation = (params) => {
   return { ...params.props, error: _.isEmpty(params.props.value) };
@@ -55,7 +70,7 @@ const DIAMOND_COLUMNS = [
   {
     field: "date",
     headerName: "Date",
-    width: 110,
+    width: 120,
     editable: true,
     preProcessEditCellProps: (params) => {
       const regex = new RegExp("^\\d{10}$");
@@ -65,7 +80,7 @@ const DIAMOND_COLUMNS = [
   {
     field: "number",
     headerName: "GIA #",
-    width: 110,
+    width: 130,
     editable: true,
     preProcessEditCellProps: (params) => {
       const regex = new RegExp("^\\d{10}$");
@@ -76,16 +91,16 @@ const DIAMOND_COLUMNS = [
     field: "shape",
     headerName: "Shape",
     type: "singleSelect",
-    valueOptions: Object.keys(ENUM_TO_SHAPE),
-    width: 75,
+    valueOptions: Object.values(SHAPE),
+    width: 80,
     editable: true,
-    valueFormatter: (params) => ENUM_TO_SHAPE[params.value],
+    valueFormatter: (params) => getEnumKeyByValue(SHAPE, params.value),
   },
   {
     field: "length",
     headerName: "Length",
     type: "number",
-    width: 60,
+    width: 70,
     editable: true,
     valueGetter: ({ value }) => value,
     preProcessEditCellProps: measurmentsValidation,
@@ -94,7 +109,7 @@ const DIAMOND_COLUMNS = [
     field: "width",
     headerName: "Width",
     type: "number",
-    width: 60,
+    width: 70,
     editable: true,
     valueGetter: ({ value }) => value,
     preProcessEditCellProps: measurmentsValidation,
@@ -103,7 +118,7 @@ const DIAMOND_COLUMNS = [
     field: "depth",
     headerName: "Depth",
     type: "number",
-    width: 60,
+    width: 70,
     editable: true,
     valueGetter: ({ value }) => value,
     preProcessEditCellProps: measurmentsValidation,
@@ -112,7 +127,7 @@ const DIAMOND_COLUMNS = [
     field: "points",
     headerName: "Points",
     type: "number",
-    width: 60,
+    width: 70,
     editable: true,
     valueGetter: ({ value }) => value,
     preProcessEditCellProps: pointsValidation,
@@ -121,74 +136,102 @@ const DIAMOND_COLUMNS = [
     field: "color",
     headerName: "Color",
     type: "singleSelect",
-    valueOptions: Object.keys(ENUM_TO_COLOR),
+    valueOptions: Object.values(COLOR_GRADES),
     width: 70,
     editable: true,
-    valueFormatter: (params) => ENUM_TO_COLOR[params.value],
+    valueFormatter: (params) => getEnumKeyByValue(COLOR_GRADES, params.value),
     preProcessEditCellProps: requiredValidation,
   },
   {
     field: "clarity",
     headerName: "Clarity",
     type: "singleSelect",
-    valueOptions: Object.keys(ENUM_TO_CLARITY),
+    valueOptions: Object.values(CLARITY_GRADES),
     width: 80,
     editable: true,
-    valueFormatter: (params) => ENUM_TO_CLARITY[params.value],
+    valueFormatter: (params) => getEnumKeyByValue(CLARITY_GRADES, params.value),
     preProcessEditCellProps: requiredValidation,
   },
   {
     field: "cut",
     headerName: "Cut",
     type: "singleSelect",
-    valueOptions: Object.keys(ENUM_TO_GRADE),
+    valueOptions: Object.values(COMMON_GRADES),
     width: 100,
     editable: true,
-    valueFormatter: (params) => ENUM_TO_GRADE[params.value],
+    valueFormatter: (params) => getEnumKeyByValue(COMMON_GRADES, params.value),
     preProcessEditCellProps: requiredValidation,
   },
   {
     field: "polish",
     headerName: "Polish",
     type: "singleSelect",
-    valueOptions: Object.keys(ENUM_TO_GRADE),
+    valueOptions: Object.values(COMMON_GRADES),
     width: 100,
     editable: true,
-    valueFormatter: (params) => ENUM_TO_GRADE[params.value],
+    valueFormatter: (params) => getEnumKeyByValue(COMMON_GRADES, params.value),
     preProcessEditCellProps: requiredValidation,
   },
   {
     field: "symmetry",
     headerName: "Symmetry",
     type: "singleSelect",
-    valueOptions: Object.keys(ENUM_TO_GRADE),
+    valueOptions: Object.values(COMMON_GRADES),
     width: 100,
     editable: true,
-    valueFormatter: (params) => ENUM_TO_GRADE[params.value],
+    valueFormatter: (params) => getEnumKeyByValue(COMMON_GRADES, params.value),
     preProcessEditCellProps: requiredValidation,
   },
   {
     field: "fluorescence",
     headerName: "Fluorescence",
     type: "singleSelect",
-    valueOptions: Object.keys(ENUM_TO_FLUORESCENCE),
+    valueOptions: Object.values(FLUORESCENCE_GRADES),
     width: 105,
     editable: true,
-    valueFormatter: (params) => ENUM_TO_FLUORESCENCE[params.value],
+    valueFormatter: (params) =>
+      getEnumKeyByValue(FLUORESCENCE_GRADES, params.value),
     preProcessEditCellProps: requiredValidation,
   },
-  { field: "", headerName: "", flex: 1 },
 ];
 
 const DiamondsTab = () => {
-  const [diamonds, setDiamonds] = useState([]);
   const ddMineContract = useDDContract(CONTRACTS.DiamondDawnMine);
+  const { ddMineContractData, config, diamondCount } =
+    useSelector(systemSelector);
+  const [deployedGIAs, setDeployedGIAs] = useState([]);
+  const provider = useProvider();
+  const dispatch = useDispatch();
+
+  const readEruptionTx = async (txHash) => {
+    try {
+      const eruptionTx = await provider.getTransaction(txHash);
+      const iface = new ethersUtils.Interface(ddMineContractData.artifact.abi);
+      const decodedData = iface.parseTransaction({ data: eruptionTx.data });
+      return _.map(decodedData.args.diamonds, (d) => d.number);
+    } catch (e) {
+      console.error(`readEruptionTx Failed`, { txHash, e });
+    }
+  };
+
+  const readEruptionTxs = async () => {
+    const numbers = await Promise.all(
+      _.map(config.eruptionTxs, readEruptionTx)
+    );
+    setDeployedGIAs(_.flatten(numbers));
+  };
+
+  const eruptionTxCount = _.get(config, "eruptionTxs", []).length;
 
   useEffect(() => {
-    const fetch = async () => {
-      setDiamonds(await getDiamondsApi());
-    };
-    fetch();
+    if (eruptionTxCount > 0) {
+      readEruptionTxs();
+    }
+  }, [eruptionTxCount]);
+
+  useEffect(() => {
+    dispatch(loadDiamondCount(ddMineContract));
+    dispatch(loadConfig());
   }, []);
 
   const CRUD = {
@@ -197,27 +240,64 @@ const DiamondsTab = () => {
     delete: deleteDiamondApi,
   };
 
-  const renderDeployButton = (selectedRows) => (
+  const populateDiamonds = async (diamonds) => {
+    try {
+      const txHash = await eruptionApi(ddMineContract, diamonds);
+      await logEruptionTxApi(txHash);
+      dispatch(loadDiamondCount(ddMineContract));
+      dispatch(loadConfig());
+    } catch (e) {}
+  };
+
+  const clearEruptionTxs = async () => {
+    await clearEruptionTxsApi();
+    dispatch(loadConfig());
+    setDeployedGIAs([]);
+  };
+
+  const renderDeployButton = (selectedRows, clearSelection) => (
     <div
       className="button link save-button"
-      onClick={() => eruptionApi(ddMineContract, selectedRows)}
+      onClick={async () => {
+        await populateDiamonds(selectedRows);
+        clearSelection();
+      }}
     >
       <FontAwesomeIcon icon={faUpload} /> Deploy
     </div>
   );
 
+  const isRowDeployed = (row) => _.includes(deployedGIAs, row.number);
+
   return (
     <div className={classNames("tab-content diamonds")}>
       <h1>Diamonds</h1>
+      {config?.eruptionTxs?.length > 0 && diamondCount === 0 && (
+        <div className="center-aligned-row clear-db-message">
+          <FontAwesomeIcon icon={faExclamationTriangle} />
+          DB contains eruptionTxs but diamondCount on the contract is 0{" "}
+          <ActionButton
+            actionKey="clear-config-tx-hashes"
+            onClick={clearEruptionTxs}
+          >
+            CLEAR TXS
+          </ActionButton>
+        </div>
+      )}
       <CRUDTable
         CRUD={CRUD}
         columns={DIAMOND_COLUMNS}
-        rows={diamonds}
-        setRows={setDiamonds}
+        rows={DIAMONDS_INFO}
         itemName="Diamond"
         getNewItem={getEmptyDiamond}
         renderButtons={renderDeployButton}
         checkboxSelection
+        getRowId={(row) => row.number}
+        readonly
+        getRowClassName={(params) =>
+          isRowDeployed(params.row) ? "deployed" : ""
+        }
+        isRowSelectable={(params) => !isRowDeployed(params.row)}
       />
     </div>
   );

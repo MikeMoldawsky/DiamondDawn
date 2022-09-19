@@ -78,6 +78,7 @@ export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
 
 // DIAMONDS API
 const prepareDiamondForPopulate = (diamond) => ({
+  ...diamond,
   points: parseInt(diamond.points),
   clarity: diamond.clarity,
   color: diamond.color,
@@ -86,7 +87,6 @@ const prepareDiamondForPopulate = (diamond) => ({
   polish: diamond.polish,
   date: parseInt(diamond.date),
   number: parseInt(diamond.number),
-  measurements: diamond.measurements,
   shape: diamond.shape,
   symmetry: diamond.symmetry,
 });
