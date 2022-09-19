@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import {faExclamationTriangle, faUpload} from "@fortawesome/free-solid-svg-icons";
 import CRUDTable from "components/CRUDTable";
 import {SHAPE, CLARITY_GRADES, COLOR_GRADES, COMMON_GRADES, CONTRACTS, FLUORESCENCE_GRADES} from "consts";
 import useDDContract from "hooks/useDDContract";
@@ -10,14 +10,15 @@ import { eruptionApi } from "api/contractApi";
 import {
   addDiamondApi,
   updateDiamondApi,
-  deleteDiamondApi, logEruptionTxApi,
+  deleteDiamondApi, logEruptionTxApi, clearEruptionTxsApi,
 } from "api/serverApi";
 import {getEnumKeyByValue} from "utils";
 import DIAMONDS_INFO from "assets/data/diamonds";
 import {useProvider} from "wagmi";
 import {useDispatch, useSelector} from "react-redux";
-import {loadConfig, systemSelector} from "store/systemReducer";
+import {loadConfig, loadDiamondCount, systemSelector} from "store/systemReducer";
 import { utils as ethersUtils } from 'ethers'
+import ActionButton from "components/ActionButton";
 
 const requiredValidation = (params) => {
   return { ...params.props, error: _.isEmpty(params.props.value) };
@@ -179,7 +180,7 @@ const DIAMOND_COLUMNS = [
 
 const DiamondsTab = () => {
   const ddMineContract = useDDContract(CONTRACTS.DiamondDawnMine);
-  const { ddMineContractData, config } = useSelector(systemSelector)
+  const { ddMineContractData, config, diamondCount } = useSelector(systemSelector)
   const [deployedGIAs, setDeployedGIAs] = useState([])
   const provider = useProvider()
   const dispatch = useDispatch()
@@ -212,6 +213,7 @@ const DiamondsTab = () => {
   }, [eruptionTxCount])
 
   useEffect(() => {
+    dispatch(loadDiamondCount(ddMineContract));
     dispatch(loadConfig())
   }, [])
 
@@ -225,11 +227,18 @@ const DiamondsTab = () => {
     try {
       const txHash = await eruptionApi(ddMineContract, diamonds)
       await logEruptionTxApi(txHash)
+      dispatch(loadDiamondCount(ddMineContract));
       dispatch(loadConfig())
     }
     catch (e) {
 
     }
+  }
+
+  const clearEruptionTxs = async () => {
+    await clearEruptionTxsApi()
+    dispatch(loadConfig())
+    setDeployedGIAs([])
   }
 
   const renderDeployButton = (selectedRows, clearSelection) => (
@@ -249,6 +258,12 @@ const DiamondsTab = () => {
   return (
     <div className={classNames("tab-content diamonds")}>
       <h1>Diamonds</h1>
+      { config?.eruptionTxs?.length > 0 && diamondCount === 0 && (
+        <div className="center-aligned-row clear-db-message">
+          <FontAwesomeIcon icon={faExclamationTriangle} />
+          DB contains eruptionTxs but diamondCount on the contract is 0 <ActionButton actionKey="clear-config-tx-hashes" onClick={clearEruptionTxs}>CLEAR TXS</ActionButton>
+        </div>
+      )}
       <CRUDTable
         CRUD={CRUD}
         columns={DIAMOND_COLUMNS}

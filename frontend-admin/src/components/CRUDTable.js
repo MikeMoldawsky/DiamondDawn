@@ -167,9 +167,11 @@ const CRUDTable = ({
         />
       </div>
       <div className="center-aligned-row">
-        <div className="button link add-button" onClick={onAddClick}>
-          <FontAwesomeIcon icon={faPlus} /> Add {itemName}
-        </div>
+        {!readonly ? (
+          <div className="button link add-button" onClick={onAddClick}>
+            <FontAwesomeIcon icon={faPlus} /> Add {itemName}
+          </div>
+        ) : <div />}
         {renderCustomButtons()}
       </div>
     </>

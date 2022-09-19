@@ -290,6 +290,27 @@
     .deployed {
       background-color: #a4d1a4 !important;
     }
+
+    .clear-db-message {
+      padding: 20px 40px 40px;
+      font-size: 1.4em;
+      color: red;
+      justify-content: center;
+
+      svg {
+        font-size: 1.4em;
+        margin-right: 10px;
+      }
+
+      .button {
+        font-size: .8em;
+        height: 36px;
+        margin-left: 40px;
+        background-color: black;
+        color: white;
+        border: solid 1px white;
+      }
+    }
   }
 
   .passwords {

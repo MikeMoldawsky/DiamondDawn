@@ -27,6 +27,14 @@ async function logEruptionTx(txHash) {
   }
 }
 
+async function clearEruptionTxs() {
+  try {
+    return await ConfigModel.findOneAndUpdate({}, { eruptionTxs: [] });
+  } catch (e) {
+    console.log(`Failed to clearEruptionTxs`, e);
+  }
+}
+
 async function getConfig() {
   try {
     return await ConfigModel.findOne({});
@@ -38,5 +46,6 @@ async function getConfig() {
 module.exports = {
   updateStageTime,
   logEruptionTx,
+  clearEruptionTxs,
   getConfig,
 };
