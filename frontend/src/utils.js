@@ -128,7 +128,7 @@ export const isTokenDone = (token, systemStage, isStageActive) => {
 
   switch (systemStage) {
     case SYSTEM_STAGE.SHIP:
-      return token.stage === SYSTEM_STAGE.SHIP || isNotProcessedEnough;
+      return (!token.isBurned && isNotProcessedEnough) || token.stage === SYSTEM_STAGE.SHIP;
     default:
       return isNotProcessedEnough;
   }

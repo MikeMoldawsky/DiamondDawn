@@ -45,7 +45,7 @@ const VideoPlayer = ({
           onEnded={onVideoEnd}
         />
       ) : (
-        <div className="video-placeholder" onClick={onEnded}>
+        <div className="video-placeholder" onClick={onVideoEnd}>
           {children}
         </div>
       )}

@@ -17,8 +17,8 @@ import { setSelectedTokenId } from "store/uiReducer";
 import TokensProvider from "containers/TokensProvider";
 
 const EnterButton = () => {
-  const { systemStage } = useSelector(systemSelector);
-  const canEnter = systemStage >= SYSTEM_STAGE.MINE;
+  const { systemStage, isStageActive } = useSelector(systemSelector);
+  const canEnter = systemStage >= SYSTEM_STAGE.MINE && !(systemStage === SYSTEM_STAGE.SHIP && !isStageActive);
 
   return canEnter ? (
     <NavLink to={`/process`}>

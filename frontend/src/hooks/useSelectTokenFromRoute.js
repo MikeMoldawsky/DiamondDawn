@@ -5,7 +5,7 @@ import { tokensSelector } from "store/tokensReducer";
 import { setSelectedTokenId } from "store/uiReducer";
 import { useNavigate, useParams } from "react-router-dom";
 
-function useSelectTokenFromRoute(notFoundRedirect = "/process") {
+function useSelectTokenFromRoute(notFoundRedirect = "/") {
   const { tokenId: tokenIdString } = useParams();
   const navigate = useNavigate();
 
