@@ -9,7 +9,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 
 const CRUDTable = ({
-  CRUD,
+  CRUD = {},
   rows,
   setRows,
   columns,
@@ -102,6 +102,8 @@ const CRUDTable = ({
   };
 
   const handleDeleteClick = (id) => async () => {
+    if (!_.isFunction(CRUD.delete)) return;
+
     await CRUD.delete(id);
     setRows(rows.filter((row) => row._id !== id));
   };
@@ -119,6 +121,8 @@ const CRUDTable = ({
   };
 
   const processRowUpdate = async (newRow) => {
+    if (!_.isFunction(CRUD.create) || !_.isFunction(CRUD.update)) return;
+
     let _newRow = await (newRow.isNew
       ? CRUD.create(_.omit(newRow, ["_id", "isNew"]))
       : CRUD.update(newRow));

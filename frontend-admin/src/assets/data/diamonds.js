@@ -5,11 +5,16 @@ import {
   COMMON_GRADES,
   FLUORESCENCE_GRADES,
 } from "consts";
+import { dateStringToUnix } from "utils";
 
+/*
+  dateStringToUnix supports any of the following input formats:
+  '1982-11-05', '11-05-1982', '11.05.1982', '11/05/1982', 'Nov 5, 1982', 'November 5, 1982'
+ */
 const DIAMONDS_INFO = [
   {
     number: 1000000000,
-    date: 1659254421,
+    date: dateStringToUnix("9/10/1987"),
     shape: SHAPE.PEAR,
     points: 55,
     color: COLOR_GRADES.P,
@@ -24,7 +29,7 @@ const DIAMONDS_INFO = [
   },
   {
     number: 1000000001,
-    date: 1659254421,
+    date: dateStringToUnix("11/05/1982"),
     shape: SHAPE.ROUND,
     points: 70,
     color: COLOR_GRADES.R,

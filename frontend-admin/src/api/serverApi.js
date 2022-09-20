@@ -54,66 +54,6 @@ export const updateStageTimeApi = async (timestamp) => {
   }
 };
 
-// DIAMONDS
-export const getDiamondsApi = async () => {
-  try {
-    const res = await axios.get(`/api/get_diamonds`);
-    return res.data;
-  } catch (e) {
-    return [];
-  }
-};
-
-export const addDiamondApi = async (diamond) => {
-  try {
-    const { data } = await axios.post(`/api/create_diamond`, diamond);
-    return data;
-  } catch (e) {
-    return null;
-  }
-};
-
-export const updateDiamondApi = async (diamond) => {
-  try {
-    const { data } = await axios.post(`/api/update_diamond`, diamond);
-    return data;
-  } catch (e) {
-    return null;
-  }
-};
-
-export const deleteDiamondApi = async (diamondId) => {
-  try {
-    const { data } = await axios.post(`/api/delete_diamond`, { diamondId });
-    return data;
-  } catch (e) {
-    return null;
-  }
-};
-
-// PASSWORDS
-export const createPasswordsApi = async (numPasswords) => {
-  try {
-    const { data } = await axios.post(`/api/create_passwords`, {
-      numPasswords,
-    });
-    return data;
-  } catch (e) {
-    return null;
-  }
-};
-
-export const countPasswordsApi = async (status) => {
-  try {
-    const { data: passwordCount } = await axios.post(`/api/count_passwords`, {
-      status,
-    });
-    return passwordCount;
-  } catch (e) {
-    return null;
-  }
-};
-
 // INVITE
 export const getInvitesApi = async () => {
   try {

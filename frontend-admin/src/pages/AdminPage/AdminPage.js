@@ -6,7 +6,6 @@ import InvitationsTab from "./InvitationsTab";
 import Tabs from "components/Tabs";
 import Header from "components/Header/Header";
 import Wallet from "components/Wallet";
-import PasswordsTab from "./PasswordsTab";
 import DiamondsTab from "./DiamondsTab";
 import StageTab from "./StageTab";
 import ConfigTab from "pages/AdminPage/ConfigTab";
@@ -39,7 +38,6 @@ const TABS = [
   { title: "Ship", component: () => <StageTab stage={SYSTEM_STAGE.SHIP} /> },
   { title: "Config", component: () => <ConfigTab /> },
   { title: "Invitations", component: () => <InvitationsTab /> },
-  { title: "Passwords", component: () => <PasswordsTab /> },
   { title: "Diamonds", component: () => <DiamondsTab /> },
 ];
 

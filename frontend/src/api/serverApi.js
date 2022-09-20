@@ -39,12 +39,12 @@ export const getInviteApi = async (inviteId) => {
 export const openInviteApi = async (inviteId) => {
   try {
     const { country, state } = getLocation();
-    const res = await axios.post(`/api/open_invite`, {
+    const { data: invite } = await axios.post(`/api/open_invite`, {
       inviteId,
       country,
       state,
     });
-    return res.data;
+    return invite;
   } catch (e) {
     return null;
   }
@@ -65,17 +65,5 @@ export const confirmInviteUsedApi = async (inviteId) => {
     return res.data;
   } catch (e) {
     return null;
-  }
-};
-
-export const checkPasswordApi = async (password) => {
-  try {
-    const { data: isCorrect } = await axios.post(`/api/check_pwd`, {
-      password,
-    });
-    return isCorrect;
-  } catch (e) {
-    logApiError(e, "checkPasswordApi");
-    return false;
   }
 };

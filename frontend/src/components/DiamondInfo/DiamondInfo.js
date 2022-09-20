@@ -3,13 +3,14 @@ import "./DiamondInfo.scss";
 import Diamond from "components/Diamond";
 import _ from "lodash";
 import { TRAIT } from "consts";
+import format from "date-fns/format";
 
 const formatTraitValue = (trait_type, value) => {
   switch (trait_type) {
     case TRAIT.date:
       const d = new Date(0);
       d.setUTCSeconds(value);
-      return d.toDateString();
+      return format(d, "MMMM d, yyyy");
     default:
       return value;
   }

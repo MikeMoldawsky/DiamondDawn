@@ -17,14 +17,8 @@ import {
 } from "consts";
 import useDDContract from "hooks/useDDContract";
 import { eruptionApi } from "api/contractApi";
-import {
-  addDiamondApi,
-  updateDiamondApi,
-  deleteDiamondApi,
-  logEruptionTxApi,
-  clearEruptionTxsApi,
-} from "api/serverApi";
-import { getEnumKeyByValue } from "utils";
+import { logEruptionTxApi, clearEruptionTxsApi } from "api/serverApi";
+import { getEnumKeyByValue, unixTimestampToDateString } from "utils";
 import DIAMONDS_INFO from "assets/data/diamonds";
 import { useProvider } from "wagmi";
 import { useDispatch, useSelector } from "react-redux";
@@ -70,8 +64,9 @@ const DIAMOND_COLUMNS = [
   {
     field: "date",
     headerName: "Date",
-    width: 120,
+    width: 160,
     editable: true,
+    valueFormatter: (params) => unixTimestampToDateString(params.value),
     preProcessEditCellProps: (params) => {
       const regex = new RegExp("^\\d{10}$");
       return { ...params.props, error: !regex.test(params.props.value) };
@@ -234,12 +229,6 @@ const DiamondsTab = () => {
     dispatch(loadConfig());
   }, []);
 
-  const CRUD = {
-    create: addDiamondApi,
-    update: updateDiamondApi,
-    delete: deleteDiamondApi,
-  };
-
   const populateDiamonds = async (diamonds) => {
     try {
       const txHash = await eruptionApi(ddMineContract, diamonds);
@@ -285,7 +274,6 @@ const DiamondsTab = () => {
         </div>
       )}
       <CRUDTable
-        CRUD={CRUD}
         columns={DIAMOND_COLUMNS}
         rows={DIAMONDS_INFO}
         itemName="Diamond"
