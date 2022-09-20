@@ -30,7 +30,8 @@ contract DiamondDawn is
     using EnumerableSet for EnumerableSet.UintSet;
 
     uint public constant PRICE = 0.002 ether; // TODO: change to 3.33eth
-    uint16 public constant MAX_MINE_ENTRANCE = 333;
+    uint public constant PRICE_WEDDING = 0.003 ether; // TODO: change to 3.66eth
+    uint16 public constant MAX_ENTRANCE = 333;
 
     bool public isLocked; // locked forever (immutable).
     bool public isStageActive;
@@ -39,15 +40,14 @@ contract DiamondDawn is
 
     uint16 private _tokenIdCounter;
     mapping(address => EnumerableSet.UintSet) private _ownerToShippedIds;
-    mapping(bytes32 => bool) private _invites;
 
     constructor(address mine_, uint16 maxEntrance_) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setDefaultRoyalty(_msgSender(), 1000); // 10 %
         ddMine = IDiamondDawnMine(mine_);
-        // TODO: remove maxMineEntrance_ once staging is deploying 333 automatically.
+        // TODO: remove maxEntrance_ once staging is deploying 333 automatically.
         ddMine.initialize(maxEntrance_);
-        // diamondDawnMine.initialize(address(this), MAX_MINE_ENTRANCE);
+        // diamondDawnMine.initialize(MAX_ENTRANCE);
     }
 
     /**********************          Modifiers          ************************/
@@ -86,21 +86,18 @@ contract DiamondDawn is
     }
 
     modifier entranceLeft() {
-        require(_tokenIdCounter <= MAX_MINE_ENTRANCE, "Max capacity.");
+        require(_tokenIdCounter <= MAX_ENTRANCE, "Max capacity.");
         _;
     }
 
     /**********************     External Functions     ************************/
 
-    function enter(string calldata password) external payable costs(PRICE) isActiveReadyStage(Stage.INVITE) {
-        //        require(balanceOf(_msgSender()) == 0, "1 token per wallet");
-        //        bytes32 passwordHash = keccak256(abi.encodePacked(password));
-        //        require(_invitations[passwordHash], "Not invited");
-        //        delete _invitations[passwordHash];
-        uint256 tokenId = ++_tokenIdCounter;
-        // TODO: should _safeMint be before/after enter().
-        ddMine.enter(tokenId);
-        _safeMint(_msgSender(), tokenId);
+    function enter() external payable costs(PRICE) isActiveReadyStage(Stage.INVITE) {
+        _enter();
+    }
+
+    function enterWedding() external payable costs(PRICE_WEDDING) isActiveReadyStage(Stage.INVITE) {
+        _enter();
     }
 
     function mine(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.MINE) {
@@ -122,21 +119,10 @@ contract DiamondDawn is
     }
 
     function rebirth(uint tokenId) external isShippedOwner(tokenId) {
-        // TODO: protect rebirth with a stupid password. e.g. (keccak256(tokenId)).
+        // TODO: protect rebirth with a stupid password. e.g. (keccak256(tokenId)) or a signature.
         _ownerToShippedIds[_msgSender()].remove(tokenId);
         ddMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);
-    }
-
-    function allowEntrance(bytes32[] calldata hashes)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-        isNotLocked
-        entranceLeft
-    {
-        for (uint i = 0; i < hashes.length; i++) {
-            _invites[hashes[i]] = true;
-        }
     }
 
     function completeStage(Stage stage_) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
@@ -205,5 +191,13 @@ contract DiamondDawn is
 
     function _burn(uint256 tokenId) internal virtual override(ERC721, ERC721Royalty) {
         super._burn(tokenId);
+    }
+
+    /**********************     Private Functions     ************************/
+
+    function _enter() private {
+        uint256 tokenId = ++_tokenIdCounter;
+        ddMine.enter(tokenId);
+        _safeMint(_msgSender(), tokenId);
     }
 }

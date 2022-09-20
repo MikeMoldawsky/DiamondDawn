@@ -8,8 +8,6 @@ interface IDiamondDawnAdmin {
 
     function withdraw() external;
 
-    function allowEntrance(bytes32[] calldata hashes) external;
-
     function lockDiamondDawn() external;
 
     function setStage(Stage stage) external;
