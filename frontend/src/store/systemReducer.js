@@ -20,10 +20,10 @@ export const loadMinePrice = (contract) => async (dispatch) => {
 };
 
 export const loadSystemStage = (contract) => async (dispatch) => {
-  const { systemStage, isStageActive } = await getSystemStageApi(contract);
+  const { systemStage, isActive } = await getSystemStageApi(contract);
   dispatch({
     type: "SYSTEM.SET_STAGE",
-    payload: { systemStage, isStageActive },
+    payload: { systemStage, isActive },
   });
 };
 

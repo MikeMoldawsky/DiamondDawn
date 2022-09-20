@@ -12,7 +12,7 @@ import Diamond from "components/Diamond";
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
-  const { systemStage, isStageActive } = useSelector(systemSelector);
+  const { systemStage, isActive } = useSelector(systemSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ function CollectorPage() {
             <Diamond diamond={token} />
             <div className="card-footer" />
           </NavLink>
-          {isTokenActionable(token, systemStage, isStageActive) && (
+          {isTokenActionable(token, systemStage, isActive) && (
             <div className="button" onClick={goToProcess(token.id)}>
               {getTokenNextStageName(token)}
             </div>

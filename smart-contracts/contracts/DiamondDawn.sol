@@ -34,7 +34,7 @@ contract DiamondDawn is
     uint16 public constant MAX_ENTRANCE = 333;
 
     bool public isLocked; // locked forever (immutable).
-    bool public isStageActive;
+    bool public isActive;
     Stage public stage;
     IDiamondDawnMine public ddMine;
 
@@ -57,15 +57,20 @@ contract DiamondDawn is
         _;
     }
 
-    modifier isActiveReadyStage(Stage stage_) {
+    modifier isNotFull() {
+        require(_tokenIdCounter <= MAX_ENTRANCE, "Max capacity");
+        _;
+    }
+
+    modifier isActiveStage(Stage stage_) {
         require(stage == stage_, "Wrong stage");
-        require(isStageActive, "Stage is inactive");
+        require(isActive, "Stage is inactive");
         require(ddMine.isReady(stage_), "Stage not ready");
         _;
     }
 
-    modifier isInactiveReadyStage(Stage stage_) {
-        require(!isStageActive, "Stage is active");
+    modifier isReadyStage(Stage stage_) {
+        require(!isActive, "Stage is active");
         require(ddMine.isReady(stage_), "Stage not ready");
         _;
     }
@@ -85,34 +90,29 @@ contract DiamondDawn is
         _;
     }
 
-    modifier entranceLeft() {
-        require(_tokenIdCounter <= MAX_ENTRANCE, "Max capacity.");
-        _;
-    }
-
     /**********************     External Functions     ************************/
 
-    function enter() external payable costs(PRICE) isActiveReadyStage(Stage.INVITE) {
+    function enter() external payable costs(PRICE) {
         _enter();
     }
 
-    function enterWedding() external payable costs(PRICE_WEDDING) isActiveReadyStage(Stage.INVITE) {
+    function enterWedding() external payable costs(PRICE_WEDDING) {
         _enter();
     }
 
-    function mine(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.MINE) {
+    function mine(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.MINE) {
         ddMine.mine(tokenId);
     }
 
-    function cut(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.CUT) {
+    function cut(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.CUT) {
         ddMine.cut(tokenId);
     }
 
-    function polish(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.POLISH) {
+    function polish(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.POLISH) {
         ddMine.polish(tokenId);
     }
 
-    function ship(uint tokenId) external isOwner(tokenId) isActiveReadyStage(Stage.SHIP) {
+    function ship(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.SHIP) {
         _burn(tokenId); // Disable NFT transfer while diamond is in transit.
         ddMine.ship(tokenId);
         _ownerToShippedIds[_msgSender()].add(tokenId);
@@ -127,18 +127,13 @@ contract DiamondDawn is
 
     function completeStage(Stage stage_) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
         require(stage == stage_, "Wrong stage");
-        isStageActive = false;
+        isActive = false;
         emit StageChanged(stage);
     }
 
-    function setStage(Stage stage_)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-        isNotLocked
-        isInactiveReadyStage(stage_)
-    {
+    function setStage(Stage stage_) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked isReadyStage(stage_) {
         stage = Stage(stage_);
-        isStageActive = true;
+        isActive = true;
         emit StageChanged(stage);
     }
 
@@ -195,7 +190,7 @@ contract DiamondDawn is
 
     /**********************     Private Functions     ************************/
 
-    function _enter() private {
+    function _enter() private isActiveStage(Stage.INVITE) isNotFull {
         uint256 tokenId = ++_tokenIdCounter;
         ddMine.enter(tokenId);
         _safeMint(_msgSender(), tokenId);

@@ -25,7 +25,7 @@ import Countdown from "react-countdown";
 const StageTab = ({ stage }) => {
   const {
     systemStage,
-    isStageActive,
+    isActive,
     paused,
     maxDiamonds,
     diamondCount,
@@ -61,7 +61,7 @@ const StageTab = ({ stage }) => {
   const isCurrentStage = stage === systemStage;
   const isNextStage = stage === systemStage + 1;
 
-  let canReveal = isVideoArtSet && !isStageActive;
+  let canReveal = isVideoArtSet && !isActive;
   if (stage === SYSTEM_STAGE.INVITE) {
     canReveal = canReveal && !paused;
   } else if (stage === SYSTEM_STAGE.MINE) {
@@ -75,10 +75,10 @@ const StageTab = ({ stage }) => {
 
     let text = "";
     if (isCurrentStage) {
-      text = `${isStageActive ? "Stage" : "Cooldown"} ends in `;
+      text = `${isActive ? "Stage" : "Cooldown"} ends in `;
     }
 
-    if (isNextStage && !isStageActive) {
+    if (isNextStage && !isActive) {
       text = "Stage starts in ";
     }
 
@@ -96,7 +96,7 @@ const StageTab = ({ stage }) => {
         <h1
           className={classNames({
             current: isCurrentStage,
-            complete: isCurrentStage && !isStageActive,
+            complete: isCurrentStage && !isActive,
           })}
         >
           {systemStageName}
@@ -159,7 +159,7 @@ const StageTab = ({ stage }) => {
         <ActionButton
           className="reveal-button"
           actionKey="Complete Stage"
-          disabled={stage !== systemStage || !isStageActive}
+          disabled={stage !== systemStage || !isActive}
           onClick={() => completeStage(stage)}
         >
           COMPLETE {systemStageName}

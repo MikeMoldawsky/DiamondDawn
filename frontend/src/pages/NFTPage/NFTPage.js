@@ -14,7 +14,7 @@ import { PageTransition } from "@steveeeie/react-page-transition";
 function NFTPage() {
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-  const { systemStage, isStageActive } = useSelector(systemSelector);
+  const { systemStage, isActive } = useSelector(systemSelector);
   const location = useLocation();
 
   useSelectTokenFromRoute();
@@ -22,7 +22,7 @@ function NFTPage() {
   if (!token) return null;
 
   const renderByStatusPart = () => {
-    if (isTokenDone(token, systemStage, isStageActive))
+    if (isTokenDone(token, systemStage, isActive))
       return (
         <>
           <div className="leading-text">This is Your Final Diamond NFT</div>
@@ -31,7 +31,7 @@ function NFTPage() {
           </div>
         </>
       );
-    if (isTokenActionable(token, systemStage, isStageActive)) {
+    if (isTokenActionable(token, systemStage, isActive)) {
       const actionName = getTokenNextStageName(token);
       return (
         <>
