@@ -95,15 +95,17 @@ const ActionView = ({
   const renderContent = () => {
     if (showCompleteVideo)
       return (
-        <VideoPlayer
-          onEnded={() => {
-            setCompleteVideoEnded(true);
-            setShowCompleteVideo(false);
-          }}
-          src={videoUrl}
-        >
-          03 - {stageNameUpper} VIDEO
-        </VideoPlayer>
+        <div className="backdrop">
+          <VideoPlayer
+            onEnded={() => {
+              setCompleteVideoEnded(true);
+              setShowCompleteVideo(false);
+            }}
+            src={videoUrl}
+          >
+            03 - {stageNameUpper} VIDEO
+          </VideoPlayer>
+        </div>
       );
 
     if (completeVideoEnded) {
