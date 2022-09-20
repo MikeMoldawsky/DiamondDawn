@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import "./PasswordBox.scss";
-import { checkPasswordApi } from "api/serverApi";
 
 const PASSWORD_LENGTH = 10;
 const CHECK_TIME = 1750;
@@ -21,7 +20,7 @@ const PasswordBox = ({ onCorrect }) => {
   const submitPassword = async () => {
     pwdInput.current.blur();
     setCheckingPassword(true);
-    const isCorrect = await checkPasswordApi(password);
+    const isCorrect = password === process.env.REACT_APP_UI_PASSWORD;
     setCheckingPassword(false);
 
     if (isCorrect) {

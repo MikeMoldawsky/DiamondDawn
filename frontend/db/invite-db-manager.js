@@ -1,5 +1,4 @@
 const InviteModel = require("./models/InviteModel");
-const PasswordModel = require("./models/PasswordModel");
 const add = require("date-fns/add");
 
 async function getInviteObjectById(inviteId) {
@@ -40,12 +39,6 @@ async function openInvite(inviteId, country, state) {
       return { invite };
     }
 
-    // get password
-    const password = await PasswordModel.findOneAndUpdate(
-      { status: "available" },
-      { status: "pending" }
-    );
-
     await InviteModel.findOneAndUpdate(
       { _id: inviteId },
       {
@@ -54,10 +47,7 @@ async function openInvite(inviteId, country, state) {
       }
     );
 
-    return {
-      invite: await getInviteObjectById(inviteId),
-      password: password.password,
-    };
+    return await getInviteObjectById(inviteId)
   } catch (e) {
     console.log(`Failed to create invite`, e);
   }

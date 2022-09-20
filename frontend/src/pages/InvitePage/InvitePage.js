@@ -60,7 +60,6 @@ const InviteIntro = ({ open }) => {
 const InvitePage = () => {
   const { inviteId } = useParams();
   const [invite, setInvite] = useState(null);
-  const [password, setPassword] = useState(null);
   const { systemStage, isActive } = useSelector(systemSelector);
   const isGetInviteSuccess = useSelector(isActionSuccessSelector("get-invite"));
   const actionDispatch = useActionDispatch();
@@ -74,11 +73,7 @@ const InvitePage = () => {
   }, [inviteId]);
 
   const onOpenInviteClick = async () => {
-    const { invite: _invite, password: _password } = await openInviteApi(
-      inviteId
-    );
-    setInvite(_invite);
-    setPassword(_password + "");
+    setInvite(await openInviteApi(inviteId));
   };
 
   const renderInviteContent = () => {
@@ -91,7 +86,7 @@ const InvitePage = () => {
       if (invite.revoked)
         return <InvalidInvitation title="Invitation Revoked" />;
       if (!invite.opened) return <InviteIntro open={onOpenInviteClick} />;
-      return <EnterMine password={password} invite={invite} />;
+      return <EnterMine invite={invite} />;
     }
     return null;
   };

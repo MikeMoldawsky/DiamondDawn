@@ -31,7 +31,7 @@ const PackageBox = ({ selected, select, index, text, cost }) => {
   );
 };
 
-const EnterMine = ({ invite, password }) => {
+const EnterMine = ({ invite }) => {
   const [selectedPackage, setSelectedPackage] = useState(0);
   const { minePrice } = useSelector(systemSelector);
   const account = useAccount();
@@ -54,7 +54,7 @@ const EnterMine = ({ invite, password }) => {
 
   const executeEnterMine = async () => {
     await setInviteForUseApi(invite._id, account.address);
-    const tx = await enterApi(contract, password, minePrice);
+    const tx = await enterApi(contract, minePrice);
     await tx.wait();
     await confirmInviteUsedApi(invite._id);
     return tx;
