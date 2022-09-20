@@ -18,9 +18,6 @@ import {
 import useDDContract from "hooks/useDDContract";
 import { eruptionApi } from "api/contractApi";
 import {
-  addDiamondApi,
-  updateDiamondApi,
-  deleteDiamondApi,
   logEruptionTxApi,
   clearEruptionTxsApi,
 } from "api/serverApi";
@@ -235,12 +232,6 @@ const DiamondsTab = () => {
     dispatch(loadConfig());
   }, []);
 
-  const CRUD = {
-    create: addDiamondApi,
-    update: updateDiamondApi,
-    delete: deleteDiamondApi,
-  };
-
   const populateDiamonds = async (diamonds) => {
     try {
       const txHash = await eruptionApi(ddMineContract, diamonds);
@@ -286,7 +277,6 @@ const DiamondsTab = () => {
         </div>
       )}
       <CRUDTable
-        CRUD={CRUD}
         columns={DIAMOND_COLUMNS}
         rows={DIAMONDS_INFO}
         itemName="Diamond"

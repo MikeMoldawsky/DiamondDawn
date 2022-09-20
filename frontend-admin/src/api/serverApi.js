@@ -54,43 +54,6 @@ export const updateStageTimeApi = async (timestamp) => {
   }
 };
 
-// DIAMONDS
-export const getDiamondsApi = async () => {
-  try {
-    const res = await axios.get(`/api/get_diamonds`);
-    return res.data;
-  } catch (e) {
-    return [];
-  }
-};
-
-export const addDiamondApi = async (diamond) => {
-  try {
-    const { data } = await axios.post(`/api/create_diamond`, diamond);
-    return data;
-  } catch (e) {
-    return null;
-  }
-};
-
-export const updateDiamondApi = async (diamond) => {
-  try {
-    const { data } = await axios.post(`/api/update_diamond`, diamond);
-    return data;
-  } catch (e) {
-    return null;
-  }
-};
-
-export const deleteDiamondApi = async (diamondId) => {
-  try {
-    const { data } = await axios.post(`/api/delete_diamond`, { diamondId });
-    return data;
-  } catch (e) {
-    return null;
-  }
-};
-
 // INVITE
 export const getInvitesApi = async () => {
   try {
