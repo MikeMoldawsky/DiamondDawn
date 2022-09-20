@@ -18,7 +18,7 @@ const DiamondPicker = ({ actionKey, disabled }) => {
   const { selectedTokenId } = useSelector(uiSelector);
   const [actionableTokens, setActionableTokens] = useState([]);
   const tokens = useSelector(tokensSelector);
-  const { systemStage, isStageActive } = useSelector(systemSelector);
+  const { systemStage, isActive } = useSelector(systemSelector);
   const isActionPending = useSelector(isActionPendingSelector(actionKey));
   const canSelect = !disabled && !isActionPending;
   const [transitionTime, setTransitionTime] = useState(0);
@@ -26,9 +26,7 @@ const DiamondPicker = ({ actionKey, disabled }) => {
   useMountLogger("DiamondPicker");
 
   useEffect(() => {
-    setActionableTokens(
-      getActionableTokens(tokens, systemStage, isStageActive)
-    );
+    setActionableTokens(getActionableTokens(tokens, systemStage, isActive));
   }, []);
 
   useTimeout(() => {

@@ -61,7 +61,7 @@ const InvitePage = () => {
   const { inviteId } = useParams();
   const [invite, setInvite] = useState(null);
   const [password, setPassword] = useState(null);
-  const { systemStage, isStageActive } = useSelector(systemSelector);
+  const { systemStage, isActive } = useSelector(systemSelector);
   const isGetInviteSuccess = useSelector(isActionSuccessSelector("get-invite"));
   const actionDispatch = useActionDispatch();
 
@@ -82,7 +82,7 @@ const InvitePage = () => {
   };
 
   const renderInviteContent = () => {
-    if (systemStage !== SYSTEM_STAGE.INVITE || !isStageActive)
+    if (systemStage !== SYSTEM_STAGE.INVITE || !isActive)
       return <h1>Invitations stage is closed</h1>;
     if (isGetInviteSuccess) {
       if (!invite) return <InvalidInvitation title="Invitation Not Found" />;

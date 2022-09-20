@@ -4,11 +4,11 @@ import { getShapeName } from "utils";
 
 // ADMIN CONTROL API
 export const getSystemStageApi = async (contract) => {
-  const [systemStage, isStageActive] = await Promise.all([
+  const [systemStage, isActive] = await Promise.all([
     contract.stage(),
-    contract.isStageActive(),
+    contract.isActive(),
   ]);
-  return { systemStage, isStageActive };
+  return { systemStage, isActive };
 };
 
 export const getSystemPausedApi = async (contract) => {

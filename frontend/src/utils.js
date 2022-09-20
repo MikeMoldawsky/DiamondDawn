@@ -119,12 +119,12 @@ export const getDiamondIcon = (token) => {
   }
 };
 
-export const isTokenDone = (token, systemStage, isStageActive) => {
+export const isTokenDone = (token, systemStage, isActive) => {
   if (!token) return false;
 
   const isNotProcessedEnough =
     token.stage < systemStage - 1 ||
-    (token.stage === systemStage - 1 && !isStageActive);
+    (token.stage === systemStage - 1 && !isActive);
 
   switch (systemStage) {
     case SYSTEM_STAGE.SHIP:
@@ -137,8 +137,8 @@ export const isTokenDone = (token, systemStage, isStageActive) => {
   }
 };
 
-export const isTokenActionable = (token, systemStage, isStageActive) => {
-  if (!token || !isStageActive) return false;
+export const isTokenActionable = (token, systemStage, isActive) => {
+  if (!token || !isActive) return false;
 
   const isActionable = token.stage === systemStage - 1;
 
@@ -149,8 +149,8 @@ export const isTokenActionable = (token, systemStage, isStageActive) => {
   return isActionable;
 };
 
-export const getActionableTokens = (tokens, systemStage, isStageActive) => {
+export const getActionableTokens = (tokens, systemStage, isActive) => {
   return _.filter(tokens, (token) =>
-    isTokenActionable(token, systemStage, isStageActive)
+    isTokenActionable(token, systemStage, isActive)
   );
 };

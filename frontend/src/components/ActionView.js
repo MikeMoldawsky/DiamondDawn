@@ -34,7 +34,7 @@ const ActionView = ({
   const contract = useDDContract();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { systemStage, isStageActive, config } = useSelector(systemSelector);
+  const { systemStage, isActive, config } = useSelector(systemSelector);
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
   const endTime = config.stageTime;
@@ -110,7 +110,7 @@ const ActionView = ({
       return <Loading />;
     }
 
-    if (!isStageActive && !isRebirth)
+    if (!isActive && !isRebirth)
       return (
         <>
           <div className="leading-text">{stageNameUpper} STAGE IS COMPLETE</div>
@@ -124,10 +124,7 @@ const ActionView = ({
         </>
       );
 
-    if (
-      requireActionable &&
-      !isTokenActionable(token, systemStage, isStageActive)
-    )
+    if (requireActionable && !isTokenActionable(token, systemStage, isActive))
       return (
         <NoDiamondView
           stageName={getStageName(systemStage)}

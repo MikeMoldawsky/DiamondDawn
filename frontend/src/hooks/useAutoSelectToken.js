@@ -10,14 +10,14 @@ function useAutoSelectToken(systemStage) {
   const dispatch = useDispatch();
   const { selectedTokenId } = useSelector(uiSelector);
   const tokens = useSelector(tokensSelector);
-  const { isStageActive } = useSelector(systemSelector);
+  const { isActive } = useSelector(systemSelector);
 
   useEffect(() => {
     if (_.size(tokens) > 0) {
       const actionableTokens = getActionableTokens(
         tokens,
         systemStage,
-        isStageActive
+        isActive
       );
 
       if (selectedTokenId !== -1) {

@@ -2,7 +2,9 @@
 pragma solidity ^0.8.15;
 
 interface IDiamondDawn {
-    function enter(string calldata password) external payable;
+    function enter() external payable;
+
+    function enterWedding() external payable;
 
     function mine(uint tokenId) external;
 
