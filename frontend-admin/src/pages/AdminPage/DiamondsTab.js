@@ -66,8 +66,8 @@ const getEmptyDiamond = () => ({
 const DIAMOND_COLUMNS = [
   {
     field: "date",
-    headerName: "Date (MM/dd/yyyy)",
-    width: 170,
+    headerName: "Date",
+    width: 160,
     editable: true,
     valueFormatter: params => unixTimestampToDateString(params.value),
     preProcessEditCellProps: (params) => {
