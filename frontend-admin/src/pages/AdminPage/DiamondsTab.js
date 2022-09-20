@@ -24,7 +24,7 @@ import {
   logEruptionTxApi,
   clearEruptionTxsApi,
 } from "api/serverApi";
-import { getEnumKeyByValue } from "utils";
+import {getEnumKeyByValue, unixTimestampToDateString} from "utils";
 import DIAMONDS_INFO from "assets/data/diamonds";
 import { useProvider } from "wagmi";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,9 +69,10 @@ const getEmptyDiamond = () => ({
 const DIAMOND_COLUMNS = [
   {
     field: "date",
-    headerName: "Date",
-    width: 120,
+    headerName: "Date (MM/dd/yyyy)",
+    width: 170,
     editable: true,
+    valueFormatter: params => unixTimestampToDateString(params.value),
     preProcessEditCellProps: (params) => {
       const regex = new RegExp("^\\d{10}$");
       return { ...params.props, error: !regex.test(params.props.value) };

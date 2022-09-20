@@ -1,6 +1,9 @@
 import _ from "lodash";
 import { toast } from "react-toastify";
 import { ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
+import getUnixTime from 'date-fns/getUnixTime'
+import fromUnixTime from 'date-fns/fromUnixTime'
+import format from 'date-fns/format'
 
 export const parseError = (e) => {
   let message = _.get(e, "error.data.message", "");
@@ -61,3 +64,12 @@ export const getShapeName = (shape, stage) => {
 
 export const getSystemStageName = (stage) =>
   getEnumKeyByValue(SYSTEM_STAGE, stage);
+
+export const dateStringToUnix = (dateString) => {
+  return getUnixTime(new Date(dateString))
+}
+
+export const unixTimestampToDateString = (timestamp) => {
+  return format(fromUnixTime(timestamp), 'MMMM d, yyyy')
+}
+
