@@ -47,7 +47,7 @@ async function openInvite(inviteId, country, state) {
       }
     );
 
-    return await getInviteObjectById(inviteId)
+    return await getInviteObjectById(inviteId);
   } catch (e) {
     console.log(`Failed to create invite`, e);
   }

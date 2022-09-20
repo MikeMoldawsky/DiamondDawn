@@ -17,11 +17,8 @@ import {
 } from "consts";
 import useDDContract from "hooks/useDDContract";
 import { eruptionApi } from "api/contractApi";
-import {
-  logEruptionTxApi,
-  clearEruptionTxsApi,
-} from "api/serverApi";
-import {getEnumKeyByValue, unixTimestampToDateString} from "utils";
+import { logEruptionTxApi, clearEruptionTxsApi } from "api/serverApi";
+import { getEnumKeyByValue, unixTimestampToDateString } from "utils";
 import DIAMONDS_INFO from "assets/data/diamonds";
 import { useProvider } from "wagmi";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,7 +66,7 @@ const DIAMOND_COLUMNS = [
     headerName: "Date",
     width: 160,
     editable: true,
-    valueFormatter: params => unixTimestampToDateString(params.value),
+    valueFormatter: (params) => unixTimestampToDateString(params.value),
     preProcessEditCellProps: (params) => {
       const regex = new RegExp("^\\d{10}$");
       return { ...params.props, error: !regex.test(params.props.value) };
