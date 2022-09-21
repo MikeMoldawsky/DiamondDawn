@@ -1,6 +1,6 @@
 const { ethers } = require("hardhat");
 const {
-  prepareRoughReady,
+  prepareMineReady,
   prepareCutReady,
   preparePolishReady,
   setAllVideoUrls,
@@ -57,21 +57,21 @@ async function deployDD() {
   return { diamondDawn, diamondDawnMine, owner, user1, user2 };
 }
 
-async function deployDDWithMineRoughReady() {
+async function deployDDWithMineReady() {
   const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
     await deployDD();
-  await prepareRoughReady(diamondDawnMine, MAX_TOKENS);
+  await prepareMineReady(diamondDawnMine, MAX_TOKENS);
   return { diamondDawn, diamondDawnMine, owner, user1, user2 };
 }
 
-async function deployDDWithMineCutReady() {
+async function deployDDWithCutReady() {
   const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
     await deployDD();
   await prepareCutReady(diamondDawnMine, MAX_TOKENS);
   return { diamondDawn, diamondDawnMine, owner, user1, user2 };
 }
 
-async function deployDDWithMinePolishReady() {
+async function deployDDWithPolishReady() {
   const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
     await deployDD();
   await preparePolishReady(diamondDawnMine, MAX_TOKENS);
@@ -83,8 +83,8 @@ module.exports = {
   deployInitializedMine,
   deployReadyMine,
   deployDD,
-  deployDDWithMineRoughReady,
-  deployDDWithMineCutReady,
-  deployDDWithMinePolishReady,
+  deployDDWithMineReady,
+  deployDDWithCutReady,
+  deployDDWithPolishReady,
   MAX_TOKENS,
 };

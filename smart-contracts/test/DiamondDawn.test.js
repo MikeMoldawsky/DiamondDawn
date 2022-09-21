@@ -10,15 +10,15 @@ const {
 } = require("./utils/MineTestUtils");
 const {
   deployDD,
-  deployDDWithMineRoughReady,
-  deployDDWithMineCutReady,
-  deployDDWithMinePolishReady,
+  deployDDWithMineReady,
+  deployDDWithCutReady,
+  deployDDWithPolishReady,
   MAX_TOKENS,
 } = require("./utils/DeployContractTestUtils");
 
-async function completeAndSetStage(ddContract, stage) {
-  await ddContract.completeStage(await ddContract.stage());
-  await ddContract.setStage(stage);
+async function completeAndSetStage(dd, stage) {
+  await dd.completeStage(await dd.stage());
+  await dd.setStage(stage);
 }
 
 const PRICE = parseEther("0.002");
@@ -89,7 +89,7 @@ describe("DiamondDawn", () => {
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
-        await loadFixture(deployDDWithMineRoughReady);
+        await loadFixture(deployDDWithMineReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -174,7 +174,7 @@ describe("DiamondDawn", () => {
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
-        await loadFixture(deployDDWithMineCutReady);
+        await loadFixture(deployDDWithCutReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -269,7 +269,7 @@ describe("DiamondDawn", () => {
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
-        await loadFixture(deployDDWithMinePolishReady);
+        await loadFixture(deployDDWithPolishReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
