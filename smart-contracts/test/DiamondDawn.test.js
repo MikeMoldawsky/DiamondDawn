@@ -12,22 +12,10 @@ const {
   prepareCutReady,
   preparePolishReady,
 } = require("./utils/MineTestUtils");
+const { deployDD } = require("./utils/DeployContractTestUtils");
 
 // constants
 const MAX_TOKENS = 10;
-async function deployDD() {
-  const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
-  const diamondDawnMine = await DiamondDawnMine.deploy([]);
-  const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
-  const diamondDawn = await DiamondDawn.deploy(
-    diamondDawnMine.address,
-    MAX_TOKENS
-  );
-  const [owner, user1, user2] = await ethers.getSigners();
-  await diamondDawn.deployed();
-  // Fixtures can return anything you consider useful for your tests
-  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
-}
 
 async function deployDDWithMineRoughReady() {
   const { diamondDawn, diamondDawnMine, owner, user1, user2 } =

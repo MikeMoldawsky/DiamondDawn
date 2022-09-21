@@ -16,22 +16,10 @@ const {
   setAllVideoUrls,
 } = require("./utils/MineTestUtils");
 const { DIAMOND } = require("./utils/Diamonds");
-const { assertOnlyAdmin } = require("./utils/AdminUtils");
+const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
+const { deployMine } = require("./utils/DeployContractTestUtils");
 
 describe("Diamond Dawn Mine Admin", () => {
-  async function deployMineContract() {
-    const [owner, user1, user2] = await ethers.getSigners();
-    const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
-    const diamondDawnMine = await DiamondDawnMine.deploy();
-    await diamondDawnMine.deployed();
-    return {
-      diamondDawnMine,
-      owner,
-      user1,
-      user2,
-    };
-  }
-
   describe("Deployed", () => {
     it("should grant admin permissions to deployer and set correct public defaults", async () => {
       const [owner, user1, user2] = await ethers.getSigners();
@@ -65,7 +53,7 @@ describe("Diamond Dawn Mine Admin", () => {
 
     beforeEach(async () => {
       const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
-        deployMineContract
+        deployMine
       );
       mineContract = diamondDawnMine;
       admin = owner;
@@ -126,7 +114,7 @@ describe("Diamond Dawn Mine Admin", () => {
 
     beforeEach(async () => {
       const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
-        deployMineContract
+        deployMine
       );
       mineContract = diamondDawnMine;
       admin = owner;
@@ -228,7 +216,7 @@ describe("Diamond Dawn Mine Admin", () => {
 
     beforeEach(async () => {
       const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
-        deployMineContract
+        deployMine
       );
       mineContract = diamondDawnMine;
       admin = owner;
