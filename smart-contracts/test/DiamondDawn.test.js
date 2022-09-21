@@ -1,8 +1,14 @@
 require("dotenv").config();
+require("@nomicfoundation/hardhat-chai-matchers");
 const { expect } = require("chai");
 const { parseEther } = require("ethers/lib/utils");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
-const { STAGE, ROUGH_SHAPE, SHAPE } = require("./utils/EnumConverterUtils");
+const {
+  STAGE,
+  ROUGH_SHAPE,
+  SHAPE,
+  ALL_STAGES,
+} = require("./utils/EnumConverterUtils");
 const {
   setCutVideos,
   setPolishedVideos,
@@ -14,14 +20,17 @@ const {
   deployDDWithCutReady,
   deployDDWithPolishReady,
   MAX_TOKENS,
+  deployDDWithRebirthReady,
 } = require("./utils/DeployContractTestUtils");
+const _ = require("lodash");
 
 async function completeAndSetStage(dd, stage) {
   await dd.completeStage(await dd.stage());
   await dd.setStage(stage);
 }
 
-const PRICE = parseEther("0.002");
+const PRICE = parseEther("0.002"); // TODO: change price to 3.33
+const PRICE_WEDDING = parseEther("0.003"); // TODO: change price to 3.33
 
 describe("DiamondDawn", () => {
   describe("Deployment", () => {
@@ -55,15 +64,20 @@ describe("DiamondDawn", () => {
     });
 
     it("Should set and initialize DiamondDawnMine", async () => {
-      expect(await dd.ddMine()).to.equal(ddMine.address);
       expect(await ddMine.diamondDawn()).to.equal(dd.address);
       expect(await ddMine.maxDiamonds()).to.equal(MAX_TOKENS);
       expect(await ddMine.isInitialized()).to.be.true;
       expect(await ddMine.isLocked()).to.be.false;
     });
 
-    it("Should set system stage to NO STAGE", async () => {
+    it("Should correctly set public params", async () => {
+      expect(await dd.PRICE()).to.equal(PRICE);
+      expect(await dd.PRICE_WEDDING()).to.equal(PRICE_WEDDING);
+      expect(await dd.MAX_ENTRANCE()).to.equal(333);
+      expect(await dd.isLocked()).to.be.false;
+      expect(await dd.isActive()).to.be.false;
       expect(await dd.stage()).to.equal(STAGE.NO_STAGE);
+      expect(await dd.ddMine()).to.equal(ddMine.address);
     });
 
     it("Should set royalties to 10%", async () => {
@@ -74,9 +88,63 @@ describe("DiamondDawn", () => {
       expect(recipient).to.equal(admin.address);
       expect(amount).to.equal(33);
     });
+
+    it("Should not allow to enter mine when wrong stage", async () => {
+      await expect(dd.enter({ value: PRICE })).to.be.revertedWith(
+        "Wrong stage"
+      );
+      await expect(
+        dd.enterWedding({ value: PRICE_WEDDING })
+      ).to.be.revertedWith("Wrong stage");
+    });
   });
 
-  describe("enter", () => {
+  describe("enter and enterWedding", () => {
+    let dd;
+    let ddMine;
+    let admin;
+    let user;
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, user1 } = await loadFixture(
+        deployDDWithRebirthReady
+      );
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
+      admin = owner;
+      user = user1;
+    });
+
+    it("Should cost 3.33 and add it to contract's balance", async () => {
+      // TODO: fix prices
+      // TODO: implement
+    });
+
+    it("Should REVERT when not INVITE stage", async () => {
+      const notAllowedStages = _.without(ALL_STAGES, STAGE.INVITE);
+      for (const stage of notAllowedStages) {
+        await completeAndSetStage(dd, stage);
+        expect(await dd.stage()).to.equal(stage);
+        await expect(dd.enter({ value: PRICE })).to.be.revertedWith(
+          "Wrong stage"
+        );
+        await expect(
+          dd.enterWedding({ value: PRICE_WEDDING })
+        ).to.be.revertedWith("Wrong stage");
+      }
+    });
+
+    it("Should REVERT when stage is NOT active", async () => {
+      // TODO: implement
+    });
+
+    it("Should REVERT when mine is full", async () => {
+      // TODO: implement
+    });
+
+    it("Should mint to owner & have the right token ID", async () => {
+      // TODO: implement
+    });
+
     // TODO: tests - important
   });
 

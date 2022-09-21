@@ -4,6 +4,7 @@ const {
   prepareCutReady,
   preparePolishReady,
   setAllVideoUrls,
+  prepareRebirthReady,
 } = require("./MineTestUtils");
 
 // constants
@@ -25,7 +26,7 @@ async function deployMine() {
 async function deployInitializedMine() {
   const { diamondDawnMine, owner, user1, user2 } = await deployMine();
   const diamondDawn = user2;
-  await diamondDawnMine.connect(diamondDawn).initialize(333);
+  await diamondDawnMine.connect(diamondDawn).initialize(MAX_TOKENS);
   return {
     diamondDawn,
     diamondDawnMine,
@@ -78,6 +79,13 @@ async function deployDDWithPolishReady() {
   return { diamondDawn, diamondDawnMine, owner, user1, user2 };
 }
 
+async function deployDDWithRebirthReady() {
+  const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+    await deployDD();
+  await prepareRebirthReady(diamondDawnMine, MAX_TOKENS);
+  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
+}
+
 module.exports = {
   deployMine,
   deployInitializedMine,
@@ -86,5 +94,6 @@ module.exports = {
   deployDDWithMineReady,
   deployDDWithCutReady,
   deployDDWithPolishReady,
+  deployDDWithRebirthReady,
   MAX_TOKENS,
 };
