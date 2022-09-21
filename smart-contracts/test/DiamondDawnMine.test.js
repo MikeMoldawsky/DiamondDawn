@@ -8,6 +8,7 @@ const {
   SHAPE,
   ROUGH_SHAPE,
   STAGE,
+  ALL_STAGES,
 } = require("./utils/EnumConverterUtils");
 const {
   assertEnterMineMetadata,
@@ -610,7 +611,7 @@ describe("Diamond Dawn Mine", () => {
   });
 
   describe("isReady", () => {
-    let mineContract;
+    let ddMine;
     let diamondDawn;
     let admin;
     let user;
@@ -619,115 +620,113 @@ describe("Diamond Dawn Mine", () => {
       const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
         deployMine
       );
-      mineContract = diamondDawnMine;
+      ddMine = diamondDawnMine;
       admin = owner;
       user = user1;
       diamondDawn = user2;
       await diamondDawnMine.connect(diamondDawn).initialize(numDiamonds);
     });
 
-    it("should be FALSE for all types by default", async () => {
-      expect(await mineContract.isReady(STAGE.NO_STAGE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.INVITE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.MINE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.CUT)).to.be.false;
-      expect(await mineContract.isReady(STAGE.POLISH)).to.be.false;
-      expect(await mineContract.isReady(STAGE.SHIP)).to.be.false;
+    it("should be NOT READY for all stages except NO STAGE", async () => {
+      expect(await ddMine.isReady(STAGE.NO_STAGE)).to.be.true;
+      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE);
+      for (const stage of noReadyStages) {
+        expect(await ddMine.isReady(stage)).to.be.false;
+      }
     });
 
     it("should be TRUE only for ENTER_MINE", async () => {
-      await mineContract.setStageVideos(STAGE.INVITE, [
+      await ddMine.setStageVideos(STAGE.INVITE, [
         { shape: NO_SHAPE_NUM, video: "hi.mp4" },
       ]);
-      expect(await mineContract.isReady(STAGE.NO_STAGE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.INVITE)).to.be.true;
-      expect(await mineContract.isReady(STAGE.MINE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.CUT)).to.be.false;
-      expect(await mineContract.isReady(STAGE.POLISH)).to.be.false;
-      expect(await mineContract.isReady(STAGE.SHIP)).to.be.false;
+      expect(await ddMine.isReady(STAGE.INVITE)).to.be.true;
+      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.INVITE);
+      for (const stage of noReadyStages) {
+        expect(await ddMine.isReady(stage)).to.be.false;
+      }
     });
 
     it("should be TRUE only for ROUGH when video set and mine populated", async () => {
-      await mineContract.setStageVideos(STAGE.MINE, [
+      await ddMine.setStageVideos(STAGE.MINE, [
         { shape: ROUGH_SHAPE.MAKEABLE_1, video: "1.mp4" },
       ]);
-      expect(await mineContract.isReady(STAGE.MINE)).to.be.false;
-      await mineContract.setStageVideos(STAGE.MINE, [
+      expect(await ddMine.isReady(STAGE.MINE)).to.be.false;
+      await ddMine.setStageVideos(STAGE.MINE, [
         { shape: ROUGH_SHAPE.MAKEABLE_2, video: "2.mp4" },
       ]);
-      expect(await mineContract.isReady(STAGE.MINE)).to.be.false;
+      expect(await ddMine.isReady(STAGE.MINE)).to.be.false;
       const diamonds = _.range(numDiamonds - 1).map((_) => DIAMOND);
-      await mineContract.eruption(diamonds);
-      expect(await mineContract.isReady(STAGE.MINE)).to.be.false;
-
-      await mineContract.eruption([DIAMOND]); // now mine has all diamonds
-      expect(await mineContract.isReady(STAGE.NO_STAGE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.INVITE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.MINE)).to.be.true;
-      expect(await mineContract.isReady(STAGE.CUT)).to.be.false;
-      expect(await mineContract.isReady(STAGE.POLISH)).to.be.false;
-      expect(await mineContract.isReady(STAGE.SHIP)).to.be.false;
+      await ddMine.eruption(diamonds);
+      expect(await ddMine.isReady(STAGE.MINE)).to.be.false;
+      await ddMine.eruption([DIAMOND]); // now mine has all diamonds
+      expect(await ddMine.isReady(STAGE.MINE)).to.be.true;
+      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.MINE);
+      for (const stage of noReadyStages) {
+        expect(await ddMine.isReady(stage)).to.be.false;
+      }
     });
 
     it("should be TRUE only for CUT", async () => {
-      await mineContract.setStageVideos(STAGE.CUT, [
+      await ddMine.setStageVideos(STAGE.CUT, [
         { shape: SHAPE.PEAR, video: "1.mp4" },
       ]);
-      expect(await mineContract.isReady(STAGE.CUT)).to.be.false;
-      await mineContract.setStageVideos(STAGE.CUT, [
+      expect(await ddMine.isReady(STAGE.CUT)).to.be.false;
+      await ddMine.setStageVideos(STAGE.CUT, [
         { shape: SHAPE.ROUND, video: "2.mp4" },
       ]);
-      expect(await mineContract.isReady(STAGE.CUT)).to.be.false;
-      await mineContract.setStageVideos(STAGE.CUT, [
+      expect(await ddMine.isReady(STAGE.CUT)).to.be.false;
+      await ddMine.setStageVideos(STAGE.CUT, [
         { shape: SHAPE.OVAL, video: "3.mp4" },
       ]);
-      expect(await mineContract.isReady(STAGE.CUT)).to.be.false;
-      await mineContract.setStageVideos(STAGE.CUT, [
+      expect(await ddMine.isReady(STAGE.CUT)).to.be.false;
+      await ddMine.setStageVideos(STAGE.CUT, [
         { shape: SHAPE.RADIANT, video: "4.mp4" },
       ]);
-
-      expect(await mineContract.isReady(STAGE.NO_STAGE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.INVITE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.MINE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.CUT)).to.be.true;
-      expect(await mineContract.isReady(STAGE.POLISH)).to.be.false;
-      expect(await mineContract.isReady(STAGE.SHIP)).to.be.false;
+      expect(await ddMine.isReady(STAGE.CUT)).to.be.true;
+      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.CUT);
+      for (const stage of noReadyStages) {
+        expect(await ddMine.isReady(stage)).to.be.false;
+      }
     });
 
     it("should be TRUE only for POLISHED", async () => {
-      await mineContract.setStageVideos(STAGE.POLISH, [
+      await ddMine.setStageVideos(STAGE.POLISH, [
         { shape: SHAPE.PEAR, video: "1.mp4" },
       ]);
-      expect(await mineContract.isReady(STAGE.POLISH)).to.be.false;
-      await mineContract.setStageVideos(STAGE.POLISH, [
+      expect(await ddMine.isReady(STAGE.POLISH)).to.be.false;
+      await ddMine.setStageVideos(STAGE.POLISH, [
         { shape: SHAPE.ROUND, video: "2.mp4" },
       ]);
-      expect(await mineContract.isReady(STAGE.POLISH)).to.be.false;
-      await mineContract.setStageVideos(STAGE.POLISH, [
+      expect(await ddMine.isReady(STAGE.POLISH)).to.be.false;
+      await ddMine.setStageVideos(STAGE.POLISH, [
         { shape: SHAPE.OVAL, video: "3.mp4" },
       ]);
-      expect(await mineContract.isReady(STAGE.POLISH)).to.be.false;
-      await mineContract.setStageVideos(STAGE.POLISH, [
+      expect(await ddMine.isReady(STAGE.POLISH)).to.be.false;
+      await ddMine.setStageVideos(STAGE.POLISH, [
         { shape: SHAPE.RADIANT, video: "4.mp4" },
       ]);
-      expect(await mineContract.isReady(STAGE.NO_STAGE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.INVITE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.MINE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.CUT)).to.be.false;
-      expect(await mineContract.isReady(STAGE.POLISH)).to.be.true;
-      expect(await mineContract.isReady(STAGE.SHIP)).to.be.false;
+      expect(await ddMine.isReady(STAGE.POLISH)).to.be.true;
+      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.POLISH);
+      for (const stage of noReadyStages) {
+        expect(await ddMine.isReady(stage)).to.be.false;
+      }
     });
 
     it("should be TRUE only for REBORN", async () => {
-      await mineContract.setStageVideos(STAGE.SHIP, [
+      await ddMine.setStageVideos(STAGE.SHIP, [
         { shape: NO_SHAPE_NUM, video: "hi.mp4" },
       ]);
-      expect(await mineContract.isReady(STAGE.NO_STAGE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.INVITE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.MINE)).to.be.false;
-      expect(await mineContract.isReady(STAGE.CUT)).to.be.false;
-      expect(await mineContract.isReady(STAGE.POLISH)).to.be.false;
-      expect(await mineContract.isReady(STAGE.SHIP)).to.be.true;
+      expect(await ddMine.isReady(STAGE.SHIP)).to.be.true;
+      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.SHIP);
+      for (const stage of noReadyStages) {
+        expect(await ddMine.isReady(stage)).to.be.false;
+      }
+    });
+
+    it("should revert if non existing stage", async () => {
+      await expect(
+        ddMine.isReady(ALL_STAGES.length)
+      ).to.be.revertedWithoutReason();
     });
   });
 });

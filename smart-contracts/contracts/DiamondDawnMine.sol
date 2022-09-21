@@ -177,12 +177,13 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
 
     function isReady(Stage stage_) external view returns (bool) {
         require(_msgSender() == diamondDawn || hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Only DD or admin");
+        if (stage_ == Stage.NO_STAGE) return true;
         if (stage_ == Stage.INVITE || stage_ == Stage.SHIP) return _isVideoExist(stage_, 0);
         if (stage_ == Stage.MINE)
             return diamondCount == maxDiamonds && _isAllVideosExist(stage_, uint(type(RoughShape).max));
         if (stage_ == Stage.CUT || stage_ == Stage.POLISH)
             return _isAllVideosExist(stage_, uint(type(Shape).max));
-        return false;
+        revert();
     }
 
     /**********************     Private Functions     ************************/

@@ -129,6 +129,15 @@ const STAGE = {
   SHIP: 5,
 };
 
+const ALL_STAGES = [
+  STAGE.NO_STAGE,
+  STAGE.INVITE,
+  STAGE.MINE,
+  STAGE.CUT,
+  STAGE.POLISH,
+  STAGE.SHIP,
+];
+
 const ROUGH_SHAPE = {
   NO_SHAPE: 0,
   MAKEABLE_1: 1,
@@ -153,6 +162,7 @@ module.exports = {
   enumToFluorescence,
   NO_SHAPE_NUM,
   STAGE,
+  ALL_STAGES,
   ROUGH_SHAPE,
   SHAPE,
 };
