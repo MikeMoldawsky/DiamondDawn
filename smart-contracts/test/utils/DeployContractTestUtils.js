@@ -1,5 +1,10 @@
 const { ethers } = require("hardhat");
-const { setAllVideoUrls } = require("./MineTestUtils");
+const {
+  prepareRoughReady,
+  prepareCutReady,
+  preparePolishReady,
+  setAllVideoUrls,
+} = require("./MineTestUtils");
 
 // constants
 const MAX_TOKENS = 10;
@@ -52,9 +57,34 @@ async function deployDD() {
   return { diamondDawn, diamondDawnMine, owner, user1, user2 };
 }
 
+async function deployDDWithMineRoughReady() {
+  const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+    await deployDD();
+  await prepareRoughReady(diamondDawnMine, MAX_TOKENS);
+  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
+}
+
+async function deployDDWithMineCutReady() {
+  const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+    await deployDD();
+  await prepareCutReady(diamondDawnMine, MAX_TOKENS);
+  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
+}
+
+async function deployDDWithMinePolishReady() {
+  const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+    await deployDD();
+  await preparePolishReady(diamondDawnMine, MAX_TOKENS);
+  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
+}
+
 module.exports = {
   deployMine,
   deployInitializedMine,
   deployReadyMine,
   deployDD,
+  deployDDWithMineRoughReady,
+  deployDDWithMineCutReady,
+  deployDDWithMinePolishReady,
+  MAX_TOKENS,
 };

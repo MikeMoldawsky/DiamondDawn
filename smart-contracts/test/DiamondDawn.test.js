@@ -1,42 +1,20 @@
 require("dotenv").config();
 const { expect } = require("chai");
 const { parseEther } = require("ethers/lib/utils");
-const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { STAGE, ROUGH_SHAPE, SHAPE } = require("./utils/EnumConverterUtils");
 const {
-  prepareRoughReady,
   setCutVideos,
   setPolishedVideos,
   setRebornVideo,
-  prepareCutReady,
-  preparePolishReady,
 } = require("./utils/MineTestUtils");
-const { deployDD } = require("./utils/DeployContractTestUtils");
-
-// constants
-const MAX_TOKENS = 10;
-
-async function deployDDWithMineRoughReady() {
-  const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
-    await deployDD();
-  await prepareRoughReady(diamondDawnMine, MAX_TOKENS);
-  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
-}
-
-async function deployDDWithMineCutReady() {
-  const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
-    await deployDD();
-  await prepareCutReady(diamondDawnMine, MAX_TOKENS);
-  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
-}
-
-async function deployDDWithMinePolishReady() {
-  const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
-    await deployDD();
-  await preparePolishReady(diamondDawnMine, MAX_TOKENS);
-  return { diamondDawn, diamondDawnMine, owner, user1, user2 };
-}
+const {
+  deployDD,
+  deployDDWithMineRoughReady,
+  deployDDWithMineCutReady,
+  deployDDWithMinePolishReady,
+  MAX_TOKENS,
+} = require("./utils/DeployContractTestUtils");
 
 async function completeAndSetStage(ddContract, stage) {
   await ddContract.completeStage(await ddContract.stage());
