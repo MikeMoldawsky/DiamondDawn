@@ -25,8 +25,8 @@ const PRICE = parseEther("0.002");
 
 describe("DiamondDawn", () => {
   describe("Deployment", () => {
-    let ddContract;
-    let mineContract;
+    let dd;
+    let ddMine;
     let admin;
     let userA;
     let userB;
@@ -34,44 +34,43 @@ describe("DiamondDawn", () => {
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
         await loadFixture(deployDD);
-      ddContract = diamondDawn;
-      mineContract = diamondDawnMine;
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
       admin = owner;
       userA = user1;
       userB = user2;
     });
 
     it("should grant admin permissions to deployer", async () => {
-      const adminRole = await ddContract.DEFAULT_ADMIN_ROLE();
-      expect(await ddContract.hasRole(adminRole, admin.address)).to.be.true;
-      expect(await ddContract.hasRole(adminRole, ddContract.address)).to.be
-        .false;
-      expect(await ddContract.hasRole(adminRole, userA.address)).to.be.false;
-      expect(await ddContract.hasRole(adminRole, userB.address)).to.be.false;
+      const adminRole = await dd.DEFAULT_ADMIN_ROLE();
+      expect(await dd.hasRole(adminRole, admin.address)).to.be.true;
+      expect(await dd.hasRole(adminRole, dd.address)).to.be.false;
+      expect(await dd.hasRole(adminRole, userA.address)).to.be.false;
+      expect(await dd.hasRole(adminRole, userB.address)).to.be.false;
     });
 
     it("Should have correct ERC721 configurations", async () => {
-      expect(await ddContract.name()).to.equals("DiamondDawn");
-      expect(await ddContract.symbol()).to.equals("DD");
+      expect(await dd.name()).to.equals("DiamondDawn");
+      expect(await dd.symbol()).to.equals("DD");
     });
 
     it("Should set and initialize DiamondDawnMine", async () => {
-      expect(await ddContract.ddMine()).to.equal(mineContract.address);
-      expect(await mineContract.diamondDawn()).to.equal(ddContract.address);
-      expect(await mineContract.maxDiamonds()).to.equal(MAX_TOKENS);
-      expect(await mineContract.isInitialized()).to.be.true;
-      expect(await mineContract.isLocked()).to.be.false;
+      expect(await dd.ddMine()).to.equal(ddMine.address);
+      expect(await ddMine.diamondDawn()).to.equal(dd.address);
+      expect(await ddMine.maxDiamonds()).to.equal(MAX_TOKENS);
+      expect(await ddMine.isInitialized()).to.be.true;
+      expect(await ddMine.isLocked()).to.be.false;
     });
 
     it("Should set system stage to NO STAGE", async () => {
-      expect(await ddContract.stage()).to.equal(STAGE.NO_STAGE);
+      expect(await dd.stage()).to.equal(STAGE.NO_STAGE);
     });
 
     it("Should set royalties to 10%", async () => {
-      let [recipient, amount] = await ddContract.royaltyInfo(0, 100);
+      let [recipient, amount] = await dd.royaltyInfo(0, 100);
       expect(recipient).to.equal(admin.address);
       expect(amount).to.equal(10);
-      [recipient, amount] = await ddContract.royaltyInfo(250, 330);
+      [recipient, amount] = await dd.royaltyInfo(250, 330);
       expect(recipient).to.equal(admin.address);
       expect(amount).to.equal(33);
     });
@@ -82,8 +81,8 @@ describe("DiamondDawn", () => {
   });
 
   describe("mine", () => {
-    let ddContract;
-    let mineContract;
+    let dd;
+    let ddMine;
     let admin;
     let userA;
     let userB;
@@ -92,8 +91,8 @@ describe("DiamondDawn", () => {
       const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
         await loadFixture(deployDDWithMineRoughReady);
       await diamondDawn.setStage(STAGE.INVITE);
-      ddContract = diamondDawn;
-      mineContract = diamondDawnMine;
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
       admin = owner;
       userA = user1;
       userB = user2;
@@ -101,78 +100,74 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when wrong system stage", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.enter({ value: PRICE });
+      await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await setCutVideos(mineContract);
-      await completeAndSetStage(ddContract, STAGE.CUT);
-      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Wrong stage");
+      await setCutVideos(ddMine);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await setPolishedVideos(mineContract);
-      await completeAndSetStage(ddContract, STAGE.POLISH);
-      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Wrong stage");
+      await setPolishedVideos(ddMine);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await setRebornVideo(mineContract);
-      await completeAndSetStage(ddContract, STAGE.SHIP);
-      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Wrong stage");
+      await setRebornVideo(ddMine);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await ddContract.mine(tokenId); // success
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId); // success
     });
 
     it("Should REVERT when mine is not ready", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.MINE);
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
       // transform mine to be not ready
-      await mineContract.setStageVideos(STAGE.MINE, [
+      await ddMine.setStageVideos(STAGE.MINE, [
         { shape: ROUGH_SHAPE.MAKEABLE_1, video: "" },
       ]);
-      await expect(ddContract.mine(tokenId)).to.be.revertedWith(
-        `Stage not ready`
-      );
+      await expect(dd.mine(tokenId)).to.be.revertedWith(`Stage not ready`);
     });
 
     it("Should REVERT when token does not exist", async () => {
       const tokenId = 1;
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await expect(ddContract.mine(tokenId)).to.be.revertedWith(
+      await completeAndSetStage(dd, STAGE.MINE);
+      await expect(dd.mine(tokenId)).to.be.revertedWith(
         "ERC721: owner query for nonexistent token"
       );
     });
 
     it("Should REVERT when not token owner", async () => {
       const tokenId = 1;
-      await ddContract.connect(userA).enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Not owner");
-      await expect(ddContract.connect(userB).mine(tokenId)).to.be.revertedWith(
+      await dd.connect(userA).enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await expect(dd.mine(tokenId)).to.be.revertedWith("Not owner");
+      await expect(dd.connect(userB).mine(tokenId)).to.be.revertedWith(
         "Not owner"
       );
-      await ddContract.connect(userA).mine(tokenId);
+      await dd.connect(userA).mine(tokenId);
     });
 
     it("Should REVERT when wrong token stage", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await expect(ddContract.mine(tokenId));
-      await expect(ddContract.mine(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await expect(dd.mine(tokenId));
+      await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
     });
 
     it("Should delegate to mine", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await expect(ddContract.mine(tokenId))
-        .to.emit(mineContract, "Mine")
-        .withArgs(tokenId);
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await expect(dd.mine(tokenId)).to.emit(ddMine, "Mine").withArgs(tokenId);
     });
   });
 
   describe("cut", () => {
-    let ddContract;
-    let mineContract;
+    let dd;
+    let ddMine;
     let admin;
     let userA;
     let userB;
@@ -181,8 +176,8 @@ describe("DiamondDawn", () => {
       const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
         await loadFixture(deployDDWithMineCutReady);
       await diamondDawn.setStage(STAGE.INVITE);
-      ddContract = diamondDawn;
-      mineContract = diamondDawnMine;
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
       admin = owner;
       userA = user1;
       userB = user2;
@@ -190,88 +185,84 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when wrong system stage", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.enter({ value: PRICE });
+      await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong stage");
-      await ddContract.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.MINE);
+      await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.mine(tokenId);
 
-      await setPolishedVideos(mineContract);
-      await completeAndSetStage(ddContract, STAGE.POLISH);
-      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong stage");
+      await setPolishedVideos(ddMine);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await setRebornVideo(mineContract);
-      await completeAndSetStage(ddContract, STAGE.SHIP);
-      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong stage");
+      await setRebornVideo(ddMine);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await completeAndSetStage(ddContract, STAGE.CUT);
-      await ddContract.cut(tokenId); // success
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId); // success
     });
 
     it("Should REVERT when Cut is not ready", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.CUT);
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.CUT);
       // transform mine to be not ready
-      await mineContract.setStageVideos(STAGE.CUT, [
+      await ddMine.setStageVideos(STAGE.CUT, [
         { shape: SHAPE.RADIANT, video: "" },
       ]);
-      await expect(ddContract.cut(tokenId)).to.be.revertedWith(
-        "Stage not ready"
-      );
+      await expect(dd.cut(tokenId)).to.be.revertedWith("Stage not ready");
     });
 
     it("Should REVERT when token does not exist", async () => {
       const tokenId = 1;
-      await completeAndSetStage(ddContract, STAGE.CUT);
-      await expect(ddContract.cut(tokenId)).to.be.revertedWith(
+      await completeAndSetStage(dd, STAGE.CUT);
+      await expect(dd.cut(tokenId)).to.be.revertedWith(
         "ERC721: owner query for nonexistent token"
       );
     });
 
     it("Should REVERT when not token owner", async () => {
       const tokenId = 1;
-      await ddContract.connect(userA).enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await ddContract.connect(userA).mine(tokenId);
+      await dd.connect(userA).enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.connect(userA).mine(tokenId);
 
-      await completeAndSetStage(ddContract, STAGE.CUT);
-      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Not owner");
-      await expect(ddContract.connect(userB).cut(tokenId)).to.be.revertedWith(
+      await completeAndSetStage(dd, STAGE.CUT);
+      await expect(dd.cut(tokenId)).to.be.revertedWith("Not owner");
+      await expect(dd.connect(userB).cut(tokenId)).to.be.revertedWith(
         "Not owner"
       );
-      await ddContract.connect(userA).cut(tokenId);
+      await dd.connect(userA).cut(tokenId);
     });
 
     it("Should REVERT when wrong token stage", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.CUT);
-      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.CUT);
+      await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await ddContract.mine(tokenId);
-      await completeAndSetStage(ddContract, STAGE.CUT);
-      await ddContract.cut(tokenId);
-      await expect(ddContract.cut(tokenId)).to.be.revertedWith("Wrong stage");
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
     });
 
     it("Should delegate to mine", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await ddContract.mine(tokenId);
-      await completeAndSetStage(ddContract, STAGE.CUT);
-      await expect(ddContract.cut(tokenId))
-        .to.emit(mineContract, "Cut")
-        .withArgs(tokenId);
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await expect(dd.cut(tokenId)).to.emit(ddMine, "Cut").withArgs(tokenId);
     });
   });
 
   describe("polish", () => {
-    let ddContract;
-    let mineContract;
+    let dd;
+    let ddMine;
     let admin;
     let userA;
     let userB;
@@ -280,8 +271,8 @@ describe("DiamondDawn", () => {
       const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
         await loadFixture(deployDDWithMinePolishReady);
       await diamondDawn.setStage(STAGE.INVITE);
-      ddContract = diamondDawn;
-      mineContract = diamondDawnMine;
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
       admin = owner;
       userA = user1;
       userB = user2;
@@ -289,104 +280,88 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when wrong system stage", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await expect(ddContract.polish(tokenId)).to.be.revertedWith(
-        "Wrong stage"
-      );
+      await dd.enter({ value: PRICE });
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await ddContract.mine(tokenId);
-      await expect(ddContract.polish(tokenId)).to.be.revertedWith(
-        "Wrong stage"
-      );
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await completeAndSetStage(ddContract, STAGE.CUT);
-      await expect(ddContract.polish(tokenId)).to.be.revertedWith(
-        "Wrong stage"
-      );
-      await ddContract.cut(tokenId); // success
+      await completeAndSetStage(dd, STAGE.CUT);
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.cut(tokenId); // success
 
-      await completeAndSetStage(ddContract, STAGE.POLISH);
-      ddContract.polish(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      dd.polish(tokenId);
 
-      await setRebornVideo(mineContract);
-      await completeAndSetStage(ddContract, STAGE.SHIP);
-      await expect(ddContract.polish(tokenId)).to.be.revertedWith(
-        "Wrong stage"
-      );
+      await setRebornVideo(ddMine);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
     });
 
     it("Should REVERT when polish is not ready", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.POLISH);
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.POLISH);
       // transform polish to be not ready
-      await mineContract.setStageVideos(STAGE.POLISH, [
+      await ddMine.setStageVideos(STAGE.POLISH, [
         { shape: SHAPE.RADIANT, video: "" },
       ]);
-      await expect(ddContract.polish(tokenId)).to.be.revertedWith(
-        "Stage not ready"
-      );
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Stage not ready");
     });
 
     it("Should REVERT when token does not exist", async () => {
       const tokenId = 1;
-      await completeAndSetStage(ddContract, STAGE.POLISH);
-      await expect(ddContract.polish(tokenId)).to.be.revertedWith(
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await expect(dd.polish(tokenId)).to.be.revertedWith(
         "ERC721: owner query for nonexistent token"
       );
     });
 
     it("Should REVERT when not token owner", async () => {
       const tokenId = 1;
-      await ddContract.connect(userA).enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await ddContract.connect(userA).mine(tokenId);
-      await completeAndSetStage(ddContract, STAGE.CUT);
-      await ddContract.connect(userA).cut(tokenId);
+      await dd.connect(userA).enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.connect(userA).mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.connect(userA).cut(tokenId);
 
-      await completeAndSetStage(ddContract, STAGE.POLISH);
-      await expect(ddContract.polish(tokenId)).to.be.revertedWith("Not owner");
-      await expect(
-        ddContract.connect(userB).polish(tokenId)
-      ).to.be.revertedWith("Not owner");
-      await ddContract.connect(userA).polish(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Not owner");
+      await expect(dd.connect(userB).polish(tokenId)).to.be.revertedWith(
+        "Not owner"
+      );
+      await dd.connect(userA).polish(tokenId);
     });
 
     it("Should REVERT when wrong token stage", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.POLISH);
-      await expect(ddContract.polish(tokenId)).to.be.revertedWith(
-        "Wrong stage"
-      );
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await ddContract.mine(tokenId);
-      await completeAndSetStage(ddContract, STAGE.POLISH);
-      await expect(ddContract.polish(tokenId)).to.be.revertedWith(
-        "Wrong stage"
-      );
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await completeAndSetStage(ddContract, STAGE.CUT);
-      await ddContract.cut(tokenId);
-      await completeAndSetStage(ddContract, STAGE.POLISH);
-      await ddContract.polish(tokenId);
-      await expect(ddContract.polish(tokenId)).to.be.revertedWith(
-        "Wrong stage"
-      );
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
     });
 
     it("Should delegate to mine", async () => {
       const tokenId = 1;
-      await ddContract.enter({ value: PRICE });
-      await completeAndSetStage(ddContract, STAGE.MINE);
-      await ddContract.mine(tokenId);
-      await completeAndSetStage(ddContract, STAGE.CUT);
-      await ddContract.cut(tokenId);
-      await completeAndSetStage(ddContract, STAGE.POLISH);
-      await expect(ddContract.polish(tokenId))
-        .to.emit(mineContract, "Polish")
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await expect(dd.polish(tokenId))
+        .to.emit(ddMine, "Polish")
         .withArgs(tokenId);
     });
   });
