@@ -94,14 +94,14 @@ async function prepareMineEntranceReady(mineContract) {
   await setEnterMineVideo(mineContract);
 }
 
-async function prepareRoughReady(mineContract, numDiamonds) {
+async function prepareMineReady(mineContract, numDiamonds) {
   await prepareMineEntranceReady(mineContract);
   await populateDiamonds(mineContract, numDiamonds);
   await setRoughVideos(mineContract);
 }
 
 async function prepareCutReady(mineContract, numDiamonds) {
-  await prepareRoughReady(mineContract, numDiamonds);
+  await prepareMineReady(mineContract, numDiamonds);
   await setCutVideos(mineContract);
 }
 
@@ -499,7 +499,7 @@ module.exports = {
   setRebornVideo,
   populateDiamonds,
   prepareMineEntranceReady,
-  prepareRoughReady,
+  prepareMineReady,
   prepareCutReady,
   preparePolishReady,
   prepareRebirthReady,
