@@ -80,7 +80,7 @@ const DIAMOND_OPTIONS = [
   },
 ];
 
-const DIAMOND_COUNT = 20;
+const DIAMOND_COUNT = 333;
 
 const DIAMONDS = [];
 for (let i = 0; i < DIAMOND_COUNT; i++) {
