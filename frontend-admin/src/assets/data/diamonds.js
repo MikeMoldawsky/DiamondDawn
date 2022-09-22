@@ -314,4 +314,14 @@ const DIAMONDS_INFO = [
   },
 ];
 
-export default DIAMONDS_INFO;
+const DIAMOND_COUNT = 333;
+
+const DIAMONDS = [];
+for (let i = 0; i < DIAMOND_COUNT; i++) {
+  DIAMONDS.push({
+    ...DIAMONDS_INFO[i % 4],
+    number: 1000000000 + i,
+  });
+}
+
+export default DIAMONDS;
