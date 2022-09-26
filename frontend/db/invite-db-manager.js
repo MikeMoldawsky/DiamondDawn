@@ -1,5 +1,9 @@
 const InviteModel = require("./models/InviteModel");
+const SignatureModel = require("./models/SignatureModel");
 const add = require("date-fns/add");
+const ethers = require("ethers");
+
+const signer = new ethers.Wallet(process.env.SIGNER_PRIVATE_KEY);
 
 async function getInviteObjectById(inviteId) {
   try {
@@ -53,21 +57,44 @@ async function openInvite(inviteId, country, state) {
   }
 }
 
-async function useInvite(inviteId, ethAddress) {
-  try {
-    // check that the invite exist and not revoked or expired
-    const invite = await getInviteObjectById(inviteId);
-    if (!invite || invite.revoked) {
-      console.log("useInvite - invite not found or revoked", { inviteId });
-      return null;
-    }
-
-    await InviteModel.findOneAndUpdate({ _id: inviteId }, { ethAddress });
-
-    return await getInviteObjectById(inviteId);
-  } catch (e) {
-    console.log(`Failed to create invite`, e);
+async function signInvite(inviteId, address) {
+  // check that the invite exist and not revoked or expired
+  const invite = await getInviteObjectById(inviteId);
+  if (!invite || invite.revoked) {
+    throw new Error(`signInvite failed - invite not found or revoked - "${inviteId}"`)
   }
+  if (!ethers.utils.isAddress(address)) {
+    throw new Error(`signInvite failed - invalid Ethereum address - "${address}"`)
+  }
+
+  let signature = await SignatureModel.findOne({ address})
+  let sig
+  if (signature) {
+    sig = signature.sig;
+  }
+  else {
+    // Convert provided `ethAddress` to correct checksum address format.
+    // This step is critical as signing an incorrectly formatted wallet address
+    // can result in invalid signatures when it comes to minting.
+    let addr = ethers.utils.getAddress(address);
+
+    // Create the message to be signed using the checksum formatted `addr` value.
+    let message = ethers.utils.arrayify(`0x${addr.slice(2).padStart(64, '0')}`);
+
+    // Sign the message using `signer`.
+    sig = await signer.signMessage(message);
+
+    // Save Signature to DB
+    await SignatureModel.create({ address, sig })
+
+    // Save ethAddress and n invite
+    await InviteModel.findOneAndUpdate({ _id: inviteId }, { ethAddress: address });
+  }
+
+  return {
+    invite: await getInviteObjectById(inviteId),
+    signature: sig,
+  };
 }
 
 async function confirmInviteUsed(inviteId) {
@@ -92,6 +119,6 @@ async function confirmInviteUsed(inviteId) {
 module.exports = {
   getInviteObjectById,
   openInvite,
-  useInvite,
+  signInvite,
   confirmInviteUsed,
 };

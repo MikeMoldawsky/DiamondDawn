@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "./interface/IDiamondDawn.sol";
 import "./interface/IDiamondDawnAdmin.sol";
 import "./interface/IDiamondDawnMine.sol";
@@ -28,6 +29,7 @@ contract DiamondDawn is
     IDiamondDawnAdmin
 {
     using EnumerableSet for EnumerableSet.UintSet;
+    using ECDSA for bytes32;
 
     uint public constant PRICE = 0.002 ether; // TODO: change to 3.33eth
     uint public constant PRICE_WEDDING = 0.003 ether; // TODO: change to 3.66eth
@@ -41,13 +43,15 @@ contract DiamondDawn is
     uint16 private _tokenIdCounter;
     mapping(address => EnumerableSet.UintSet) private _ownerToShippedIds;
 
-    constructor(address mine_, uint16 maxEntrance_) ERC721("DiamondDawn", "DD") {
+    address public signer = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
+
+    constructor(address mine_, uint16 maxEntrance_, address signer_) ERC721("DiamondDawn", "DD") {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setDefaultRoyalty(_msgSender(), 1000); // 10 %
         ddMine = IDiamondDawnMine(mine_);
         // TODO: remove maxEntrance_ once staging is deploying 333 automatically.
         ddMine.initialize(maxEntrance_);
-        // diamondDawnMine.initialize(MAX_ENTRANCE);
+//        signer = signer_;
     }
 
     /**********************          Modifiers          ************************/
@@ -92,12 +96,12 @@ contract DiamondDawn is
 
     /**********************     External Functions     ************************/
 
-    function enter() external payable costs(PRICE) {
-        _enter();
+    function enter(bytes calldata signature) external payable costs(PRICE) {
+        _enter(signature);
     }
 
-    function enterWedding() external payable costs(PRICE_WEDDING) {
-        _enter();
+    function enterWedding(bytes calldata signature) external payable costs(PRICE_WEDDING) {
+        _enter(signature);
     }
 
     function mine(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.MINE) {
@@ -190,7 +194,17 @@ contract DiamondDawn is
 
     /**********************     Private Functions     ************************/
 
-    function _enter() private isActiveStage(Stage.INVITE) isNotFull {
+    function _recoverSigner(bytes calldata signature) private view returns (bool) {
+        return signer == keccak256(abi.encodePacked(
+                "\x19Ethereum Signed Message:\n32",
+                bytes32(uint256(uint160(msg.sender)))
+            )).recover(signature);
+    }
+
+    function _enter(bytes calldata signature) private isActiveStage(Stage.INVITE) isNotFull {
+
+        require(_recoverSigner(signature), "Address not allowed to mint");
+
         uint256 tokenId = ++_tokenIdCounter;
         ddMine.enter(tokenId);
         _safeMint(_msgSender(), tokenId);
