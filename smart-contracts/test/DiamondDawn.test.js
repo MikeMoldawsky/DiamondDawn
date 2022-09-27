@@ -41,15 +41,19 @@ describe("DiamondDawn", () => {
     let admin;
     let userA;
     let userB;
+    let sigA;
+    let sigB;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+      const { diamondDawn, diamondDawnMine, owner, user1, user2, sig1, sig2 } =
         await loadFixture(deployDD);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
       userA = user1;
       userB = user2;
+      sigA = sig1;
+      sigB = sig2;
     });
 
     it("should grant admin permissions to deployer", async () => {
@@ -93,11 +97,11 @@ describe("DiamondDawn", () => {
     });
 
     it("Should not allow to enter mine when wrong stage", async () => {
-      await expect(dd.enter({ value: PRICE })).to.be.revertedWith(
+      await expect(dd.enter(sigA, { value: PRICE })).to.be.revertedWith(
         "Wrong stage"
       );
       await expect(
-        dd.enterWedding({ value: PRICE_WEDDING })
+        dd.enterWedding(sigA, { value: PRICE_WEDDING })
       ).to.be.revertedWith("Wrong stage");
     });
   });
@@ -107,8 +111,11 @@ describe("DiamondDawn", () => {
     let ddMine;
     let admin;
     let user;
+    let adminSig;
+    let userSig;
+
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1 } = await loadFixture(
+      const { diamondDawn, diamondDawnMine, owner, ownerSig, user1, sig1 } = await loadFixture(
         deployDDWithRebirthReady
       );
       await diamondDawn.setStage(STAGE.INVITE);
@@ -116,21 +123,23 @@ describe("DiamondDawn", () => {
       ddMine = diamondDawnMine;
       admin = owner;
       user = user1;
+      adminSig = ownerSig;
+      userSig = sig1;
     });
 
     it("Should REVERT when price is wrong", async () => {
       await expect(
-        dd.enter({ value: PRICE.add(parseEther("0.0001")) })
+        dd.enter(adminSig, { value: PRICE.add(parseEther("0.0001")) })
       ).to.be.revertedWith(`Cost is: ${PRICE.toString()}`);
       await expect(
-        dd.enter({ value: PRICE.sub(parseEther("0.0001")) })
+        dd.enter(adminSig, { value: PRICE.sub(parseEther("0.0001")) })
       ).to.be.revertedWith(`Cost is: ${PRICE.toString()}`);
 
       await expect(
-        dd.enterWedding({ value: PRICE.add(parseEther("0.0001")) })
+        dd.enterWedding(adminSig, { value: PRICE.add(parseEther("0.0001")) })
       ).to.be.revertedWith(`Cost is: ${PRICE_WEDDING.toString()}`);
       await expect(
-        dd.enterWedding({ value: PRICE.sub(parseEther("0.0001")) })
+        dd.enterWedding(adminSig, { value: PRICE.sub(parseEther("0.0001")) })
       ).to.be.revertedWith(`Cost is: ${PRICE_WEDDING.toString()}`);
     });
 
@@ -139,11 +148,11 @@ describe("DiamondDawn", () => {
       for (const stage of notAllowedStages) {
         await completeAndSetStage(dd, stage);
         expect(await dd.stage()).to.equal(stage);
-        await expect(dd.enter({ value: PRICE })).to.be.revertedWith(
+        await expect(dd.enter(adminSig, { value: PRICE })).to.be.revertedWith(
           "Wrong stage"
         );
         await expect(
-          dd.enterWedding({ value: PRICE_WEDDING })
+          dd.enterWedding(adminSig, { value: PRICE_WEDDING })
         ).to.be.revertedWith("Wrong stage");
       }
     });
@@ -152,23 +161,23 @@ describe("DiamondDawn", () => {
       await dd.completeStage(STAGE.INVITE);
       expect(await dd.stage()).to.equal(STAGE.INVITE);
       expect(await dd.isActive()).to.be.false;
-      await expect(dd.enter({ value: PRICE })).to.be.revertedWith(
+      await expect(dd.enter(adminSig, { value: PRICE })).to.be.revertedWith(
         "Stage is inactive"
       );
       await expect(
-        dd.enterWedding({ value: PRICE_WEDDING })
+        dd.enterWedding(adminSig, { value: PRICE_WEDDING })
       ).to.be.revertedWith("Stage is inactive");
     });
 
     it("Should REVERT when mine is full", async () => {
       await Promise.all(
-        _.range(MAX_TOKENS).map((_) => dd.enter({ value: PRICE }))
+        _.range(MAX_TOKENS).map((_) => dd.enter(adminSig, { value: PRICE }))
       );
-      await expect(dd.enter({ value: PRICE })).to.be.revertedWith(
+      await expect(dd.enter(adminSig, { value: PRICE })).to.be.revertedWith(
         "Max capacity"
       );
       await expect(
-        dd.enterWedding({ value: PRICE_WEDDING })
+        dd.enterWedding(adminSig, { value: PRICE_WEDDING })
       ).to.be.revertedWith("Max capacity");
     });
 
@@ -177,32 +186,32 @@ describe("DiamondDawn", () => {
       await ddMine.setStageVideos(STAGE.INVITE, [
         { shape: NO_SHAPE_NUM, video: "" },
       ]);
-      await expect(dd.enter({ value: PRICE })).to.be.revertedWith(
+      await expect(dd.enter(adminSig, { value: PRICE })).to.be.revertedWith(
         "Stage not ready"
       );
 
       await expect(
-        dd.enterWedding({ value: PRICE_WEDDING })
+        dd.enterWedding(adminSig, { value: PRICE_WEDDING })
       ).to.be.revertedWith("Stage not ready");
     });
 
     it("Should cost 3.33 and add it to contract's balance", async () => {
       expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       expect(await ethers.provider.getBalance(dd.address)).to.equal(PRICE);
-      await dd.enterWedding({ value: PRICE_WEDDING });
+      await dd.enterWedding(adminSig, { value: PRICE_WEDDING });
       expect(await ethers.provider.getBalance(dd.address)).to.equal(
         PRICE.add(PRICE_WEDDING)
       );
     });
 
     it("Should mint to owner, emit events & have the right token ID", async () => {
-      await expect(dd.connect(user).enter({ value: PRICE }))
+      await expect(dd.connect(user).enter(userSig, { value: PRICE }))
         .to.emit(dd, "Transfer")
         .withArgs("0x0000000000000000000000000000000000000000", user.address, 1)
         .to.emit(ddMine, "Enter")
         .withArgs(1);
-      await expect(dd.connect(admin).enterWedding({ value: PRICE_WEDDING }))
+      await expect(dd.connect(admin).enterWedding(adminSig, { value: PRICE_WEDDING }))
         .to.emit(dd, "Transfer")
         .withArgs(
           "0x0000000000000000000000000000000000000000",
@@ -216,6 +225,8 @@ describe("DiamondDawn", () => {
       expect(await dd.balanceOf(user.address)).to.equal(1);
       expect(await dd.balanceOf(admin.address)).to.equal(1);
     });
+
+    // TODO - test signatures
   });
 
   describe("mine", () => {
@@ -224,9 +235,12 @@ describe("DiamondDawn", () => {
     let admin;
     let userA;
     let userB;
+    let adminSig;
+    let sigA;
+    let sigB;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+      const { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 } =
         await loadFixture(deployDDWithMineReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
@@ -234,11 +248,14 @@ describe("DiamondDawn", () => {
       admin = owner;
       userA = user1;
       userB = user2;
+      adminSig = ownerSig;
+      sigA = sig1;
+      sigB = sig2;
     });
 
     it("Should REVERT when wrong system stage", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
 
       await setCutVideos(ddMine);
@@ -259,7 +276,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when mine is not ready", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       // transform mine to be not ready
       await ddMine.setStageVideos(STAGE.MINE, [
@@ -278,7 +295,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when not token owner", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter({ value: PRICE });
+      await dd.connect(userA).enter(sigA, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await expect(dd.mine(tokenId)).to.be.revertedWith("Not owner");
       await expect(dd.connect(userB).mine(tokenId)).to.be.revertedWith(
@@ -289,7 +306,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when wrong token stage", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await expect(dd.mine(tokenId));
       await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
@@ -297,7 +314,7 @@ describe("DiamondDawn", () => {
 
     it("Should delegate to mine", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await expect(dd.mine(tokenId)).to.emit(ddMine, "Mine").withArgs(tokenId);
     });
@@ -309,9 +326,12 @@ describe("DiamondDawn", () => {
     let admin;
     let userA;
     let userB;
+    let adminSig;
+    let sigA;
+    let sigB;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+      const { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 } =
         await loadFixture(deployDDWithCutReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
@@ -319,11 +339,14 @@ describe("DiamondDawn", () => {
       admin = owner;
       userA = user1;
       userB = user2;
+      adminSig = ownerSig;
+      sigA = sig1;
+      sigB = sig2;
     });
 
     it("Should REVERT when wrong system stage", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
 
       await completeAndSetStage(dd, STAGE.MINE);
@@ -344,7 +367,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when Cut is not ready", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.CUT);
       // transform mine to be not ready
       await ddMine.setStageVideos(STAGE.CUT, [
@@ -363,7 +386,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when not token owner", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter({ value: PRICE });
+      await dd.connect(userA).enter(sigA, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await dd.connect(userA).mine(tokenId);
 
@@ -377,7 +400,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when wrong token stage", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.CUT);
       await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
 
@@ -390,7 +413,7 @@ describe("DiamondDawn", () => {
 
     it("Should delegate to mine", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await dd.mine(tokenId);
       await completeAndSetStage(dd, STAGE.CUT);
@@ -404,9 +427,12 @@ describe("DiamondDawn", () => {
     let admin;
     let userA;
     let userB;
+    let adminSig;
+    let sigA;
+    let sigB;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+      const { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 } =
         await loadFixture(deployDDWithPolishReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
@@ -414,11 +440,14 @@ describe("DiamondDawn", () => {
       admin = owner;
       userA = user1;
       userB = user2;
+      adminSig = ownerSig;
+      sigA = sig1;
+      sigB = sig2;
     });
 
     it("Should REVERT when wrong system stage", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
 
       await completeAndSetStage(dd, STAGE.MINE);
@@ -439,7 +468,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when polish is not ready", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.POLISH);
       // transform polish to be not ready
       await ddMine.setStageVideos(STAGE.POLISH, [
@@ -458,7 +487,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when not token owner", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter({ value: PRICE });
+      await dd.connect(userA).enter(sigA, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await dd.connect(userA).mine(tokenId);
       await completeAndSetStage(dd, STAGE.CUT);
@@ -474,7 +503,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when wrong token stage", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.POLISH);
       await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
 
@@ -492,7 +521,7 @@ describe("DiamondDawn", () => {
 
     it("Should delegate to mine", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await dd.mine(tokenId);
       await completeAndSetStage(dd, STAGE.CUT);

@@ -5,7 +5,7 @@ const { setAllVideoUrls } = require("./MineTestUtils");
 const MAX_TOKENS = 10;
 
 async function deployMine() {
-  const [owner, user1, user2] = await ethers.getSigners();
+  const [owner, user1, user2, signer] = await ethers.getSigners();
   const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
   const diamondDawnMine = await DiamondDawnMine.deploy();
   await diamondDawnMine.deployed();
@@ -14,6 +14,7 @@ async function deployMine() {
     owner,
     user1,
     user2,
+    signer,
   };
 }
 

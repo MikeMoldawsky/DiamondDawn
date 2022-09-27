@@ -44,14 +44,14 @@ contract DiamondDawn is
     uint16 private _numTokens;
     mapping(address => EnumerableSet.UintSet) private _ownerToShippedIds;
 
-    address public signer;
+    address private _signer;
 
     constructor(
         address mine_,
         uint16 maxEntrance_,
         address signer_
     ) ERC721("DiamondDawn", "DD") {
-        signer = signer_;
+        _signer = signer_;
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setDefaultRoyalty(_msgSender(), 1000); // 10 %
         ddMine = IDiamondDawnMine(mine_);
@@ -201,9 +201,9 @@ contract DiamondDawn is
 
     function _recoverSigner(bytes calldata signature) private view returns (bool) {
         return
-            signer ==
+            _signer ==
             keccak256(
-                abi.encodePacked("\x19Ethereum Signed Message:\n32", bytes32(uint256(uint160(msg.sender))))
+                abi.encodePacked("\x19Ethereum Signed Message:\n32", bytes32(uint256(uint160(_msgSender()))))
             ).recover(signature);
     }
 
