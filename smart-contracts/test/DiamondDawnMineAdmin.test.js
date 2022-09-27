@@ -137,7 +137,7 @@ describe("Diamond Dawn Mine Admin", () => {
 
     it("should REVERT when token doesn't exist", async () => {
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
-        "Wrong stage"
+        "Wrong shipment state"
       );
     });
 
@@ -151,19 +151,19 @@ describe("Diamond Dawn Mine Admin", () => {
     it("should REVERT when NOT POLISHED or REBORN", async () => {
       await mineContract.eruption([DIAMOND]);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
-        "Wrong stage"
+        "Wrong shipment state"
       );
       await mineContract.connect(diamondDawn).enter(tokenId);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
-        "Wrong stage"
+        "Wrong shipment state"
       );
       await mineContract.connect(diamondDawn).mine(tokenId);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
-        "Wrong stage"
+        "Wrong shipment state"
       );
       await mineContract.connect(diamondDawn).cut(tokenId);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
-        "Wrong stage"
+        "Wrong shipment state"
       );
       await mineContract.connect(diamondDawn).polish(tokenId);
       await assertPolishedMetadata(
