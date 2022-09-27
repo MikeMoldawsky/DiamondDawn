@@ -23,6 +23,7 @@ const {
   MAX_TOKENS,
   deployDDWithRebirthReady,
 } = require("./utils/DeployDDUtils");
+const { getSignature } = require("./utils/SignatureUtils");
 const _ = require("lodash");
 const { ethers } = require("hardhat");
 
@@ -41,29 +42,17 @@ describe("DiamondDawn", () => {
     let admin;
     let userA;
     let userB;
-    let sigA;
-    let sigB;
     let adminSig;
 
     beforeEach(async () => {
-      const {
-        diamondDawn,
-        diamondDawnMine,
-        owner,
-        user1,
-        user2,
-        ownerSig,
-        sig1,
-        sig2,
-      } = await loadFixture(deployDD);
+      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+        await loadFixture(deployDD);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
       userA = user1;
       userB = user2;
-      adminSig = ownerSig;
-      sigA = sig1;
-      sigB = sig2;
+      adminSig = getSignature(signer, admin);
     });
 
     it("should grant admin permissions to deployer", async () => {
@@ -134,15 +123,15 @@ describe("DiamondDawn", () => {
     let userSig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, ownerSig, user1, sig1 } =
+      const { diamondDawn, diamondDawnMine, owner, user1, signer } =
         await loadFixture(deployDDWithRebirthReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
       user = user1;
-      adminSig = ownerSig;
-      userSig = sig1;
+      adminSig = getSignature(signer, admin);
+      userSig = getSignature(signer, user);
     });
 
     it("Should REVERT when price is wrong", async () => {
@@ -257,28 +246,18 @@ describe("DiamondDawn", () => {
     let userB;
     let adminSig;
     let sigA;
-    let sigB;
 
     beforeEach(async () => {
-      const {
-        diamondDawn,
-        diamondDawnMine,
-        owner,
-        user1,
-        user2,
-        ownerSig,
-        sig1,
-        sig2,
-      } = await loadFixture(deployDDWithMineReady);
+      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+        await loadFixture(deployDDWithMineReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
       userA = user1;
       userB = user2;
-      adminSig = ownerSig;
-      sigA = sig1;
-      sigB = sig2;
+      adminSig = getSignature(signer, admin);
+      sigA = getSignature(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
@@ -380,28 +359,18 @@ describe("DiamondDawn", () => {
     let userB;
     let adminSig;
     let sigA;
-    let sigB;
 
     beforeEach(async () => {
-      const {
-        diamondDawn,
-        diamondDawnMine,
-        owner,
-        user1,
-        user2,
-        ownerSig,
-        sig1,
-        sig2,
-      } = await loadFixture(deployDDWithCutReady);
+      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+        await loadFixture(deployDDWithCutReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
       userA = user1;
       userB = user2;
-      adminSig = ownerSig;
-      sigA = sig1;
-      sigB = sig2;
+      adminSig = getSignature(signer, admin);
+      sigA = getSignature(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
@@ -500,28 +469,18 @@ describe("DiamondDawn", () => {
     let userB;
     let adminSig;
     let sigA;
-    let sigB;
 
     beforeEach(async () => {
-      const {
-        diamondDawn,
-        diamondDawnMine,
-        owner,
-        user1,
-        user2,
-        ownerSig,
-        sig1,
-        sig2,
-      } = await loadFixture(deployDDWithPolishReady);
+      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+        await loadFixture(deployDDWithPolishReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
       userA = user1;
       userB = user2;
-      adminSig = ownerSig;
-      sigA = sig1;
-      sigB = sig2;
+      adminSig = getSignature(signer, admin);
+      sigA = getSignature(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
