@@ -83,6 +83,7 @@ describe("DiamondDawn", () => {
       // expect(await dd.MAX_ENTRANCE()).to.equal(333); // TODO: uncomment
       expect(await dd.isLocked()).to.be.false;
       expect(await dd.isActive()).to.be.false;
+      expect(await dd.paused()).to.be.false;
       expect(await dd.stage()).to.equal(STAGE.NO_STAGE);
       expect(await dd.ddMine()).to.equal(ddMine.address);
     });
@@ -96,7 +97,15 @@ describe("DiamondDawn", () => {
       expect(amount).to.equal(33);
     });
 
-    it("Should not allow to enter mine when wrong stage", async () => {
+    it("Should support interfaces", async () => {
+      expect(await dd.supportsInterface(`0x80ac58cd`)).to.be.true; // ERC721: NFT
+      expect(await dd.supportsInterface(`0x5b5e139f`)).to.be.true; // ERC721Metadata: NFT name, symbol & tokenURI
+      expect(await dd.supportsInterface(`0x2a55205a`)).to.be.true; // ERC2981: Royalties
+      // TODO: check if it's smart to add ERC721Enumerable.
+      // expect(await dd.supportsInterface(`0x780e9d63`)).to.be.true; // ERC721Enumerable: totalSupply etc.
+    });
+
+    it("Should not allow to enter mine", async () => {
       await expect(dd.enter(sigA, { value: PRICE })).to.be.revertedWith(
         "Wrong stage"
       );
@@ -262,6 +271,32 @@ describe("DiamondDawn", () => {
       sigB = sig2;
     });
 
+    it("Should REVERT when not token owner", async () => {
+      const tokenId = 1;
+      await dd.connect(userA).enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await expect(dd.mine(tokenId)).to.be.revertedWith("Not owner");
+      await expect(dd.connect(userB).mine(tokenId)).to.be.revertedWith(
+        "Not owner"
+      );
+      await dd.connect(userA).mine(tokenId);
+    });
+
+    it("Should REVERT when not token owner after transfer", async () => {
+      const tokenId = 1;
+      await dd.connect(userA).enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      expect(await dd.balanceOf(userA.address)).to.equal(1);
+      await dd
+        .connect(userA)
+        .transferFrom(userA.address, userB.address, tokenId);
+      expect(await dd.balanceOf(userA.address)).to.equal(0);
+      await expect(dd.connect(userA).mine(tokenId)).to.be.revertedWith(
+        "Not owner"
+      );
+      await dd.connect(userB).mine(tokenId);
+    });
+
     it("Should REVERT when wrong system stage", async () => {
       const tokenId = 1;
       await dd.enter(adminSig, { value: PRICE });
@@ -283,6 +318,15 @@ describe("DiamondDawn", () => {
       await dd.mine(tokenId); // success
     });
 
+    it("Should REVERT when stage is NOT active", async () => {
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.completeStage(STAGE.MINE);
+      expect(await dd.stage()).to.equal(STAGE.MINE);
+      expect(await dd.isActive()).to.be.false;
+      await expect(dd.mine(1)).to.be.revertedWith("Stage is inactive");
+    });
+
     it("Should REVERT when mine is not ready", async () => {
       const tokenId = 1;
       await dd.enter(adminSig, { value: PRICE });
@@ -302,23 +346,12 @@ describe("DiamondDawn", () => {
       );
     });
 
-    it("Should REVERT when not token owner", async () => {
+    it("Should REVERT when can NOT process token", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter(sigA, { value: PRICE });
-      await completeAndSetStage(dd, STAGE.MINE);
-      await expect(dd.mine(tokenId)).to.be.revertedWith("Not owner");
-      await expect(dd.connect(userB).mine(tokenId)).to.be.revertedWith(
-        "Not owner"
-      );
-      await dd.connect(userA).mine(tokenId);
-    });
-
-    it("Should REVERT when wrong token stage", async () => {
-      const tokenId = 1;
-      await dd.enter(adminSig, { value: PRICE });
+      await dd.enter({ value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await expect(dd.mine(tokenId));
-      await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
+      await expect(dd.mine(tokenId)).to.be.revertedWith("Can't process");
     });
 
     it("Should delegate to mine", async () => {
@@ -361,6 +394,20 @@ describe("DiamondDawn", () => {
       sigB = sig2;
     });
 
+    it("Should REVERT when not token owner", async () => {
+      const tokenId = 1;
+      await dd.connect(userA).enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.connect(userA).mine(tokenId);
+
+      await completeAndSetStage(dd, STAGE.CUT);
+      await expect(dd.cut(tokenId)).to.be.revertedWith("Not owner");
+      await expect(dd.connect(userB).cut(tokenId)).to.be.revertedWith(
+        "Not owner"
+      );
+      await dd.connect(userA).cut(tokenId);
+    });
+
     it("Should REVERT when wrong system stage", async () => {
       const tokenId = 1;
       await dd.enter(adminSig, { value: PRICE });
@@ -382,6 +429,17 @@ describe("DiamondDawn", () => {
       await dd.cut(tokenId); // success
     });
 
+    it("Should REVERT when stage is NOT active", async () => {
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(1);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.completeStage(STAGE.CUT);
+      expect(await dd.stage()).to.equal(STAGE.CUT);
+      expect(await dd.isActive()).to.be.false;
+      await expect(dd.cut(1)).to.be.revertedWith("Stage is inactive");
+    });
+
     it("Should REVERT when Cut is not ready", async () => {
       const tokenId = 1;
       await dd.enter(adminSig, { value: PRICE });
@@ -401,31 +459,17 @@ describe("DiamondDawn", () => {
       );
     });
 
-    it("Should REVERT when not token owner", async () => {
+    it("Should REVERT when can NOT process token", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter(sigA, { value: PRICE });
-      await completeAndSetStage(dd, STAGE.MINE);
-      await dd.connect(userA).mine(tokenId);
-
+      await dd.enter({ value: PRICE });
       await completeAndSetStage(dd, STAGE.CUT);
-      await expect(dd.cut(tokenId)).to.be.revertedWith("Not owner");
-      await expect(dd.connect(userB).cut(tokenId)).to.be.revertedWith(
-        "Not owner"
-      );
-      await dd.connect(userA).cut(tokenId);
-    });
-
-    it("Should REVERT when wrong token stage", async () => {
-      const tokenId = 1;
-      await dd.enter(adminSig, { value: PRICE });
-      await completeAndSetStage(dd, STAGE.CUT);
-      await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
+      await expect(dd.cut(tokenId)).to.be.revertedWith("Can't process");
 
       await completeAndSetStage(dd, STAGE.MINE);
       await dd.mine(tokenId);
       await completeAndSetStage(dd, STAGE.CUT);
       await dd.cut(tokenId);
-      await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
+      await expect(dd.cut(tokenId)).to.be.revertedWith("Can't process");
     });
 
     it("Should delegate to mine", async () => {
@@ -470,6 +514,22 @@ describe("DiamondDawn", () => {
       sigB = sig2;
     });
 
+    it("Should REVERT when not token owner", async () => {
+      const tokenId = 1;
+      await dd.connect(userA).enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.connect(userA).mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.connect(userA).cut(tokenId);
+
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Not owner");
+      await expect(dd.connect(userB).polish(tokenId)).to.be.revertedWith(
+        "Not owner"
+      );
+      await dd.connect(userA).polish(tokenId);
+    });
+
     it("Should REVERT when wrong system stage", async () => {
       const tokenId = 1;
       await dd.enter(adminSig, { value: PRICE });
@@ -491,6 +551,19 @@ describe("DiamondDawn", () => {
       await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
     });
 
+    it("Should REVERT when stage is NOT active", async () => {
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(1);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(1);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.completeStage(STAGE.POLISH);
+      expect(await dd.stage()).to.equal(STAGE.POLISH);
+      expect(await dd.isActive()).to.be.false;
+      await expect(dd.polish(1)).to.be.revertedWith("Stage is inactive");
+    });
+
     it("Should REVERT when polish is not ready", async () => {
       const tokenId = 1;
       await dd.enter(adminSig, { value: PRICE });
@@ -510,38 +583,22 @@ describe("DiamondDawn", () => {
       );
     });
 
-    it("Should REVERT when not token owner", async () => {
+    it("Should REVERT when can NOT process token", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter(sigA, { value: PRICE });
-      await completeAndSetStage(dd, STAGE.MINE);
-      await dd.connect(userA).mine(tokenId);
-      await completeAndSetStage(dd, STAGE.CUT);
-      await dd.connect(userA).cut(tokenId);
-
+      await dd.enter({ value: PRICE });
       await completeAndSetStage(dd, STAGE.POLISH);
-      await expect(dd.polish(tokenId)).to.be.revertedWith("Not owner");
-      await expect(dd.connect(userB).polish(tokenId)).to.be.revertedWith(
-        "Not owner"
-      );
-      await dd.connect(userA).polish(tokenId);
-    });
-
-    it("Should REVERT when wrong token stage", async () => {
-      const tokenId = 1;
-      await dd.enter(adminSig, { value: PRICE });
-      await completeAndSetStage(dd, STAGE.POLISH);
-      await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Can't process");
 
       await completeAndSetStage(dd, STAGE.MINE);
       await dd.mine(tokenId);
       await completeAndSetStage(dd, STAGE.POLISH);
-      await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Can't process");
 
       await completeAndSetStage(dd, STAGE.CUT);
       await dd.cut(tokenId);
       await completeAndSetStage(dd, STAGE.POLISH);
       await dd.polish(tokenId);
-      await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
+      await expect(dd.polish(tokenId)).to.be.revertedWith("Can't process");
     });
 
     it("Should delegate to mine", async () => {
@@ -565,6 +622,23 @@ describe("DiamondDawn", () => {
     // expect(await dd.balanceOf(user.address)).to.equal(1);
     // expect(await dd.balanceOf(admin.address)).to.equal(1);
     // TODO: tests - important
+
+    it("Should REVERT when stage is NOT active", async () => {
+      // await dd.enter({ value: PRICE });
+      // await completeAndSetStage(dd, STAGE.MINE);
+      // await dd.mine(1);
+      // await completeAndSetStage(dd, STAGE.CUT);
+      // await dd.cut(1);
+      // await completeAndSetStage(dd, STAGE.POLISH);
+      // await dd.polish(1);
+      // await completeAndSetStage(dd, STAGE.SHIP);
+      // await dd.completeStage(STAGE.SHIP);
+      // expect(await dd.stage()).to.equal(STAGE.SHIP);
+      // expect(await dd.isActive()).to.be.false;
+      // await expect(dd.ship(1)).to.be.revertedWith(
+      //     "Stage is inactive"
+      // );
+    });
   });
 
   describe("rebirth", () => {
