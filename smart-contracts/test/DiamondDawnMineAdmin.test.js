@@ -17,7 +17,7 @@ const {
 } = require("./utils/MineTestUtils");
 const { DIAMOND } = require("./utils/Diamonds");
 const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
-const { deployMine } = require("./utils/DeployContractTestUtils");
+const { deployMine } = require("./utils/DeployMineUtils");
 
 describe("Diamond Dawn Mine Admin", () => {
   describe("Deployed", () => {

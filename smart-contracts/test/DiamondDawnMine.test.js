@@ -23,7 +23,7 @@ const {
   deployMine,
   deployReadyMine,
   deployInitializedMine,
-} = require("./utils/DeployContractTestUtils");
+} = require("./utils/DeployMineUtils");
 
 describe("Diamond Dawn Mine", () => {
   describe("initialized", () => {

@@ -8,6 +8,7 @@ const {
   ROUGH_SHAPE,
   SHAPE,
   ALL_STAGES,
+  NO_SHAPE_NUM,
 } = require("./utils/EnumConverterUtils");
 const {
   setCutVideos,
@@ -21,8 +22,9 @@ const {
   deployDDWithPolishReady,
   MAX_TOKENS,
   deployDDWithRebirthReady,
-} = require("./utils/DeployContractTestUtils");
+} = require("./utils/DeployDDUtils");
 const _ = require("lodash");
+const { ethers } = require("hardhat");
 
 async function completeAndSetStage(dd, stage) {
   await dd.completeStage(await dd.stage());
@@ -73,7 +75,8 @@ describe("DiamondDawn", () => {
     it("Should correctly set public params", async () => {
       expect(await dd.PRICE()).to.equal(PRICE);
       expect(await dd.PRICE_WEDDING()).to.equal(PRICE_WEDDING);
-      expect(await dd.MAX_ENTRANCE()).to.equal(333);
+      expect(await dd.MAX_ENTRANCE()).to.equal(MAX_TOKENS);
+      // expect(await dd.MAX_ENTRANCE()).to.equal(333); // TODO: uncomment
       expect(await dd.isLocked()).to.be.false;
       expect(await dd.isActive()).to.be.false;
       expect(await dd.stage()).to.equal(STAGE.NO_STAGE);
@@ -108,15 +111,27 @@ describe("DiamondDawn", () => {
       const { diamondDawn, diamondDawnMine, owner, user1 } = await loadFixture(
         deployDDWithRebirthReady
       );
+      await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
       user = user1;
     });
 
-    it("Should cost 3.33 and add it to contract's balance", async () => {
-      // TODO: fix prices
-      // TODO: implement
+    it("Should REVERT when price is wrong", async () => {
+      await expect(
+        dd.enter({ value: PRICE.add(parseEther("0.0001")) })
+      ).to.be.revertedWith(`Cost is: ${PRICE.toString()}`);
+      await expect(
+        dd.enter({ value: PRICE.sub(parseEther("0.0001")) })
+      ).to.be.revertedWith(`Cost is: ${PRICE.toString()}`);
+
+      await expect(
+        dd.enterWedding({ value: PRICE.add(parseEther("0.0001")) })
+      ).to.be.revertedWith(`Cost is: ${PRICE_WEDDING.toString()}`);
+      await expect(
+        dd.enterWedding({ value: PRICE.sub(parseEther("0.0001")) })
+      ).to.be.revertedWith(`Cost is: ${PRICE_WEDDING.toString()}`);
     });
 
     it("Should REVERT when not INVITE stage", async () => {
@@ -134,18 +149,73 @@ describe("DiamondDawn", () => {
     });
 
     it("Should REVERT when stage is NOT active", async () => {
-      // TODO: implement
+      await dd.completeStage(STAGE.INVITE);
+      expect(await dd.stage()).to.equal(STAGE.INVITE);
+      expect(await dd.isActive()).to.be.false;
+      await expect(dd.enter({ value: PRICE })).to.be.revertedWith(
+        "Stage is inactive"
+      );
+      await expect(
+        dd.enterWedding({ value: PRICE_WEDDING })
+      ).to.be.revertedWith("Stage is inactive");
     });
 
     it("Should REVERT when mine is full", async () => {
-      // TODO: implement
+      await Promise.all(
+        _.range(MAX_TOKENS).map((_) => dd.enter({ value: PRICE }))
+      );
+      await expect(dd.enter({ value: PRICE })).to.be.revertedWith(
+        "Max capacity"
+      );
+      await expect(
+        dd.enterWedding({ value: PRICE_WEDDING })
+      ).to.be.revertedWith("Max capacity");
     });
 
-    it("Should mint to owner & have the right token ID", async () => {
-      // TODO: implement
+    it("Should REVERT when mine is NOT READY", async () => {
+      // transform mine to be not ready
+      await ddMine.setStageVideos(STAGE.INVITE, [
+        { shape: NO_SHAPE_NUM, video: "" },
+      ]);
+      await expect(dd.enter({ value: PRICE })).to.be.revertedWith(
+        "Stage not ready"
+      );
+
+      await expect(
+        dd.enterWedding({ value: PRICE_WEDDING })
+      ).to.be.revertedWith("Stage not ready");
     });
 
-    // TODO: tests - important
+    it("Should cost 3.33 and add it to contract's balance", async () => {
+      expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
+      await dd.enter({ value: PRICE });
+      expect(await ethers.provider.getBalance(dd.address)).to.equal(PRICE);
+      await dd.enterWedding({ value: PRICE_WEDDING });
+      expect(await ethers.provider.getBalance(dd.address)).to.equal(
+        PRICE.add(PRICE_WEDDING)
+      );
+    });
+
+    it("Should mint to owner, emit events & have the right token ID", async () => {
+      await expect(dd.connect(user).enter({ value: PRICE }))
+        .to.emit(dd, "Transfer")
+        .withArgs("0x0000000000000000000000000000000000000000", user.address, 1)
+        .to.emit(ddMine, "Enter")
+        .withArgs(1);
+      await expect(dd.connect(admin).enterWedding({ value: PRICE_WEDDING }))
+        .to.emit(dd, "Transfer")
+        .withArgs(
+          "0x0000000000000000000000000000000000000000",
+          admin.address,
+          2
+        )
+        .to.emit(ddMine, "Enter")
+        .withArgs(2);
+      expect(await dd.ownerOf(1)).to.be.equal(user.address);
+      expect(await dd.ownerOf(2)).to.be.equal(admin.address);
+      expect(await dd.balanceOf(user.address)).to.equal(1);
+      expect(await dd.balanceOf(admin.address)).to.equal(1);
+    });
   });
 
   describe("mine", () => {
@@ -435,6 +505,11 @@ describe("DiamondDawn", () => {
   });
 
   describe("ship", () => {
+    // TODO: dont forget to test the shit bellow
+    // expect(await dd.ownerOf(1)).to.be.equal(user.address);
+    // expect(await dd.ownerOf(2)).to.be.equal(admin.address);
+    // expect(await dd.balanceOf(user.address)).to.equal(1);
+    // expect(await dd.balanceOf(admin.address)).to.equal(1);
     // TODO: tests - important
   });
 
