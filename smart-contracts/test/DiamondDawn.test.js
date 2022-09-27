@@ -490,7 +490,7 @@ describe("DiamondDawn", () => {
       await dd.cut(tokenId); // success
 
       await completeAndSetStage(dd, STAGE.POLISH);
-      dd.polish(tokenId);
+      await dd.polish(tokenId);
 
       await setRebornVideo(ddMine);
       await completeAndSetStage(dd, STAGE.SHIP);
@@ -562,41 +562,160 @@ describe("DiamondDawn", () => {
   });
 
   describe("ship", () => {
-    // TODO: dont forget to test the shit bellow
-    // expect(await dd.ownerOf(1)).to.be.equal(user.address);
-    // expect(await dd.ownerOf(2)).to.be.equal(admin.address);
-    // expect(await dd.balanceOf(user.address)).to.equal(1);
-    // expect(await dd.balanceOf(admin.address)).to.equal(1);
-    // TODO: tests - important
+    let dd;
+    let ddMine;
+    let admin;
+    let userA;
+    let userB;
+
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+        await loadFixture(deployDDWithRebirthReady);
+      await diamondDawn.setStage(STAGE.INVITE);
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
+      admin = owner;
+      userA = user1;
+      userB = user2;
+    });
+
+    it("Should REVERT when not token owner", async () => {
+      const tokenId = 1;
+      await dd.connect(userA).enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.connect(userA).mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.connect(userA).cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.connect(userA).polish(tokenId);
+
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await expect(dd.ship(tokenId)).to.be.revertedWith("Not owner");
+      await expect(dd.connect(userB).ship(tokenId)).to.be.revertedWith(
+        "Not owner"
+      );
+      await dd.connect(userA).ship(tokenId);
+    });
+
+    it("Should REVERT when wrong system stage", async () => {
+      const tokenId = 1;
+      await dd.enter({ value: PRICE });
+      await expect(dd.ship(tokenId)).to.be.revertedWith("Wrong stage");
+
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await expect(dd.ship(tokenId)).to.be.revertedWith("Wrong stage");
+
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await expect(dd.ship(tokenId)).to.be.revertedWith("Wrong stage");
+
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await expect(dd.ship(tokenId)).to.be.revertedWith("Wrong stage");
+
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId); // success
+      await expect(dd.ship(tokenId)).to.be.revertedWith(
+        "ERC721: owner query for nonexistent token"
+      );
+    });
 
     it("Should REVERT when stage is NOT active", async () => {
-      // await dd.enter({ value: PRICE });
-      // await completeAndSetStage(dd, STAGE.MINE);
-      // await dd.mine(1);
-      // await completeAndSetStage(dd, STAGE.CUT);
-      // await dd.cut(1);
-      // await completeAndSetStage(dd, STAGE.POLISH);
-      // await dd.polish(1);
-      // await completeAndSetStage(dd, STAGE.SHIP);
-      // await dd.completeStage(STAGE.SHIP);
-      // expect(await dd.stage()).to.equal(STAGE.SHIP);
-      // expect(await dd.isActive()).to.be.false;
-      // await expect(dd.ship(1)).to.be.revertedWith(
-      //     "Stage is inactive"
-      // );
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(1);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(1);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(1);
+      await completeAndSetStage(dd, STAGE.SHIP);
+
+      await dd.completeStage(STAGE.SHIP);
+      expect(await dd.stage()).to.equal(STAGE.SHIP);
+      expect(await dd.isActive()).to.be.false;
+      await expect(dd.ship(1)).to.be.revertedWith("Stage is inactive");
+    });
+
+    it("Should REVERT when ship is not ready", async () => {
+      const tokenId = 1;
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.SHIP);
+      // transform ship to be not ready
+      await ddMine.setStageVideos(STAGE.SHIP, [
+        { shape: NO_SHAPE_NUM, video: "" },
+      ]);
+      await expect(dd.ship(tokenId)).to.be.revertedWith("Stage not ready");
+    });
+
+    it("Should REVERT when token does not exist", async () => {
+      const tokenId = 1;
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await expect(dd.ship(tokenId)).to.be.revertedWith(
+        "ERC721: owner query for nonexistent token"
+      );
+    });
+
+    it("Should REVERT when can NOT process token", async () => {
+      const tokenId = 1;
+      await dd.enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await expect(dd.ship(tokenId)).to.be.revertedWith("Can't process");
+
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await expect(dd.ship(tokenId)).to.be.revertedWith("Can't process");
+
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await expect(dd.ship(tokenId)).to.be.revertedWith("Can't process");
+
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
+      await expect(dd.ship(tokenId)).to.be.revertedWith(
+        "ERC721: owner query for nonexistent token"
+      );
+
+      await dd.rebirth(tokenId);
+      await expect(dd.ship(tokenId)).to.be.revertedWith("Can't process");
+    });
+
+    it("Should BURN and Delegate to mine", async () => {
+      const tokenId = 1;
+      await dd.connect(userA).enter({ value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.connect(userA).mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.connect(userA).cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.connect(userA).polish(tokenId);
+
+      await completeAndSetStage(dd, STAGE.SHIP);
+      expect(await dd.ownerOf(1)).to.be.equal(userA.address);
+      expect(await dd.balanceOf(userA.address)).to.equal(1);
+      await expect(dd.connect(userA).ship(tokenId))
+        .to.emit(dd, "Transfer")
+        .withArgs(
+          userA.address,
+          "0x0000000000000000000000000000000000000000",
+          1
+        )
+        .and.to.emit(ddMine, "Ship")
+        .withArgs(tokenId, 1, 1111111111);
+      expect(await dd.balanceOf(userA.address)).to.equal(0);
+      await expect(dd.ownerOf(1)).to.be.revertedWith(
+        "ERC721: owner query for nonexistent token"
+      );
+      // TODO: once we are ERC721Enumerable add check for totalSupply
     });
   });
 
   describe("rebirth", () => {
     // TODO: tests - important
-  });
-
-  describe("getTokenIdsByOwner", () => {
-    // TODO: tests
-  });
-
-  describe("getShippingTokenIds", () => {
-    // TODO: tests
   });
 
   describe("Transactions", () => {
