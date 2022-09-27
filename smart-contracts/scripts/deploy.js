@@ -10,7 +10,7 @@ const {
   updateDiamondDawnContract,
   updateDiamondDawnMineContract,
 } = require("../db/contract-db-manager");
-const { clearEruptionTxs } = require("../db/config-db-manager")
+const { clearEruptionTxs } = require("../db/config-db-manager");
 const {
   STAGE,
   NO_SHAPE_NUM,

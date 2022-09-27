@@ -46,7 +46,11 @@ contract DiamondDawn is
 
     address public signer;
 
-    constructor(address mine_, uint16 maxEntrance_, address signer_) ERC721("DiamondDawn", "DD") {
+    constructor(
+        address mine_,
+        uint16 maxEntrance_,
+        address signer_
+    ) ERC721("DiamondDawn", "DD") {
         signer = signer_;
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setDefaultRoyalty(_msgSender(), 1000); // 10 %
@@ -196,14 +200,14 @@ contract DiamondDawn is
     /**********************     Private Functions     ************************/
 
     function _recoverSigner(bytes calldata signature) private view returns (bool) {
-        return signer == keccak256(abi.encodePacked(
-                "\x19Ethereum Signed Message:\n32",
-                bytes32(uint256(uint160(msg.sender)))
-            )).recover(signature);
+        return
+            signer ==
+            keccak256(
+                abi.encodePacked("\x19Ethereum Signed Message:\n32", bytes32(uint256(uint160(msg.sender))))
+            ).recover(signature);
     }
 
     function _enter(bytes calldata signature) private isActiveStage(Stage.INVITE) isNotFull {
-
         require(_recoverSigner(signature), "Address not allowed to mint");
 
         uint256 tokenId = ++_numTokens;

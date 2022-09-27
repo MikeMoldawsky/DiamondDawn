@@ -61,34 +61,40 @@ async function signInvite(inviteId, address) {
   // check that the invite exist and not revoked or expired
   const invite = await getInviteObjectById(inviteId);
   if (!invite || invite.revoked) {
-    throw new Error(`signInvite failed - invite not found or revoked - "${inviteId}"`)
+    throw new Error(
+      `signInvite failed - invite not found or revoked - "${inviteId}"`
+    );
   }
   if (!ethers.utils.isAddress(address)) {
-    throw new Error(`signInvite failed - invalid Ethereum address - "${address}"`)
+    throw new Error(
+      `signInvite failed - invalid Ethereum address - "${address}"`
+    );
   }
 
-  let signature = await SignatureModel.findOne({ address})
-  let sig
+  let signature = await SignatureModel.findOne({ address });
+  let sig;
   if (signature) {
     sig = signature.sig;
-  }
-  else {
+  } else {
     // Convert provided `ethAddress` to correct checksum address format.
     // This step is critical as signing an incorrectly formatted wallet address
     // can result in invalid signatures when it comes to minting.
     let addr = ethers.utils.getAddress(address);
 
     // Create the message to be signed using the checksum formatted `addr` value.
-    let message = ethers.utils.arrayify(`0x${addr.slice(2).padStart(64, '0')}`);
+    let message = ethers.utils.arrayify(`0x${addr.slice(2).padStart(64, "0")}`);
 
     // Sign the message using `signer`.
     sig = await signer.signMessage(message);
 
     // Save Signature to DB
-    await SignatureModel.create({ address, sig })
+    await SignatureModel.create({ address, sig });
 
     // Save ethAddress and n invite
-    await InviteModel.findOneAndUpdate({ _id: inviteId }, { ethAddress: address });
+    await InviteModel.findOneAndUpdate(
+      { _id: inviteId },
+      { ethAddress: address }
+    );
   }
 
   return {
