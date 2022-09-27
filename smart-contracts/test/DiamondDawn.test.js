@@ -590,9 +590,11 @@ describe("DiamondDawn", () => {
     let admin;
     let userA;
     let userB;
+    let adminSig;
+    let userASig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2 } =
+      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
         await loadFixture(deployDDWithRebirthReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
@@ -600,11 +602,13 @@ describe("DiamondDawn", () => {
       admin = owner;
       userA = user1;
       userB = user2;
+      adminSig = getSignature(signer, admin);
+      userASig = getSignature(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter({ value: PRICE });
+      await dd.connect(userA).enter(userASig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await dd.connect(userA).mine(tokenId);
       await completeAndSetStage(dd, STAGE.CUT);
@@ -622,7 +626,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when wrong system stage", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await expect(dd.ship(tokenId)).to.be.revertedWith("Wrong stage");
 
       await completeAndSetStage(dd, STAGE.MINE);
@@ -645,7 +649,7 @@ describe("DiamondDawn", () => {
     });
 
     it("Should REVERT when stage is NOT active", async () => {
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await dd.mine(1);
       await completeAndSetStage(dd, STAGE.CUT);
@@ -662,7 +666,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when ship is not ready", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.SHIP);
       // transform ship to be not ready
       await ddMine.setStageVideos(STAGE.SHIP, [
@@ -681,7 +685,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when can NOT process token", async () => {
       const tokenId = 1;
-      await dd.enter({ value: PRICE });
+      await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.SHIP);
       await expect(dd.ship(tokenId)).to.be.revertedWith("Can't process");
 
@@ -709,7 +713,7 @@ describe("DiamondDawn", () => {
 
     it("Should BURN and Delegate to mine", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter({ value: PRICE });
+      await dd.connect(userA).enter(userASig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await dd.connect(userA).mine(tokenId);
       await completeAndSetStage(dd, STAGE.CUT);
