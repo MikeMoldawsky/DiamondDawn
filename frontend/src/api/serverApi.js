@@ -50,13 +50,9 @@ export const openInviteApi = async (inviteId) => {
   }
 };
 
-export const setInviteForUseApi = async (inviteId, ethAddress) => {
-  try {
-    const res = await axios.post(`/api/use_invite`, { inviteId, ethAddress });
-    return res.data;
-  } catch (e) {
-    return null;
-  }
+export const signInviteApi = async (inviteId, ethAddress) => {
+  const res = await axios.post(`/api/sign_invite`, { inviteId, ethAddress });
+  return res.data;
 };
 
 export const confirmInviteUsedApi = async (inviteId) => {
