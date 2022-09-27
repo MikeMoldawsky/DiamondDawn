@@ -33,14 +33,15 @@ contract DiamondDawn is
 
     uint public constant PRICE = 0.002 ether; // TODO: change to 3.33eth
     uint public constant PRICE_WEDDING = 0.003 ether; // TODO: change to 3.66eth
-    uint16 public constant MAX_ENTRANCE = 333;
+    //    uint16 public constant MAX_ENTRANCE = 333;
+    uint16 public MAX_ENTRANCE; // TODO: change to constant once the script is ready
 
     bool public isLocked; // locked forever (immutable).
     bool public isActive;
     Stage public stage;
     IDiamondDawnMine public ddMine;
 
-    uint16 private _tokenIdCounter;
+    uint16 private _numTokens;
     mapping(address => EnumerableSet.UintSet) private _ownerToShippedIds;
 
     address public signer;
@@ -50,8 +51,8 @@ contract DiamondDawn is
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setDefaultRoyalty(_msgSender(), 1000); // 10 %
         ddMine = IDiamondDawnMine(mine_);
-        // TODO: remove maxEntrance_ once staging is deploying 333 automatically.
-        ddMine.initialize(maxEntrance_);
+        MAX_ENTRANCE = maxEntrance_; // TODO: remove maxEntrance_ once staging is deploying 333 automatically.
+        ddMine.initialize(MAX_ENTRANCE);
     }
 
     /**********************          Modifiers          ************************/
@@ -62,7 +63,7 @@ contract DiamondDawn is
     }
 
     modifier isNotFull() {
-        require(_tokenIdCounter <= MAX_ENTRANCE, "Max capacity");
+        require(_numTokens < MAX_ENTRANCE, "Max capacity");
         _;
     }
 
@@ -136,7 +137,7 @@ contract DiamondDawn is
     }
 
     function setStage(Stage stage_) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked isReadyStage(stage_) {
-        stage = Stage(stage_);
+        stage = stage_;
         isActive = true;
         emit StageChanged(stage);
     }
@@ -205,7 +206,7 @@ contract DiamondDawn is
 
         require(_recoverSigner(signature), "Address not allowed to mint");
 
-        uint256 tokenId = ++_tokenIdCounter;
+        uint256 tokenId = ++_numTokens;
         ddMine.enter(tokenId);
         _safeMint(_msgSender(), tokenId);
     }

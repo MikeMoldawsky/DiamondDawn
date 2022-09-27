@@ -3,49 +3,12 @@ const {
   prepareMineReady,
   prepareCutReady,
   preparePolishReady,
-  setAllVideoUrls,
   prepareRebirthReady,
 } = require("./MineTestUtils");
+const { deployMine } = require("./DeployMineUtils");
 
 // constants
 const MAX_TOKENS = 10;
-
-async function deployMine() {
-  const [owner, user1, user2] = await ethers.getSigners();
-  const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
-  const diamondDawnMine = await DiamondDawnMine.deploy();
-  await diamondDawnMine.deployed();
-  return {
-    diamondDawnMine,
-    owner,
-    user1,
-    user2,
-  };
-}
-
-async function deployInitializedMine() {
-  const { diamondDawnMine, owner, user1, user2 } = await deployMine();
-  const diamondDawn = user2;
-  await diamondDawnMine.connect(diamondDawn).initialize(MAX_TOKENS);
-  return {
-    diamondDawn,
-    diamondDawnMine,
-    owner,
-    user1,
-  };
-}
-
-async function deployReadyMine() {
-  const { diamondDawnMine, diamondDawn, owner, user1 } =
-    await deployInitializedMine();
-  await setAllVideoUrls(diamondDawnMine);
-  return {
-    diamondDawn,
-    diamondDawnMine,
-    owner,
-    user1,
-  };
-}
 
 async function deployDD() {
   const { diamondDawnMine, owner, user1, user2 } = await deployMine();
@@ -87,9 +50,6 @@ async function deployDDWithRebirthReady() {
 }
 
 module.exports = {
-  deployMine,
-  deployInitializedMine,
-  deployReadyMine,
   deployDD,
   deployDDWithMineReady,
   deployDDWithCutReady,
