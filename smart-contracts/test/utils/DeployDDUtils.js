@@ -35,35 +35,112 @@ async function deployDD() {
     signer.address
   );
   await diamondDawn.deployed();
-  return { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 };
+  return {
+    diamondDawn,
+    diamondDawnMine,
+    owner,
+    user1,
+    user2,
+    ownerSig,
+    sig1,
+    sig2,
+  };
 }
 
 async function deployDDWithMineReady() {
-  const { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 } =
-    await deployDD();
+  const {
+    diamondDawn,
+    diamondDawnMine,
+    owner,
+    user1,
+    user2,
+    ownerSig,
+    sig1,
+    sig2,
+  } = await deployDD();
   await prepareMineReady(diamondDawnMine, MAX_TOKENS);
-  return { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 };
+  return {
+    diamondDawn,
+    diamondDawnMine,
+    owner,
+    user1,
+    user2,
+    ownerSig,
+    sig1,
+    sig2,
+  };
 }
 
 async function deployDDWithCutReady() {
-  const { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 } =
-    await deployDD();
+  const {
+    diamondDawn,
+    diamondDawnMine,
+    owner,
+    user1,
+    user2,
+    ownerSig,
+    sig1,
+    sig2,
+  } = await deployDD();
   await prepareCutReady(diamondDawnMine, MAX_TOKENS);
-  return { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 };
+  return {
+    diamondDawn,
+    diamondDawnMine,
+    owner,
+    user1,
+    user2,
+    ownerSig,
+    sig1,
+    sig2,
+  };
 }
 
 async function deployDDWithPolishReady() {
-  const { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 } =
-    await deployDD();
+  const {
+    diamondDawn,
+    diamondDawnMine,
+    owner,
+    user1,
+    user2,
+    ownerSig,
+    sig1,
+    sig2,
+  } = await deployDD();
   await preparePolishReady(diamondDawnMine, MAX_TOKENS);
-  return { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 };
+  return {
+    diamondDawn,
+    diamondDawnMine,
+    owner,
+    user1,
+    user2,
+    ownerSig,
+    sig1,
+    sig2,
+  };
 }
 
 async function deployDDWithRebirthReady() {
-  const { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 } =
-    await deployDD();
+  const {
+    diamondDawn,
+    diamondDawnMine,
+    owner,
+    user1,
+    user2,
+    ownerSig,
+    sig1,
+    sig2,
+  } = await deployDD();
   await prepareRebirthReady(diamondDawnMine, MAX_TOKENS);
-  return { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 };
+  return {
+    diamondDawn,
+    diamondDawnMine,
+    owner,
+    user1,
+    user2,
+    ownerSig,
+    sig1,
+    sig2,
+  };
 }
 
 module.exports = {

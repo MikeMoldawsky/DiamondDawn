@@ -115,9 +115,8 @@ describe("DiamondDawn", () => {
     let userSig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, ownerSig, user1, sig1 } = await loadFixture(
-        deployDDWithRebirthReady
-      );
+      const { diamondDawn, diamondDawnMine, owner, ownerSig, user1, sig1 } =
+        await loadFixture(deployDDWithRebirthReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -211,7 +210,9 @@ describe("DiamondDawn", () => {
         .withArgs("0x0000000000000000000000000000000000000000", user.address, 1)
         .to.emit(ddMine, "Enter")
         .withArgs(1);
-      await expect(dd.connect(admin).enterWedding(adminSig, { value: PRICE_WEDDING }))
+      await expect(
+        dd.connect(admin).enterWedding(adminSig, { value: PRICE_WEDDING })
+      )
         .to.emit(dd, "Transfer")
         .withArgs(
           "0x0000000000000000000000000000000000000000",
@@ -240,8 +241,16 @@ describe("DiamondDawn", () => {
     let sigB;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 } =
-        await loadFixture(deployDDWithMineReady);
+      const {
+        diamondDawn,
+        diamondDawnMine,
+        owner,
+        user1,
+        user2,
+        ownerSig,
+        sig1,
+        sig2,
+      } = await loadFixture(deployDDWithMineReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -331,8 +340,16 @@ describe("DiamondDawn", () => {
     let sigB;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 } =
-        await loadFixture(deployDDWithCutReady);
+      const {
+        diamondDawn,
+        diamondDawnMine,
+        owner,
+        user1,
+        user2,
+        ownerSig,
+        sig1,
+        sig2,
+      } = await loadFixture(deployDDWithCutReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -432,8 +449,16 @@ describe("DiamondDawn", () => {
     let sigB;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, ownerSig, sig1, sig2 } =
-        await loadFixture(deployDDWithPolishReady);
+      const {
+        diamondDawn,
+        diamondDawnMine,
+        owner,
+        user1,
+        user2,
+        ownerSig,
+        sig1,
+        sig2,
+      } = await loadFixture(deployDDWithPolishReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
