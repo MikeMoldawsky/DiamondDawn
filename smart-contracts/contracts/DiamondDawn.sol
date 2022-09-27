@@ -43,15 +43,15 @@ contract DiamondDawn is
     uint16 private _tokenIdCounter;
     mapping(address => EnumerableSet.UintSet) private _ownerToShippedIds;
 
-    address public signer = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
+    address public signer;
 
     constructor(address mine_, uint16 maxEntrance_, address signer_) ERC721("DiamondDawn", "DD") {
+        signer = signer_;
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setDefaultRoyalty(_msgSender(), 1000); // 10 %
         ddMine = IDiamondDawnMine(mine_);
         // TODO: remove maxEntrance_ once staging is deploying 333 automatically.
         ddMine.initialize(maxEntrance_);
-//        signer = signer_;
     }
 
     /**********************          Modifiers          ************************/
