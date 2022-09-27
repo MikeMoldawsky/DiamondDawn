@@ -91,7 +91,7 @@ describe("Diamond Dawn Mine", () => {
     it("should REVERT when token EXISTS", async () => {
       await ddMine.connect(dd).enter(tokenId); // token exists
       await expect(ddMine.connect(dd).enter(tokenId)).to.be.revertedWith(
-        "Wrong stage"
+        "Can't process"
       );
     });
 
@@ -150,7 +150,7 @@ describe("Diamond Dawn Mine", () => {
       await ddMine.connect(dd).enter(tokenId);
       await ddMine.connect(dd).mine(tokenId);
       await expect(ddMine.connect(dd).mine(tokenId)).to.be.revertedWith(
-        "Wrong stage"
+        "Can't process"
       );
     });
 
@@ -208,12 +208,12 @@ describe("Diamond Dawn Mine", () => {
       await ddMine.eruption([DIAMOND]);
       await ddMine.connect(dd).enter(tokenId);
       await expect(ddMine.connect(dd).cut(tokenId)).to.be.revertedWith(
-        "Wrong stage"
+        "Can't process"
       );
       await ddMine.connect(dd).mine(tokenId);
       await ddMine.connect(dd).cut(tokenId);
       await expect(ddMine.connect(dd).cut(tokenId)).to.be.revertedWith(
-        "Wrong stage"
+        "Can't process"
       );
     });
 
@@ -273,16 +273,16 @@ describe("Diamond Dawn Mine", () => {
       await ddMine.eruption([DIAMOND]);
       await ddMine.connect(dd).enter(tokenId);
       await expect(ddMine.connect(dd).polish(tokenId)).to.be.revertedWith(
-        "Wrong stage"
+        "Can't process"
       );
       await ddMine.connect(dd).mine(tokenId);
       await expect(ddMine.connect(dd).polish(tokenId)).to.be.revertedWith(
-        "Wrong stage"
+        "Can't process"
       );
       await ddMine.connect(dd).cut(tokenId);
       await ddMine.connect(dd).polish(tokenId);
       await expect(ddMine.connect(dd).polish(tokenId)).to.be.revertedWith(
-        "Wrong stage"
+        "Can't process"
       );
     });
 
@@ -342,15 +342,15 @@ describe("Diamond Dawn Mine", () => {
       await ddMine.eruption([DIAMOND]);
       await ddMine.connect(dd).enter(tokenId);
       await expect(ddMine.connect(dd).ship(tokenId)).to.be.revertedWith(
-        "Wrong stage"
+        "Can't process"
       );
       await ddMine.connect(dd).mine(tokenId);
       await expect(ddMine.connect(dd).ship(tokenId)).to.be.revertedWith(
-        "Wrong stage"
+        "Can't process"
       );
       await ddMine.connect(dd).cut(tokenId);
       await expect(ddMine.connect(dd).ship(tokenId)).to.be.revertedWith(
-        "Wrong stage"
+        "Can't process"
       );
       await ddMine.connect(dd).polish(tokenId);
       await ddMine.connect(dd).ship(tokenId);
@@ -435,10 +435,13 @@ describe("Diamond Dawn Mine", () => {
       );
 
       await ddMine.connect(dd).ship(tokenId);
-      await ddMine.connect(dd).rebirth(tokenId);
+      await expect(ddMine.connect(dd).ship(tokenId)).to.be.revertedWith(
+        "Shipped"
+      );
 
+      await ddMine.connect(dd).rebirth(tokenId);
       await expect(ddMine.connect(dd).rebirth(tokenId)).to.be.revertedWith(
-        "Wrong stage"
+        "Wrong state"
       );
     });
 

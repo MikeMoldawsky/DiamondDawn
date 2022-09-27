@@ -29,14 +29,13 @@ struct RebornMetadata {
     uint16 id;
 }
 
-//TODO: 34 bytes, should check if we can save 2 bytes for 1 word.
 struct Metadata {
-    Stage stage_; // 1 byte
-    RoughMetadata rough; // 4 bytes
-    CutMetadata cut; // 3 bytes
-    PolishedMetadata polished; // 2 bytes
-    RebornMetadata reborn; // 2 bytes
-    Certificate certificate; // 22 bytes
+    Stage state_;
+    RoughMetadata rough;
+    CutMetadata cut;
+    PolishedMetadata polished;
+    RebornMetadata reborn;
+    Certificate certificate;
 }
 
 struct ShapeVideo {

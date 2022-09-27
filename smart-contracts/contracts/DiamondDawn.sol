@@ -5,9 +5,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
-import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "./interface/IDiamondDawn.sol";
@@ -22,6 +20,7 @@ contract DiamondDawn is
     ERC721,
     ERC721Burnable,
     ERC721Royalty,
+    // TODO: check if it's smart to add ERC721Enumerable. Why? how opensea and other clients know about total supply etc
     AccessControl,
     Pausable,
     IDiamondDawn,
