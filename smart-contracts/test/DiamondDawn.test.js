@@ -79,6 +79,7 @@ describe("DiamondDawn", () => {
       // expect(await dd.MAX_ENTRANCE()).to.equal(333); // TODO: uncomment
       expect(await dd.isLocked()).to.be.false;
       expect(await dd.isActive()).to.be.false;
+      expect(await dd.paused()).to.be.false;
       expect(await dd.stage()).to.equal(STAGE.NO_STAGE);
       expect(await dd.ddMine()).to.equal(ddMine.address);
     });
@@ -92,7 +93,15 @@ describe("DiamondDawn", () => {
       expect(amount).to.equal(33);
     });
 
-    it("Should not allow to enter mine when wrong stage", async () => {
+    it("Should support interfaces", async () => {
+      expect(await dd.supportsInterface(`0x80ac58cd`)).to.be.true; // ERC721: NFT
+      expect(await dd.supportsInterface(`0x5b5e139f`)).to.be.true; // ERC721Metadata: NFT name, symbol & tokenURI
+      expect(await dd.supportsInterface(`0x2a55205a`)).to.be.true; // ERC2981: Royalties
+      // TODO: check if it's smart to add ERC721Enumerable.
+      // expect(await dd.supportsInterface(`0x780e9d63`)).to.be.true; // ERC721Enumerable: totalSupply etc.
+    });
+
+    it("Should not allow to enter mine", async () => {
       await expect(dd.enter({ value: PRICE })).to.be.revertedWith(
         "Wrong stage"
       );
