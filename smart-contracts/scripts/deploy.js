@@ -10,6 +10,7 @@ const {
   updateDiamondDawnContract,
   updateDiamondDawnMineContract,
 } = require("../db/contract-db-manager");
+const { clearEruptionTxs } = require("../db/config-db-manager");
 const {
   STAGE,
   NO_SHAPE_NUM,
@@ -95,13 +96,15 @@ async function main() {
     throw new Error(`Wrong network: ${hre.network.name}`);
   }
 
+  // Clear DB
+  await clearEruptionTxs();
   const [deployer] = await hre.ethers.getSigners();
   // Diamond Dawn Mine
   const mineArgs = [];
   const mine = await deployContract(deployer, "DiamondDawnMine", mineArgs);
   // Diamond Dawn
   let dd;
-  const ddArgs = [mine.address, DIAMOND_COUNT];
+  const ddArgs = [mine.address, DIAMOND_COUNT, process.env.SIGNER_PUBLIC_KEY];
   if (hre.network.name === "goerli") {
     dd = await deployContract(deployer, "DiamondDawn", ddArgs);
     // await populateDiamonds(mine);

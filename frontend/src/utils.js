@@ -4,6 +4,7 @@ import { ROUGH_SHAPE, SHAPE, SYSTEM_STAGE, TRAIT } from "consts";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 
 export const parseError = (e) => {
+  if (e.response?.data) return e.response.data;
   let message = _.get(e, "error.data.message", "");
   if (!message) {
     message = _.get(e, "error.message", "");
