@@ -41,7 +41,7 @@ contract DiamondDawn is
     IDiamondDawnMine public ddMine;
 
     uint16 private _numTokens;
-    mapping(address => EnumerableSet.UintSet) private _ownerToShippedIds;
+    mapping(address => EnumerableSet.UintSet) private _shipped;
 
     address private _signer;
 
@@ -89,7 +89,7 @@ contract DiamondDawn is
     }
 
     modifier isShippedOwner(uint tokenId) {
-        require(_ownerToShippedIds[_msgSender()].contains(tokenId), "No shipping");
+        require(_shipped[_msgSender()].contains(tokenId), "No shipping");
         _;
     }
 
@@ -121,14 +121,14 @@ contract DiamondDawn is
     }
 
     function ship(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.SHIP) {
-        _burn(tokenId); // Disable NFT transfer while diamond is in transit.
+        _burn(tokenId);
         ddMine.ship(tokenId);
-        _ownerToShippedIds[_msgSender()].add(tokenId);
+        _shipped[_msgSender()].add(tokenId);
     }
 
     function rebirth(uint tokenId) external isShippedOwner(tokenId) {
         // TODO: protect rebirth with a stupid password. e.g. (keccak256(tokenId)) or a signature.
-        _ownerToShippedIds[_msgSender()].remove(tokenId);
+        _shipped[_msgSender()].remove(tokenId);
         ddMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);
     }
