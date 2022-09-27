@@ -245,7 +245,7 @@ describe("DiamondDawn", () => {
     let userA;
     let userB;
     let adminSig;
-    let sigA;
+    let userASig;
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
@@ -257,12 +257,12 @@ describe("DiamondDawn", () => {
       userA = user1;
       userB = user2;
       adminSig = getSignature(signer, admin);
-      sigA = getSignature(signer, userA);
+      userASig = getSignature(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter(sigA, { value: PRICE });
+      await dd.connect(userA).enter(userASig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await expect(dd.mine(tokenId)).to.be.revertedWith("Not owner");
       await expect(dd.connect(userB).mine(tokenId)).to.be.revertedWith(
@@ -273,7 +273,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when not token owner after transfer", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter(sigA, { value: PRICE });
+      await dd.connect(userA).enter(userASig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       expect(await dd.balanceOf(userA.address)).to.equal(1);
       await dd
@@ -358,7 +358,7 @@ describe("DiamondDawn", () => {
     let userA;
     let userB;
     let adminSig;
-    let sigA;
+    let userASig;
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
@@ -370,12 +370,12 @@ describe("DiamondDawn", () => {
       userA = user1;
       userB = user2;
       adminSig = getSignature(signer, admin);
-      sigA = getSignature(signer, userA);
+      userASig = getSignature(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter(sigA, { value: PRICE });
+      await dd.connect(userA).enter(userASig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await dd.connect(userA).mine(tokenId);
 
@@ -468,7 +468,7 @@ describe("DiamondDawn", () => {
     let userA;
     let userB;
     let adminSig;
-    let sigA;
+    let userASig;
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
@@ -480,12 +480,12 @@ describe("DiamondDawn", () => {
       userA = user1;
       userB = user2;
       adminSig = getSignature(signer, admin);
-      sigA = getSignature(signer, userA);
+      userASig = getSignature(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
       const tokenId = 1;
-      await dd.connect(userA).enter(sigA, { value: PRICE });
+      await dd.connect(userA).enter(userASig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       await dd.connect(userA).mine(tokenId);
       await completeAndSetStage(dd, STAGE.CUT);
