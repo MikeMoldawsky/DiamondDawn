@@ -1,6 +1,5 @@
 const { ethers } = require("hardhat");
 const { setAllVideoUrls } = require("./MineTestUtils");
-const _ = require("lodash");
 
 // constants
 const MAX_TOKENS = 10;
