@@ -45,13 +45,13 @@ describe("DiamondDawn", () => {
     let adminSig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDD);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      userA = user1;
-      userB = user2;
+      userA = users[0];
+      userB = users[1];
       adminSig = getSignature(signer, admin);
     });
 
@@ -119,19 +119,23 @@ describe("DiamondDawn", () => {
     let ddMine;
     let admin;
     let user;
+    let signer1;
     let adminSig;
     let userSig;
+    let users1;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithRebirthReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
+      user = users.pop();
+      signer1 = signer;
       adminSig = getSignature(signer, admin);
       userSig = getSignature(signer, user);
+      users1 = users;
     });
 
     it("Should REVERT when price is wrong", async () => {
@@ -178,7 +182,10 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when mine is full", async () => {
       await Promise.all(
-        _.range(MAX_TOKENS).map((_) => dd.enter(adminSig, { value: PRICE }))
+        _.range(MAX_TOKENS).map(async (i) => {
+          const signature = await getSignature(signer1, users1[i]);
+          return await dd.connect(users1[i]).enter(signature, { value: PRICE });
+        })
       );
       await expect(dd.enter(adminSig, { value: PRICE })).to.be.revertedWith(
         "Max capacity"
@@ -206,7 +213,7 @@ describe("DiamondDawn", () => {
       expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
       await dd.enter(adminSig, { value: PRICE });
       expect(await ethers.provider.getBalance(dd.address)).to.equal(PRICE);
-      await dd.enterWedding(adminSig, { value: PRICE_WEDDING });
+      await dd.connect(user).enterWedding(userSig, { value: PRICE_WEDDING });
       expect(await ethers.provider.getBalance(dd.address)).to.equal(
         PRICE.add(PRICE_WEDDING)
       );
@@ -248,14 +255,14 @@ describe("DiamondDawn", () => {
     let userASig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithMineReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      userA = user1;
-      userB = user2;
+      userA = users[0];
+      userB = users[1];
       adminSig = getSignature(signer, admin);
       userASig = getSignature(signer, userA);
     });
@@ -361,14 +368,14 @@ describe("DiamondDawn", () => {
     let userASig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithCutReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      userA = user1;
-      userB = user2;
+      userA = users[0];
+      userB = users[1];
       adminSig = getSignature(signer, admin);
       userASig = getSignature(signer, userA);
     });
@@ -471,14 +478,14 @@ describe("DiamondDawn", () => {
     let userASig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithPolishReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      userA = user1;
-      userB = user2;
+      userA = users[0];
+      userB = users[1];
       adminSig = getSignature(signer, admin);
       userASig = getSignature(signer, userA);
     });
@@ -594,14 +601,14 @@ describe("DiamondDawn", () => {
     let userASig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithRebirthReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      userA = user1;
-      userB = user2;
+      userA = users[0];
+      userB = users[1];
       adminSig = getSignature(signer, admin);
       userASig = getSignature(signer, userA);
     });

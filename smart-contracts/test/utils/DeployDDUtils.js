@@ -11,7 +11,8 @@ const { deployMine } = require("./DeployMineUtils");
 const MAX_TOKENS = 10;
 
 async function deployDD() {
-  const { diamondDawnMine, owner, user1, user2, signer } = await deployMine();
+  const { diamondDawnMine, owner, users } = await deployMine();
+  const signer = users.pop();
   const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
   const diamondDawn = await DiamondDawn.deploy(
     diamondDawnMine.address,
@@ -23,65 +24,60 @@ async function deployDD() {
     diamondDawn,
     diamondDawnMine,
     owner,
-    user1,
-    user2,
     signer,
+    users,
   };
 }
 
 async function deployDDWithMineReady() {
-  const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+  const { diamondDawn, diamondDawnMine, owner, signer, users } =
     await deployDD();
   await prepareMineReady(diamondDawnMine, MAX_TOKENS);
   return {
     diamondDawn,
     diamondDawnMine,
     owner,
-    user1,
-    user2,
     signer,
+    users,
   };
 }
 
 async function deployDDWithCutReady() {
-  const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+  const { diamondDawn, diamondDawnMine, owner, signer, users } =
     await deployDD();
   await prepareCutReady(diamondDawnMine, MAX_TOKENS);
   return {
     diamondDawn,
     diamondDawnMine,
     owner,
-    user1,
-    user2,
     signer,
+    users,
   };
 }
 
 async function deployDDWithPolishReady() {
-  const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+  const { diamondDawn, diamondDawnMine, owner, signer, users } =
     await deployDD();
   await preparePolishReady(diamondDawnMine, MAX_TOKENS);
   return {
     diamondDawn,
     diamondDawnMine,
     owner,
-    user1,
-    user2,
     signer,
+    users,
   };
 }
 
 async function deployDDWithRebirthReady() {
-  const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+  const { diamondDawn, diamondDawnMine, owner, signer, users } =
     await deployDD();
   await prepareRebirthReady(diamondDawnMine, MAX_TOKENS);
   return {
     diamondDawn,
     diamondDawnMine,
     owner,
-    user1,
-    user2,
     signer,
+    users,
   };
 }
 

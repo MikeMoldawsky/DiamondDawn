@@ -52,13 +52,13 @@ describe("Diamond Dawn Mine Admin", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
+      const { diamondDawnMine, owner, users } = await loadFixture(
         deployMine
       );
       mineContract = diamondDawnMine;
       admin = owner;
-      diamondDawn = user1;
-      user = user2;
+      diamondDawn = users[0];
+      user = users[1];
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -113,13 +113,13 @@ describe("Diamond Dawn Mine Admin", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
+      const { diamondDawnMine, owner, users } = await loadFixture(
         deployMine
       );
       mineContract = diamondDawnMine;
       admin = owner;
-      diamondDawn = user1;
-      user = user2;
+      diamondDawn = users[0];
+      user = users[1];
       await diamondDawnMine.connect(diamondDawn).initialize(333);
       await setAllVideoUrls(diamondDawnMine);
     });
@@ -215,13 +215,13 @@ describe("Diamond Dawn Mine Admin", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
+      const { diamondDawnMine, owner, users } = await loadFixture(
         deployMine
       );
       mineContract = diamondDawnMine;
       admin = owner;
-      diamondDawn = user1;
-      user = user2;
+      diamondDawn = users[0];
+      user = users[1];
       await diamondDawnMine.connect(diamondDawn).initialize(333);
     });
 

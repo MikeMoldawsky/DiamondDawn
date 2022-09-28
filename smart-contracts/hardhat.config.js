@@ -25,6 +25,11 @@ module.exports = {
     ],
   },
   networks: {
+    hardhat: {
+      accounts: {
+        count: 350,
+      },
+    },
     ropsten: {
       url: process.env.ROPSTEN_URL || "",
       accounts:
