@@ -52,9 +52,7 @@ describe("Diamond Dawn Mine Admin", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawnMine, owner, users } = await loadFixture(
-        deployMine
-      );
+      const { diamondDawnMine, owner, users } = await loadFixture(deployMine);
       mineContract = diamondDawnMine;
       admin = owner;
       diamondDawn = users[0];
@@ -113,9 +111,7 @@ describe("Diamond Dawn Mine Admin", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawnMine, owner, users } = await loadFixture(
-        deployMine
-      );
+      const { diamondDawnMine, owner, users } = await loadFixture(deployMine);
       mineContract = diamondDawnMine;
       admin = owner;
       diamondDawn = users[0];
@@ -215,9 +211,7 @@ describe("Diamond Dawn Mine Admin", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawnMine, owner, users } = await loadFixture(
-        deployMine
-      );
+      const { diamondDawnMine, owner, users } = await loadFixture(deployMine);
       mineContract = diamondDawnMine;
       admin = owner;
       diamondDawn = users[0];

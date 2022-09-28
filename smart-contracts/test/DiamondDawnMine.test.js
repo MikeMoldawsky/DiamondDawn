@@ -620,9 +620,7 @@ describe("Diamond Dawn Mine", () => {
     let user;
     const numDiamonds = 5;
     beforeEach(async () => {
-      const { diamondDawnMine, owner, users } = await loadFixture(
-        deployMine
-      );
+      const { diamondDawnMine, owner, users } = await loadFixture(deployMine);
       ddMine = diamondDawnMine;
       admin = owner;
       user = users[0];
