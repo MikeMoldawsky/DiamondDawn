@@ -140,7 +140,6 @@ contract DiamondDawn is
     function completeStage(Stage stage_) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
         require(stage == stage_, "Wrong stage");
         isActive = false;
-        emit StageChanged(stage);
     }
 
     function setStage(Stage stage_) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked isReadyStage(stage_) {
