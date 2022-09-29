@@ -209,7 +209,8 @@ contract DiamondDawn is
 
     function _enter(bytes calldata signature) private isActiveStage(Stage.INVITE) isNotFull {
         require(_isValid(signature), "Not allowed to mint");
-        require(!_minted[_msgSender()], "Already minted");
+        // TODO: uncomment before production
+        //        require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
         uint256 tokenId = ++_numTokens;
         ddMine.enter(tokenId);
