@@ -5,6 +5,7 @@ export const SYSTEM_STAGE = {
   CUT: 3,
   POLISH: 4,
   SHIP: 5,
+  DAWN: 6,
 };
 
 export const SYSTEM_STAGE_NAME = {
@@ -14,6 +15,7 @@ export const SYSTEM_STAGE_NAME = {
   [SYSTEM_STAGE.CUT]: "Cut",
   [SYSTEM_STAGE.POLISH]: "Polish",
   [SYSTEM_STAGE.SHIP]: "Ship",
+  [SYSTEM_STAGE.DAWN]: "Dawn",
 };
 
 export const ROUGH_SHAPE = {

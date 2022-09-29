@@ -96,14 +96,6 @@ describe("DiamondDawn", () => {
       expect(amount).to.equal(33);
     });
 
-    it("Should support interfaces", async () => {
-      expect(await dd.supportsInterface(`0x80ac58cd`)).to.be.true; // ERC721: NFT
-      expect(await dd.supportsInterface(`0x5b5e139f`)).to.be.true; // ERC721Metadata: NFT name, symbol & tokenURI
-      expect(await dd.supportsInterface(`0x2a55205a`)).to.be.true; // ERC2981: Royalties
-      // TODO: check if it's smart to add ERC721Enumerable.
-      // expect(await dd.supportsInterface(`0x780e9d63`)).to.be.true; // ERC721Enumerable: totalSupply etc.
-    });
-
     it("Should not allow to enter mine", async () => {
       await expect(dd.enter(adminSig, { value: PRICE })).to.be.revertedWith(
         "Wrong stage"
@@ -786,6 +778,7 @@ describe("DiamondDawn", () => {
       await completeAndSetStage(dd, STAGE.SHIP);
       expect(await dd.ownerOf(1)).to.be.equal(userA.address);
       expect(await dd.balanceOf(userA.address)).to.equal(1);
+      expect(await dd.totalSupply()).to.equal(1);
       await expect(dd.connect(userA).ship(tokenId))
         .to.emit(dd, "Transfer")
         .withArgs(
@@ -799,12 +792,181 @@ describe("DiamondDawn", () => {
       await expect(dd.ownerOf(1)).to.be.revertedWith(
         "ERC721: owner query for nonexistent token"
       );
-      // TODO: once we are ERC721Enumerable add check for totalSupply
+      expect(await dd.totalSupply()).to.equal(0);
     });
   });
 
   describe("rebirth", () => {
-    // TODO: tests - important
+    let dd;
+    let ddMine;
+    let admin;
+    let userA;
+    let userB;
+    let adminSig;
+    let userASig;
+
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
+        await loadFixture(deployDDWithRebirthReady);
+      await diamondDawn.setStage(STAGE.INVITE);
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
+      admin = owner;
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
+    });
+
+    it("Should REVERT when not SHIP stage", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+
+      await completeAndSetStage(dd, STAGE.MINE);
+      await expect(dd.rebirth(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.mine(tokenId);
+
+      await completeAndSetStage(dd, STAGE.CUT);
+      await expect(dd.rebirth(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.cut(tokenId);
+
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await expect(dd.rebirth(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.polish(tokenId);
+
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
+
+      await dd.rebirth(tokenId); // success
+      await expect(dd.rebirth(tokenId)).to.be.revertedWith("No shipment");
+    });
+
+    it("Should REVERT when not DAWN stage", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+
+      await completeAndSetStage(dd, STAGE.MINE);
+      await expect(dd.rebirth(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.mine(tokenId);
+
+      await completeAndSetStage(dd, STAGE.CUT);
+      await expect(dd.rebirth(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.cut(tokenId);
+
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await expect(dd.rebirth(tokenId)).to.be.revertedWith("Wrong stage");
+      await dd.polish(tokenId);
+
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
+
+      await completeAndSetStage(dd, STAGE.DAWN);
+      await dd.rebirth(tokenId); // success
+      await expect(dd.rebirth(tokenId)).to.be.revertedWith("No shipment");
+    });
+
+    it("Should REVERT when not shipped", async () => {
+      const tokenId = 1;
+      await dd.connect(userA).enter(userASig, { value: PRICE });
+
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.connect(userA).mine(tokenId);
+
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.connect(userA).cut(tokenId);
+
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.connect(userA).polish(tokenId);
+
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.connect(userA).ship(tokenId);
+
+      await expect(dd.rebirth(tokenId)).to.be.revertedWith("No shipment");
+      await expect(dd.connect(userB).rebirth(tokenId)).to.be.revertedWith(
+        "No shipment"
+      );
+      await dd.connect(userA).rebirth(tokenId);
+    });
+
+    it("Should REVERT when ship stage not ready", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
+
+      // transform ship to be not ready
+      await ddMine.setStageVideos(STAGE.SHIP, [
+        { shape: NO_SHAPE_NUM, video: "" },
+      ]);
+      await expect(dd.rebirth(tokenId)).to.be.revertedWith("Ship not ready");
+    });
+
+    it("Should REBIRTH when SHIP stage is not active", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
+
+      await dd.completeStage(STAGE.SHIP);
+      expect(await dd.stage()).to.equal(STAGE.SHIP);
+      expect(await dd.isActive()).to.be.false;
+      await dd.rebirth(tokenId); // success
+    });
+
+    it("Should REBIRTH when DAWN stage is not active", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
+      await completeAndSetStage(dd, STAGE.DAWN);
+      await dd.completeStage(STAGE.DAWN);
+
+      expect(await dd.stage()).to.equal(STAGE.DAWN);
+      expect(await dd.isActive()).to.be.false;
+      await dd.rebirth(tokenId); // success
+    });
+
+    it("Should REVERT when rebirth more than once", async () => {});
+
+    it("Should be enabled when locked", async () => {});
+
+    it("Should delegate to mine", async () => {});
+  });
+
+  describe("tokenURI", () => {});
+
+  describe("supportsInterface", () => {
+    let dd;
+
+    beforeEach(async () => {
+      const { diamondDawn } = await loadFixture(deployDD);
+      dd = diamondDawn;
+    });
+
+    it("Should support interfaces", async () => {
+      expect(await dd.supportsInterface(`0x80ac58cd`)).to.be.true; // ERC721: NFT
+      expect(await dd.supportsInterface(`0x5b5e139f`)).to.be.true; // ERC721Metadata: NFT name, symbol & tokenURI
+      expect(await dd.supportsInterface(`0x780e9d63`)).to.be.true; // ERC721Enumerable: totalSupply etc.
+      expect(await dd.supportsInterface(`0x2a55205a`)).to.be.true; // ERC2981: Royalties
+    });
   });
 
   describe("Transactions", () => {

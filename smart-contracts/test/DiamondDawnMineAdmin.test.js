@@ -9,6 +9,7 @@ const {
   SHAPE,
   ROUGH_SHAPE,
   STAGE,
+  ALL_STAGES,
 } = require("./utils/EnumConverterUtils");
 const {
   assertPolishedMetadata,
@@ -232,17 +233,8 @@ describe("Diamond Dawn Mine Admin", () => {
 
     it("should REVERT when mine is locked", async () => {
       await mineContract.connect(diamondDawn).lockMine();
-      const stages = [
-        STAGE.NO_STAGE,
-        STAGE.INVITE,
-        STAGE.MINE,
-        STAGE.CUT,
-        STAGE.POLISH,
-        STAGE.SHIP,
-      ];
-
       await Promise.all(
-        stages.map((stage) =>
+        ALL_STAGES.map((stage) =>
           assertOnlyAdmin(admin, mineContract, (contract) =>
             contract.setStageVideos(stage, [])
           )

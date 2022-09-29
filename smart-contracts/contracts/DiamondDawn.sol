@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
@@ -20,8 +21,8 @@ import "./interface/IDiamondDawnMine.sol";
 contract DiamondDawn is
     ERC721,
     ERC721Burnable,
+    ERC721Enumerable,
     ERC721Royalty,
-    // TODO: check if it's smart to add ERC721Enumerable. Why? how opensea and other clients know about total supply etc
     AccessControl,
     Pausable,
     IDiamondDawn,
@@ -84,13 +85,15 @@ contract DiamondDawn is
         _;
     }
 
-    modifier costs(uint price) {
-        require(msg.value == price, string.concat("Cost is: ", Strings.toString(price)));
+    modifier isDawnAllowed(uint tokenId) {
+        require(stage == Stage.SHIP || stage == Stage.DAWN, "Wrong stage");
+        require(_shipped[_msgSender()].contains(tokenId), "No shipment");
+        require(ddMine.isReady(Stage.SHIP), "Ship not ready");
         _;
     }
 
-    modifier isShippedOwner(uint tokenId) {
-        require(_shipped[_msgSender()].contains(tokenId), "No shipping");
+    modifier costs(uint price) {
+        require(msg.value == price, string.concat("Cost is: ", Strings.toString(price)));
         _;
     }
 
@@ -127,8 +130,8 @@ contract DiamondDawn is
         _shipped[_msgSender()].add(tokenId);
     }
 
-    function rebirth(uint tokenId) external isShippedOwner(tokenId) {
-        // TODO: protect rebirth with a stupid password. e.g. (keccak256(tokenId)) or a signature.
+    function rebirth(uint tokenId) external isDawnAllowed(tokenId) {
+        // TODO: protect rebirth with a signature.
         _shipped[_msgSender()].remove(tokenId);
         ddMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);
@@ -177,7 +180,7 @@ contract DiamondDawn is
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, ERC721Royalty, AccessControl)
+        override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
@@ -189,7 +192,7 @@ contract DiamondDawn is
         address from,
         address to,
         uint256 tokenId
-    ) internal override(ERC721) whenNotPaused {
+    ) internal override(ERC721, ERC721Enumerable) whenNotPaused {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 

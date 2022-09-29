@@ -7,5 +7,6 @@ enum Stage {
     MINE,
     CUT,
     POLISH,
-    SHIP
+    SHIP,
+    DAWN
 }
