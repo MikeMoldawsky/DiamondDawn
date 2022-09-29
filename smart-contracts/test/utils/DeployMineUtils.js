@@ -5,40 +5,39 @@ const { setAllVideoUrls } = require("./MineTestUtils");
 const MAX_TOKENS = 10;
 
 async function deployMine() {
-  const [owner, user1, user2, signer] = await ethers.getSigners();
+  const users = await ethers.getSigners();
+  const owner = users.shift();
   const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
   const diamondDawnMine = await DiamondDawnMine.deploy();
   await diamondDawnMine.deployed();
   return {
-    diamondDawnMine,
     owner,
-    user1,
-    user2,
-    signer,
+    users,
+    diamondDawnMine,
   };
 }
 
 async function deployInitializedMine() {
-  const { diamondDawnMine, owner, user1, user2 } = await deployMine();
-  const diamondDawn = user2;
+  const { diamondDawnMine, owner, users } = await deployMine();
+  const diamondDawn = users.pop();
   await diamondDawnMine.connect(diamondDawn).initialize(MAX_TOKENS);
   return {
     diamondDawn,
     diamondDawnMine,
     owner,
-    user1,
+    users,
   };
 }
 
 async function deployReadyMine() {
-  const { diamondDawnMine, diamondDawn, owner, user1 } =
+  const { diamondDawnMine, diamondDawn, owner, users } =
     await deployInitializedMine();
   await setAllVideoUrls(diamondDawnMine);
   return {
     diamondDawn,
     diamondDawnMine,
     owner,
-    user1,
+    users,
   };
 }
 

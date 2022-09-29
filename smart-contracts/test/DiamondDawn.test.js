@@ -23,7 +23,7 @@ const {
   MAX_TOKENS,
   deployDDWithRebirthReady,
 } = require("./utils/DeployDDUtils");
-const { getSignature } = require("./utils/SignatureUtils");
+const { signMessage } = require("./utils/SignatureUtils");
 const _ = require("lodash");
 const { ethers } = require("hardhat");
 
@@ -45,14 +45,14 @@ describe("DiamondDawn", () => {
     let adminSig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDD);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      userA = user1;
-      userB = user2;
-      adminSig = getSignature(signer, admin);
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
     });
 
     it("should grant admin permissions to deployer", async () => {
@@ -119,19 +119,23 @@ describe("DiamondDawn", () => {
     let ddMine;
     let admin;
     let user;
+    let signer1;
     let adminSig;
     let userSig;
+    let users1;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithRebirthReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
-      adminSig = getSignature(signer, admin);
-      userSig = getSignature(signer, user);
+      user = users.pop();
+      signer1 = signer;
+      adminSig = signMessage(signer, admin);
+      userSig = signMessage(signer, user);
+      users1 = users;
     });
 
     it("Should REVERT when price is wrong", async () => {
@@ -178,7 +182,10 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when mine is full", async () => {
       await Promise.all(
-        _.range(MAX_TOKENS).map((_) => dd.enter(adminSig, { value: PRICE }))
+        _.range(MAX_TOKENS).map(async (i) => {
+          const signature = await signMessage(signer1, users1[i]);
+          return await dd.connect(users1[i]).enter(signature, { value: PRICE });
+        })
       );
       await expect(dd.enter(adminSig, { value: PRICE })).to.be.revertedWith(
         "Max capacity"
@@ -202,11 +209,68 @@ describe("DiamondDawn", () => {
       ).to.be.revertedWith("Stage not ready");
     });
 
+    // TODO: should enable before production
+    xit("Should REVERT when trying to mine more than once", async () => {
+      await dd.enter(adminSig, { value: PRICE });
+      await expect(dd.enter(adminSig, { value: PRICE })).to.be.revertedWith(
+        "Already minted"
+      );
+      await expect(
+        dd.enterWedding(adminSig, { value: PRICE_WEDDING })
+      ).to.be.revertedWith("Already minted");
+      // test enter wedding
+      await dd.connect(user).enterWedding(userSig, { value: PRICE_WEDDING });
+      await expect(
+        dd.connect(user).enter(userSig, { value: PRICE })
+      ).to.be.revertedWith("Already minted");
+      await expect(
+        dd.connect(user).enterWedding(userSig, { value: PRICE_WEDDING })
+      ).to.be.revertedWith("Already minted");
+    });
+
+    it("Should REVERT when using wrong address signature", async () => {
+      await expect(dd.enter(userSig, { value: PRICE })).to.be.revertedWith(
+        "Not allowed to mint"
+      );
+      await expect(
+        dd.enterWedding(userSig, { value: PRICE_WEDDING })
+      ).to.be.revertedWith("Not allowed to mint");
+    });
+
+    it("Should REVERT when message is signed by another signer", async () => {
+      const signedMessage = signMessage(admin, admin);
+      await expect(
+        dd.enter(signedMessage, { value: PRICE })
+      ).to.be.revertedWith("Not allowed to mint");
+      await expect(
+        dd.enterWedding(signedMessage, { value: PRICE_WEDDING })
+      ).to.be.revertedWith("Not allowed to mint");
+    });
+
+    it("Should REVERT when using another address signed message", async () => {
+      await expect(dd.enter(userSig, { value: PRICE })).to.be.revertedWith(
+        "Not allowed to mint"
+      );
+      await expect(
+        dd.enterWedding(userSig, { value: PRICE_WEDDING })
+      ).to.be.revertedWith("Not allowed to mint");
+    });
+
+    it("Should REVERT when signed with a wrong message", async () => {
+      const signature = signer1.signMessage("that's a wrong message");
+      await expect(dd.enter(signature, { value: PRICE })).to.be.revertedWith(
+        "Not allowed to mint"
+      );
+      await expect(
+        dd.enterWedding(signature, { value: PRICE_WEDDING })
+      ).to.be.revertedWith("Not allowed to mint");
+    });
+
     it("Should cost 3.33 and add it to contract's balance", async () => {
       expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
       await dd.enter(adminSig, { value: PRICE });
       expect(await ethers.provider.getBalance(dd.address)).to.equal(PRICE);
-      await dd.enterWedding(adminSig, { value: PRICE_WEDDING });
+      await dd.connect(user).enterWedding(userSig, { value: PRICE_WEDDING });
       expect(await ethers.provider.getBalance(dd.address)).to.equal(
         PRICE.add(PRICE_WEDDING)
       );
@@ -234,8 +298,6 @@ describe("DiamondDawn", () => {
       expect(await dd.balanceOf(user.address)).to.equal(1);
       expect(await dd.balanceOf(admin.address)).to.equal(1);
     });
-
-    // TODO - test signatures
   });
 
   describe("mine", () => {
@@ -248,16 +310,16 @@ describe("DiamondDawn", () => {
     let userASig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithMineReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      userA = user1;
-      userB = user2;
-      adminSig = getSignature(signer, admin);
-      userASig = getSignature(signer, userA);
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
@@ -361,16 +423,16 @@ describe("DiamondDawn", () => {
     let userASig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithCutReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      userA = user1;
-      userB = user2;
-      adminSig = getSignature(signer, admin);
-      userASig = getSignature(signer, userA);
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
@@ -471,16 +533,16 @@ describe("DiamondDawn", () => {
     let userASig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithPolishReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      userA = user1;
-      userB = user2;
-      adminSig = getSignature(signer, admin);
-      userASig = getSignature(signer, userA);
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
@@ -594,16 +656,16 @@ describe("DiamondDawn", () => {
     let userASig;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1, user2, signer } =
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithRebirthReady);
       await diamondDawn.setStage(STAGE.INVITE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      userA = user1;
-      userB = user2;
-      adminSig = getSignature(signer, admin);
-      userASig = getSignature(signer, userA);
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {

@@ -42,6 +42,7 @@ contract DiamondDawn is
 
     uint16 private _numTokens;
     mapping(address => EnumerableSet.UintSet) private _shipped;
+    mapping(address => bool) private _minted;
 
     address private _signer;
 
@@ -198,7 +199,7 @@ contract DiamondDawn is
 
     /**********************     Private Functions     ************************/
 
-    function _recoverSigner(bytes calldata signature) private view returns (bool) {
+    function _isValid(bytes calldata signature) private view returns (bool) {
         return
             _signer ==
             keccak256(
@@ -207,8 +208,10 @@ contract DiamondDawn is
     }
 
     function _enter(bytes calldata signature) private isActiveStage(Stage.INVITE) isNotFull {
-        require(_recoverSigner(signature), "Address not allowed to mint");
-
+        require(_isValid(signature), "Not allowed to mint");
+        // TODO: uncomment before production
+        //        require(!_minted[_msgSender()], "Already minted");
+        _minted[_msgSender()] = true;
         uint256 tokenId = ++_numTokens;
         ddMine.enter(tokenId);
         _safeMint(_msgSender(), tokenId);

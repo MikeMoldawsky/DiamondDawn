@@ -33,10 +33,10 @@ describe("Diamond Dawn Mine", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawnMine, owner, user1 } = await loadFixture(deployMine);
+      const { diamondDawnMine, owner, users } = await loadFixture(deployMine);
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
+      user = users[0];
     });
 
     it("should correctly set dd, maxDiamonds, init & open", async () => {
@@ -66,13 +66,13 @@ describe("Diamond Dawn Mine", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, user1, owner } = await loadFixture(
+      const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
         deployReadyMine
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
+      user = users[0];
     });
 
     it("should REVERT when NOT diamond dawn", async () => {
@@ -115,13 +115,13 @@ describe("Diamond Dawn Mine", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, user1, owner } = await loadFixture(
+      const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
         deployReadyMine
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
+      user = users[0];
     });
 
     it("should REVERT when NOT DiamondDawn", async () => {
@@ -182,13 +182,13 @@ describe("Diamond Dawn Mine", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, user1, owner } = await loadFixture(
+      const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
         deployReadyMine
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
+      user = users[0];
     });
 
     it("should REVERT when NOT DiamondDawn", async () => {
@@ -247,13 +247,13 @@ describe("Diamond Dawn Mine", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, user1, owner } = await loadFixture(
+      const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
         deployReadyMine
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
+      user = users[0];
     });
 
     it("should REVERT when NOT DiamondDawn", async () => {
@@ -316,13 +316,13 @@ describe("Diamond Dawn Mine", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, user1, owner } = await loadFixture(
+      const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
         deployReadyMine
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
+      user = users[0];
     });
 
     it("should REVERT when NOT DiamondDawn", async () => {
@@ -389,13 +389,13 @@ describe("Diamond Dawn Mine", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, user1, owner } = await loadFixture(
+      const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
         deployReadyMine
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
+      user = users[0];
     });
 
     it("should REVERT when NOT DiamondDawn", async () => {
@@ -474,13 +474,13 @@ describe("Diamond Dawn Mine", () => {
     let dd;
     let user;
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, user1 } = await loadFixture(
+      const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
         deployInitializedMine
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
+      user = users[0];
     });
 
     it("should REVERT when NOT Diamond Dawn", async () => {
@@ -539,12 +539,12 @@ describe("Diamond Dawn Mine", () => {
     let user;
 
     beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, user1, owner } =
+      const { diamondDawn, diamondDawnMine, owner, users } =
         await deployReadyMine();
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
+      user = users[0];
     });
 
     it("should REVERT when NOT diamond dawn", async () => {
@@ -620,13 +620,11 @@ describe("Diamond Dawn Mine", () => {
     let user;
     const numDiamonds = 5;
     beforeEach(async () => {
-      const { diamondDawnMine, owner, user1, user2 } = await loadFixture(
-        deployMine
-      );
+      const { diamondDawnMine, owner, users } = await loadFixture(deployMine);
       ddMine = diamondDawnMine;
       admin = owner;
-      user = user1;
-      diamondDawn = user2;
+      user = users[0];
+      diamondDawn = users[1];
       await diamondDawnMine.connect(diamondDawn).initialize(numDiamonds);
     });
 
