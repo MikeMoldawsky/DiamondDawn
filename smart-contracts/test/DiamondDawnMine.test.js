@@ -628,9 +628,10 @@ describe("Diamond Dawn Mine", () => {
       await diamondDawnMine.connect(diamondDawn).initialize(numDiamonds);
     });
 
-    it("should be NOT READY for all stages except NO STAGE", async () => {
+    it("should be NOT READY for all stages except NO STAGE and DAWN", async () => {
       expect(await ddMine.isReady(STAGE.NO_STAGE)).to.be.true;
-      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE);
+      expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
+      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.DAWN);
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
       }
@@ -641,7 +642,12 @@ describe("Diamond Dawn Mine", () => {
         { shape: NO_SHAPE_NUM, video: "hi.mp4" },
       ]);
       expect(await ddMine.isReady(STAGE.INVITE)).to.be.true;
-      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.INVITE);
+      const noReadyStages = _.without(
+        ALL_STAGES,
+        STAGE.NO_STAGE,
+        STAGE.DAWN,
+        STAGE.INVITE
+      );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
       }
@@ -661,7 +667,12 @@ describe("Diamond Dawn Mine", () => {
       expect(await ddMine.isReady(STAGE.MINE)).to.be.false;
       await ddMine.eruption([DIAMOND]); // now mine has all diamonds
       expect(await ddMine.isReady(STAGE.MINE)).to.be.true;
-      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.MINE);
+      const noReadyStages = _.without(
+        ALL_STAGES,
+        STAGE.NO_STAGE,
+        STAGE.DAWN,
+        STAGE.MINE
+      );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
       }
@@ -684,7 +695,12 @@ describe("Diamond Dawn Mine", () => {
         { shape: SHAPE.RADIANT, video: "4.mp4" },
       ]);
       expect(await ddMine.isReady(STAGE.CUT)).to.be.true;
-      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.CUT);
+      const noReadyStages = _.without(
+        ALL_STAGES,
+        STAGE.NO_STAGE,
+        STAGE.DAWN,
+        STAGE.CUT
+      );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
       }
@@ -707,7 +723,12 @@ describe("Diamond Dawn Mine", () => {
         { shape: SHAPE.RADIANT, video: "4.mp4" },
       ]);
       expect(await ddMine.isReady(STAGE.POLISH)).to.be.true;
-      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.POLISH);
+      const noReadyStages = _.without(
+        ALL_STAGES,
+        STAGE.NO_STAGE,
+        STAGE.DAWN,
+        STAGE.POLISH
+      );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
       }
@@ -718,10 +739,23 @@ describe("Diamond Dawn Mine", () => {
         { shape: NO_SHAPE_NUM, video: "hi.mp4" },
       ]);
       expect(await ddMine.isReady(STAGE.SHIP)).to.be.true;
-      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.SHIP);
+      const noReadyStages = _.without(
+        ALL_STAGES,
+        STAGE.NO_STAGE,
+        STAGE.DAWN,
+        STAGE.SHIP
+      );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
       }
+    });
+
+    it("should always be TRUE for DAWN", async () => {
+      expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
+      await ddMine.setStageVideos(STAGE.DAWN, [
+        { shape: NO_SHAPE_NUM, video: "" },
+      ]);
+      expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
     });
 
     it("should revert if non existing stage", async () => {

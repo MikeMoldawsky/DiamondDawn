@@ -7,6 +7,7 @@ export const SYSTEM_STAGE = {
   CUT: 3,
   POLISH: 4,
   SHIP: 5,
+  DAWN: 6,
 };
 
 export const ROUGH_SHAPE = {

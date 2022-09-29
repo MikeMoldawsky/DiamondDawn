@@ -127,6 +127,7 @@ const STAGE = {
   CUT: 3,
   POLISH: 4,
   SHIP: 5,
+  DAWN: 6,
 };
 
 const ALL_STAGES = [
@@ -136,6 +137,7 @@ const ALL_STAGES = [
   STAGE.CUT,
   STAGE.POLISH,
   STAGE.SHIP,
+  STAGE.DAWN,
 ];
 
 const ROUGH_SHAPE = {

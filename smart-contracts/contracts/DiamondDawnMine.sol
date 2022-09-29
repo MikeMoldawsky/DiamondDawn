@@ -184,6 +184,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         if (stage_ == Stage.POLISH || stage_ == Stage.CUT)
             return _isAllVideosExist(stage_, uint(type(Shape).max));
         if (stage_ == Stage.SHIP) return _isVideoExist(stage_, 0);
+        if (stage_ == Stage.DAWN) return true;
         revert();
     }
 
