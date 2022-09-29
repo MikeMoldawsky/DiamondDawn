@@ -37,7 +37,6 @@ const PRICE = parseEther("0.002"); // TODO: change price to 3.33
 const PRICE_WEDDING = parseEther("0.003"); // TODO: change price to 3.33
 
 describe("DiamondDawn", () => {
-
   describe("enter and enterWedding", () => {
     let dd;
     let ddMine;
