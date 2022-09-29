@@ -353,10 +353,10 @@ async function _getParsedMetadata(ddUser, mineContract, tokenId) {
   const actualMetadata = await mineContract
     .connect(ddUser)
     .getMetadata(tokenId);
-  return await _assertBase64AndGetParsed(actualMetadata);
+  return await assertBase64AndGetParsed(actualMetadata);
 }
 
-async function _assertBase64AndGetParsed(actualMetadata) {
+async function assertBase64AndGetParsed(actualMetadata) {
   const actualParsedUrlData = parseDataUrl(actualMetadata); // parse data-url (data:[<mediatype>][;base64],<data>)
   // validate data-url format
   expect(actualParsedUrlData.base64).to.be.true;
@@ -486,6 +486,7 @@ function _getRebirthMetadataNoCaratShapeAndImage(id, diamond) {
 }
 
 module.exports = {
+  assertBase64AndGetParsed,
   assertEnterMineMetadata,
   assertRoughMetadata,
   assertCutMetadata,

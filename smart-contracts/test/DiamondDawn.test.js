@@ -14,6 +14,8 @@ const {
   setCutVideos,
   setPolishedVideos,
   setRebornVideo,
+  assertEnterMineMetadata,
+  assertBase64AndGetParsed,
 } = require("./utils/MineTestUtils");
 const {
   deployDD,
@@ -26,6 +28,7 @@ const {
 const { signMessage } = require("./utils/SignatureUtils");
 const _ = require("lodash");
 const { ethers } = require("hardhat");
+const { deployReadyMine } = require("./utils/DeployMineUtils");
 
 async function completeAndSetStage(dd, stage) {
   await dd.completeStage(await dd.stage());
@@ -944,14 +947,143 @@ describe("DiamondDawn", () => {
       await dd.rebirth(tokenId); // success
     });
 
-    it("Should REVERT when rebirth more than once", async () => {});
+    it("Should REVERT when rebirth more than once", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
+      await dd.rebirth(tokenId); // success
+      await completeAndSetStage(dd, STAGE.DAWN);
+      await expect(dd.rebirth(tokenId)).to.be.revertedWith("No shipment");
+    });
 
-    it("Should be enabled when locked", async () => {});
+    it("Should REVERT when trying to rebirth another user token or with wrong tokenId", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
 
-    it("Should delegate to mine", async () => {});
+      await expect(dd.connect(userA).rebirth(tokenId)).to.be.revertedWith(
+        "No shipment"
+      );
+      await expect(dd.rebirth(tokenId + 1)).to.be.revertedWith("No shipment");
+      await dd.rebirth(tokenId); // success
+    });
+
+    it("Should be enabled when locked", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
+
+      expect(await dd.isLocked()).to.be.false;
+      await dd.lockDiamondDawn();
+      expect(await dd.isLocked()).to.be.true;
+      await dd.rebirth(tokenId); // success
+    });
+
+    it("Should be enabled when locked and dawn stage", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
+      await completeAndSetStage(dd, STAGE.DAWN);
+
+      expect(await dd.isLocked()).to.be.false;
+      await dd.lockDiamondDawn();
+      expect(await dd.isLocked()).to.be.true;
+      await dd.rebirth(tokenId); // success
+    });
+
+    it("Should delegate to mine", async () => {
+      const tokenId = 1;
+      await dd.connect(userA).enter(userASig, { value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.connect(userA).mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.connect(userA).cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.connect(userA).polish(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.connect(userA).ship(tokenId);
+
+      expect(await dd.totalSupply()).to.equal(0);
+      expect(await dd.balanceOf(userA.address)).to.equal(0);
+      await expect(dd.connect(userA).rebirth(tokenId))
+        .to.emit(dd, "Transfer")
+        .withArgs(
+          "0x0000000000000000000000000000000000000000",
+          userA.address,
+          1
+        )
+        .and.to.emit(ddMine, "Rebirth")
+        .withArgs(tokenId);
+      expect(await dd.balanceOf(userA.address)).to.equal(1);
+      expect(await dd.ownerOf(tokenId)).to.be.equal(userA.address);
+      expect(await dd.totalSupply()).to.equal(1);
+    });
   });
 
-  describe("tokenURI", () => {});
+  describe("tokenURI", () => {
+    let dd;
+    let ddMine;
+    let admin;
+    let userA;
+    let userB;
+    let adminSig;
+    let userASig;
+
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
+        await loadFixture(deployDDWithRebirthReady);
+      await diamondDawn.setStage(STAGE.INVITE);
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
+      admin = owner;
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
+    });
+
+    it("should delegate to Mine - sanity check", async () => {
+      await dd.connect(userA).enter(userASig, { value: PRICE });
+      const metadata = await dd.tokenURI(1);
+      const parsed = await assertBase64AndGetParsed(metadata);
+      expect(parsed).to.deep.equal({
+        name: "Mine Entrance #1",
+        description: "description",
+        created_by: "dd",
+        image:
+          "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/enterMine.mp4",
+        attributes: [{ trait_type: "Type", value: "Mine Entrance" }],
+      });
+    });
+  });
 
   describe("supportsInterface", () => {
     let dd;
