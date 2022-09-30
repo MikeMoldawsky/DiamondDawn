@@ -54,7 +54,7 @@ contract DiamondDawn is
     ) ERC721("DiamondDawn", "DD") {
         _signer = signer_;
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _setDefaultRoyalty(_msgSender(), 1000); // 10 %
+        _setDefaultRoyalty(_msgSender(), 1000);
         ddMine = IDiamondDawnMine(mine_);
         MAX_ENTRANCE = maxEntrance_; // TODO: remove maxEntrance_ once staging is deploying 333 automatically.
         ddMine.initialize(MAX_ENTRANCE);
