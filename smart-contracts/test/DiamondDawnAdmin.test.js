@@ -288,31 +288,181 @@ describe("Diamond Dawn Admin", () => {
   });
 
   describe("pause", () => {
-    it("should REVERT when NOT admin", async () => {});
+    let dd;
+    let ddMine;
+    let admin;
+    let userA;
+    let userB;
+    let adminSig;
+    let userASig;
 
-    it("should REVERT when dd is locked", async () => {});
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
+        await loadFixture(deployDDWithRebirthReady);
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
+      admin = owner;
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
+      await dd.setStage(STAGE.INVITE);
+    });
 
-    it("should set pause", async () => {});
+    it("should REVERT when NOT admin", async () => {
+      const unAuthUsers = [userA, userB];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, dd, (contract) => contract.pause())
+        )
+      );
+      await dd.pause(); // success
+    });
 
-    it("should lock from transfers", async () => {});
+    it("should REVERT when dd is locked", async () => {
+      await lockDiamondDawn(dd);
+      expect(await dd.isLocked()).to.be.true;
+      await expect(dd.pause()).to.revertedWith("Locked forever");
+    });
+
+    it("should correctly set paused", async () => {
+      expect(await dd.paused()).to.be.false;
+      await dd.pause();
+      expect(await dd.paused()).to.be.true;
+    });
+
+    it("should lock from transfers", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+      expect(await dd.balanceOf(admin.address)).to.equal(1);
+      await dd.pause();
+      await expect(
+        dd.transferFrom(admin.address, userA.address, tokenId)
+      ).to.revertedWith("Pausable: paused");
+      expect(await dd.balanceOf(admin.address)).to.equal(1);
+    });
   });
 
   describe("unpause", () => {
-    it("should REVERT when NOT admin", async () => {});
+    let dd;
+    let ddMine;
+    let admin;
+    let userA;
+    let userB;
+    let adminSig;
+    let userASig;
 
-    it("should REVERT when dd is locked", async () => {});
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
+        await loadFixture(deployDDWithRebirthReady);
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
+      admin = owner;
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
+      await dd.setStage(STAGE.INVITE);
+    });
 
-    it("should set unpause", async () => {});
+    it("should REVERT when NOT admin", async () => {
+      const unAuthUsers = [userA, userB];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, dd, (contract) => contract.unpause())
+        )
+      );
+      await dd.pause(); // success
+      await dd.unpause(); // success
+    });
 
-    it("should enable transfers", async () => {});
+    it("should REVERT when dd is locked", async () => {
+      await lockDiamondDawn(dd);
+      expect(await dd.isLocked()).to.be.true;
+      await expect(dd.unpause()).to.revertedWith("Locked forever");
+    });
+
+    it("should correctly set paused", async () => {
+      await dd.pause();
+      expect(await dd.paused()).to.be.true;
+      await dd.unpause();
+      expect(await dd.paused()).to.be.false;
+    });
+
+    it("should enable transfers", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+      expect(await dd.balanceOf(admin.address)).to.equal(1);
+      await dd.pause();
+      await expect(
+        dd.transferFrom(admin.address, userA.address, tokenId)
+      ).to.revertedWith("Pausable: paused");
+
+      await dd.unpause();
+      await dd.transferFrom(admin.address, userA.address, tokenId);
+      expect(await dd.balanceOf(admin.address)).to.equal(0);
+      expect(await dd.balanceOf(userA.address)).to.equal(1);
+    });
   });
 
   describe("setRoyaltyInfo", () => {
-    it("should REVERT when NOT admin", async () => {});
+    let dd;
+    let ddMine;
+    let admin;
+    let userA;
+    let userB;
+    let adminSig;
+    let userASig;
 
-    it("should SUCCEED when dd is locked", async () => {});
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
+        await loadFixture(deployDDWithRebirthReady);
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
+      admin = owner;
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
+      await dd.setStage(STAGE.INVITE);
+    });
 
-    it("should change default royalties", async () => {});
+    it("should REVERT when NOT admin", async () => {
+      const unAuthUsers = [userA, userB];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, dd, (contract) =>
+            contract.setRoyaltyInfo(admin.address, 500)
+          )
+        )
+      );
+      await dd.setRoyaltyInfo(admin.address, 500);
+    });
+
+    it("should SUCCEED when dd is locked", async () => {
+      await lockDiamondDawn(dd);
+      expect(await dd.isLocked()).to.be.true;
+      await dd.setRoyaltyInfo(admin.address, 500); // success
+    });
+
+    it("should correctly set 10% default royalties", async () => {
+      let [recipient, amount] = await dd.royaltyInfo(0, 100);
+      expect(recipient).to.equal(admin.address);
+      expect(amount).to.equal(10);
+      [recipient, amount] = await dd.royaltyInfo(250, 330);
+      expect(recipient).to.equal(admin.address);
+      expect(amount).to.equal(33);
+    });
+
+    it("should change default royalties", async () => {
+      await dd.setRoyaltyInfo(admin.address, 500); // 5%
+      let [recipient, amount] = await dd.royaltyInfo(0, 100);
+      expect(recipient).to.equal(admin.address);
+      expect(amount).to.equal(5); // 5%
+      [recipient, amount] = await dd.royaltyInfo(250, 220);
+      expect(recipient).to.equal(admin.address);
+      expect(amount).to.equal(11);
+    });
   });
 
   describe("withdraw", () => {
