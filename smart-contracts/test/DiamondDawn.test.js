@@ -14,7 +14,6 @@ const {
   setCutVideos,
   setPolishedVideos,
   setRebornVideo,
-  assertEnterMineMetadata,
   assertBase64AndGetParsed,
 } = require("./utils/MineTestUtils");
 const {
@@ -28,87 +27,10 @@ const {
 const { signMessage } = require("./utils/SignatureUtils");
 const _ = require("lodash");
 const { ethers } = require("hardhat");
-const { deployReadyMine } = require("./utils/DeployMineUtils");
-
-async function completeAndSetStage(dd, stage) {
-  await dd.completeStage(await dd.stage());
-  await dd.setStage(stage);
-}
-
-const PRICE = parseEther("0.002"); // TODO: change price to 3.33
-const PRICE_WEDDING = parseEther("0.003"); // TODO: change price to 3.33
+const { PRICE, PRICE_WEDDING } = require("./utils/Consts");
+const { completeAndSetStage } = require("./utils/DDTestUtils");
 
 describe("DiamondDawn", () => {
-  describe("Deployment", () => {
-    let dd;
-    let ddMine;
-    let admin;
-    let userA;
-    let userB;
-    let adminSig;
-
-    beforeEach(async () => {
-      const { diamondDawn, diamondDawnMine, owner, signer, users } =
-        await loadFixture(deployDD);
-      dd = diamondDawn;
-      ddMine = diamondDawnMine;
-      admin = owner;
-      userA = users[0];
-      userB = users[1];
-      adminSig = signMessage(signer, admin);
-    });
-
-    it("should grant admin permissions to deployer", async () => {
-      const adminRole = await dd.DEFAULT_ADMIN_ROLE();
-      expect(await dd.hasRole(adminRole, admin.address)).to.be.true;
-      expect(await dd.hasRole(adminRole, dd.address)).to.be.false;
-      expect(await dd.hasRole(adminRole, userA.address)).to.be.false;
-      expect(await dd.hasRole(adminRole, userB.address)).to.be.false;
-    });
-
-    it("Should have correct ERC721 configurations", async () => {
-      expect(await dd.name()).to.equals("DiamondDawn");
-      expect(await dd.symbol()).to.equals("DD");
-    });
-
-    it("Should set and initialize DiamondDawnMine", async () => {
-      expect(await ddMine.diamondDawn()).to.equal(dd.address);
-      expect(await ddMine.maxDiamonds()).to.equal(MAX_TOKENS);
-      expect(await ddMine.isInitialized()).to.be.true;
-      expect(await ddMine.isLocked()).to.be.false;
-    });
-
-    it("Should correctly set public params", async () => {
-      expect(await dd.PRICE()).to.equal(PRICE);
-      expect(await dd.PRICE_WEDDING()).to.equal(PRICE_WEDDING);
-      expect(await dd.MAX_ENTRANCE()).to.equal(MAX_TOKENS);
-      // expect(await dd.MAX_ENTRANCE()).to.equal(333); // TODO: uncomment
-      expect(await dd.isLocked()).to.be.false;
-      expect(await dd.isActive()).to.be.false;
-      expect(await dd.paused()).to.be.false;
-      expect(await dd.stage()).to.equal(STAGE.NO_STAGE);
-      expect(await dd.ddMine()).to.equal(ddMine.address);
-    });
-
-    it("Should set royalties to 10%", async () => {
-      let [recipient, amount] = await dd.royaltyInfo(0, 100);
-      expect(recipient).to.equal(admin.address);
-      expect(amount).to.equal(10);
-      [recipient, amount] = await dd.royaltyInfo(250, 330);
-      expect(recipient).to.equal(admin.address);
-      expect(amount).to.equal(33);
-    });
-
-    it("Should not allow to enter mine", async () => {
-      await expect(dd.enter(adminSig, { value: PRICE })).to.be.revertedWith(
-        "Wrong stage"
-      );
-      await expect(
-        dd.enterWedding(adminSig, { value: PRICE_WEDDING })
-      ).to.be.revertedWith("Wrong stage");
-    });
-  });
-
   describe("enter and enterWedding", () => {
     let dd;
     let ddMine;
@@ -995,6 +917,7 @@ describe("DiamondDawn", () => {
       await dd.ship(tokenId);
 
       expect(await dd.isLocked()).to.be.false;
+      await completeAndSetStage(dd, STAGE.DAWN);
       await dd.lockDiamondDawn();
       expect(await dd.isLocked()).to.be.true;
       await dd.rebirth(tokenId); // success
