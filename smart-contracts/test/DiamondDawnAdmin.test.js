@@ -1,26 +1,29 @@
 require("dotenv").config();
 require("@nomicfoundation/hardhat-chai-matchers");
 const { expect } = require("chai");
-const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
-const _ = require("lodash");
 const {
-  NO_SHAPE_NUM,
-  SHAPE,
-  ROUGH_SHAPE,
+  deployDD,
+  MAX_TOKENS,
+  deployDDWithRebirthReady,
+} = require("./utils/DeployDDUtils");
+const { signMessage } = require("./utils/SignatureUtils");
+const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
+const { PRICE_WEDDING, PRICE } = require("./utils/Consts");
+const {
   STAGE,
+  NO_SHAPE_NUM,
   ALL_STAGES,
 } = require("./utils/EnumConverterUtils");
-const {
-  assertPolishedMetadata,
-  assertRebornMetadata,
-  setAllVideoUrls,
-} = require("./utils/MineTestUtils");
-const { DIAMOND } = require("./utils/Diamonds");
-const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
-const { deployMine } = require("./utils/DeployMineUtils");
-const { deployDD, MAX_TOKENS } = require("./utils/DeployDDUtils");
-const { signMessage } = require("./utils/SignatureUtils");
+const { ethers } = require("hardhat");
+const { completeAndSetStage } = require("./utils/DDTestUtils");
+const _ = require("lodash");
+
+async function lockDiamondDawn(dd) {
+  await dd.completeStage(await dd.stage());
+  await dd.setStage(STAGE.DAWN);
+  await dd.lockDiamondDawn();
+}
 
 describe("Diamond Dawn Admin", () => {
   describe("Deployment", () => {
@@ -93,61 +96,195 @@ describe("Diamond Dawn Admin", () => {
     });
   });
 
-  describe("withdraw", () => {
-    it("should REVERT when NOT admin", async () => {
-      // const unAuthUsers = [diamondDawn, user];
-      // await Promise.all(
-      //     unAuthUsers.map((unAuth) =>
-      //         assertOnlyAdmin(unAuth, mineContract, (contract) =>
-      //             contract.setStageVideos(STAGE.NO_STAGE, [])
-      //         )
-      //     )
-      // );
+  describe("setStage", () => {
+    let dd;
+    let ddMine;
+    let admin;
+    let userA;
+    let userB;
+    let adminSig;
+    let userASig;
+
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
+        await loadFixture(deployDDWithRebirthReady);
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
+      admin = owner;
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
     });
 
-    it("should properly work", async () => {});
+    it("should REVERT when NOT admin", async () => {
+      const unAuthUsers = [userA, userB];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, dd, (contract) =>
+            contract.setStage(STAGE.INVITE)
+          )
+        )
+      );
+      await dd.setStage(STAGE.INVITE); // success
+    });
 
-    it("should properly work when locked", async () => {});
-  });
+    it("should REVERT when stage is active", async () => {
+      await dd.setStage(STAGE.INVITE);
+      expect(await dd.isActive()).to.be.true;
+      await expect(dd.setStage(STAGE.MINE)).to.revertedWith("Stage is active");
+    });
 
-  describe("lockDiamondDawn", () => {
-    it("should REVERT when NOT admin", async () => {});
+    it("should REVERT when mine stage is not ready", async () => {
+      await dd.setStage(STAGE.INVITE); // work
+      await dd.completeStage(STAGE.INVITE);
+      await ddMine.setStageVideos(STAGE.INVITE, [
+        { shape: NO_SHAPE_NUM, video: "" },
+      ]);
+      await expect(dd.setStage(STAGE.INVITE)).to.revertedWith("Mine not ready");
+    });
 
-    it("should REVERT if not DAWN stage", async () => {});
+    it("should REVERT when dd is locked", async () => {
+      await lockDiamondDawn(dd);
+      expect(await dd.isLocked()).to.be.true;
+      await expect(dd.setStage(STAGE.MINE)).to.revertedWith("Locked forever");
+    });
 
-    it("should delegate lock to mine", async () => {});
-
-    it("should disable all setter functions", async () => {});
-  });
-
-  describe("setStage", () => {
-    it("should REVERT when NOT admin", async () => {});
-
-    it("should REVERT when stage is not ready", async () => {});
-
-    it("should REVERT when stage is active", async () => {});
-
-    it("should REVERT when dd is locked", async () => {});
-
-    it("should set active stage, emit event", async () => {});
+    it("should set active stage, emit event", async () => {
+      for (const stage of ALL_STAGES) {
+        await expect(dd.setStage(stage))
+          .to.emit(dd, "StageChanged")
+          .withArgs(stage);
+        expect(await dd.isActive()).to.be.true;
+        expect(await dd.stage()).to.equal(stage);
+        await dd.completeStage(stage);
+      }
+    });
   });
 
   describe("completeStage", () => {
-    it("should REVERT when NOT admin", async () => {});
+    let dd;
+    let ddMine;
+    let admin;
+    let userA;
+    let userB;
+    let adminSig;
+    let userASig;
 
-    it("should REVERT when NOT current system stage", async () => {});
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
+        await loadFixture(deployDDWithRebirthReady);
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
+      admin = owner;
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
+      await dd.setStage(STAGE.INVITE);
+    });
 
-    it("should REVERT when dd is locked", async () => {});
+    it("should REVERT when NOT admin", async () => {
+      const unAuthUsers = [userA, userB];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, dd, (contract) =>
+            contract.completeStage(STAGE.INVITE)
+          )
+        )
+      );
+      await dd.completeStage(STAGE.INVITE); // success
+    });
 
-    it("should set isActive to false", async () => {});
+    it("should REVERT when dd is locked", async () => {
+      await lockDiamondDawn(dd);
+      expect(await dd.isLocked()).to.be.true;
+      await expect(dd.completeStage(STAGE.INVITE)).to.revertedWith(
+        "Locked forever"
+      );
+    });
+
+    it("should REVERT when NOT current system stage", async () => {
+      expect(await dd.stage()).to.equal(STAGE.INVITE);
+      await expect(dd.completeStage(STAGE.MINE)).to.revertedWith("Wrong stage");
+      await dd.completeStage(STAGE.INVITE); // success
+    });
+
+    it("should set isActive to false", async () => {
+      expect(await dd.isActive()).to.be.true;
+      await dd.completeStage(STAGE.INVITE); // success
+      expect(await dd.stage()).to.equal(STAGE.INVITE);
+      expect(await dd.isActive()).to.be.false;
+    });
   });
 
-  describe("setRoyaltyInfo", () => {
-    it("should REVERT when NOT admin", async () => {});
+  describe("lockDiamondDawn", () => {
+    let dd;
+    let ddMine;
+    let admin;
+    let userA;
+    let userB;
+    let adminSig;
+    let userASig;
 
-    it("should SUCCEED when dd is locked", async () => {});
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
+        await loadFixture(deployDDWithRebirthReady);
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
+      admin = owner;
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
+      await dd.setStage(STAGE.INVITE);
+    });
 
-    it("should change default royalties", async () => {});
+    it("should REVERT when NOT admin", async () => {
+      const unAuthUsers = [userA, userB];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, dd, (contract) => contract.lockDiamondDawn())
+        )
+      );
+      await lockDiamondDawn(dd); // success
+    });
+
+    it("should REVERT when dd is locked", async () => {
+      await lockDiamondDawn(dd);
+      expect(await dd.isLocked()).to.be.true;
+      await expect(dd.lockDiamondDawn()).to.revertedWith("Locked forever");
+    });
+
+    it("should REVERT if not DAWN stage", async () => {
+      for (const stage of _.without(ALL_STAGES, STAGE.DAWN)) {
+        await dd.completeStage(await dd.stage());
+        await dd.setStage(stage);
+        expect(await dd.stage()).to.equal(stage);
+        await expect(dd.lockDiamondDawn()).to.revertedWith("Not Dawn stage");
+      }
+    });
+
+    it("should delegate lock to mine", async () => {
+      expect(await dd.isLocked()).to.be.false;
+      expect(await ddMine.isLocked()).to.be.false;
+      await lockDiamondDawn(dd);
+      expect(await dd.isLocked()).to.be.true;
+      expect(await ddMine.isLocked()).to.be.true;
+    });
+
+    it("should disable all setter functions except withdraw & royalties", async () => {
+      await lockDiamondDawn(dd);
+      await expect(dd.setStage(STAGE.INVITE)).to.revertedWith("Locked forever");
+      await expect(dd.completeStage(STAGE.INVITE)).to.revertedWith(
+        "Locked forever"
+      );
+      await expect(dd.lockDiamondDawn()).to.revertedWith("Locked forever");
+      await expect(dd.pause()).to.revertedWith("Locked forever");
+      await expect(dd.unpause()).to.revertedWith("Locked forever");
+      await dd.withdraw(); // success
+      await dd.setRoyaltyInfo(admin.address, 500); // success
+    });
   });
 
   describe("pause", () => {
@@ -168,5 +305,81 @@ describe("Diamond Dawn Admin", () => {
     it("should set unpause", async () => {});
 
     it("should enable transfers", async () => {});
+  });
+
+  describe("setRoyaltyInfo", () => {
+    it("should REVERT when NOT admin", async () => {});
+
+    it("should SUCCEED when dd is locked", async () => {});
+
+    it("should change default royalties", async () => {});
+  });
+
+  describe("withdraw", () => {
+    let dd;
+    let ddMine;
+    let admin;
+    let userA;
+    let userB;
+    let adminSig;
+    let userASig;
+
+    beforeEach(async () => {
+      const { diamondDawn, diamondDawnMine, owner, signer, users } =
+        await loadFixture(deployDDWithRebirthReady);
+      await diamondDawn.setStage(STAGE.INVITE);
+      dd = diamondDawn;
+      ddMine = diamondDawnMine;
+      admin = owner;
+      userA = users[0];
+      userB = users[1];
+      adminSig = signMessage(signer, admin);
+      userASig = signMessage(signer, userA);
+    });
+
+    it("should REVERT when NOT admin", async () => {
+      const unAuthUsers = [userA, userB];
+      await Promise.all(
+        unAuthUsers.map((unAuth) =>
+          assertOnlyAdmin(unAuth, dd, (contract) => contract.withdraw())
+        )
+      );
+      await dd.withdraw(); // success
+    });
+
+    it("should properly work", async () => {
+      expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
+      await dd.enter(adminSig, { value: PRICE });
+      expect(await ethers.provider.getBalance(dd.address)).to.equal(PRICE);
+      await expect(() => dd.withdraw()).to.changeEtherBalances(
+        [dd, admin],
+        [-PRICE, PRICE]
+      );
+      expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
+    });
+
+    it("should properly work when locked", async () => {
+      expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
+      await dd.enter(adminSig, { value: PRICE });
+      await dd.connect(userA).enterWedding(userASig, { value: PRICE_WEDDING });
+      const expectedBalance = PRICE.add(PRICE_WEDDING);
+      expect(await ethers.provider.getBalance(dd.address)).to.equal(
+        expectedBalance
+      );
+
+      await completeAndSetStage(dd, STAGE.DAWN);
+      await dd.completeStage(STAGE.DAWN);
+      await dd.lockDiamondDawn();
+
+      expect(await dd.stage()).to.equal(STAGE.DAWN);
+      expect(await dd.isActive()).to.be.false;
+      expect(await dd.isLocked()).to.be.true;
+
+      await expect(() => dd.withdraw()).to.changeEtherBalances(
+        [dd, admin],
+        [-expectedBalance, expectedBalance]
+      );
+      expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
+    });
   });
 });

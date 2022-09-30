@@ -81,7 +81,7 @@ contract DiamondDawn is
 
     modifier isReadyStage(Stage stage_) {
         require(!isActive, "Stage is active");
-        require(ddMine.isReady(stage_), "Stage not ready");
+        require(ddMine.isReady(stage_), "Mine not ready");
         _;
     }
 
@@ -137,18 +137,19 @@ contract DiamondDawn is
         _safeMint(_msgSender(), tokenId);
     }
 
-    function completeStage(Stage stage_) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-        require(stage == stage_, "Wrong stage");
-        isActive = false;
-    }
-
     function setStage(Stage stage_) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked isReadyStage(stage_) {
         stage = stage_;
         isActive = true;
         emit StageChanged(stage);
     }
 
+    function completeStage(Stage stage_) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        require(stage == stage_, "Wrong stage");
+        isActive = false;
+    }
+
     function lockDiamondDawn() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        require(stage == Stage.DAWN, "Not Dawn stage");
         ddMine.lockMine();
         isLocked = true;
     }
@@ -161,13 +162,13 @@ contract DiamondDawn is
         _unpause();
     }
 
-    function withdraw() external onlyRole(DEFAULT_ADMIN_ROLE) {
-        (bool success, ) = msg.sender.call{value: address(this).balance}("");
-        require(success, "Transfer failed.");
-    }
-
     function setRoyaltyInfo(address receiver, uint96 feeNumerator) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _setDefaultRoyalty(receiver, feeNumerator);
+    }
+
+    function withdraw() external onlyRole(DEFAULT_ADMIN_ROLE) {
+        (bool success, ) = _msgSender().call{value: address(this).balance}("");
+        require(success, "Transfer failed.");
     }
 
     /**********************     Public Functions     ************************/

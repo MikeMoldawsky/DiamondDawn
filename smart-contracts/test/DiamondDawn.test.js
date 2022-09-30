@@ -27,14 +27,8 @@ const {
 const { signMessage } = require("./utils/SignatureUtils");
 const _ = require("lodash");
 const { ethers } = require("hardhat");
-
-async function completeAndSetStage(dd, stage) {
-  await dd.completeStage(await dd.stage());
-  await dd.setStage(stage);
-}
-
-const PRICE = parseEther("0.002"); // TODO: change price to 3.33
-const PRICE_WEDDING = parseEther("0.003"); // TODO: change price to 3.33
+const { PRICE, PRICE_WEDDING } = require("./utils/Consts");
+const { completeAndSetStage } = require("./utils/DDTestUtils");
 
 describe("DiamondDawn", () => {
   describe("enter and enterWedding", () => {
