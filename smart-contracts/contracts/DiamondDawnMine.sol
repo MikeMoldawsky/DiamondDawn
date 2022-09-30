@@ -6,21 +6,15 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interface/IDiamondDawnMine.sol";
 import "./interface/IDiamondDawnMineAdmin.sol";
-import "./objects/Mine.sol";
 import "./objects/Diamond.sol";
+import "./objects/Mine.sol";
+import "./utils/MathUtils.sol";
 import "./utils/NFTSerializer.sol";
 import "./utils/StringUtils.sol";
-import "./utils/MathUtils.sol";
-import "./objects/Mine.sol";
-import "./objects/Mine.sol";
-import "./objects/Mine.sol";
-import "./objects/Mine.sol";
-import "./objects/Mine.sol";
 
-// TODO: write description
 /**
- * @title DiamondDawnMine NFT Contract
- * @author Diamond Dawn
+ * @title DiamondDawn NFT Contract
+ * @author Mike Moldawsky aka Tweezers
  */
 contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondDawnMineAdmin {
     bool public isLocked; // mine is locked forever.

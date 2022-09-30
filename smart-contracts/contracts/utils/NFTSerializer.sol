@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
+/**
+ * A generic NFT Metadata serializer.
+ * Based on https://etherscan.io/address/0x4e1e18aaCCDf9acFd2E8847654A3871dfD234F02#code
+ */
 struct NFTMetadata {
     string name;
     string description;
