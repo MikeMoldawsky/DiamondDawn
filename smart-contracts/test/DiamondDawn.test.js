@@ -917,6 +917,7 @@ describe("DiamondDawn", () => {
       await dd.ship(tokenId);
 
       expect(await dd.isLocked()).to.be.false;
+      await completeAndSetStage(dd, STAGE.DAWN);
       await dd.lockDiamondDawn();
       expect(await dd.isLocked()).to.be.true;
       await dd.rebirth(tokenId); // success
