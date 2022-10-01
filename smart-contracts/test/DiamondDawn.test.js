@@ -15,6 +15,7 @@ const {
   setPolishedVideos,
   setRebornVideo,
   assertBase64AndGetParsed,
+  BASE_URI,
 } = require("./utils/MineTestUtils");
 const {
   deployDD,
@@ -1001,8 +1002,7 @@ describe("DiamondDawn", () => {
         name: "Mine Entrance #1",
         description: "description",
         created_by: "dd",
-        image:
-          "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/enterMine.mp4",
+        image: `${BASE_URI}enterMine.mp4`,
         attributes: [{ trait_type: "Type", value: "Mine Entrance" }],
       });
     });

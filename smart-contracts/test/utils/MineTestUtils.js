@@ -19,8 +19,7 @@ const MIN_ROUGH_EXTRA_POINTS = 37;
 const MAX_ROUGH_EXTRA_POINTS = 74;
 const MIN_POLISH_EXTRA_POINTS = 1;
 const MAX_POLISH_EXTRA_POINTS = 4;
-const BASE_URI =
-  "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks";
+const BASE_URI = "https://arweave.net/"; // TODO: change to ar://
 
 // constants for tests
 const ENTER_MINE_VIDEO = "enterMine.mp4";
@@ -346,7 +345,7 @@ function _assertShapeImage(type, shape, image) {
     default:
       throw new Error("Unknown type");
   }
-  expect(image).to.be.equal(`${BASE_URI}/${video}`);
+  expect(image).to.be.equal(`${BASE_URI}${video}`);
 }
 
 async function _getParsedMetadata(ddUser, mineContract, tokenId) {
@@ -370,7 +369,7 @@ function _getExpectedMetadataEnterMine(tokenId) {
     name: `Mine Entrance #${tokenId}`,
     description: "description",
     created_by: "dd",
-    image: `${BASE_URI}/${ENTER_MINE_VIDEO}`,
+    image: `${BASE_URI}${ENTER_MINE_VIDEO}`,
     attributes: [{ trait_type: "Type", value: "Mine Entrance" }],
   };
 }
@@ -486,6 +485,7 @@ function _getRebirthMetadataNoCaratShapeAndImage(id, diamond) {
 }
 
 module.exports = {
+  BASE_URI,
   assertBase64AndGetParsed,
   assertEnterMineMetadata,
   assertRoughMetadata,
