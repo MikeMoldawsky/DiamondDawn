@@ -21,8 +21,8 @@ const { DIAMOND } = require("./utils/Diamonds");
 const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
 const {
   deployMine,
-  deployReadyMine,
-  deployInitializedMine,
+  deployMineWithVideos,
+  deployInitializedMine10WithVideos,
 } = require("./utils/DeployMineUtils");
 
 describe("Diamond Dawn Mine", () => {
@@ -67,7 +67,7 @@ describe("Diamond Dawn Mine", () => {
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
-        deployReadyMine
+        deployInitializedMine10WithVideos
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -116,7 +116,7 @@ describe("Diamond Dawn Mine", () => {
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
-        deployReadyMine
+        deployInitializedMine10WithVideos
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -183,7 +183,7 @@ describe("Diamond Dawn Mine", () => {
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
-        deployReadyMine
+        deployInitializedMine10WithVideos
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -248,7 +248,7 @@ describe("Diamond Dawn Mine", () => {
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
-        deployReadyMine
+        deployInitializedMine10WithVideos
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -317,7 +317,7 @@ describe("Diamond Dawn Mine", () => {
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
-        deployReadyMine
+        deployInitializedMine10WithVideos
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -390,7 +390,7 @@ describe("Diamond Dawn Mine", () => {
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
-        deployReadyMine
+        deployInitializedMine10WithVideos
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -475,7 +475,7 @@ describe("Diamond Dawn Mine", () => {
     let user;
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, users } = await loadFixture(
-        deployInitializedMine
+        deployInitializedMine10WithVideos
       );
       dd = diamondDawn;
       ddMine = diamondDawnMine;
@@ -540,7 +540,7 @@ describe("Diamond Dawn Mine", () => {
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, users } =
-        await deployReadyMine();
+        await deployInitializedMine10WithVideos();
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;

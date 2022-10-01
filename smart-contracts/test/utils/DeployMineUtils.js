@@ -1,9 +1,6 @@
 const { ethers } = require("hardhat");
 const { setAllVideoUrls } = require("./MineTestUtils");
 
-// constants
-const MAX_TOKENS = 10;
-
 async function deployMine() {
   const users = await ethers.getSigners();
   const owner = users.shift();
@@ -17,10 +14,10 @@ async function deployMine() {
   };
 }
 
-async function deployInitializedMine() {
+async function deployInitializedMine10() {
   const { diamondDawnMine, owner, users } = await deployMine();
   const diamondDawn = users.pop();
-  await diamondDawnMine.connect(diamondDawn).initialize(MAX_TOKENS);
+  await diamondDawnMine.connect(diamondDawn).initialize(10);
   return {
     diamondDawn,
     diamondDawnMine,
@@ -29,9 +26,20 @@ async function deployInitializedMine() {
   };
 }
 
-async function deployReadyMine() {
-  const { diamondDawnMine, diamondDawn, owner, users } =
-    await deployInitializedMine();
+async function deployInitializedMine10WithVideos() {
+  const { diamondDawn, diamondDawnMine, owner, users } =
+    await deployInitializedMine10();
+  await setAllVideoUrls(diamondDawnMine);
+  return {
+    diamondDawn,
+    diamondDawnMine,
+    owner,
+    users,
+  };
+}
+
+async function deployMineWithVideos() {
+  const { diamondDawnMine, diamondDawn, owner, users } = await deployMine();
   await setAllVideoUrls(diamondDawnMine);
   return {
     diamondDawn,
@@ -43,7 +51,7 @@ async function deployReadyMine() {
 
 module.exports = {
   deployMine,
-  deployInitializedMine,
-  deployReadyMine,
-  MAX_TOKENS,
+  deployInitializedMine10,
+  deployInitializedMine10WithVideos,
+  deployMineWithVideos,
 };

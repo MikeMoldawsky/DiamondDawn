@@ -33,8 +33,7 @@ contract DiamondDawn is
 
     uint public constant PRICE = 0.002 ether; // TODO: change to 3.33eth
     uint public constant PRICE_WEDDING = 0.003 ether; // TODO: change to 3.66eth
-    //    uint16 public constant MAX_ENTRANCE = 333;
-    uint16 public MAX_ENTRANCE; // TODO: change to constant once the script is ready
+    uint16 public constant MAX_ENTRANCE = 333;
 
     bool public isLocked; // locked forever (immutable).
     bool public isActive;
@@ -47,16 +46,11 @@ contract DiamondDawn is
 
     address private _signer;
 
-    constructor(
-        address mine_,
-        uint16 maxEntrance_,
-        address signer_
-    ) ERC721("DiamondDawn", "DD") {
+    constructor(address mine_, address signer_) ERC721("DiamondDawn", "DD") {
         _signer = signer_;
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setDefaultRoyalty(_msgSender(), 1000);
         ddMine = IDiamondDawnMine(mine_);
-        MAX_ENTRANCE = maxEntrance_; // TODO: remove maxEntrance_ once staging is deploying 333 automatically.
         ddMine.initialize(MAX_ENTRANCE);
     }
 
