@@ -23,9 +23,7 @@ const Diamond = ({ diamond }) => {
     );
   }, [videoUrl]);
 
-  return (
-    <div className="diamond-art">{renderPlayer()}</div>
-  );
+  return <div className="diamond-art">{renderPlayer()}</div>;
 };
 
 export default Diamond;
