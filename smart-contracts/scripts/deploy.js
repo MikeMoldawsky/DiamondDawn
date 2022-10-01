@@ -104,7 +104,7 @@ async function main() {
   const mine = await deployContract(deployer, "DiamondDawnMine", mineArgs);
   // Diamond Dawn
   let dd;
-  const ddArgs = [mine.address, DIAMOND_COUNT, process.env.SIGNER_PUBLIC_KEY];
+  const ddArgs = [mine.address, process.env.SIGNER_PUBLIC_KEY];
   if (hre.network.name === "goerli") {
     dd = await deployContract(deployer, "DiamondDawn", ddArgs);
     // await populateDiamonds(mine);

@@ -85,8 +85,12 @@ async function setAllVideoUrls(mineContract) {
 }
 
 async function populateDiamonds(mineContract, numDiamonds) {
-  const diamonds = _.range(numDiamonds).map((_) => DIAMOND);
-  await mineContract.eruption(diamonds);
+  if (numDiamonds === 333) {
+    await mineContract.eruption(_.range(300).map((_) => DIAMOND));
+    await mineContract.eruption(_.range(33).map((_) => DIAMOND));
+  } else {
+    await mineContract.eruption(_.range(numDiamonds).map((_) => DIAMOND));
+  }
 }
 
 async function prepareMineEntranceReady(mineContract) {

@@ -22,7 +22,7 @@ const {
   deployDDWithMineReady,
   deployDDWithCutReady,
   deployDDWithPolishReady,
-  MAX_TOKENS,
+  NUM_TOKENS,
   deployDDWithRebirthReady,
 } = require("./utils/DeployDDUtils");
 const { signMessage } = require("./utils/SignatureUtils");
@@ -100,7 +100,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when mine is full", async () => {
       await Promise.all(
-        _.range(MAX_TOKENS).map(async (i) => {
+        _.range(NUM_TOKENS).map(async (i) => {
           const signature = await signMessage(signer1, users1[i]);
           return await dd.connect(users1[i]).enter(signature, { value: PRICE });
         })

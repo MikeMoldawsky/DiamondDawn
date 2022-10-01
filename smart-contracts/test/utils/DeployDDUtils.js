@@ -5,18 +5,17 @@ const {
   preparePolishReady,
   prepareRebirthReady,
 } = require("./MineTestUtils");
-const { deployMine } = require("./DeployMineUtils");
+const { deployMineWithVideos } = require("./DeployMineUtils");
 
 // constants
-const MAX_TOKENS = 10;
+const NUM_TOKENS = 333;
 
 async function deployDD() {
-  const { diamondDawnMine, owner, users } = await deployMine();
+  const { diamondDawnMine, owner, users } = await deployMineWithVideos();
   const signer = users.pop();
   const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
   const diamondDawn = await DiamondDawn.deploy(
     diamondDawnMine.address,
-    MAX_TOKENS,
     signer.address
   );
   await diamondDawn.deployed();
@@ -32,7 +31,7 @@ async function deployDD() {
 async function deployDDWithMineReady() {
   const { diamondDawn, diamondDawnMine, owner, signer, users } =
     await deployDD();
-  await prepareMineReady(diamondDawnMine, MAX_TOKENS);
+  await prepareMineReady(diamondDawnMine, NUM_TOKENS);
   return {
     diamondDawn,
     diamondDawnMine,
@@ -45,7 +44,7 @@ async function deployDDWithMineReady() {
 async function deployDDWithCutReady() {
   const { diamondDawn, diamondDawnMine, owner, signer, users } =
     await deployDD();
-  await prepareCutReady(diamondDawnMine, MAX_TOKENS);
+  await prepareCutReady(diamondDawnMine, NUM_TOKENS);
   return {
     diamondDawn,
     diamondDawnMine,
@@ -58,7 +57,7 @@ async function deployDDWithCutReady() {
 async function deployDDWithPolishReady() {
   const { diamondDawn, diamondDawnMine, owner, signer, users } =
     await deployDD();
-  await preparePolishReady(diamondDawnMine, MAX_TOKENS);
+  await preparePolishReady(diamondDawnMine, NUM_TOKENS);
   return {
     diamondDawn,
     diamondDawnMine,
@@ -71,7 +70,7 @@ async function deployDDWithPolishReady() {
 async function deployDDWithRebirthReady() {
   const { diamondDawn, diamondDawnMine, owner, signer, users } =
     await deployDD();
-  await prepareRebirthReady(diamondDawnMine, MAX_TOKENS);
+  await prepareRebirthReady(diamondDawnMine, NUM_TOKENS);
   return {
     diamondDawn,
     diamondDawnMine,
@@ -87,5 +86,5 @@ module.exports = {
   deployDDWithCutReady,
   deployDDWithPolishReady,
   deployDDWithRebirthReady,
-  MAX_TOKENS,
+  NUM_TOKENS,
 };

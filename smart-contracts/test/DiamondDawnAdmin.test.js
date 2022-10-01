@@ -4,7 +4,7 @@ const { expect } = require("chai");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const {
   deployDD,
-  MAX_TOKENS,
+  NUM_TOKENS,
   deployDDWithRebirthReady,
 } = require("./utils/DeployDDUtils");
 const { signMessage } = require("./utils/SignatureUtils");
@@ -60,7 +60,7 @@ describe("Diamond Dawn Admin", () => {
 
     it("Should set and initialize DiamondDawnMine", async () => {
       expect(await ddMine.diamondDawn()).to.equal(dd.address);
-      expect(await ddMine.maxDiamonds()).to.equal(MAX_TOKENS);
+      expect(await ddMine.maxDiamonds()).to.equal(NUM_TOKENS);
       expect(await ddMine.isInitialized()).to.be.true;
       expect(await ddMine.isLocked()).to.be.false;
     });
@@ -68,8 +68,7 @@ describe("Diamond Dawn Admin", () => {
     it("Should correctly set public params", async () => {
       expect(await dd.PRICE()).to.equal(PRICE);
       expect(await dd.PRICE_WEDDING()).to.equal(PRICE_WEDDING);
-      expect(await dd.MAX_ENTRANCE()).to.equal(MAX_TOKENS);
-      // expect(await dd.MAX_ENTRANCE()).to.equal(333); // TODO: uncomment
+      expect(await dd.MAX_ENTRANCE()).to.equal(NUM_TOKENS);
       expect(await dd.isLocked()).to.be.false;
       expect(await dd.isActive()).to.be.false;
       expect(await dd.paused()).to.be.false;
