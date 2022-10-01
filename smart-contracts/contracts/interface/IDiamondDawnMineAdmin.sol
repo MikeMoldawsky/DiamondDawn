@@ -11,4 +11,6 @@ interface IDiamondDawnMineAdmin {
     function lostShipment(uint tokenId, Certificate calldata diamond) external;
 
     function setStageVideos(Stage stage_, ShapeVideo[] calldata shapeVideos) external;
+
+    function setBaseTokenURI(string calldata baseTokenURI) external;
 }

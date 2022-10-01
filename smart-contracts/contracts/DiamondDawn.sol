@@ -15,8 +15,8 @@ import "./interface/IDiamondDawnAdmin.sol";
 import "./interface/IDiamondDawnMine.sol";
 
 /**
- * @title DiamondDawn NFT Contract
- * @author Mike Moldawsky aka Tweezers
+ * @title DiamondDawn
+ * @author Mike Moldawsky (Tweezers)
  */
 contract DiamondDawn is
     ERC721,

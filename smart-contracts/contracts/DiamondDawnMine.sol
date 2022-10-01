@@ -13,8 +13,8 @@ import "./utils/NFTSerializer.sol";
 import "./utils/StringUtils.sol";
 
 /**
- * @title DiamondDawn NFT Contract
- * @author Mike Moldawsky aka Tweezers
+ * @title DiamondDawnMine
+ * @author Mike Moldawsky (Tweezers)
  */
 contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondDawnMineAdmin {
     bool public isLocked; // mine is locked forever.
@@ -38,6 +38,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     uint16 private _randNonce = 0;
     Certificate[] private _mine;
     mapping(uint => Metadata) private _metadata;
+    string private _baseTokenURI = "https://arweave.net/"; // TODO: change to "ar://"
 
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -162,6 +163,10 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         }
     }
 
+    function setBaseTokenURI(string calldata baseTokenURI) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _baseTokenURI = baseTokenURI;
+    }
+
     function getMetadata(uint tokenId) external view onlyDiamondDawn exists(tokenId) returns (string memory) {
         Metadata memory metadata = _metadata[tokenId];
         string memory videoURI = _getVideoURI(metadata);
@@ -208,7 +213,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
 
     function _getVideoURI(Metadata memory metadata) private view returns (string memory) {
         string memory videoUrl = _getVideo(metadata.state_, _getShapeNumber(metadata));
-        return string.concat(_videoBaseURI(), videoUrl);
+        return string.concat(_baseTokenURI, videoUrl);
     }
 
     function _isAllVideosExist(Stage stage_, uint maxShape) private view returns (bool) {
@@ -284,11 +289,6 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             attributes[15] = toAttribute("Physical Id", Strings.toString(metadata.reborn.id), "");
         }
         return attributes;
-    }
-
-    function _videoBaseURI() private pure returns (string memory) {
-        // TODO: change to ipfs or ar baseURL before production
-        return "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/";
     }
 
     function _getShapeNumber(Metadata memory metadata) private pure returns (uint) {

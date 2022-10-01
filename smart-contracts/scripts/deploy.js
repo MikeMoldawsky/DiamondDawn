@@ -158,26 +158,50 @@ async function populateDiamonds(mine) {
 
 async function setVideos(diamondDawnMine) {
   await diamondDawnMine.setStageVideos(STAGE.INVITE, [
-    { shape: NO_SHAPE_NUM, video: "infinity.mp4" },
+    {
+      shape: NO_SHAPE_NUM,
+      video: "kwW9gXgTCNNBM3bfqrnshOIziN7WTwNZ1nH2un1OLi8",
+    },
   ]);
   await diamondDawnMine.setStageVideos(STAGE.MINE, [
-    { shape: ROUGH_SHAPE.MAKEABLE_1, video: "rough_makeable1.mp4" },
-    { shape: ROUGH_SHAPE.MAKEABLE_2, video: "rough_makeable2.mp4" },
+    {
+      shape: ROUGH_SHAPE.MAKEABLE_1,
+      video: "BtRbJnl31VM4l_FwNuYLLozafgBg6KCh4hFASNCUQU4",
+    },
+    {
+      shape: ROUGH_SHAPE.MAKEABLE_2,
+      video: "65tm30lsGQUYp7bfZE9Dm4fnAt3Vnp5dnOnJvNNoES4",
+    },
   ]);
   await diamondDawnMine.setStageVideos(STAGE.CUT, [
-    { shape: SHAPE.PEAR, video: "cut_pear.mp4" },
-    { shape: SHAPE.ROUND, video: "cut_round.mp4" },
-    { shape: SHAPE.OVAL, video: "cut_oval.mp4" },
-    { shape: SHAPE.RADIANT, video: "cut_radiant.mp4" },
+    { shape: SHAPE.PEAR, video: "srm04dqoAKbhqpHMZNFJvK4M2BOQMpBvsV6UPiN5nc8" },
+    {
+      shape: SHAPE.ROUND,
+      video: "69IYg9WisacjDt7THpKvmmzgRdvzEd5OxvrvWXT4YB4",
+    },
+    { shape: SHAPE.OVAL, video: "RwNs4UCLSvhYA24KZQEsF2qelbXYJ-ZzKhB7CJQ1ZIw" },
+    {
+      shape: SHAPE.RADIANT,
+      video: "ZIA_cEULReCgJTv02SEIvfIE8teRPC6H07iPEkteHDA",
+    },
   ]);
   await diamondDawnMine.setStageVideos(STAGE.POLISH, [
-    { shape: SHAPE.PEAR, video: "polished_pear.mp4" },
-    { shape: SHAPE.ROUND, video: "polished_round.mp4" },
-    { shape: SHAPE.OVAL, video: "polished_oval.mp4" },
-    { shape: SHAPE.RADIANT, video: "polished_radiant.mp4" },
+    { shape: SHAPE.PEAR, video: "NnI-JkZmMtbER5vSLiR3s49btZ216OS_JjjnBPKlE3I" },
+    {
+      shape: SHAPE.ROUND,
+      video: "vyOKWpf4300MX1av8lMbKqjjFwhIBu0cD66WYEs-DiI",
+    },
+    { shape: SHAPE.OVAL, video: "HO2Sp81wPsJywp-7pQ5xnznGujvGiTUxvmaz_BRH_qg" },
+    {
+      shape: SHAPE.RADIANT,
+      video: "AIXfjxPSyNhzvKYhHV3iQ9txbl1fjp2yqiRRfjkgAAw",
+    },
   ]);
   await diamondDawnMine.setStageVideos(STAGE.SHIP, [
-    { shape: NO_SHAPE_NUM, video: "diamond_dawn.mp4" },
+    {
+      shape: NO_SHAPE_NUM,
+      video: "JBdFRAh_m6VIRQxKdgk22SXQhWGmqz1odXx-vIN3glk",
+    },
   ]);
 }
 
