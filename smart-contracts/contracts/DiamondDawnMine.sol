@@ -38,7 +38,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     uint16 private _randNonce = 0;
     Certificate[] private _mine;
     mapping(uint => Metadata) private _metadata;
-    string private _baseTokenURI = "https://arweave.net/" // TODO: change to "ar://"
+    string private _baseTokenURI = "https://arweave.net/"; // TODO: change to "ar://"
 
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
