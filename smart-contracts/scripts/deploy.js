@@ -181,7 +181,7 @@ async function setVideos(diamondDawnMine) {
     },
     { shape: SHAPE.OVAL, video: "RwNs4UCLSvhYA24KZQEsF2qelbXYJ-ZzKhB7CJQ1ZIw" },
     {
-      shape: SHAPE.RADIANT,
+      shape: SHAPE.CUSHION,
       video: "ZIA_cEULReCgJTv02SEIvfIE8teRPC6H07iPEkteHDA",
     },
   ]);
@@ -193,7 +193,7 @@ async function setVideos(diamondDawnMine) {
     },
     { shape: SHAPE.OVAL, video: "HO2Sp81wPsJywp-7pQ5xnznGujvGiTUxvmaz_BRH_qg" },
     {
-      shape: SHAPE.RADIANT,
+      shape: SHAPE.CUSHION,
       video: "AIXfjxPSyNhzvKYhHV3iQ9txbl1fjp2yqiRRfjkgAAw",
     },
   ]);

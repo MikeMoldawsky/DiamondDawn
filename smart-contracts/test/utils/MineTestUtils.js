@@ -30,12 +30,12 @@ const MAKEABLE_2_VIDEO = "makeable2.mp4";
 const CUT_PEAR_VIDEO = "cutPear.mp4";
 const CUT_ROUND_VIDEO = "cutRound.mp4";
 const CUT_OVAL_VIDEO = "cutOval.mp4";
-const CUT_RADIANT_VIDEO = "cutRadiant.mp4";
+const CUT_CUSHION_VIDEO = "cutCushion.mp4";
 
 const POLISHED_PEAR_VIDEO = "polishedPear.mp4";
 const POLISHED_ROUND_VIDEO = "polishedRound.mp4";
 const POLISHED_OVAL_VIDEO = "polishedOval.mp4";
-const POLISHED_RADIANT_VIDEO = "polishedRadiant.mp4";
+const POLISHED_CUSHION_VIDEO = "polishedCushion.mp4";
 
 const REBORN_VIDEO = "reborn.mp4";
 
@@ -57,7 +57,7 @@ async function setCutVideos(mineContract) {
     { shape: SHAPE.PEAR, video: CUT_PEAR_VIDEO },
     { shape: SHAPE.ROUND, video: CUT_ROUND_VIDEO },
     { shape: SHAPE.OVAL, video: CUT_OVAL_VIDEO },
-    { shape: SHAPE.RADIANT, video: CUT_RADIANT_VIDEO },
+    { shape: SHAPE.CUSHION, video: CUT_CUSHION_VIDEO },
   ]);
 }
 
@@ -66,7 +66,7 @@ async function setPolishedVideos(mineContract) {
     { shape: SHAPE.PEAR, video: POLISHED_PEAR_VIDEO },
     { shape: SHAPE.ROUND, video: POLISHED_ROUND_VIDEO },
     { shape: SHAPE.OVAL, video: POLISHED_OVAL_VIDEO },
-    { shape: SHAPE.RADIANT, video: POLISHED_RADIANT_VIDEO },
+    { shape: SHAPE.CUSHION, video: POLISHED_CUSHION_VIDEO },
   ]);
 }
 
@@ -131,12 +131,15 @@ async function assertEnterMineMetadata(ddUser, mineContract, tokenId) {
 async function assertRoughMetadata(
   ddUser,
   mineContract,
+  diamond,
   tokenId,
-  roughId,
-  diamond
+  numMined,
+  totalMined
 ) {
-  const expectedMetadataNoCaratShapeImage =
-    _getRoughMetadataNoCaratShapeImage(roughId);
+  const expectedMetadataNoCaratShapeImage = _getRoughMetadataNoCaratShapeImage(
+    numMined,
+    totalMined
+  );
   await _assertMetadataByType(
     expectedMetadataNoCaratShapeImage,
     ddUser,
@@ -151,13 +154,19 @@ async function assertRoughMetadata(
 async function assertCutMetadata(
   ddUser,
   mineContract,
+  diamond,
   tokenId,
-  cutId,
-  diamond
+  numMined,
+  totalMined,
+  numCut,
+  totalCut
 ) {
   const expectedMetadataNoCaratShapeImage = _getCutMetadataNoCaratShapeImage(
-    cutId,
-    diamond
+    diamond,
+    numMined,
+    totalMined,
+    numCut,
+    totalCut
   );
   await _assertMetadataByType(
     expectedMetadataNoCaratShapeImage,
@@ -173,12 +182,25 @@ async function assertCutMetadata(
 async function assertPolishedMetadata(
   ddUser,
   mineContract,
+  diamond,
   tokenId,
-  polishedId,
-  diamond
+  numMined,
+  totalMined,
+  numCut,
+  totalCut,
+  numPolished,
+  totalPolished
 ) {
   const expectedMetadataNoCaratShapeImage =
-    _getPolishedMetadataNoCaratShapeImage(polishedId, diamond);
+    _getPolishedMetadataNoCaratShapeImage(
+      diamond,
+      numMined,
+      totalMined,
+      numCut,
+      totalCut,
+      numPolished,
+      totalPolished
+    );
   await _assertMetadataByType(
     expectedMetadataNoCaratShapeImage,
     ddUser,
@@ -192,12 +214,29 @@ async function assertPolishedMetadata(
 async function assertRebornMetadata(
   ddUser,
   mineContract,
+  diamond,
   tokenId,
-  rebornId,
-  diamond
+  numMined,
+  totalMined,
+  numCut,
+  totalCut,
+  numPolished,
+  totalPolished,
+  numPhysical,
+  totalPhysical
 ) {
   const expectedMetadataNoCaratShapeImage =
-    _getRebirthMetadataNoCaratShapeAndImage(rebornId, diamond);
+    _getRebirthMetadataNoCaratShapeAndImage(
+      diamond,
+      numMined,
+      totalMined,
+      numCut,
+      totalCut,
+      numPolished,
+      totalPolished,
+      numPhysical,
+      totalPhysical
+    );
   await _assertMetadataByType(
     expectedMetadataNoCaratShapeImage,
     ddUser,
@@ -305,7 +344,7 @@ function _assertShapeImage(type, shape, image) {
       }
       break;
     case STAGE.CUT:
-      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Radiant"]);
+      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Cushion"]);
       switch (shape) {
         case "Pear":
           video = CUT_PEAR_VIDEO;
@@ -316,15 +355,15 @@ function _assertShapeImage(type, shape, image) {
         case "Oval":
           video = CUT_OVAL_VIDEO;
           break;
-        case "Radiant":
-          video = CUT_RADIANT_VIDEO;
+        case "Cushion":
+          video = CUT_CUSHION_VIDEO;
           break;
         default:
           throw new Error("Unknown shape");
       }
       break;
     case STAGE.POLISH:
-      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Radiant"]);
+      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Cushion"]);
       switch (shape) {
         case "Pear":
           video = POLISHED_PEAR_VIDEO;
@@ -335,15 +374,15 @@ function _assertShapeImage(type, shape, image) {
         case "Oval":
           video = POLISHED_OVAL_VIDEO;
           break;
-        case "Radiant":
-          video = POLISHED_RADIANT_VIDEO;
+        case "Cushion":
+          video = POLISHED_CUSHION_VIDEO;
           break;
         default:
           throw new Error("Unknown shape");
       }
       break;
     case STAGE.SHIP:
-      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Radiant"]);
+      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Cushion"]);
       video = REBORN_VIDEO;
       break;
     default:
@@ -370,30 +409,42 @@ async function assertBase64AndGetParsed(actualMetadata) {
 
 function _getExpectedMetadataEnterMine(tokenId) {
   return {
-    name: `Mine Entrance #${tokenId}`,
+    name: `Mine Key #${tokenId}`,
     description: "description",
     created_by: "dd",
     image: `${BASE_URI}${ENTER_MINE_VIDEO}`,
-    attributes: [{ trait_type: "Type", value: "Mine Entrance" }],
+    attributes: [{ trait_type: "Type", value: "Key" }],
   };
 }
 
-function _getRoughMetadataNoCaratShapeImage(id) {
+function _getRoughMetadataNoCaratShapeImage(numMined, totalMined) {
   return {
-    name: `Rough Diamond #${id}`,
+    name: `Rough Stone #${numMined}`,
     description: "description",
     created_by: "dd",
     attributes: [
       { trait_type: "Type", value: "Rough" },
       { trait_type: "Origin", value: "Metaverse" },
       { trait_type: "Identification", value: "Natural" },
+      {
+        display_type: "number",
+        max_value: totalMined,
+        trait_type: "Mined",
+        value: numMined,
+      },
       { trait_type: "Color", value: "Cape" },
       { trait_type: "Mine", value: "Underground" },
     ],
   };
 }
 
-function _getCutMetadataNoCaratShapeImage(id, diamond) {
+function _getCutMetadataNoCaratShapeImage(
+  diamond,
+  numMined,
+  totalMined,
+  numCut,
+  totalCut
+) {
   const separator = enumToShape(diamond.shape) === "Round" ? " - " : " x ";
   const measurements =
     _.padEnd((diamond.length / 100).toString(), 4, "0") +
@@ -402,13 +453,19 @@ function _getCutMetadataNoCaratShapeImage(id, diamond) {
     " x " +
     _.padEnd((diamond.depth / 100).toString(), 4, "0");
   return {
-    name: `Cut Diamond #${id}`,
+    name: `Formation #${numCut}`,
     description: "description",
     created_by: "dd",
     attributes: [
       { trait_type: "Type", value: "Cut" },
       { trait_type: "Origin", value: "Metaverse" },
       { trait_type: "Identification", value: "Natural" },
+      {
+        display_type: "number",
+        max_value: totalMined,
+        trait_type: "Mined",
+        value: numMined,
+      },
       { trait_type: "Color", value: enumToColor(diamond.color) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {
@@ -419,11 +476,25 @@ function _getCutMetadataNoCaratShapeImage(id, diamond) {
         trait_type: "Measurements",
         value: measurements,
       },
+      {
+        display_type: "number",
+        max_value: totalCut,
+        trait_type: "Cut",
+        value: numCut,
+      },
     ],
   };
 }
 
-function _getPolishedMetadataNoCaratShapeImage(id, diamond) {
+function _getPolishedMetadataNoCaratShapeImage(
+  diamond,
+  numMined,
+  totalMined,
+  numCut,
+  totalCut,
+  numPolished,
+  totalPolished
+) {
   const separator = enumToShape(diamond.shape) === "Round" ? " - " : " x ";
   const measurements =
     _.padEnd((diamond.length / 100).toString(), 4, "0") +
@@ -432,13 +503,19 @@ function _getPolishedMetadataNoCaratShapeImage(id, diamond) {
     " x " +
     _.padEnd((diamond.depth / 100).toString(), 4, "0");
   return {
-    name: `Polished Diamond #${id}`,
+    name: `Diamond #${numPolished}`,
     description: "description",
     created_by: "dd",
     attributes: [
       { trait_type: "Type", value: "Polished" },
       { trait_type: "Origin", value: "Metaverse" },
       { trait_type: "Identification", value: "Natural" },
+      {
+        display_type: "number",
+        max_value: totalMined,
+        trait_type: "Mined",
+        value: numMined,
+      },
       { trait_type: "Color", value: enumToColor(diamond.color) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {
@@ -446,14 +523,36 @@ function _getPolishedMetadataNoCaratShapeImage(id, diamond) {
         value: enumToFluorescence(diamond.fluorescence),
       },
       { trait_type: "Measurements", value: measurements },
+      {
+        display_type: "number",
+        max_value: totalCut,
+        trait_type: "Cut",
+        value: numCut,
+      },
       { trait_type: "Clarity", value: enumToClarity(diamond.clarity) },
       { trait_type: "Polish", value: enumToGrade(diamond.polish) },
       { trait_type: "Symmetry", value: enumToGrade(diamond.symmetry) },
+      {
+        display_type: "number",
+        max_value: totalPolished,
+        trait_type: "Polished",
+        value: numPolished,
+      },
     ],
   };
 }
 
-function _getRebirthMetadataNoCaratShapeAndImage(id, diamond) {
+function _getRebirthMetadataNoCaratShapeAndImage(
+  diamond,
+  numMined,
+  totalMined,
+  numCut,
+  totalCut,
+  numPolished,
+  totalPolished,
+  numPhysical,
+  totalPhysical
+) {
   const separator = enumToShape(diamond.shape) === "Round" ? " - " : " x ";
   const measurements =
     _.padEnd((diamond.length / 100).toString(), 4, "0") +
@@ -463,13 +562,19 @@ function _getRebirthMetadataNoCaratShapeAndImage(id, diamond) {
     _.padEnd((diamond.depth / 100).toString(), 4, "0");
 
   return {
-    name: `Diamond Dawn #${id}`,
+    name: `Dawn #${numPhysical}`,
     description: "description",
     created_by: "dd",
     attributes: [
       { trait_type: "Type", value: "Reborn" },
       { trait_type: "Origin", value: "Metaverse" },
       { trait_type: "Identification", value: "Natural" },
+      {
+        display_type: "number",
+        max_value: totalMined,
+        trait_type: "Mined",
+        value: numMined,
+      },
       { trait_type: "Color", value: enumToColor(diamond.color) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {
@@ -477,13 +582,30 @@ function _getRebirthMetadataNoCaratShapeAndImage(id, diamond) {
         value: enumToFluorescence(diamond.fluorescence),
       },
       { trait_type: "Measurements", value: measurements },
+      {
+        display_type: "number",
+        max_value: totalCut,
+        trait_type: "Cut",
+        value: numCut,
+      },
       { trait_type: "Clarity", value: enumToClarity(diamond.clarity) },
       { trait_type: "Polish", value: enumToGrade(diamond.polish) },
       { trait_type: "Symmetry", value: enumToGrade(diamond.symmetry) },
+      {
+        display_type: "number",
+        max_value: totalPolished,
+        trait_type: "Polished",
+        value: numPolished,
+      },
       { trait_type: "Laboratory", value: "GIA" },
       { trait_type: "Report Date", value: diamond.date, display_type: "date" },
       { trait_type: "Report Number", value: diamond.number },
-      { trait_type: "Physical Id", value: id },
+      {
+        display_type: "number",
+        max_value: totalPhysical,
+        trait_type: "Physical",
+        value: numPhysical,
+      },
     ],
   };
 }

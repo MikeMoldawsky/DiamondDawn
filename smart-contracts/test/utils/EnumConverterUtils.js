@@ -1,7 +1,7 @@
 const enumToType = (i) => {
   switch (i) {
     case 1:
-      return "Mine Entrance";
+      return "Key";
     case 2:
       return "Rough";
     case 3:
@@ -35,7 +35,7 @@ const enumToShape = (i) => {
     case 3:
       return "Oval";
     case 4:
-      return "Radiant";
+      return "Cushion";
     default:
       throw new Error("No shape");
   }
@@ -151,7 +151,7 @@ const SHAPE = {
   PEAR: 1,
   ROUND: 2,
   OVAL: 3,
-  RADIANT: 4,
+  CUSHION: 4,
 };
 
 module.exports = {

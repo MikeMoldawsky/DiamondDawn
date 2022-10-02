@@ -14,6 +14,8 @@ import "./interface/IDiamondDawn.sol";
 import "./interface/IDiamondDawnAdmin.sol";
 import "./interface/IDiamondDawnMine.sol";
 
+// TODO: add diamond "picture"
+
 /**
  * @title DiamondDawn
  * @author Mike Moldawsky (Tweezers)
@@ -35,7 +37,7 @@ contract DiamondDawn is
     uint public constant PRICE_WEDDING = 0.003 ether; // TODO: change to 3.66eth
     uint16 public constant MAX_ENTRANCE = 333;
 
-    bool public isLocked; // locked forever (immutable).
+    bool public isLocked; // immutable
     bool public isActive;
     Stage public stage;
     IDiamondDawnMine public ddMine;
@@ -43,14 +45,13 @@ contract DiamondDawn is
     uint16 private _numTokens;
     mapping(address => EnumerableSet.UintSet) private _shipped;
     mapping(address => bool) private _minted;
+    address private _signer; // TODO: set correct signer for production
 
-    address private _signer;
-
-    constructor(address mine_, address signer_) ERC721("DiamondDawn", "DD") {
-        _signer = signer_;
-        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _setDefaultRoyalty(_msgSender(), 1000);
+    constructor(address mine_, address signer) ERC721("DiamondDawn", "DD") {
         ddMine = IDiamondDawnMine(mine_);
+        _signer = signer;
+        _setDefaultRoyalty(_msgSender(), 1000);
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         ddMine.initialize(MAX_ENTRANCE);
     }
 
@@ -99,10 +100,12 @@ contract DiamondDawn is
     /**********************     External Functions     ************************/
 
     function enter(bytes calldata signature) external payable costs(PRICE) {
+        // TODO: change function name
         _enter(signature);
     }
 
     function enterWedding(bytes calldata signature) external payable costs(PRICE_WEDDING) {
+        // TODO: change function name
         _enter(signature);
     }
 
@@ -125,7 +128,8 @@ contract DiamondDawn is
     }
 
     function rebirth(uint tokenId) external isDawnAllowed(tokenId) {
-        // TODO: protect rebirth with a signature.
+        // TODO: check signature
+        //        require(_isValid(signature), "Not allowed to rebirth");
         _shipped[_msgSender()].remove(tokenId);
         ddMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);

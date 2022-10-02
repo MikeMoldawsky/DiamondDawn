@@ -29,7 +29,7 @@ export const SHAPE = {
   PEAR: 1,
   ROUND: 2,
   OVAL: 3,
-  RADIANT: 4,
+  CUSHION: 4,
 };
 export const EVENTS = {
   StageChanged: "StageChanged",
