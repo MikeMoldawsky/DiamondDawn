@@ -3,19 +3,14 @@ require("@nomicfoundation/hardhat-chai-matchers");
 const { expect } = require("chai");
 const { parseEther } = require("ethers/lib/utils");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
+const { STAGE, ALL_STAGES } = require("./utils/EnumConverterUtils");
 const {
-  STAGE,
-  ROUGH_SHAPE,
-  SHAPE,
-  ALL_STAGES,
-  NO_SHAPE_NUM,
-} = require("./utils/EnumConverterUtils");
-const {
-  setCutVideos,
-  setPolishedVideos,
-  setRebornVideo,
+  setCutManifest,
+  setPolishManifest,
+  setRebornManifest,
   assertBase64AndGetParsed,
   BASE_URI,
+  INVITE_MANIFEST,
 } = require("./utils/MineTestUtils");
 const {
   deployDD,
@@ -115,9 +110,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when mine is NOT READY", async () => {
       // transform mine to be not ready
-      await ddMine.setStageVideos(STAGE.INVITE, [
-        { shape: NO_SHAPE_NUM, video: "" },
-      ]);
+      await ddMine.setManifest(STAGE.INVITE, "");
       await expect(dd.enter(adminSig, { value: PRICE })).to.be.revertedWith(
         "Stage not ready"
       );
@@ -271,15 +264,15 @@ describe("DiamondDawn", () => {
       await dd.enter(adminSig, { value: PRICE });
       await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await setCutVideos(ddMine);
+      await setCutManifest(ddMine);
       await completeAndSetStage(dd, STAGE.CUT);
       await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await setPolishedVideos(ddMine);
+      await setPolishManifest(ddMine);
       await completeAndSetStage(dd, STAGE.POLISH);
       await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await setRebornVideo(ddMine);
+      await setRebornManifest(ddMine);
       await completeAndSetStage(dd, STAGE.SHIP);
       await expect(dd.mine(tokenId)).to.be.revertedWith("Wrong stage");
 
@@ -301,9 +294,7 @@ describe("DiamondDawn", () => {
       await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.MINE);
       // transform mine to be not ready
-      await ddMine.setStageVideos(STAGE.MINE, [
-        { shape: ROUGH_SHAPE.MAKEABLE_1, video: "" },
-      ]);
+      await ddMine.setManifest(STAGE.MINE, "");
       await expect(dd.mine(tokenId)).to.be.revertedWith(`Stage not ready`);
     });
 
@@ -376,11 +367,11 @@ describe("DiamondDawn", () => {
       await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
       await dd.mine(tokenId);
 
-      await setPolishedVideos(ddMine);
+      await setPolishManifest(ddMine);
       await completeAndSetStage(dd, STAGE.POLISH);
       await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
 
-      await setRebornVideo(ddMine);
+      await setRebornManifest(ddMine);
       await completeAndSetStage(dd, STAGE.SHIP);
       await expect(dd.cut(tokenId)).to.be.revertedWith("Wrong stage");
 
@@ -404,9 +395,7 @@ describe("DiamondDawn", () => {
       await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.CUT);
       // transform mine to be not ready
-      await ddMine.setStageVideos(STAGE.CUT, [
-        { shape: SHAPE.CUSHION, video: "" },
-      ]);
+      await ddMine.setManifest(STAGE.CUT, "");
       await expect(dd.cut(tokenId)).to.be.revertedWith("Stage not ready");
     });
 
@@ -495,7 +484,7 @@ describe("DiamondDawn", () => {
       await completeAndSetStage(dd, STAGE.POLISH);
       await dd.polish(tokenId);
 
-      await setRebornVideo(ddMine);
+      await setRebornManifest(ddMine);
       await completeAndSetStage(dd, STAGE.SHIP);
       await expect(dd.polish(tokenId)).to.be.revertedWith("Wrong stage");
     });
@@ -518,9 +507,7 @@ describe("DiamondDawn", () => {
       await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.POLISH);
       // transform polish to be not ready
-      await ddMine.setStageVideos(STAGE.POLISH, [
-        { shape: SHAPE.CUSHION, video: "" },
-      ]);
+      await ddMine.setManifest(STAGE.POLISH, "");
       await expect(dd.polish(tokenId)).to.be.revertedWith("Stage not ready");
     });
 
@@ -649,9 +636,7 @@ describe("DiamondDawn", () => {
       await dd.enter(adminSig, { value: PRICE });
       await completeAndSetStage(dd, STAGE.SHIP);
       // transform ship to be not ready
-      await ddMine.setStageVideos(STAGE.SHIP, [
-        { shape: NO_SHAPE_NUM, video: "" },
-      ]);
+      await ddMine.setManifest(STAGE.SHIP, "");
       await expect(dd.ship(tokenId)).to.be.revertedWith("Stage not ready");
     });
 
@@ -827,9 +812,7 @@ describe("DiamondDawn", () => {
       await dd.ship(tokenId);
 
       // transform ship to be not ready
-      await ddMine.setStageVideos(STAGE.SHIP, [
-        { shape: NO_SHAPE_NUM, video: "" },
-      ]);
+      await ddMine.setManifest(STAGE.SHIP, "");
       await expect(dd.rebirth(tokenId)).to.be.revertedWith("Ship not ready");
     });
 
@@ -1002,8 +985,8 @@ describe("DiamondDawn", () => {
         name: "Mine Key #1",
         description: "description",
         created_by: "dd",
-        image: `${BASE_URI}enterMine.mp4`,
-        animation_url: `${BASE_URI}enterMine.mp4`, // TODO: change to jpg
+        image: `${BASE_URI}${INVITE_MANIFEST}/resource.jpg`,
+        animation_url: `${BASE_URI}${INVITE_MANIFEST}/resource.mp4`,
         attributes: [{ trait_type: "Type", value: "Key" }],
       });
     });

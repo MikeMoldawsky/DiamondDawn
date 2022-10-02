@@ -37,8 +37,3 @@ struct Metadata {
     RebornMetadata reborn;
     Certificate certificate;
 }
-
-struct ShapeVideo {
-    uint8 shape;
-    string video;
-}

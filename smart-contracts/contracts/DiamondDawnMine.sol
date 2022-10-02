@@ -22,7 +22,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     uint16 public maxDiamonds;
     uint16 public diamondCount;
     address public diamondDawn;
-    mapping(uint => mapping(uint => string)) public stageToShapeVideo;
+    mapping(uint => string) public manifests;
 
     // Carat loss of ~35% to ~65% from rough stone to the polished diamond.
     uint8 private constant MIN_EXTRA_ROUGH_POINTS = 37;
@@ -153,14 +153,9 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         metadata.certificate = diamond;
     }
 
-    function setStageVideos(Stage stage_, ShapeVideo[] calldata shapeVideos)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
+    function setManifest(Stage stage_, string calldata manifest) external onlyRole(DEFAULT_ADMIN_ROLE) {
         require(stage_ != Stage.NO_STAGE);
-        for (uint i = 0; i < shapeVideos.length; i++) {
-            _setVideo(stage_, shapeVideos[i].shape, shapeVideos[i].video);
-        }
+        manifests[uint(stage_)] = manifest;
     }
 
     function setBaseTokenURI(string calldata baseTokenURI) external onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -169,25 +164,17 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
 
     function getMetadata(uint tokenId) external view onlyDiamondDawn exists(tokenId) returns (string memory) {
         Metadata memory metadata = _metadata[tokenId];
-        string memory videoURI = _getVideoURI(metadata);
-        string memory imageURI = _getVideoURI(metadata); // TODO: change to image URI
-        string memory base64Json = Base64.encode(
-            bytes(_getMetadataJson(tokenId, metadata, imageURI, videoURI))
-        );
+        string memory noExtensionURI = _getNoExtensionURI(metadata);
+        string memory base64Json = Base64.encode(bytes(_getMetadataJson(tokenId, metadata, noExtensionURI)));
         return string(abi.encodePacked("data:application/json;base64,", base64Json));
     }
 
     function isReady(Stage stage_) external view returns (bool) {
         require(_msgSender() == diamondDawn || hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Only DD or admin");
         if (stage_ == Stage.NO_STAGE) return true;
-        if (stage_ == Stage.INVITE) return _isVideoExist(stage_, 0);
-        if (stage_ == Stage.MINE)
-            return diamondCount == maxDiamonds && _isAllVideosExist(stage_, uint(type(RoughShape).max));
-        if (stage_ == Stage.POLISH || stage_ == Stage.CUT)
-            return _isAllVideosExist(stage_, uint(type(Shape).max));
-        if (stage_ == Stage.SHIP) return _isVideoExist(stage_, 0);
         if (stage_ == Stage.DAWN) return true;
-        revert();
+        if (stage_ == Stage.MINE && diamondCount != maxDiamonds) return false;
+        return bytes(manifests[uint(stage_)]).length > 0;
     }
 
     /**********************     Private Functions     ************************/
@@ -206,49 +193,24 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         return getRandomInRange(min, max, _randNonce);
     }
 
-    function _setVideo(
-        Stage stage_,
-        uint shape,
-        string memory videoUrl
-    ) private {
-        stageToShapeVideo[uint(stage_)][shape] = videoUrl;
-    }
-
-    function _getVideoURI(Metadata memory metadata) private view returns (string memory) {
-        string memory videoUrl = _getVideo(metadata.state_, _getShapeNumber(metadata));
-        return string.concat(_baseTokenURI, videoUrl);
-    }
-
-    function _isAllVideosExist(Stage stage_, uint maxShape) private view returns (bool) {
-        for (uint i = 1; i <= maxShape; i++) {
-            // skipping 0 - no shape
-            if (!_isVideoExist(stage_, i)) return false;
-        }
-        return true;
-    }
-
-    function _isVideoExist(Stage stage_, uint shape) private view returns (bool) {
-        return bytes(_getVideo(stage_, shape)).length > 0;
-    }
-
-    function _getVideo(Stage stage_, uint shape) private view returns (string memory) {
-        return stageToShapeVideo[uint(stage_)][shape];
+    function _getNoExtensionURI(Metadata memory metadata) private view returns (string memory) {
+        string memory manifest = manifests[uint(metadata.state_)];
+        string memory name = _getResourceName(metadata);
+        return string.concat(_baseTokenURI, manifest, "/", name);
     }
 
     function _getMetadataJson(
         uint tokenId,
         Metadata memory metadata,
-        string memory imageURI,
-        string memory videoURI
+        string memory noExtensionURI
     ) private view returns (string memory) {
         // TODO: add description and created by when ready.
-        // TODO: check if we need to add image in addition to animation_url.
         NFTMetadata memory nftMetadata = NFTMetadata({
             name: getName(metadata, tokenId),
             description: "description",
             createdBy: "dd",
-            image: imageURI,
-            animationUrl: videoURI,
+            image: string.concat(noExtensionURI, ".jpg"),
+            animationUrl: string.concat(noExtensionURI, ".mp4"),
             attributes: _getJsonAttributes(metadata)
         });
         return serialize(nftMetadata);
@@ -321,14 +283,6 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         return attributes;
     }
 
-    function _getShapeNumber(Metadata memory metadata) private pure returns (uint) {
-        Stage state_ = metadata.state_;
-        if (state_ == Stage.CUT || state_ == Stage.POLISH) return uint(metadata.certificate.shape);
-        if (state_ == Stage.MINE) return uint(metadata.rough.shape);
-        if (state_ == Stage.INVITE || state_ == Stage.SHIP) return 0;
-        revert("Shape number");
-    }
-
     function _getStateAttrsNum(Stage state_) private pure returns (uint) {
         if (state_ == Stage.INVITE) return 1;
         if (state_ == Stage.MINE) return 8;
@@ -349,5 +303,17 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             return metadata.certificate.points + metadata.cut.extraPoints;
         } else if (state_ == Stage.POLISH || state_ == Stage.SHIP) return metadata.certificate.points;
         revert("Points");
+    }
+
+    function _getResourceName(Metadata memory metadata) private pure returns (string memory) {
+        if (metadata.state_ == Stage.INVITE || metadata.state_ == Stage.SHIP) return "resource";
+        else if (metadata.state_ == Stage.MINE) {
+            if (metadata.rough.shape == RoughShape.MAKEABLE_1) return "makeable1";
+            if (metadata.rough.shape == RoughShape.MAKEABLE_2) return "makeable2";
+        } else if (metadata.certificate.shape == Shape.PEAR) return "pear";
+        else if (metadata.certificate.shape == Shape.ROUND) return "round";
+        else if (metadata.certificate.shape == Shape.OVAL) return "oval";
+        else if (metadata.certificate.shape == Shape.CUSHION) return "cushion";
+        revert();
     }
 }

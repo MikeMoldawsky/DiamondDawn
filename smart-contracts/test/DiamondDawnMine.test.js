@@ -3,13 +3,7 @@ require("@nomicfoundation/hardhat-chai-matchers");
 const { expect } = require("chai");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const _ = require("lodash");
-const {
-  NO_SHAPE_NUM,
-  SHAPE,
-  ROUGH_SHAPE,
-  STAGE,
-  ALL_STAGES,
-} = require("./utils/EnumConverterUtils");
+const { STAGE, ALL_STAGES } = require("./utils/EnumConverterUtils");
 const {
   assertEnterMineMetadata,
   assertRoughMetadata,
@@ -525,7 +519,7 @@ describe("Diamond Dawn Mine", () => {
         contract.lostShipment(1, DIAMOND)
       );
       await assertOnlyAdmin(admin, ddMine, (contract) =>
-        contract.setStageVideos(0, [])
+        contract.setManifest(0, "")
       );
     });
 
@@ -683,9 +677,8 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for ENTER_MINE", async () => {
-      await ddMine.setStageVideos(STAGE.INVITE, [
-        { shape: NO_SHAPE_NUM, video: "hi.mp4" },
-      ]);
+      expect(await ddMine.isReady(STAGE.INVITE)).to.be.false;
+      await ddMine.setManifest(STAGE.INVITE, "hi.mp4");
       expect(await ddMine.isReady(STAGE.INVITE)).to.be.true;
       const noReadyStages = _.without(
         ALL_STAGES,
@@ -699,13 +692,8 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for ROUGH when video set and mine populated", async () => {
-      await ddMine.setStageVideos(STAGE.MINE, [
-        { shape: ROUGH_SHAPE.MAKEABLE_1, video: "1.mp4" },
-      ]);
       expect(await ddMine.isReady(STAGE.MINE)).to.be.false;
-      await ddMine.setStageVideos(STAGE.MINE, [
-        { shape: ROUGH_SHAPE.MAKEABLE_2, video: "2.mp4" },
-      ]);
+      await ddMine.setManifest(STAGE.MINE, "1.mp4");
       expect(await ddMine.isReady(STAGE.MINE)).to.be.false;
       const diamonds = _.range(numDiamonds - 1).map((_) => DIAMOND);
       await ddMine.eruption(diamonds);
@@ -724,21 +712,8 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for CUT", async () => {
-      await ddMine.setStageVideos(STAGE.CUT, [
-        { shape: SHAPE.PEAR, video: "1.mp4" },
-      ]);
       expect(await ddMine.isReady(STAGE.CUT)).to.be.false;
-      await ddMine.setStageVideos(STAGE.CUT, [
-        { shape: SHAPE.ROUND, video: "2.mp4" },
-      ]);
-      expect(await ddMine.isReady(STAGE.CUT)).to.be.false;
-      await ddMine.setStageVideos(STAGE.CUT, [
-        { shape: SHAPE.OVAL, video: "3.mp4" },
-      ]);
-      expect(await ddMine.isReady(STAGE.CUT)).to.be.false;
-      await ddMine.setStageVideos(STAGE.CUT, [
-        { shape: SHAPE.CUSHION, video: "4.mp4" },
-      ]);
+      await ddMine.setManifest(STAGE.CUT, "1.mp4");
       expect(await ddMine.isReady(STAGE.CUT)).to.be.true;
       const noReadyStages = _.without(
         ALL_STAGES,
@@ -752,21 +727,8 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for POLISHED", async () => {
-      await ddMine.setStageVideos(STAGE.POLISH, [
-        { shape: SHAPE.PEAR, video: "1.mp4" },
-      ]);
       expect(await ddMine.isReady(STAGE.POLISH)).to.be.false;
-      await ddMine.setStageVideos(STAGE.POLISH, [
-        { shape: SHAPE.ROUND, video: "2.mp4" },
-      ]);
-      expect(await ddMine.isReady(STAGE.POLISH)).to.be.false;
-      await ddMine.setStageVideos(STAGE.POLISH, [
-        { shape: SHAPE.OVAL, video: "3.mp4" },
-      ]);
-      expect(await ddMine.isReady(STAGE.POLISH)).to.be.false;
-      await ddMine.setStageVideos(STAGE.POLISH, [
-        { shape: SHAPE.CUSHION, video: "4.mp4" },
-      ]);
+      await ddMine.setManifest(STAGE.POLISH, "1.mp4");
       expect(await ddMine.isReady(STAGE.POLISH)).to.be.true;
       const noReadyStages = _.without(
         ALL_STAGES,
@@ -780,9 +742,8 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for REBORN", async () => {
-      await ddMine.setStageVideos(STAGE.SHIP, [
-        { shape: NO_SHAPE_NUM, video: "hi.mp4" },
-      ]);
+      expect(await ddMine.isReady(STAGE.SHIP)).to.be.false;
+      await ddMine.setManifest(STAGE.SHIP, "hi.mp4");
       expect(await ddMine.isReady(STAGE.SHIP)).to.be.true;
       const noReadyStages = _.without(
         ALL_STAGES,
@@ -797,9 +758,7 @@ describe("Diamond Dawn Mine", () => {
 
     it("should always be TRUE for DAWN", async () => {
       expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
-      await ddMine.setStageVideos(STAGE.DAWN, [
-        { shape: NO_SHAPE_NUM, video: "" },
-      ]);
+      await ddMine.setManifest(STAGE.DAWN, "");
       expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
     });
 
