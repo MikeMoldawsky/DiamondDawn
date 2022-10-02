@@ -494,7 +494,7 @@ function _getExpectedMetadataEnterMine(tokenId) {
     description: "description",
     created_by: "dd",
     image: `${BASE_URI}${ENTER_MINE_IMAGE}`,
-    animation_rul: `${BASE_URI}${ENTER_MINE_VIDEO}`,
+    animation_url: `${BASE_URI}${ENTER_MINE_VIDEO}`,
     attributes: [{ trait_type: "Type", value: "Key" }],
   };
 }

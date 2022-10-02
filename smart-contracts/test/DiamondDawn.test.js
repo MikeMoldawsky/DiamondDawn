@@ -1003,6 +1003,7 @@ describe("DiamondDawn", () => {
         description: "description",
         created_by: "dd",
         image: `${BASE_URI}enterMine.mp4`,
+        animation_url: `${BASE_URI}enterMine.mp4`, // TODO: change to jpg
         attributes: [{ trait_type: "Type", value: "Key" }],
       });
     });
