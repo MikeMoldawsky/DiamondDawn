@@ -4,11 +4,11 @@ import ReactPlayer from "react-player";
 import _ from "lodash";
 
 const Diamond = ({ diamond }) => {
-  const { image, isBurned } = diamond;
+  const { animation_url, isBurned } = diamond;
 
   const videoUrl = isBurned
     ? "https://tweezers-public.s3.amazonaws.com/diamond-dawn-nft-mocks/burn.mp4"
-    : image;
+    : animation_url;
 
   const renderPlayer = useCallback(() => {
     return (
