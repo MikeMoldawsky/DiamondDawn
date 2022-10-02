@@ -158,15 +158,15 @@ async function setVideos(diamondDawnMine) {
   );
   await diamondDawnMine.setManifest(
     STAGE.MINE,
-    "BtRbJnl31VM4l_FwNuYLLozafgBg6KCh4hFASNCUQU4"
+    "ROJj21Z-xdJ90lscyVvpBCIuYAFm8nQf0rF63KxqSBg"
   );
   await diamondDawnMine.setManifest(
     STAGE.CUT,
-    "srm04dqoAKbhqpHMZNFJvK4M2BOQMpBvsV6UPiN5nc8"
+    "qIF9aJGqY8uOz55o-x-_q4LRdNc4YDjvuOO_iUFmqgk"
   );
   await diamondDawnMine.setManifest(
     STAGE.POLISH,
-    "NnI-JkZmMtbER5vSLiR3s49btZ216OS_JjjnBPKlE3I"
+    "LzfNElWncGfBa5eIaFWZ3JxNYt95PvdHIr8t7MMHrU0"
   );
   await diamondDawnMine.setManifest(
     STAGE.SHIP,
