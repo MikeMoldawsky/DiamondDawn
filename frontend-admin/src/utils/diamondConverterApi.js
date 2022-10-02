@@ -1,5 +1,5 @@
 const ENUM_TO_TYPE = {
-  1: "Mine Entrance",
+  1: "Key",
   2: "Rough",
   3: "Cut",
   4: "Polished",
@@ -10,7 +10,7 @@ const ENUM_TO_SHAPE = {
   1: "Pear",
   2: "Round",
   3: "Oval",
-  4: "Radiant",
+  4: "Cushion",
 };
 
 const ENUM_TO_COLOR = {

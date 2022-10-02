@@ -118,7 +118,7 @@ export const tokenByIdSelector = (tokenId) => (state) =>
 const getTokenStageByTypeTrait = (token) => {
   const displayType = getTokenTrait(token, TRAIT.type);
   switch (displayType) {
-    case "Mine Entrance":
+    case "Key":
       return SYSTEM_STAGE.INVITE;
     case "Rough":
       return SYSTEM_STAGE.MINE;

@@ -6,7 +6,7 @@ enum Shape {
     PEAR,
     ROUND,
     OVAL,
-    RADIANT
+    CUSHION
 }
 
 enum Grade {

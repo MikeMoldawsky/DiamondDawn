@@ -38,7 +38,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     uint16 private _randNonce = 0;
     Certificate[] private _mine;
     mapping(uint => Metadata) private _metadata;
-    string private _baseTokenURI = "https://arweave.net/"; // TODO: change to "ar://"
+    string private _baseTokenURI = "ar://";
 
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -170,7 +170,10 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     function getMetadata(uint tokenId) external view onlyDiamondDawn exists(tokenId) returns (string memory) {
         Metadata memory metadata = _metadata[tokenId];
         string memory videoURI = _getVideoURI(metadata);
-        string memory base64Json = Base64.encode(bytes(_getMetadataJson(tokenId, metadata, videoURI)));
+        string memory imageURI = _getVideoURI(metadata); // TODO: change to image URI
+        string memory base64Json = Base64.encode(
+            bytes(_getMetadataJson(tokenId, metadata, imageURI, videoURI))
+        );
         return string(abi.encodePacked("data:application/json;base64,", base64Json));
     }
 
@@ -235,20 +238,23 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     function _getMetadataJson(
         uint tokenId,
         Metadata memory metadata,
+        string memory imageURI,
         string memory videoURI
-    ) private pure returns (string memory) {
+    ) private view returns (string memory) {
         // TODO: add description and created by when ready.
+        // TODO: check if we need to add image in addition to animation_url.
         NFTMetadata memory nftMetadata = NFTMetadata({
             name: getName(metadata, tokenId),
             description: "description",
             createdBy: "dd",
-            image: videoURI,
+            image: imageURI,
+            animationUrl: videoURI,
             attributes: _getJsonAttributes(metadata)
         });
         return serialize(nftMetadata);
     }
 
-    function _getJsonAttributes(Metadata memory metadata) private pure returns (Attribute[] memory) {
+    function _getJsonAttributes(Metadata memory metadata) private view returns (Attribute[] memory) {
         Stage state_ = metadata.state_;
         Attribute[] memory attributes = new Attribute[](_getStateAttrsNum(state_));
         attributes[0] = toStrAttribute("Type", toTypeStr(state_));
@@ -259,34 +265,58 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         attributes[1] = toStrAttribute("Origin", "Metaverse");
         attributes[2] = toStrAttribute("Identification", "Natural");
         attributes[3] = toAttribute("Carat", toDecimalStr(_getPoints(metadata)), "");
+        attributes[4] = toMaxValueAttribute(
+            "Mined",
+            Strings.toString(metadata.rough.id),
+            Strings.toString(_mineCounter),
+            "number"
+        );
         if (state_ == Stage.MINE) {
-            attributes[4] = toStrAttribute("Color", "Cape");
-            attributes[5] = toStrAttribute("Shape", toRoughShapeStr(metadata.rough.shape));
-            attributes[6] = toStrAttribute("Mine", "Underground");
+            attributes[5] = toStrAttribute("Color", "Cape");
+            attributes[6] = toStrAttribute("Shape", toRoughShapeStr(metadata.rough.shape));
+            attributes[7] = toStrAttribute("Mine", "Underground");
             return attributes;
         }
 
         Certificate memory certificate = metadata.certificate;
         if (uint(Stage.CUT) <= uint(state_)) {
-            attributes[4] = toStrAttribute("Color", toColorStr(certificate.color));
-            attributes[5] = toStrAttribute("Cut", toGradeStr(certificate.cut));
-            attributes[6] = toStrAttribute("Fluorescence", toFluorescenceStr(certificate.fluorescence));
-            attributes[7] = toStrAttribute(
+            attributes[5] = toStrAttribute("Color", toColorStr(certificate.color));
+            attributes[6] = toStrAttribute("Cut", toGradeStr(certificate.cut));
+            attributes[7] = toStrAttribute("Fluorescence", toFluorescenceStr(certificate.fluorescence));
+            attributes[8] = toStrAttribute(
                 "Measurements",
                 toMeasurementsStr(certificate.shape, certificate.length, certificate.width, certificate.depth)
             );
-            attributes[8] = toStrAttribute("Shape", toShapeStr(certificate.shape));
+            attributes[9] = toStrAttribute("Shape", toShapeStr(certificate.shape));
+            // TODO: validate that OpenSea works with 2 attributes called "Cut" or change name
+            attributes[10] = toMaxValueAttribute(
+                "Cut",
+                Strings.toString(metadata.cut.id),
+                Strings.toString(_cutCounter),
+                "number"
+            );
         }
         if (uint(Stage.POLISH) <= uint(state_)) {
-            attributes[9] = toStrAttribute("Clarity", toClarityStr(certificate.clarity));
-            attributes[10] = toStrAttribute("Polish", toGradeStr(certificate.polish));
-            attributes[11] = toStrAttribute("Symmetry", toGradeStr(certificate.symmetry));
+            attributes[11] = toStrAttribute("Clarity", toClarityStr(certificate.clarity));
+            attributes[12] = toStrAttribute("Polish", toGradeStr(certificate.polish));
+            attributes[13] = toStrAttribute("Symmetry", toGradeStr(certificate.symmetry));
+            attributes[14] = toMaxValueAttribute(
+                "Polished",
+                Strings.toString(metadata.polished.id),
+                Strings.toString(_polishedCounter),
+                "number"
+            );
         }
         if (uint(Stage.SHIP) <= uint(state_)) {
-            attributes[12] = toStrAttribute("Laboratory", "GIA");
-            attributes[13] = toAttribute("Report Date", Strings.toString(certificate.date), "date");
-            attributes[14] = toAttribute("Report Number", Strings.toString(certificate.number), "");
-            attributes[15] = toAttribute("Physical Id", Strings.toString(metadata.reborn.id), "");
+            attributes[15] = toStrAttribute("Laboratory", "GIA");
+            attributes[16] = toAttribute("Report Date", Strings.toString(certificate.date), "date");
+            attributes[17] = toAttribute("Report Number", Strings.toString(certificate.number), "");
+            attributes[18] = toMaxValueAttribute(
+                "Physical",
+                Strings.toString(metadata.reborn.id),
+                Strings.toString(_rebornCounter),
+                "number"
+            );
         }
         return attributes;
     }
@@ -301,10 +331,10 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
 
     function _getStateAttrsNum(Stage state_) private pure returns (uint) {
         if (state_ == Stage.INVITE) return 1;
-        if (state_ == Stage.MINE) return 7;
-        if (state_ == Stage.CUT) return 9;
-        if (state_ == Stage.POLISH) return 12;
-        if (state_ == Stage.SHIP) return 16;
+        if (state_ == Stage.MINE) return 8;
+        if (state_ == Stage.CUT) return 11;
+        if (state_ == Stage.POLISH) return 15;
+        if (state_ == Stage.SHIP) return 19;
         revert("Attributes number");
     }
 

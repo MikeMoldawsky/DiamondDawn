@@ -405,7 +405,7 @@ describe("DiamondDawn", () => {
       await completeAndSetStage(dd, STAGE.CUT);
       // transform mine to be not ready
       await ddMine.setStageVideos(STAGE.CUT, [
-        { shape: SHAPE.RADIANT, video: "" },
+        { shape: SHAPE.CUSHION, video: "" },
       ]);
       await expect(dd.cut(tokenId)).to.be.revertedWith("Stage not ready");
     });
@@ -519,7 +519,7 @@ describe("DiamondDawn", () => {
       await completeAndSetStage(dd, STAGE.POLISH);
       // transform polish to be not ready
       await ddMine.setStageVideos(STAGE.POLISH, [
-        { shape: SHAPE.RADIANT, video: "" },
+        { shape: SHAPE.CUSHION, video: "" },
       ]);
       await expect(dd.polish(tokenId)).to.be.revertedWith("Stage not ready");
     });
@@ -999,11 +999,12 @@ describe("DiamondDawn", () => {
       const metadata = await dd.tokenURI(1);
       const parsed = await assertBase64AndGetParsed(metadata);
       expect(parsed).to.deep.equal({
-        name: "Mine Entrance #1",
+        name: "Mine Key #1",
         description: "description",
         created_by: "dd",
         image: `${BASE_URI}enterMine.mp4`,
-        attributes: [{ trait_type: "Type", value: "Mine Entrance" }],
+        animation_url: `${BASE_URI}enterMine.mp4`, // TODO: change to jpg
+        attributes: [{ trait_type: "Type", value: "Key" }],
       });
     });
   });

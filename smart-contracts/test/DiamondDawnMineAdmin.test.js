@@ -166,41 +166,62 @@ describe("Diamond Dawn Mine Admin", () => {
       await assertPolishedMetadata(
         diamondDawn,
         mineContract,
+        DIAMOND,
         tokenId,
         1,
-        DIAMOND
+        1,
+        1,
+        1,
+        1,
+        1
       );
       await mineContract.connect(diamondDawn).ship(tokenId);
       await assertPolishedMetadata(
         diamondDawn,
         mineContract,
+        DIAMOND,
         tokenId,
         1,
-        DIAMOND
+        1,
+        1,
+        1,
+        1,
+        1
       );
       const replacedDiamond = { ...DIAMOND, points: DIAMOND.points + 10 };
       await mineContract.lostShipment(tokenId, replacedDiamond);
       await assertPolishedMetadata(
         diamondDawn,
         mineContract,
+        replacedDiamond,
         tokenId,
         1,
-        replacedDiamond
+        1,
+        1,
+        1,
+        1,
+        1
       );
       const replacedDiamond2 = {
         ...DIAMOND,
         points: DIAMOND.points + 20,
         shape: DIAMOND.shape + 1,
       };
-      const rebornId = 1;
       await mineContract.connect(diamondDawn).rebirth(tokenId);
       await mineContract.lostShipment(tokenId, replacedDiamond2);
       await assertRebornMetadata(
         diamondDawn,
         mineContract,
+        replacedDiamond2,
         tokenId,
-        rebornId,
-        replacedDiamond2
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
       );
     });
   });
@@ -256,12 +277,12 @@ describe("Diamond Dawn Mine Admin", () => {
       const cutPear = "cut_pear.mp4";
       const cutRound = "cut_round.mp4";
       const cutOval = "cut_oval.mp4";
-      const cutRadiant = "cut_radiant.mp4";
+      const cutCushion = "cut_cushion.mp4";
       // polished
       const polishedPear = "polished_pear.mp4";
       const polishedRound = "polished_round.mp4";
       const polishedOval = "polished_oval.mp4";
-      const polishedRadiant = "polished_radiant.mp4";
+      const polishedCushion = "polished_cushion.mp4";
       // reborn
       const rebornVideo = "diamond_dawn.mp4";
 
@@ -277,13 +298,13 @@ describe("Diamond Dawn Mine Admin", () => {
         { shape: SHAPE.PEAR, video: cutPear },
         { shape: SHAPE.ROUND, video: cutRound },
         { shape: SHAPE.OVAL, video: cutOval },
-        { shape: SHAPE.RADIANT, video: cutRadiant },
+        { shape: SHAPE.CUSHION, video: cutCushion },
       ]);
       await mineContract.setStageVideos(STAGE.POLISH, [
         { shape: SHAPE.PEAR, video: polishedPear },
         { shape: SHAPE.ROUND, video: polishedRound },
         { shape: SHAPE.OVAL, video: polishedOval },
-        { shape: SHAPE.RADIANT, video: polishedRadiant },
+        { shape: SHAPE.CUSHION, video: polishedCushion },
       ]);
       await mineContract.setStageVideos(STAGE.SHIP, [
         { shape: NO_SHAPE_NUM, video: rebornVideo },
@@ -310,8 +331,8 @@ describe("Diamond Dawn Mine Admin", () => {
         await mineContract.stageToShapeVideo(STAGE.CUT, SHAPE.OVAL)
       ).to.be.equal(cutOval);
       expect(
-        await mineContract.stageToShapeVideo(STAGE.CUT, SHAPE.RADIANT)
-      ).to.be.equal(cutRadiant);
+        await mineContract.stageToShapeVideo(STAGE.CUT, SHAPE.CUSHION)
+      ).to.be.equal(cutCushion);
 
       expect(
         await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.PEAR)
@@ -323,8 +344,8 @@ describe("Diamond Dawn Mine Admin", () => {
         await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.OVAL)
       ).to.be.equal(polishedOval);
       expect(
-        await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.RADIANT)
-      ).to.be.equal(polishedRadiant);
+        await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.CUSHION)
+      ).to.be.equal(polishedCushion);
 
       expect(await mineContract.stageToShapeVideo(STAGE.SHIP, 0)).to.be.equal(
         rebornVideo

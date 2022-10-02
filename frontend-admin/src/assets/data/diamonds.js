@@ -60,7 +60,7 @@ const DIAMONDS_INFO = [
   {
     number: 1000000003,
     date: 1659254421,
-    shape: SHAPE.RADIANT,
+    shape: SHAPE.CUSHION,
     points: 66,
     color: COLOR_GRADES.M,
     clarity: CLARITY_GRADES.IF,
@@ -120,7 +120,7 @@ const DIAMONDS_INFO = [
   {
     number: 1000000007,
     date: 1659254421,
-    shape: SHAPE.RADIANT,
+    shape: SHAPE.CUSHION,
     points: 66,
     color: COLOR_GRADES.O,
     clarity: CLARITY_GRADES.IF,
@@ -180,7 +180,7 @@ const DIAMONDS_INFO = [
   {
     number: 1000000011,
     date: 1659254421,
-    shape: SHAPE.RADIANT,
+    shape: SHAPE.CUSHION,
     points: 66,
     color: COLOR_GRADES.N,
     clarity: CLARITY_GRADES.IF,
@@ -240,7 +240,7 @@ const DIAMONDS_INFO = [
   {
     number: 1000000015,
     date: 1659254421,
-    shape: SHAPE.RADIANT,
+    shape: SHAPE.CUSHION,
     points: 66,
     color: COLOR_GRADES.P,
     clarity: CLARITY_GRADES.IF,
@@ -300,7 +300,7 @@ const DIAMONDS_INFO = [
   {
     number: 1000000019,
     date: 1659254421,
-    shape: SHAPE.RADIANT,
+    shape: SHAPE.CUSHION,
     points: 66,
     color: COLOR_GRADES.M,
     clarity: CLARITY_GRADES.IF,

@@ -61,7 +61,7 @@ function toShapeStr(Shape shape) pure returns (string memory) {
     if (shape == Shape.PEAR) return "Pear";
     if (shape == Shape.ROUND) return "Round";
     if (shape == Shape.OVAL) return "Oval";
-    if (shape == Shape.RADIANT) return "Radiant";
+    if (shape == Shape.CUSHION) return "Cushion";
     revert();
 }
 
@@ -72,15 +72,13 @@ function toRoughShapeStr(RoughShape shape) pure returns (string memory) {
 }
 
 function getName(Metadata memory metadata, uint tokenId) pure returns (string memory) {
-    if (metadata.state_ == Stage.INVITE) return string.concat("Mine Entrance #", Strings.toString(tokenId));
+    if (metadata.state_ == Stage.INVITE) return string.concat("Mine Key #", Strings.toString(tokenId));
     if (metadata.state_ == Stage.MINE)
-        return string.concat("Rough Diamond #", Strings.toString(metadata.rough.id));
-    if (metadata.state_ == Stage.CUT)
-        return string.concat("Cut Diamond #", Strings.toString(metadata.cut.id));
+        return string.concat("Rough Stone #", Strings.toString(metadata.rough.id));
+    if (metadata.state_ == Stage.CUT) return string.concat("Formation #", Strings.toString(metadata.cut.id));
     if (metadata.state_ == Stage.POLISH)
-        return string.concat("Polished Diamond #", Strings.toString(metadata.polished.id));
-    if (metadata.state_ == Stage.SHIP)
-        return string.concat("Diamond Dawn #", Strings.toString(metadata.reborn.id));
+        return string.concat("Diamond #", Strings.toString(metadata.polished.id));
+    if (metadata.state_ == Stage.SHIP) return string.concat("Dawn #", Strings.toString(metadata.reborn.id));
     revert();
 }
 
@@ -92,7 +90,7 @@ function toDecimalStr(uint percentage) pure returns (string memory) {
 }
 
 function toTypeStr(Stage state_) pure returns (string memory) {
-    if (state_ == Stage.INVITE) return "Mine Entrance";
+    if (state_ == Stage.INVITE) return "Key";
     if (state_ == Stage.MINE) return "Rough";
     if (state_ == Stage.CUT) return "Cut";
     if (state_ == Stage.POLISH) return "Polished";

@@ -21,7 +21,6 @@ const { DIAMOND } = require("./utils/Diamonds");
 const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
 const {
   deployMine,
-  deployMineWithVideos,
   deployInitializedMine10WithVideos,
 } = require("./utils/DeployMineUtils");
 
@@ -96,14 +95,12 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should enter 4 tokens and generate metadata", async () => {
-      await Promise.all(
-        _.range(1, 5).map(async (i) => {
-          await expect(ddMine.connect(dd).enter(i))
-            .to.emit(ddMine, "Enter")
-            .withArgs(i);
-          await assertEnterMineMetadata(dd, ddMine, i);
-        })
-      );
+      for (let i = 1; i < 5; i++) {
+        await expect(ddMine.connect(dd).enter(i))
+          .to.emit(ddMine, "Enter")
+          .withArgs(i);
+        await assertEnterMineMetadata(dd, ddMine, i);
+      }
     });
   });
 
@@ -162,15 +159,13 @@ describe("Diamond Dawn Mine", () => {
           await ddMine.connect(dd).enter(i);
         })
       );
-      await Promise.all(
-        _.range(1, 5).map(async (i) => {
-          const tokenId = 5 - i;
-          await expect(ddMine.connect(dd).mine(tokenId))
-            .to.emit(ddMine, "Mine")
-            .withArgs(tokenId);
-          await assertRoughMetadata(dd, ddMine, tokenId, i, DIAMOND);
-        })
-      );
+      for (let i = 1; i < 5; i++) {
+        const tokenId = 5 - i;
+        await expect(ddMine.connect(dd).mine(tokenId))
+          .to.emit(ddMine, "Mine")
+          .withArgs(tokenId);
+        await assertRoughMetadata(dd, ddMine, DIAMOND, tokenId, i, i);
+      }
     });
   });
 
@@ -227,15 +222,13 @@ describe("Diamond Dawn Mine", () => {
         })
       );
 
-      await Promise.all(
-        _.range(1, 5).map(async (i) => {
-          const tokenId = 5 - i;
-          await expect(await ddMine.connect(dd).cut(tokenId))
-            .to.emit(ddMine, "Cut")
-            .withArgs(tokenId);
-          await assertCutMetadata(dd, ddMine, tokenId, i, DIAMOND);
-        })
-      );
+      for (let i = 1; i < 5; i++) {
+        const tokenId = 5 - i;
+        await expect(await ddMine.connect(dd).cut(tokenId))
+          .to.emit(ddMine, "Cut")
+          .withArgs(tokenId);
+        await assertCutMetadata(dd, ddMine, DIAMOND, tokenId, tokenId, 4, i, i);
+      }
     });
   });
 
@@ -296,15 +289,24 @@ describe("Diamond Dawn Mine", () => {
           await ddMine.connect(dd).cut(i);
         })
       );
-      await Promise.all(
-        _.range(1, 5).map(async (i) => {
-          const tokenId = 5 - i;
-          await expect(ddMine.connect(dd).polish(tokenId))
-            .to.emit(ddMine, "Polish")
-            .withArgs(tokenId);
-          await assertPolishedMetadata(dd, ddMine, tokenId, i, DIAMOND);
-        })
-      );
+      for (let i = 1; i < 5; i++) {
+        const tokenId = 5 - i;
+        await expect(ddMine.connect(dd).polish(tokenId))
+          .to.emit(ddMine, "Polish")
+          .withArgs(tokenId);
+        await assertPolishedMetadata(
+          dd,
+          ddMine,
+          DIAMOND,
+          tokenId,
+          tokenId,
+          4,
+          tokenId,
+          4,
+          i,
+          i
+        );
+      }
     });
   });
 
@@ -368,16 +370,25 @@ describe("Diamond Dawn Mine", () => {
           await ddMine.connect(dd).cut(i);
         })
       );
-      await Promise.all(
-        _.range(1, 5).map(async (i) => {
-          const tokenId = 5 - i;
-          await ddMine.connect(dd).polish(tokenId);
-          await expect(ddMine.connect(dd).ship(tokenId))
-            .to.emit(ddMine, "Ship")
-            .withArgs(tokenId, i, DIAMOND.number);
-          await assertPolishedMetadata(dd, ddMine, tokenId, i, DIAMOND);
-        })
-      );
+      for (let i = 1; i < 5; i++) {
+        const tokenId = 5 - i;
+        await ddMine.connect(dd).polish(tokenId);
+        await expect(ddMine.connect(dd).ship(tokenId))
+          .to.emit(ddMine, "Ship")
+          .withArgs(tokenId, i, DIAMOND.number);
+        await assertPolishedMetadata(
+          dd,
+          ddMine,
+          DIAMOND,
+          tokenId,
+          tokenId,
+          4,
+          tokenId,
+          4,
+          i,
+          i
+        );
+      }
     });
   });
 
@@ -455,16 +466,27 @@ describe("Diamond Dawn Mine", () => {
           await ddMine.connect(dd).polish(i);
         })
       );
-      await Promise.all(
-        _.range(1, 5).map(async (i) => {
-          const tokenId = 5 - i;
-          await ddMine.connect(dd).ship(tokenId);
-          await expect(ddMine.connect(dd).rebirth(tokenId))
-            .to.emit(ddMine, "Rebirth")
-            .withArgs(tokenId);
-          await assertRebornMetadata(dd, ddMine, tokenId, i, DIAMOND);
-        })
-      );
+      for (let i = 1; i < 5; i++) {
+        const tokenId = 5 - i;
+        await ddMine.connect(dd).ship(tokenId);
+        await expect(ddMine.connect(dd).rebirth(tokenId))
+          .to.emit(ddMine, "Rebirth")
+          .withArgs(tokenId);
+        await assertRebornMetadata(
+          dd,
+          ddMine,
+          DIAMOND,
+          tokenId,
+          tokenId,
+          4,
+          tokenId,
+          4,
+          tokenId,
+          4,
+          i,
+          i
+        );
+      }
     });
   });
 
@@ -571,7 +593,7 @@ describe("Diamond Dawn Mine", () => {
       await ddMine.connect(dd).enter(tokenId);
       await ddMine.connect(dd).mine(tokenId);
 
-      await assertRoughMetadata(dd, ddMine, tokenId, 1, DIAMOND);
+      await assertRoughMetadata(dd, ddMine, DIAMOND, tokenId, 1, 1);
     });
 
     it("is correct for cut", async () => {
@@ -582,7 +604,7 @@ describe("Diamond Dawn Mine", () => {
       await ddMine.connect(dd).cut(tokenId);
 
       // fetch metadata for token 1
-      await assertCutMetadata(dd, ddMine, tokenId, 1, DIAMOND);
+      await assertCutMetadata(dd, ddMine, DIAMOND, tokenId, 1, 1, 1, 1);
     });
 
     it("is correct for polish", async () => {
@@ -594,7 +616,18 @@ describe("Diamond Dawn Mine", () => {
       await ddMine.connect(dd).mine(tokenId);
       await ddMine.connect(dd).cut(tokenId);
       await ddMine.connect(dd).polish(tokenId);
-      await assertPolishedMetadata(dd, ddMine, tokenId, 1, DIAMOND);
+      await assertPolishedMetadata(
+        dd,
+        ddMine,
+        DIAMOND,
+        tokenId,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      );
     });
 
     it("is correct for rebirth", async () => {
@@ -608,8 +641,20 @@ describe("Diamond Dawn Mine", () => {
       await ddMine.connect(dd).polish(tokenId);
       await ddMine.connect(dd).ship(tokenId);
       await ddMine.connect(dd).rebirth(tokenId);
-      const physicalTokenId = 1;
-      await assertRebornMetadata(dd, ddMine, tokenId, physicalTokenId, DIAMOND);
+      await assertRebornMetadata(
+        dd,
+        ddMine,
+        DIAMOND,
+        tokenId,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      );
     });
   });
 
@@ -692,7 +737,7 @@ describe("Diamond Dawn Mine", () => {
       ]);
       expect(await ddMine.isReady(STAGE.CUT)).to.be.false;
       await ddMine.setStageVideos(STAGE.CUT, [
-        { shape: SHAPE.RADIANT, video: "4.mp4" },
+        { shape: SHAPE.CUSHION, video: "4.mp4" },
       ]);
       expect(await ddMine.isReady(STAGE.CUT)).to.be.true;
       const noReadyStages = _.without(
@@ -720,7 +765,7 @@ describe("Diamond Dawn Mine", () => {
       ]);
       expect(await ddMine.isReady(STAGE.POLISH)).to.be.false;
       await ddMine.setStageVideos(STAGE.POLISH, [
-        { shape: SHAPE.RADIANT, video: "4.mp4" },
+        { shape: SHAPE.CUSHION, video: "4.mp4" },
       ]);
       expect(await ddMine.isReady(STAGE.POLISH)).to.be.true;
       const noReadyStages = _.without(

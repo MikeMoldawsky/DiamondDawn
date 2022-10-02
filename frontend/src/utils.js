@@ -94,7 +94,7 @@ export const getDiamondIcon = (token) => {
           return faGem;
         case SHAPE.OVAL:
           return faGem;
-        case SHAPE.RADIANT:
+        case SHAPE.CUSHION:
           return faGem;
         default:
           return null;
@@ -108,7 +108,7 @@ export const getDiamondIcon = (token) => {
           return faGem;
         case SHAPE.OVAL:
           return faGem;
-        case SHAPE.RADIANT:
+        case SHAPE.CUSHION:
           return faGem;
         default:
           return null;
