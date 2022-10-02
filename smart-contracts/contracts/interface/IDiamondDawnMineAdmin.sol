@@ -2,7 +2,6 @@
 pragma solidity ^0.8.15;
 
 import "../objects/Diamond.sol";
-import "../objects/Mine.sol";
 import "../objects/System.sol";
 
 interface IDiamondDawnMineAdmin {
@@ -10,7 +9,7 @@ interface IDiamondDawnMineAdmin {
 
     function lostShipment(uint tokenId, Certificate calldata diamond) external;
 
-    function setStageVideos(Stage stage_, ShapeVideo[] calldata shapeVideos) external;
+    function setManifest(Stage stage_, string calldata manifest) external;
 
     function setBaseTokenURI(string calldata baseTokenURI) external;
 }

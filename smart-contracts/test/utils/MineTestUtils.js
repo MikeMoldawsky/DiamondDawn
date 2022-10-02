@@ -7,9 +7,6 @@ const {
   enumToGrade,
   enumToFluorescence,
   enumToShape,
-  NO_SHAPE_NUM,
-  ROUGH_SHAPE,
-  SHAPE,
   STAGE,
 } = require("./EnumConverterUtils");
 const { DIAMOND } = require("./Diamonds");
@@ -22,78 +19,38 @@ const MAX_POLISH_EXTRA_POINTS = 4;
 const BASE_URI = "ar://";
 
 // constants for tests
-const ENTER_MINE_VIDEO = "enterMine.mp4";
-const ENTER_MINE_IMAGE = "enterMine.mp4"; // TODO: change to jpg
+const INVITE_MANIFEST = "invite-manifest";
+const MINE_MANIFEST = "mine-manifest";
+const CUT_MANIFEST = "cut-manifest";
+const POLISH_MANIFEST = "polish-manifest";
+const REBORN_MANIFEST = "reborn-manifest";
 
-const MAKEABLE_1_VIDEO = "makeable1.mp4";
-const MAKEABLE_1_IMAGE = "makeable1.jpg";
-const MAKEABLE_2_VIDEO = "makeable2.mp4";
-const MAKEABLE_2_IMAGE = "makeable2.jpg";
-
-const CUT_PEAR_VIDEO = "cutPear.mp4";
-const CUT_PEAR_IMAGE = "cutPear.jpg";
-const CUT_ROUND_VIDEO = "cutRound.mp4";
-const CUT_ROUND_IMAGE = "cutRound.jpg";
-const CUT_OVAL_VIDEO = "cutOval.mp4";
-const CUT_OVAL_IMAGE = "cutOval.jpg";
-const CUT_CUSHION_VIDEO = "cutCushion.mp4";
-const CUT_CUSHION_IMAGE = "cutCushion.jpg";
-
-const POLISHED_PEAR_VIDEO = "polishedPear.mp4";
-const POLISHED_PEAR_IMAGE = "polishedPear.jpg";
-const POLISHED_ROUND_VIDEO = "polishedRound.mp4";
-const POLISHED_ROUND_IMAGE = "polishedRound.jpg";
-const POLISHED_OVAL_VIDEO = "polishedOval.mp4";
-const POLISHED_OVAL_IMAGE = "polishedOval.jpg";
-const POLISHED_CUSHION_VIDEO = "polishedCushion.mp4";
-const POLISHED_CUSHION_IMAGE = "polishedCushion.jpg";
-
-const REBORN_VIDEO = "reborn.mp4";
-const REBORN_IMAGE = "reborn.jpg";
-
-async function setEnterMineVideo(mineContract) {
-  await mineContract.setStageVideos(STAGE.INVITE, [
-    { shape: NO_SHAPE_NUM, video: ENTER_MINE_VIDEO },
-  ]);
+async function setInviteManifest(mineContract) {
+  await mineContract.setManifest(STAGE.INVITE, INVITE_MANIFEST);
 }
 
-async function setRoughVideos(mineContract) {
-  await mineContract.setStageVideos(STAGE.MINE, [
-    { shape: ROUGH_SHAPE.MAKEABLE_1, video: MAKEABLE_1_VIDEO },
-    { shape: ROUGH_SHAPE.MAKEABLE_2, video: MAKEABLE_2_VIDEO },
-  ]);
+async function setMineManifest(mineContract) {
+  await mineContract.setManifest(STAGE.MINE, MINE_MANIFEST);
 }
 
-async function setCutVideos(mineContract) {
-  await mineContract.setStageVideos(STAGE.CUT, [
-    { shape: SHAPE.PEAR, video: CUT_PEAR_VIDEO },
-    { shape: SHAPE.ROUND, video: CUT_ROUND_VIDEO },
-    { shape: SHAPE.OVAL, video: CUT_OVAL_VIDEO },
-    { shape: SHAPE.CUSHION, video: CUT_CUSHION_VIDEO },
-  ]);
+async function setCutManifest(mineContract) {
+  await mineContract.setManifest(STAGE.CUT, CUT_MANIFEST);
 }
 
-async function setPolishedVideos(mineContract) {
-  await mineContract.setStageVideos(STAGE.POLISH, [
-    { shape: SHAPE.PEAR, video: POLISHED_PEAR_VIDEO },
-    { shape: SHAPE.ROUND, video: POLISHED_ROUND_VIDEO },
-    { shape: SHAPE.OVAL, video: POLISHED_OVAL_VIDEO },
-    { shape: SHAPE.CUSHION, video: POLISHED_CUSHION_VIDEO },
-  ]);
+async function setPolishManifest(mineContract) {
+  await mineContract.setManifest(STAGE.POLISH, POLISH_MANIFEST);
 }
 
-async function setRebornVideo(mineContract) {
-  await mineContract.setStageVideos(STAGE.SHIP, [
-    { shape: NO_SHAPE_NUM, video: REBORN_VIDEO },
-  ]);
+async function setRebornManifest(mineContract) {
+  await mineContract.setManifest(STAGE.SHIP, REBORN_MANIFEST);
 }
 
-async function setAllVideoUrls(mineContract) {
-  await setEnterMineVideo(mineContract);
-  await setRoughVideos(mineContract);
-  await setCutVideos(mineContract);
-  await setPolishedVideos(mineContract);
-  await setRebornVideo(mineContract);
+async function setAllManifests(mineContract) {
+  await setInviteManifest(mineContract);
+  await setMineManifest(mineContract);
+  await setCutManifest(mineContract);
+  await setPolishManifest(mineContract);
+  await setRebornManifest(mineContract);
 }
 
 async function populateDiamonds(mineContract, numDiamonds) {
@@ -105,29 +62,29 @@ async function populateDiamonds(mineContract, numDiamonds) {
   }
 }
 
-async function prepareMineEntranceReady(mineContract) {
-  await setEnterMineVideo(mineContract);
+async function prepareInviteReady(mineContract) {
+  await setInviteManifest(mineContract);
 }
 
 async function prepareMineReady(mineContract, numDiamonds) {
-  await prepareMineEntranceReady(mineContract);
+  await prepareInviteReady(mineContract);
   await populateDiamonds(mineContract, numDiamonds);
-  await setRoughVideos(mineContract);
+  await setMineManifest(mineContract);
 }
 
 async function prepareCutReady(mineContract, numDiamonds) {
   await prepareMineReady(mineContract, numDiamonds);
-  await setCutVideos(mineContract);
+  await setCutManifest(mineContract);
 }
 
 async function preparePolishReady(mineContract, numDiamonds) {
   await prepareCutReady(mineContract, numDiamonds);
-  await setPolishedVideos(mineContract);
+  await setPolishManifest(mineContract);
 }
 
 async function prepareRebirthReady(mineContract, numDiamonds) {
   await preparePolishReady(mineContract, numDiamonds);
-  await setRebornVideo(mineContract);
+  await setRebornManifest(mineContract);
 }
 
 async function assertEnterMineMetadata(ddUser, mineContract, tokenId) {
@@ -326,16 +283,17 @@ async function _validateAndRemoveShapeAndURIsMetadata(
     const [actualShapeAttribute] = arr;
     expect(actualShapeAttribute).to.have.all.keys("trait_type", "value");
     expect(actualShapeAttribute.trait_type).equal("Shape");
-    // TODO: after video + image fixes - re-enable test
-    // _assertShapeImage(
-    //   type,
-    //   actualShapeAttribute.value,
-    //   actualParsedMetadata.image
-    // );
-    _assertShapeAnimationUrl(
+    _assertURI(
       type,
       actualShapeAttribute.value,
-      actualParsedMetadata.animation_url
+      actualParsedMetadata.image,
+      ".jpeg"
+    );
+    _assertURI(
+      type,
+      actualShapeAttribute.value,
+      actualParsedMetadata.animation_url,
+      ".mp4"
     );
     return true;
   });
@@ -344,132 +302,73 @@ async function _validateAndRemoveShapeAndURIsMetadata(
   return actualParsedMetadata;
 }
 
-function _assertShapeImage(type, shape, image) {
-  let expectedImage;
+function _assertURI(type, shape, image, suffix) {
+  let manifest;
+  let resource;
   switch (type) {
     case STAGE.MINE:
+      manifest = MINE_MANIFEST;
       expect(shape).to.be.oneOf(["Makeable 1", "Makeable 2"]);
       switch (shape) {
         case "Makeable 1":
-          expectedImage = MAKEABLE_1_IMAGE;
+          resource = "makeable1";
           break;
         case "Makeable 2":
-          expectedImage = MAKEABLE_2_IMAGE;
+          resource = "makeable2";
           break;
         default:
           throw new Error("Unknown shape");
       }
       break;
     case STAGE.CUT:
+      manifest = CUT_MANIFEST;
       expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Cushion"]);
       switch (shape) {
         case "Pear":
-          expectedImage = CUT_PEAR_IMAGE;
+          resource = "pear";
           break;
         case "Round":
-          expectedImage = CUT_ROUND_IMAGE;
+          resource = "round";
           break;
         case "Oval":
-          expectedImage = CUT_OVAL_IMAGE;
+          resource = "oval";
           break;
         case "Cushion":
-          expectedImage = CUT_CUSHION_IMAGE;
+          resource = "cushion";
           break;
         default:
           throw new Error("Unknown shape");
       }
       break;
     case STAGE.POLISH:
+      manifest = POLISH_MANIFEST;
       expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Cushion"]);
       switch (shape) {
         case "Pear":
-          expectedImage = POLISHED_PEAR_IMAGE;
+          resource = "pear";
           break;
         case "Round":
-          expectedImage = POLISHED_ROUND_IMAGE;
+          resource = "round";
           break;
         case "Oval":
-          expectedImage = POLISHED_OVAL_IMAGE;
+          resource = "oval";
           break;
         case "Cushion":
-          expectedImage = POLISHED_CUSHION_IMAGE;
+          resource = "cushion";
           break;
         default:
           throw new Error("Unknown shape");
       }
       break;
     case STAGE.SHIP:
+      manifest = REBORN_MANIFEST;
       expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Cushion"]);
-      expectedImage = REBORN_IMAGE;
+      resource = "resource";
       break;
     default:
       throw new Error("Unknown type");
   }
-  expect(image).to.be.equal(`${BASE_URI}${expectedImage}`);
-}
-
-function _assertShapeAnimationUrl(type, shape, animation) {
-  let expectedAnimation;
-  switch (type) {
-    case STAGE.MINE:
-      expect(shape).to.be.oneOf(["Makeable 1", "Makeable 2"]);
-      switch (shape) {
-        case "Makeable 1":
-          expectedAnimation = MAKEABLE_1_VIDEO;
-          break;
-        case "Makeable 2":
-          expectedAnimation = MAKEABLE_2_VIDEO;
-          break;
-        default:
-          throw new Error("Unknown shape");
-      }
-      break;
-    case STAGE.CUT:
-      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Cushion"]);
-      switch (shape) {
-        case "Pear":
-          expectedAnimation = CUT_PEAR_VIDEO;
-          break;
-        case "Round":
-          expectedAnimation = CUT_ROUND_VIDEO;
-          break;
-        case "Oval":
-          expectedAnimation = CUT_OVAL_VIDEO;
-          break;
-        case "Cushion":
-          expectedAnimation = CUT_CUSHION_VIDEO;
-          break;
-        default:
-          throw new Error("Unknown shape");
-      }
-      break;
-    case STAGE.POLISH:
-      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Cushion"]);
-      switch (shape) {
-        case "Pear":
-          expectedAnimation = POLISHED_PEAR_VIDEO;
-          break;
-        case "Round":
-          expectedAnimation = POLISHED_ROUND_VIDEO;
-          break;
-        case "Oval":
-          expectedAnimation = POLISHED_OVAL_VIDEO;
-          break;
-        case "Cushion":
-          expectedAnimation = POLISHED_CUSHION_VIDEO;
-          break;
-        default:
-          throw new Error("Unknown shape");
-      }
-      break;
-    case STAGE.SHIP:
-      expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Cushion"]);
-      expectedAnimation = REBORN_VIDEO;
-      break;
-    default:
-      throw new Error("Unknown type");
-  }
-  expect(animation).to.be.equal(`${BASE_URI}${expectedAnimation}`);
+  expect(image).to.be.equal(`${BASE_URI}${manifest}/${resource}${suffix}`);
 }
 
 async function _getParsedMetadata(ddUser, mineContract, tokenId) {
@@ -493,8 +392,8 @@ function _getExpectedMetadataEnterMine(tokenId) {
     name: `Mine Key #${tokenId}`,
     description: "description",
     created_by: "dd",
-    image: `${BASE_URI}${ENTER_MINE_IMAGE}`,
-    animation_url: `${BASE_URI}${ENTER_MINE_VIDEO}`,
+    image: `${BASE_URI}${INVITE_MANIFEST}/resource.jpeg`,
+    animation_url: `${BASE_URI}${INVITE_MANIFEST}/resource.mp4`,
     attributes: [{ trait_type: "Type", value: "Key" }],
   };
 }
@@ -694,20 +593,25 @@ function _getRebirthMetadataNoCaratShapeAndURIs(
 
 module.exports = {
   BASE_URI,
+  INVITE_MANIFEST,
+  MINE_MANIFEST,
+  CUT_MANIFEST,
+  POLISH_MANIFEST,
+  REBORN_MANIFEST,
   assertBase64AndGetParsed,
   assertEnterMineMetadata,
   assertRoughMetadata,
   assertCutMetadata,
   assertPolishedMetadata,
   assertRebornMetadata,
-  setAllVideoUrls,
-  setEnterMineVideo,
-  setRoughVideos,
-  setCutVideos,
-  setPolishedVideos,
-  setRebornVideo,
+  setAllManifests,
+  setInviteManifest,
+  setMineManifest,
+  setCutManifest,
+  setPolishManifest,
+  setRebornManifest,
   populateDiamonds,
-  prepareMineEntranceReady,
+  prepareInviteReady,
   prepareMineReady,
   prepareCutReady,
   preparePolishReady,

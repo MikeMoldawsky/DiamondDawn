@@ -4,7 +4,7 @@ import {
   getMineDiamondCountApi,
   getSystemPausedApi,
   getSystemStageApi,
-  getVideoUrlsByStageApi,
+  getStageManifestApi,
   getMaxDiamondsApi,
 } from "api/contractApi";
 import {
@@ -70,7 +70,7 @@ export const updateStageTime = (timestamp) => async (dispatch) => {
 };
 
 export const loadStageArt = (mineContract, systemStage) => async (dispatch) => {
-  const videoArt = await getVideoUrlsByStageApi(mineContract, systemStage);
+  const videoArt = await getStageManifestApi(mineContract, systemStage);
   dispatch({
     type: "SYSTEM.SET_VIDEO_ART",
     payload: { videoArt },

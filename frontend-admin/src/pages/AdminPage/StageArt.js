@@ -3,10 +3,7 @@ import useDDContract from "hooks/useDDContract";
 import { CONTRACTS } from "consts";
 import _ from "lodash";
 import ActionButton from "components/ActionButton";
-import {
-  getVideoUrlsByStageApi,
-  setVideoUrlsByStageApi,
-} from "api/contractApi";
+import { getStageManifestApi, setStageManifestApi } from "api/contractApi";
 import rdiff from "recursive-diff";
 import { useDispatch, useSelector } from "react-redux";
 import { loadStageArt, systemSelector } from "store/systemReducer";
@@ -19,7 +16,7 @@ const StageArt = ({ systemStage }) => {
   const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
 
   const fetchStageArtData = async () => {
-    const stageArt = await getVideoUrlsByStageApi(mineContract, systemStage);
+    const stageArt = await getStageManifestApi(mineContract, systemStage);
     setStageArtData(stageArt);
   };
 
@@ -37,7 +34,7 @@ const StageArt = ({ systemStage }) => {
 
   const saveVideoUrls = async () => {
     const urls = _.values(stageArtData);
-    await setVideoUrlsByStageApi(mineContract, systemStage, urls);
+    await setStageManifestApi(mineContract, systemStage, urls[0]);
     dispatch(loadStageArt(mineContract, systemStage));
   };
 

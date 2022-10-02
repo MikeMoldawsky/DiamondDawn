@@ -10,11 +10,7 @@ const {
 const { signMessage } = require("./utils/SignatureUtils");
 const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
 const { PRICE_WEDDING, PRICE } = require("./utils/Consts");
-const {
-  STAGE,
-  NO_SHAPE_NUM,
-  ALL_STAGES,
-} = require("./utils/EnumConverterUtils");
+const { STAGE, ALL_STAGES } = require("./utils/EnumConverterUtils");
 const { ethers } = require("hardhat");
 const { completeAndSetStage } = require("./utils/DDTestUtils");
 const _ = require("lodash");
@@ -137,9 +133,7 @@ describe("Diamond Dawn Admin", () => {
     it("should REVERT when mine stage is not ready", async () => {
       await dd.setStage(STAGE.INVITE); // work
       await dd.completeStage(STAGE.INVITE);
-      await ddMine.setStageVideos(STAGE.INVITE, [
-        { shape: NO_SHAPE_NUM, video: "" },
-      ]);
+      await ddMine.setManifest(STAGE.INVITE, "");
       await expect(dd.setStage(STAGE.INVITE)).to.revertedWith("Mine not ready");
     });
 

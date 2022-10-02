@@ -11,12 +11,7 @@ const {
   updateDiamondDawnMineContract,
 } = require("../db/contract-db-manager");
 const { clearEruptionTxs } = require("../db/config-db-manager");
-const {
-  STAGE,
-  NO_SHAPE_NUM,
-  SHAPE,
-  ROUGH_SHAPE,
-} = require("./utils/EnumConverterUtils");
+const { STAGE } = require("./utils/EnumConverterUtils");
 
 const DIAMOND_OPTIONS = [
   {
@@ -157,52 +152,26 @@ async function populateDiamonds(mine) {
 }
 
 async function setVideos(diamondDawnMine) {
-  await diamondDawnMine.setStageVideos(STAGE.INVITE, [
-    {
-      shape: NO_SHAPE_NUM,
-      video: "kwW9gXgTCNNBM3bfqrnshOIziN7WTwNZ1nH2un1OLi8",
-    },
-  ]);
-  await diamondDawnMine.setStageVideos(STAGE.MINE, [
-    {
-      shape: ROUGH_SHAPE.MAKEABLE_1,
-      video: "BtRbJnl31VM4l_FwNuYLLozafgBg6KCh4hFASNCUQU4",
-    },
-    {
-      shape: ROUGH_SHAPE.MAKEABLE_2,
-      video: "65tm30lsGQUYp7bfZE9Dm4fnAt3Vnp5dnOnJvNNoES4",
-    },
-  ]);
-  await diamondDawnMine.setStageVideos(STAGE.CUT, [
-    { shape: SHAPE.PEAR, video: "srm04dqoAKbhqpHMZNFJvK4M2BOQMpBvsV6UPiN5nc8" },
-    {
-      shape: SHAPE.ROUND,
-      video: "69IYg9WisacjDt7THpKvmmzgRdvzEd5OxvrvWXT4YB4",
-    },
-    { shape: SHAPE.OVAL, video: "RwNs4UCLSvhYA24KZQEsF2qelbXYJ-ZzKhB7CJQ1ZIw" },
-    {
-      shape: SHAPE.CUSHION,
-      video: "ZIA_cEULReCgJTv02SEIvfIE8teRPC6H07iPEkteHDA",
-    },
-  ]);
-  await diamondDawnMine.setStageVideos(STAGE.POLISH, [
-    { shape: SHAPE.PEAR, video: "NnI-JkZmMtbER5vSLiR3s49btZ216OS_JjjnBPKlE3I" },
-    {
-      shape: SHAPE.ROUND,
-      video: "vyOKWpf4300MX1av8lMbKqjjFwhIBu0cD66WYEs-DiI",
-    },
-    { shape: SHAPE.OVAL, video: "HO2Sp81wPsJywp-7pQ5xnznGujvGiTUxvmaz_BRH_qg" },
-    {
-      shape: SHAPE.CUSHION,
-      video: "AIXfjxPSyNhzvKYhHV3iQ9txbl1fjp2yqiRRfjkgAAw",
-    },
-  ]);
-  await diamondDawnMine.setStageVideos(STAGE.SHIP, [
-    {
-      shape: NO_SHAPE_NUM,
-      video: "JBdFRAh_m6VIRQxKdgk22SXQhWGmqz1odXx-vIN3glk",
-    },
-  ]);
+  await diamondDawnMine.setManifest(
+    STAGE.INVITE,
+    "sMO6zq1xVt4w0kQIz5X0fmQuJhCL5fHoGJk3Qmo6PcY"
+  );
+  await diamondDawnMine.setManifest(
+    STAGE.MINE,
+    "BtRbJnl31VM4l_FwNuYLLozafgBg6KCh4hFASNCUQU4"
+  );
+  await diamondDawnMine.setManifest(
+    STAGE.CUT,
+    "srm04dqoAKbhqpHMZNFJvK4M2BOQMpBvsV6UPiN5nc8"
+  );
+  await diamondDawnMine.setManifest(
+    STAGE.POLISH,
+    "NnI-JkZmMtbER5vSLiR3s49btZ216OS_JjjnBPKlE3I"
+  );
+  await diamondDawnMine.setManifest(
+    STAGE.SHIP,
+    "JBdFRAh_m6VIRQxKdgk22SXQhWGmqz1odXx-vIN3glk"
+  );
 }
 
 async function verifyContract(contract, args) {

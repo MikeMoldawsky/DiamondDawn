@@ -4,17 +4,11 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const _ = require("lodash");
-const {
-  NO_SHAPE_NUM,
-  SHAPE,
-  ROUGH_SHAPE,
-  STAGE,
-  ALL_STAGES,
-} = require("./utils/EnumConverterUtils");
+const { STAGE, ALL_STAGES } = require("./utils/EnumConverterUtils");
 const {
   assertPolishedMetadata,
   assertRebornMetadata,
-  setAllVideoUrls,
+  setAllManifests,
 } = require("./utils/MineTestUtils");
 const { DIAMOND } = require("./utils/Diamonds");
 const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
@@ -118,7 +112,7 @@ describe("Diamond Dawn Mine Admin", () => {
       diamondDawn = users[0];
       user = users[1];
       await diamondDawnMine.connect(diamondDawn).initialize(333);
-      await setAllVideoUrls(diamondDawnMine);
+      await setAllManifests(diamondDawnMine);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -226,7 +220,7 @@ describe("Diamond Dawn Mine Admin", () => {
     });
   });
 
-  describe("setStageVideos", () => {
+  describe("setManifest", () => {
     let mineContract;
     let admin;
     let diamondDawn;
@@ -246,7 +240,7 @@ describe("Diamond Dawn Mine Admin", () => {
       await Promise.all(
         unAuthUsers.map((unAuth) =>
           assertOnlyAdmin(unAuth, mineContract, (contract) =>
-            contract.setStageVideos(STAGE.NO_STAGE, [])
+            contract.setManifest(STAGE.NO_STAGE, "")
           )
         )
       );
@@ -257,7 +251,7 @@ describe("Diamond Dawn Mine Admin", () => {
       await Promise.all(
         ALL_STAGES.map((stage) =>
           assertOnlyAdmin(admin, mineContract, (contract) =>
-            contract.setStageVideos(stage, [])
+            contract.setManifest(stage, "")
           )
         )
       );
@@ -265,90 +259,36 @@ describe("Diamond Dawn Mine Admin", () => {
 
     it("should REVERT when no type url is locked", async () => {
       await expect(
-        mineContract.setStageVideos(STAGE.NO_STAGE, [])
+        mineContract.setManifest(STAGE.NO_STAGE, "")
       ).to.be.revertedWithoutReason();
     });
 
     it("should SUCCESSFULLY set videos", async () => {
-      const enterMine = "infinity.mp4";
-      const roughMakeable1 = "rough_1.mp4";
-      const roughMakeable2 = "rough_2.mp4";
-      // cut
-      const cutPear = "cut_pear.mp4";
-      const cutRound = "cut_round.mp4";
-      const cutOval = "cut_oval.mp4";
-      const cutCushion = "cut_cushion.mp4";
-      // polished
-      const polishedPear = "polished_pear.mp4";
-      const polishedRound = "polished_round.mp4";
-      const polishedOval = "polished_oval.mp4";
-      const polishedCushion = "polished_cushion.mp4";
-      // reborn
-      const rebornVideo = "diamond_dawn.mp4";
+      const inviteManifest = "invite";
+      const mineManifest = "mine";
+      const cutManifest = "cut";
+      const polishedManifest = "polished";
+      const shipManifest = "dawn";
 
-      await mineContract.setStageVideos(STAGE.INVITE, [
-        { shape: NO_SHAPE_NUM, video: enterMine },
-      ]);
-      await mineContract.setStageVideos(STAGE.MINE, [
-        { shape: ROUGH_SHAPE.MAKEABLE_1, video: roughMakeable1 },
-        { shape: ROUGH_SHAPE.MAKEABLE_2, video: roughMakeable2 },
-      ]);
+      await mineContract.setManifest(STAGE.INVITE, inviteManifest);
+      await mineContract.setManifest(STAGE.MINE, mineManifest);
+      await mineContract.setManifest(STAGE.CUT, cutManifest);
+      await mineContract.setManifest(STAGE.POLISH, polishedManifest);
+      await mineContract.setManifest(STAGE.SHIP, shipManifest);
 
-      await mineContract.setStageVideos(STAGE.CUT, [
-        { shape: SHAPE.PEAR, video: cutPear },
-        { shape: SHAPE.ROUND, video: cutRound },
-        { shape: SHAPE.OVAL, video: cutOval },
-        { shape: SHAPE.CUSHION, video: cutCushion },
-      ]);
-      await mineContract.setStageVideos(STAGE.POLISH, [
-        { shape: SHAPE.PEAR, video: polishedPear },
-        { shape: SHAPE.ROUND, video: polishedRound },
-        { shape: SHAPE.OVAL, video: polishedOval },
-        { shape: SHAPE.CUSHION, video: polishedCushion },
-      ]);
-      await mineContract.setStageVideos(STAGE.SHIP, [
-        { shape: NO_SHAPE_NUM, video: rebornVideo },
-      ]);
-
-      expect(await mineContract.stageToShapeVideo(STAGE.INVITE, 0)).to.be.equal(
-        enterMine
+      expect(await mineContract.manifests(STAGE.INVITE)).to.be.equal(
+        inviteManifest
+      );
+      expect(await mineContract.manifests(STAGE.MINE)).to.be.equal(
+        mineManifest
+      );
+      expect(await mineContract.manifests(STAGE.CUT)).to.be.equal(cutManifest);
+      expect(await mineContract.manifests(STAGE.POLISH)).to.be.equal(
+        polishedManifest
       );
 
-      expect(
-        await mineContract.stageToShapeVideo(STAGE.MINE, ROUGH_SHAPE.MAKEABLE_1)
-      ).to.be.equal(roughMakeable1);
-      expect(
-        await mineContract.stageToShapeVideo(STAGE.MINE, ROUGH_SHAPE.MAKEABLE_2)
-      ).to.be.equal(roughMakeable2);
-
-      expect(
-        await mineContract.stageToShapeVideo(STAGE.CUT, SHAPE.PEAR)
-      ).to.be.equal(cutPear);
-      expect(
-        await mineContract.stageToShapeVideo(STAGE.CUT, SHAPE.ROUND)
-      ).to.be.equal(cutRound);
-      expect(
-        await mineContract.stageToShapeVideo(STAGE.CUT, SHAPE.OVAL)
-      ).to.be.equal(cutOval);
-      expect(
-        await mineContract.stageToShapeVideo(STAGE.CUT, SHAPE.CUSHION)
-      ).to.be.equal(cutCushion);
-
-      expect(
-        await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.PEAR)
-      ).to.be.equal(polishedPear);
-      expect(
-        await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.ROUND)
-      ).to.be.equal(polishedRound);
-      expect(
-        await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.OVAL)
-      ).to.be.equal(polishedOval);
-      expect(
-        await mineContract.stageToShapeVideo(STAGE.POLISH, SHAPE.CUSHION)
-      ).to.be.equal(polishedCushion);
-
-      expect(await mineContract.stageToShapeVideo(STAGE.SHIP, 0)).to.be.equal(
-        rebornVideo
+      expect(await mineContract.manifests(STAGE.SHIP)).to.be.equal(
+        shipManifest
       );
     });
   });

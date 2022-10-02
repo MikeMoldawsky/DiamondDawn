@@ -1,5 +1,5 @@
 const { ethers } = require("hardhat");
-const { setAllVideoUrls } = require("./MineTestUtils");
+const { setAllManifests } = require("./MineTestUtils");
 
 async function deployMine() {
   const users = await ethers.getSigners();
@@ -29,7 +29,7 @@ async function deployInitializedMine10() {
 async function deployInitializedMine10WithVideos() {
   const { diamondDawn, diamondDawnMine, owner, users } =
     await deployInitializedMine10();
-  await setAllVideoUrls(diamondDawnMine);
+  await setAllManifests(diamondDawnMine);
   return {
     diamondDawn,
     diamondDawnMine,
@@ -40,7 +40,7 @@ async function deployInitializedMine10WithVideos() {
 
 async function deployMineWithVideos() {
   const { diamondDawnMine, diamondDawn, owner, users } = await deployMine();
-  await setAllVideoUrls(diamondDawnMine);
+  await setAllManifests(diamondDawnMine);
   return {
     diamondDawn,
     diamondDawnMine,

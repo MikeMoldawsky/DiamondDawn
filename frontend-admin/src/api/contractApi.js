@@ -1,6 +1,6 @@
 import { NO_SHAPE_NUM, ROUGH_SHAPE, SHAPE, SYSTEM_STAGE } from "consts";
 import _ from "lodash";
-import { getShapeName } from "utils";
+import { getShapeName, getSystemStageName } from "utils";
 
 // ADMIN CONTROL API
 export const getSystemStageApi = async (contract) => {
@@ -47,31 +47,13 @@ export const unpauseApi = async (contract) => {
   return receipt.transactionHash;
 };
 
-// ART URLS API
-const ART_MAPPING = {
-  [SYSTEM_STAGE.INVITE]: [NO_SHAPE_NUM],
-  [SYSTEM_STAGE.MINE]: [ROUGH_SHAPE.MAKEABLE_1, ROUGH_SHAPE.MAKEABLE_2],
-  [SYSTEM_STAGE.CUT]: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.CUSHION],
-  [SYSTEM_STAGE.POLISH]: [SHAPE.PEAR, SHAPE.ROUND, SHAPE.OVAL, SHAPE.CUSHION],
-  [SYSTEM_STAGE.SHIP]: [NO_SHAPE_NUM],
+export const getStageManifestApi = async (mineContract, stage) => {
+  const url = await mineContract["manifests"](stage);
+  return _.zipObject([getSystemStageName(stage)], [url]);
 };
 
-export const getVideoUrlsByStageApi = async (mineContract, stage) => {
-  const shapes = ART_MAPPING[stage];
-  const urls = await Promise.all(
-    _.map(shapes, (shape) => mineContract["stageToShapeVideo"](stage, shape))
-  );
-  const names = _.map(shapes, (shape) => getShapeName(shape, stage));
-  return _.zipObject(names, urls);
-};
-
-export const setVideoUrlsByStageApi = async (mineContract, stage, urls) => {
-  const shapes = ART_MAPPING[stage];
-  const shapeVideos = _.zipWith(shapes, urls, (shape, url) => ({
-    shape: shape,
-    video: url,
-  }));
-  const tx = await mineContract["setStageVideos"](stage, shapeVideos);
+export const setStageManifestApi = async (mineContract, stage, url) => {
+  const tx = await mineContract["setManifest"](stage, url);
   const receipt = await tx.wait();
   return receipt.transactionHash;
 };
