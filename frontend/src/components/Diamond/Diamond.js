@@ -13,7 +13,11 @@ const Diamond = ({ diamond }) => {
   const renderPlayer = useCallback(() => {
     return (
       <ReactPlayer
-        url={_.startsWith(videoUrl, 'ar://') ? _.replace(videoUrl, 'ar://', 'https://arweave.net/'): videoUrl}
+        url={
+          _.startsWith(videoUrl, "ar://")
+            ? _.replace(videoUrl, "ar://", "https://arweave.net/")
+            : videoUrl
+        }
         playing
         playsinline
         controls={false}
