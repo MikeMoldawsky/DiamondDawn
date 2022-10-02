@@ -38,7 +38,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     uint16 private _randNonce = 0;
     Certificate[] private _mine;
     mapping(uint => Metadata) private _metadata;
-    string private _baseTokenURI = "https://arweave.net/"; // TODO: change to "ar://"
+    string private _baseTokenURI = "ar://";
 
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
@@ -170,7 +170,10 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     function getMetadata(uint tokenId) external view onlyDiamondDawn exists(tokenId) returns (string memory) {
         Metadata memory metadata = _metadata[tokenId];
         string memory videoURI = _getVideoURI(metadata);
-        string memory base64Json = Base64.encode(bytes(_getMetadataJson(tokenId, metadata, videoURI)));
+        string memory imageURI = _getVideoURI(metadata); // TODO: change to image URI
+        string memory base64Json = Base64.encode(
+            bytes(_getMetadataJson(tokenId, metadata, imageURI, videoURI))
+        );
         return string(abi.encodePacked("data:application/json;base64,", base64Json));
     }
 
@@ -235,14 +238,17 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     function _getMetadataJson(
         uint tokenId,
         Metadata memory metadata,
+        string memory imageURI,
         string memory videoURI
     ) private view returns (string memory) {
         // TODO: add description and created by when ready.
+        // TODO: check if we need to add image in addition to animation_url.
         NFTMetadata memory nftMetadata = NFTMetadata({
             name: getName(metadata, tokenId),
             description: "description",
             createdBy: "dd",
-            image: videoURI,
+            image: imageURI,
+            animationUrl: videoURI,
             attributes: _getJsonAttributes(metadata)
         });
         return serialize(nftMetadata);
@@ -282,6 +288,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
                 toMeasurementsStr(certificate.shape, certificate.length, certificate.width, certificate.depth)
             );
             attributes[9] = toStrAttribute("Shape", toShapeStr(certificate.shape));
+            // TODO: validate that OpenSea works with 2 attributes called "Cut" or change name
             attributes[10] = toMaxValueAttribute(
                 "Cut",
                 Strings.toString(metadata.cut.id),

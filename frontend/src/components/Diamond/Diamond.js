@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import "./Diamond.scss";
 import ReactPlayer from "react-player";
+import _ from "lodash";
 
 const Diamond = ({ diamond }) => {
   const { image, isBurned } = diamond;
@@ -12,7 +13,7 @@ const Diamond = ({ diamond }) => {
   const renderPlayer = useCallback(() => {
     return (
       <ReactPlayer
-        url={videoUrl}
+        url={_.startsWith(videoUrl, 'ar://') ? _.replace(videoUrl, 'ar://', 'https://arweave.net/'): videoUrl}
         playing
         playsinline
         controls={false}
