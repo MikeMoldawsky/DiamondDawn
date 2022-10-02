@@ -209,7 +209,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             name: getName(metadata, tokenId),
             description: "description",
             createdBy: "dd",
-            image: string.concat(noExtensionURI, ".jpg"),
+            image: string.concat(noExtensionURI, ".jpeg"),
             animationUrl: string.concat(noExtensionURI, ".mp4"),
             attributes: _getJsonAttributes(metadata)
         });

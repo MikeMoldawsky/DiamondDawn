@@ -11,12 +11,7 @@ const {
   updateDiamondDawnMineContract,
 } = require("../db/contract-db-manager");
 const { clearEruptionTxs } = require("../db/config-db-manager");
-const {
-  STAGE,
-  NO_SHAPE_NUM,
-  SHAPE,
-  ROUGH_SHAPE,
-} = require("./utils/EnumConverterUtils");
+const { STAGE } = require("./utils/EnumConverterUtils");
 
 const DIAMOND_OPTIONS = [
   {
@@ -159,7 +154,7 @@ async function populateDiamonds(mine) {
 async function setVideos(diamondDawnMine) {
   await diamondDawnMine.setManifest(
     STAGE.INVITE,
-    "kwW9gXgTCNNBM3bfqrnshOIziN7WTwNZ1nH2un1OLi8"
+    "sMO6zq1xVt4w0kQIz5X0fmQuJhCL5fHoGJk3Qmo6PcY"
   );
   await diamondDawnMine.setManifest(
     STAGE.MINE,

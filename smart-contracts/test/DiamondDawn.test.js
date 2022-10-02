@@ -985,7 +985,7 @@ describe("DiamondDawn", () => {
         name: "Mine Key #1",
         description: "description",
         created_by: "dd",
-        image: `${BASE_URI}${INVITE_MANIFEST}/resource.jpg`,
+        image: `${BASE_URI}${INVITE_MANIFEST}/resource.jpeg`,
         animation_url: `${BASE_URI}${INVITE_MANIFEST}/resource.mp4`,
         attributes: [{ trait_type: "Type", value: "Key" }],
       });

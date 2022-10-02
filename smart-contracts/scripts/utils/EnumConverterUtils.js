@@ -118,8 +118,6 @@ const enumToFluorescence = (i) => {
   }
 };
 
-const NO_SHAPE_NUM = 0;
-
 const STAGE = {
   NO_STAGE: 0,
   INVITE: 1,
@@ -127,20 +125,6 @@ const STAGE = {
   CUT: 3,
   POLISH: 4,
   SHIP: 5,
-};
-
-const ROUGH_SHAPE = {
-  NO_SHAPE: 0,
-  MAKEABLE_1: 1,
-  MAKEABLE_2: 2,
-};
-
-const SHAPE = {
-  NO_SHAPE: 0,
-  PEAR: 1,
-  ROUND: 2,
-  OVAL: 3,
-  CUSHION: 4,
 };
 
 module.exports = {
@@ -151,8 +135,5 @@ module.exports = {
   enumToClarity,
   enumToGrade,
   enumToFluorescence,
-  NO_SHAPE_NUM,
   STAGE,
-  ROUGH_SHAPE,
-  SHAPE,
 };
