@@ -170,7 +170,7 @@ async function setVideos(diamondDawnMine) {
   );
   await diamondDawnMine.setManifest(
     STAGE.SHIP,
-    "JBdFRAh_m6VIRQxKdgk22SXQhWGmqz1odXx-vIN3glk"
+    "dm4lEPAKKKLf-ZjghklqtVyODMZVynvM1Nsj8-vJnPs"
   );
 }
 
