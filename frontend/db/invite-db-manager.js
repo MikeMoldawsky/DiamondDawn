@@ -38,6 +38,11 @@ async function openInvite(inviteId, country, state) {
       return null;
     }
 
+    if (invite.used) {
+      console.log("openInvite - invite used", { invite });
+      return { invite };
+    }
+
     if (invite.revoked) {
       console.log("openInvite - invite revoked", { invite });
       return { invite };
@@ -60,9 +65,9 @@ async function openInvite(inviteId, country, state) {
 async function signInvite(inviteId, address) {
   // check that the invite exist and not revoked or expired
   const invite = await getInviteObjectById(inviteId);
-  if (!invite || invite.revoked) {
+  if (!invite || invite.revoked || invite.used) {
     throw new Error(
-      `signInvite failed - invite not found or revoked - "${inviteId}"`
+      `signInvite failed - invite not found, revoked or used - "${inviteId}"`
     );
   }
   if (!ethers.utils.isAddress(address)) {

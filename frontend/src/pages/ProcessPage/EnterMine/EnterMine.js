@@ -16,6 +16,7 @@ import useMountLogger from "hooks/useMountLogger";
 import { enterApi } from "api/contractApi";
 import { useNavigate } from "react-router-dom";
 import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
+import {showError} from "utils";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -48,12 +49,20 @@ const EnterMine = ({ invite }) => {
     dispatch(loadMinePrice(contract));
   }, []);
 
-  if (!invite || invite.revoked) return null;
+  if (!invite || invite.revoked || invite.used) return null;
 
   const onInviteExpired = () => navigate("/");
 
   const executeEnterMine = async () => {
-    const { signature } = await signInviteApi(invite._id, account.address);
+    let signature
+    try {
+      const response = await signInviteApi(invite._id, account.address);
+      signature = response.signature
+    }
+    catch (e) {
+      navigate("/")
+      throw new Error("Invite expired or already used")
+    }
     const tx = await enterApi(contract, minePrice, signature);
     await tx.wait();
     await confirmInviteUsedApi(invite._id);
