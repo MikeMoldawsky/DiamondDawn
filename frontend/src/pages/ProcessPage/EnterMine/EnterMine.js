@@ -14,8 +14,8 @@ import ActionView from "components/ActionView";
 import { DUMMY_VIDEO_URL } from "consts";
 import useMountLogger from "hooks/useMountLogger";
 import { enterApi } from "api/contractApi";
-import { useNavigate } from "react-router-dom";
 import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
+import useNavigateToDefault from "hooks/useNavigateToDefault";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -38,7 +38,7 @@ const EnterMine = ({ invite }) => {
   const contract = useDDContract();
   const dispatch = useDispatch();
   const tokens = useSelector(tokensSelector);
-  const navigate = useNavigate();
+  const navigateToDefault = useNavigateToDefault();
 
   const maxTokenId = _.max(_.map(tokens, "id"));
 
@@ -48,12 +48,19 @@ const EnterMine = ({ invite }) => {
     dispatch(loadMinePrice(contract));
   }, []);
 
-  if (!invite || invite.revoked) return null;
+  if (!invite || invite.revoked || invite.used) return null;
 
-  const onInviteExpired = () => navigate("/");
+  const onInviteExpired = () => navigateToDefault();
 
   const executeEnterMine = async () => {
-    const { signature } = await signInviteApi(invite._id, account.address);
+    let signature;
+    try {
+      const response = await signInviteApi(invite._id, account.address);
+      signature = response.signature;
+    } catch (e) {
+      navigateToDefault();
+      throw new Error("Invite expired or already used");
+    }
     const tx = await enterApi(contract, minePrice, signature);
     await tx.wait();
     await confirmInviteUsedApi(invite._id);

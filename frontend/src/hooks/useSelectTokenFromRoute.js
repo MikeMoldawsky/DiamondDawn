@@ -3,11 +3,12 @@ import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { setSelectedTokenId } from "store/uiReducer";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import useNavigateToDefault from "hooks/useNavigateToDefault";
 
-function useSelectTokenFromRoute(notFoundRedirect = "/") {
+function useSelectTokenFromRoute() {
   const { tokenId: tokenIdString } = useParams();
-  const navigate = useNavigate();
+  const navigateToDefault = useNavigateToDefault();
 
   const dispatch = useDispatch();
   const tokens = useSelector(tokensSelector);
@@ -20,7 +21,7 @@ function useSelectTokenFromRoute(notFoundRedirect = "/") {
         return;
       }
     }
-    navigate(notFoundRedirect);
+    navigateToDefault();
   }, [tokens, tokenIdString, dispatch]);
 }
 

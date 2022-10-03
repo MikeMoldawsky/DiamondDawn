@@ -14,17 +14,20 @@ import { systemSelector } from "store/systemReducer";
 import teaserVideo from "assets/video/teaser.mp4";
 import { SYSTEM_STAGE, SYSTEM_STAGE_NAME } from "consts";
 import { setSelectedTokenId } from "store/uiReducer";
-import TokensProvider from "containers/TokensProvider";
+import { tokensSelector } from "store/tokensReducer";
+import size from "lodash/size";
 
 const EnterButton = () => {
   const { systemStage, isActive } = useSelector(systemSelector);
-  const canEnter =
-    systemStage >= SYSTEM_STAGE.MINE &&
-    !(systemStage === SYSTEM_STAGE.SHIP && !isActive);
-
-  return canEnter ? (
+  const tokens = useSelector(tokensSelector);
+  const visible = systemStage >= SYSTEM_STAGE.MINE && isActive;
+  const disabled = size(tokens) === 0;
+  return visible ? (
     <NavLink to={`/process`}>
-      <div className="button text-upper" style={{ marginTop: 40 }}>
+      <div
+        className={classNames("button text-upper", { disabled })}
+        style={{ marginTop: 40 }}
+      >
         ENTER {SYSTEM_STAGE_NAME[systemStage]}
       </div>
     </NavLink>
@@ -74,9 +77,7 @@ const Homepage = () => {
         >
           <img src={infinityLogo} alt={""} />
         </CommonView>
-        <TokensProvider isGated>
-          <EnterButton />
-        </TokensProvider>
+        <EnterButton />
       </div>
       <div id="video" className="box center-aligned-column box-middle">
         <VideoPlayer

@@ -7,7 +7,7 @@ import useDDContract from "hooks/useDDContract";
 import { loadConfig, loadSystemStage } from "store/systemReducer";
 import { EVENTS } from "consts";
 import useOnConnect from "hooks/useOnConnect";
-import { readAndWatchAccountTokens } from "store/tokensReducer";
+import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { useNavigate } from "react-router-dom";
 
 const AppLoader = () => {
@@ -39,6 +39,7 @@ const AppLoader = () => {
 
   useOnConnect(
     () => {
+      dispatch(clearTokens());
       dispatch(
         readAndWatchAccountTokens(
           actionDispatch,

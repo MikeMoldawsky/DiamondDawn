@@ -9,6 +9,7 @@ import ActionView from "components/ActionView";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { setSelectedTokenId } from "store/uiReducer";
+import useNavigateToDefault from "hooks/useNavigateToDefault";
 
 function RebirthPage() {
   const { tokenId } = useParams();
@@ -17,6 +18,7 @@ function RebirthPage() {
   const tokens = useSelector(tokensSelector);
   const [isReady, setIsReady] = useState(false);
   const dispatch = useDispatch();
+  const navigateToDefault = useNavigateToDefault();
 
   useEffect(() => {
     const fetch = async () => {
@@ -36,14 +38,14 @@ function RebirthPage() {
         if (token.stage === SYSTEM_STAGE.SHIP) {
           navigate(`/nft/${tokenId}`);
         } else if (!token || !token.isBurned) {
-          navigate("/");
+          navigateToDefault();
         } else {
           dispatch(setSelectedTokenId(intTokenId));
           setIsReady(true);
         }
       }
     } catch (e) {
-      navigate("/");
+      navigateToDefault();
     }
   }, []);
 

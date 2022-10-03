@@ -108,6 +108,8 @@ export const setTokenUri = (tokenId, tokenUri) => ({
   payload: { tokenId, tokenUri },
 });
 
+export const clearTokens = () => ({ type: "TOKENS.CLEAR" });
+
 // selectors
 export const tokensSelector = (state) => state.tokens;
 
@@ -158,6 +160,7 @@ export const tokensReducer = makeReducer(
       const { tokenId, tokenUri } = action.payload;
       return reduceToken(state, tokenId, tokenUri);
     },
+    "TOKENS.CLEAR": () => INITIAL_STATE,
   },
   INITIAL_STATE
 );
