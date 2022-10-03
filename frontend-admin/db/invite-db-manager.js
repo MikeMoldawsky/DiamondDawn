@@ -46,9 +46,9 @@ async function getInviteObjectById(inviteId) {
   }
 }
 
-async function getInvites() {
+async function getInvites(approved) {
   try {
-    const invites = await InviteModel.find();
+    const invites = await InviteModel.find({ approved });
     return await Promise.all(_.map(invites, getInviteObjectById))
   } catch (e) {
     console.log(`Failed to get all invites`, e);

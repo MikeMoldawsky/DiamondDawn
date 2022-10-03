@@ -55,9 +55,9 @@ export const updateStageTimeApi = async (timestamp) => {
 };
 
 // INVITE
-export const getInvitesApi = async () => {
+export const getInvitesApi = async (approved) => {
   try {
-    const res = await axios.get(`/api/get_invites`);
+    const res = await axios.post(`/api/get_invites`, { approved });
     return res.data;
   } catch (e) {
     return [];
