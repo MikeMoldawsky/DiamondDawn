@@ -7,7 +7,7 @@ const InviteSchema = new mongoose.Schema({
   used: { type: Boolean },
   location: { type: String },
   twitter: { type: String },
-  ethAddress: { type: String },
+  address: { type: String },
   note: { type: String },
 });
 

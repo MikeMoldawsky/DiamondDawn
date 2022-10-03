@@ -50,8 +50,8 @@ export const openInviteApi = async (inviteId) => {
   }
 };
 
-export const signInviteApi = async (inviteId, ethAddress) => {
-  const res = await axios.post(`/api/sign_invite`, { inviteId, ethAddress });
+export const signInviteApi = async (inviteId, address) => {
+  const res = await axios.post(`/api/sign_invite`, { inviteId, address });
   return res.data;
 };
 

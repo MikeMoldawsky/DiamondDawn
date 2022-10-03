@@ -37,7 +37,7 @@ const INVITATION_COLUMNS = [
   { field: "location", headerName: "Location", width: 150 },
   { field: "twitter", headerName: "Twitter", width: 150, editable: true },
   {
-    field: "ethAddress",
+    field: "address",
     headerName: "ETH Address",
     width: 400,
     editable: true,

@@ -2,14 +2,25 @@ const InviteModel = require("./models/InviteModel");
 const SignatureModel = require("./models/SignatureModel");
 const add = require("date-fns/add");
 const ethers = require("ethers");
+const isEmpty = require('lodash/isEmpty')
 
 const signer = new ethers.Wallet(process.env.SIGNER_PRIVATE_KEY);
+
+async function getSignatureByAddress(address) {
+  return await SignatureModel.findOne({ address });
+}
 
 async function getInviteObjectById(inviteId) {
   try {
     const invite = (await InviteModel.findById(inviteId)).toObject();
+    if (!invite) return invite
+
+    if (invite.address) {
+      const signature = await getSignatureByAddress(invite.address);
+      invite.signed = !isEmpty(signature)
+    }
+
     if (
-      invite &&
       invite.opened &&
       process.env.REACT_APP_INVITE_TTL_SECONDS > 0
     ) {
@@ -33,19 +44,9 @@ async function openInvite(inviteId, country, state) {
   try {
     // check that the invite exist and not revoked or expired
     const invite = await getInviteObjectById(inviteId);
-    if (!invite) {
-      console.log("openInvite - invite not found", { inviteId });
+    if (!invite || invite.used || invite.revoked || !invite.approved) {
+      console.log("openInvite - invalid invite", invite);
       return null;
-    }
-
-    if (invite.used) {
-      console.log("openInvite - invite used", { invite });
-      return { invite };
-    }
-
-    if (invite.revoked) {
-      console.log("openInvite - invite revoked", { invite });
-      return { invite };
     }
 
     await InviteModel.findOneAndUpdate(
@@ -71,18 +72,18 @@ async function signInvite(inviteId, address) {
 
   // check that the invite exist and not revoked or expired
   const invite = await getInviteObjectById(inviteId);
-  if (!invite || invite.revoked || invite.used) {
+  if (!invite || invite.revoked || invite.used || !invite.approved) {
     throw new Error(
-      `signInvite failed - invite not found, revoked or used - "${inviteId}"`
+      `signInvite failed - invalid invite - "${inviteId}"`
     );
   }
 
-  let signature = await SignatureModel.findOne({ address });
+  let signature = await getSignatureByAddress(address);
   let sig;
   if (signature) {
     sig = signature.sig;
   } else {
-    // Convert provided `ethAddress` to correct checksum address format.
+    // Convert provided `address` to correct checksum address format.
     // This step is critical as signing an incorrectly formatted wallet address
     // can result in invalid signatures when it comes to minting.
     let addr = ethers.utils.getAddress(address);
@@ -96,10 +97,10 @@ async function signInvite(inviteId, address) {
     // Save Signature to DB
     await SignatureModel.create({ address, sig });
 
-    // Save ethAddress and n invite
+    // Save address and n invite
     await InviteModel.findOneAndUpdate(
       { _id: inviteId },
-      { ethAddress: address }
+      { address: address }
     );
   }
 
