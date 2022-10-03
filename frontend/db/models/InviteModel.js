@@ -5,7 +5,7 @@ const InviteSchema = new mongoose.Schema({
   identifier: { type: String }, // twitter/email
   address: { type: String },
   created: { type: Date, required: true, default: Date.now },
-  approved: { type: Date },
+  approved: { type: Boolean },
   opened: { type: Date },
   used: { type: Boolean },
   location: { type: String },

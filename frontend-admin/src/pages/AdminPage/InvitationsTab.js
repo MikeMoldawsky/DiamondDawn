@@ -21,24 +21,25 @@ const INVITATION_COLUMNS = [
     type: "dateTime",
     width: 180,
   },
+  { field: "approved", headerName: "Approved", type: "boolean", width: 100 },
   { field: "opened", headerName: "Opened At", type: "dateTime", width: 180 },
-  {
-    field: "revoked",
-    headerName: "Expired",
-    type: "boolean",
-    width: 100,
-  },
+  { field: "signed", headerName: "Signed", type: "boolean", width: 80 },
   {
     field: "used",
     headerName: "Used",
     type: "boolean",
-    width: 100,
+    width: 80,
   },
-  { field: "location", headerName: "Location", width: 150 },
-  { field: "twitter", headerName: "Twitter", width: 150, editable: true },
+  {
+    field: "revoked",
+    headerName: "Expired",
+    type: "boolean",
+    width: 80,
+  },
+  { field: "identifier", headerName: "Twitter/Email", width: 200, editable: true },
   {
     field: "address",
-    headerName: "ETH Address",
+    headerName: "Address",
     width: 400,
     editable: true,
     preProcessEditCellProps: (params) => {
@@ -48,6 +49,7 @@ const INVITATION_COLUMNS = [
       return { ...params.props, error: !isValid };
     },
   },
+  { field: "location", headerName: "Location", width: 150 },
   { field: "note", headerName: "Notes", width: 300, flex: 1, editable: true },
 ];
 

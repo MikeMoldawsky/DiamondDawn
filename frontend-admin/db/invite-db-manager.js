@@ -1,38 +1,55 @@
 const InviteModel = require("./models/InviteModel");
+const SignatureModel = require("./models/SignatureModel");
 const _ = require("lodash");
 const add = require("date-fns/add");
+const isEmpty = require('lodash/isEmpty')
 
 async function createInvite() {
   try {
-    const invite = new InviteModel({});
+    const invite = new InviteModel({ approved: true });
     return await invite.save();
   } catch (e) {
     console.log(`Failed to create invite`, e);
   }
 }
 
-function getInviteObject(inviteModel) {
-  try {
-    const invite = inviteModel.toObject();
-    const ttl = parseInt(process.env.REACT_APP_INVITE_TTL_SECONDS);
-    if (invite && invite.opened && ttl > 0) {
-      invite.expires = add(invite.opened, { seconds: ttl });
+async function getSignatureByAddress(address) {
+  return await SignatureModel.findOne({ address });
+}
 
-      if (invite.expires < new Date()) {
+async function getInviteObjectById(inviteId) {
+  try {
+    const invite = (await InviteModel.findById(inviteId)).toObject();
+    if (!invite) return invite
+
+    if (invite.address) {
+      const signature = await getSignatureByAddress(invite.address);
+      invite.signed = !isEmpty(signature)
+    }
+
+    if (
+      invite.opened &&
+      process.env.REACT_APP_INVITE_TTL_SECONDS > 0
+    ) {
+      invite.expires = add(invite.opened, {
+        seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
+      });
+
+      if (invite.used || invite.expires < new Date()) {
         invite.revoked = true;
       }
     }
 
     return invite;
   } catch (e) {
-    console.log(`Failed to get invite ${getInviteObject._id}`, e);
+    console.log(`Failed to get invite ${inviteId}`, e);
   }
 }
 
 async function getInvites() {
   try {
     const invites = await InviteModel.find();
-    return _.map(invites, getInviteObject);
+    return await Promise.all(_.map(invites, getInviteObjectById))
   } catch (e) {
     console.log(`Failed to get all invites`, e);
   }

@@ -28,9 +28,8 @@ async function getInviteObjectById(inviteId) {
         seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
       });
 
-      if (invite.expires < new Date()) {
+      if (invite.used || invite.expires < new Date()) {
         invite.revoked = true;
-        console.log("Invite expired", { invite });
       }
     }
 
