@@ -26,6 +26,7 @@ import SideMenu from "components/SideMenu";
 import CollectorPage from "pages/CollectorPage";
 import useActionDispatch from "hooks/useActionDispatch";
 import { loadContractInfo } from "store/systemReducer";
+import AccountProvider from "containers/AccountProvider";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
@@ -51,9 +52,9 @@ const MainLayout = () => {
               <Route
                 path="invite/:inviteId"
                 element={
-                  <TokensProvider withLoader>
+                  <AccountProvider withLoader>
                     <InvitePage />
-                  </TokensProvider>
+                  </AccountProvider>
                 }
               />
               <Route
