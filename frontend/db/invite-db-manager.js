@@ -68,7 +68,7 @@ async function signInvite(inviteId, address) {
       `signInvite failed - invalid Ethereum address - "${address}"`
     );
   }
-  
+
   // check that the invite exist and not revoked or expired
   const invite = await getInviteObjectById(inviteId);
   if (!invite || invite.revoked || invite.used) {
