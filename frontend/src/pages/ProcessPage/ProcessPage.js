@@ -10,12 +10,12 @@ import Polish from "./Polish";
 import Ship from "./Burn";
 import { SYSTEM_STAGE } from "consts";
 import "./ProcessPage.scss";
-import { useNavigate } from "react-router-dom";
+import useNavigateToDefault from "hooks/useNavigateToDefault";
 
 const ProcessPage = () => {
   const { systemStage } = useSelector(systemSelector);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigateToDefault = useNavigateToDefault();
 
   useAutoSelectToken(systemStage);
 
@@ -38,7 +38,7 @@ const ProcessPage = () => {
       case SYSTEM_STAGE.SHIP:
         return <Ship />;
       default:
-        navigate("/");
+        navigateToDefault();
         return null;
     }
   }, [systemStage]);
