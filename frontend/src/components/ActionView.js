@@ -12,8 +12,7 @@ import _ from "lodash";
 import { setShouldIgnoreTokenTransferWatch, uiSelector } from "store/uiReducer";
 import { getTokenUriApi } from "api/contractApi";
 import { getStageName, isTokenActionable } from "utils";
-import Countdown from "components/Countdown";
-import NoDiamondView from "components/NoDiamondView";
+import useNavigateToDefault from "hooks/useNavigateToDefault";
 
 const ActionView = ({
   children,
@@ -39,6 +38,7 @@ const ActionView = ({
   const token = useSelector(tokenByIdSelector(selectedTokenId));
   const endTime = config.stageTime;
   const withWatch = _.isFunction(watch);
+  const navigateToDefault = useNavigateToDefault();
 
   useEffect(() => {
     dispatch(loadConfig());
@@ -112,27 +112,11 @@ const ActionView = ({
       return <Loading />;
     }
 
-    if (!isActive && !isRebirth)
-      return (
-        <>
-          <div className="leading-text">{stageNameUpper} STAGE IS COMPLETE</div>
-          <Countdown
-            date={endTime}
-            text={[
-              "You have",
-              `until ${_.lowerCase(getStageName(systemStage + 1))}`,
-            ]}
-          />
-        </>
-      );
+    // Make sure stage is active OR rebirth (which doesn't require active stage)
+    if (!isActive && !isRebirth) return navigateToDefault();
 
-    if (requireActionable && !isTokenActionable(token, systemStage, isActive))
-      return (
-        <NoDiamondView
-          stageName={getStageName(systemStage)}
-          stageTime={endTime}
-        />
-      );
+    // Handle requireActionable
+    if (requireActionable && !isTokenActionable(token, systemStage, isActive)) return navigateToDefault();
 
     return React.cloneElement(children, { execute, endTime });
   };
