@@ -1,7 +1,7 @@
 const ConfigModel = require("./models/ConfigModel");
 
 async function updateStageTime(timestamp) {
-  const dateTime = new Date(timestamp);
+  const dateTime = timestamp ? new Date(timestamp) : null;
   try {
     let config = await ConfigModel.findOne({});
     if (config) {

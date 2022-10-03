@@ -18,7 +18,7 @@ import {
 import useDDContract from "hooks/useDDContract";
 import { eruptionApi } from "api/contractApi";
 import { logEruptionTxApi, clearEruptionTxsApi } from "api/serverApi";
-import { getEnumKeyByValue, unixTimestampToDateString } from "utils";
+import { getEnumKeyByValue, showError, unixTimestampToDateString } from "utils";
 import DIAMONDS_INFO from "assets/data/diamonds";
 import { useProvider } from "wagmi";
 import { useDispatch, useSelector } from "react-redux";
@@ -230,12 +230,10 @@ const DiamondsTab = () => {
   }, []);
 
   const populateDiamonds = async (diamonds) => {
-    try {
-      const txHash = await eruptionApi(ddMineContract, diamonds);
-      await logEruptionTxApi(txHash);
-      dispatch(loadDiamondCount(ddMineContract));
-      dispatch(loadConfig());
-    } catch (e) {}
+    const txHash = await eruptionApi(ddMineContract, diamonds);
+    await logEruptionTxApi(txHash);
+    dispatch(loadDiamondCount(ddMineContract));
+    dispatch(loadConfig());
   };
 
   const clearEruptionTxs = async () => {
@@ -248,8 +246,12 @@ const DiamondsTab = () => {
     <div
       className="button link save-button"
       onClick={async () => {
-        await populateDiamonds(selectedRows);
-        clearSelection();
+        try {
+          await populateDiamonds(selectedRows);
+          clearSelection();
+        } catch (e) {
+          showError(e, "Eruption Error");
+        }
       }}
     >
       <FontAwesomeIcon icon={faUpload} /> Deploy
