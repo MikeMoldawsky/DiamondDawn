@@ -44,8 +44,7 @@ const StageTab = ({ stage }) => {
   const completeStage = async () => {
     await completeStageApi(contract, systemStage);
     dispatch(loadSystemStage(contract));
-    const timestamp = add(new Date(), { days: 3 });
-    dispatch(updateStageTime(timestamp));
+    dispatch(updateStageTime(null));
   };
 
   const isVideoArtSet = _.every(videoArt, (videoUrl) => !_.isEmpty(videoUrl));
