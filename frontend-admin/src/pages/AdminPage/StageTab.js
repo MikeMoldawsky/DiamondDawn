@@ -10,24 +10,15 @@ import {
   systemSelector,
   updateStageTime,
 } from "store/systemReducer";
-import {
-  setSystemStageApi,
-  completeStageApi,
-} from "api/contractApi";
+import { setSystemStageApi, completeStageApi } from "api/contractApi";
 import classNames from "classnames";
 import { SYSTEM_STAGE } from "consts";
 import add from "date-fns/add";
 import Countdown from "react-countdown";
 
 const StageTab = ({ stage }) => {
-  const {
-    systemStage,
-    isActive,
-    maxDiamonds,
-    diamondCount,
-    videoArt,
-    config,
-  } = useSelector(systemSelector);
+  const { systemStage, isActive, maxDiamonds, diamondCount, videoArt, config } =
+    useSelector(systemSelector);
   const systemStageName = getSystemStageName(stage);
 
   const contract = useDDContract();

@@ -18,7 +18,7 @@ import {
 import useDDContract from "hooks/useDDContract";
 import { eruptionApi } from "api/contractApi";
 import { logEruptionTxApi, clearEruptionTxsApi } from "api/serverApi";
-import {getEnumKeyByValue, showError, unixTimestampToDateString} from "utils";
+import { getEnumKeyByValue, showError, unixTimestampToDateString } from "utils";
 import DIAMONDS_INFO from "assets/data/diamonds";
 import { useProvider } from "wagmi";
 import { useDispatch, useSelector } from "react-redux";
@@ -249,9 +249,8 @@ const DiamondsTab = () => {
         try {
           await populateDiamonds(selectedRows);
           clearSelection();
-        }
-        catch (e) {
-          showError(e, "Eruption Error")
+        } catch (e) {
+          showError(e, "Eruption Error");
         }
       }}
     >

@@ -13,7 +13,7 @@ import {
   updateStageTime,
 } from "store/systemReducer";
 import classNames from "classnames";
-import {pauseApi, unpauseApi} from "api/contractApi";
+import { pauseApi, unpauseApi } from "api/contractApi";
 import useDDContract from "hooks/useDDContract";
 
 const ConfigTab = () => {
@@ -68,9 +68,7 @@ const ConfigTab = () => {
         </div>
       </div>
       <div className="separator" />
-      <div className="title">
-        IS PAUSED
-      </div>
+      <div className="title">IS PAUSED</div>
       <div className="center-aligned-row input-row">
         <div className="stage">{paused.toString()}</div>
         <ActionButton actionKey="togglePause" onClick={togglePause}>
