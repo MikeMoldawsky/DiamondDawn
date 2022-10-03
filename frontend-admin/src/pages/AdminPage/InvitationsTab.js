@@ -21,7 +21,7 @@ const INVITATION_COLUMNS = [
     width: 180,
     showIfRequest: true,
   },
-  { field: "approved", headerName: "Approved", type: "boolean", width: 100, editable: true },
+  { field: "approved", headerName: "Approved", type: "boolean", width: 100, editable: true, showIfRequest: true },
   { field: "opened", headerName: "Opened At", type: "dateTime", width: 180 },
   { field: "signed", headerName: "Signed", type: "boolean", width: 80 },
   {
@@ -82,10 +82,10 @@ const ClipboardButton = ({ inviteId }) => {
   );
 };
 
-const ApproveButton = ({ inviteId, fetchInvites }) => {
+const ApproveButton = ({ inviteId, onApprove }) => {
   const approve = async () => {
     await updateInviteApi({ _id: inviteId, approved: true })
-    fetchInvites();
+    onApprove();
   }
 
   return (
@@ -120,7 +120,13 @@ const InvitationsTab = ({approved}) => {
 
   const columns = approved ? INVITATION_COLUMNS : _.filter(INVITATION_COLUMNS, ({ showIfRequest }) => showIfRequest)
 
-  const renderActions = ({ id }) => approved ? [<ClipboardButton inviteId={id} />] : [<ApproveButton inviteId={id} fetchInvites={fetchInvites} />]
+  const setApproved = inviteId => {
+    setInvitations(_.map(invitations, invite => {
+      return invite._id === inviteId ? {...invite, approved: true} : invite
+    }))
+  }
+
+  const renderActions = ({ id }) => approved ? [<ClipboardButton inviteId={id} />] : [<ApproveButton inviteId={id} onApprove={() => setApproved(id)} />]
 
   return (
     <div className={classNames("tab-content invitations")}>
