@@ -39,7 +39,7 @@ const AppLoader = () => {
 
   useOnConnect(
     () => {
-      dispatch(clearTokens())
+      dispatch(clearTokens());
       dispatch(
         readAndWatchAccountTokens(
           actionDispatch,

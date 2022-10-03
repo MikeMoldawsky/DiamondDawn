@@ -116,7 +116,8 @@ const ActionView = ({
     if (!isActive && !isRebirth) return navigateToDefault();
 
     // Handle requireActionable
-    if (requireActionable && !isTokenActionable(token, systemStage, isActive)) return navigateToDefault();
+    if (requireActionable && !isTokenActionable(token, systemStage, isActive))
+      return navigateToDefault();
 
     return React.cloneElement(children, { execute, endTime });
   };

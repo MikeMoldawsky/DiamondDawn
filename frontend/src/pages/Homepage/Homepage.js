@@ -14,17 +14,20 @@ import { systemSelector } from "store/systemReducer";
 import teaserVideo from "assets/video/teaser.mp4";
 import { SYSTEM_STAGE, SYSTEM_STAGE_NAME } from "consts";
 import { setSelectedTokenId } from "store/uiReducer";
-import {tokensSelector} from "store/tokensReducer";
-import size from 'lodash/size'
+import { tokensSelector } from "store/tokensReducer";
+import size from "lodash/size";
 
 const EnterButton = () => {
   const { systemStage, isActive } = useSelector(systemSelector);
-  const tokens = useSelector(tokensSelector)
+  const tokens = useSelector(tokensSelector);
   const visible = systemStage >= SYSTEM_STAGE.MINE && isActive;
-  const disabled = size(tokens) === 0
+  const disabled = size(tokens) === 0;
   return visible ? (
     <NavLink to={`/process`}>
-      <div className={classNames("button text-upper", { disabled })} style={{ marginTop: 40 }}>
+      <div
+        className={classNames("button text-upper", { disabled })}
+        style={{ marginTop: 40 }}
+      >
         ENTER {SYSTEM_STAGE_NAME[systemStage]}
       </div>
     </NavLink>

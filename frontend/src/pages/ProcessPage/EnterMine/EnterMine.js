@@ -53,14 +53,13 @@ const EnterMine = ({ invite }) => {
   const onInviteExpired = () => navigateToDefault();
 
   const executeEnterMine = async () => {
-    let signature
+    let signature;
     try {
       const response = await signInviteApi(invite._id, account.address);
-      signature = response.signature
-    }
-    catch (e) {
-      navigateToDefault()
-      throw new Error("Invite expired or already used")
+      signature = response.signature;
+    } catch (e) {
+      navigateToDefault();
+      throw new Error("Invite expired or already used");
     }
     const tx = await enterApi(contract, minePrice, signature);
     await tx.wait();
