@@ -242,7 +242,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
 
         Certificate memory certificate = metadata.certificate;
         if (uint(Stage.CUT) <= uint(state_)) {
-            attributes[5] = toStrAttribute("Color", toColorStr(certificate.color));
+            attributes[5] = toStrAttribute("Color", toColorStr(certificate.color, certificate.toColor));
             attributes[6] = toStrAttribute("Cut", toGradeStr(certificate.cut));
             attributes[7] = toStrAttribute("Fluorescence", toFluorescenceStr(certificate.fluorescence));
             attributes[8] = toStrAttribute(
