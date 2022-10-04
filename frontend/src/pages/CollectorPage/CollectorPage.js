@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import map from "lodash/map";
+import size from "lodash/size";
 import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
@@ -9,6 +10,7 @@ import { getTokenNextStageName, isTokenActionable } from "utils";
 import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
+import RequestForm from "components/RequestForm";
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
@@ -46,7 +48,11 @@ function CollectorPage() {
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
         <div className="leading-text">Collector's Room</div>
-        <div className="cards">{map(tokens, renderTokenCard)}</div>
+        {size(tokens) > 0 ? (
+          <div className="cards">{map(tokens, renderTokenCard)}</div>
+        ) : (
+          <RequestForm />
+        )}
       </div>
     </div>
   );

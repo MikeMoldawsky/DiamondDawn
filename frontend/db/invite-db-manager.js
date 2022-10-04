@@ -128,9 +128,19 @@ async function confirmInviteUsed(inviteId) {
   }
 }
 
+async function createInviteRequest(identifier, address, country, state) {
+  try {
+    const invite = new InviteModel({ identifier, address, location: `${state}, ${country}` });
+    return await invite.save();
+  } catch (e) {
+    console.log(`Failed to create invite request`, { identifier, address, e });
+  }
+}
+
 module.exports = {
   getInviteObjectById,
   openInvite,
   signInvite,
   confirmInviteUsed,
+  createInviteRequest,
 };

@@ -63,3 +63,18 @@ export const confirmInviteUsedApi = async (inviteId) => {
     return null;
   }
 };
+
+export const createInviteRequestApi = async (identifier, address) => {
+  try {
+    const { country, state } = getLocation();
+    const { data: invite } = await axios.post(`/api/request_invite`, {
+      identifier,
+      address,
+      country,
+      state,
+    });
+    return invite;
+  } catch (e) {
+    return null;
+  }
+}
