@@ -141,7 +141,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         onlyRole(DEFAULT_ADMIN_ROLE)
         mineOverflow(diamonds.length)
     {
-        for (uint i = 0; i < diamonds.length; i = uncheckedInc(i)) {
+        for (uint i = 0; i < diamonds.length; i++) {
             _mine.push(diamonds[i]);
         }
         diamondCount += uint16(diamonds.length);
