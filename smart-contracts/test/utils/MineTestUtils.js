@@ -9,7 +9,7 @@ const {
   enumToShape,
   STAGE,
 } = require("./EnumConverterUtils");
-const { DIAMOND } = require("./Diamonds");
+const { DIAMOND, DIAMOND_TO_COLOR } = require("./Diamonds");
 
 // constants from contract
 const MIN_ROUGH_EXTRA_POINTS = 37;
@@ -55,10 +55,23 @@ async function setAllManifests(mineContract) {
 
 async function populateDiamonds(mineContract, numDiamonds) {
   if (numDiamonds === 333) {
-    await mineContract.eruption(_.range(300).map((_) => DIAMOND));
-    await mineContract.eruption(_.range(33).map((_) => DIAMOND));
+    await mineContract.eruption(
+      _.range(150).flatMap((_) => [DIAMOND, DIAMOND_TO_COLOR])
+    );
+    await mineContract.eruption(
+      _.range(16).flatMap((_) => [DIAMOND, DIAMOND_TO_COLOR])
+    );
+    await mineContract.eruption([DIAMOND]);
   } else {
-    await mineContract.eruption(_.range(numDiamonds).map((_) => DIAMOND));
+    const numPairs = numDiamonds / 2;
+    if (numPairs > 0) {
+      await mineContract.eruption(
+        _.range(numPairs).flatMap((_) => [DIAMOND, DIAMOND_TO_COLOR])
+      );
+    }
+    if (numDiamonds % 2 === 1) {
+      await mineContract.eruption([DIAMOND]);
+    }
   }
 }
 
@@ -447,7 +460,7 @@ function _getCutMetadataNoCaratShapeAndURIs(
         trait_type: "Mined",
         value: numMined,
       },
-      { trait_type: "Color", value: enumToColor(diamond.color) },
+      { trait_type: "Color", value: _expectedColor(diamond) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {
         trait_type: "Fluorescence",
@@ -497,7 +510,7 @@ function _getPolishedMetadataNoCaratShapeAndURIs(
         trait_type: "Mined",
         value: numMined,
       },
-      { trait_type: "Color", value: enumToColor(diamond.color) },
+      { trait_type: "Color", value: _expectedColor(diamond) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {
         trait_type: "Fluorescence",
@@ -556,7 +569,7 @@ function _getRebirthMetadataNoCaratShapeAndURIs(
         trait_type: "Mined",
         value: numMined,
       },
-      { trait_type: "Color", value: enumToColor(diamond.color) },
+      { trait_type: "Color", value: _expectedColor(diamond) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {
         trait_type: "Fluorescence",
@@ -589,6 +602,12 @@ function _getRebirthMetadataNoCaratShapeAndURIs(
       },
     ],
   };
+}
+
+function _expectedColor(diamond) {
+  return diamond.toColor === 0
+    ? enumToColor(diamond.color)
+    : `${enumToColor(diamond.color)}-${enumToColor(diamond.toColor)}`;
 }
 
 module.exports = {

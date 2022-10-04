@@ -5,22 +5,11 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "../objects/Diamond.sol";
 import "../objects/Mine.sol";
 
-function toColorStr(Color color) pure returns (string memory) {
-    if (color == Color.M) return "M";
-    if (color == Color.N) return "N";
-    if (color == Color.O) return "O";
-    if (color == Color.P) return "P";
-    if (color == Color.Q) return "Q";
-    if (color == Color.R) return "R";
-    if (color == Color.S) return "S";
-    if (color == Color.T) return "T";
-    if (color == Color.U) return "U";
-    if (color == Color.V) return "V";
-    if (color == Color.W) return "W";
-    if (color == Color.X) return "X";
-    if (color == Color.Y) return "Y";
-    if (color == Color.Z) return "Z";
-    revert();
+function toColorStr(Color color, Color toColor) pure returns (string memory) {
+    return
+        toColor == Color.NO_COLOR
+            ? _toColorStr(color)
+            : string.concat(_toColorStr(color), "-", _toColorStr(toColor));
 }
 
 function toGradeStr(Grade grade) pure returns (string memory) {
@@ -94,5 +83,23 @@ function toTypeStr(Stage state_) pure returns (string memory) {
     if (state_ == Stage.CUT) return "Cut";
     if (state_ == Stage.POLISH) return "Polished";
     if (state_ == Stage.SHIP) return "Reborn";
+    revert();
+}
+
+function _toColorStr(Color color) pure returns (string memory) {
+    if (color == Color.M) return "M";
+    if (color == Color.N) return "N";
+    if (color == Color.O) return "O";
+    if (color == Color.P) return "P";
+    if (color == Color.Q) return "Q";
+    if (color == Color.R) return "R";
+    if (color == Color.S) return "S";
+    if (color == Color.T) return "T";
+    if (color == Color.U) return "U";
+    if (color == Color.V) return "V";
+    if (color == Color.W) return "W";
+    if (color == Color.X) return "X";
+    if (color == Color.Y) return "Y";
+    if (color == Color.Z) return "Z";
     revert();
 }

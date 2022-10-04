@@ -51,14 +51,15 @@ enum Color {
 }
 
 struct Certificate {
-    uint32 date; // TODO: check that all dates fits
-    uint32 number; // TODO: check that all certificates fits
+    uint32 number; // TODO: check that all certificates are smaller than 4,294,967,296
+    uint32 date;
     uint16 length;
     uint16 width;
     uint16 depth;
     uint8 points;
     Clarity clarity;
     Color color;
+    Color toColor;
     Grade cut;
     Grade symmetry;
     Grade polish;
