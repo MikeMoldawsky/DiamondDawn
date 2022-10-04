@@ -16,6 +16,9 @@ import "./utils/StringUtils.sol";
  * @title DiamondDawnMine
  * @author Mike Moldawsky (Tweezers)
  */
+// TODO: Warning: Contract code size is 27937 bytes and exceeds 24576 bytes (a limit introduced in Spurious Dragon).
+// TODO: This contract may not be deployable on mainnet. Consider enabling the optimizer (with a low "runs" value!),
+// TODO: turning off revert strings, or using libraries.
 contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondDawnMineAdmin {
     bool public isLocked; // mine is locked forever.
     bool public isInitialized;
@@ -204,11 +207,9 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         Metadata memory metadata,
         string memory noExtensionURI
     ) private view returns (string memory) {
-        // TODO: add description and created by when ready.
+        // TODO: add description and created by when ready or remove them.
         NFTMetadata memory nftMetadata = NFTMetadata({
             name: getName(metadata, tokenId),
-            description: "description",
-            createdBy: "dd",
             image: string.concat(noExtensionURI, ".jpeg"),
             animationUrl: string.concat(noExtensionURI, ".mp4"),
             attributes: _getJsonAttributes(metadata)
@@ -305,6 +306,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         revert("Points");
     }
 
+    // TODO: might need to use toShapeStr instead in order to reduce the contract size.
     function _getResourceName(Metadata memory metadata) private pure returns (string memory) {
         if (metadata.state_ == Stage.INVITE || metadata.state_ == Stage.SHIP) return "resource";
         else if (metadata.state_ == Stage.MINE) {

@@ -7,8 +7,6 @@ pragma solidity ^0.8.15;
  */
 struct NFTMetadata {
     string name;
-    string description;
-    string createdBy;
     string image;
     string animationUrl;
     Attribute[] attributes;
@@ -61,8 +59,6 @@ function serialize(NFTMetadata memory metadata) pure returns (string memory) {
     bytes memory bytes_;
     bytes_ = abi.encodePacked(bytes_, _openObject());
     bytes_ = abi.encodePacked(bytes_, _pushAttr("name", metadata.name, true, false));
-    bytes_ = abi.encodePacked(bytes_, _pushAttr("description", metadata.description, true, false));
-    bytes_ = abi.encodePacked(bytes_, _pushAttr("created_by", metadata.createdBy, true, false));
     bytes_ = abi.encodePacked(bytes_, _pushAttr("image", metadata.image, true, false));
     bytes_ = abi.encodePacked(bytes_, _pushAttr("animation_url", metadata.animationUrl, true, false));
     bytes_ = abi.encodePacked(
