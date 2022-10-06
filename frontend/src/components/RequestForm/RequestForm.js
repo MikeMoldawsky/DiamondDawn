@@ -7,7 +7,7 @@ import './RequestForm.scss'
 import { utils as ethersUtils } from 'ethers'
 import {createInviteRequestApi} from "api/serverApi";
 
-const RequestForm = () => {
+const RequestForm = ({ optionalIdentity }) => {
   const {
     register,
     handleSubmit,
@@ -47,6 +47,7 @@ const RequestForm = () => {
       </div>
       <form>
         {renderInput("identifier", "Twitter/Email", {
+          required: !optionalIdentity,
           pattern: /^[a-zA-Z0-9_]{4,15}$|^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
         })}
         {renderInput("address", "ETH Address", {

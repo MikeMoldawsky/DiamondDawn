@@ -11,6 +11,7 @@ import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
 import RequestForm from "components/RequestForm";
+import InviteStatus from 'components/InviteStatus'
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
@@ -53,6 +54,7 @@ function CollectorPage() {
         ) : (
           <RequestForm />
         )}
+        <InviteStatus />
       </div>
     </div>
   );

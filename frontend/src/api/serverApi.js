@@ -78,3 +78,12 @@ export const createInviteRequestApi = async (identifier, address) => {
     return null;
   }
 }
+
+export const getInviteByAddressApi = async (address) => {
+  try {
+    const { data: invite } = await axios.post(`/api/get_invite_by_address`, { address });
+    return invite;
+  } catch (e) {
+    return [];
+  }
+}

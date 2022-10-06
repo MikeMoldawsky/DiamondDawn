@@ -137,10 +137,20 @@ async function createInviteRequest(identifier, address, country, state) {
   }
 }
 
+async function getInviteByAddress(address) {
+  try {
+    const invites = await InviteModel.find({ address });
+    return await Promise.all(_.map(invites, getInviteObjectById))
+  } catch (e) {
+    console.log(`Failed to get all invites by address`, {address, e});
+  }
+}
+
 module.exports = {
   getInviteObjectById,
   openInvite,
   signInvite,
   confirmInviteUsed,
   createInviteRequest,
+  getInviteByAddress,
 };
