@@ -12,7 +12,7 @@ import { systemSelector } from "store/systemReducer";
 import { SYSTEM_STAGE } from "consts";
 import useActionDispatch from "hooks/useActionDispatch";
 import { isActionSuccessSelector } from "store/actionStatusReducer";
-import {useAccount} from "wagmi";
+import { useAccount } from "wagmi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 
 const InvalidInvitation = ({ title }) => (
@@ -65,7 +65,7 @@ const InvitePage = () => {
   const { systemStage, isActive } = useSelector(systemSelector);
   const isGetInviteSuccess = useSelector(isActionSuccessSelector("get-invite"));
   const actionDispatch = useActionDispatch();
-  const account = useAccount()
+  const account = useAccount();
   const navigateToDefault = useNavigateToDefault();
 
   useEffect(() => {
@@ -81,18 +81,18 @@ const InvitePage = () => {
   };
 
   const renderInviteContent = () => {
-    if (!isGetInviteSuccess) return null
+    if (!isGetInviteSuccess) return null;
 
     if (systemStage !== SYSTEM_STAGE.INVITE || !isActive)
       return navigateToDefault();
     if (!invite) return <InvalidInvitation title="Invitation Not Found" />;
-    if (invite.address && invite.address !== account?.address) return <InvalidInvitation title="Address Mismatch" />
+    if (invite.address && invite.address !== account?.address)
+      return <InvalidInvitation title="Address Mismatch" />;
     if (!invite.approved)
       return <InvalidInvitation title="Invitation Not Approved" />;
     if (invite.used)
       return <InvalidInvitation title="You Already Used This Invitation" />;
-    if (invite.revoked)
-      return <InvalidInvitation title="Invitation Expired" />;
+    if (invite.revoked) return <InvalidInvitation title="Invitation Expired" />;
     if (!invite.opened) return <InviteIntro open={onOpenInviteClick} />;
     return <EnterMine invite={invite} />;
   };

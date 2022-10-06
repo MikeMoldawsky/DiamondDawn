@@ -1,5 +1,5 @@
-import {makeReducer, reduceSetFull} from "./reduxUtils";
-import {getInviteByAddressApi} from "api/serverApi";
+import { makeReducer, reduceSetFull } from "./reduxUtils";
+import { getInviteByAddressApi } from "api/serverApi";
 
 const INITIAL_STATE = null;
 
@@ -8,10 +8,10 @@ export const updateInvite = (invite) => ({
   payload: invite,
 });
 
-export const loadInviteByAddress = (address) => async dispatch => {
-  const invite = await getInviteByAddressApi(address)
-  dispatch(updateInvite(invite))
-}
+export const loadInviteByAddress = (address) => async (dispatch) => {
+  const invite = await getInviteByAddressApi(address);
+  dispatch(updateInvite(invite));
+};
 
 export const clearInvite = () => ({
   type: "INVITE.CLEAR",

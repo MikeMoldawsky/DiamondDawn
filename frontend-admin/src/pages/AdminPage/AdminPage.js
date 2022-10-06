@@ -20,7 +20,7 @@ import {
 import useDDContract from "hooks/useDDContract";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
-import {getInvitesApi} from "api/serverApi";
+import { getInvitesApi } from "api/serverApi";
 
 const TABS = [
   {

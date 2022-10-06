@@ -8,11 +8,12 @@ const AccountProvider = ({ children, withLoader }) => {
   const account = useAccount();
 
   const renderContent = () => {
-    if (isEmpty(account?.address)) return (
-      <div className="center-aligned-column loader-container">
-        <Wallet />
-      </div>
-    )
+    if (isEmpty(account?.address))
+      return (
+        <div className="center-aligned-column loader-container">
+          <Wallet />
+        </div>
+      );
     return children;
   };
 

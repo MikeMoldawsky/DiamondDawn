@@ -2,7 +2,7 @@ const InviteModel = require("./models/InviteModel");
 const SignatureModel = require("./models/SignatureModel");
 const add = require("date-fns/add");
 const ethers = require("ethers");
-const isEmpty = require('lodash/isEmpty')
+const isEmpty = require("lodash/isEmpty");
 
 const signer = new ethers.Wallet(process.env.SIGNER_PRIVATE_KEY);
 
@@ -13,17 +13,14 @@ async function getSignatureByAddress(address) {
 async function getInviteObjectById(inviteId) {
   try {
     const invite = (await InviteModel.findById(inviteId)).toObject();
-    if (!invite) return invite
+    if (!invite) return invite;
 
     if (invite.address) {
       const signature = await getSignatureByAddress(invite.address);
-      invite.signed = !isEmpty(signature)
+      invite.signed = !isEmpty(signature);
     }
 
-    if (
-      invite.opened &&
-      process.env.REACT_APP_INVITE_TTL_SECONDS > 0
-    ) {
+    if (invite.opened && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {
       invite.expires = add(invite.opened, {
         seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
       });
@@ -72,9 +69,7 @@ async function signInvite(inviteId, address) {
   // check that the invite exist and not revoked or expired
   const invite = await getInviteObjectById(inviteId);
   if (!invite || invite.revoked || invite.used || !invite.approved) {
-    throw new Error(
-      `signInvite failed - invalid invite - "${inviteId}"`
-    );
+    throw new Error(`signInvite failed - invalid invite - "${inviteId}"`);
   }
 
   let signature = await getSignatureByAddress(address);
@@ -97,10 +92,7 @@ async function signInvite(inviteId, address) {
     await SignatureModel.create({ address, sig });
 
     // Save address and n invite
-    await InviteModel.findOneAndUpdate(
-      { _id: inviteId },
-      { address: address }
-    );
+    await InviteModel.findOneAndUpdate({ _id: inviteId }, { address: address });
   }
 
   return {
@@ -129,17 +121,21 @@ async function confirmInviteUsed(inviteId) {
 }
 
 async function createInviteRequest(address, identifier, country, state) {
-  let invite = await InviteModel.findOne({ address })
+  let invite = await InviteModel.findOne({ address });
   if (invite) {
-    throw new Error("Address already invited")
+    throw new Error("Address already invited");
   }
-  invite = new InviteModel({ identifier, address, location: `${state}, ${country}` });
+  invite = new InviteModel({
+    identifier,
+    address,
+    location: `${state}, ${country}`,
+  });
   return invite.save();
 }
 
 async function getInviteByAddress(address) {
   const invite = await InviteModel.findOne({ address });
-  return invite ? getInviteObjectById(invite) : null
+  return invite ? getInviteObjectById(invite) : null;
 }
 
 module.exports = {

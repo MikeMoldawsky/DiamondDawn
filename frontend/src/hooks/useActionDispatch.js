@@ -23,7 +23,7 @@ const useActionDispatch = () => {
           type: "ACTION_STATUS.SUCCESS",
           payload: { actionKey },
         });
-      }, 0)
+      }, 0);
     } catch (e) {
       console.error("useActionDispatch Failed", { e });
       dispatch({
