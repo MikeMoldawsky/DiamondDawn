@@ -8,6 +8,7 @@ import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 import './RequestForm.scss'
 import { utils as ethersUtils } from 'ethers'
+import {showError} from "utils";
 
 const RequestForm = ({ optionalIdentity, createInviteApi, text, onSuccess }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false)
@@ -44,9 +45,7 @@ const RequestForm = ({ optionalIdentity, createInviteApi, text, onSuccess }) => 
   };
 
   const requestInvitation = async ({ identifier, address }) => {
-    console.log('requestInvitation', {identifier, address})
-    const res = await createInviteApi(address, identifier)
-    console.log('requestInvitation SUCCESS', res)
+    await createInviteApi(address, identifier)
     setIsSubmitSuccess(true)
     onSuccess && await onSuccess()
   }

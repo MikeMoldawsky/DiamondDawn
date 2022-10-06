@@ -4,13 +4,13 @@ const _ = require("lodash");
 const add = require("date-fns/add");
 const isEmpty = require('lodash/isEmpty')
 
-async function createInvite(args) {
-  try {
-    const invite = new InviteModel({ approved: true, ...args });
-    return await invite.save();
-  } catch (e) {
-    console.log(`Failed to create invite`, e);
+async function createInvite(address, identity) {
+  let invite = await InviteModel.findOne({ address })
+  if (invite) {
+    throw new Error("Address already invited")
   }
+  invite = new InviteModel({ approved: true, address, identity });
+  return invite.save();
 }
 
 async function getSignatureByAddress(address) {
