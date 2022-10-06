@@ -64,9 +64,9 @@ export const getInvitesApi = async (approved) => {
   }
 };
 
-export const createInviteApi = async () => {
+export const createInviteApi = async (address, identifier) => {
   try {
-    const res = await axios.post(`/api/create_invite`);
+    const res = await axios.post(`/api/create_invite`, { address, identifier });
     return res.data;
   } catch (e) {
     return null;

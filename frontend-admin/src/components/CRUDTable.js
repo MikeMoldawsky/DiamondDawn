@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import _ from "lodash";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { DataGrid, GridRowModes, GridActionsCellItem } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
@@ -168,13 +166,7 @@ const CRUDTable = ({
         />
       </div>
       <div className="center-aligned-row">
-        {!readonly ? (
-          <div className="button link add-button" onClick={onAddClick}>
-            <FontAwesomeIcon icon={faPlus} /> Add {itemName}
-          </div>
-        ) : (
-          <div />
-        )}
+        <div />
         {renderCustomButtons()}
       </div>
     </>

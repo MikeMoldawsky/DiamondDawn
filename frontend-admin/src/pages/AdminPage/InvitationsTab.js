@@ -12,6 +12,7 @@ import {
   updateInviteApi,
   deleteInviteApi, getInvitesApi,
 } from "api/serverApi";
+import RequestForm from "components/RequestForm";
 
 const INVITATION_COLUMNS = [
   {
@@ -128,9 +129,16 @@ const InvitationsTab = ({approved}) => {
 
   const renderActions = ({ id }) => approved ? [<ClipboardButton inviteId={id} />] : [<ApproveButton inviteId={id} onApprove={() => setApproved(id)} />]
 
+  const onCreateSuccess = async () => {
+    setInvitations(await getInvitesApi(approved));
+  }
+
   return (
     <div className={classNames("tab-content invitations")}>
       <h1>Invitations</h1>
+      {approved && (
+        <RequestForm createInviteApi={createInviteApi} optionalIdentity text="create Invitation" onSuccess={onCreateSuccess} />
+      )}
       <CRUDTable
         CRUD={CRUD}
         columns={columns}

@@ -4,9 +4,9 @@ const _ = require("lodash");
 const add = require("date-fns/add");
 const isEmpty = require('lodash/isEmpty')
 
-async function createInvite() {
+async function createInvite(args) {
   try {
-    const invite = new InviteModel({ approved: true });
+    const invite = new InviteModel({ approved: true, ...args });
     return await invite.save();
   } catch (e) {
     console.log(`Failed to create invite`, e);
@@ -48,8 +48,9 @@ async function getInviteObjectById(inviteId) {
 
 async function getInvites(approved) {
   try {
-    const invites = await InviteModel.find({ approved });
-    return await Promise.all(_.map(invites, getInviteObjectById))
+    const dbInvites = await InviteModel.find({ approved });
+    const invites = await Promise.all(_.map(dbInvites, getInviteObjectById))
+    return _.orderBy(invites, ['created'], ['desc'])
   } catch (e) {
     console.log(`Failed to get all invites`, e);
   }
