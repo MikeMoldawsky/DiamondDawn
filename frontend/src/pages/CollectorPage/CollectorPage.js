@@ -27,6 +27,7 @@ import {
 } from "store/inviteReducer";
 import AccountProvider from "containers/AccountProvider";
 import TokensProvider from "containers/TokensProvider";
+import { SYSTEM_STAGE } from "consts";
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
@@ -39,6 +40,8 @@ function CollectorPage() {
   const isInviteFetched = useSelector(
     isActionFirstCompleteSelector("get-invite-by-address")
   );
+
+  const isInviteStage = systemStage === SYSTEM_STAGE.INVITE && isActive;
 
   console.log({ isInviteFetched, invite });
 
@@ -91,10 +94,13 @@ function CollectorPage() {
 
   const renderContent = () => {
     if (size(tokens) > 0)
+      return <div className="cards">{map(tokens, renderTokenCard)}</div>;
+    if (!isInviteStage)
       return (
-        <TokensProvider withLoader>
-          <div className="cards">{map(tokens, renderTokenCard)}</div>
-        </TokensProvider>
+        <>
+          <div className="secondary-text">Invitations stage is closed</div>
+          <div className="button link-opensea">BUY ON OPENSEA</div>
+        </>
       );
     if (!isInviteFetched) return null;
     return (
@@ -116,7 +122,9 @@ function CollectorPage() {
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
         <div className="leading-text">Collector's Room</div>
-        <AccountProvider>{renderContent()}</AccountProvider>
+        <AccountProvider>
+          <TokensProvider withLoader>{renderContent()}</TokensProvider>
+        </AccountProvider>
       </div>
     </div>
   );

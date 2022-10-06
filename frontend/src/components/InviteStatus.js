@@ -4,13 +4,18 @@ import { inviteSelector, loadInviteByAddress } from "store/inviteReducer";
 import Countdown from "components/Countdown";
 import { useAccount } from "wagmi";
 import { NavLink } from "react-router-dom";
+import { isStageActiveSelector } from "store/systemReducer";
+import { SYSTEM_STAGE } from "consts";
 
 const InviteStatus = () => {
+  const isInvitesStage = useSelector(
+    isStageActiveSelector(SYSTEM_STAGE.INVITE)
+  );
   const invite = useSelector(inviteSelector);
   const dispatch = useDispatch();
   const account = useAccount();
 
-  if (!invite || invite.used || invite.revoked) return null;
+  if (!isInvitesStage || !invite || invite.used || invite.revoked) return null;
 
   const renderContent = () => {
     if (invite.opened)
