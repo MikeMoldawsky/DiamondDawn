@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import classNames from "classnames";
 import map from "lodash/map";
 import size from "lodash/size";
@@ -16,8 +16,10 @@ import {createInviteRequestApi} from "api/serverApi";
 import useOnConnect from "hooks/useOnConnect";
 import {useAccount} from "wagmi";
 import useActionDispatch from "hooks/useActionDispatch";
-import {isActionFirstCompleteSelector} from "store/actionStatusReducer";
+import {clearActionStatus, isActionFirstCompleteSelector} from "store/actionStatusReducer";
 import {clearInvite, inviteSelector, loadInviteByAddress} from "store/inviteReducer";
+import AccountProvider from "containers/AccountProvider";
+import TokensProvider from "containers/TokensProvider";
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
@@ -33,14 +35,24 @@ function CollectorPage() {
 
   const loadInvite = async (address) => dispatch(loadInviteByAddress(address))
 
+  const clearInviteState = () => {
+    dispatch(clearInvite())
+    dispatch(clearActionStatus("get-invite-by-address"))
+  }
+
   useOnConnect(async (address) => {
+    clearInviteState()
     actionDispatch(
       () => loadInvite(address),
       "get-invite-by-address"
     )
   }, () => {
-    dispatch(clearInvite())
+    clearInviteState()
   })
+
+  useEffect(() => {
+    return clearInviteState
+  }, [])
 
   const goToProcess = (tokenId) => (e) => {
     e.stopPropagation();
@@ -70,7 +82,9 @@ function CollectorPage() {
 
   const renderContent = () => {
     if (size(tokens) > 0) return (
-      <div className="cards">{map(tokens, renderTokenCard)}</div>
+      <TokensProvider withLoader>
+        <div className="cards">{map(tokens, renderTokenCard)}</div>
+      </TokensProvider>
     )
     if (!isInviteFetched) return null
     return (
@@ -88,7 +102,9 @@ function CollectorPage() {
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
         <div className="leading-text">Collector's Room</div>
-        {renderContent()}
+        <AccountProvider>
+          {renderContent()}
+        </AccountProvider>
       </div>
     </div>
   );

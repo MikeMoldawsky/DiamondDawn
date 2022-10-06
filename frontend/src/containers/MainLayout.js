@@ -76,9 +76,7 @@ const MainLayout = () => {
               <Route
                 path="collector"
                 element={
-                  <TokensProvider withLoader>
-                    <CollectorPage />
-                  </TokensProvider>
+                  <CollectorPage />
                 }
               />
               <Route

@@ -45,7 +45,7 @@ const InviteIntro = ({ open }) => {
   const ttl = secondsToString(process.env.REACT_APP_INVITE_TTL_SECONDS);
   return (
     <>
-      <h1>You Are Invited to Diamonds Dawn!</h1>
+      <h1>You Are Invited to Diamond Dawn!</h1>
       <div className="warning-message">
         <FontAwesomeIcon icon={faExclamationTriangle} />
         <div className="warning-text">
