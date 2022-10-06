@@ -14,6 +14,7 @@ const ENUM_TO_SHAPE = {
 };
 
 const ENUM_TO_COLOR = {
+  0: "NO COLOR",
   1: "M",
   2: "N",
   3: "O",

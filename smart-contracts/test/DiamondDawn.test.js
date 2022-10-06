@@ -25,6 +25,7 @@ const _ = require("lodash");
 const { ethers } = require("hardhat");
 const { PRICE, PRICE_WEDDING } = require("./utils/Consts");
 const { completeAndSetStage } = require("./utils/DDTestUtils");
+const { DIAMOND_TO_COLOR, DIAMOND } = require("./utils/Diamonds");
 
 describe("DiamondDawn", () => {
   describe("enter and enterWedding", () => {
@@ -698,7 +699,12 @@ describe("DiamondDawn", () => {
           1
         )
         .and.to.emit(ddMine, "Ship")
-        .withArgs(tokenId, 1, 1111111111);
+        .withArgs(
+          tokenId,
+          1,
+          (number) =>
+            number === DIAMOND.number || number === DIAMOND_TO_COLOR.number
+        );
       expect(await dd.balanceOf(userA.address)).to.equal(0);
       await expect(dd.ownerOf(1)).to.be.revertedWith(
         "ERC721: owner query for nonexistent token"

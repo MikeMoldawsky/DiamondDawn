@@ -88,13 +88,15 @@ describe("Diamond Dawn Mine Admin", () => {
       );
     });
 
-    it("should SUCCESSFULLY insert 333 diamonds", async () => {
-      // TODO - check if we can make it to 333 after optimizations (currently the txn gas limit is 30,395,800 -> 30,023,384)
-      const prodDiamondsSize = 320;
-      await mineContract.connect(diamondDawn).initialize(prodDiamondsSize);
-      const maxDiamondsArray = _.range(prodDiamondsSize).map(() => DIAMOND);
-      await mineContract.eruption(maxDiamondsArray);
-      expect(await mineContract.diamondCount()).to.be.equal(prodDiamondsSize);
+    it("should SUCCESSFULLY insert 333 in 2 batches", async () => {
+      const numDiamonds = 333;
+      await mineContract.connect(diamondDawn).initialize(numDiamonds);
+      const batches = [300, 33];
+      for (const batch of batches) {
+        const maxDiamondsArray = _.range(batch).map(() => DIAMOND);
+        await mineContract.eruption(maxDiamondsArray);
+      }
+      expect(await mineContract.diamondCount()).to.be.equal(numDiamonds);
     });
   });
 
