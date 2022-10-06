@@ -12,31 +12,34 @@ import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
 import RequestForm from "components/RequestForm";
 import InviteStatus from 'components/InviteStatus'
-import {createInviteRequestApi, getInviteByAddressApi} from "api/serverApi";
+import {createInviteRequestApi} from "api/serverApi";
 import useOnConnect from "hooks/useOnConnect";
 import {useAccount} from "wagmi";
 import useActionDispatch from "hooks/useActionDispatch";
 import {isActionFirstCompleteSelector} from "store/actionStatusReducer";
+import {clearInvite, inviteSelector, loadInviteByAddress} from "store/inviteReducer";
 
 function CollectorPage() {
-  const [invite, setInvite] = useState(null)
   const tokens = useSelector(tokensSelector);
   const { systemStage, isActive } = useSelector(systemSelector);
   const actionDispatch = useActionDispatch();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const account = useAccount();
+  const invite = useSelector(inviteSelector)
   const isInviteFetched = useSelector(isActionFirstCompleteSelector("get-invite-by-address"))
 
   console.log({ isInviteFetched, invite })
 
+  const loadInvite = async (address) => dispatch(loadInviteByAddress(address))
+
   useOnConnect(async (address) => {
     actionDispatch(
-      async () => setInvite(await getInviteByAddressApi(address)),
+      () => loadInvite(address),
       "get-invite-by-address"
     )
   }, () => {
-    setInvite(null)
+    dispatch(clearInvite())
   })
 
   const goToProcess = (tokenId) => (e) => {
@@ -65,10 +68,6 @@ function CollectorPage() {
     );
   };
 
-  const onRequestSuccess = async () => {
-    setInvite(await getInviteByAddressApi(account.address))
-  }
-
   const renderContent = () => {
     if (size(tokens) > 0) return (
       <div className="cards">{map(tokens, renderTokenCard)}</div>
@@ -77,9 +76,9 @@ function CollectorPage() {
     return (
       <div className="invite-view">
         {invite ? (
-          <InviteStatus invite={invite} />
+          <InviteStatus />
         ) : (
-          <RequestForm createInviteApi={createInviteRequestApi} text="Request Invitation" onSuccess={onRequestSuccess} />
+          <RequestForm createInviteApi={createInviteRequestApi} text="Request Invitation" onSuccess={() => loadInvite(account.address)} />
         )}
       </div>
     )
