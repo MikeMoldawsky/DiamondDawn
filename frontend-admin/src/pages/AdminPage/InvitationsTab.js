@@ -56,7 +56,6 @@ const INVITATION_COLUMNS = [
     field: "address",
     headerName: "Address",
     width: 400,
-    editable: true,
     showIfRequest: true,
     preProcessEditCellProps: (params) => {
       const isValid =

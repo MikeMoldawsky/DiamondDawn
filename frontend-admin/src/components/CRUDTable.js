@@ -100,10 +100,13 @@ const CRUDTable = ({
   };
 
   const handleDeleteClick = (id) => async () => {
-    if (!_.isFunction(CRUD.delete)) return;
-
-    await CRUD.delete(id);
-    setRows(rows.filter((row) => row._id !== id));
+    if (
+      _.isFunction(CRUD.delete) &&
+      window.confirm("Are you sure you want to delete invite?")
+    ) {
+      await CRUD.delete(id);
+      setRows(rows.filter((row) => row._id !== id));
+    }
   };
 
   const handleCancelClick = (id) => () => {
