@@ -128,22 +128,18 @@ async function confirmInviteUsed(inviteId) {
   }
 }
 
-async function createInviteRequest(identifier, address, country, state) {
-  try {
-    const invite = new InviteModel({ identifier, address, location: `${state}, ${country}` });
-    return await invite.save();
-  } catch (e) {
-    console.log(`Failed to create invite request`, { identifier, address, e });
+async function createInviteRequest(address, identifier, country, state) {
+  let invite = await InviteModel.findOne({ address })
+  if (invite) {
+    throw new Error("Address already invited")
   }
+  invite = new InviteModel({ identifier, address, location: `${state}, ${country}` });
+  return invite.save();
 }
 
 async function getInviteByAddress(address) {
-  try {
-    const invites = await InviteModel.find({ address });
-    return await Promise.all(_.map(invites, getInviteObjectById))
-  } catch (e) {
-    console.log(`Failed to get all invites by address`, {address, e});
-  }
+  const invite = await InviteModel.findOne({ address });
+  return invite ? getInviteObjectById(invite) : null
 }
 
 module.exports = {

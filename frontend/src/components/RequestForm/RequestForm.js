@@ -1,25 +1,34 @@
-import React from "react";
-import _ from "lodash";
+import React, {useEffect, useState} from "react";
+import isEmpty from 'lodash/isEmpty'
+import isNil from 'lodash/isNil'
+import get from 'lodash/get'
+import toUpper from 'lodash/toUpper'
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 import './RequestForm.scss'
 import { utils as ethersUtils } from 'ethers'
-import {createInviteRequestApi} from "api/serverApi";
 
-const RequestForm = ({ optionalIdentity }) => {
+const RequestForm = ({ optionalIdentity, createInviteApi, text, onSuccess }) => {
+  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false)
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm({
     mode: 'onChange',
   });
 
+  useEffect(() => {
+    reset()
+    setIsSubmitSuccess(false)
+  }, [isSubmitSuccess])
+
   const renderInput = (name, placeholder, opts = {}) => {
-    const emptyValue = _.isEmpty(watch(name))
-    const hasError = !_.isNil(_.get(errors, name))
+    const emptyValue = isEmpty(watch(name))
+    const hasError = !isNil(get(errors, name))
     return (
       <div className="input-container">
         <input
@@ -36,14 +45,16 @@ const RequestForm = ({ optionalIdentity }) => {
 
   const requestInvitation = async ({ identifier, address }) => {
     console.log('requestInvitation', {identifier, address})
-    const res = await createInviteRequestApi(identifier, address)
+    const res = await createInviteApi(address, identifier)
     console.log('requestInvitation SUCCESS', res)
+    onSuccess && await onSuccess()
+    setIsSubmitSuccess(true)
   }
 
   return (
     <div className="request-form">
       <div className="secondary-text">
-        REQUEST INVITATION
+        {toUpper(text)}
       </div>
       <form>
         {renderInput("identifier", "Twitter/Email", {
@@ -55,8 +66,8 @@ const RequestForm = ({ optionalIdentity }) => {
             ethaddress: ethersUtils.isAddress,
           }
         })}
-        <ActionButton actionKey="Request Invitation" onClick={handleSubmit(requestInvitation)} disabled={!_.isEmpty(errors)}>
-          Request Invitation
+        <ActionButton actionKey="Request Invitation" onClick={handleSubmit(requestInvitation)} disabled={!isEmpty(errors)}>
+          {text}
         </ActionButton>
       </form>
     </div>

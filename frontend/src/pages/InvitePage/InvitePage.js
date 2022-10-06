@@ -12,8 +12,6 @@ import { systemSelector } from "store/systemReducer";
 import { SYSTEM_STAGE } from "consts";
 import useActionDispatch from "hooks/useActionDispatch";
 import { isActionSuccessSelector } from "store/actionStatusReducer";
-import ContractProvider from "containers/ContractProvider";
-import Loading from "components/Loading";
 import {useAccount} from "wagmi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 
@@ -83,21 +81,20 @@ const InvitePage = () => {
   };
 
   const renderInviteContent = () => {
-    if (isGetInviteSuccess) {
-      if (systemStage !== SYSTEM_STAGE.INVITE || !isActive)
-        return navigateToDefault();
-      if (!invite) return <InvalidInvitation title="Invitation Not Found" />;
-      if (invite.address && invite.address !== account?.address) return <InvalidInvitation title="Address Mismatch" />
-      if (!invite.approved)
-        return <InvalidInvitation title="Invitation Not Approved" />;
-      if (invite.used)
-        return <InvalidInvitation title="You Already Used This Invitation" />;
-      if (invite.revoked)
-        return <InvalidInvitation title="Invitation Expired" />;
-      if (!invite.opened) return <InviteIntro open={onOpenInviteClick} />;
-      return <EnterMine invite={invite} />;
-    }
-    return null;
+    if (!isGetInviteSuccess) return null
+
+    if (systemStage !== SYSTEM_STAGE.INVITE || !isActive)
+      return navigateToDefault();
+    if (!invite) return <InvalidInvitation title="Invitation Not Found" />;
+    if (invite.address && invite.address !== account?.address) return <InvalidInvitation title="Address Mismatch" />
+    if (!invite.approved)
+      return <InvalidInvitation title="Invitation Not Approved" />;
+    if (invite.used)
+      return <InvalidInvitation title="You Already Used This Invitation" />;
+    if (invite.revoked)
+      return <InvalidInvitation title="Invitation Expired" />;
+    if (!invite.opened) return <InviteIntro open={onOpenInviteClick} />;
+    return <EnterMine invite={invite} />;
   };
 
   return (

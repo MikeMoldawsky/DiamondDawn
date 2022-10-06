@@ -1,17 +1,9 @@
-import React, {useEffect, useState} from 'react'
-import useOnConnect from "hooks/useOnConnect";
-import {getInviteByAddressApi} from "api/serverApi";
+import React from 'react'
 
-const InviteStatus = () => {
-  const [invite, setInvite] = useState(null)
-
-  console.log('Invite Status', {invite})
-
-  useOnConnect(async (address) => {
-    setInvite(await getInviteByAddressApi(address))
-  }, () => {
-    setInvite(null)
-  })
+const InviteStatus = ({ invite }) => {
+  return invite ? (
+    <div className="invite-status">You have an invite</div>
+  ) : null
 }
 
 export default InviteStatus

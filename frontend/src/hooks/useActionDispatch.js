@@ -17,10 +17,13 @@ const useActionDispatch = () => {
         dispatch(action);
       }
 
-      dispatch({
-        type: "ACTION_STATUS.SUCCESS",
-        payload: { actionKey },
-      });
+      // wait for next tick to give the components time to react
+      setTimeout(() => {
+        dispatch({
+          type: "ACTION_STATUS.SUCCESS",
+          payload: { actionKey },
+        });
+      }, 0)
     } catch (e) {
       console.error("useActionDispatch Failed", { e });
       dispatch({

@@ -1,6 +1,11 @@
 const { getInviteByAddress } = require("../db/invite-db-manager");
 
 module.exports = async function (req, res) {
-  const { address } = req.body;
-  res.send(await getInviteByAddress(address));
+  try {
+    const { address } = req.body;
+    res.send(await getInviteByAddress(address));
+  }
+  catch (e) {
+    res.status(500).send(e.message)
+  }
 };
