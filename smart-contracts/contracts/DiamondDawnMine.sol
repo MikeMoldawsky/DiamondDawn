@@ -13,9 +13,31 @@ import "./utils/NFTSerializer.sol";
 import "./utils/StringUtils.sol";
 
 /**
+ *    ________    .__                                           .___
+ *    \______ \   |__| _____      _____     ____     ____     __| _/
+ *     |    |  \  |  | \__  \    /     \   /  _ \   /    \   / __ |
+ *     |    `   \ |  |  / __ \_ |  Y Y  \ (  <_> ) |   |  \ / /_/ |
+ *    /_______  / |__| (____  / |__|_|  /  \____/  |___|  / \____ |
+ *            \/            \/        \/                \/       \/
+ *    ________
+ *    \______ \   _____    __  _  __   ____
+ *     |    |  \  \__  \   \ \/ \/ /  /    \
+ *     |    `   \  / __ \_  \     /  |   |  \
+ *    /_______  / (____  /   \/\_/   |___|  /
+ *            \/       \/                 \/                                ,
+ *       _____    .__
+ *      /     \   |__|   ____     ____
+ *     /  \ /  \  |  |  /    \  _/ __ \
+ *    /    Y    \ |  | |   |  \ \  ___/
+ *    \____|__  / |__| |___|  /  \___  >
+ *            \/            \/       \/                          ,
+ *
  * @title DiamondDawnMine
  * @author Mike Moldawsky (Tweezers)
- */
+*/
+// TODO: Warning: Contract code size is 27937 bytes and exceeds 24576 bytes (a limit introduced in Spurious Dragon).
+// TODO: This contract may not be deployable on mainnet. Consider enabling the optimizer (with a low "runs" value!),
+// TODO: turning off revert strings, or using libraries.
 contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondDawnMineAdmin {
     bool public isLocked; // mine is locked forever.
     bool public isInitialized;
@@ -204,7 +226,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         Metadata memory metadata,
         string memory noExtensionURI
     ) private view returns (string memory) {
-        // TODO: add description and created by when ready.
+        // TODO: add description and created by when ready or remove them.
         NFTMetadata memory nftMetadata = NFTMetadata({
             name: getName(metadata, tokenId),
             description: "description",
@@ -305,6 +327,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         revert("Points");
     }
 
+    // TODO: might need to use toShapeStr instead in order to reduce the contract size.
     function _getResourceName(Metadata memory metadata) private pure returns (string memory) {
         if (metadata.state_ == Stage.INVITE || metadata.state_ == Stage.SHIP) return "resource";
         else if (metadata.state_ == Stage.MINE) {
