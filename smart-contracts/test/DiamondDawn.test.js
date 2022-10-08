@@ -989,6 +989,8 @@ describe("DiamondDawn", () => {
       const parsed = await assertBase64AndGetParsed(metadata);
       expect(parsed).to.deep.equal({
         name: "Mine Key #1",
+        description: "description",
+        created_by: "dd",
         image: `${BASE_URI}${INVITE_MANIFEST}/resource.jpeg`,
         animation_url: `${BASE_URI}${INVITE_MANIFEST}/resource.mp4`,
         attributes: [{ trait_type: "Type", value: "Key" }],
