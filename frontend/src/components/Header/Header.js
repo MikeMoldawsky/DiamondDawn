@@ -13,6 +13,22 @@ import AudioPlayer from "components/AudioPlayer";
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const location = useLocation();
   const isLogoVisible = location.pathname !== "/";
+  const isLogoClickable = location.pathname !== "/coming-soon";
+
+  const renderLogo = () => {
+    if (!isLogoVisible) return null;
+    return (
+      <div className="logo-box">
+        {isLogoClickable ? (
+          <NavLink to="/">
+            <img src={ddLogo} alt="TWEEZERS" />
+          </NavLink>
+        ) : (
+          <img src={ddLogo} alt="TWEEZERS" />
+        )}
+      </div>
+    );
+  };
 
   return (
     <header>
@@ -25,13 +41,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             <DiamondList />
           </ContractProvider>
         </div>
-        {isLogoVisible && (
-          <div className="logo-box">
-            <NavLink to="/">
-              <img src={ddLogo} alt="TWEEZERS" />
-            </NavLink>
-          </div>
-        )}
+        {renderLogo()}
         <div className="center-aligned-row header-side">
           <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
           <div className="vertical-sep" />
