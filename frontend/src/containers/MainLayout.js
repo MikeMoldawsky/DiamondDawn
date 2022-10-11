@@ -5,7 +5,8 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate, useNavigate,
+  Navigate,
+  useNavigate,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -79,8 +80,8 @@ const AppRoutes = () => {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
-  )
-}
+  );
+};
 
 const MainLayout = () => {
   useMountLogger("MainLayout");

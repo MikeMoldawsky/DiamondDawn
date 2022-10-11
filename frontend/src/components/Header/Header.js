@@ -16,7 +16,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const isLogoClickable = location.pathname !== "/coming-soon";
 
   const renderLogo = () => {
-    if (!isLogoVisible) return null
+    if (!isLogoVisible) return null;
     return (
       <div className="logo-box">
         {isLogoClickable ? (
@@ -27,8 +27,8 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           <img src={ddLogo} alt="TWEEZERS" />
         )}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <header>
