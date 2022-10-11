@@ -1,21 +1,7 @@
 const InviteModel = require("./models/InviteModel");
 const add = require("date-fns/add");
 const ethers = require("ethers");
-
-const signer = new ethers.Wallet(process.env.SIGNER_PRIVATE_KEY);
-
-async function getSignatureByAddress(address) {
-  // Convert provided `address` to correct checksum address format.
-  // This step is critical as signing an incorrectly formatted wallet address
-  // can result in invalid signatures when it comes to minting.
-  let addr = ethers.utils.getAddress(address);
-
-  // Create the message to be signed using the checksum formatted `addr` value.
-  let message = ethers.utils.arrayify(`0x${addr.slice(2).padStart(64, "0")}`);
-
-  // Sign the message using `signer`.
-  return await signer.signMessage(message);
-}
+const signer = require("../helpers/signer")
 
 async function getInviteObjectById(inviteId) {
   try {
@@ -78,7 +64,7 @@ async function signInvite(inviteId, address) {
     throw new Error(`Wrong Ethereum address`);
   }
 
-  const signature = await getSignatureByAddress(address);
+  const signature = await signer.signAddress(address);
 
   return { invite, signature };
 }

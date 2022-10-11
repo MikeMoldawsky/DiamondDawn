@@ -70,9 +70,9 @@ export const shipApi = async (contract, tokenId) => {
   }
 };
 
-export const rebirthApi = async (contract, tokenId) => {
+export const rebirthApi = async (contract, tokenId, signature) => {
   try {
-    return await contract.rebirth(tokenId, { gasLimit: 220000 });
+    return await contract.rebirth(tokenId, signature, { gasLimit: 220000 });
   } catch (e) {
     logApiError(e, "rebirthApi");
     throw new Error(e);

@@ -90,10 +90,9 @@ const ActionView = ({
     setActionTxId(receipt.transactionHash);
   };
 
-  const stageNameUpper = _.upperCase(getStageName(systemStage));
-
   const renderContent = () => {
-    if (showCompleteVideo)
+    if (showCompleteVideo) {
+      const stageNameUpper = isRebirth ? "REBIRTH" : _.upperCase(getStageName(systemStage));
       return (
         <div className="backdrop">
           <VideoPlayer
@@ -103,10 +102,11 @@ const ActionView = ({
             }}
             src={videoUrl}
           >
-            03 - {stageNameUpper} VIDEO
+            {stageNameUpper} VIDEO
           </VideoPlayer>
         </div>
       );
+    }
 
     if (completeVideoEnded) {
       return <Loading />;
