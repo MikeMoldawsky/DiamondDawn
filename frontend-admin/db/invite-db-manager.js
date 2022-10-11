@@ -4,12 +4,12 @@ const _ = require("lodash");
 const add = require("date-fns/add");
 const isEmpty = require("lodash/isEmpty");
 
-async function createInvite(address, identity) {
+async function createInvite(address, identifier) {
   let invite = await InviteModel.findOne({ address });
   if (invite) {
     throw new Error("Address already invited");
   }
-  invite = new InviteModel({ approved: true, address, identity });
+  invite = new InviteModel({ approved: true, address, identifier });
   return invite.save();
 }
 

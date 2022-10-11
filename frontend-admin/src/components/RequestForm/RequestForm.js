@@ -8,7 +8,6 @@ import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 import "./RequestForm.scss";
 import { utils as ethersUtils } from "ethers";
-import { showError } from "utils";
 
 const RequestForm = ({
   optionalIdentity,
