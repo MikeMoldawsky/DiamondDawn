@@ -92,7 +92,9 @@ const ActionView = ({
 
   const renderContent = () => {
     if (showCompleteVideo) {
-      const stageNameUpper = isRebirth ? "REBIRTH" : _.upperCase(getStageName(systemStage));
+      const stageNameUpper = isRebirth
+        ? "REBIRTH"
+        : _.upperCase(getStageName(systemStage));
       return (
         <div className="backdrop">
           <VideoPlayer

@@ -1,7 +1,7 @@
 const InviteModel = require("./models/InviteModel");
 const add = require("date-fns/add");
 const ethers = require("ethers");
-const signer = require("../helpers/signer")
+const signer = require("../helpers/signer");
 
 async function getInviteObjectById(inviteId) {
   try {
@@ -49,9 +49,7 @@ async function openInvite(inviteId, country, state) {
 
 async function signInvite(inviteId, address) {
   if (!ethers.utils.isAddress(address)) {
-    throw new Error(
-      `Invalid Ethereum address - "${address}"`
-    );
+    throw new Error(`Invalid Ethereum address - "${address}"`);
   }
 
   // check that the invite exist and not revoked or expired

@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { setSelectedTokenId } from "store/uiReducer";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
-import {signRebirthApi} from "api/serverApi";
-import {useAccount} from "wagmi";
+import { signRebirthApi } from "api/serverApi";
+import { useAccount } from "wagmi";
 
 function RebirthPage() {
   const { tokenId } = useParams();
@@ -21,7 +21,7 @@ function RebirthPage() {
   const [isReady, setIsReady] = useState(false);
   const dispatch = useDispatch();
   const navigateToDefault = useNavigateToDefault();
-  const account = useAccount()
+  const account = useAccount();
 
   useEffect(() => {
     const fetch = async () => {
@@ -64,9 +64,9 @@ function RebirthPage() {
   );
 
   const executeRebirth = async () => {
-    let signature = await signRebirthApi(account.address)
-    return rebirthApi(contract, tokenId, signature)
-  }
+    let signature = await signRebirthApi(account.address);
+    return rebirthApi(contract, tokenId, signature);
+  };
 
   return (
     <div className="page rebirth-page">

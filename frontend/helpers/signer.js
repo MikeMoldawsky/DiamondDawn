@@ -31,4 +31,4 @@ async function signAddressAndTokenId(address, tokenId) {
 module.exports = {
   signAddress,
   signAddressAndTokenId,
-}
+};
