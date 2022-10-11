@@ -14,9 +14,20 @@ import "./interface/IDiamondDawn.sol";
 import "./interface/IDiamondDawnAdmin.sol";
 import "./interface/IDiamondDawnMine.sol";
 
-// TODO: add diamond "picture"
-
 /**
+ *    ________    .__                                           .___
+ *    \______ \   |__| _____      _____     ____     ____     __| _/
+ *     |    |  \  |  | \__  \    /     \   /  _ \   /    \   / __ |
+ *     |    `   \ |  |  / __ \_ |  Y Y  \ (  <_> ) |   |  \ / /_/ |
+ *    /_______  / |__| (____  / |__|_|  /  \____/  |___|  / \____ |
+ *            \/            \/        \/                \/       \/
+ *    ________
+ *    \______ \   _____    __  _  __   ____
+ *     |    |  \  \__  \   \ \/ \/ /  /    \
+ *     |    `   \  / __ \_  \     /  |   |  \
+ *    /_______  / (____  /   \/\_/   |___|  /
+ *            \/       \/                 \/                                ,
+ *
  * @title DiamondDawn
  * @author Mike Moldawsky (Tweezers)
  */
