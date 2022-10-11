@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import _ from "lodash";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { DataGrid, GridRowModes, GridActionsCellItem } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
@@ -102,10 +100,13 @@ const CRUDTable = ({
   };
 
   const handleDeleteClick = (id) => async () => {
-    if (!_.isFunction(CRUD.delete)) return;
-
-    await CRUD.delete(id);
-    setRows(rows.filter((row) => row._id !== id));
+    if (
+      _.isFunction(CRUD.delete) &&
+      window.confirm("Are you sure you want to delete invite?")
+    ) {
+      await CRUD.delete(id);
+      setRows(rows.filter((row) => row._id !== id));
+    }
   };
 
   const handleCancelClick = (id) => () => {
@@ -168,13 +169,7 @@ const CRUDTable = ({
         />
       </div>
       <div className="center-aligned-row">
-        {!readonly ? (
-          <div className="button link add-button" onClick={onAddClick}>
-            <FontAwesomeIcon icon={faPlus} /> Add {itemName}
-          </div>
-        ) : (
-          <div />
-        )}
+        <div />
         {renderCustomButtons()}
       </div>
     </>

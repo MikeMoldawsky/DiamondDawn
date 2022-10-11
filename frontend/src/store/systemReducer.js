@@ -2,6 +2,7 @@ import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import { BigNumber } from "ethers";
 import { getConfigApi, getContractInfoApi } from "api/serverApi";
 import { getMinePriceApi, getSystemStageApi } from "api/contractApi";
+import get from "lodash/get";
 
 const INITIAL_STATE = {
   ddContractInfo: null,
@@ -44,6 +45,11 @@ export const loadContractInfo = () => async (dispatch) => {
 };
 
 export const systemSelector = (state) => state.system;
+
+export const isStageActiveSelector = (stage) => (state) => {
+  const { systemStage, isActive } = systemSelector(state);
+  return systemStage === stage && isActive;
+};
 
 export const systemReducer = makeReducer(
   {

@@ -12,6 +12,8 @@ import { systemSelector } from "store/systemReducer";
 import { SYSTEM_STAGE } from "consts";
 import useActionDispatch from "hooks/useActionDispatch";
 import { isActionSuccessSelector } from "store/actionStatusReducer";
+import { useAccount } from "wagmi";
+import useNavigateToDefault from "hooks/useNavigateToDefault";
 
 const InvalidInvitation = ({ title }) => (
   <>
@@ -43,7 +45,7 @@ const InviteIntro = ({ open }) => {
   const ttl = secondsToString(process.env.REACT_APP_INVITE_TTL_SECONDS);
   return (
     <>
-      <h1>You Are Invited to Diamonds Dawn!</h1>
+      <h1>You Are Invited to Diamond Dawn!</h1>
       <div className="warning-message">
         <FontAwesomeIcon icon={faExclamationTriangle} />
         <div className="warning-text">
@@ -63,6 +65,8 @@ const InvitePage = () => {
   const { systemStage, isActive } = useSelector(systemSelector);
   const isGetInviteSuccess = useSelector(isActionSuccessSelector("get-invite"));
   const actionDispatch = useActionDispatch();
+  const account = useAccount();
+  const navigateToDefault = useNavigateToDefault();
 
   useEffect(() => {
     if (inviteId) {
@@ -77,18 +81,20 @@ const InvitePage = () => {
   };
 
   const renderInviteContent = () => {
+    if (!isGetInviteSuccess) return null;
+
     if (systemStage !== SYSTEM_STAGE.INVITE || !isActive)
-      return <h1>Invitations stage is closed</h1>;
-    if (isGetInviteSuccess) {
-      if (!invite) return <InvalidInvitation title="Invitation Not Found" />;
-      if (invite.used)
-        return <InvalidInvitation title="Invitation Already Used" />;
-      if (invite.revoked)
-        return <InvalidInvitation title="Invitation Revoked" />;
-      if (!invite.opened) return <InviteIntro open={onOpenInviteClick} />;
-      return <EnterMine invite={invite} />;
-    }
-    return null;
+      return navigateToDefault();
+    if (!invite) return <InvalidInvitation title="Invitation Not Found" />;
+    if (invite.address && invite.address !== account?.address)
+      return <InvalidInvitation title="Address Mismatch" />;
+    if (!invite.approved)
+      return <InvalidInvitation title="Invitation Not Approved" />;
+    if (invite.used)
+      return <InvalidInvitation title="You Already Used This Invitation" />;
+    if (invite.revoked) return <InvalidInvitation title="Invitation Expired" />;
+    if (!invite.opened) return <InviteIntro open={onOpenInviteClick} />;
+    return <EnterMine invite={invite} />;
   };
 
   return (
