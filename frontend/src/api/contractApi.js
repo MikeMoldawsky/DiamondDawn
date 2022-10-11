@@ -27,7 +27,7 @@ export const getMinePriceApi = async (contract) => {
 // PROCESS
 export const enterApi = async (contract, minePrice, signature) => {
   try {
-    return contract.enter(signature, { value: minePrice });
+    return contract.enter(signature, { value: minePrice, gasLimit: 220000 });
   } catch (e) {
     logApiError(e, "enterApi");
     throw new Error(e);
@@ -36,7 +36,7 @@ export const enterApi = async (contract, minePrice, signature) => {
 
 export const mineApi = async (contract, tokenId) => {
   try {
-    return await contract.mine(tokenId);
+    return await contract.mine(tokenId, { gasLimit: 220000 });
   } catch (e) {
     logApiError(e, "mineApi");
     throw new Error(e);
@@ -45,7 +45,7 @@ export const mineApi = async (contract, tokenId) => {
 
 export const cutApi = async (contract, tokenId) => {
   try {
-    return await contract.cut(tokenId);
+    return await contract.cut(tokenId, { gasLimit: 220000 });
   } catch (e) {
     logApiError(e, "cutApi");
     throw new Error(e);
@@ -54,7 +54,7 @@ export const cutApi = async (contract, tokenId) => {
 
 export const polishApi = async (contract, tokenId) => {
   try {
-    return await contract.polish(tokenId);
+    return await contract.polish(tokenId, { gasLimit: 220000 });
   } catch (e) {
     logApiError(e, "polishApi");
     throw new Error(e);
@@ -63,7 +63,7 @@ export const polishApi = async (contract, tokenId) => {
 
 export const shipApi = async (contract, tokenId) => {
   try {
-    return await contract.ship(tokenId);
+    return await contract.ship(tokenId, { gasLimit: 220000 });
   } catch (e) {
     logApiError(e, "shipApi");
     throw new Error(e);
@@ -72,7 +72,7 @@ export const shipApi = async (contract, tokenId) => {
 
 export const rebirthApi = async (contract, tokenId) => {
   try {
-    return await contract.rebirth(tokenId);
+    return await contract.rebirth(tokenId, { gasLimit: 220000 });
   } catch (e) {
     logApiError(e, "rebirthApi");
     throw new Error(e);
