@@ -18,9 +18,13 @@ describe("Diamond Dawn Mine Admin", () => {
   describe("Deployed", () => {
     it("should grant admin permissions to deployer and set correct public defaults", async () => {
       const [owner, user1, user2] = await ethers.getSigners();
-      const DiamondDawnMine = await ethers.getContractFactory(
-        "DiamondDawnMine"
-      );
+      const StringUtilsLib = await ethers.getContractFactory("StringUtils");
+      const stringUtils = await StringUtilsLib.deploy();
+      const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine", {
+        libraries: {
+          StringUtils: stringUtils.address
+        }
+      });
       const diamondDawnMine = await DiamondDawnMine.deploy([]);
       await diamondDawnMine.deployed();
       const adminRole = await diamondDawnMine.DEFAULT_ADMIN_ROLE();

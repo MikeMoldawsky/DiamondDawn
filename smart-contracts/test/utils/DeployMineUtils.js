@@ -4,7 +4,13 @@ const { setAllManifests } = require("./MineTestUtils");
 async function deployMine() {
   const users = await ethers.getSigners();
   const owner = users.shift();
-  const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine");
+  const StringUtilsLib = await ethers.getContractFactory("StringUtils");
+  const stringUtils = await StringUtilsLib.deploy();
+  const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine", {
+    libraries: {
+      StringUtils: stringUtils.address
+    }
+  });
   const diamondDawnMine = await DiamondDawnMine.deploy();
   await diamondDawnMine.deployed();
   return {

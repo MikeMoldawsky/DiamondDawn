@@ -228,7 +228,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     ) private view returns (string memory) {
         // TODO: add description and created by when ready or remove them.
         NFTMetadata memory nftMetadata = NFTMetadata({
-            name: getName(metadata, tokenId),
+            name: StringUtils.getName(metadata, tokenId),
             description: "description",
             createdBy: "dd",
             image: string.concat(noExtensionURI, ".jpeg"),
@@ -241,14 +241,14 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     function _getJsonAttributes(Metadata memory metadata) private view returns (Attribute[] memory) {
         Stage state_ = metadata.state_;
         Attribute[] memory attributes = new Attribute[](_getStateAttrsNum(state_));
-        attributes[0] = toStrAttribute("Type", toTypeStr(state_));
+        attributes[0] = toStrAttribute("Type", StringUtils.toTypeStr(state_));
         if (state_ == Stage.INVITE) {
             return attributes;
         }
 
         attributes[1] = toStrAttribute("Origin", "Metaverse");
         attributes[2] = toStrAttribute("Identification", "Natural");
-        attributes[3] = toAttribute("Carat", toDecimalStr(_getPoints(metadata)), "");
+        attributes[3] = toAttribute("Carat", StringUtils.toDecimalStr(_getPoints(metadata)), "");
         attributes[4] = toMaxValueAttribute(
             "Mined",
             Strings.toString(metadata.rough.id),
@@ -257,21 +257,21 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         );
         if (state_ == Stage.MINE) {
             attributes[5] = toStrAttribute("Color", "Cape");
-            attributes[6] = toStrAttribute("Shape", toRoughShapeStr(metadata.rough.shape));
+            attributes[6] = toStrAttribute("Shape", StringUtils.toRoughShapeStr(metadata.rough.shape));
             attributes[7] = toStrAttribute("Mine", "Underground");
             return attributes;
         }
 
         Certificate memory certificate = metadata.certificate;
         if (uint(Stage.CUT) <= uint(state_)) {
-            attributes[5] = toStrAttribute("Color", toColorStr(certificate.color, certificate.toColor));
-            attributes[6] = toStrAttribute("Cut", toGradeStr(certificate.cut));
-            attributes[7] = toStrAttribute("Fluorescence", toFluorescenceStr(certificate.fluorescence));
+            attributes[5] = toStrAttribute("Color", StringUtils.toColorStr(certificate.color, certificate.toColor));
+            attributes[6] = toStrAttribute("Cut", StringUtils.toGradeStr(certificate.cut));
+            attributes[7] = toStrAttribute("Fluorescence", StringUtils.toFluorescenceStr(certificate.fluorescence));
             attributes[8] = toStrAttribute(
                 "Measurements",
-                toMeasurementsStr(certificate.shape, certificate.length, certificate.width, certificate.depth)
+                StringUtils.toMeasurementsStr(certificate.shape, certificate.length, certificate.width, certificate.depth)
             );
-            attributes[9] = toStrAttribute("Shape", toShapeStr(certificate.shape));
+            attributes[9] = toStrAttribute("Shape", StringUtils.toShapeStr(certificate.shape));
             // TODO: validate that OpenSea works with 2 attributes called "Cut" or change name
             attributes[10] = toMaxValueAttribute(
                 "Cut",
@@ -281,9 +281,9 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
         }
         if (uint(Stage.POLISH) <= uint(state_)) {
-            attributes[11] = toStrAttribute("Clarity", toClarityStr(certificate.clarity));
-            attributes[12] = toStrAttribute("Polish", toGradeStr(certificate.polish));
-            attributes[13] = toStrAttribute("Symmetry", toGradeStr(certificate.symmetry));
+            attributes[11] = toStrAttribute("Clarity", StringUtils.toClarityStr(certificate.clarity));
+            attributes[12] = toStrAttribute("Polish", StringUtils.toGradeStr(certificate.polish));
+            attributes[13] = toStrAttribute("Symmetry", StringUtils.toGradeStr(certificate.symmetry));
             attributes[14] = toMaxValueAttribute(
                 "Polished",
                 Strings.toString(metadata.polished.id),
