@@ -14,5 +14,5 @@ interface IDiamondDawn {
 
     function ship(uint tokenId) external;
 
-    function rebirth(uint tokenId) external;
+    function rebirth(uint tokenId, bytes calldata signature) external;
 }

@@ -32,7 +32,6 @@ const INVITATION_COLUMNS = [
     showIfRequest: true,
   },
   { field: "opened", headerName: "Opened At", type: "dateTime", width: 180 },
-  { field: "signed", headerName: "Signed", type: "boolean", width: 80 },
   {
     field: "used",
     headerName: "Used",

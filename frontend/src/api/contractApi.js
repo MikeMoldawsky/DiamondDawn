@@ -25,9 +25,14 @@ export const getMinePriceApi = async (contract) => {
 };
 
 // PROCESS
+const PROCESS_GAS_LIMIT = 220000;
+
 export const enterApi = async (contract, minePrice, signature) => {
   try {
-    return contract.enter(signature, { value: minePrice });
+    return contract.enter(signature, {
+      value: minePrice,
+      gasLimit: PROCESS_GAS_LIMIT,
+    });
   } catch (e) {
     logApiError(e, "enterApi");
     throw new Error(e);
@@ -36,7 +41,7 @@ export const enterApi = async (contract, minePrice, signature) => {
 
 export const mineApi = async (contract, tokenId) => {
   try {
-    return await contract.mine(tokenId);
+    return await contract.mine(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
   } catch (e) {
     logApiError(e, "mineApi");
     throw new Error(e);
@@ -45,7 +50,7 @@ export const mineApi = async (contract, tokenId) => {
 
 export const cutApi = async (contract, tokenId) => {
   try {
-    return await contract.cut(tokenId);
+    return await contract.cut(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
   } catch (e) {
     logApiError(e, "cutApi");
     throw new Error(e);
@@ -54,7 +59,7 @@ export const cutApi = async (contract, tokenId) => {
 
 export const polishApi = async (contract, tokenId) => {
   try {
-    return await contract.polish(tokenId);
+    return await contract.polish(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
   } catch (e) {
     logApiError(e, "polishApi");
     throw new Error(e);
@@ -63,16 +68,18 @@ export const polishApi = async (contract, tokenId) => {
 
 export const shipApi = async (contract, tokenId) => {
   try {
-    return await contract.ship(tokenId);
+    return await contract.ship(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
   } catch (e) {
     logApiError(e, "shipApi");
     throw new Error(e);
   }
 };
 
-export const rebirthApi = async (contract, tokenId) => {
+export const rebirthApi = async (contract, tokenId, signature) => {
   try {
-    return await contract.rebirth(tokenId);
+    return await contract.rebirth(tokenId, signature, {
+      gasLimit: PROCESS_GAS_LIMIT,
+    });
   } catch (e) {
     logApiError(e, "rebirthApi");
     throw new Error(e);

@@ -1,8 +1,6 @@
 const InviteModel = require("./models/InviteModel");
-const SignatureModel = require("./models/SignatureModel");
 const _ = require("lodash");
 const add = require("date-fns/add");
-const isEmpty = require("lodash/isEmpty");
 
 async function createInvite(address, identifier) {
   let invite = await InviteModel.findOne({ address });
@@ -13,19 +11,10 @@ async function createInvite(address, identifier) {
   return invite.save();
 }
 
-async function getSignatureByAddress(address) {
-  return await SignatureModel.findOne({ address });
-}
-
 async function getInviteObjectById(inviteId) {
   try {
     const invite = (await InviteModel.findById(inviteId)).toObject();
     if (!invite) return invite;
-
-    if (invite.address) {
-      const signature = await getSignatureByAddress(invite.address);
-      invite.signed = !isEmpty(signature);
-    }
 
     if (invite.opened && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {
       invite.expires = add(invite.opened, {

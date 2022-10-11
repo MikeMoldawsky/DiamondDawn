@@ -138,9 +138,8 @@ contract DiamondDawn is
         _shipped[_msgSender()].add(tokenId);
     }
 
-    function rebirth(uint tokenId) external isDawnAllowed(tokenId) {
-        // TODO: check signature
-        //        require(_isValid(signature), "Not allowed to rebirth");
+    function rebirth(uint tokenId, bytes calldata signature) external isDawnAllowed(tokenId) {
+        require(_isValid(signature), "Not allowed to mint");
         _shipped[_msgSender()].remove(tokenId);
         ddMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);

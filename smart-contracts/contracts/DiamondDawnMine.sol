@@ -34,7 +34,7 @@ import "./utils/StringUtils.sol";
  *
  * @title DiamondDawnMine
  * @author Mike Moldawsky (Tweezers)
-*/
+ */
 // TODO: Warning: Contract code size is 27937 bytes and exceeds 24576 bytes (a limit introduced in Spurious Dragon).
 // TODO: This contract may not be deployable on mainnet. Consider enabling the optimizer (with a low "runs" value!),
 // TODO: turning off revert strings, or using libraries.
