@@ -42,6 +42,7 @@ function CollectorPage() {
   );
 
   const isInviteStage = systemStage === SYSTEM_STAGE.INVITE && isActive;
+  const isInviteStageComplete = systemStage > SYSTEM_STAGE.INVITE
 
   console.log({ isInviteFetched, invite });
 
@@ -95,11 +96,16 @@ function CollectorPage() {
   const renderContent = () => {
     if (size(tokens) > 0)
       return <div className="cards">{map(tokens, renderTokenCard)}</div>;
+    if (systemStage > SYSTEM_STAGE.INVITE)  return (
+      <>
+        <div className="secondary-text">Invitations stage is complete</div>
+        <div className="button link-opensea">BUY ON OPENSEA</div>
+      </>
+    );
     if (!isInviteStage)
       return (
         <>
-          <div className="secondary-text">Invitations stage is closed</div>
-          <div className="button link-opensea">BUY ON OPENSEA</div>
+          <div className="secondary-text">Invitations stage not started yet</div>
         </>
       );
     if (!isInviteFetched) return null;

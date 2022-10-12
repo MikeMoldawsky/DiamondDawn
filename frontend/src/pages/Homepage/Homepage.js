@@ -4,14 +4,15 @@ import "./Homepage.scss";
 import CommonView from "components/CommonView";
 import VideoPlayer from "components/VideoPlayer";
 import infinityLogo from "assets/images/infinity-logo.png";
-import { NavLink } from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import teaserVideo from "assets/video/teaser.mp4";
 import { SYSTEM_STAGE, SYSTEM_STAGE_NAME } from "consts";
-import { setSelectedTokenId } from "store/uiReducer";
+import {setSelectedTokenId, uiSelector} from "store/uiReducer";
 import { tokensSelector } from "store/tokensReducer";
 import size from "lodash/size";
+import {isDemo} from "utils";
 
 const EnterButton = () => {
   const { systemStage, isActive } = useSelector(systemSelector);
@@ -34,8 +35,11 @@ const Homepage = () => {
   const videoPlayer = useRef(null);
   const [playVideo, setPlayVideo] = useState(false);
   const dispatch = useDispatch();
+  const { demoAuth } = useSelector(uiSelector)
+  const navigate = useNavigate()
 
   useEffect(() => {
+    isDemo() && !demoAuth && navigate("/coming-soon")
     dispatch(setSelectedTokenId(-1));
   }, []);
 

@@ -29,67 +29,16 @@ import useActionDispatch from "hooks/useActionDispatch";
 import { loadContractInfo } from "store/systemReducer";
 import AccountProvider from "containers/AccountProvider";
 import ComingSoonPage from "pages/ComingSoonPage";
-
-const AppRoutes = () => {
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (process.env.REACT_APP_DEMO_MODE === "true") {
-      navigate('/coming-soon')
-    }
-  }, [])
-
-  return (
-    <Routes>
-      <Route path="/" exact element={<Homepage />} />
-      <Route path="/coming-soon" exact element={<ComingSoonPage />} />
-      <Route path="/">
-        <Route
-          path="invite/:inviteId"
-          element={
-            <AccountProvider withLoader>
-              <InvitePage />
-            </AccountProvider>
-          }
-        />
-        <Route
-          path="process"
-          element={
-            <TokensProvider withLoader isGated>
-              <ProcessPage />
-            </TokensProvider>
-          }
-        />
-        <Route
-          path="rebirth/:tokenId"
-          element={
-            <TokensProvider withLoader isGated>
-              <RebirthPage />
-            </TokensProvider>
-          }
-        />
-        <Route path="collector" element={<CollectorPage />} />
-        <Route
-          path="nft/:tokenId"
-          element={
-            <TokensProvider withLoader isGated>
-              <NFTPage />
-            </TokensProvider>
-          }
-        />
-        <Route path="team" element={<TeamPage />} />
-        <Route path="faq" element={<FAQPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
-  );
-};
+import {useSelector} from "react-redux";
+import {uiSelector} from "store/uiReducer";
+import {isDemo} from "utils";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const actionDispatch = useActionDispatch();
+  const { demoAuth } = useSelector(uiSelector)
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");
@@ -103,7 +52,47 @@ const MainLayout = () => {
             isMenuOpen={drawerOpen}
             toggleMenu={() => setDrawerOpen(!drawerOpen)}
           />
-          <AppRoutes />
+          <Routes>
+            <Route path="/" exact element={isDemo() && !demoAuth ? <ComingSoonPage /> : <Homepage />} />
+            <Route path="/">
+              <Route
+                path="invite/:inviteId"
+                element={
+                  <AccountProvider withLoader>
+                    <InvitePage />
+                  </AccountProvider>
+                }
+              />
+              <Route
+                path="process"
+                element={
+                  <TokensProvider withLoader isGated>
+                    <ProcessPage />
+                  </TokensProvider>
+                }
+              />
+              <Route
+                path="rebirth/:tokenId"
+                element={
+                  <TokensProvider withLoader isGated>
+                    <RebirthPage />
+                  </TokensProvider>
+                }
+              />
+              <Route path="collector" element={<CollectorPage />} />
+              <Route
+                path="nft/:tokenId"
+                element={
+                  <TokensProvider withLoader isGated>
+                    <NFTPage />
+                  </TokensProvider>
+                }
+              />
+              <Route path="team" element={<TeamPage />} />
+              <Route path="faq" element={<FAQPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
           <SideMenu
             isOpen={drawerOpen}
             closeMenu={() => setDrawerOpen(false)}

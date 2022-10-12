@@ -4,9 +4,12 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import {useNavigate} from "react-router-dom";
 import DemoOnly from 'components/DemoOnly'
+import {updateUiState} from "store/uiReducer";
+import {useDispatch} from "react-redux";
 
 const ComingSoonPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const renderBgPlayer = useCallback(
     () => (
@@ -23,6 +26,10 @@ const ComingSoonPage = () => {
     []
   );
 
+  const onCorrectPassword = () => {
+    dispatch(updateUiState({ demoAuth: true }))
+  }
+
   return (
     <div className="page coming-soon">
       {renderBgPlayer()}
@@ -33,7 +40,7 @@ const ComingSoonPage = () => {
           digital with the tangible
         </div>
         <DemoOnly>
-          <PasswordBox onCorrect={() => navigate("/")} />
+          <PasswordBox onCorrect={onCorrectPassword} />
         </DemoOnly>
       </div>
     </div>

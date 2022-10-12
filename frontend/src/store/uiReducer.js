@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   selectedTokenId: -1,
   shouldIgnoreTokenTransferWatch: false,
   muted: true,
+  demoAuth: false,
 };
 
 export const setSelectedTokenId = (selectedTokenId) => ({
@@ -22,6 +23,11 @@ export const toggleMuted = () => (dispatch, getState) => {
   const { muted } = uiSelector(getState());
   dispatch(setMuted(!muted));
 };
+
+export const updateUiState = (payload) => ({
+  type: "UI.UPDATE_STATE",
+  payload,
+});
 
 export const setMuted = (muted) => ({
   type: "UI.UPDATE_STATE",
