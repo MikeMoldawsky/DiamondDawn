@@ -2,13 +2,11 @@ import React, { useCallback } from "react";
 import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
-import {useNavigate} from "react-router-dom";
 import DemoOnly from 'components/DemoOnly'
 import {updateUiState} from "store/uiReducer";
 import {useDispatch} from "react-redux";
 
 const ComingSoonPage = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch()
 
   const renderBgPlayer = useCallback(

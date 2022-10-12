@@ -6,7 +6,7 @@ import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { NavLink, useNavigate } from "react-router-dom";
-import { getTokenNextStageName, isTokenActionable } from "utils";
+import {getTokenNextStageName, isDemo, isTokenActionable} from "utils";
 import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
@@ -42,9 +42,6 @@ function CollectorPage() {
   );
 
   const isInviteStage = systemStage === SYSTEM_STAGE.INVITE && isActive;
-  const isInviteStageComplete = systemStage > SYSTEM_STAGE.INVITE
-
-  console.log({ isInviteFetched, invite });
 
   const loadInvite = async (address) => dispatch(loadInviteByAddress(address));
 
@@ -128,9 +125,11 @@ function CollectorPage() {
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
         <div className="leading-text">Collector's Room</div>
-        <AccountProvider>
-          <TokensProvider withLoader>{renderContent()}</TokensProvider>
-        </AccountProvider>
+        {!isDemo() ? (
+          <AccountProvider>
+            <TokensProvider withLoader>{renderContent()}</TokensProvider>
+          </AccountProvider>
+        ) : renderContent()}
       </div>
     </div>
   );

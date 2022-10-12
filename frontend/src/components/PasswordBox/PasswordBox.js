@@ -4,7 +4,6 @@ import "./PasswordBox.scss";
 import { demoAuthApi } from 'api/serverApi'
 
 const PASSWORD_LENGTH = 10;
-const CHECK_TIME = 1750;
 
 const PasswordBox = ({ onCorrect }) => {
   const [password, setPassword] = useState("");
@@ -25,7 +24,6 @@ const PasswordBox = ({ onCorrect }) => {
     setCheckingPassword(false);
 
     if (isCorrect) {
-      console.log("PASSWORD CORRECT");
       onCorrect();
     } else {
       setPasswordError(true);

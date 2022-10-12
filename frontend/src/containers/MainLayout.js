@@ -44,6 +44,8 @@ const MainLayout = () => {
     actionDispatch(loadContractInfo(), "get-contract");
   }, []);
 
+  const isDemoMode = isDemo()
+
   return (
     <div className={classNames("main-layout", { "drawer-open": drawerOpen })}>
       <WagmiWrapper>
@@ -53,7 +55,7 @@ const MainLayout = () => {
             toggleMenu={() => setDrawerOpen(!drawerOpen)}
           />
           <Routes>
-            <Route path="/" exact element={isDemo() && !demoAuth ? <ComingSoonPage /> : <Homepage />} />
+            <Route path="/" exact element={isDemoMode && !demoAuth ? <ComingSoonPage /> : <Homepage />} />
             <Route path="/">
               <Route
                 path="invite/:inviteId"
@@ -97,9 +99,11 @@ const MainLayout = () => {
             isOpen={drawerOpen}
             closeMenu={() => setDrawerOpen(false)}
           />
-          <ContractProvider>
-            <AppLoader />
-          </ContractProvider>
+          {!isDemoMode && (
+            <ContractProvider>
+              <AppLoader />
+            </ContractProvider>
+          )}
         </Router>
       </WagmiWrapper>
       <ToastContainer />
