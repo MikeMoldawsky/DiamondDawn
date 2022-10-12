@@ -56,6 +56,7 @@ const MainLayout = () => {
           />
           <Routes>
             <Route path="/" exact element={isDemoMode && !demoAuth ? <ComingSoonPage /> : <Homepage />} />
+            <Route path="/coming-soon" element={<ComingSoonPage />} />
             <Route path="/">
               <Route
                 path="invite/:inviteId"
