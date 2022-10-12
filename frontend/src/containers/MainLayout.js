@@ -31,11 +31,13 @@ import AccountProvider from "containers/AccountProvider";
 import ComingSoonPage from "pages/ComingSoonPage";
 
 const AppRoutes = () => {
-  // const navigate = useNavigate()
-  //
-  // useEffect(() => {
-  //   navigate('/coming-soon')
-  // }, [])
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (process.env.REACT_APP_DEMO_MODE === "true") {
+      navigate('/coming-soon')
+    }
+  }, [])
 
   return (
     <Routes>

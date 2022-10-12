@@ -91,3 +91,9 @@ export const signRebirthApi = async (address, tokenId) => {
   const res = await axios.post(`/api/sign_rebirth`, { address, tokenId });
   return res.data;
 };
+
+// Demo
+export const demoAuthApi = async (pwd) => {
+  const res = await axios.post(`/api/demo_auth`, { pwd });
+  return res.data?.auth;
+};
