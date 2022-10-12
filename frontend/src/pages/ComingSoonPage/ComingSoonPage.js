@@ -2,9 +2,9 @@ import React, { useCallback } from "react";
 import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
-import DemoOnly from "components/DemoOnly";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch } from "react-redux";
+import { isDemo } from "utils";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -37,9 +37,7 @@ const ComingSoonPage = () => {
           The first-ever virtual diamond mining experience that merges the
           digital with the tangible
         </div>
-        <DemoOnly>
-          <PasswordBox onCorrect={onCorrectPassword} />
-        </DemoOnly>
+        {isDemo() && <PasswordBox onCorrect={onCorrectPassword} />}
       </div>
     </div>
   );
