@@ -2,7 +2,7 @@ import { getNftsForOwner, initializeAlchemy, Network } from "@alch/alchemy-sdk";
 import { logApiError } from "utils";
 
 const alchemy = initializeAlchemy({
-  apiKey: process.env.REACT_ALCHEMY_KEY, // Replace with your Alchemy API Key.
+  apiKey: process.env.REACT_APP_ALCHEMY_KEY, // Replace with your Alchemy API Key.
   network: Network.ETH_MAINNET, // Replace with your network.
   maxRetries: 10,
 });
