@@ -6,7 +6,7 @@ import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { NavLink, useNavigate } from "react-router-dom";
-import {getTokenNextStageName, isDemo, isTokenActionable} from "utils";
+import { getTokenNextStageName, isDemo, isTokenActionable } from "utils";
 import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
@@ -93,16 +93,19 @@ function CollectorPage() {
   const renderContent = () => {
     if (size(tokens) > 0)
       return <div className="cards">{map(tokens, renderTokenCard)}</div>;
-    if (systemStage > SYSTEM_STAGE.INVITE)  return (
-      <>
-        <div className="secondary-text">Invitations stage is complete</div>
-        <div className="button link-opensea">BUY ON OPENSEA</div>
-      </>
-    );
+    if (systemStage > SYSTEM_STAGE.INVITE)
+      return (
+        <>
+          <div className="secondary-text">Invitations stage is complete</div>
+          <div className="button link-opensea">BUY ON OPENSEA</div>
+        </>
+      );
     if (!isInviteStage)
       return (
         <>
-          <div className="secondary-text">Invitations stage not started yet</div>
+          <div className="secondary-text">
+            Invitations stage not started yet
+          </div>
         </>
       );
     if (!isInviteFetched) return null;
@@ -129,7 +132,9 @@ function CollectorPage() {
           <AccountProvider>
             <TokensProvider withLoader>{renderContent()}</TokensProvider>
           </AccountProvider>
-        ) : renderContent()}
+        ) : (
+          renderContent()
+        )}
       </div>
     </div>
   );

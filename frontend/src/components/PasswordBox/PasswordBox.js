@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import "./PasswordBox.scss";
-import { demoAuthApi } from 'api/serverApi'
+import { demoAuthApi } from "api/serverApi";
 
 const PASSWORD_LENGTH = 10;
 

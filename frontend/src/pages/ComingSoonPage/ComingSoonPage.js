@@ -2,12 +2,12 @@ import React, { useCallback } from "react";
 import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
-import DemoOnly from 'components/DemoOnly'
-import {updateUiState} from "store/uiReducer";
-import {useDispatch} from "react-redux";
+import DemoOnly from "components/DemoOnly";
+import { updateUiState } from "store/uiReducer";
+import { useDispatch } from "react-redux";
 
 const ComingSoonPage = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const renderBgPlayer = useCallback(
     () => (
@@ -25,8 +25,8 @@ const ComingSoonPage = () => {
   );
 
   const onCorrectPassword = () => {
-    dispatch(updateUiState({ demoAuth: true }))
-  }
+    dispatch(updateUiState({ demoAuth: true }));
+  };
 
   return (
     <div className="page coming-soon">

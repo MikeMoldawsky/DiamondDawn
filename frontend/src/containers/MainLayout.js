@@ -29,22 +29,22 @@ import useActionDispatch from "hooks/useActionDispatch";
 import { loadContractInfo } from "store/systemReducer";
 import AccountProvider from "containers/AccountProvider";
 import ComingSoonPage from "pages/ComingSoonPage";
-import {useSelector} from "react-redux";
-import {uiSelector} from "store/uiReducer";
-import {isDemo} from "utils";
+import { useSelector } from "react-redux";
+import { uiSelector } from "store/uiReducer";
+import { isDemo } from "utils";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const actionDispatch = useActionDispatch();
-  const { demoAuth } = useSelector(uiSelector)
+  const { demoAuth } = useSelector(uiSelector);
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");
   }, []);
 
-  const isDemoMode = isDemo()
+  const isDemoMode = isDemo();
 
   return (
     <div className={classNames("main-layout", { "drawer-open": drawerOpen })}>
@@ -55,7 +55,13 @@ const MainLayout = () => {
             toggleMenu={() => setDrawerOpen(!drawerOpen)}
           />
           <Routes>
-            <Route path="/" exact element={isDemoMode && !demoAuth ? <ComingSoonPage /> : <Homepage />} />
+            <Route
+              path="/"
+              exact
+              element={
+                isDemoMode && !demoAuth ? <ComingSoonPage /> : <Homepage />
+              }
+            />
             <Route path="/coming-soon" element={<ComingSoonPage />} />
             <Route path="/">
               <Route
