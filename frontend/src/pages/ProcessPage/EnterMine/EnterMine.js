@@ -63,7 +63,12 @@ const EnterMine = ({ invite }) => {
     }
     const tx = await enterApi(contract, minePrice, signature);
     await tx.wait();
-    await confirmInviteUsedApi(invite._id, account.address);
+    try {
+      await confirmInviteUsedApi(invite._id, account.address);
+    }
+    catch (e) {
+      // do not show error not to confuse the user
+    }
     return tx;
   };
 
