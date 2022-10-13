@@ -2,37 +2,41 @@ const InviteModel = require("./models/InviteModel");
 const _ = require("lodash");
 const add = require("date-fns/add");
 
-async function createInvite() {
-  try {
-    const invite = new InviteModel({});
-    return await invite.save();
-  } catch (e) {
-    console.log(`Failed to create invite`, e);
+async function createInvite(address, identifier) {
+  let invite = await InviteModel.findOne({ address });
+  if (invite) {
+    throw new Error("Address already invited");
   }
+  invite = new InviteModel({ approved: true, address, identifier });
+  return invite.save();
 }
 
-function getInviteObject(inviteModel) {
+async function getInviteObjectById(inviteId) {
   try {
-    const invite = inviteModel.toObject();
-    const ttl = parseInt(process.env.REACT_APP_INVITE_TTL_SECONDS);
-    if (invite && invite.opened && ttl > 0) {
-      invite.expires = add(invite.opened, { seconds: ttl });
+    const invite = (await InviteModel.findById(inviteId)).toObject();
+    if (!invite) return invite;
 
-      if (invite.expires < new Date()) {
+    if (invite.opened && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {
+      invite.expires = add(invite.opened, {
+        seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
+      });
+
+      if (invite.used || invite.expires < new Date()) {
         invite.revoked = true;
       }
     }
 
     return invite;
   } catch (e) {
-    console.log(`Failed to get invite ${getInviteObject._id}`, e);
+    console.log(`Failed to get invite ${inviteId}`, e);
   }
 }
 
-async function getInvites() {
+async function getInvites(approved) {
   try {
-    const invites = await InviteModel.find();
-    return _.map(invites, getInviteObject);
+    const dbInvites = await InviteModel.find({ approved });
+    const invites = await Promise.all(_.map(dbInvites, getInviteObjectById));
+    return _.orderBy(invites, ["created"], ["desc"]);
   } catch (e) {
     console.log(`Failed to get all invites`, e);
   }

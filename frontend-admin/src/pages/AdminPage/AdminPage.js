@@ -20,6 +20,7 @@ import {
 import useDDContract from "hooks/useDDContract";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
+import { getInvitesApi } from "api/serverApi";
 
 const TABS = [
   {
@@ -37,7 +38,8 @@ const TABS = [
   },
   { title: "Ship", component: () => <StageTab stage={SYSTEM_STAGE.SHIP} /> },
   { title: "Config", component: () => <ConfigTab /> },
-  { title: "Invitations", component: () => <InvitationsTab /> },
+  { title: "Invitations", component: () => <InvitationsTab approved={true} /> },
+  { title: "Requests", component: () => <InvitationsTab approved={false} /> },
   { title: "Diamonds", component: () => <DiamondsTab /> },
 ];
 

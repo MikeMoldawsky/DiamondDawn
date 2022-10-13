@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,16 +27,24 @@ import SideMenu from "components/SideMenu";
 import CollectorPage from "pages/CollectorPage";
 import useActionDispatch from "hooks/useActionDispatch";
 import { loadContractInfo } from "store/systemReducer";
+import AccountProvider from "containers/AccountProvider";
+import ComingSoonPage from "pages/ComingSoonPage";
+import { useSelector } from "react-redux";
+import { uiSelector } from "store/uiReducer";
+import { isDemo } from "utils";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const actionDispatch = useActionDispatch();
+  const { demoAuth } = useSelector(uiSelector);
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");
   }, []);
+
+  const isDemoMode = isDemo();
 
   return (
     <div className={classNames("main-layout", { "drawer-open": drawerOpen })}>
@@ -46,14 +55,21 @@ const MainLayout = () => {
             toggleMenu={() => setDrawerOpen(!drawerOpen)}
           />
           <Routes>
-            <Route path="/" exact element={<Homepage />} />
+            <Route
+              path="/"
+              exact
+              element={
+                isDemoMode && !demoAuth ? <ComingSoonPage /> : <Homepage />
+              }
+            />
+            <Route path="/coming-soon" element={<ComingSoonPage />} />
             <Route path="/">
               <Route
                 path="invite/:inviteId"
                 element={
-                  <TokensProvider withLoader>
+                  <AccountProvider withLoader>
                     <InvitePage />
-                  </TokensProvider>
+                  </AccountProvider>
                 }
               />
               <Route
@@ -72,14 +88,7 @@ const MainLayout = () => {
                   </TokensProvider>
                 }
               />
-              <Route
-                path="collector"
-                element={
-                  <TokensProvider withLoader isGated>
-                    <CollectorPage />
-                  </TokensProvider>
-                }
-              />
+              <Route path="collector" element={<CollectorPage />} />
               <Route
                 path="nft/:tokenId"
                 element={
@@ -97,9 +106,11 @@ const MainLayout = () => {
             isOpen={drawerOpen}
             closeMenu={() => setDrawerOpen(false)}
           />
-          <ContractProvider>
-            <AppLoader />
-          </ContractProvider>
+          {!isDemoMode && (
+            <ContractProvider>
+              <AppLoader />
+            </ContractProvider>
+          )}
         </Router>
       </WagmiWrapper>
       <ToastContainer />

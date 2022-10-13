@@ -1,25 +1,20 @@
 const InviteModel = require("./models/InviteModel");
-const SignatureModel = require("./models/SignatureModel");
 const add = require("date-fns/add");
 const ethers = require("ethers");
-
-const signer = new ethers.Wallet(process.env.SIGNER_PRIVATE_KEY);
+const signer = require("../helpers/signer");
 
 async function getInviteObjectById(inviteId) {
   try {
     const invite = (await InviteModel.findById(inviteId)).toObject();
-    if (
-      invite &&
-      invite.opened &&
-      process.env.REACT_APP_INVITE_TTL_SECONDS > 0
-    ) {
+    if (!invite) return invite;
+
+    if (invite.opened && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {
       invite.expires = add(invite.opened, {
         seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
       });
 
-      if (invite.expires < new Date()) {
+      if (invite.used || invite.expires < new Date()) {
         invite.revoked = true;
-        console.log("Invite expired", { invite });
       }
     }
 
@@ -33,19 +28,9 @@ async function openInvite(inviteId, country, state) {
   try {
     // check that the invite exist and not revoked or expired
     const invite = await getInviteObjectById(inviteId);
-    if (!invite) {
-      console.log("openInvite - invite not found", { inviteId });
+    if (!invite || invite.used || invite.revoked || !invite.approved) {
+      console.log("openInvite - Invalid invite", invite);
       return null;
-    }
-
-    if (invite.used) {
-      console.log("openInvite - invite used", { invite });
-      return { invite };
-    }
-
-    if (invite.revoked) {
-      console.log("openInvite - invite revoked", { invite });
-      return { invite };
     }
 
     await InviteModel.findOneAndUpdate(
@@ -64,49 +49,22 @@ async function openInvite(inviteId, country, state) {
 
 async function signInvite(inviteId, address) {
   if (!ethers.utils.isAddress(address)) {
-    throw new Error(
-      `signInvite failed - invalid Ethereum address - "${address}"`
-    );
+    throw new Error(`Invalid Ethereum address - "${address}"`);
   }
 
   // check that the invite exist and not revoked or expired
   const invite = await getInviteObjectById(inviteId);
-  if (!invite || invite.revoked || invite.used) {
-    throw new Error(
-      `signInvite failed - invite not found, revoked or used - "${inviteId}"`
-    );
+  if (!invite || invite.revoked || invite.used || !invite.approved) {
+    throw new Error(`Invalid invite`);
   }
 
-  let signature = await SignatureModel.findOne({ address });
-  let sig;
-  if (signature) {
-    sig = signature.sig;
-  } else {
-    // Convert provided `ethAddress` to correct checksum address format.
-    // This step is critical as signing an incorrectly formatted wallet address
-    // can result in invalid signatures when it comes to minting.
-    let addr = ethers.utils.getAddress(address);
-
-    // Create the message to be signed using the checksum formatted `addr` value.
-    let message = ethers.utils.arrayify(`0x${addr.slice(2).padStart(64, "0")}`);
-
-    // Sign the message using `signer`.
-    sig = await signer.signMessage(message);
-
-    // Save Signature to DB
-    await SignatureModel.create({ address, sig });
-
-    // Save ethAddress and n invite
-    await InviteModel.findOneAndUpdate(
-      { _id: inviteId },
-      { ethAddress: address }
-    );
+  if (address !== invite.address) {
+    throw new Error(`Wrong Ethereum address`);
   }
 
-  return {
-    invite: await getInviteObjectById(inviteId),
-    signature: sig,
-  };
+  const signature = await signer.signAddress(address);
+
+  return { invite, signature };
 }
 
 async function confirmInviteUsed(inviteId) {
@@ -128,9 +86,32 @@ async function confirmInviteUsed(inviteId) {
   }
 }
 
+async function createInviteRequest(address, identifier, country, state) {
+  if (!ethers.utils.isAddress(address)) {
+    throw new Error(`Invalid Ethereum address - "${address}"`);
+  }
+  let invite = await InviteModel.findOne({ address });
+  if (invite) {
+    throw new Error("Address already invited");
+  }
+  invite = new InviteModel({
+    identifier,
+    address,
+    location: `${state}, ${country}`,
+  });
+  return invite.save();
+}
+
+async function getInviteByAddress(address) {
+  const invite = await InviteModel.findOne({ address });
+  return invite ? getInviteObjectById(invite) : null;
+}
+
 module.exports = {
   getInviteObjectById,
   openInvite,
   signInvite,
   confirmInviteUsed,
+  createInviteRequest,
+  getInviteByAddress,
 };

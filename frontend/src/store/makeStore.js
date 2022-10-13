@@ -5,10 +5,12 @@ import { systemReducer } from "./systemReducer";
 import { uiReducer } from "./uiReducer";
 import { tokensReducer } from "./tokensReducer";
 import { actionStatusReducer } from "./actionStatusReducer";
+import { inviteReducer } from "store/inviteReducer";
 
 const rootReducer = combineReducers({
   system: systemReducer,
   tokens: tokensReducer,
+  invite: inviteReducer,
   ui: uiReducer,
   actionStatus: actionStatusReducer,
 });

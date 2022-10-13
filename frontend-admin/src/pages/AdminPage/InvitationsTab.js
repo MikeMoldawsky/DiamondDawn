@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faLink } from "@fortawesome/free-solid-svg-icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { utils as ethersUtils } from "ethers";
 import {
-  getInvitesApi,
   createInviteApi,
   updateInviteApi,
   deleteInviteApi,
+  getInvitesApi,
 } from "api/serverApi";
+import RequestForm from "components/RequestForm";
 
 const INVITATION_COLUMNS = [
   {
@@ -20,27 +21,41 @@ const INVITATION_COLUMNS = [
     headerName: "Created At",
     type: "dateTime",
     width: 180,
+    showIfRequest: true,
   },
-  { field: "opened", headerName: "Opened At", type: "dateTime", width: 180 },
   {
-    field: "revoked",
-    headerName: "Expired",
+    field: "approved",
+    headerName: "Approved",
     type: "boolean",
     width: 100,
+    editable: true,
+    showIfRequest: true,
   },
+  { field: "opened", headerName: "Opened At", type: "dateTime", width: 180 },
   {
     field: "used",
     headerName: "Used",
     type: "boolean",
-    width: 100,
+    width: 80,
   },
-  { field: "location", headerName: "Location", width: 150 },
-  { field: "twitter", headerName: "Twitter", width: 150, editable: true },
   {
-    field: "ethAddress",
-    headerName: "ETH Address",
-    width: 400,
+    field: "revoked",
+    headerName: "Expired",
+    type: "boolean",
+    width: 80,
+  },
+  {
+    field: "identifier",
+    headerName: "Twitter/Email",
+    width: 200,
     editable: true,
+    showIfRequest: true,
+  },
+  {
+    field: "address",
+    headerName: "Address",
+    width: 400,
+    showIfRequest: true,
     preProcessEditCellProps: (params) => {
       const isValid =
         _.isEmpty(params.props.value) ||
@@ -48,7 +63,20 @@ const INVITATION_COLUMNS = [
       return { ...params.props, error: !isValid };
     },
   },
-  { field: "note", headerName: "Notes", width: 300, flex: 1, editable: true },
+  {
+    field: "location",
+    headerName: "Location",
+    width: 150,
+    showIfRequest: true,
+  },
+  {
+    field: "note",
+    headerName: "Notes",
+    width: 300,
+    flex: 1,
+    editable: true,
+    showIfRequest: true,
+  },
 ];
 
 const ClipboardButton = ({ inviteId }) => {
@@ -79,16 +107,33 @@ const ClipboardButton = ({ inviteId }) => {
   );
 };
 
-const InvitationsTab = () => {
+const ApproveButton = ({ inviteId, onApprove }) => {
+  const approve = async () => {
+    await updateInviteApi({ _id: inviteId, approved: true });
+    onApprove();
+  };
+
+  return (
+    <GridActionsCellItem
+      icon={<FontAwesomeIcon icon={faCheck} onClick={approve} />}
+      label="Edit"
+      className="textPrimary"
+      color="inherit"
+    />
+  );
+};
+
+const InvitationsTab = ({ approved }) => {
   const [invitations, setInvitations] = useState([]);
 
   const fetchInvites = async () => {
-    setInvitations(await getInvitesApi());
+    setInvitations(await getInvitesApi(approved));
   };
 
   useEffect(() => {
+    setInvitations([]);
     fetchInvites();
-  }, []);
+  }, [approved]);
 
   const CRUD = {
     create: createInviteApi,
@@ -96,18 +141,47 @@ const InvitationsTab = () => {
     delete: deleteInviteApi,
   };
 
+  const columns = approved
+    ? INVITATION_COLUMNS
+    : _.filter(INVITATION_COLUMNS, ({ showIfRequest }) => showIfRequest);
+
+  const setApproved = (inviteId) => {
+    setInvitations(
+      _.map(invitations, (invite) => {
+        return invite._id === inviteId ? { ...invite, approved: true } : invite;
+      })
+    );
+  };
+
+  const renderActions = ({ id }) =>
+    approved
+      ? [<ClipboardButton inviteId={id} />]
+      : [<ApproveButton inviteId={id} onApprove={() => setApproved(id)} />];
+
+  const onCreateSuccess = async () => {
+    setInvitations(await getInvitesApi(approved));
+  };
+
   return (
     <div className={classNames("tab-content invitations")}>
       <h1>Invitations</h1>
+      {approved && (
+        <RequestForm
+          createInviteApi={createInviteApi}
+          optionalIdentity
+          text="create Invitation"
+          onSuccess={onCreateSuccess}
+        />
+      )}
       <CRUDTable
         CRUD={CRUD}
-        columns={INVITATION_COLUMNS}
+        columns={columns}
         rows={invitations}
         setRows={setInvitations}
         itemName="Invitation"
         getNewItem={createInviteApi}
         newCreatedOnServer
-        renderActions={({ id }) => [<ClipboardButton inviteId={id} />]}
+        renderActions={renderActions}
       />
     </div>
   );

@@ -155,3 +155,5 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
     isTokenActionable(token, systemStage, isActive)
   );
 };
+
+export const isDemo = () => process.env.REACT_APP_DEMO_MODE === "true";

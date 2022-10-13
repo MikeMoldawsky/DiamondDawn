@@ -50,8 +50,8 @@ export const openInviteApi = async (inviteId) => {
   }
 };
 
-export const signInviteApi = async (inviteId, ethAddress) => {
-  const res = await axios.post(`/api/sign_invite`, { inviteId, ethAddress });
+export const signInviteApi = async (inviteId, address) => {
+  const res = await axios.post(`/api/sign_invite`, { inviteId, address });
   return res.data;
 };
 
@@ -62,4 +62,38 @@ export const confirmInviteUsedApi = async (inviteId) => {
   } catch (e) {
     return null;
   }
+};
+
+export const createInviteRequestApi = async (address, identifier) => {
+  const { country, state } = getLocation();
+  const { data: invite } = await axios.post(`/api/request_invite`, {
+    address,
+    identifier,
+    country,
+    state,
+  });
+  return invite;
+};
+
+export const getInviteByAddressApi = async (address) => {
+  try {
+    const { data: invite } = await axios.post(`/api/get_invite_by_address`, {
+      address,
+    });
+    return invite;
+  } catch (e) {
+    return null;
+  }
+};
+
+// Signature
+export const signRebirthApi = async (address, tokenId) => {
+  const res = await axios.post(`/api/sign_rebirth`, { address, tokenId });
+  return res.data;
+};
+
+// Demo
+export const demoAuthApi = async (pwd) => {
+  const res = await axios.post(`/api/demo_auth`, { pwd });
+  return res.data?.auth;
 };

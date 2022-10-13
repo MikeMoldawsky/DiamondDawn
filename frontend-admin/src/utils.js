@@ -6,7 +6,11 @@ import fromUnixTime from "date-fns/fromUnixTime";
 import format from "date-fns/format";
 
 export const parseError = (e) => {
+  if (e.response?.data) return e.response.data;
   let message = _.get(e, "error.data.message", "");
+  if (!message) {
+    message = _.get(e, "error.message", "");
+  }
   if (!message) {
     message = _.get(e, "message", "");
     try {
