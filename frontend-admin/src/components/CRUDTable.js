@@ -18,6 +18,7 @@ const CRUDTable = ({
   renderActions,
   readonly,
   getRowId = (row) => row._id,
+  getIsRowDeletable,
   ...gridProps
 }) => {
   const [rowModesModel, setRowModesModel] = useState({});
@@ -31,8 +32,8 @@ const CRUDTable = ({
       headerName: "Actions",
       width: 120,
       cellClassName: "actions",
-      getActions: (row) => {
-        const { id } = row;
+      getActions: (params) => {
+        const { id } = params;
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
@@ -53,7 +54,7 @@ const CRUDTable = ({
         }
 
         return [
-          ...(renderActions ? renderActions(row) : []),
+          ...(renderActions ? renderActions(params) : []),
           <GridActionsCellItem
             icon={<EditIcon />}
             label="Edit"
@@ -61,12 +62,14 @@ const CRUDTable = ({
             onClick={handleEditClick(id)}
             color="inherit"
           />,
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteClick(id)}
-            color="inherit"
-          />,
+          ...(!getIsRowDeletable || getIsRowDeletable(params.row) ? [
+            <GridActionsCellItem
+              icon={<DeleteIcon />}
+              label="Delete"
+              onClick={handleDeleteClick(id)}
+              color="inherit"
+            />
+          ] : []),
         ];
       },
     });

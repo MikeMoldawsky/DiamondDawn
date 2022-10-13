@@ -56,7 +56,10 @@ async function updateInvite(inviteProps) {
 
 async function deleteInvite(inviteId) {
   try {
-    return await InviteModel.findOneAndDelete({ _id: inviteId });
+    const invite = await InviteModel.findById(inviteId)
+    if (invite && !invite.used) {
+      return await InviteModel.findOneAndDelete({ _id: inviteId });
+    }
   } catch (e) {
     console.log(`Failed to DELETE Invite`, e);
   }
