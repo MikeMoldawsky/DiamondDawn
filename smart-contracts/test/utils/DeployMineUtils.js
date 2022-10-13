@@ -8,8 +8,8 @@ async function deployMine() {
   const serializer = await SerializerLib.deploy();
   const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine", {
     libraries: {
-      Serializer: serializer.address
-    }
+      Serializer: serializer.address,
+    },
   });
   const diamondDawnMine = await DiamondDawnMine.deploy();
   await diamondDawnMine.deployed();

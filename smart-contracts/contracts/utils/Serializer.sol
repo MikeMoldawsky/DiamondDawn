@@ -6,8 +6,7 @@ import "../objects/Diamond.sol";
 import "../objects/Mine.sol";
 
 library Serializer {
-
-   struct NFTMetadata {
+    struct NFTMetadata {
         string name;
         string description;
         string createdBy;
@@ -33,14 +32,7 @@ library Serializer {
         string memory value,
         string memory displayType
     ) public pure returns (Attribute memory) {
-        return
-            Attribute({
-                traitType: traitType,
-                value: value,
-                maxValue: "",
-                displayType: displayType,
-                isString: false
-            });
+        return Attribute({traitType: traitType, value: value, maxValue: "", displayType: displayType, isString: false});
     }
 
     function toMaxValueAttribute(
@@ -67,10 +59,7 @@ library Serializer {
         bytes_ = abi.encodePacked(bytes_, _pushAttr("created_by", metadata.createdBy, true, false));
         bytes_ = abi.encodePacked(bytes_, _pushAttr("image", metadata.image, true, false));
         bytes_ = abi.encodePacked(bytes_, _pushAttr("animation_url", metadata.animationUrl, true, false));
-        bytes_ = abi.encodePacked(
-            bytes_,
-            _pushAttr("attributes", _serializeAttrs(metadata.attributes), false, true)
-        );
+        bytes_ = abi.encodePacked(bytes_, _pushAttr("attributes", _serializeAttrs(metadata.attributes), false, true));
         bytes_ = abi.encodePacked(bytes_, _closeObject());
         return string(bytes_);
     }
@@ -93,10 +82,7 @@ library Serializer {
             bytes_ = abi.encodePacked(bytes_, _pushAttr("display_type", attribute.displayType, true, false));
         }
         if (bytes(attribute.maxValue).length > 0) {
-            bytes_ = abi.encodePacked(
-                bytes_,
-                _pushAttr("max_value", attribute.maxValue, attribute.isString, false)
-            );
+            bytes_ = abi.encodePacked(bytes_, _pushAttr("max_value", attribute.maxValue, attribute.isString, false));
         }
         bytes_ = abi.encodePacked(bytes_, _pushAttr("trait_type", attribute.traitType, true, false));
         bytes_ = abi.encodePacked(bytes_, _pushAttr("value", attribute.value, attribute.isString, true));
@@ -192,11 +178,9 @@ library Serializer {
 
     function getName(Metadata memory metadata, uint tokenId) public pure returns (string memory) {
         if (metadata.state_ == Stage.INVITE) return string.concat("Mine Key #", Strings.toString(tokenId));
-        if (metadata.state_ == Stage.MINE)
-            return string.concat("Rough Stone #", Strings.toString(metadata.rough.id));
+        if (metadata.state_ == Stage.MINE) return string.concat("Rough Stone #", Strings.toString(metadata.rough.id));
         if (metadata.state_ == Stage.CUT) return string.concat("Formation #", Strings.toString(metadata.cut.id));
-        if (metadata.state_ == Stage.POLISH)
-            return string.concat("Diamond #", Strings.toString(metadata.polished.id));
+        if (metadata.state_ == Stage.POLISH) return string.concat("Diamond #", Strings.toString(metadata.polished.id));
         if (metadata.state_ == Stage.SHIP) return string.concat("Dawn #", Strings.toString(metadata.reborn.id));
         revert();
     }
@@ -234,5 +218,4 @@ library Serializer {
         if (color == Color.Z) return "Z";
         revert();
     }
-
 }

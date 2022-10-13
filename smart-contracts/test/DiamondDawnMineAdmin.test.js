@@ -20,11 +20,14 @@ describe("Diamond Dawn Mine Admin", () => {
       const [owner, user1, user2] = await ethers.getSigners();
       const SerializerLib = await ethers.getContractFactory("Serializer");
       const serializer = await SerializerLib.deploy();
-      const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine", {
-        libraries: {
-          Serializer: serializer.address,
+      const DiamondDawnMine = await ethers.getContractFactory(
+        "DiamondDawnMine",
+        {
+          libraries: {
+            Serializer: serializer.address,
+          },
         }
-      });
+      );
       const diamondDawnMine = await DiamondDawnMine.deploy([]);
       await diamondDawnMine.deployed();
       const adminRole = await diamondDawnMine.DEFAULT_ADMIN_ROLE();

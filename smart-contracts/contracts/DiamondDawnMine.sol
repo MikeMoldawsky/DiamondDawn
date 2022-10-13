@@ -33,10 +33,7 @@ import "./utils/Serializer.sol";
  *
  * @title DiamondDawnMine
  * @author Mike Moldawsky (Tweezers)
-*/
-// TODO: Warning: Contract code size is 27937 bytes and exceeds 24576 bytes (a limit introduced in Spurious Dragon).
-// TODO: This contract may not be deployable on mainnet. Consider enabling the optimizer (with a low "runs" value!),
-// TODO: turning off revert strings, or using libraries.
+ */
 contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondDawnMineAdmin {
     bool public isLocked; // mine is locked forever.
     bool public isInitialized;
@@ -263,12 +260,23 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
 
         Certificate memory certificate = metadata.certificate;
         if (uint(Stage.CUT) <= uint(state_)) {
-            attributes[5] = Serializer.toStrAttribute("Color", Serializer.toColorStr(certificate.color, certificate.toColor));
+            attributes[5] = Serializer.toStrAttribute(
+                "Color",
+                Serializer.toColorStr(certificate.color, certificate.toColor)
+            );
             attributes[6] = Serializer.toStrAttribute("Cut", Serializer.toGradeStr(certificate.cut));
-            attributes[7] = Serializer.toStrAttribute("Fluorescence", Serializer.toFluorescenceStr(certificate.fluorescence));
+            attributes[7] = Serializer.toStrAttribute(
+                "Fluorescence",
+                Serializer.toFluorescenceStr(certificate.fluorescence)
+            );
             attributes[8] = Serializer.toStrAttribute(
                 "Measurements",
-                Serializer.toMeasurementsStr(certificate.shape, certificate.length, certificate.width, certificate.depth)
+                    Serializer.toMeasurementsStr(
+                    certificate.shape,
+                    certificate.length,
+                    certificate.width,
+                    certificate.depth
+                )
             );
             attributes[9] = Serializer.toStrAttribute("Shape", Serializer.toShapeStr(certificate.shape));
             // TODO: validate that OpenSea works with 2 attributes called "Cut" or change name
@@ -326,7 +334,6 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         revert("Points");
     }
 
-    // TODO: might need to use toShapeStr instead in order to reduce the contract size.
     function _getResourceName(Metadata memory metadata) private pure returns (string memory) {
         if (metadata.state_ == Stage.INVITE || metadata.state_ == Stage.SHIP) return "resource";
         else if (metadata.state_ == Stage.MINE) {
