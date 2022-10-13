@@ -1,5 +1,4 @@
 import { logApiError } from "utils";
-import { utils as ethersUtils } from "ethers";
 
 // STATE/STORAGE
 export const getSystemStageApi = async (contract) => {
@@ -28,62 +27,32 @@ export const getMinePriceApi = async (contract) => {
 const PROCESS_GAS_LIMIT = 220000;
 
 export const enterApi = async (contract, minePrice, signature) => {
-  try {
-    return contract.enter(signature, {
-      value: minePrice,
-      gasLimit: PROCESS_GAS_LIMIT,
-    });
-  } catch (e) {
-    logApiError(e, "enterApi");
-    throw new Error(e);
-  }
+  return contract.enter(signature, {
+    value: minePrice,
+    gasLimit: PROCESS_GAS_LIMIT,
+  });
 };
 
 export const mineApi = async (contract, tokenId) => {
-  try {
-    return await contract.mine(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
-  } catch (e) {
-    logApiError(e, "mineApi");
-    throw new Error(e);
-  }
+  return contract.mine(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
 };
 
 export const cutApi = async (contract, tokenId) => {
-  try {
-    return await contract.cut(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
-  } catch (e) {
-    logApiError(e, "cutApi");
-    throw new Error(e);
-  }
+  return contract.cut(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
 };
 
 export const polishApi = async (contract, tokenId) => {
-  try {
-    return await contract.polish(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
-  } catch (e) {
-    logApiError(e, "polishApi");
-    throw new Error(e);
-  }
+  return contract.polish(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
 };
 
 export const shipApi = async (contract, tokenId) => {
-  try {
-    return await contract.ship(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
-  } catch (e) {
-    logApiError(e, "shipApi");
-    throw new Error(e);
-  }
+  return contract.ship(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
 };
 
 export const rebirthApi = async (contract, tokenId, signature) => {
-  try {
-    return await contract.rebirth(tokenId, signature, {
-      gasLimit: PROCESS_GAS_LIMIT,
-    });
-  } catch (e) {
-    logApiError(e, "rebirthApi");
-    throw new Error(e);
-  }
+  return contract.rebirth(tokenId, signature, {
+    gasLimit: PROCESS_GAS_LIMIT,
+  });
 };
 
 // TOKEN URI
