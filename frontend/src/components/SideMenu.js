@@ -1,11 +1,14 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
 import { NavLink } from "react-router-dom";
-import TokensProvider from "containers/TokensProvider";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
   return (
-    <Drawer anchor="right" open={isOpen}>
+    <Drawer
+      anchor="right"
+      open={isOpen}
+      ModalProps={{ onBackdropClick: closeMenu }}
+    >
       <NavLink to={"/collector"} onClick={closeMenu}>
         <div className="menu-item">COLLECTOR'S ROOM</div>
       </NavLink>

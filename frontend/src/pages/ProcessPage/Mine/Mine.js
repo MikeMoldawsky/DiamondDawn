@@ -6,11 +6,11 @@ import Countdown from "components/Countdown";
 import { tokenByIdSelector } from "store/tokensReducer";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
-import { DUMMY_VIDEO_URL } from "consts";
 import useMountLogger from "hooks/useMountLogger";
 import { mineApi } from "api/contractApi";
 import { uiSelector } from "store/uiReducer";
 import DiamondPicker from "components/DiamondPicker";
+import { getCDNObjectUrl } from "utils";
 
 const Mine = () => {
   const contract = useDDContract();
@@ -43,7 +43,7 @@ const Mine = () => {
   return (
     <ActionView
       transact={() => mineApi(contract, selectedTokenId)}
-      videoUrl={DUMMY_VIDEO_URL}
+      videoUrl={getCDNObjectUrl("/videos/post_mine.mp4")}
       requireActionable
     >
       <MineContent />

@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch } from "react-redux";
-import { isDemo } from "utils";
+import { getCDNObjectUrl, isDemo } from "utils";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const ComingSoonPage = () => {
   const renderBgPlayer = useCallback(
     () => (
       <ReactPlayer
-        url="https://tweezers-public.s3.us-east-1.amazonaws.com/COMING_SOON.mp4"
+        url={getCDNObjectUrl("/videos/coming_soon.mp4")}
         playing
         playsinline
         controls={false}
