@@ -4,11 +4,11 @@ import useDDContract from "hooks/useDDContract";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { tokenByIdSelector } from "store/tokensReducer";
-import { DUMMY_VIDEO_URL } from "consts";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import { polishApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
+import {getCDNObjectUrl} from "utils";
 
 const Polish = () => {
   const contract = useDDContract();
@@ -45,7 +45,7 @@ const Polish = () => {
   return (
     <ActionView
       transact={() => polishApi(contract, selectedTokenId)}
-      videoUrl={DUMMY_VIDEO_URL}
+      videoUrl={getCDNObjectUrl("/videos/final.mp4")}
       requireActionable
     >
       <PolishContent />

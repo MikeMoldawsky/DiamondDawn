@@ -11,11 +11,11 @@ import { tokensSelector, watchTokenMinedBy } from "store/tokensReducer";
 import { useAccount } from "wagmi";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
-import { DUMMY_VIDEO_URL } from "consts";
 import useMountLogger from "hooks/useMountLogger";
 import { enterApi } from "api/contractApi";
 import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
+import {getCDNObjectUrl} from "utils";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (
@@ -109,7 +109,7 @@ const EnterMine = ({ invite }) => {
     <ActionView
       watch={watchTokenMinedBy(account.address, maxTokenId)}
       transact={executeEnterMine}
-      videoUrl={DUMMY_VIDEO_URL}
+      videoUrl={getCDNObjectUrl("/videos/final.mp4")}
     >
       <EnterMineContent />
     </ActionView>

@@ -12,7 +12,7 @@ const ComingSoonPage = () => {
   const renderBgPlayer = useCallback(
     () => (
       <ReactPlayer
-        url={getCDNObjectUrl('COMING_SOON_3_LOOPS_LR.mp4')}
+        url={getCDNObjectUrl('/videos/coming_soon.mp4')}
         playing
         playsinline
         controls={false}

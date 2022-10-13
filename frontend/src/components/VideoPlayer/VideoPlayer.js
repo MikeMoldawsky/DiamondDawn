@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
-import { DUMMY_VIDEO_URL } from "consts";
 import { useDispatch, useSelector } from "react-redux";
 import { setMuted, uiSelector } from "store/uiReducer";
 
@@ -8,7 +7,7 @@ const GLOBAL_SHOW_VIDEO = true;
 
 const VideoPlayer = ({
   children,
-  src = DUMMY_VIDEO_URL,
+  src,
   onEnded,
   onPlay,
   controls,

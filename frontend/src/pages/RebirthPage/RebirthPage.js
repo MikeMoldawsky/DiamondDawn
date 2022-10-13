@@ -4,7 +4,7 @@ import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
 import ActionButton from "components/ActionButton";
 import { rebirthApi } from "api/contractApi";
-import { DUMMY_VIDEO_URL, SYSTEM_STAGE } from "consts";
+import { SYSTEM_STAGE } from "consts";
 import ActionView from "components/ActionView";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
@@ -12,6 +12,7 @@ import { setSelectedTokenId } from "store/uiReducer";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { signRebirthApi } from "api/serverApi";
 import { useAccount } from "wagmi";
+import {getCDNObjectUrl} from "utils";
 
 function RebirthPage() {
   const { tokenId } = useParams();
@@ -74,7 +75,7 @@ function RebirthPage() {
         <ActionView
           isRebirth
           transact={executeRebirth}
-          videoUrl={DUMMY_VIDEO_URL}
+          videoUrl={getCDNObjectUrl("/videos/final.mp4")}
         >
           <RebirthContent />
         </ActionView>

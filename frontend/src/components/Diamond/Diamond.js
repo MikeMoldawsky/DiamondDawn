@@ -10,7 +10,7 @@ const Diamond = ({ diamond }) => {
   const shape = getTokenTrait(diamond, 'Shape') || SHAPE_NAME.NO_SHAPE
 
   const fileName = isBurned ? "burn.mp4" : DIAMOND_ANIMATION_MAPPING[stage][shape]
-  const videoUrl = getCDNObjectUrl(`diamond-dawn-nft-mocks/${fileName}`)
+  const videoUrl = getCDNObjectUrl(`/diamond-dawn-nft-mocks/${fileName}`)
 
   console.log('Diamond', { diamond, shape, videoUrl, animation_url })
 

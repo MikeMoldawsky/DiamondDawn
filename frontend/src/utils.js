@@ -158,4 +158,4 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
 
 export const isDemo = () => process.env.REACT_APP_DEMO_MODE === "true";
 
-export const getCDNObjectUrl = objectPath => `${process.env.REACT_APP_CDN_URL}/${objectPath}`
+export const getCDNObjectUrl = objectPath => `${process.env.REACT_APP_CDN_URL}${objectPath}`

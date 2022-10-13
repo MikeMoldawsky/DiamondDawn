@@ -3,16 +3,14 @@ import classNames from "classnames";
 import "./Homepage.scss";
 import CommonView from "components/CommonView";
 import VideoPlayer from "components/VideoPlayer";
-import infinityLogo from "assets/images/infinity-logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
-import teaserVideo from "assets/video/teaser.mp4";
 import { SYSTEM_STAGE, SYSTEM_STAGE_NAME } from "consts";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import { tokensSelector } from "store/tokensReducer";
 import size from "lodash/size";
-import { isDemo } from "utils";
+import {getCDNObjectUrl, isDemo} from "utils";
 
 const EnterButton = () => {
   const { systemStage, isActive } = useSelector(systemSelector);
@@ -65,7 +63,7 @@ const Homepage = () => {
           leadingText="A BILLION YEARS IN THE MAKING"
           secondaryText="the first ever diamond mining experience, from NFT to reality"
         >
-          <img src={infinityLogo} alt={""} />
+          <img src={getCDNObjectUrl("/images/infinity_logo.png")} alt="" />
         </CommonView>
         <EnterButton />
       </div>
@@ -73,7 +71,7 @@ const Homepage = () => {
         <VideoPlayer
           id="home-video"
           videoPlayer={videoPlayer}
-          src={teaserVideo}
+          src={getCDNObjectUrl("/videos/teaser.mp4")}
           controls
           playing={playVideo}
         />
