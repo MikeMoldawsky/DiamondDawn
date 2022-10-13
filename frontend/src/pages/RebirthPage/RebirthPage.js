@@ -75,7 +75,7 @@ function RebirthPage() {
         <ActionView
           isRebirth
           transact={executeRebirth}
-          videoUrl={getCDNObjectUrl("/videos/final.mp4")}
+          videoUrl={getCDNObjectUrl("/videos/post_rebirth.mp4")}
         >
           <RebirthContent />
         </ActionView>

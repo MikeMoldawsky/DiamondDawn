@@ -46,7 +46,7 @@ const Cut = () => {
   return (
     <ActionView
       transact={() => cutApi(contract, selectedTokenId)}
-      videoUrl={getCDNObjectUrl("/videos/final.mp4")}
+      videoUrl={getCDNObjectUrl("/videos/post_cut.mp4")}
       requireActionable
     >
       <CutContent />

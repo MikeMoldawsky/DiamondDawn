@@ -93,7 +93,7 @@ const Ship = () => {
   return (
     <ActionView
       transact={() => shipApi(contract, selectedTokenId)}
-      videoUrl={getCDNObjectUrl("/videos/final.mp4")}
+      videoUrl={getCDNObjectUrl("/videos/post_ship.mp4")}
       isBurn
       requireActionable
     >

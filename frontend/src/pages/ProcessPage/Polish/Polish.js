@@ -45,7 +45,7 @@ const Polish = () => {
   return (
     <ActionView
       transact={() => polishApi(contract, selectedTokenId)}
-      videoUrl={getCDNObjectUrl("/videos/final.mp4")}
+      videoUrl={getCDNObjectUrl("/videos/post_polish.mp4")}
       requireActionable
     >
       <PolishContent />

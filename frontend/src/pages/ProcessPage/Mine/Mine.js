@@ -43,7 +43,7 @@ const Mine = () => {
   return (
     <ActionView
       transact={() => mineApi(contract, selectedTokenId)}
-      videoUrl={getCDNObjectUrl("/videos/final.mp4")}
+      videoUrl={getCDNObjectUrl("/videos/post_mine.mp4")}
       requireActionable
     >
       <MineContent />
