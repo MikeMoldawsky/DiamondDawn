@@ -31,6 +31,7 @@ export const SHAPE = {
   OVAL: 3,
   CUSHION: 4,
 };
+
 export const EVENTS = {
   StageChanged: "StageChanged",
 };
@@ -57,3 +58,45 @@ export const TRAIT = {
   width: "Width",
   type: "Type",
 };
+
+export const ROUGH_SHAPE_NAME = {
+  NO_SHAPE: "No Shape",
+  MAKEABLE_1: "Makeable 1",
+  MAKEABLE_2: "Makeable 2",
+};
+
+export const SHAPE_NAME = {
+  NO_SHAPE: "No Shape",
+  PEAR: "Pear",
+  ROUND: "Round",
+  OVAL: "Oval",
+  CUSHION: "Cushion",
+};
+
+export const DIAMOND_ANIMATION_MAPPING = {
+  [SYSTEM_STAGE.INVITE]: {
+    [SHAPE_NAME.NO_SHAPE]: 'infinity.mp4',
+  },
+  [SYSTEM_STAGE.MINE]: {
+    [ROUGH_SHAPE_NAME.MAKEABLE_1]: 'rough_makeable1.mp4',
+    [ROUGH_SHAPE_NAME.MAKEABLE_2]: 'rough_makeable2.mp4',
+  },
+  [SYSTEM_STAGE.CUT]: {
+    [SHAPE_NAME.PEAR]: 'cut_pear.mp4',
+    [SHAPE_NAME.ROUND]: 'cut_round.mp4',
+    [SHAPE_NAME.OVAL]: 'cut_oval.mp4',
+    [SHAPE_NAME.CUSHION]: 'cut_radiant.mp4',
+  },
+  [SYSTEM_STAGE.POLISH]: {
+    [SHAPE_NAME.PEAR]: 'polished_pear.mp4',
+    [SHAPE_NAME.ROUND]: 'polished_round.mp4',
+    [SHAPE_NAME.OVAL]: 'polished_oval.mp4',
+    [SHAPE_NAME.CUSHION]: 'polished_radiant.mp4',
+  },
+  [SYSTEM_STAGE.SHIP]: {
+    [SHAPE_NAME.PEAR]: 'diamond_dawn.mp4',
+    [SHAPE_NAME.ROUND]: 'diamond_dawn.mp4',
+    [SHAPE_NAME.OVAL]: 'diamond_dawn.mp4',
+    [SHAPE_NAME.CUSHION]: 'diamond_dawn.mp4',
+  },
+}

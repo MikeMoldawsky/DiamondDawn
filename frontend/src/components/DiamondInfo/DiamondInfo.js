@@ -24,9 +24,9 @@ const DiamondInfo = ({ diamond }) => {
       <Diamond diamond={diamond} />
       <div className="text-content">
         <div className="token-id">{name}</div>
-        {_.map(attributes, ({ trait_type, value }) => (
+        {_.map(attributes, ({ trait_type, value }, i) => (
           <div
-            key={`trait-${_.kebabCase(trait_type)}`}
+            key={`trait-${_.kebabCase(trait_type)}-${i}`}
             className="center-aligned-row"
           >
             <span>{trait_type}</span>
