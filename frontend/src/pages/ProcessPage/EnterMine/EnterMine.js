@@ -15,7 +15,7 @@ import useMountLogger from "hooks/useMountLogger";
 import { enterApi } from "api/contractApi";
 import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
-import {getCDNObjectUrl} from "utils";
+import { getCDNObjectUrl } from "utils";
 
 const PackageBox = ({ selected, select, index, text, cost }) => {
   return (

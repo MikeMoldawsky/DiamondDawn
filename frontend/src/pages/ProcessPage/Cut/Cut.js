@@ -9,7 +9,7 @@ import ActionView from "components/ActionView";
 import useMountLogger from "hooks/useMountLogger";
 import { cutApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
-import {getCDNObjectUrl} from "utils";
+import { getCDNObjectUrl } from "utils";
 
 const Cut = () => {
   const contract = useDDContract();

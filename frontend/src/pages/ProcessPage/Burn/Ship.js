@@ -12,7 +12,7 @@ import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import { shipApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
-import {getCDNObjectUrl} from "utils";
+import { getCDNObjectUrl } from "utils";
 
 const Ship = () => {
   const contract = useDDContract();

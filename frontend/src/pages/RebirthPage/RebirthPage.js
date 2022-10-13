@@ -12,7 +12,7 @@ import { setSelectedTokenId } from "store/uiReducer";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { signRebirthApi } from "api/serverApi";
 import { useAccount } from "wagmi";
-import {getCDNObjectUrl} from "utils";
+import { getCDNObjectUrl } from "utils";
 
 function RebirthPage() {
   const { tokenId } = useParams();

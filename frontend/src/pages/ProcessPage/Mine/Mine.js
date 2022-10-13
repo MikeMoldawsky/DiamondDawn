@@ -10,7 +10,7 @@ import useMountLogger from "hooks/useMountLogger";
 import { mineApi } from "api/contractApi";
 import { uiSelector } from "store/uiReducer";
 import DiamondPicker from "components/DiamondPicker";
-import {getCDNObjectUrl} from "utils";
+import { getCDNObjectUrl } from "utils";
 
 const Mine = () => {
   const contract = useDDContract();

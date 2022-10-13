@@ -10,7 +10,7 @@ import { SYSTEM_STAGE, SYSTEM_STAGE_NAME } from "consts";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import { tokensSelector } from "store/tokensReducer";
 import size from "lodash/size";
-import {getCDNObjectUrl, isDemo} from "utils";
+import { getCDNObjectUrl, isDemo } from "utils";
 
 const EnterButton = () => {
   const { systemStage, isActive } = useSelector(systemSelector);

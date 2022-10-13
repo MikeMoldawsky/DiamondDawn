@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import AudioPlayer from "components/AudioPlayer";
-import {getCDNObjectUrl} from "utils";
+import { getCDNObjectUrl } from "utils";
 
 const Header = ({ isMenuOpen, toggleMenu }) => (
   <header>
@@ -23,7 +23,10 @@ const Header = ({ isMenuOpen, toggleMenu }) => (
       </div>
       <div className="logo-box">
         <NavLink to="/">
-          <img src={getCDNObjectUrl("/images/infinity_logo.png")} alt="DIAMOND DAWN" />
+          <img
+            src={getCDNObjectUrl("/images/infinity_logo.png")}
+            alt="DIAMOND DAWN"
+          />
         </NavLink>
       </div>
       <div className="center-aligned-row header-side">

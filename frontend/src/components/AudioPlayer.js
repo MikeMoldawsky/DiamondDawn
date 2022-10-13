@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleMuted, uiSelector } from "store/uiReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeMute, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
-import {getCDNObjectUrl} from "utils";
+import { getCDNObjectUrl } from "utils";
 
 const AudioPlayer = () => {
   const dispatch = useDispatch();

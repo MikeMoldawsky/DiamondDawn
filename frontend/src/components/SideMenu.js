@@ -4,7 +4,11 @@ import { NavLink } from "react-router-dom";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
   return (
-    <Drawer anchor="right" open={isOpen} ModalProps={{ onBackdropClick: closeMenu }}>
+    <Drawer
+      anchor="right"
+      open={isOpen}
+      ModalProps={{ onBackdropClick: closeMenu }}
+    >
       <NavLink to={"/collector"} onClick={closeMenu}>
         <div className="menu-item">COLLECTOR'S ROOM</div>
       </NavLink>
