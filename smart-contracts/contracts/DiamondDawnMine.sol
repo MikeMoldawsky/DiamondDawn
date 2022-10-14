@@ -271,7 +271,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
             attributes[8] = Serializer.toStrAttribute(
                 "Measurements",
-                    Serializer.toMeasurementsStr(
+                Serializer.toMeasurementsStr(
                     certificate.shape,
                     certificate.length,
                     certificate.width,

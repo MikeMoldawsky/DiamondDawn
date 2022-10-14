@@ -7,7 +7,7 @@ const {
   NUM_TOKENS,
   deployDDWithRebirthReady,
 } = require("./utils/DeployDDUtils");
-const { signMessage } = require("./utils/SignatureUtils");
+const { signEnterMessage } = require("./utils/SignatureUtils");
 const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
 const { PRICE_WEDDING, PRICE } = require("./utils/Consts");
 const { STAGE, ALL_STAGES } = require("./utils/EnumConverterUtils");
@@ -38,7 +38,7 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
+      adminSig = signEnterMessage(signer, admin);
     });
 
     it("should grant admin permissions to deployer", async () => {
@@ -108,8 +108,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -172,8 +172,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
       await dd.setStage(STAGE.INVITE);
     });
 
@@ -228,8 +228,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
       await dd.setStage(STAGE.INVITE);
     });
 
@@ -297,8 +297,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
       await dd.setStage(STAGE.INVITE);
     });
 
@@ -353,8 +353,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
       await dd.setStage(STAGE.INVITE);
     });
 
@@ -415,8 +415,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
       await dd.setStage(STAGE.INVITE);
     });
 
@@ -476,8 +476,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
     });
 
     it("should REVERT when NOT admin", async () => {
