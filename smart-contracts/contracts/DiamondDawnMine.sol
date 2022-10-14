@@ -222,11 +222,8 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         Metadata memory metadata,
         string memory noExtensionURI
     ) private view returns (string memory) {
-        // TODO: add description and created by when ready or remove them.
         Serializer.NFTMetadata memory nftMetadata = Serializer.NFTMetadata({
             name: Serializer.getName(metadata, tokenId),
-            description: "description",
-            createdBy: "dd",
             image: string.concat(noExtensionURI, ".jpeg"),
             animationUrl: string.concat(noExtensionURI, ".mp4"),
             attributes: _getJsonAttributes(metadata)
