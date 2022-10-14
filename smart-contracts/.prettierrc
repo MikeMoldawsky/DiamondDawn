@@ -4,7 +4,7 @@
       "files": "*.sol",
       "options": {
         "explicitTypes": "preserve",
-        "printWidth": 110
+        "printWidth": 120
       }
     }
   ]

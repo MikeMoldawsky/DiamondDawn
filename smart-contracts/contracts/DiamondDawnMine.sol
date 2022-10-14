@@ -9,8 +9,7 @@ import "./interface/IDiamondDawnMineAdmin.sol";
 import "./objects/Diamond.sol";
 import "./objects/Mine.sol";
 import "./utils/MathUtils.sol";
-import "./utils/NFTSerializer.sol";
-import "./utils/StringUtils.sol";
+import "./utils/Serializer.sol";
 
 /**
  *    ________    .__                                           .___
@@ -35,9 +34,6 @@ import "./utils/StringUtils.sol";
  * @title DiamondDawnMine
  * @author Mike Moldawsky (Tweezers)
  */
-// TODO: Warning: Contract code size is 27937 bytes and exceeds 24576 bytes (a limit introduced in Spurious Dragon).
-// TODO: This contract may not be deployable on mainnet. Consider enabling the optimizer (with a low "runs" value!),
-// TODO: turning off revert strings, or using libraries.
 contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondDawnMineAdmin {
     bool public isLocked; // mine is locked forever.
     bool public isInitialized;
@@ -227,53 +223,64 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         string memory noExtensionURI
     ) private view returns (string memory) {
         // TODO: add description and created by when ready or remove them.
-        NFTMetadata memory nftMetadata = NFTMetadata({
-            name: getName(metadata, tokenId),
+        Serializer.NFTMetadata memory nftMetadata = Serializer.NFTMetadata({
+            name: Serializer.getName(metadata, tokenId),
             description: "description",
             createdBy: "dd",
             image: string.concat(noExtensionURI, ".jpeg"),
             animationUrl: string.concat(noExtensionURI, ".mp4"),
             attributes: _getJsonAttributes(metadata)
         });
-        return serialize(nftMetadata);
+        return Serializer.serialize(nftMetadata);
     }
 
-    function _getJsonAttributes(Metadata memory metadata) private view returns (Attribute[] memory) {
+    function _getJsonAttributes(Metadata memory metadata) private view returns (Serializer.Attribute[] memory) {
         Stage state_ = metadata.state_;
-        Attribute[] memory attributes = new Attribute[](_getStateAttrsNum(state_));
-        attributes[0] = toStrAttribute("Type", toTypeStr(state_));
+        Serializer.Attribute[] memory attributes = new Serializer.Attribute[](_getStateAttrsNum(state_));
+        attributes[0] = Serializer.toStrAttribute("Type", Serializer.toTypeStr(state_));
         if (state_ == Stage.INVITE) {
             return attributes;
         }
 
-        attributes[1] = toStrAttribute("Origin", "Metaverse");
-        attributes[2] = toStrAttribute("Identification", "Natural");
-        attributes[3] = toAttribute("Carat", toDecimalStr(_getPoints(metadata)), "");
-        attributes[4] = toMaxValueAttribute(
+        attributes[1] = Serializer.toStrAttribute("Origin", "Metaverse");
+        attributes[2] = Serializer.toStrAttribute("Identification", "Natural");
+        attributes[3] = Serializer.toAttribute("Carat", Serializer.toDecimalStr(_getPoints(metadata)), "");
+        attributes[4] = Serializer.toMaxValueAttribute(
             "Mined",
             Strings.toString(metadata.rough.id),
             Strings.toString(_mineCounter),
             "number"
         );
         if (state_ == Stage.MINE) {
-            attributes[5] = toStrAttribute("Color", "Cape");
-            attributes[6] = toStrAttribute("Shape", toRoughShapeStr(metadata.rough.shape));
-            attributes[7] = toStrAttribute("Mine", "Underground");
+            attributes[5] = Serializer.toStrAttribute("Color", "Cape");
+            attributes[6] = Serializer.toStrAttribute("Shape", Serializer.toRoughShapeStr(metadata.rough.shape));
+            attributes[7] = Serializer.toStrAttribute("Mine", "Underground");
             return attributes;
         }
 
         Certificate memory certificate = metadata.certificate;
         if (uint(Stage.CUT) <= uint(state_)) {
-            attributes[5] = toStrAttribute("Color", toColorStr(certificate.color, certificate.toColor));
-            attributes[6] = toStrAttribute("Cut", toGradeStr(certificate.cut));
-            attributes[7] = toStrAttribute("Fluorescence", toFluorescenceStr(certificate.fluorescence));
-            attributes[8] = toStrAttribute(
-                "Measurements",
-                toMeasurementsStr(certificate.shape, certificate.length, certificate.width, certificate.depth)
+            attributes[5] = Serializer.toStrAttribute(
+                "Color",
+                Serializer.toColorStr(certificate.color, certificate.toColor)
             );
-            attributes[9] = toStrAttribute("Shape", toShapeStr(certificate.shape));
+            attributes[6] = Serializer.toStrAttribute("Cut", Serializer.toGradeStr(certificate.cut));
+            attributes[7] = Serializer.toStrAttribute(
+                "Fluorescence",
+                Serializer.toFluorescenceStr(certificate.fluorescence)
+            );
+            attributes[8] = Serializer.toStrAttribute(
+                "Measurements",
+                    Serializer.toMeasurementsStr(
+                    certificate.shape,
+                    certificate.length,
+                    certificate.width,
+                    certificate.depth
+                )
+            );
+            attributes[9] = Serializer.toStrAttribute("Shape", Serializer.toShapeStr(certificate.shape));
             // TODO: validate that OpenSea works with 2 attributes called "Cut" or change name
-            attributes[10] = toMaxValueAttribute(
+            attributes[10] = Serializer.toMaxValueAttribute(
                 "Cut",
                 Strings.toString(metadata.cut.id),
                 Strings.toString(_cutCounter),
@@ -281,10 +288,10 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
         }
         if (uint(Stage.POLISH) <= uint(state_)) {
-            attributes[11] = toStrAttribute("Clarity", toClarityStr(certificate.clarity));
-            attributes[12] = toStrAttribute("Polish", toGradeStr(certificate.polish));
-            attributes[13] = toStrAttribute("Symmetry", toGradeStr(certificate.symmetry));
-            attributes[14] = toMaxValueAttribute(
+            attributes[11] = Serializer.toStrAttribute("Clarity", Serializer.toClarityStr(certificate.clarity));
+            attributes[12] = Serializer.toStrAttribute("Polish", Serializer.toGradeStr(certificate.polish));
+            attributes[13] = Serializer.toStrAttribute("Symmetry", Serializer.toGradeStr(certificate.symmetry));
+            attributes[14] = Serializer.toMaxValueAttribute(
                 "Polished",
                 Strings.toString(metadata.polished.id),
                 Strings.toString(_polishedCounter),
@@ -292,10 +299,10 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
         }
         if (uint(Stage.SHIP) <= uint(state_)) {
-            attributes[15] = toStrAttribute("Laboratory", "GIA");
-            attributes[16] = toAttribute("Report Date", Strings.toString(certificate.date), "date");
-            attributes[17] = toAttribute("Report Number", Strings.toString(certificate.number), "");
-            attributes[18] = toMaxValueAttribute(
+            attributes[15] = Serializer.toStrAttribute("Laboratory", "GIA");
+            attributes[16] = Serializer.toAttribute("Report Date", Strings.toString(certificate.date), "date");
+            attributes[17] = Serializer.toAttribute("Report Number", Strings.toString(certificate.number), "");
+            attributes[18] = Serializer.toMaxValueAttribute(
                 "Physical",
                 Strings.toString(metadata.reborn.id),
                 Strings.toString(_rebornCounter),
@@ -327,7 +334,6 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         revert("Points");
     }
 
-    // TODO: might need to use toShapeStr instead in order to reduce the contract size.
     function _getResourceName(Metadata memory metadata) private pure returns (string memory) {
         if (metadata.state_ == Stage.INVITE || metadata.state_ == Stage.SHIP) return "resource";
         else if (metadata.state_ == Stage.MINE) {

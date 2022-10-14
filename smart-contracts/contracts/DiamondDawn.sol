@@ -213,9 +213,8 @@ contract DiamondDawn is
     function _isValid(bytes calldata signature) private view returns (bool) {
         return
             _signer ==
-            keccak256(
-                abi.encodePacked("\x19Ethereum Signed Message:\n32", bytes32(uint256(uint160(_msgSender()))))
-            ).recover(signature);
+            keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", bytes32(uint256(uint160(_msgSender())))))
+                .recover(signature);
     }
 
     function _enter(bytes calldata signature) private isActiveStage(Stage.INVITE) isNotFull {
