@@ -904,6 +904,49 @@ describe("DiamondDawn", () => {
       ); // success
     });
 
+    it("Should REVERT when using wrong signature", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
+      const signatureUserA = await signRebirthMessage(signer_, userA, tokenId);
+      await expect(dd.rebirth(tokenId, signatureUserA)).to.be.revertedWith(
+        "Not allowed to rebirth"
+      );
+      await expect(
+        dd.connect(userA).rebirth(tokenId, signatureUserA)
+      ).to.be.revertedWith("No shipment");
+      const signatureWrongToken = await signRebirthMessage(
+        signer_,
+        admin,
+        tokenId + 1
+      );
+      await expect(dd.rebirth(tokenId, signatureWrongToken)).to.be.revertedWith(
+        "Not allowed to rebirth"
+      );
+      const signatureWrongSigner = await signRebirthMessage(
+        admin,
+        admin,
+        tokenId
+      );
+      await expect(
+        dd.rebirth(tokenId, signatureWrongSigner)
+      ).to.be.revertedWith("Not allowed to rebirth");
+      await expect(
+        dd.rebirth(tokenId, signer_.signMessage("that's a wrong message"))
+      ).to.be.revertedWith("Not allowed to rebirth");
+      await dd.rebirth(
+        tokenId,
+        await signRebirthMessage(signer_, admin, tokenId)
+      ); // success
+    });
+
     it("Should REVERT when rebirth more than once", async () => {
       const tokenId = 1;
       await dd.enter(adminSig, { value: PRICE });
