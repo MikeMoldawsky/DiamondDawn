@@ -65,7 +65,14 @@ function RebirthPage() {
   );
 
   const executeRebirth = async () => {
-    let signature = await signRebirthApi(account.address);
+    let signature;
+    try {
+      signature = await signRebirthApi(account.address);
+    } catch (e) {
+      navigateToDefault();
+      throw new Error(e);
+    }
+
     return rebirthApi(contract, tokenId, signature);
   };
 

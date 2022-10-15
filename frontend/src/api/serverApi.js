@@ -36,18 +36,15 @@ export const getInviteApi = async (inviteId) => {
   }
 };
 
-export const openInviteApi = async (inviteId) => {
-  try {
-    const { country, state } = getLocation();
-    const { data: invite } = await axios.post(`/api/open_invite`, {
-      inviteId,
-      country,
-      state,
-    });
-    return invite;
-  } catch (e) {
-    return null;
-  }
+export const openInviteApi = async (inviteId, address) => {
+  const { country, state } = getLocation();
+  const { data: invite } = await axios.post(`/api/open_invite`, {
+    inviteId,
+    address,
+    country,
+    state,
+  });
+  return invite;
 };
 
 export const signInviteApi = async (inviteId, address) => {
@@ -55,13 +52,12 @@ export const signInviteApi = async (inviteId, address) => {
   return res.data;
 };
 
-export const confirmInviteUsedApi = async (inviteId) => {
-  try {
-    const res = await axios.post(`/api/confirm_invite_used`, { inviteId });
-    return res.data;
-  } catch (e) {
-    return null;
-  }
+export const confirmInviteUsedApi = async (inviteId, address) => {
+  const res = await axios.post(`/api/confirm_invite_used`, {
+    inviteId,
+    address,
+  });
+  return res.data;
 };
 
 export const createInviteRequestApi = async (address, identifier) => {

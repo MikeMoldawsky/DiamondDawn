@@ -81,13 +81,18 @@ const ActionView = ({
 
     setShowCompleteVideo(true);
 
-    const receipt = await tx.wait();
+    try {
+      const receipt = await tx.wait();
 
-    if (!withWatch) {
-      onSuccess(selectedTokenId);
+      if (!withWatch) {
+        onSuccess(selectedTokenId);
+      }
+
+      setActionTxId(receipt.transactionHash);
+    } catch (e) {
+      setShowCompleteVideo(false);
+      throw new Error(e);
     }
-
-    setActionTxId(receipt.transactionHash);
   };
 
   const renderContent = () => {

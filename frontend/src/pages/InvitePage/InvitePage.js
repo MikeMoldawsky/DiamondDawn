@@ -76,8 +76,8 @@ const InvitePage = () => {
     }
   }, [inviteId]);
 
-  const onOpenInviteClick = async () => {
-    setInvite(await openInviteApi(inviteId));
+  const openInvite = async () => {
+    setInvite(await openInviteApi(inviteId, account.address));
   };
 
   const renderInviteContent = () => {
@@ -93,7 +93,7 @@ const InvitePage = () => {
     if (invite.used)
       return <InvalidInvitation title="You Already Used This Invitation" />;
     if (invite.revoked) return <InvalidInvitation title="Invitation Expired" />;
-    if (!invite.opened) return <InviteIntro open={onOpenInviteClick} />;
+    if (!invite.opened) return <InviteIntro open={openInvite} />;
     return <EnterMine invite={invite} />;
   };
 

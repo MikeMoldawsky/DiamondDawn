@@ -49,9 +49,7 @@ const RequestForm = ({
   };
 
   const requestInvitation = async ({ identifier, address }) => {
-    console.log("requestInvitation", { identifier, address });
-    const res = await createInviteApi(address, identifier);
-    console.log("requestInvitation SUCCESS", res);
+    await createInviteApi(address, identifier);
     onSuccess && (await onSuccess());
     setIsSubmitSuccess(true);
   };
