@@ -53,7 +53,10 @@ export const signInviteApi = async (inviteId, address) => {
 };
 
 export const confirmInviteUsedApi = async (inviteId, address) => {
-  const res = await axios.post(`/api/confirm_invite_used`, { inviteId, address });
+  const res = await axios.post(`/api/confirm_invite_used`, {
+    inviteId,
+    address,
+  });
   return res.data;
 };
 

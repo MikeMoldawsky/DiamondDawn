@@ -89,10 +89,9 @@ const ActionView = ({
       }
 
       setActionTxId(receipt.transactionHash);
-    }
-    catch (e) {
+    } catch (e) {
       setShowCompleteVideo(false);
-      throw new Error(e)
+      throw new Error(e);
     }
   };
 

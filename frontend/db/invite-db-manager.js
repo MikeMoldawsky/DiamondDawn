@@ -45,9 +45,9 @@ function validateInviteBeforeAction(invite, address) {
 }
 
 async function openInvite(inviteId, address, country, state) {
-  validateAddress(address)
+  validateAddress(address);
   const invite = await getInviteObjectById(inviteId);
-  validateInviteBeforeAction(invite, address)
+  validateInviteBeforeAction(invite, address);
 
   await InviteModel.findOneAndUpdate(
     { _id: inviteId },
@@ -61,9 +61,9 @@ async function openInvite(inviteId, address, country, state) {
 }
 
 async function signInvite(inviteId, address) {
-  validateAddress(address)
+  validateAddress(address);
   const invite = await getInviteObjectById(inviteId);
-  validateInviteBeforeAction(invite, address)
+  validateInviteBeforeAction(invite, address);
 
   const signature = await signer.signAddress(address);
 
@@ -71,9 +71,9 @@ async function signInvite(inviteId, address) {
 }
 
 async function confirmInviteUsed(inviteId, address) {
-  validateAddress(address)
+  validateAddress(address);
   const invite = await getInviteObjectById(inviteId);
-  validateInviteBeforeAction(invite, address)
+  validateInviteBeforeAction(invite, address);
 
   await InviteModel.findOneAndUpdate({ _id: inviteId }, { used: true });
 
@@ -81,7 +81,7 @@ async function confirmInviteUsed(inviteId, address) {
 }
 
 async function createInviteRequest(address, identifier, country, state) {
-  validateAddress(address)
+  validateAddress(address);
   let invite = await InviteModel.findOne({ address });
   if (invite) {
     throw new Error("Address already invited");
