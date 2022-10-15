@@ -62,14 +62,16 @@ const CRUDTable = ({
             onClick={handleEditClick(id)}
             color="inherit"
           />,
-          ...(!getIsRowDeletable || getIsRowDeletable(params.row) ? [
-            <GridActionsCellItem
-              icon={<DeleteIcon />}
-              label="Delete"
-              onClick={handleDeleteClick(id)}
-              color="inherit"
-            />
-          ] : []),
+          ...(!getIsRowDeletable || getIsRowDeletable(params.row)
+            ? [
+                <GridActionsCellItem
+                  icon={<DeleteIcon />}
+                  label="Delete"
+                  onClick={handleDeleteClick(id)}
+                  color="inherit"
+                />,
+              ]
+            : []),
         ];
       },
     });

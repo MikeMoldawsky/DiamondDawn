@@ -56,7 +56,7 @@ async function updateInvite(inviteProps) {
 
 async function deleteInvite(inviteId) {
   try {
-    const invite = await InviteModel.findById(inviteId)
+    const invite = await InviteModel.findById(inviteId);
     if (invite && !invite.used) {
       return await InviteModel.findOneAndDelete({ _id: inviteId });
     }

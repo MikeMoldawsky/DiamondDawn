@@ -182,7 +182,7 @@ const InvitationsTab = ({ approved }) => {
         getNewItem={createInviteApi}
         newCreatedOnServer
         renderActions={renderActions}
-        getIsRowDeletable={row => !row.used}
+        getIsRowDeletable={(row) => !row.used}
       />
     </div>
   );
