@@ -20,7 +20,10 @@ const {
   NUM_TOKENS,
   deployDDWithRebirthReady,
 } = require("./utils/DeployDDUtils");
-const { signMessage } = require("./utils/SignatureUtils");
+const {
+  signEnterMessage,
+  signRebirthMessage,
+} = require("./utils/SignatureUtils");
 const _ = require("lodash");
 const { ethers } = require("hardhat");
 const { PRICE, PRICE_WEDDING } = require("./utils/Consts");
@@ -47,8 +50,8 @@ describe("DiamondDawn", () => {
       admin = owner;
       user = users.pop();
       signer1 = signer;
-      adminSig = signMessage(signer, admin);
-      userSig = signMessage(signer, user);
+      adminSig = signEnterMessage(signer, admin);
+      userSig = signEnterMessage(signer, user);
       users1 = users;
     });
 
@@ -97,7 +100,7 @@ describe("DiamondDawn", () => {
     it("Should REVERT when mine is full", async () => {
       await Promise.all(
         _.range(NUM_TOKENS).map(async (i) => {
-          const signature = await signMessage(signer1, users1[i]);
+          const signature = await signEnterMessage(signer1, users1[i]);
           return await dd.connect(users1[i]).enter(signature, { value: PRICE });
         })
       );
@@ -150,7 +153,7 @@ describe("DiamondDawn", () => {
     });
 
     it("Should REVERT when message is signed by another signer", async () => {
-      const signedMessage = signMessage(admin, admin);
+      const signedMessage = signEnterMessage(admin, admin);
       await expect(
         dd.enter(signedMessage, { value: PRICE })
       ).to.be.revertedWith("Not allowed to mint");
@@ -230,8 +233,8 @@ describe("DiamondDawn", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
@@ -341,8 +344,8 @@ describe("DiamondDawn", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
@@ -449,8 +452,8 @@ describe("DiamondDawn", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
     });
 
     it("Should REVERT when not token owner", async () => {
@@ -555,6 +558,7 @@ describe("DiamondDawn", () => {
   describe("ship", () => {
     let dd;
     let ddMine;
+    let signer_;
     let admin;
     let userA;
     let userB;
@@ -570,8 +574,9 @@ describe("DiamondDawn", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
+      signer_ = signer;
     });
 
     it("Should REVERT when not token owner", async () => {
@@ -672,8 +677,10 @@ describe("DiamondDawn", () => {
       await expect(dd.ship(tokenId)).to.be.revertedWith(
         "ERC721: owner query for nonexistent token"
       );
-
-      await dd.rebirth(tokenId, adminSig);
+      await dd.rebirth(
+        tokenId,
+        await signRebirthMessage(signer_, admin, tokenId)
+      );
       await expect(dd.ship(tokenId)).to.be.revertedWith("Can't process");
     });
 
@@ -722,6 +729,7 @@ describe("DiamondDawn", () => {
     let adminSig;
     let userASig;
     let userBSig;
+    let signer_;
 
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, signer, users } =
@@ -732,29 +740,31 @@ describe("DiamondDawn", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
-      userBSig = signMessage(signer, userB);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
+      userBSig = signEnterMessage(signer, userB);
+      signer_ = signer;
     });
 
     it("Should REVERT when not SHIP stage", async () => {
       const tokenId = 1;
+      const rebirthAdminSig = await signRebirthMessage(signer_, admin, tokenId);
       await dd.enter(adminSig, { value: PRICE });
 
       await completeAndSetStage(dd, STAGE.MINE);
-      await expect(dd.rebirth(tokenId, adminSig)).to.be.revertedWith(
+      await expect(dd.rebirth(tokenId, rebirthAdminSig)).to.be.revertedWith(
         "Wrong stage"
       );
       await dd.mine(tokenId);
 
       await completeAndSetStage(dd, STAGE.CUT);
-      await expect(dd.rebirth(tokenId, adminSig)).to.be.revertedWith(
+      await expect(dd.rebirth(tokenId, rebirthAdminSig)).to.be.revertedWith(
         "Wrong stage"
       );
       await dd.cut(tokenId);
 
       await completeAndSetStage(dd, STAGE.POLISH);
-      await expect(dd.rebirth(tokenId, adminSig)).to.be.revertedWith(
+      await expect(dd.rebirth(tokenId, rebirthAdminSig)).to.be.revertedWith(
         "Wrong stage"
       );
       await dd.polish(tokenId);
@@ -762,30 +772,31 @@ describe("DiamondDawn", () => {
       await completeAndSetStage(dd, STAGE.SHIP);
       await dd.ship(tokenId);
 
-      await dd.rebirth(tokenId, adminSig); // success
-      await expect(dd.rebirth(tokenId, adminSig)).to.be.revertedWith(
+      await dd.rebirth(tokenId, rebirthAdminSig); // success
+      await expect(dd.rebirth(tokenId, rebirthAdminSig)).to.be.revertedWith(
         "No shipment"
       );
     });
 
     it("Should REVERT when not DAWN stage", async () => {
       const tokenId = 1;
+      const rebirthAdminSig = await signRebirthMessage(signer_, admin, tokenId);
       await dd.enter(adminSig, { value: PRICE });
 
       await completeAndSetStage(dd, STAGE.MINE);
-      await expect(dd.rebirth(tokenId, adminSig)).to.be.revertedWith(
+      await expect(dd.rebirth(tokenId, rebirthAdminSig)).to.be.revertedWith(
         "Wrong stage"
       );
       await dd.mine(tokenId);
 
       await completeAndSetStage(dd, STAGE.CUT);
-      await expect(dd.rebirth(tokenId, adminSig)).to.be.revertedWith(
+      await expect(dd.rebirth(tokenId, rebirthAdminSig)).to.be.revertedWith(
         "Wrong stage"
       );
       await dd.cut(tokenId);
 
       await completeAndSetStage(dd, STAGE.POLISH);
-      await expect(dd.rebirth(tokenId, adminSig)).to.be.revertedWith(
+      await expect(dd.rebirth(tokenId, rebirthAdminSig)).to.be.revertedWith(
         "Wrong stage"
       );
       await dd.polish(tokenId);
@@ -794,14 +805,19 @@ describe("DiamondDawn", () => {
       await dd.ship(tokenId);
 
       await completeAndSetStage(dd, STAGE.DAWN);
-      await dd.rebirth(tokenId, adminSig); // success
-      await expect(dd.rebirth(tokenId, adminSig)).to.be.revertedWith(
+      await dd.rebirth(tokenId, rebirthAdminSig); // success
+      await expect(dd.rebirth(tokenId, rebirthAdminSig)).to.be.revertedWith(
         "No shipment"
       );
     });
 
     it("Should REVERT when not shipped", async () => {
       const tokenId = 1;
+      const rebirthUserAdminSig = await signRebirthMessage(
+        signer_,
+        userA,
+        tokenId
+      );
       await dd.connect(userA).enter(userASig, { value: PRICE });
 
       await completeAndSetStage(dd, STAGE.MINE);
@@ -816,13 +832,13 @@ describe("DiamondDawn", () => {
       await completeAndSetStage(dd, STAGE.SHIP);
       await dd.connect(userA).ship(tokenId);
 
-      await expect(dd.rebirth(tokenId, adminSig)).to.be.revertedWith(
+      await expect(dd.rebirth(tokenId, rebirthUserAdminSig)).to.be.revertedWith(
         "No shipment"
       );
       await expect(
         dd.connect(userB).rebirth(tokenId, userBSig)
       ).to.be.revertedWith("No shipment");
-      await dd.connect(userA).rebirth(tokenId, userASig);
+      await dd.connect(userA).rebirth(tokenId, rebirthUserAdminSig);
     });
 
     it("Should REVERT when ship stage not ready", async () => {
@@ -838,8 +854,9 @@ describe("DiamondDawn", () => {
       await dd.ship(tokenId);
 
       // transform ship to be not ready
+      const rebirthAdminSig = await signRebirthMessage(signer_, admin, tokenId);
       await ddMine.setManifest(STAGE.SHIP, "");
-      await expect(dd.rebirth(tokenId, adminSig)).to.be.revertedWith(
+      await expect(dd.rebirth(tokenId, rebirthAdminSig)).to.be.revertedWith(
         "Ship not ready"
       );
     });
@@ -859,7 +876,10 @@ describe("DiamondDawn", () => {
       await dd.completeStage(STAGE.SHIP);
       expect(await dd.stage()).to.equal(STAGE.SHIP);
       expect(await dd.isActive()).to.be.false;
-      await dd.rebirth(tokenId, adminSig); // success
+      await dd.rebirth(
+        tokenId,
+        await signRebirthMessage(signer_, admin, tokenId)
+      ); // success
     });
 
     it("Should REBIRTH when DAWN stage is not active", async () => {
@@ -878,7 +898,53 @@ describe("DiamondDawn", () => {
 
       expect(await dd.stage()).to.equal(STAGE.DAWN);
       expect(await dd.isActive()).to.be.false;
-      await dd.rebirth(tokenId, adminSig); // success
+      await dd.rebirth(
+        tokenId,
+        await signRebirthMessage(signer_, admin, tokenId)
+      ); // success
+    });
+
+    it("Should REVERT when using wrong signature", async () => {
+      const tokenId = 1;
+      await dd.enter(adminSig, { value: PRICE });
+      await completeAndSetStage(dd, STAGE.MINE);
+      await dd.mine(tokenId);
+      await completeAndSetStage(dd, STAGE.CUT);
+      await dd.cut(tokenId);
+      await completeAndSetStage(dd, STAGE.POLISH);
+      await dd.polish(tokenId);
+      await completeAndSetStage(dd, STAGE.SHIP);
+      await dd.ship(tokenId);
+      const signatureUserA = await signRebirthMessage(signer_, userA, tokenId);
+      await expect(dd.rebirth(tokenId, signatureUserA)).to.be.revertedWith(
+        "Not allowed to rebirth"
+      );
+      await expect(
+        dd.connect(userA).rebirth(tokenId, signatureUserA)
+      ).to.be.revertedWith("No shipment");
+      const signatureWrongToken = await signRebirthMessage(
+        signer_,
+        admin,
+        tokenId + 1
+      );
+      await expect(dd.rebirth(tokenId, signatureWrongToken)).to.be.revertedWith(
+        "Not allowed to rebirth"
+      );
+      const signatureWrongSigner = await signRebirthMessage(
+        admin,
+        admin,
+        tokenId
+      );
+      await expect(
+        dd.rebirth(tokenId, signatureWrongSigner)
+      ).to.be.revertedWith("Not allowed to rebirth");
+      await expect(
+        dd.rebirth(tokenId, signer_.signMessage("that's a wrong message"))
+      ).to.be.revertedWith("Not allowed to rebirth");
+      await dd.rebirth(
+        tokenId,
+        await signRebirthMessage(signer_, admin, tokenId)
+      ); // success
     });
 
     it("Should REVERT when rebirth more than once", async () => {
@@ -892,9 +958,10 @@ describe("DiamondDawn", () => {
       await dd.polish(tokenId);
       await completeAndSetStage(dd, STAGE.SHIP);
       await dd.ship(tokenId);
-      await dd.rebirth(tokenId, adminSig); // success
+      const rebirthAdminSig = await signRebirthMessage(signer_, admin, tokenId);
+      await dd.rebirth(tokenId, rebirthAdminSig); // success
       await completeAndSetStage(dd, STAGE.DAWN);
-      await expect(dd.rebirth(tokenId, adminSig)).to.be.revertedWith(
+      await expect(dd.rebirth(tokenId, rebirthAdminSig)).to.be.revertedWith(
         "No shipment"
       );
     });
@@ -910,14 +977,15 @@ describe("DiamondDawn", () => {
       await dd.polish(tokenId);
       await completeAndSetStage(dd, STAGE.SHIP);
       await dd.ship(tokenId);
-
+      const rebirthUserASig = await signRebirthMessage(signer_, admin, tokenId);
+      const rebirthAdminSig = await signRebirthMessage(signer_, admin, tokenId);
       await expect(
-        dd.connect(userA).rebirth(tokenId, userASig)
+        dd.connect(userA).rebirth(tokenId, rebirthUserASig)
       ).to.be.revertedWith("No shipment");
-      await expect(dd.rebirth(tokenId + 1, adminSig)).to.be.revertedWith(
+      await expect(dd.rebirth(tokenId + 1, rebirthAdminSig)).to.be.revertedWith(
         "No shipment"
       );
-      await dd.rebirth(tokenId, adminSig); // success
+      await dd.rebirth(tokenId, rebirthAdminSig); // success
     });
 
     it("Should be enabled when locked", async () => {
@@ -936,7 +1004,10 @@ describe("DiamondDawn", () => {
       await completeAndSetStage(dd, STAGE.DAWN);
       await dd.lockDiamondDawn();
       expect(await dd.isLocked()).to.be.true;
-      await dd.rebirth(tokenId, adminSig); // success
+      await dd.rebirth(
+        tokenId,
+        await signRebirthMessage(signer_, admin, tokenId)
+      ); // success
     });
 
     it("Should be enabled when locked and dawn stage", async () => {
@@ -955,7 +1026,10 @@ describe("DiamondDawn", () => {
       expect(await dd.isLocked()).to.be.false;
       await dd.lockDiamondDawn();
       expect(await dd.isLocked()).to.be.true;
-      await dd.rebirth(tokenId, adminSig); // success
+      await dd.rebirth(
+        tokenId,
+        await signRebirthMessage(signer_, admin, tokenId)
+      ); // success
     });
 
     it("Should delegate to mine", async () => {
@@ -972,7 +1046,11 @@ describe("DiamondDawn", () => {
 
       expect(await dd.totalSupply()).to.equal(0);
       expect(await dd.balanceOf(userA.address)).to.equal(0);
-      await expect(dd.connect(userA).rebirth(tokenId, userASig))
+      await expect(
+        dd
+          .connect(userA)
+          .rebirth(tokenId, await signRebirthMessage(signer_, userA, tokenId))
+      )
         .to.emit(dd, "Transfer")
         .withArgs(
           "0x0000000000000000000000000000000000000000",
@@ -1005,8 +1083,8 @@ describe("DiamondDawn", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signMessage(signer, admin);
-      userASig = signMessage(signer, userA);
+      adminSig = signEnterMessage(signer, admin);
+      userASig = signEnterMessage(signer, userA);
     });
 
     it("should delegate to Mine - sanity check", async () => {
@@ -1015,8 +1093,6 @@ describe("DiamondDawn", () => {
       const parsed = await assertBase64AndGetParsed(metadata);
       expect(parsed).to.deep.equal({
         name: "Mine Key #1",
-        description: "description",
-        created_by: "dd",
         image: `${BASE_URI}${INVITE_MANIFEST}/resource.jpeg`,
         animation_url: `${BASE_URI}${INVITE_MANIFEST}/resource.mp4`,
         attributes: [{ trait_type: "Type", value: "Key" }],

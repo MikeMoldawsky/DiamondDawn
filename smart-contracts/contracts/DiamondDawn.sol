@@ -26,7 +26,7 @@ import "./interface/IDiamondDawnMine.sol";
  *     |    |  \  \__  \   \ \/ \/ /  /    \
  *     |    `   \  / __ \_  \     /  |   |  \
  *    /_______  / (____  /   \/\_/   |___|  /
- *            \/       \/                 \/                                ,
+ *            \/       \/                 \/
  *
  * @title DiamondDawn
  * @author Mike Moldawsky (Tweezers)
@@ -139,7 +139,10 @@ contract DiamondDawn is
     }
 
     function rebirth(uint tokenId, bytes calldata signature) external isDawnAllowed(tokenId) {
-        require(_isValid(signature), "Not allowed to mint");
+        require(
+            _isValid(signature, bytes32(abi.encodePacked(_msgSender(), uint96(tokenId)))),
+            "Not allowed to rebirth"
+        );
         _shipped[_msgSender()].remove(tokenId);
         ddMine.rebirth(tokenId);
         _safeMint(_msgSender(), tokenId);
@@ -210,20 +213,17 @@ contract DiamondDawn is
 
     /**********************     Private Functions     ************************/
 
-    function _isValid(bytes calldata signature) private view returns (bool) {
-        return
-            _signer ==
-            keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", bytes32(uint256(uint160(_msgSender())))))
-                .recover(signature);
-    }
-
     function _enter(bytes calldata signature) private isActiveStage(Stage.INVITE) isNotFull {
-        require(_isValid(signature), "Not allowed to mint");
+        require(_isValid(signature, bytes32(uint256(uint160(_msgSender())))), "Not allowed to mint");
         // TODO: uncomment before production
         // require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
         uint256 tokenId = ++_numTokens;
         ddMine.enter(tokenId);
         _safeMint(_msgSender(), tokenId);
+    }
+
+    function _isValid(bytes calldata signature, bytes32 message) private view returns (bool) {
+        return _signer == keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", message)).recover(signature);
     }
 }
