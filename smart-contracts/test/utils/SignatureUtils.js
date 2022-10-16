@@ -1,6 +1,6 @@
 const { ethers } = require("hardhat");
 
-async function signEnterMessage(signer, user) {
+async function signForgeMessage(signer, user) {
   try {
     // Convert provided `ethAddress` to correct checksum address format.
     // This step is critical as signing an incorrectly formatted wallet address
@@ -18,7 +18,7 @@ async function signEnterMessage(signer, user) {
   }
 }
 
-async function signRebirthMessage(signer, user, tokenId) {
+async function signDawnMessage(signer, user, tokenId) {
   try {
     // Convert provided `ethAddress` to correct checksum address format.
     // This step is critical as signing an incorrectly formatted wallet address
@@ -37,6 +37,6 @@ async function signRebirthMessage(signer, user, tokenId) {
 }
 
 module.exports = {
-  signEnterMessage,
-  signRebirthMessage,
+  signForgeMessage,
+  signDawnMessage,
 };

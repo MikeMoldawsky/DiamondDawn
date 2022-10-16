@@ -3,10 +3,10 @@ pragma solidity ^0.8.15;
 
 enum Stage {
     NO_STAGE,
-    INVITE,
+    FORGE,
     MINE,
     CUT,
     POLISH,
-    SHIP,
-    DAWN
+    DAWN,
+    COMPLETED
 }

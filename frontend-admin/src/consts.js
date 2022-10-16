@@ -2,12 +2,12 @@ export const NO_SHAPE_NUM = 0;
 
 export const SYSTEM_STAGE = {
   NO_STAGE: 0,
-  INVITE: 1,
+  FORGE: 1,
   MINE: 2,
   CUT: 3,
   POLISH: 4,
-  SHIP: 5,
-  DAWN: 6,
+  DAWN: 5,
+  COMPLETED: 6,
 };
 
 export const ROUGH_SHAPE = {

@@ -51,7 +51,7 @@ describe("Diamond Dawn Mine", () => {
     });
   });
 
-  describe("enter", () => {
+  describe("forge", () => {
     const tokenId = 1;
     let ddMine;
     let dd;
@@ -69,29 +69,29 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should REVERT when NOT diamond dawn", async () => {
-      await expect(ddMine.connect(user).enter(tokenId)).to.be.revertedWith(
+      await expect(ddMine.connect(user).forge(tokenId)).to.be.revertedWith(
         "Only DD"
       );
     });
 
     it("should REVERT when mine is LOCKED", async () => {
       await ddMine.connect(dd).lockMine();
-      await expect(ddMine.connect(dd).enter(tokenId)).to.be.revertedWith(
+      await expect(ddMine.connect(dd).forge(tokenId)).to.be.revertedWith(
         "Locked"
       );
     });
 
     it("should REVERT when token EXISTS", async () => {
-      await ddMine.connect(dd).enter(tokenId); // token exists
-      await expect(ddMine.connect(dd).enter(tokenId)).to.be.revertedWith(
+      await ddMine.connect(dd).forge(tokenId); // token exists
+      await expect(ddMine.connect(dd).forge(tokenId)).to.be.revertedWith(
         "Can't process"
       );
     });
 
-    it("should enter 4 tokens and generate metadata", async () => {
+    it("should forge 4 keys and generate metadata", async () => {
       for (let i = 1; i < 5; i++) {
-        await expect(ddMine.connect(dd).enter(i))
-          .to.emit(ddMine, "Enter")
+        await expect(ddMine.connect(dd).forge(i))
+          .to.emit(ddMine, "Forge")
           .withArgs(i);
         await assertEnterMineMetadata(dd, ddMine, i);
       }
@@ -138,7 +138,7 @@ describe("Diamond Dawn Mine", () => {
     it("should REVERT when token is NOT invite type", async () => {
       await ddMine.eruption([DIAMOND]);
       await ddMine.eruption([DIAMOND]);
-      await ddMine.connect(dd).enter(tokenId);
+      await ddMine.connect(dd).forge(tokenId);
       await ddMine.connect(dd).mine(tokenId);
       await expect(ddMine.connect(dd).mine(tokenId)).to.be.revertedWith(
         "Can't process"
@@ -150,7 +150,7 @@ describe("Diamond Dawn Mine", () => {
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           await ddMine.eruption([DIAMOND]);
-          await ddMine.connect(dd).enter(i);
+          await ddMine.connect(dd).forge(i);
         })
       );
       for (let i = 1; i < 5; i++) {
@@ -195,7 +195,7 @@ describe("Diamond Dawn Mine", () => {
 
     it("should REVERT when token is NOT rough type", async () => {
       await ddMine.eruption([DIAMOND]);
-      await ddMine.connect(dd).enter(tokenId);
+      await ddMine.connect(dd).forge(tokenId);
       await expect(ddMine.connect(dd).cut(tokenId)).to.be.revertedWith(
         "Can't process"
       );
@@ -211,7 +211,7 @@ describe("Diamond Dawn Mine", () => {
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           await ddMine.eruption([DIAMOND]);
-          await ddMine.connect(dd).enter(i);
+          await ddMine.connect(dd).forge(i);
           await ddMine.connect(dd).mine(i);
         })
       );
@@ -258,7 +258,7 @@ describe("Diamond Dawn Mine", () => {
 
     it("should REVERT when token is NOT cut type", async () => {
       await ddMine.eruption([DIAMOND]);
-      await ddMine.connect(dd).enter(tokenId);
+      await ddMine.connect(dd).forge(tokenId);
       await expect(ddMine.connect(dd).polish(tokenId)).to.be.revertedWith(
         "Can't process"
       );
@@ -278,7 +278,7 @@ describe("Diamond Dawn Mine", () => {
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           await ddMine.eruption([DIAMOND]);
-          await ddMine.connect(dd).enter(i);
+          await ddMine.connect(dd).forge(i);
           await ddMine.connect(dd).mine(i);
           await ddMine.connect(dd).cut(i);
         })
@@ -336,7 +336,7 @@ describe("Diamond Dawn Mine", () => {
 
     it("should REVERT when token is NOT polish type", async () => {
       await ddMine.eruption([DIAMOND]);
-      await ddMine.connect(dd).enter(tokenId);
+      await ddMine.connect(dd).forge(tokenId);
       await expect(ddMine.connect(dd).ship(tokenId)).to.be.revertedWith(
         "Can't process"
       );
@@ -359,7 +359,7 @@ describe("Diamond Dawn Mine", () => {
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           await ddMine.eruption([DIAMOND]);
-          await ddMine.connect(dd).enter(i);
+          await ddMine.connect(dd).forge(i);
           await ddMine.connect(dd).mine(i);
           await ddMine.connect(dd).cut(i);
         })
@@ -404,38 +404,38 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should REVERT when NOT DiamondDawn", async () => {
-      await expect(ddMine.connect(user).rebirth(tokenId)).to.be.revertedWith(
+      await expect(ddMine.connect(user).dawn(tokenId)).to.be.revertedWith(
         "Only DD"
       );
     });
 
     it("should work when mine is locked", async () => {
       await ddMine.eruption([DIAMOND]);
-      await ddMine.connect(dd).enter(1);
+      await ddMine.connect(dd).forge(1);
       await ddMine.connect(dd).mine(1);
       await ddMine.connect(dd).cut(1);
       await ddMine.connect(dd).polish(1);
       await ddMine.connect(dd).ship(1);
       await ddMine.connect(dd).lockMine();
-      await ddMine.connect(dd).rebirth(1);
+      await ddMine.connect(dd).dawn(1);
     });
 
     it("should REVERT when not shipped", async () => {
       await ddMine.eruption([DIAMOND]);
-      await ddMine.connect(dd).enter(tokenId);
-      await expect(ddMine.connect(dd).rebirth(tokenId)).to.be.revertedWith(
+      await ddMine.connect(dd).forge(tokenId);
+      await expect(ddMine.connect(dd).dawn(tokenId)).to.be.revertedWith(
         "Not shipped"
       );
       await ddMine.connect(dd).mine(tokenId);
-      await expect(ddMine.connect(dd).rebirth(tokenId)).to.be.revertedWith(
+      await expect(ddMine.connect(dd).dawn(tokenId)).to.be.revertedWith(
         "Not shipped"
       );
       await ddMine.connect(dd).cut(tokenId);
-      await expect(ddMine.connect(dd).rebirth(tokenId)).to.be.revertedWith(
+      await expect(ddMine.connect(dd).dawn(tokenId)).to.be.revertedWith(
         "Not shipped"
       );
       await ddMine.connect(dd).polish(tokenId);
-      await expect(ddMine.connect(dd).rebirth(tokenId)).to.be.revertedWith(
+      await expect(ddMine.connect(dd).dawn(tokenId)).to.be.revertedWith(
         "Not shipped"
       );
 
@@ -444,8 +444,8 @@ describe("Diamond Dawn Mine", () => {
         "Shipped"
       );
 
-      await ddMine.connect(dd).rebirth(tokenId);
-      await expect(ddMine.connect(dd).rebirth(tokenId)).to.be.revertedWith(
+      await ddMine.connect(dd).dawn(tokenId);
+      await expect(ddMine.connect(dd).dawn(tokenId)).to.be.revertedWith(
         "Wrong state"
       );
     });
@@ -454,7 +454,7 @@ describe("Diamond Dawn Mine", () => {
       await Promise.all(
         _.range(1, 5).map(async (i) => {
           await ddMine.eruption([DIAMOND]);
-          await ddMine.connect(dd).enter(i);
+          await ddMine.connect(dd).forge(i);
           await ddMine.connect(dd).mine(i);
           await ddMine.connect(dd).cut(i);
           await ddMine.connect(dd).polish(i);
@@ -463,8 +463,8 @@ describe("Diamond Dawn Mine", () => {
       for (let i = 1; i < 5; i++) {
         const tokenId = 5 - i;
         await ddMine.connect(dd).ship(tokenId);
-        await expect(ddMine.connect(dd).rebirth(tokenId))
-          .to.emit(ddMine, "Rebirth")
+        await expect(ddMine.connect(dd).dawn(tokenId))
+          .to.emit(ddMine, "Dawn")
           .withArgs(tokenId);
         await assertRebornMetadata(
           dd,
@@ -575,16 +575,16 @@ describe("Diamond Dawn Mine", () => {
       );
     });
 
-    it("is correct for enter mine", async () => {
+    it("is correct for forge key", async () => {
       const tokenId = 1;
-      await ddMine.connect(dd).enter(tokenId);
+      await ddMine.connect(dd).forge(tokenId);
       await assertEnterMineMetadata(dd, ddMine, tokenId);
     });
 
     it("is correct for mine", async () => {
       await ddMine.eruption([DIAMOND]);
       const tokenId = 1;
-      await ddMine.connect(dd).enter(tokenId);
+      await ddMine.connect(dd).forge(tokenId);
       await ddMine.connect(dd).mine(tokenId);
 
       await assertRoughMetadata(dd, ddMine, DIAMOND, tokenId, 1, 1);
@@ -593,7 +593,7 @@ describe("Diamond Dawn Mine", () => {
     it("is correct for cut", async () => {
       await ddMine.eruption([DIAMOND]);
       const tokenId = 1;
-      await ddMine.connect(dd).enter(tokenId);
+      await ddMine.connect(dd).forge(tokenId);
       await ddMine.connect(dd).mine(tokenId);
       await ddMine.connect(dd).cut(tokenId);
 
@@ -606,7 +606,7 @@ describe("Diamond Dawn Mine", () => {
 
       // Token 1 enters mine
       const tokenId = 1;
-      await ddMine.connect(dd).enter(tokenId);
+      await ddMine.connect(dd).forge(tokenId);
       await ddMine.connect(dd).mine(tokenId);
       await ddMine.connect(dd).cut(tokenId);
       await ddMine.connect(dd).polish(tokenId);
@@ -629,12 +629,12 @@ describe("Diamond Dawn Mine", () => {
 
       // Token 1 enters mine
       const tokenId = 1;
-      await ddMine.connect(dd).enter(tokenId);
+      await ddMine.connect(dd).forge(tokenId);
       await ddMine.connect(dd).mine(tokenId);
       await ddMine.connect(dd).cut(tokenId);
       await ddMine.connect(dd).polish(tokenId);
       await ddMine.connect(dd).ship(tokenId);
-      await ddMine.connect(dd).rebirth(tokenId);
+      await ddMine.connect(dd).dawn(tokenId);
       await assertRebornMetadata(
         dd,
         ddMine,
@@ -667,24 +667,28 @@ describe("Diamond Dawn Mine", () => {
       await diamondDawnMine.connect(diamondDawn).initialize(numDiamonds);
     });
 
-    it("should be NOT READY for all stages except NO STAGE and DAWN", async () => {
+    it("should be NOT READY for all stages except NO STAGE and COMPLETED", async () => {
       expect(await ddMine.isReady(STAGE.NO_STAGE)).to.be.true;
-      expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
-      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.DAWN);
+      expect(await ddMine.isReady(STAGE.COMPLETED)).to.be.true;
+      const noReadyStages = _.without(
+        ALL_STAGES,
+        STAGE.NO_STAGE,
+        STAGE.COMPLETED
+      );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
       }
     });
 
     it("should be TRUE only for ENTER_MINE", async () => {
-      expect(await ddMine.isReady(STAGE.INVITE)).to.be.false;
-      await ddMine.setManifest(STAGE.INVITE, "hi.mp4");
-      expect(await ddMine.isReady(STAGE.INVITE)).to.be.true;
+      expect(await ddMine.isReady(STAGE.FORGE)).to.be.false;
+      await ddMine.setManifest(STAGE.FORGE, "hi.mp4");
+      expect(await ddMine.isReady(STAGE.FORGE)).to.be.true;
       const noReadyStages = _.without(
         ALL_STAGES,
         STAGE.NO_STAGE,
-        STAGE.DAWN,
-        STAGE.INVITE
+        STAGE.COMPLETED,
+        STAGE.FORGE
       );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
@@ -703,7 +707,7 @@ describe("Diamond Dawn Mine", () => {
       const noReadyStages = _.without(
         ALL_STAGES,
         STAGE.NO_STAGE,
-        STAGE.DAWN,
+        STAGE.COMPLETED,
         STAGE.MINE
       );
       for (const stage of noReadyStages) {
@@ -718,7 +722,7 @@ describe("Diamond Dawn Mine", () => {
       const noReadyStages = _.without(
         ALL_STAGES,
         STAGE.NO_STAGE,
-        STAGE.DAWN,
+        STAGE.COMPLETED,
         STAGE.CUT
       );
       for (const stage of noReadyStages) {
@@ -733,7 +737,7 @@ describe("Diamond Dawn Mine", () => {
       const noReadyStages = _.without(
         ALL_STAGES,
         STAGE.NO_STAGE,
-        STAGE.DAWN,
+        STAGE.COMPLETED,
         STAGE.POLISH
       );
       for (const stage of noReadyStages) {
@@ -742,24 +746,24 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for REBORN", async () => {
-      expect(await ddMine.isReady(STAGE.SHIP)).to.be.false;
-      await ddMine.setManifest(STAGE.SHIP, "hi.mp4");
-      expect(await ddMine.isReady(STAGE.SHIP)).to.be.true;
+      expect(await ddMine.isReady(STAGE.DAWN)).to.be.false;
+      await ddMine.setManifest(STAGE.DAWN, "hi.mp4");
+      expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
       const noReadyStages = _.without(
         ALL_STAGES,
         STAGE.NO_STAGE,
-        STAGE.DAWN,
-        STAGE.SHIP
+        STAGE.COMPLETED,
+        STAGE.DAWN
       );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
       }
     });
 
-    it("should always be TRUE for DAWN", async () => {
-      expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
-      await ddMine.setManifest(STAGE.DAWN, "");
-      expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
+    it("should always be TRUE for COMPLETED", async () => {
+      expect(await ddMine.isReady(STAGE.COMPLETED)).to.be.true;
+      await ddMine.setManifest(STAGE.COMPLETED, "");
+      expect(await ddMine.isReady(STAGE.COMPLETED)).to.be.true;
     });
 
     it("should revert if non existing stage", async () => {
