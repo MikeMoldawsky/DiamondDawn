@@ -9,7 +9,7 @@ const {
 } = require("./utils/DeployDDUtils");
 const { signForgeMessage } = require("./utils/SignatureUtils");
 const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
-const { PRICE_WEDDING, PRICE } = require("./utils/Consts");
+const { PRICE_MARRIAGE, PRICE } = require("./utils/Consts");
 const { STAGE, ALL_STAGES } = require("./utils/EnumConverterUtils");
 const { ethers } = require("hardhat");
 const { completeAndSetStage } = require("./utils/DDTestUtils");
@@ -63,7 +63,7 @@ describe("Diamond Dawn Admin", () => {
 
     it("Should correctly set public params", async () => {
       expect(await dd.PRICE()).to.equal(PRICE);
-      expect(await dd.PRICE_WEDDING()).to.equal(PRICE_WEDDING);
+      expect(await dd.PRICE_MARRIAGE()).to.equal(PRICE_MARRIAGE);
       expect(await dd.MAX_ENTRANCE()).to.equal(NUM_TOKENS);
       expect(await dd.isLocked()).to.be.false;
       expect(await dd.isActive()).to.be.false;
@@ -86,7 +86,7 @@ describe("Diamond Dawn Admin", () => {
         "Wrong stage"
       );
       await expect(
-        dd.forgeWithPartner(adminSig, { value: PRICE_WEDDING })
+        dd.forgeWithPartner(adminSig, { value: PRICE_MARRIAGE })
       ).to.be.revertedWith("Wrong stage");
     });
   });
@@ -506,8 +506,8 @@ describe("Diamond Dawn Admin", () => {
       await dd.forge(adminSig, { value: PRICE });
       await dd
         .connect(userA)
-        .forgeWithPartner(userASig, { value: PRICE_WEDDING });
-      const expectedBalance = PRICE.add(PRICE_WEDDING);
+        .forgeWithPartner(userASig, { value: PRICE_MARRIAGE });
+      const expectedBalance = PRICE.add(PRICE_MARRIAGE);
       expect(await ethers.provider.getBalance(dd.address)).to.equal(
         expectedBalance
       );

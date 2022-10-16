@@ -45,7 +45,7 @@ contract DiamondDawn is
     using ECDSA for bytes32;
 
     uint public constant PRICE = 0.002 ether; // TODO: change to 3.33eth
-    uint public constant PRICE_WEDDING = 0.003 ether; // TODO: change to 3.66eth
+    uint public constant PRICE_MARRIAGE = 0.003 ether; // TODO: change to 3.66eth
     uint16 public constant MAX_ENTRANCE = 333;
 
     bool public isLocked; // immutable
@@ -114,8 +114,7 @@ contract DiamondDawn is
         _forge(signature);
     }
 
-    function forgeWithPartner(bytes calldata signature) external payable costs(PRICE_WEDDING) {
-        // marriage
+    function forgeWithPartner(bytes calldata signature) external payable costs(PRICE_MARRIAGE) {
         _forge(signature);
     }
 

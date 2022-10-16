@@ -23,7 +23,7 @@ const {
 const { signForgeMessage, signDawnMessage } = require("./utils/SignatureUtils");
 const _ = require("lodash");
 const { ethers } = require("hardhat");
-const { PRICE, PRICE_WEDDING } = require("./utils/Consts");
+const { PRICE, PRICE_MARRIAGE } = require("./utils/Consts");
 const { completeAndSetStage } = require("./utils/DDTestUtils");
 const { DIAMOND_TO_COLOR, DIAMOND } = require("./utils/Diamonds");
 
@@ -64,12 +64,12 @@ describe("DiamondDawn", () => {
         dd.forgeWithPartner(adminSig, {
           value: PRICE.add(parseEther("0.0001")),
         })
-      ).to.be.revertedWith(`Cost is: ${PRICE_WEDDING.toString()}`);
+      ).to.be.revertedWith(`Cost is: ${PRICE_MARRIAGE.toString()}`);
       await expect(
         dd.forgeWithPartner(adminSig, {
           value: PRICE.sub(parseEther("0.0001")),
         })
-      ).to.be.revertedWith(`Cost is: ${PRICE_WEDDING.toString()}`);
+      ).to.be.revertedWith(`Cost is: ${PRICE_MARRIAGE.toString()}`);
     });
 
     it("Should REVERT when not INVITE stage", async () => {
@@ -81,7 +81,7 @@ describe("DiamondDawn", () => {
           "Wrong stage"
         );
         await expect(
-          dd.forgeWithPartner(adminSig, { value: PRICE_WEDDING })
+          dd.forgeWithPartner(adminSig, { value: PRICE_MARRIAGE })
         ).to.be.revertedWith("Wrong stage");
       }
     });
@@ -94,7 +94,7 @@ describe("DiamondDawn", () => {
         "Stage is inactive"
       );
       await expect(
-        dd.forgeWithPartner(adminSig, { value: PRICE_WEDDING })
+        dd.forgeWithPartner(adminSig, { value: PRICE_MARRIAGE })
       ).to.be.revertedWith("Stage is inactive");
     });
 
@@ -109,7 +109,7 @@ describe("DiamondDawn", () => {
         "Max capacity"
       );
       await expect(
-        dd.forgeWithPartner(adminSig, { value: PRICE_WEDDING })
+        dd.forgeWithPartner(adminSig, { value: PRICE_MARRIAGE })
       ).to.be.revertedWith("Max capacity");
     });
 
@@ -121,7 +121,7 @@ describe("DiamondDawn", () => {
       );
 
       await expect(
-        dd.forgeWithPartner(adminSig, { value: PRICE_WEDDING })
+        dd.forgeWithPartner(adminSig, { value: PRICE_MARRIAGE })
       ).to.be.revertedWith("Stage not ready");
     });
 
@@ -132,17 +132,17 @@ describe("DiamondDawn", () => {
         "Already minted"
       );
       await expect(
-        dd.forgeWithPartner(adminSig, { value: PRICE_WEDDING })
+        dd.forgeWithPartner(adminSig, { value: PRICE_MARRIAGE })
       ).to.be.revertedWith("Already minted");
       // test forgeWithPartner
       await dd
         .connect(user)
-        .forgeWithPartner(userSig, { value: PRICE_WEDDING });
+        .forgeWithPartner(userSig, { value: PRICE_MARRIAGE });
       await expect(
         dd.connect(user).forge(userSig, { value: PRICE })
       ).to.be.revertedWith("Already minted");
       await expect(
-        dd.connect(user).forgeWithPartner(userSig, { value: PRICE_WEDDING })
+        dd.connect(user).forgeWithPartner(userSig, { value: PRICE_MARRIAGE })
       ).to.be.revertedWith("Already minted");
     });
 
@@ -151,7 +151,7 @@ describe("DiamondDawn", () => {
         "Not allowed to mint"
       );
       await expect(
-        dd.forgeWithPartner(userSig, { value: PRICE_WEDDING })
+        dd.forgeWithPartner(userSig, { value: PRICE_MARRIAGE })
       ).to.be.revertedWith("Not allowed to mint");
     });
 
@@ -161,7 +161,7 @@ describe("DiamondDawn", () => {
         dd.forge(signedMessage, { value: PRICE })
       ).to.be.revertedWith("Not allowed to mint");
       await expect(
-        dd.forgeWithPartner(signedMessage, { value: PRICE_WEDDING })
+        dd.forgeWithPartner(signedMessage, { value: PRICE_MARRIAGE })
       ).to.be.revertedWith("Not allowed to mint");
     });
 
@@ -170,7 +170,7 @@ describe("DiamondDawn", () => {
         "Not allowed to mint"
       );
       await expect(
-        dd.forgeWithPartner(userSig, { value: PRICE_WEDDING })
+        dd.forgeWithPartner(userSig, { value: PRICE_MARRIAGE })
       ).to.be.revertedWith("Not allowed to mint");
     });
 
@@ -180,7 +180,7 @@ describe("DiamondDawn", () => {
         "Not allowed to mint"
       );
       await expect(
-        dd.forgeWithPartner(signature, { value: PRICE_WEDDING })
+        dd.forgeWithPartner(signature, { value: PRICE_MARRIAGE })
       ).to.be.revertedWith("Not allowed to mint");
     });
 
@@ -190,9 +190,9 @@ describe("DiamondDawn", () => {
       expect(await ethers.provider.getBalance(dd.address)).to.equal(PRICE);
       await dd
         .connect(user)
-        .forgeWithPartner(userSig, { value: PRICE_WEDDING });
+        .forgeWithPartner(userSig, { value: PRICE_MARRIAGE });
       expect(await ethers.provider.getBalance(dd.address)).to.equal(
-        PRICE.add(PRICE_WEDDING)
+        PRICE.add(PRICE_MARRIAGE)
       );
     });
 
@@ -203,7 +203,7 @@ describe("DiamondDawn", () => {
         .to.emit(ddMine, "Forge")
         .withArgs(1);
       await expect(
-        dd.connect(admin).forgeWithPartner(adminSig, { value: PRICE_WEDDING })
+        dd.connect(admin).forgeWithPartner(adminSig, { value: PRICE_MARRIAGE })
       )
         .to.emit(dd, "Transfer")
         .withArgs(
@@ -1040,7 +1040,7 @@ describe("DiamondDawn", () => {
           userA.address,
           1
         )
-        .and.to.emit(ddMine, "Rebirth")
+        .and.to.emit(ddMine, "Dawn")
         .withArgs(tokenId);
       expect(await dd.balanceOf(userA.address)).to.equal(1);
       expect(await dd.ownerOf(tokenId)).to.be.equal(userA.address);

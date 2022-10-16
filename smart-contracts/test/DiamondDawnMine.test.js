@@ -464,7 +464,7 @@ describe("Diamond Dawn Mine", () => {
         const tokenId = 5 - i;
         await ddMine.connect(dd).ship(tokenId);
         await expect(ddMine.connect(dd).dawn(tokenId))
-          .to.emit(ddMine, "Rebirth")
+          .to.emit(ddMine, "Dawn")
           .withArgs(tokenId);
         await assertRebornMetadata(
           dd,
