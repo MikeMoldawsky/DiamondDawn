@@ -153,7 +153,7 @@ describe("Diamond Dawn Mine Admin", () => {
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
         "Wrong shipment state"
       );
-      await mineContract.connect(diamondDawn).enter(tokenId);
+      await mineContract.connect(diamondDawn).forge(tokenId);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
         "Wrong shipment state"
       );
@@ -210,7 +210,7 @@ describe("Diamond Dawn Mine Admin", () => {
         points: DIAMOND.points + 20,
         shape: DIAMOND.shape + 1,
       };
-      await mineContract.connect(diamondDawn).rebirth(tokenId);
+      await mineContract.connect(diamondDawn).dawn(tokenId);
       await mineContract.lostShipment(tokenId, replacedDiamond2);
       await assertRebornMetadata(
         diamondDawn,

@@ -110,14 +110,13 @@ contract DiamondDawn is
 
     /**********************     External Functions     ************************/
 
-    function enter(bytes calldata signature) external payable costs(PRICE) {
-        // TODO: change function name
-        _enter(signature);
+    function forge(bytes calldata signature) external payable costs(PRICE) {
+        _forge(signature);
     }
 
-    function enterWedding(bytes calldata signature) external payable costs(PRICE_WEDDING) {
-        // TODO: change function name
-        _enter(signature);
+    function forgeWithPartner(bytes calldata signature) external payable costs(PRICE_WEDDING) {
+        // marriage
+        _forge(signature);
     }
 
     function mine(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.MINE) {
@@ -138,13 +137,13 @@ contract DiamondDawn is
         _shipped[_msgSender()].add(tokenId);
     }
 
-    function rebirth(uint tokenId, bytes calldata signature) external isDawnAllowed(tokenId) {
+    function dawn(uint tokenId, bytes calldata signature) external isDawnAllowed(tokenId) {
         require(
             _isValid(signature, bytes32(abi.encodePacked(_msgSender(), uint96(tokenId)))),
             "Not allowed to rebirth"
         );
         _shipped[_msgSender()].remove(tokenId);
-        ddMine.rebirth(tokenId);
+        ddMine.dawn(tokenId);
         _safeMint(_msgSender(), tokenId);
     }
 
@@ -213,13 +212,13 @@ contract DiamondDawn is
 
     /**********************     Private Functions     ************************/
 
-    function _enter(bytes calldata signature) private isActiveStage(Stage.INVITE) isNotFull {
+    function _forge(bytes calldata signature) private isActiveStage(Stage.INVITE) isNotFull {
         require(_isValid(signature, bytes32(uint256(uint160(_msgSender())))), "Not allowed to mint");
         // TODO: uncomment before production
         // require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
         uint256 tokenId = ++_numTokens;
-        ddMine.enter(tokenId);
+        ddMine.forge(tokenId);
         _safeMint(_msgSender(), tokenId);
     }
 

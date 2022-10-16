@@ -101,9 +101,9 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         isInitialized = true;
     }
 
-    function enter(uint tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.NO_STAGE) {
+    function forge(uint tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.NO_STAGE) {
         _metadata[tokenId].state_ = Stage.INVITE;
-        emit Enter(tokenId);
+        emit Forge(tokenId);
     }
 
     function mine(uint tokenId) external onlyDiamondDawn mineNotDry canProcess(tokenId, Stage.INVITE) {
@@ -140,11 +140,11 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         emit Ship(tokenId, metadata.reborn.id, metadata.certificate.number);
     }
 
-    function rebirth(uint tokenId) external onlyDiamondDawn {
+    function dawn(uint tokenId) external onlyDiamondDawn {
         require(_metadata[tokenId].reborn.id > 0, "Not shipped");
         require(_metadata[tokenId].state_ == Stage.POLISH, "Wrong state");
         _metadata[tokenId].state_ = Stage.SHIP;
-        emit Rebirth(tokenId);
+        emit Dawn(tokenId);
     }
 
     function lockMine() external onlyDiamondDawn {

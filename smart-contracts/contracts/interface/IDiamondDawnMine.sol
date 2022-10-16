@@ -5,16 +5,16 @@ import "../objects/Mine.sol";
 import "../objects/System.sol";
 
 interface IDiamondDawnMine {
-    event Enter(uint tokenId);
+    event Forge(uint tokenId);
     event Mine(uint tokenId);
     event Cut(uint tokenId);
     event Polish(uint tokenId);
     event Ship(uint tokenId, uint16 physicalId, uint32 number);
-    event Rebirth(uint tokenId);
+    event Dawn(uint tokenId);
 
     function initialize(uint16 maxDiamond) external;
 
-    function enter(uint tokenId) external;
+    function forge(uint tokenId) external;
 
     function mine(uint tokenId) external;
 
@@ -24,7 +24,7 @@ interface IDiamondDawnMine {
 
     function ship(uint tokenId) external;
 
-    function rebirth(uint tokenId) external;
+    function dawn(uint tokenId) external;
 
     function lockMine() external;
 

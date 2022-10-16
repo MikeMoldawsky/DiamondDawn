@@ -33,7 +33,7 @@ async function signAddressAndTokenId(address, tokenId) {
     // Sign the message using `signer`.
     return await signer.signMessage(message);
   } catch (e) {
-    console.log("Failed to get rebirth signature");
+    console.log("Failed to get dawn signature");
     throw e;
   }
 }

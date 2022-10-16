@@ -7,7 +7,7 @@ const {
   NUM_TOKENS,
   deployDDWithRebirthReady,
 } = require("./utils/DeployDDUtils");
-const { signEnterMessage } = require("./utils/SignatureUtils");
+const { signForgeMessage } = require("./utils/SignatureUtils");
 const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
 const { PRICE_WEDDING, PRICE } = require("./utils/Consts");
 const { STAGE, ALL_STAGES } = require("./utils/EnumConverterUtils");
@@ -38,7 +38,7 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signEnterMessage(signer, admin);
+      adminSig = signForgeMessage(signer, admin);
     });
 
     it("should grant admin permissions to deployer", async () => {
@@ -81,12 +81,12 @@ describe("Diamond Dawn Admin", () => {
       expect(amount).to.equal(33);
     });
 
-    it("Should not allow to enter mine", async () => {
-      await expect(dd.enter(adminSig, { value: PRICE })).to.be.revertedWith(
+    it("Should not allow to forge key", async () => {
+      await expect(dd.forge(adminSig, { value: PRICE })).to.be.revertedWith(
         "Wrong stage"
       );
       await expect(
-        dd.enterWedding(adminSig, { value: PRICE_WEDDING })
+        dd.forgeWithPartner(adminSig, { value: PRICE_WEDDING })
       ).to.be.revertedWith("Wrong stage");
     });
   });
@@ -108,8 +108,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signEnterMessage(signer, admin);
-      userASig = signEnterMessage(signer, userA);
+      adminSig = signForgeMessage(signer, admin);
+      userASig = signForgeMessage(signer, userA);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -172,8 +172,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signEnterMessage(signer, admin);
-      userASig = signEnterMessage(signer, userA);
+      adminSig = signForgeMessage(signer, admin);
+      userASig = signForgeMessage(signer, userA);
       await dd.setStage(STAGE.INVITE);
     });
 
@@ -228,8 +228,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signEnterMessage(signer, admin);
-      userASig = signEnterMessage(signer, userA);
+      adminSig = signForgeMessage(signer, admin);
+      userASig = signForgeMessage(signer, userA);
       await dd.setStage(STAGE.INVITE);
     });
 
@@ -297,8 +297,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signEnterMessage(signer, admin);
-      userASig = signEnterMessage(signer, userA);
+      adminSig = signForgeMessage(signer, admin);
+      userASig = signForgeMessage(signer, userA);
       await dd.setStage(STAGE.INVITE);
     });
 
@@ -326,7 +326,7 @@ describe("Diamond Dawn Admin", () => {
 
     it("should lock from transfers", async () => {
       const tokenId = 1;
-      await dd.enter(adminSig, { value: PRICE });
+      await dd.forge(adminSig, { value: PRICE });
       expect(await dd.balanceOf(admin.address)).to.equal(1);
       await dd.pause();
       await expect(
@@ -353,8 +353,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signEnterMessage(signer, admin);
-      userASig = signEnterMessage(signer, userA);
+      adminSig = signForgeMessage(signer, admin);
+      userASig = signForgeMessage(signer, userA);
       await dd.setStage(STAGE.INVITE);
     });
 
@@ -384,7 +384,7 @@ describe("Diamond Dawn Admin", () => {
 
     it("should enable transfers", async () => {
       const tokenId = 1;
-      await dd.enter(adminSig, { value: PRICE });
+      await dd.forge(adminSig, { value: PRICE });
       expect(await dd.balanceOf(admin.address)).to.equal(1);
       await dd.pause();
       await expect(
@@ -415,8 +415,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signEnterMessage(signer, admin);
-      userASig = signEnterMessage(signer, userA);
+      adminSig = signForgeMessage(signer, admin);
+      userASig = signForgeMessage(signer, userA);
       await dd.setStage(STAGE.INVITE);
     });
 
@@ -476,8 +476,8 @@ describe("Diamond Dawn Admin", () => {
       admin = owner;
       userA = users[0];
       userB = users[1];
-      adminSig = signEnterMessage(signer, admin);
-      userASig = signEnterMessage(signer, userA);
+      adminSig = signForgeMessage(signer, admin);
+      userASig = signForgeMessage(signer, userA);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -492,7 +492,7 @@ describe("Diamond Dawn Admin", () => {
 
     it("should properly work", async () => {
       expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
-      await dd.enter(adminSig, { value: PRICE });
+      await dd.forge(adminSig, { value: PRICE });
       expect(await ethers.provider.getBalance(dd.address)).to.equal(PRICE);
       await expect(() => dd.withdraw()).to.changeEtherBalances(
         [dd, admin],
@@ -503,8 +503,10 @@ describe("Diamond Dawn Admin", () => {
 
     it("should properly work when locked", async () => {
       expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
-      await dd.enter(adminSig, { value: PRICE });
-      await dd.connect(userA).enterWedding(userASig, { value: PRICE_WEDDING });
+      await dd.forge(adminSig, { value: PRICE });
+      await dd
+        .connect(userA)
+        .forgeWithPartner(userASig, { value: PRICE_WEDDING });
       const expectedBalance = PRICE.add(PRICE_WEDDING);
       expect(await ethers.provider.getBalance(dd.address)).to.equal(
         expectedBalance

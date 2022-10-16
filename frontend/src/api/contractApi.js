@@ -26,8 +26,8 @@ export const getMinePriceApi = async (contract) => {
 // PROCESS
 const PROCESS_GAS_LIMIT = 220000;
 
-export const enterApi = async (contract, minePrice, signature) => {
-  return contract.enter(signature, {
+export const forgeApi = async (contract, minePrice, signature) => {
+  return contract.forge(signature, {
     value: minePrice,
     gasLimit: PROCESS_GAS_LIMIT,
   });
@@ -49,8 +49,8 @@ export const shipApi = async (contract, tokenId) => {
   return contract.ship(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
 };
 
-export const rebirthApi = async (contract, tokenId, signature) => {
-  return contract.rebirth(tokenId, signature, {
+export const dawnApi = async (contract, tokenId, signature) => {
+  return contract.dawn(tokenId, signature, {
     gasLimit: PROCESS_GAS_LIMIT,
   });
 };

@@ -12,7 +12,7 @@ import { useAccount } from "wagmi";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import useMountLogger from "hooks/useMountLogger";
-import { enterApi } from "api/contractApi";
+import { forgeApi } from "api/contractApi";
 import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { getCDNObjectUrl } from "utils";
@@ -61,7 +61,7 @@ const EnterMine = ({ invite }) => {
       navigateToDefault();
       throw new Error(e);
     }
-    const tx = await enterApi(contract, minePrice, signature);
+    const tx = await forgeApi(contract, minePrice, signature);
     await tx.wait();
     try {
       await confirmInviteUsedApi(invite._id, account.address);

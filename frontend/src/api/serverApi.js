@@ -83,8 +83,8 @@ export const getInviteByAddressApi = async (address) => {
 };
 
 // Signature
-export const signRebirthApi = async (address, tokenId) => {
-  const res = await axios.post(`/api/sign_rebirth`, { address, tokenId });
+export const signDawnApi = async (address, tokenId) => {
+  const res = await axios.post(`/api/sign_dawn`, { address, tokenId });
   return res.data;
 };
 
