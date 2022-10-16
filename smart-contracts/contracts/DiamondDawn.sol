@@ -92,9 +92,9 @@ contract DiamondDawn is
     }
 
     modifier isDawnAllowed(uint tokenId) {
-        require(stage == Stage.SHIP || stage == Stage.DAWN, "Wrong stage");
+        require(stage == Stage.DAWN || stage == Stage.COMPLETED, "Wrong stage");
         require(_shipped[_msgSender()].contains(tokenId), "No shipment");
-        require(ddMine.isReady(Stage.SHIP), "Ship not ready");
+        require(ddMine.isReady(Stage.DAWN), "Dawn not ready");
         _;
     }
 
@@ -130,7 +130,7 @@ contract DiamondDawn is
         ddMine.polish(tokenId);
     }
 
-    function ship(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.SHIP) {
+    function ship(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.DAWN) {
         _burn(tokenId);
         ddMine.ship(tokenId);
         _shipped[_msgSender()].add(tokenId);
@@ -158,7 +158,7 @@ contract DiamondDawn is
     }
 
     function lockDiamondDawn() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-        require(stage == Stage.DAWN, "Not Dawn stage");
+        require(stage == Stage.COMPLETED, "Not Completed");
         ddMine.lockMine();
         isLocked = true;
     }
@@ -211,7 +211,7 @@ contract DiamondDawn is
 
     /**********************     Private Functions     ************************/
 
-    function _forge(bytes calldata signature) private isActiveStage(Stage.INVITE) isNotFull {
+    function _forge(bytes calldata signature) private isActiveStage(Stage.FORGE) isNotFull {
         require(_isValid(signature, bytes32(uint256(uint160(_msgSender())))), "Not allowed to mint");
         // TODO: uncomment before production
         // require(!_minted[_msgSender()], "Already minted");

@@ -1,21 +1,21 @@
 export const SYSTEM_STAGE = {
   NO_STAGE: 0,
-  INVITE: 1,
+  FORGE: 1,
   MINE: 2,
   CUT: 3,
   POLISH: 4,
-  SHIP: 5,
-  DAWN: 6,
+  DAWN: 5,
+  COMPLETED: 6,
 };
 
 export const SYSTEM_STAGE_NAME = {
   [SYSTEM_STAGE.NO_STAGE]: "No Stage",
-  [SYSTEM_STAGE.INVITE]: "Invite",
+  [SYSTEM_STAGE.FORGE]: "Forge",
   [SYSTEM_STAGE.MINE]: "Mine",
   [SYSTEM_STAGE.CUT]: "Cut",
   [SYSTEM_STAGE.POLISH]: "Polish",
-  [SYSTEM_STAGE.SHIP]: "Ship",
   [SYSTEM_STAGE.DAWN]: "Dawn",
+  [SYSTEM_STAGE.COMPLETED]: "Completed",
 };
 
 export const ROUGH_SHAPE = {
@@ -71,7 +71,7 @@ export const SHAPE_NAME = {
 };
 
 export const DIAMOND_ANIMATION_MAPPING = {
-  [SYSTEM_STAGE.INVITE]: {
+  [SYSTEM_STAGE.FORGE]: {
     [SHAPE_NAME.NO_SHAPE]: "infinity.mp4",
   },
   [SYSTEM_STAGE.MINE]: {
@@ -90,7 +90,7 @@ export const DIAMOND_ANIMATION_MAPPING = {
     [SHAPE_NAME.OVAL]: "polished_oval.mp4",
     [SHAPE_NAME.CUSHION]: "polished_radiant.mp4",
   },
-  [SYSTEM_STAGE.SHIP]: {
+  [SYSTEM_STAGE.DAWN]: {
     [SHAPE_NAME.PEAR]: "diamond_dawn.mp4",
     [SHAPE_NAME.ROUND]: "diamond_dawn.mp4",
     [SHAPE_NAME.OVAL]: "diamond_dawn.mp4",

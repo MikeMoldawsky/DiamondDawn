@@ -120,8 +120,8 @@ export const tokenByIdSelector = (tokenId) => (state) =>
 const getTokenStageByTypeTrait = (token) => {
   const displayType = getTokenTrait(token, TRAIT.type);
   switch (displayType) {
-    case "Key":
-      return SYSTEM_STAGE.INVITE;
+    case "Forged":
+      return SYSTEM_STAGE.FORGE;
     case "Rough":
       return SYSTEM_STAGE.MINE;
     case "Cut":
@@ -129,7 +129,7 @@ const getTokenStageByTypeTrait = (token) => {
     case "Polished":
       return SYSTEM_STAGE.POLISH;
     case "Reborn":
-      return SYSTEM_STAGE.SHIP;
+      return SYSTEM_STAGE.DAWN;
     default:
       return 0;
   }

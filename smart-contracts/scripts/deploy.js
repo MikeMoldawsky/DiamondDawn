@@ -153,7 +153,7 @@ async function populateDiamonds(mine) {
 
 async function setVideos(diamondDawnMine) {
   await diamondDawnMine.setManifest(
-    STAGE.INVITE,
+    STAGE.FORGE,
     "sMO6zq1xVt4w0kQIz5X0fmQuJhCL5fHoGJk3Qmo6PcY"
   );
   await diamondDawnMine.setManifest(
@@ -169,7 +169,7 @@ async function setVideos(diamondDawnMine) {
     "LzfNElWncGfBa5eIaFWZ3JxNYt95PvdHIr8t7MMHrU0"
   );
   await diamondDawnMine.setManifest(
-    STAGE.SHIP,
+    STAGE.DAWN,
     "dm4lEPAKKKLf-ZjghklqtVyODMZVynvM1Nsj8-vJnPs"
   );
 }

@@ -8,9 +8,7 @@ import { isStageActiveSelector } from "store/systemReducer";
 import { SYSTEM_STAGE } from "consts";
 
 const InviteStatus = () => {
-  const isInvitesStage = useSelector(
-    isStageActiveSelector(SYSTEM_STAGE.INVITE)
-  );
+  const isInvitesStage = useSelector(isStageActiveSelector(SYSTEM_STAGE.FORGE));
   const invite = useSelector(inviteSelector);
   const dispatch = useDispatch();
   const account = useAccount();

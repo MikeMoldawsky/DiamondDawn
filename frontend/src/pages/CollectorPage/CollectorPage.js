@@ -41,7 +41,7 @@ function CollectorPage() {
     isActionFirstCompleteSelector("get-invite-by-address")
   );
 
-  const isInviteStage = systemStage === SYSTEM_STAGE.INVITE && isActive;
+  const isForgeStage = systemStage === SYSTEM_STAGE.FORGE && isActive;
 
   const loadInvite = async (address) => dispatch(loadInviteByAddress(address));
 
@@ -93,14 +93,14 @@ function CollectorPage() {
   const renderContent = () => {
     if (size(tokens) > 0)
       return <div className="cards">{map(tokens, renderTokenCard)}</div>;
-    if (systemStage > SYSTEM_STAGE.INVITE)
+    if (systemStage > SYSTEM_STAGE.FORGE)
       return (
         <>
           <div className="secondary-text">Invitations stage is complete</div>
           <div className="button link-opensea">BUY ON OPENSEA</div>
         </>
       );
-    if (!isInviteStage)
+    if (!isForgeStage)
       return (
         <>
           <div className="secondary-text">

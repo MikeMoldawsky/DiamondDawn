@@ -54,7 +54,7 @@ export const updateStageTimeApi = async (timestamp) => {
   }
 };
 
-// INVITE
+// FORGE
 export const getInvitesApi = async (approved) => {
   try {
     const res = await axios.post(`/api/get_invites`, { approved });

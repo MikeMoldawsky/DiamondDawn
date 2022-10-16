@@ -39,7 +39,7 @@ function RebirthPage() {
       const intTokenId = parseInt(tokenId);
       if (!_.isEmpty(tokens)) {
         const token = _.find(tokens, (t) => t.id === intTokenId);
-        if (token.stage === SYSTEM_STAGE.SHIP) {
+        if (token.stage === SYSTEM_STAGE.DAWN) {
           navigate(`/nft/${tokenId}`);
         } else if (!token || !token.isBurned) {
           navigateToDefault();

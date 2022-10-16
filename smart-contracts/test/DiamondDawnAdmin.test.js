@@ -17,7 +17,7 @@ const _ = require("lodash");
 
 async function lockDiamondDawn(dd) {
   await dd.completeStage(await dd.stage());
-  await dd.setStage(STAGE.DAWN);
+  await dd.setStage(STAGE.COMPLETED);
   await dd.lockDiamondDawn();
 }
 
@@ -117,24 +117,24 @@ describe("Diamond Dawn Admin", () => {
       await Promise.all(
         unAuthUsers.map((unAuth) =>
           assertOnlyAdmin(unAuth, dd, (contract) =>
-            contract.setStage(STAGE.INVITE)
+            contract.setStage(STAGE.FORGE)
           )
         )
       );
-      await dd.setStage(STAGE.INVITE); // success
+      await dd.setStage(STAGE.FORGE); // success
     });
 
     it("should REVERT when stage is active", async () => {
-      await dd.setStage(STAGE.INVITE);
+      await dd.setStage(STAGE.FORGE);
       expect(await dd.isActive()).to.be.true;
       await expect(dd.setStage(STAGE.MINE)).to.revertedWith("Stage is active");
     });
 
     it("should REVERT when mine stage is not ready", async () => {
-      await dd.setStage(STAGE.INVITE); // work
-      await dd.completeStage(STAGE.INVITE);
-      await ddMine.setManifest(STAGE.INVITE, "");
-      await expect(dd.setStage(STAGE.INVITE)).to.revertedWith("Mine not ready");
+      await dd.setStage(STAGE.FORGE); // work
+      await dd.completeStage(STAGE.FORGE);
+      await ddMine.setManifest(STAGE.FORGE, "");
+      await expect(dd.setStage(STAGE.FORGE)).to.revertedWith("Mine not ready");
     });
 
     it("should REVERT when dd is locked", async () => {
@@ -174,7 +174,7 @@ describe("Diamond Dawn Admin", () => {
       userB = users[1];
       adminSig = signForgeMessage(signer, admin);
       userASig = signForgeMessage(signer, userA);
-      await dd.setStage(STAGE.INVITE);
+      await dd.setStage(STAGE.FORGE);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -182,31 +182,31 @@ describe("Diamond Dawn Admin", () => {
       await Promise.all(
         unAuthUsers.map((unAuth) =>
           assertOnlyAdmin(unAuth, dd, (contract) =>
-            contract.completeStage(STAGE.INVITE)
+            contract.completeStage(STAGE.FORGE)
           )
         )
       );
-      await dd.completeStage(STAGE.INVITE); // success
+      await dd.completeStage(STAGE.FORGE); // success
     });
 
     it("should REVERT when dd is locked", async () => {
       await lockDiamondDawn(dd);
       expect(await dd.isLocked()).to.be.true;
-      await expect(dd.completeStage(STAGE.INVITE)).to.revertedWith(
+      await expect(dd.completeStage(STAGE.FORGE)).to.revertedWith(
         "Locked forever"
       );
     });
 
     it("should REVERT when NOT current system stage", async () => {
-      expect(await dd.stage()).to.equal(STAGE.INVITE);
+      expect(await dd.stage()).to.equal(STAGE.FORGE);
       await expect(dd.completeStage(STAGE.MINE)).to.revertedWith("Wrong stage");
-      await dd.completeStage(STAGE.INVITE); // success
+      await dd.completeStage(STAGE.FORGE); // success
     });
 
     it("should set isActive to false", async () => {
       expect(await dd.isActive()).to.be.true;
-      await dd.completeStage(STAGE.INVITE); // success
-      expect(await dd.stage()).to.equal(STAGE.INVITE);
+      await dd.completeStage(STAGE.FORGE); // success
+      expect(await dd.stage()).to.equal(STAGE.FORGE);
       expect(await dd.isActive()).to.be.false;
     });
   });
@@ -230,7 +230,7 @@ describe("Diamond Dawn Admin", () => {
       userB = users[1];
       adminSig = signForgeMessage(signer, admin);
       userASig = signForgeMessage(signer, userA);
-      await dd.setStage(STAGE.INVITE);
+      await dd.setStage(STAGE.FORGE);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -249,12 +249,12 @@ describe("Diamond Dawn Admin", () => {
       await expect(dd.lockDiamondDawn()).to.revertedWith("Locked forever");
     });
 
-    it("should REVERT if not DAWN stage", async () => {
-      for (const stage of _.without(ALL_STAGES, STAGE.DAWN)) {
+    it("should REVERT if not COMPLETED stage", async () => {
+      for (const stage of _.without(ALL_STAGES, STAGE.COMPLETED)) {
         await dd.completeStage(await dd.stage());
         await dd.setStage(stage);
         expect(await dd.stage()).to.equal(stage);
-        await expect(dd.lockDiamondDawn()).to.revertedWith("Not Dawn stage");
+        await expect(dd.lockDiamondDawn()).to.revertedWith("Not Completed");
       }
     });
 
@@ -268,8 +268,8 @@ describe("Diamond Dawn Admin", () => {
 
     it("should disable all setter functions except withdraw & royalties", async () => {
       await lockDiamondDawn(dd);
-      await expect(dd.setStage(STAGE.INVITE)).to.revertedWith("Locked forever");
-      await expect(dd.completeStage(STAGE.INVITE)).to.revertedWith(
+      await expect(dd.setStage(STAGE.FORGE)).to.revertedWith("Locked forever");
+      await expect(dd.completeStage(STAGE.FORGE)).to.revertedWith(
         "Locked forever"
       );
       await expect(dd.lockDiamondDawn()).to.revertedWith("Locked forever");
@@ -299,7 +299,7 @@ describe("Diamond Dawn Admin", () => {
       userB = users[1];
       adminSig = signForgeMessage(signer, admin);
       userASig = signForgeMessage(signer, userA);
-      await dd.setStage(STAGE.INVITE);
+      await dd.setStage(STAGE.FORGE);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -355,7 +355,7 @@ describe("Diamond Dawn Admin", () => {
       userB = users[1];
       adminSig = signForgeMessage(signer, admin);
       userASig = signForgeMessage(signer, userA);
-      await dd.setStage(STAGE.INVITE);
+      await dd.setStage(STAGE.FORGE);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -417,7 +417,7 @@ describe("Diamond Dawn Admin", () => {
       userB = users[1];
       adminSig = signForgeMessage(signer, admin);
       userASig = signForgeMessage(signer, userA);
-      await dd.setStage(STAGE.INVITE);
+      await dd.setStage(STAGE.FORGE);
     });
 
     it("should REVERT when NOT admin", async () => {
@@ -470,7 +470,7 @@ describe("Diamond Dawn Admin", () => {
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithRebirthReady);
-      await diamondDawn.setStage(STAGE.INVITE);
+      await diamondDawn.setStage(STAGE.FORGE);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
@@ -512,11 +512,11 @@ describe("Diamond Dawn Admin", () => {
         expectedBalance
       );
 
-      await completeAndSetStage(dd, STAGE.DAWN);
-      await dd.completeStage(STAGE.DAWN);
+      await completeAndSetStage(dd, STAGE.COMPLETED);
+      await dd.completeStage(STAGE.COMPLETED);
       await dd.lockDiamondDawn();
 
-      expect(await dd.stage()).to.equal(STAGE.DAWN);
+      expect(await dd.stage()).to.equal(STAGE.COMPLETED);
       expect(await dd.isActive()).to.be.false;
       expect(await dd.isLocked()).to.be.true;
 

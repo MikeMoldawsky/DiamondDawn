@@ -24,8 +24,8 @@ import { getInvitesApi } from "api/serverApi";
 
 const TABS = [
   {
-    title: "Invite",
-    component: () => <StageTab stage={SYSTEM_STAGE.INVITE} />,
+    title: "Forge",
+    component: () => <StageTab stage={SYSTEM_STAGE.FORGE} />,
   },
   {
     title: "Mine",
@@ -36,7 +36,7 @@ const TABS = [
     title: "Polish",
     component: () => <StageTab stage={SYSTEM_STAGE.POLISH} />,
   },
-  { title: "Ship", component: () => <StageTab stage={SYSTEM_STAGE.SHIP} /> },
+  { title: "Dawn", component: () => <StageTab stage={SYSTEM_STAGE.DAWN} /> },
   { title: "Config", component: () => <ConfigTab /> },
   { title: "Invitations", component: () => <InvitationsTab approved={true} /> },
   { title: "Requests", component: () => <InvitationsTab approved={false} /> },

@@ -667,24 +667,28 @@ describe("Diamond Dawn Mine", () => {
       await diamondDawnMine.connect(diamondDawn).initialize(numDiamonds);
     });
 
-    it("should be NOT READY for all stages except NO STAGE and DAWN", async () => {
+    it("should be NOT READY for all stages except NO STAGE and COMPLETED", async () => {
       expect(await ddMine.isReady(STAGE.NO_STAGE)).to.be.true;
-      expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
-      const noReadyStages = _.without(ALL_STAGES, STAGE.NO_STAGE, STAGE.DAWN);
+      expect(await ddMine.isReady(STAGE.COMPLETED)).to.be.true;
+      const noReadyStages = _.without(
+        ALL_STAGES,
+        STAGE.NO_STAGE,
+        STAGE.COMPLETED
+      );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
       }
     });
 
     it("should be TRUE only for ENTER_MINE", async () => {
-      expect(await ddMine.isReady(STAGE.INVITE)).to.be.false;
-      await ddMine.setManifest(STAGE.INVITE, "hi.mp4");
-      expect(await ddMine.isReady(STAGE.INVITE)).to.be.true;
+      expect(await ddMine.isReady(STAGE.FORGE)).to.be.false;
+      await ddMine.setManifest(STAGE.FORGE, "hi.mp4");
+      expect(await ddMine.isReady(STAGE.FORGE)).to.be.true;
       const noReadyStages = _.without(
         ALL_STAGES,
         STAGE.NO_STAGE,
-        STAGE.DAWN,
-        STAGE.INVITE
+        STAGE.COMPLETED,
+        STAGE.FORGE
       );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
@@ -703,7 +707,7 @@ describe("Diamond Dawn Mine", () => {
       const noReadyStages = _.without(
         ALL_STAGES,
         STAGE.NO_STAGE,
-        STAGE.DAWN,
+        STAGE.COMPLETED,
         STAGE.MINE
       );
       for (const stage of noReadyStages) {
@@ -718,7 +722,7 @@ describe("Diamond Dawn Mine", () => {
       const noReadyStages = _.without(
         ALL_STAGES,
         STAGE.NO_STAGE,
-        STAGE.DAWN,
+        STAGE.COMPLETED,
         STAGE.CUT
       );
       for (const stage of noReadyStages) {
@@ -733,7 +737,7 @@ describe("Diamond Dawn Mine", () => {
       const noReadyStages = _.without(
         ALL_STAGES,
         STAGE.NO_STAGE,
-        STAGE.DAWN,
+        STAGE.COMPLETED,
         STAGE.POLISH
       );
       for (const stage of noReadyStages) {
@@ -742,24 +746,24 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for REBORN", async () => {
-      expect(await ddMine.isReady(STAGE.SHIP)).to.be.false;
-      await ddMine.setManifest(STAGE.SHIP, "hi.mp4");
-      expect(await ddMine.isReady(STAGE.SHIP)).to.be.true;
+      expect(await ddMine.isReady(STAGE.DAWN)).to.be.false;
+      await ddMine.setManifest(STAGE.DAWN, "hi.mp4");
+      expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
       const noReadyStages = _.without(
         ALL_STAGES,
         STAGE.NO_STAGE,
-        STAGE.DAWN,
-        STAGE.SHIP
+        STAGE.COMPLETED,
+        STAGE.DAWN
       );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;
       }
     });
 
-    it("should always be TRUE for DAWN", async () => {
-      expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
-      await ddMine.setManifest(STAGE.DAWN, "");
-      expect(await ddMine.isReady(STAGE.DAWN)).to.be.true;
+    it("should always be TRUE for COMPLETED", async () => {
+      expect(await ddMine.isReady(STAGE.COMPLETED)).to.be.true;
+      await ddMine.setManifest(STAGE.COMPLETED, "");
+      expect(await ddMine.isReady(STAGE.COMPLETED)).to.be.true;
     });
 
     it("should revert if non existing stage", async () => {
