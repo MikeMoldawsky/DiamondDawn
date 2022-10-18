@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import "css/common.scss";
+import "css/elements.scss";
 import {
   BrowserRouter as Router,
   Routes,

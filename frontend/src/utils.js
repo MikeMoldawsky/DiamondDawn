@@ -160,3 +160,5 @@ export const isDemo = () => process.env.REACT_APP_DEMO_MODE === "true";
 
 export const getCDNObjectUrl = (objectPath) =>
   `${process.env.REACT_APP_CDN_URL}${objectPath}`;
+
+export const shortenEthAddress = address => `${address.substring(0, 6)}...${address.substring(address.length - 4)}`

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import isEmpty from "lodash/isEmpty";
 import isNil from "lodash/isNil";
 import get from "lodash/get";
-import toUpper from "lodash/toUpper";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import ActionButton from "components/ActionButton";
@@ -12,7 +11,6 @@ import { utils as ethersUtils } from "ethers";
 const RequestForm = ({
   optionalIdentity,
   createInviteApi,
-  text,
   onSuccess,
 }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
@@ -56,24 +54,28 @@ const RequestForm = ({
 
   return (
     <div className="request-form">
-      <div className="secondary-text">{toUpper(text)}</div>
       <form>
-        {renderInput("identifier", "Twitter/Email", {
-          required: !optionalIdentity,
-          pattern:
-            /^[a-zA-Z0-9_]{4,15}$|^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-        })}
-        {renderInput("address", "ETH Address", {
-          validate: {
-            ethaddress: ethersUtils.isAddress,
-          },
-        })}
+        <div className="center-aligned-row">
+          {renderInput("identifier", "Twitter link", {
+            required: !optionalIdentity,
+            pattern:
+              /^[a-zA-Z0-9_]{4,15}$|^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          })}
+          {renderInput("address", "E-mail", {
+            validate: {
+              ethaddress: ethersUtils.isAddress,
+            },
+          })}
+        </div>
+        <div className="input-container textarea-container">
+          <textarea  {...register("note")} placeholder="Tell us why" />
+        </div>
         <ActionButton
           actionKey="Request Invitation"
           onClick={handleSubmit(requestInvitation)}
           disabled={!isEmpty(errors)}
         >
-          {text}
+          SUBMIT
         </ActionButton>
       </form>
     </div>

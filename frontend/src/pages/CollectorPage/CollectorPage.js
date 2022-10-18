@@ -6,7 +6,7 @@ import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { NavLink, useNavigate } from "react-router-dom";
-import { getTokenNextStageName, isDemo, isTokenActionable } from "utils";
+import {getCDNObjectUrl, getTokenNextStageName, isDemo, isTokenActionable, shortenEthAddress} from "utils";
 import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
@@ -28,6 +28,11 @@ import {
 import AccountProvider from "containers/AccountProvider";
 import TokensProvider from "containers/TokensProvider";
 import { SYSTEM_STAGE } from "consts";
+import Loading from "components/Loading";
+import Wallet from "components/Wallet";
+import AnimatedLogo from "components/AnimatedLogo";
+import ReactPlayer from "react-player";
+import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
@@ -124,17 +129,66 @@ function CollectorPage() {
     );
   };
 
+  const renderDemoContent = () => {
+    if (!account?.address) return (
+      <div className="center-aligned-column not-connected">
+        <div className="heading">
+          <div className="leading-text">WELCOME</div>
+          <div className="leading-text">TO THE COLLECTORS ROOM</div>
+        </div>
+        <div className="center-aligned-column bottom-content">
+          <AllInclusiveIcon />
+          <div className="secondary-text">CONNECT WALLET TO CONTINUE</div>
+          <Wallet />
+        </div>
+      </div>
+    )
+
+    return (
+      <div className="layout-box">
+        <div className="image-box">
+          <ReactPlayer
+            url={getCDNObjectUrl("/videos/infinity_logo.mp4")}
+            playing
+            playsinline
+            controls={false}
+            muted
+            loop
+            className="react-player loader"
+            width="100%"
+            height="100%"
+          />
+          <div className="description">
+            A video showing the evolution of the stone? The different types of cutting? Something intriguing and mysterious
+          </div>
+        </div>
+        <div className="title-box">
+          <div className="secondary-text">Hello {shortenEthAddress(account.address)}</div>
+        </div>
+        <div className="content-box">
+          <div className="leading-text">JOIN DIAMOND DAWN</div>
+          <div className="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy</div>
+          <RequestForm
+            createInviteApi={createInviteRequestApi}
+            text="Request Invitation"
+            onSuccess={() => loadInvite(account.address)}
+          />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
-        <div className="leading-text">Collector's Room</div>
-        {!isDemo() ? (
-          <AccountProvider>
-            <TokensProvider withLoader>{renderContent()}</TokensProvider>
-          </AccountProvider>
-        ) : (
-          renderContent()
-        )}
+        <h1>The Collector's Room</h1>
+        <main className="box">
+          {!isDemo() ? (
+            <AccountProvider>
+              <TokensProvider withLoader>{renderContent()}</TokensProvider>
+            </AccountProvider>
+          ) : renderDemoContent()}
+        </main>
       </div>
     </div>
   );

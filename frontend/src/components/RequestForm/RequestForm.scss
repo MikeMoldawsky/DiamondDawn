@@ -1,13 +1,26 @@
 .request-form {
-  width: 500px;
-  margin: 0 auto;
-  text-align: center;
+  //width: 500px;
+  //margin: 0 auto;
+  //text-align: center;
+  width: 100%;
+  text-align: left;
+  flex-grow: 2;
 
-  .secondary-text {
-    margin-bottom: 10px;
+  form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
-  input {
+  //.secondary-text {
+  //  margin-bottom: 10px;
+  //}
+
+  .textarea-container {
+    flex-grow: 2;
+  }
+
+  input, textarea {
     width: 100%;
     margin-top: 20px;
     padding: 12px 18px;
@@ -25,6 +38,10 @@
     &.validation-success {
       border-color: green;
     }
+  }
+
+  textarea {
+    height: calc(100% - 32px);
   }
 
   .button {

@@ -1,20 +1,10 @@
 import React from "react";
-import ReactPlayer from "react-player";
-import { getCDNObjectUrl } from "utils";
+import AnimatedLogo from "components/AnimatedLogo";
 
 const Loading = () => {
   return (
     <div className="center-aligned-column loader-container">
-      <ReactPlayer
-        url={getCDNObjectUrl("/videos/infinity_logo.mp4")}
-        playing
-        playsinline
-        controls={false}
-        muted
-        loop
-        className="react-player loader"
-        width={300}
-      />
+      <AnimatedLogo />
     </div>
   );
 };
