@@ -222,6 +222,6 @@ contract DiamondDawn is
     }
 
     function _isValid(bytes calldata signature, bytes32 message) private view returns (bool) {
-        return _signer == keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", message)).recover(signature);
+        return _signer == message.toEthSignedMessageHash().recover(signature);
     }
 }
