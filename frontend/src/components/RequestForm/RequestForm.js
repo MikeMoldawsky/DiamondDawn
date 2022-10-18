@@ -33,16 +33,14 @@ const RequestForm = ({
     const emptyValue = isEmpty(watch(name));
     const hasError = !isNil(get(errors, name));
     return (
-      <div className="input-container">
-        <input
-          {...register(name, { required: true, ...opts })}
-          placeholder={placeholder}
-          className={classNames({
-            "validation-error": hasError,
-            "validation-success": !emptyValue && !hasError,
-          })}
-        />
-      </div>
+      <input
+        {...register(name, { required: true, ...opts })}
+        placeholder={placeholder}
+        className={classNames("input", {
+          "validation-error": hasError,
+          "validation-success": !emptyValue && !hasError,
+        })}
+      />
     );
   };
 
@@ -55,7 +53,7 @@ const RequestForm = ({
   return (
     <div className="request-form">
       <form>
-        <div className="center-aligned-row">
+        <div className="center-aligned-row inputs-row">
           {renderInput("identifier", "Twitter link", {
             required: !optionalIdentity,
             pattern:
@@ -67,9 +65,8 @@ const RequestForm = ({
             },
           })}
         </div>
-        <div className="input-container textarea-container">
-          <textarea  {...register("note")} placeholder="Tell us why" />
-        </div>
+        <div className="text-comment">Fill in one or more</div>
+        <textarea {...register("note")} className="input" placeholder="Tell us why" />
         <ActionButton
           actionKey="Request Invitation"
           onClick={handleSubmit(requestInvitation)}

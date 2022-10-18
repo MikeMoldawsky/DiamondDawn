@@ -28,9 +28,7 @@ import {
 import AccountProvider from "containers/AccountProvider";
 import TokensProvider from "containers/TokensProvider";
 import { SYSTEM_STAGE } from "consts";
-import Loading from "components/Loading";
 import Wallet from "components/Wallet";
-import AnimatedLogo from "components/AnimatedLogo";
 import ReactPlayer from "react-player";
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 
@@ -146,7 +144,7 @@ function CollectorPage() {
 
     return (
       <div className="layout-box">
-        <div className="image-box">
+        <div className="box image-box">
           <ReactPlayer
             url={getCDNObjectUrl("/videos/infinity_logo.mp4")}
             playing
@@ -167,7 +165,7 @@ function CollectorPage() {
         </div>
         <div className="content-box">
           <div className="leading-text">JOIN DIAMOND DAWN</div>
-          <div className="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy</div>
+          <div className="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the</div>
           <RequestForm
             createInviteApi={createInviteRequestApi}
             text="Request Invitation"

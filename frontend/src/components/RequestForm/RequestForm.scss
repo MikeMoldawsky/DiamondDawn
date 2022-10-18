@@ -1,7 +1,6 @@
+@import "css/varsNEW";
+
 .request-form {
-  //width: 500px;
-  //margin: 0 auto;
-  //text-align: center;
   width: 100%;
   text-align: left;
   flex-grow: 2;
@@ -12,40 +11,16 @@
     flex-direction: column;
   }
 
-  //.secondary-text {
-  //  margin-bottom: 10px;
-  //}
-
-  .textarea-container {
-    flex-grow: 2;
-  }
-
   input, textarea {
-    width: 100%;
-    margin-top: 20px;
-    padding: 12px 18px;
-    border: none;
-    border-left: solid 5px transparent;
-
-    &:focus {
-      outline: none;
-    }
-
-    &.validation-error {
-      border-color: red;
-    }
-
-    &.validation-success {
-      border-color: green;
-    }
+    margin: .8rem 0;
+    font-size: $font18px;
   }
 
   textarea {
-    height: calc(100% - 32px);
+    flex-grow: 2;
   }
 
   .button {
-    width: 350px;
-    margin: 40px auto;
+    margin-top: .8rem;
   }
 }

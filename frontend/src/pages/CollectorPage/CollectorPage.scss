@@ -2,11 +2,13 @@
 @import "css/varsNEW";
 
 .page.collector-page {
-  background: url("../../assets/images/bg-image.png") no-repeat center center;
+  background: url("../../assets/images/bg-image.png") no-repeat top center;
   background-size: cover;
 
   main {
-    width: 90%;
+    min-height: 524px;
+    max-width: 98%;
+    min-width: 1050px;
     aspect-ratio: 2;
     margin: 0 auto;
   }
@@ -15,16 +17,20 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr 3fr;
-    grid-column-gap: 7%;
-    grid-row-gap: 0px;
-    width: 90%;
-    height: 85%;
+    height: 100%;
+    backdrop-filter: blur(30px);
 
     .image-box {
       grid-area: 1 / 1 / 3 / 2;
       aspect-ratio: 1/1;
       position: relative;
-      background-color: black;
+      margin: 11.5% 6.5% 6.5% 11.5%;
+      border: solid 1px white;
+      padding: 8px;
+
+      .react-player {
+        background-color: black;
+      }
 
       .description {
         position: absolute;
@@ -37,38 +43,34 @@
 
     .title-box {
       grid-area: 1 / 2 / 2 / 3;
-      padding: 0 8% 0 5%;
+      padding: 11.5% 20% 0 6.5%;
     }
 
     .content-box {
       grid-area: 2 / 2 / 3 / 3;
-      padding: 0 8% 0 5%;
+      padding: 0 20% 6.5% 6.5%;
       display: flex;
       flex-direction: column;
     }
   }
 
+  .leading-text {
+    font-size: $font42px;
+    margin-bottom: .8rem;
+  }
+
   .secondary-text {
-    font-size: 1.2em;
-    line-height: 1.2em;
+    font-size: $font25px;
   }
 
   .text {
-    font-size: .85em;
-  }
-
-  .box {
-    align-items: center;
-    justify-content: center;
+    font-size: $font18px;
+    margin-bottom: .8rem;
   }
 
   .not-connected {
     justify-content: center;
     text-align: center;
-
-    .leading-text {
-      font-size: $font50px;
-    }
 
     .bottom-content {
       margin-top: 12%;
@@ -78,17 +80,16 @@
       }
     }
   }
+}
 
-  .request-form {
-    flex-grow: 2;
-
-    .textarea-container {
-      flex-grow: 2;
+@media only screen and (max-width: 1200px) {
+  .page.collector-page {
+    .leading-text {
+      font-size: $font36px;
     }
 
-    .button {
-      width: 100px;
-      margin: 0;
+    .text {
+      font-size: 1em;
     }
   }
 }
