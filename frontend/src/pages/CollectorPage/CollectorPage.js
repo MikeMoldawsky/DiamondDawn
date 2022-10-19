@@ -31,6 +31,7 @@ import { SYSTEM_STAGE } from "consts";
 import Wallet from "components/Wallet";
 import ReactPlayer from "react-player";
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
+import Box from "components/Box";
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
@@ -137,7 +138,7 @@ function CollectorPage() {
         <div className="center-aligned-column bottom-content">
           <AllInclusiveIcon />
           <div className="secondary-text">CONNECT WALLET TO CONTINUE</div>
-          <Wallet />
+          <Wallet label="connect" />
         </div>
       </div>
     )
@@ -180,13 +181,13 @@ function CollectorPage() {
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
         <h1>The Collector's Room</h1>
-        <main className="box">
+        <Box className="main-box">
           {!isDemo() ? (
             <AccountProvider>
               <TokensProvider withLoader>{renderContent()}</TokensProvider>
             </AccountProvider>
           ) : renderDemoContent()}
-        </main>
+        </Box>
       </div>
     </div>
   );

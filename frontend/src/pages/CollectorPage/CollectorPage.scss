@@ -5,9 +5,9 @@
   background: url("../../assets/images/bg-image.png") no-repeat top center;
   background-size: cover;
 
-  main {
+  .main-box {
+    max-width: 90%;
     min-height: 524px;
-    max-width: 98%;
     min-width: 1050px;
     aspect-ratio: 2;
     margin: 0 auto;
@@ -18,11 +18,10 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr 3fr;
     height: 100%;
-    backdrop-filter: blur(30px);
 
     .image-box {
       grid-area: 1 / 1 / 3 / 2;
-      aspect-ratio: 1/1;
+      aspect-ratio: 1;
       position: relative;
       margin: 11.5% 6.5% 6.5% 11.5%;
       border: solid 1px white;
@@ -43,19 +42,19 @@
 
     .title-box {
       grid-area: 1 / 2 / 2 / 3;
-      padding: 11.5% 20% 0 6.5%;
+      padding: 10% 20% 0 6.5%;
     }
 
     .content-box {
       grid-area: 2 / 2 / 3 / 3;
-      padding: 0 20% 6.5% 6.5%;
+      padding: 0 20% 5% 6.5%;
       display: flex;
       flex-direction: column;
     }
   }
 
   .leading-text {
-    font-size: $font42px;
+    font-size: $font36px;
     margin-bottom: .8rem;
   }
 
@@ -69,14 +68,24 @@
   }
 
   .not-connected {
-    justify-content: center;
+    height: 65%;
+    justify-content: space-between;
     text-align: center;
 
     .bottom-content {
-      margin-top: 12%;
-
       svg {
-        font-size: 10em;
+        font-size: 8em;
+        margin-bottom: -0.05em;
+      }
+
+      button {
+        margin-top: 15px;
+        background-color: transparent;
+        color: $text_gray;
+        border: solid 1px $text_gray;
+        font-weight: 300;
+        text-transform: lowercase;
+        padding: 0 4.5em;
       }
     }
   }
@@ -85,7 +94,7 @@
 @media only screen and (max-width: 1200px) {
   .page.collector-page {
     .leading-text {
-      font-size: $font36px;
+      font-size: $font30px;
     }
 
     .text {
