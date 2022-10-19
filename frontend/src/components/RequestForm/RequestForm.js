@@ -112,7 +112,7 @@ const RequestForm = ({ onSuccess }) => {
               >
                 YES
               </ActionButton>
-              <button className="inverted" onClick={onChangeWalletClick}>Change Wallet</button>
+              <button className="button inverted" onClick={onChangeWalletClick}>Change Wallet</button>
             </div>
           </Modal>
         )}

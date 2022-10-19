@@ -139,7 +139,7 @@ function CollectorPage() {
         <div className="center-aligned-column bottom-content">
           <AllInclusiveIcon />
           <div className="secondary-text">CONNECT WALLET TO CONTINUE</div>
-          <Wallet label="connect" />
+          <Wallet label="connect" className="button" />
         </div>
       </div>
     )
@@ -176,7 +176,7 @@ function CollectorPage() {
             <div className="request-status">
               <div className="text-comment">Your request has been sent</div>
               <div className="text-comment">STATUS: {invite.approved ? "approved" : "pending"}</div>
-              <button disabled={!invite.approved}>GO TO MINT PAGE</button>
+              <button className="button" disabled={!invite.approved}>GO TO MINT PAGE</button>
             </div>
           ) : (
             <RequestForm onSuccess={() => loadInvite(account.address)} />
