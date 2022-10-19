@@ -50,6 +50,7 @@ input[type="text"] {
 }
 
 .page {
+  overflow-x: hidden;
   overflow-y: auto;
   scroll-behavior: smooth;
   position: relative;
