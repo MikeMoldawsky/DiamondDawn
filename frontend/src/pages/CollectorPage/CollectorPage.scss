@@ -2,7 +2,7 @@
 @import "css/varsNEW";
 
 .page.collector-page {
-  background: url("../../assets/images/bg-image.png") no-repeat top center;
+  background: url("../../assets/images/collector-bg.png") no-repeat top center;
   background-size: cover;
 
   .main-box {
@@ -74,24 +74,34 @@
   }
 
   .not-connected {
-    height: 65%;
+    height: 70%;
     justify-content: space-between;
     text-align: center;
 
+    .leading-text {
+      font-size: $font50px;
+      margin-bottom: 0.2em;
+    }
+
+    .secondary-text {
+      color: white;
+    }
+
     .bottom-content {
       svg {
-        font-size: 8em;
-        margin-bottom: -0.05em;
+        margin-bottom: 16%;
       }
 
       button {
-        margin-top: 15px;
+        margin-top: 8%;
         background-color: transparent;
         color: $text_gray;
         border: solid 1px $text_gray;
         font-weight: 300;
         text-transform: lowercase;
-        padding: 0 4.5em;
+        padding: 0 7em;
+        height: 2.75em;
+        border-radius: 4.5em;
       }
     }
   }

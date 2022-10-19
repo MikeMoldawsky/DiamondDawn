@@ -13,17 +13,18 @@
 
   &:before {
     content: '';
-    background-color: $gray_blur;
+    background-color: #7e7d7d;
     position: absolute;
     top: $padding_thin;
     bottom: $padding_wide;
     left: $padding_wide;
     right: $padding_thin;
-    opacity: .65;
+    opacity: .3;
     z-index: -1;
   }
 
   .box-inner {
+    background: transparent url('../assets/images/collector-box-bg.svg') -2px -2px no-repeat padding-box;
     backdrop-filter: blur(30px);
     height: 100%;
     display: flex;

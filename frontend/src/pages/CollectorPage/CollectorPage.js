@@ -33,6 +33,8 @@ import ReactPlayer from "react-player";
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import Box from "components/Box";
 import ActionButton from "components/ActionButton";
+import SVG from 'components/SVG'
+import infinitySymbolUrl from 'assets/images/infinity-symbol.svg'
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
@@ -137,7 +139,8 @@ function CollectorPage() {
           <div className="leading-text">TO THE COLLECTORS ROOM</div>
         </div>
         <div className="center-aligned-column bottom-content">
-          <AllInclusiveIcon />
+          {/*<AllInclusiveIcon />*/}
+          <SVG src={infinitySymbolUrl} className="infinity-symbol" />
           <div className="secondary-text">CONNECT WALLET TO CONTINUE</div>
           <Wallet label="connect" className="button" />
         </div>
