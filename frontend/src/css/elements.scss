@@ -72,8 +72,8 @@ button, .button {
   &.inverted,
   &.link {
     color: white;
-    background-color: black;
-    border-color: white !important;
+    background-color: transparent;
+    border: solid 1px white;
   }
 
   &.link {

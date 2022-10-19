@@ -8,6 +8,11 @@ import ActionButton from "components/ActionButton";
 import "./RequestForm.scss";
 import {createInviteRequestApi} from "api/serverApi";
 import {useAccount} from "wagmi";
+import Modal from "components/Modal";
+import {useAccountModal, useConnectModal} from "@rainbow-me/rainbowkit";
+import {shortenEthAddress} from "utils";
+import {useSelector} from "react-redux";
+import {isActionPendingSelector} from "store/actionStatusReducer";
 
 const RequestForm = ({ onSuccess }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
@@ -17,11 +22,16 @@ const RequestForm = ({ onSuccess }) => {
     formState: { errors },
     watch,
     reset,
+    trigger,
+    getValues,
   } = useForm({
     mode: "onChange",
   });
   const [isRequiredError, setIsRequiredError] = useState(false)
   const account = useAccount()
+  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false)
+  const { openAccountModal } = useAccountModal();
+  const isSubmitting = useSelector(isActionPendingSelector("Request Invitation"))
 
   useEffect(() => {
     reset();
@@ -33,7 +43,8 @@ const RequestForm = ({ onSuccess }) => {
     const hasError = !isNil(get(errors, name));
     return (
       <input
-        {...register(name, { required: true, ...opts })}
+        {...register(name, { required: true, onChange: () => setIsRequiredError(false), ...opts })}
+        disabled={isSubmitting}
         placeholder={placeholder}
         className={classNames("input", {
           "validation-error": hasError || isRequiredError,
@@ -47,10 +58,26 @@ const RequestForm = ({ onSuccess }) => {
     if (!twitter && !email) {
       setIsRequiredError(true)
     }
+    setIsApproveModalOpen(false)
     await createInviteRequestApi(account.address, {twitter, email, note});
     onSuccess && (await onSuccess());
     setIsSubmitSuccess(true);
   };
+
+  const onSubmitClick = async () => {
+    const { twitter, email } = getValues()
+    if (!twitter && !email) {
+      setIsRequiredError(true)
+    }
+    else {
+      setIsApproveModalOpen(true)
+    }
+  }
+
+  const onChangeWalletClick = e => {
+    e.preventDefault()
+    openAccountModal()
+  }
 
   return (
     <div className="request-form">
@@ -66,14 +93,29 @@ const RequestForm = ({ onSuccess }) => {
           })}
         </div>
         <div className="text-comment">Fill in one or more</div>
-        <textarea {...register("note")} className="input" placeholder="Tell us why" />
+        <textarea {...register("note")} disabled={isSubmitting} className="input" placeholder="Tell us why" />
         <ActionButton
           actionKey="Request Invitation"
-          onClick={handleSubmit(requestInvitation)}
+          onClick={onSubmitClick}
           disabled={!isEmpty(errors)}
         >
           SUBMIT
         </ActionButton>
+        {isApproveModalOpen && (
+          <Modal close={() => setIsApproveModalOpen(false)}>
+            <div className="modal-heading">{shortenEthAddress(account.address)}</div>
+            <div className="modal-content">Are you sure this is the wallet address you would like to submit the request with?</div>
+            <div className="modal-buttons">
+              <ActionButton
+                actionKey="Request Invitation"
+                onClick={handleSubmit(requestInvitation)}
+              >
+                YES
+              </ActionButton>
+              <button className="inverted" onClick={onChangeWalletClick}>Change Wallet</button>
+            </div>
+          </Modal>
+        )}
       </form>
     </div>
   );

@@ -9,6 +9,12 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    position: relative;
+
+    .modal {
+      width: 110%;
+      transform: translate(-50%, -70%);
+    }
   }
 
   input, textarea {
