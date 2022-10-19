@@ -10,7 +10,6 @@ import "./RequestForm.scss";
 import { utils as ethersUtils } from "ethers";
 
 const RequestForm = ({
-  optionalIdentity,
   createInviteApi,
   text,
   onSuccess,
@@ -48,8 +47,8 @@ const RequestForm = ({
     );
   };
 
-  const requestInvitation = async ({ identifier, address }) => {
-    await createInviteApi(address, identifier);
+  const requestInvitation = async ({ twitter, email, address }) => {
+    await createInviteApi(address, twitter, email);
     setIsSubmitSuccess(true);
     onSuccess && (await onSuccess());
   };
@@ -58,10 +57,13 @@ const RequestForm = ({
     <div className="request-form">
       <div className="secondary-text">{toUpper(text)}</div>
       <form>
-        {renderInput("identifier", "Twitter/Email", {
-          required: !optionalIdentity,
-          pattern:
-            /^[a-zA-Z0-9_]{4,15}$|^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+        {renderInput("twitter", "Twitter link", {
+          required: false,
+          pattern: /^[a-zA-Z0-9_]{4,15}$/i,
+        })}
+        {renderInput("email", "E-mail", {
+          required: false,
+          pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
         })}
         {renderInput("address", "ETH Address", {
           validate: {

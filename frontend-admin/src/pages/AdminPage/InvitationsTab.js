@@ -45,8 +45,15 @@ const INVITATION_COLUMNS = [
     width: 80,
   },
   {
-    field: "identifier",
-    headerName: "Twitter/Email",
+    field: "twitter",
+    headerName: "Twitter",
+    width: 200,
+    editable: true,
+    showIfRequest: true,
+  },
+  {
+    field: "email",
+    headerName: "Email",
     width: 200,
     editable: true,
     showIfRequest: true,
@@ -168,7 +175,6 @@ const InvitationsTab = ({ approved }) => {
       {approved && (
         <RequestForm
           createInviteApi={createInviteApi}
-          optionalIdentity
           text="create Invitation"
           onSuccess={onCreateSuccess}
         />
