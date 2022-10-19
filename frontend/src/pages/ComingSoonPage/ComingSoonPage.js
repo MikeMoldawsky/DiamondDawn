@@ -36,8 +36,9 @@ const ComingSoonPage = () => {
       <div className="center-aligned-column content">
         <div className="leading-text">COMING SOON</div>
         <div className="secondary-text">
-          The first-ever virtual diamond mining experience<br />that merges the
-          digital with the tangible
+          The first-ever virtual diamond mining experience
+          <br />
+          that merges the digital with the tangible
         </div>
         {isDemo() && <PasswordBox onCorrect={onCorrectPassword} />}
       </div>

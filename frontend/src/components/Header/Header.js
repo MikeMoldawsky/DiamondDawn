@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import AudioPlayer from "components/AudioPlayer";
-import {getCDNObjectUrl, isDemo} from "utils";
+import { getCDNObjectUrl, isDemo } from "utils";
 
 const Header = ({ isMenuOpen, toggleMenu }) => (
   <header>
