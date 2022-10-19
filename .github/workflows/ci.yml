@@ -1,4 +1,4 @@
-name: Diamond Dawn CI
+name: Diamond Dawn CI DEV
 
 concurrency:
   group: '${{ github.workflow }}-${{ github.head_ref || github.ref }}'
@@ -6,7 +6,7 @@ concurrency:
 
 on:
   push:
-    branches: [main, develop]
+    branches: [develop]
   pull_request:
 
 jobs:
