@@ -32,6 +32,7 @@ import Wallet from "components/Wallet";
 import ReactPlayer from "react-player";
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import Box from "components/Box";
+import ActionButton from "components/ActionButton";
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
@@ -143,6 +144,10 @@ function CollectorPage() {
       </div>
     )
 
+    if (!isInviteFetched) return null;
+
+    const title = invite ? "REQUEST STATUS" : "JOIN DIAMOND DAWN"
+
     return (
       <div className="layout-box">
         <div className="box image-box">
@@ -165,13 +170,17 @@ function CollectorPage() {
           <div className="secondary-text">Hello {shortenEthAddress(account.address)}</div>
         </div>
         <div className="content-box">
-          <div className="leading-text">JOIN DIAMOND DAWN</div>
+          <div className="leading-text">{title}</div>
           <div className="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the</div>
-          <RequestForm
-            createInviteApi={createInviteRequestApi}
-            text="Request Invitation"
-            onSuccess={() => loadInvite(account.address)}
-          />
+          {invite ? (
+            <div className="request-status">
+              <div className="text-comment">Your request has been sent</div>
+              <div className="text-comment">STATUS: {invite.approved ? "approved" : "pending"}</div>
+              <button disabled={!invite.approved}>GO TO MINT PAGE</button>
+            </div>
+          ) : (
+            <RequestForm onSuccess={() => loadInvite(account.address)} />
+          )}
         </div>
       </div>
     )

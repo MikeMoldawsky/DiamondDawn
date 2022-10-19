@@ -67,6 +67,12 @@
     margin-bottom: .8rem;
   }
 
+  .request-status {
+    .text-comment, button {
+      margin-top: 1.5em;
+    }
+  }
+
   .not-connected {
     height: 65%;
     justify-content: space-between;

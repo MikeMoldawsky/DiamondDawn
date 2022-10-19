@@ -6,13 +6,10 @@ import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 import "./RequestForm.scss";
-import { utils as ethersUtils } from "ethers";
+import {createInviteRequestApi} from "api/serverApi";
+import {useAccount} from "wagmi";
 
-const RequestForm = ({
-  optionalIdentity,
-  createInviteApi,
-  onSuccess,
-}) => {
+const RequestForm = ({ onSuccess }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const {
     register,
@@ -23,6 +20,8 @@ const RequestForm = ({
   } = useForm({
     mode: "onChange",
   });
+  const [isRequiredError, setIsRequiredError] = useState(false)
+  const account = useAccount()
 
   useEffect(() => {
     reset();
@@ -37,15 +36,18 @@ const RequestForm = ({
         {...register(name, { required: true, ...opts })}
         placeholder={placeholder}
         className={classNames("input", {
-          "validation-error": hasError,
+          "validation-error": hasError || isRequiredError,
           "validation-success": !emptyValue && !hasError,
         })}
       />
     );
   };
 
-  const requestInvitation = async ({ identifier, address }) => {
-    await createInviteApi(address, identifier);
+  const requestInvitation = async ({twitter, email, note}) => {
+    if (!twitter && !email) {
+      setIsRequiredError(true)
+    }
+    await createInviteRequestApi(account.address, {twitter, email, note});
     onSuccess && (await onSuccess());
     setIsSubmitSuccess(true);
   };
@@ -54,15 +56,13 @@ const RequestForm = ({
     <div className="request-form">
       <form>
         <div className="center-aligned-row inputs-row">
-          {renderInput("identifier", "Twitter link", {
-            required: !optionalIdentity,
-            pattern:
-              /^[a-zA-Z0-9_]{4,15}$|^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          {renderInput("twitter", "Twitter link", {
+            required: false,
+            pattern: /^[a-zA-Z0-9_]{4,15}$/i,
           })}
-          {renderInput("address", "E-mail", {
-            validate: {
-              ethaddress: ethersUtils.isAddress,
-            },
+          {renderInput("email", "E-mail", {
+            required: false,
+            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
           })}
         </div>
         <div className="text-comment">Fill in one or more</div>
