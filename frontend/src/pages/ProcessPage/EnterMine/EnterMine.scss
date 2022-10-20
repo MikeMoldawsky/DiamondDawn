@@ -1,42 +1,120 @@
+@import "css/varsNEW";
+
 .action-view.enter {
   height: 100%;
   background: transparent url('../../../assets/images/enter-mine-bg.png') -2px -2px no-repeat padding-box;
   background-size: 100%;
+  text-align: center;
+  color: $text_gray;
+
+  .leading-text {
+    color: white;
+    font-size: $font50px !important;
+  }
+
+  .secondary-text {
+    font-size: $font20px !important;
+    line-height: 1.25em;
+    font-weight: 300;
+  }
 
   .layout-box {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 7fr);
+    grid-template-rows: 7fr 4fr 6fr 3fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
-    height: 100%;
+    height: 87.5%;
+    position: relative;
+    top: 12.5%;
+    padding: 0 6%;
+
   }
 
   .image-box {
     grid-area: 1 / 1 / 5 / 2;
-    aspect-ratio: 1.024;
     position: relative;
-    margin: 10.5% 6.5% 6.5% 11.5%;
     padding: 10px;
-    background: url("../../../assets/images/enter-mine-bg-key.png") no-repeat 42% -12%;
-    background-size: 67%;
+    background: url("../../../assets/images/enter-mine-bg-key.png") no-repeat 35% -10%;
+    background-size: 62%;
+  }
+
+  .right-box {
+    margin-left: -5%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .right-box-with-sep {
+    @extend .right-box;
+    position: relative;
+    border-bottom: solid 1px $border_gray;
   }
 
   .congrats-box {
     grid-area: 1 / 2 / 2 / 3;
-    padding: 9% 20% 0 6.5%;
+    @extend .right-box-with-sep;
+    align-items: center;
+    justify-content: flex-start;
+
+    .center-aligned-column {
+      width: 90%;
+    }
   }
 
   .mint-box {
     grid-area: 2 / 2 / 3 / 3;
+    color: white;
+    @extend .right-box-with-sep;
+    align-items: center;
+    justify-content: center;
+
+    .center-aligned-row {
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    .text-row {
+      font-size: $font20px;
+
+      svg {
+        margin-right: .5em;
+      }
+    }
   }
 
   .timer-box {
     grid-area: 3 / 2 / 4 / 3;
+    @extend .right-box-with-sep;
+    align-items: stretch;
+    justify-content: space-evenly;
+
+    .countdown {
+      width: 75%;
+      margin: 0 auto;
+    }
+
+    .or {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      background-color: #101010;
+      padding: 0 0.5em;
+      z-index: 1;
+    }
   }
 
   .status-box {
-    padding: 0 20% 7.5% 6.5%;
     grid-area: 4 / 2 / 5 / 3;
+    color: white;
+    @extend .right-box;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      margin: 0 1em;
+    }
   }
 }
