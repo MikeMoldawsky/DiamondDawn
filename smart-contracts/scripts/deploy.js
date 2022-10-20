@@ -96,7 +96,10 @@ async function main() {
   const [deployer] = await hre.ethers.getSigners();
   // Diamond Dawn Mine
   const mineArgs = [];
-  const mine = await deployContract(deployer, "DiamondDawnMine", mineArgs);
+  const SerializerLib = await hre.ethers.getContractFactory("Serializer");
+  const serializer = await SerializerLib.deploy();
+  const libraries = { Serializer: serializer.address }
+  const mine = await deployContract(deployer, "DiamondDawnMine", mineArgs, libraries);
   // Diamond Dawn
   let dd;
   const ddArgs = [mine.address, process.env.SIGNER_PUBLIC_KEY];
@@ -123,7 +126,7 @@ async function main() {
   await mongoose.disconnect(); // build doesn't finish without disconnect
 }
 
-async function deployContract(deployer, contractName, args) {
+async function deployContract(deployer, contractName, args, libraries) {
   const deployerAddress = await deployer.getAddress();
   const deployerBalance = await deployer.getBalance();
   console.log(`Deploying ${contractName}`, {
@@ -133,7 +136,7 @@ async function deployContract(deployer, contractName, args) {
     network: hre.network.name,
     args,
   });
-  const factory = await hre.ethers.getContractFactory(contractName);
+  const factory = await hre.ethers.getContractFactory(contractName, { libraries });
   const contract = await factory.deploy(...args);
   await contract.deployed();
   const deployerNewBalance = await deployer.getBalance();
