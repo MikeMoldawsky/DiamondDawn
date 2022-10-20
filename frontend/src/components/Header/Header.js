@@ -34,17 +34,17 @@ const Header = ({ isMenuOpen, toggleMenu }) => (
         <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
           <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
         </a>
-        {!isDemo() && (
-          <>
-            <div className="vertical-sep" />
-            <AudioPlayer />
-            <FontAwesomeIcon
-              className="menu-icon"
-              icon={isMenuOpen ? faX : faBars}
-              onClick={toggleMenu}
-            />
-          </>
-        )}
+        {/*{!isDemo() && (*/}
+        <>
+          <div className="vertical-sep" />
+          <AudioPlayer />
+          <FontAwesomeIcon
+            className="menu-icon"
+            icon={isMenuOpen ? faX : faBars}
+            onClick={toggleMenu}
+          />
+        </>
+        {/*)}*/}
       </div>
     </div>
   </header>

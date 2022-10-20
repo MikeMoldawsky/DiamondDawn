@@ -3,13 +3,13 @@ import Countdown from "react-countdown";
 import "./Countdown.scss";
 import toLower from "lodash/toLower";
 
-const CountdownComp = ({ date, text = [], renderParts, onComplete }) => {
-  if (!date) return null;
-
+const CountdownComp = ({ date, text = [], renderParts, onComplete, parts }) => {
   const renderPart = (caption, value) =>
     !renderParts || renderParts[toLower(caption)] ? (
       <div className="center-aligned-column">
-        <div className="value">{value}</div>
+        <div className="value">
+          {value.toString().length === 1 ? "0" + value : value}
+        </div>
         <div className="caption">{caption}</div>
       </div>
     ) : null;
@@ -28,6 +28,10 @@ const CountdownComp = ({ date, text = [], renderParts, onComplete }) => {
       </div>
     );
   };
+
+  if (parts) return renderer(parts);
+
+  if (!date) return null;
 
   return (
     <div className="center-aligned-row countdown-row">

@@ -130,7 +130,7 @@ const ActionView = ({
   };
 
   return (
-    <div className={classNames("action-view mine", className)}>
+    <div className={classNames("action-view", className)}>
       {renderContent()}
     </div>
   );

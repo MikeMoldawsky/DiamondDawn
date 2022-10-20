@@ -20,7 +20,8 @@ const ActionButton = ({
   const isPending = useSelector(isActionPendingSelector(actionKey));
   const dispatch = useDispatch();
 
-  const clickHandler = async () => {
+  const clickHandler = async (e) => {
+    e.preventDefault();
     if (isPending || disabled || !onClick) return;
     dispatch(setActionPending(actionKey));
     try {
@@ -32,7 +33,7 @@ const ActionButton = ({
   };
 
   return (
-    <div
+    <button
       className={classNames("button", actionKey, className, {
         disabled: disabled || isPending,
       })}
@@ -40,11 +41,11 @@ const ActionButton = ({
       {...props}
     >
       {isPending ? (
-        <BeatLoader color={"#fff"} loading={true} size={10} />
+        <BeatLoader color={"#000"} loading={true} size={10} />
       ) : (
         <div className="button-content">{children}</div>
       )}
-    </div>
+    </button>
   );
 };
 

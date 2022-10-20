@@ -80,15 +80,24 @@ async function confirmInviteUsed(inviteId, address) {
   return await getInviteObjectById(inviteId);
 }
 
-async function createInviteRequest(address, identifier, country, state) {
+async function createInviteRequest(
+  address,
+  twitter,
+  email,
+  note,
+  country,
+  state
+) {
   validateAddress(address);
   let invite = await InviteModel.findOne({ address });
   if (invite) {
     throw new Error("Address already invited");
   }
   invite = new InviteModel({
-    identifier,
     address,
+    twitter,
+    email,
+    note,
     location: `${state}, ${country}`,
   });
   return invite.save();

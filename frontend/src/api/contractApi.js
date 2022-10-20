@@ -23,6 +23,14 @@ export const getMinePriceApi = async (contract) => {
   }
 };
 
+export const getMaxDiamondsApi = async (contract) => {
+  return await contract.maxDiamonds();
+};
+
+export const getMineDiamondCountApi = async (mineContract) => {
+  return await mineContract.diamondCount();
+};
+
 // PROCESS
 const PROCESS_GAS_LIMIT = 220000;
 

@@ -6,7 +6,13 @@ import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { NavLink, useNavigate } from "react-router-dom";
-import { getTokenNextStageName, isDemo, isTokenActionable } from "utils";
+import {
+  getCDNObjectUrl,
+  getTokenNextStageName,
+  isDemo,
+  isTokenActionable,
+  shortenEthAddress,
+} from "utils";
 import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
@@ -28,6 +34,85 @@ import {
 import AccountProvider from "containers/AccountProvider";
 import TokensProvider from "containers/TokensProvider";
 import { SYSTEM_STAGE } from "consts";
+import Wallet from "components/Wallet";
+import ReactPlayer from "react-player";
+import Box from "components/Box";
+import Loading from "components/Loading";
+import EnterMine from "pages/ProcessPage/EnterMine";
+
+const NotConnectedView = ({ name }) => {
+  return (
+    <Box className="main-box opaque">
+      <div className="center-aligned-column not-connected">
+        <div className="heading">
+          <div className="leading-text">WELCOME</div>
+          <div className="leading-text">TO {name}</div>
+        </div>
+        <div className="center-aligned-column bottom-content">
+          <img src={getCDNObjectUrl("/images/infinity_icon.png")} alt="" />
+          <div className="secondary-text">CONNECT WALLET TO CONTINUE</div>
+          <Wallet label="connect" className="button" />
+        </div>
+      </div>
+    </Box>
+  );
+};
+
+const InviteView = ({ invite, loadInvite }) => {
+  const account = useAccount();
+
+  const title = invite ? "REQUEST STATUS" : "JOIN DIAMOND DAWN";
+
+  return (
+    <Box className="main-box opaque invite">
+      <div className="layout-box">
+        <div className="image-box">
+          <div className="image-placeholder" />
+          {/*<ReactPlayer*/}
+          {/*  url={getCDNObjectUrl("/videos/infinity_logo.mp4")}*/}
+          {/*  playing*/}
+          {/*  playsinline*/}
+          {/*  controls={false}*/}
+          {/*  muted*/}
+          {/*  loop*/}
+          {/*  className="react-player loader"*/}
+          {/*  width="100%"*/}
+          {/*  height="100%"*/}
+          {/*/>*/}
+          <div className="description">
+            A video showing the evolution of the stone? The different types of
+            cutting? Something intriguing and mysterious
+          </div>
+        </div>
+        <div className="title-box">
+          <div className="secondary-text">
+            Hello {shortenEthAddress(account.address)}
+          </div>
+        </div>
+        <div className="content-box">
+          <div className="leading-text">{title}</div>
+          <div className="text">
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the
+          </div>
+          {invite ? (
+            <div className="request-status">
+              <div className="text-comment">Your request has been sent</div>
+              <div className="text-comment">
+                STATUS: {invite.approved ? "approved" : "pending"}
+              </div>
+              <button className="button" disabled={!invite.approved}>
+                GO TO MINT PAGE
+              </button>
+            </div>
+          ) : (
+            <RequestForm onSuccess={() => loadInvite(account.address)} />
+          )}
+        </div>
+      </div>
+    </Box>
+  );
+};
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
@@ -124,16 +209,37 @@ function CollectorPage() {
     );
   };
 
+  const renderDemoContent = () => {
+    if (!account?.address)
+      return <NotConnectedView name="THE COLLECTORS ROOM" />;
+
+    if (!isInviteFetched)
+      return (
+        <Box className="main-box">
+          <Loading />
+        </Box>
+      );
+
+    if (invite.approved)
+      return (
+        <Box className="main-box">
+          <EnterMine />
+        </Box>
+      );
+
+    return <InviteView invite={invite} loadInvite={loadInvite} />;
+  };
+
   return (
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
-        <div className="leading-text">Collector's Room</div>
+        <h1>The Collector's Room</h1>
         {!isDemo() ? (
           <AccountProvider>
             <TokensProvider withLoader>{renderContent()}</TokensProvider>
           </AccountProvider>
         ) : (
-          renderContent()
+          renderDemoContent()
         )}
       </div>
     </div>
