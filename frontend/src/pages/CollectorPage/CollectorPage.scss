@@ -15,7 +15,7 @@
 
   .leading-text {
     font-size: $font36px;
-    margin-bottom: .8rem;
+    margin-bottom: 0.8rem;
   }
 
   .secondary-text {
@@ -24,7 +24,7 @@
 
   .text {
     font-size: $font18px;
-    margin-bottom: .8rem;
+    margin-bottom: 0.8rem;
   }
 
   .not-connected {
@@ -79,7 +79,8 @@
         .image-placeholder {
           width: 100%;
           height: 100%;
-          background: url("../../assets/images/collector-invite-placeholder.png") no-repeat 0 0;
+          background: url("../../assets/images/collector-invite-placeholder.png")
+            no-repeat 0 0;
           background-size: 100%;
         }
 
@@ -92,7 +93,7 @@
           top: 0;
           left: 0;
           padding: 20px;
-          font-size: .8em;
+          font-size: 0.8em;
         }
       }
 
@@ -108,7 +109,8 @@
         flex-direction: column;
 
         .request-status {
-          .text-comment, button {
+          .text-comment,
+          button {
             margin-top: 1.5em;
           }
         }

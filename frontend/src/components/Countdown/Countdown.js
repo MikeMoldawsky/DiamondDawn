@@ -7,7 +7,9 @@ const CountdownComp = ({ date, text = [], renderParts, onComplete, parts }) => {
   const renderPart = (caption, value) =>
     !renderParts || renderParts[toLower(caption)] ? (
       <div className="center-aligned-column">
-        <div className="value">{value.toString().length === 1 ? '0' + value : value}</div>
+        <div className="value">
+          {value.toString().length === 1 ? "0" + value : value}
+        </div>
         <div className="caption">{caption}</div>
       </div>
     ) : null;
@@ -27,7 +29,7 @@ const CountdownComp = ({ date, text = [], renderParts, onComplete, parts }) => {
     );
   };
 
-  if (parts) return renderer(parts)
+  if (parts) return renderer(parts);
 
   if (!date) return null;
 

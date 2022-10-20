@@ -35,15 +35,15 @@ const Header = ({ isMenuOpen, toggleMenu }) => (
           <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
         </a>
         {/*{!isDemo() && (*/}
-          <>
-            <div className="vertical-sep" />
-            <AudioPlayer />
-            <FontAwesomeIcon
-              className="menu-icon"
-              icon={isMenuOpen ? faX : faBars}
-              onClick={toggleMenu}
-            />
-          </>
+        <>
+          <div className="vertical-sep" />
+          <AudioPlayer />
+          <FontAwesomeIcon
+            className="menu-icon"
+            icon={isMenuOpen ? faX : faBars}
+            onClick={toggleMenu}
+          />
+        </>
         {/*)}*/}
       </div>
     </div>

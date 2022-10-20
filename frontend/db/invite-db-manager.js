@@ -80,7 +80,14 @@ async function confirmInviteUsed(inviteId, address) {
   return await getInviteObjectById(inviteId);
 }
 
-async function createInviteRequest(address, twitter, email, note, country, state) {
+async function createInviteRequest(
+  address,
+  twitter,
+  email,
+  note,
+  country,
+  state
+) {
   validateAddress(address);
   let invite = await InviteModel.findOne({ address });
   if (invite) {

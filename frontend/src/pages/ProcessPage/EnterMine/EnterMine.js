@@ -4,12 +4,12 @@ import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faEthereum} from "@fortawesome/free-brands-svg-icons/faEthereum"
+import { faEthereum } from "@fortawesome/free-brands-svg-icons/faEthereum";
 
 const EnterMine = ({ invite }) => {
-  const minePrice = 3.33
-  const maxDiamonds = 333
-  const diamondCount = 0
+  const minePrice = 3.33;
+  const maxDiamonds = 333;
+  const diamondCount = 0;
   const navigateToDefault = useNavigateToDefault();
 
   const onInviteExpired = () => navigateToDefault();
@@ -22,7 +22,8 @@ const EnterMine = ({ invite }) => {
           <div className="center-aligned-column">
             <div className="leading-text">CONGRATULATION</div>
             <div className="secondary-text">
-              simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since
+              simply dummy text of the printing and typesetting industry. Lorem
+              Ipsum has been the industry's standard dummy text ever since
             </div>
           </div>
         </div>
@@ -30,9 +31,7 @@ const EnterMine = ({ invite }) => {
           <div className="center-aligned-row">
             <div className="center-start-aligned-row text-row">
               <FontAwesomeIcon icon={faEthereum} />
-              <div className="price">
-                {minePrice} GET YOUR KEY
-              </div>
+              <div className="price">{minePrice} GET YOUR KEY</div>
             </div>
             <div>
               <ActionButton
@@ -63,7 +62,8 @@ const EnterMine = ({ invite }) => {
           <div className="or">OR</div>
         </div>
         <div className="status-box">
-          LIMITED OFFER OF {maxDiamonds} NFTS<span>/</span>{maxDiamonds - diamondCount} REMAINING
+          LIMITED OFFER OF {maxDiamonds} NFTS<span>/</span>
+          {maxDiamonds - diamondCount} REMAINING
         </div>
       </div>
     </div>

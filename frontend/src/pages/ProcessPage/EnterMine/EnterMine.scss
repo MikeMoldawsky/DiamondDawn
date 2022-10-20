@@ -2,7 +2,8 @@
 
 .action-view.enter {
   height: 100%;
-  background: transparent url('../../../assets/images/enter-mine-bg.png') -2px -2px no-repeat padding-box;
+  background: transparent url("../../../assets/images/enter-mine-bg.png") -2px -2px
+    no-repeat padding-box;
   background-size: 100%;
   text-align: center;
   color: $text_gray;
@@ -28,14 +29,14 @@
     position: relative;
     top: 12.5%;
     padding: 0 6%;
-
   }
 
   .image-box {
     grid-area: 1 / 1 / 5 / 2;
     position: relative;
     padding: 10px;
-    background: url("../../../assets/images/enter-mine-bg-key.png") no-repeat 35% -10%;
+    background: url("../../../assets/images/enter-mine-bg-key.png") no-repeat
+      35% -10%;
     background-size: 62%;
   }
 
@@ -78,7 +79,7 @@
       font-size: $font20px;
 
       svg {
-        margin-right: .5em;
+        margin-right: 0.5em;
       }
     }
   }

@@ -6,7 +6,13 @@ import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { NavLink, useNavigate } from "react-router-dom";
-import {getCDNObjectUrl, getTokenNextStageName, isDemo, isTokenActionable, shortenEthAddress} from "utils";
+import {
+  getCDNObjectUrl,
+  getTokenNextStageName,
+  isDemo,
+  isTokenActionable,
+  shortenEthAddress,
+} from "utils";
 import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
@@ -49,13 +55,13 @@ const NotConnectedView = ({ name }) => {
         </div>
       </div>
     </Box>
-  )
-}
+  );
+};
 
 const InviteView = ({ invite, loadInvite }) => {
   const account = useAccount();
 
-  const title = invite ? "REQUEST STATUS" : "JOIN DIAMOND DAWN"
+  const title = invite ? "REQUEST STATUS" : "JOIN DIAMOND DAWN";
 
   return (
     <Box className="main-box opaque invite">
@@ -74,20 +80,30 @@ const InviteView = ({ invite, loadInvite }) => {
           {/*  height="100%"*/}
           {/*/>*/}
           <div className="description">
-            A video showing the evolution of the stone? The different types of cutting? Something intriguing and mysterious
+            A video showing the evolution of the stone? The different types of
+            cutting? Something intriguing and mysterious
           </div>
         </div>
         <div className="title-box">
-          <div className="secondary-text">Hello {shortenEthAddress(account.address)}</div>
+          <div className="secondary-text">
+            Hello {shortenEthAddress(account.address)}
+          </div>
         </div>
         <div className="content-box">
           <div className="leading-text">{title}</div>
-          <div className="text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the</div>
+          <div className="text">
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the
+          </div>
           {invite ? (
             <div className="request-status">
               <div className="text-comment">Your request has been sent</div>
-              <div className="text-comment">STATUS: {invite.approved ? "approved" : "pending"}</div>
-              <button className="button" disabled={!invite.approved}>GO TO MINT PAGE</button>
+              <div className="text-comment">
+                STATUS: {invite.approved ? "approved" : "pending"}
+              </div>
+              <button className="button" disabled={!invite.approved}>
+                GO TO MINT PAGE
+              </button>
             </div>
           ) : (
             <RequestForm onSuccess={() => loadInvite(account.address)} />
@@ -95,8 +111,8 @@ const InviteView = ({ invite, loadInvite }) => {
         </div>
       </div>
     </Box>
-  )
-}
+  );
+};
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
@@ -194,22 +210,25 @@ function CollectorPage() {
   };
 
   const renderDemoContent = () => {
-    if (!account?.address) return <NotConnectedView name="THE COLLECTORS ROOM" />
+    if (!account?.address)
+      return <NotConnectedView name="THE COLLECTORS ROOM" />;
 
-    if (!isInviteFetched) return (
-      <Box className="main-box">
-        <Loading />
-      </Box>
-    );
+    if (!isInviteFetched)
+      return (
+        <Box className="main-box">
+          <Loading />
+        </Box>
+      );
 
-    if (invite.approved) return (
-      <Box className="main-box">
-        <EnterMine />
-      </Box>
-    );
+    if (invite.approved)
+      return (
+        <Box className="main-box">
+          <EnterMine />
+        </Box>
+      );
 
-    return <InviteView invite={invite} loadInvite={loadInvite} />
-  }
+    return <InviteView invite={invite} loadInvite={loadInvite} />;
+  };
 
   return (
     <div className={classNames("page collector-page")}>
@@ -219,7 +238,9 @@ function CollectorPage() {
           <AccountProvider>
             <TokensProvider withLoader>{renderContent()}</TokensProvider>
           </AccountProvider>
-        ) : renderDemoContent()}
+        ) : (
+          renderDemoContent()
+        )}
       </div>
     </div>
   );

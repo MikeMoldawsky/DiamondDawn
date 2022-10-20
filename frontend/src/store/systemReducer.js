@@ -1,7 +1,12 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import { BigNumber } from "ethers";
 import { getConfigApi, getContractInfoApi } from "api/serverApi";
-import {getMaxDiamondsApi, getMineDiamondCountApi, getMinePriceApi, getSystemStageApi} from "api/contractApi";
+import {
+  getMaxDiamondsApi,
+  getMineDiamondCountApi,
+  getMinePriceApi,
+  getSystemStageApi,
+} from "api/contractApi";
 import get from "lodash/get";
 
 const INITIAL_STATE = {

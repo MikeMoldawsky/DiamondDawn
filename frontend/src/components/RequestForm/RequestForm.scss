@@ -17,8 +17,9 @@
     }
   }
 
-  input, textarea {
-    margin: .8rem 0;
+  input,
+  textarea {
+    margin: 0.8rem 0;
     font-size: $font18px;
   }
 
@@ -27,6 +28,6 @@
   }
 
   .button {
-    margin-top: .8rem;
+    margin-top: 0.8rem;
   }
 }
