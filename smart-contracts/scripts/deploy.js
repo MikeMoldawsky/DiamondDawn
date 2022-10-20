@@ -98,8 +98,13 @@ async function main() {
   const mineArgs = [];
   const SerializerLib = await hre.ethers.getContractFactory("Serializer");
   const serializer = await SerializerLib.deploy();
-  const libraries = { Serializer: serializer.address }
-  const mine = await deployContract(deployer, "DiamondDawnMine", mineArgs, libraries);
+  const libraries = { Serializer: serializer.address };
+  const mine = await deployContract(
+    deployer,
+    "DiamondDawnMine",
+    mineArgs,
+    libraries
+  );
   // Diamond Dawn
   let dd;
   const ddArgs = [mine.address, process.env.SIGNER_PUBLIC_KEY];
@@ -136,7 +141,9 @@ async function deployContract(deployer, contractName, args, libraries) {
     network: hre.network.name,
     args,
   });
-  const factory = await hre.ethers.getContractFactory(contractName, { libraries });
+  const factory = await hre.ethers.getContractFactory(contractName, {
+    libraries,
+  });
   const contract = await factory.deploy(...args);
   await contract.deployed();
   const deployerNewBalance = await deployer.getBalance();
