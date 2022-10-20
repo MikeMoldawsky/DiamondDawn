@@ -9,6 +9,7 @@ import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import AudioPlayer from "components/AudioPlayer";
 import { getCDNObjectUrl, isDemo } from "utils";
+import { DIAMOND_DAWN_TWITTER_URL } from "consts";
 
 const Header = ({ isMenuOpen, toggleMenu }) => (
   <header>
@@ -30,7 +31,9 @@ const Header = ({ isMenuOpen, toggleMenu }) => (
         </NavLink>
       </div>
       <div className="center-aligned-row header-side">
-        <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
+        <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
+          <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
+        </a>
         {!isDemo() && (
           <>
             <div className="vertical-sep" />
