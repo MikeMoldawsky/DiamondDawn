@@ -22,7 +22,7 @@
   .layout-box {
     display: grid;
     grid-template-columns: repeat(2, 7fr);
-    grid-template-rows: 7fr 4fr 6fr 3fr;
+    grid-template-rows: 6.5fr 4fr 6fr 3fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     height: 87.5%;
@@ -41,7 +41,7 @@
   }
 
   .right-box {
-    margin-left: -5%;
+    margin-left: -4%;
     display: flex;
     flex-direction: column;
   }
@@ -59,7 +59,7 @@
     justify-content: flex-start;
 
     .center-aligned-column {
-      width: 90%;
+      width: 86%;
     }
   }
 
