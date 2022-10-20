@@ -1,0 +1,256 @@
+@import "vars";
+@import "../assets/fonts/fonts.css";
+
+html,
+body,
+#root,
+.main-layout,
+.main-layout > div[data-rk],
+.page {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-size: 16px;
+  overflow: hidden;
+  background-color: black;
+  color: white;
+  margin: 0;
+}
+
+* {
+  font-family: "Saira", monospace;
+  font-weight: 300;
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+input[type="text"] {
+  width: 100%;
+  height: 48px;
+  padding: 0 10px;
+  border: none;
+  border-left: solid 6px white;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.validation-error {
+    border-color: $light-red;
+  }
+}
+
+.page {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  position: relative;
+
+  .inner-page {
+    padding-top: 200px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+.loader-container {
+  height: 100%;
+}
+
+.center-aligned-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.center-aligned-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-upper {
+  text-transform: uppercase;
+}
+
+.button {
+  color: $dark;
+  background-color: $white;
+  height: 65px;
+  border-radius: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 60px;
+  border: solid 1px transparent;
+  cursor: pointer;
+  font-weight: 500;
+  width: auto;
+  letter-spacing: 2px;
+
+  .button-text {
+    font-weight: 500;
+  }
+
+  span > span {
+    background-color: $dark !important;
+  }
+
+  svg {
+    height: 1.4em;
+    margin-right: 16px;
+  }
+
+  &.icon-after {
+    svg {
+      margin-right: 0;
+      margin-left: 16px;
+    }
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &:hover:not(.disabled) {
+    color: $white;
+    background-color: $dark;
+    border-color: $white;
+  }
+
+  &.inverted,
+  &.link {
+    color: $white;
+    background-color: $dark;
+    border-color: white !important;
+  }
+
+  &.link {
+    border-color: transparent !important;
+
+    span > span {
+      background-color: $white !important;
+    }
+  }
+}
+
+.common-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.leading-text {
+  font-size: 2.1875em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.35em;
+}
+
+.secondary-text {
+  font-size: 1.5625em;
+  color: $secondary_gray;
+  text-align: center;
+}
+
+.video-placeholder {
+  height: 100% !important;
+  width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    font-size: 4em;
+  }
+}
+
+.tabs {
+  .tabs-header {
+    justify-content: center;
+  }
+}
+
+.Toastify__toast-container {
+  top: 80px !important;
+}
+
+.MuiTextField-root {
+  background-color: white !important;
+}
+
+.MuiDrawer-root .MuiPaper-root {
+  padding-top: 150px;
+  width: 300px;
+  background: #ffffff55;
+  box-shadow: 0 10px 30px #00000029;
+  color: white;
+  padding-left: 50px;
+
+  .menu-item {
+    margin-bottom: 20px;
+    font-size: 1.4em;
+  }
+}
+
+// ANIMATIONS
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.5);
+  }
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}

@@ -1,4 +1,4 @@
-name: ci
+name: Diamond Dawn CI DEV
 
 concurrency:
   group: '${{ github.workflow }}-${{ github.head_ref || github.ref }}'
@@ -6,12 +6,33 @@ concurrency:
 
 on:
   push:
-    branches: [main,develop]
+    branches:
+      - develop
   pull_request:
+    branches:
+      - develop
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Check formatting - frontent
+        run: cd frontend && npm run check
+      - name: Check formatting - frontent-admin
+        run: cd frontend-admin && npm run check
+      - name: Check formatting - smart-contracts
+        run: cd smart-contracts && npm run check
   compile_and_run_tests:
     runs-on: ubuntu-latest
+    needs:
+      - check
+    defaults:
+      run:
+        working-directory: ./smart-contracts
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -19,15 +40,13 @@ jobs:
           node-version: '16'
       - name: Install dependencies
         run: npm ci
-      - name: Compile code
-        run: npm run compile
-      - name: Run test coverage
+      - name: Compile & Run test coverage
         run: npm run coverage
       - uses: 5monkeys/cobertura-action@master
         with:
-          path: coverage/cobertura-coverage.xml
+          path: smart-contracts/coverage/cobertura-coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          minimum_coverage: 10
+          minimum_coverage: 0
           fail_below_threshold: True
           show_line: True
           show_branch: True
@@ -40,9 +59,38 @@ jobs:
         with:
           node-version: 16
           sarif: results.sarif
+      # - name: Generate Documentation
+      #   uses: mattnotmitt/doxygen-action@v1.9.4
+      #   with:
+      #       working-directory: 'contracts/'
+      #       doxyfile-path: 'docs/'
       # - name: Upload SARIF file
       #   uses: github/codeql-action/upload-sarif@v2
       #   with:
       #     sarif_file: ${{ steps.slither.outputs.sarif }}
-
-
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/develop' }}
+    needs:
+      - check
+      - compile_and_run_tests
+    env:
+      HARDHAT_NETWORK: goerli
+      GOERLI_URL: ${{ secrets.GOERLI_URL }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+      ADMINS: ${{ secrets.ADMINS }}
+      SIGNER_PUBLIC_KEY: ${{ secrets.SIGNER_PUBLIC_KEY }}
+    defaults:
+      run:
+        working-directory: ./smart-contracts
+    steps:
+      -   uses: actions/checkout@v2
+      -   uses: actions/setup-node@v2
+          with:
+            node-version: '16'
+      -   name: Install dependencies
+          run: npm ci
+      -   name: Deploy smart contracts
+          run: npm run build

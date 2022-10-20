@@ -1,0 +1,31 @@
+@import "css/vars";
+
+.page.invite-page {
+  max-width: 1000px;
+  margin: 0 auto;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .button {
+    margin: 80px auto 40px;
+    width: 300px;
+  }
+
+  .warning-message {
+    display: flex;
+    align-self: center;
+
+    svg {
+      width: 60px;
+      height: auto;
+      margin-right: 40px;
+    }
+
+    .warning-text {
+      font-size: 1.4em;
+    }
+  }
+}

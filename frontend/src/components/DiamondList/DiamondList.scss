@@ -1,0 +1,65 @@
+@import "css/vars";
+
+.diamond-list {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 40px;
+
+  .diamond-item {
+    position: relative;
+
+    .token-icon {
+      margin-right: 16px;
+      cursor: pointer;
+      border: solid 1px transparent;
+      border-radius: 4px;
+      padding: 5px 8px;
+      opacity: 0.7;
+
+      svg {
+        width: 1.4em;
+        height: 1.4em;
+      }
+
+      .token-id {
+        font-size: 0.8em;
+        margin-left: 5px;
+      }
+    }
+
+    &.enabled {
+      .token-icon {
+        opacity: 1;
+      }
+    }
+
+    &.selected {
+      .token-icon {
+        transform: scale(1.2);
+      }
+    }
+  }
+
+  a.active {
+    .token-icon {
+      border: solid 1px white;
+    }
+  }
+
+  .diamond-info-container {
+    background-color: black;
+    width: 240px;
+    position: absolute;
+    right: 0;
+    top: 70px;
+    z-index: 1;
+    border: solid 1px $darker-gray;
+
+    .token-id {
+      text-align: center;
+      border-top: solid 1px $darker-gray;
+      padding: 10px 0;
+    }
+  }
+}

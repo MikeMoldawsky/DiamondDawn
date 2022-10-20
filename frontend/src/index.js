@@ -1,14 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
-import LandingPage from "./pages/LandingPage";
-// import App from "./App";
+import MainLayout from "containers/MainLayout";
+import { Provider } from "react-redux";
+import { makeStore } from "store/makeStore";
+
+let store = makeStore();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <LandingPage />
-  </React.StrictMode>
+  <Provider store={store}>
+    <MainLayout />
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

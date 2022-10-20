@@ -1,0 +1,11 @@
+{
+  "overrides": [
+    {
+      "files": "*.sol",
+      "options": {
+        "explicitTypes": "preserve",
+        "printWidth": 120
+      }
+    }
+  ]
+}

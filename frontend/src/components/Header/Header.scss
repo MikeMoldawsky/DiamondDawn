@@ -1,0 +1,60 @@
+@import "css/vars";
+
+header {
+  position: fixed;
+  z-index: 10000;
+  width: 100%;
+  height: $headerHeight;
+
+  .header-internal {
+    padding: 0 40px;
+    height: $headerHeight;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    .wallet {
+      button {
+        letter-spacing: 0.1em;
+      }
+    }
+
+    .vertical-sep {
+      width: 1px;
+      margin: 0 1em;
+      background-color: white;
+      height: 1.4em;
+    }
+
+    .mute-icon {
+      margin-right: 1em;
+      width: 1.75em;
+    }
+  }
+
+  .logo-box {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    img {
+      height: 5.75em;
+      width: unset;
+    }
+  }
+
+  svg.menu-icon {
+    height: 1.4em;
+    cursor: pointer;
+  }
+}
+
+.drawer-open {
+  header {
+    svg.menu-icon {
+      margin-left: 3px;
+    }
+  }
+}

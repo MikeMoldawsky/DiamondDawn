@@ -1,0 +1,79 @@
+@import "css/vars";
+
+.page.process-page {
+  display: flex;
+  flex-direction: column;
+
+  main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 30px;
+  }
+
+  .countdown-view {
+    text-align: center;
+
+    .leading-text {
+      font-size: 1.2em;
+    }
+  }
+
+  .video-placeholder {
+    margin-top: 80px;
+    height: $videoHeight;
+    width: $videoWidth;
+    background-color: rgba(255, 255, 255, 0.2);
+    font-size: 1.8em;
+    cursor: pointer;
+  }
+
+  .action-view {
+    text-align: center;
+
+    .backdrop {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10001;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+  }
+
+  .action-button {
+    width: 200px;
+    margin: 0 auto 40px;
+  }
+
+  .content {
+    cursor: pointer;
+    z-index: 1;
+    position: absolute;
+    padding: 100px 300px;
+    background-color: $dark;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    border: solid 1px silver;
+    border-radius: 10px;
+  }
+}

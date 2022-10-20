@@ -1,0 +1,350 @@
+@import "css/vars";
+
+.page.admin-page {
+  main {
+    margin: 0 100px;
+    padding-top: $headerHeight + 40px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 40px;
+    position: relative;
+
+    &.current {
+      &:after {
+        position: absolute;
+        font-size: 0.4em;
+        content: "\2713         ACTIVE";
+        background-color: green;
+        border-radius: 5px;
+        margin-left: 10px;
+        padding: 2px 8px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      &.complete {
+        &:after {
+          content: "\2713         COMPLETE";
+          background-color: orange;
+        }
+      }
+    }
+  }
+
+  .tabs {
+    .tab-header:nth-child(6) {
+      margin-left: 120px;
+    }
+  }
+
+  .Mui-error {
+    background-color: #e98383;
+  }
+
+  .MuiInputBase-input {
+    border-left: none !important;
+    padding: 17px 6px;
+    margin-bottom: 0 !important;
+  }
+
+  .MuiOutlinedInput-root {
+    background-color: white;
+    padding: 0 10px;
+  }
+
+  .add-button {
+    margin: unset;
+    width: 160px;
+    justify-content: flex-start;
+    padding: 0 18px;
+  }
+
+  .button.disabled {
+    opacity: 0.5;
+  }
+
+  .button-row {
+    display: flex;
+    align-self: center;
+    justify-content: flex-end;
+  }
+
+  .main-button-row {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .save-button {
+    margin: 30px 0 0;
+    width: 100px;
+    justify-self: flex-end;
+    align-self: flex-end;
+    padding: 0 18px;
+  }
+
+  .input-row:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  .separator {
+    width: 100%;
+    height: 1px;
+    background-color: white;
+    margin: 30px 0;
+  }
+
+  .title {
+    font-weight: 700;
+    margin-bottom: 30px;
+    font-size: 1.2em;
+    position: relative;
+
+    &.success,
+    &.error {
+      &:before {
+        position: absolute;
+        top: -13px;
+        left: -40px;
+        font-size: 1.8em;
+      }
+    }
+
+    &.success:before {
+      color: green;
+      content: "\2713";
+    }
+
+    &.error:before {
+      color: red;
+      content: "\2715";
+    }
+  }
+
+  .caption {
+    font-weight: 700;
+  }
+
+  .table-container {
+    background-color: white;
+  }
+
+  .stage-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    text-align: left;
+    width: 600px;
+    margin: 0 auto;
+
+    h1 {
+      flex-grow: 2;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .stage-art {
+      align-items: flex-end;
+
+      .inputs {
+        flex-grow: 2;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        input {
+          width: 400px;
+        }
+      }
+    }
+
+    .button {
+      height: 32px;
+      font-size: 1em;
+    }
+
+    .reveal-button {
+      margin-bottom: 60px;
+      height: 48px;
+      font-size: 1.2em;
+
+      .button-content {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .admin-control {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    text-align: left;
+    width: 360px;
+    margin: 0 auto;
+
+    .caption {
+      margin-bottom: 5px;
+    }
+
+    .input-row {
+      margin-bottom: 30px;
+    }
+
+    .title {
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      height: 32px;
+      font-size: 1em;
+    }
+
+    .token-section {
+      margin-top: 20px;
+    }
+  }
+
+  .admin-art {
+    width: 700px;
+    margin: 0 auto;
+
+    .caption {
+      margin-bottom: 10px;
+    }
+
+    .stage-art {
+      align-items: flex-end;
+      margin-bottom: 40px;
+
+      .inputs {
+        flex-grow: 2;
+      }
+
+      .button {
+        width: 60px;
+        margin: 0 0 10px 100px;
+        height: 32px;
+        font-size: 1em;
+      }
+    }
+    padding-bottom: 40px;
+  }
+
+  .admin-schedule {
+    width: 700px;
+    margin: 0 auto;
+
+    .button {
+      height: 32px;
+      font-size: 1em;
+      width: 60px;
+      margin: 0 0 0 40px;
+    }
+
+    .stage-row {
+      margin-bottom: 40px;
+    }
+
+    .inner-row {
+      justify-content: flex-end;
+    }
+
+    .countdown {
+      width: 120px;
+      margin-left: 40px;
+    }
+
+    input {
+      width: 180px;
+    }
+  }
+
+  .config {
+    width: 700px;
+    margin: 0 auto;
+
+    .stage-time {
+      .countdown {
+        width: 120px;
+        margin-left: 40px;
+      }
+
+      .input-row {
+        flex-grow: 2;
+      }
+    }
+  }
+
+  .invitations {
+    .save-button {
+      width: 185px;
+    }
+  }
+
+  .diamonds {
+    .deployed {
+      background-color: #a4d1a4 !important;
+    }
+
+    .clear-db-message {
+      padding: 20px 40px 40px;
+      font-size: 1.4em;
+      color: red;
+      justify-content: center;
+
+      svg {
+        font-size: 1.4em;
+        margin-right: 10px;
+      }
+
+      .button {
+        font-size: 0.8em;
+        height: 36px;
+        margin-left: 40px;
+        background-color: black;
+        color: white;
+        border: solid 1px white;
+      }
+    }
+  }
+
+  .passwords {
+    width: 400px;
+    margin: 0 auto;
+
+    .button {
+      width: 200px;
+      margin: 40px auto;
+    }
+  }
+
+  table {
+    width: 100%;
+    text-align: left;
+
+    thead tr th {
+      font-weight: 700;
+      min-width: 30px;
+    }
+
+    tbody tr td {
+      padding: 10px 0;
+      min-width: 30px;
+
+      svg {
+        cursor: pointer;
+
+        &.copied {
+          path {
+            fill: green;
+          }
+        }
+      }
+    }
+  }
+}

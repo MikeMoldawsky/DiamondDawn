@@ -1,0 +1,24 @@
+@import "css/vars";
+
+.action-view.burn {
+  form {
+    width: 500px;
+    margin-top: 40px;
+
+    .button {
+      width: 200px;
+      margin: 20px auto 0;
+    }
+
+    .sbs-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .input-container {
+        width: calc(50% - 25px);
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
