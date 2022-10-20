@@ -1,29 +1,42 @@
-.action-view.mine {
-  .packages {
-    justify-content: space-evenly;
-    width: 800px;
-    margin: 40px auto;
+.action-view.enter {
+  height: 100%;
+  background: transparent url('../../../assets/images/enter-mine-bg.png') -2px -2px no-repeat padding-box;
+  background-size: 100%;
 
-    .package {
-      width: 33.33%;
-      cursor: pointer;
+  .layout-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    height: 100%;
+  }
 
-      .package-content {
-        margin: 0 20px;
-        padding: 20px 0;
-      }
+  .image-box {
+    grid-area: 1 / 1 / 5 / 2;
+    aspect-ratio: 1.024;
+    position: relative;
+    margin: 10.5% 6.5% 6.5% 11.5%;
+    padding: 10px;
+    background: url("../../../assets/images/enter-mine-bg-key.png") no-repeat 42% -12%;
+    background-size: 67%;
+  }
 
-      &:not(:last-child) {
-        border-right: solid 1px white;
-      }
+  .congrats-box {
+    grid-area: 1 / 2 / 2 / 3;
+    padding: 9% 20% 0 6.5%;
+  }
 
-      &.selected {
-        cursor: default;
+  .mint-box {
+    grid-area: 2 / 2 / 3 / 3;
+  }
 
-        .package-content {
-          border: solid 1px white;
-        }
-      }
-    }
+  .timer-box {
+    grid-area: 3 / 2 / 4 / 3;
+  }
+
+  .status-box {
+    padding: 0 20% 7.5% 6.5%;
+    grid-area: 4 / 2 / 5 / 3;
   }
 }

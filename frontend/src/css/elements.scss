@@ -2,7 +2,7 @@
 
 .box {
   $padding_thin: .5em;
-  $padding_wide: .5em;
+  $padding_wide: .7em;
 
   position: relative;
   border: solid 2px $border_gray;
@@ -13,23 +13,34 @@
 
   &:before {
     content: '';
-    background-color: #7e7d7d;
+    background-color: black;
     position: absolute;
     top: $padding_thin;
     bottom: $padding_wide;
     left: $padding_wide;
     right: $padding_thin;
-    opacity: .3;
+    opacity: 1;
     z-index: -1;
   }
 
   .box-inner {
-    background: transparent url('../assets/images/collector-box-bg.svg') -2px -2px no-repeat padding-box;
-    backdrop-filter: blur(30px);
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  &.opaque {
+    &:before {
+      background-color: #7e7d7d;
+      opacity: .3;
+    }
+
+    .box-inner {
+      background: transparent url('../assets/images/collector-opaque-bg.svg') -2px -2px no-repeat padding-box;
+      background-size: 101%;
+      backdrop-filter: blur(30px);
+    }
   }
 }
 
