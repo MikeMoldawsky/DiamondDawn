@@ -35,6 +35,8 @@ import Box from "components/Box";
 import ActionButton from "components/ActionButton";
 import SVG from 'components/SVG'
 import infinitySymbolUrl from 'assets/images/infinity-symbol.svg'
+import Loading from "components/Loading";
+import inviteVideoPlaceholder from "assets/images/collector-invite-placeholder.png"
 
 function CollectorPage() {
   const tokens = useSelector(tokensSelector);
@@ -147,24 +149,25 @@ function CollectorPage() {
       </div>
     )
 
-    if (!isInviteFetched) return null;
+    if (!isInviteFetched) return <Loading />;
 
     const title = invite ? "REQUEST STATUS" : "JOIN DIAMOND DAWN"
 
     return (
       <div className="layout-box">
-        <div className="box image-box">
-          <ReactPlayer
-            url={getCDNObjectUrl("/videos/infinity_logo.mp4")}
-            playing
-            playsinline
-            controls={false}
-            muted
-            loop
-            className="react-player loader"
-            width="100%"
-            height="100%"
-          />
+        <div className="image-box">
+          <div className="image-placeholder" />
+          {/*<ReactPlayer*/}
+          {/*  url={getCDNObjectUrl("/videos/infinity_logo.mp4")}*/}
+          {/*  playing*/}
+          {/*  playsinline*/}
+          {/*  controls={false}*/}
+          {/*  muted*/}
+          {/*  loop*/}
+          {/*  className="react-player loader"*/}
+          {/*  width="100%"*/}
+          {/*  height="100%"*/}
+          {/*/>*/}
           <div className="description">
             A video showing the evolution of the stone? The different types of cutting? Something intriguing and mysterious
           </div>

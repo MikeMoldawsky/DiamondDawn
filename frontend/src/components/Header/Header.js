@@ -34,7 +34,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => (
         <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
           <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
         </a>
-        {!isDemo() && (
+        {/*{!isDemo() && (*/}
           <>
             <div className="vertical-sep" />
             <AudioPlayer />
@@ -44,7 +44,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => (
               onClick={toggleMenu}
             />
           </>
-        )}
+        {/*)}*/}
       </div>
     </div>
   </header>

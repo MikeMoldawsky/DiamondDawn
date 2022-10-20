@@ -19,7 +19,7 @@ const RequestForm = ({ onSuccess }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     watch,
     reset,
     trigger,
@@ -97,7 +97,7 @@ const RequestForm = ({ onSuccess }) => {
         <ActionButton
           actionKey="Request Invitation"
           onClick={onSubmitClick}
-          disabled={!isEmpty(errors)}
+          disabled={!isDirty || !isEmpty(errors) || isRequiredError}
         >
           SUBMIT
         </ActionButton>
