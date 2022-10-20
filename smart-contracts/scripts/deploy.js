@@ -96,7 +96,15 @@ async function main() {
   const [deployer] = await hre.ethers.getSigners();
   // Diamond Dawn Mine
   const mineArgs = [];
-  const mine = await deployContract(deployer, "DiamondDawnMine", mineArgs);
+  const SerializerLib = await hre.ethers.getContractFactory("Serializer");
+  const serializer = await SerializerLib.deploy();
+  const libraries = { Serializer: serializer.address };
+  const mine = await deployContract(
+    deployer,
+    "DiamondDawnMine",
+    mineArgs,
+    libraries
+  );
   // Diamond Dawn
   let dd;
   const ddArgs = [mine.address, process.env.SIGNER_PUBLIC_KEY];
@@ -123,7 +131,7 @@ async function main() {
   await mongoose.disconnect(); // build doesn't finish without disconnect
 }
 
-async function deployContract(deployer, contractName, args) {
+async function deployContract(deployer, contractName, args, libraries) {
   const deployerAddress = await deployer.getAddress();
   const deployerBalance = await deployer.getBalance();
   console.log(`Deploying ${contractName}`, {
@@ -133,7 +141,9 @@ async function deployContract(deployer, contractName, args) {
     network: hre.network.name,
     args,
   });
-  const factory = await hre.ethers.getContractFactory(contractName);
+  const factory = await hre.ethers.getContractFactory(contractName, {
+    libraries,
+  });
   const contract = await factory.deploy(...args);
   await contract.deployed();
   const deployerNewBalance = await deployer.getBalance();
@@ -153,7 +163,7 @@ async function populateDiamonds(mine) {
 
 async function setVideos(diamondDawnMine) {
   await diamondDawnMine.setManifest(
-    STAGE.INVITE,
+    STAGE.FORGE,
     "sMO6zq1xVt4w0kQIz5X0fmQuJhCL5fHoGJk3Qmo6PcY"
   );
   await diamondDawnMine.setManifest(
@@ -169,7 +179,7 @@ async function setVideos(diamondDawnMine) {
     "LzfNElWncGfBa5eIaFWZ3JxNYt95PvdHIr8t7MMHrU0"
   );
   await diamondDawnMine.setManifest(
-    STAGE.SHIP,
+    STAGE.DAWN,
     "dm4lEPAKKKLf-ZjghklqtVyODMZVynvM1Nsj8-vJnPs"
   );
 }

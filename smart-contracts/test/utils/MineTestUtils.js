@@ -19,14 +19,14 @@ const MAX_POLISH_EXTRA_POINTS = 4;
 const BASE_URI = "ar://";
 
 // constants for tests
-const INVITE_MANIFEST = "invite-manifest";
+const FORGE_MANIFEST = "forge-manifest";
 const MINE_MANIFEST = "mine-manifest";
 const CUT_MANIFEST = "cut-manifest";
 const POLISH_MANIFEST = "polish-manifest";
 const REBORN_MANIFEST = "reborn-manifest";
 
 async function setInviteManifest(mineContract) {
-  await mineContract.setManifest(STAGE.INVITE, INVITE_MANIFEST);
+  await mineContract.setManifest(STAGE.FORGE, FORGE_MANIFEST);
 }
 
 async function setMineManifest(mineContract) {
@@ -42,7 +42,7 @@ async function setPolishManifest(mineContract) {
 }
 
 async function setRebornManifest(mineContract) {
-  await mineContract.setManifest(STAGE.SHIP, REBORN_MANIFEST);
+  await mineContract.setManifest(STAGE.DAWN, REBORN_MANIFEST);
 }
 
 async function setAllManifests(mineContract) {
@@ -222,7 +222,7 @@ async function assertRebornMetadata(
     ddUser,
     mineContract,
     tokenId,
-    STAGE.SHIP,
+    STAGE.DAWN,
     diamond.points
   );
 }
@@ -373,7 +373,7 @@ function _assertURI(type, shape, image, suffix) {
           throw new Error("Unknown shape");
       }
       break;
-    case STAGE.SHIP:
+    case STAGE.DAWN:
       manifest = REBORN_MANIFEST;
       expect(shape).to.be.oneOf(["Pear", "Round", "Oval", "Cushion"]);
       resource = "resource";
@@ -403,19 +403,15 @@ async function assertBase64AndGetParsed(actualMetadata) {
 function _getExpectedMetadataEnterMine(tokenId) {
   return {
     name: `Mine Key #${tokenId}`,
-    description: "description",
-    created_by: "dd",
-    image: `${BASE_URI}${INVITE_MANIFEST}/resource.jpeg`,
-    animation_url: `${BASE_URI}${INVITE_MANIFEST}/resource.mp4`,
-    attributes: [{ trait_type: "Type", value: "Key" }],
+    image: `${BASE_URI}${FORGE_MANIFEST}/resource.jpeg`,
+    animation_url: `${BASE_URI}${FORGE_MANIFEST}/resource.mp4`,
+    attributes: [{ trait_type: "Type", value: "Forged" }],
   };
 }
 
 function _getRoughMetadataNoCaratShapeAndURIs(numMined, totalMined) {
   return {
     name: `Rough Stone #${numMined}`,
-    description: "description",
-    created_by: "dd",
     attributes: [
       { trait_type: "Type", value: "Rough" },
       { trait_type: "Origin", value: "Metaverse" },
@@ -448,8 +444,6 @@ function _getCutMetadataNoCaratShapeAndURIs(
     _.padEnd((diamond.depth / 100).toString(), 4, "0");
   return {
     name: `Formation #${numCut}`,
-    description: "description",
-    created_by: "dd",
     attributes: [
       { trait_type: "Type", value: "Cut" },
       { trait_type: "Origin", value: "Metaverse" },
@@ -498,8 +492,6 @@ function _getPolishedMetadataNoCaratShapeAndURIs(
     _.padEnd((diamond.depth / 100).toString(), 4, "0");
   return {
     name: `Diamond #${numPolished}`,
-    description: "description",
-    created_by: "dd",
     attributes: [
       { trait_type: "Type", value: "Polished" },
       { trait_type: "Origin", value: "Metaverse" },
@@ -557,8 +549,6 @@ function _getRebirthMetadataNoCaratShapeAndURIs(
 
   return {
     name: `Dawn #${numPhysical}`,
-    description: "description",
-    created_by: "dd",
     attributes: [
       { trait_type: "Type", value: "Reborn" },
       { trait_type: "Origin", value: "Metaverse" },
@@ -612,7 +602,7 @@ function _expectedColor(diamond) {
 
 module.exports = {
   BASE_URI,
-  INVITE_MANIFEST,
+  FORGE_MANIFEST,
   MINE_MANIFEST,
   CUT_MANIFEST,
   POLISH_MANIFEST,

@@ -26,7 +26,7 @@ import "./interface/IDiamondDawnMine.sol";
  *     |    |  \  \__  \   \ \/ \/ /  /    \
  *     |    `   \  / __ \_  \     /  |   |  \
  *    /_______  / (____  /   \/\_/   |___|  /
- *            \/       \/                 \/                                ,
+ *            \/       \/                 \/
  *
  * @title DiamondDawn
  * @author Mike Moldawsky (Tweezers)
@@ -45,7 +45,7 @@ contract DiamondDawn is
     using ECDSA for bytes32;
 
     uint public constant PRICE = 0.002 ether; // TODO: change to 3.33eth
-    uint public constant PRICE_WEDDING = 0.003 ether; // TODO: change to 3.66eth
+    uint public constant PRICE_MARRIAGE = 0.003 ether; // TODO: change to 3.66eth
     uint16 public constant MAX_ENTRANCE = 333;
 
     bool public isLocked; // immutable
@@ -92,9 +92,9 @@ contract DiamondDawn is
     }
 
     modifier isDawnAllowed(uint tokenId) {
-        require(stage == Stage.SHIP || stage == Stage.DAWN, "Wrong stage");
+        require(stage == Stage.DAWN || stage == Stage.COMPLETED, "Wrong stage");
         require(_shipped[_msgSender()].contains(tokenId), "No shipment");
-        require(ddMine.isReady(Stage.SHIP), "Ship not ready");
+        require(ddMine.isReady(Stage.DAWN), "Dawn not ready");
         _;
     }
 
@@ -110,14 +110,12 @@ contract DiamondDawn is
 
     /**********************     External Functions     ************************/
 
-    function enter(bytes calldata signature) external payable costs(PRICE) {
-        // TODO: change function name
-        _enter(signature);
+    function forge(bytes calldata signature) external payable costs(PRICE) {
+        _forge(signature);
     }
 
-    function enterWedding(bytes calldata signature) external payable costs(PRICE_WEDDING) {
-        // TODO: change function name
-        _enter(signature);
+    function forgeWithPartner(bytes calldata signature) external payable costs(PRICE_MARRIAGE) {
+        _forge(signature);
     }
 
     function mine(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.MINE) {
@@ -132,16 +130,19 @@ contract DiamondDawn is
         ddMine.polish(tokenId);
     }
 
-    function ship(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.SHIP) {
+    function ship(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.DAWN) {
         _burn(tokenId);
         ddMine.ship(tokenId);
         _shipped[_msgSender()].add(tokenId);
     }
 
-    function rebirth(uint tokenId, bytes calldata signature) external isDawnAllowed(tokenId) {
-        require(_isValid(signature), "Not allowed to mint");
+    function dawn(uint tokenId, bytes calldata signature) external isDawnAllowed(tokenId) {
+        require(
+            _isValid(signature, bytes32(abi.encodePacked(_msgSender(), uint96(tokenId)))),
+            "Not allowed to rebirth"
+        );
         _shipped[_msgSender()].remove(tokenId);
-        ddMine.rebirth(tokenId);
+        ddMine.dawn(tokenId);
         _safeMint(_msgSender(), tokenId);
     }
 
@@ -157,7 +158,7 @@ contract DiamondDawn is
     }
 
     function lockDiamondDawn() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-        require(stage == Stage.DAWN, "Not Dawn stage");
+        require(stage == Stage.COMPLETED, "Not Completed");
         ddMine.lockMine();
         isLocked = true;
     }
@@ -210,20 +211,17 @@ contract DiamondDawn is
 
     /**********************     Private Functions     ************************/
 
-    function _isValid(bytes calldata signature) private view returns (bool) {
-        return
-            _signer ==
-            keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", bytes32(uint256(uint160(_msgSender())))))
-                .recover(signature);
-    }
-
-    function _enter(bytes calldata signature) private isActiveStage(Stage.INVITE) isNotFull {
-        require(_isValid(signature), "Not allowed to mint");
+    function _forge(bytes calldata signature) private isActiveStage(Stage.FORGE) isNotFull {
+        require(_isValid(signature, bytes32(uint256(uint160(_msgSender())))), "Not allowed to mint");
         // TODO: uncomment before production
         // require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
         uint256 tokenId = ++_numTokens;
-        ddMine.enter(tokenId);
+        ddMine.forge(tokenId);
         _safeMint(_msgSender(), tokenId);
+    }
+
+    function _isValid(bytes calldata signature, bytes32 message) private view returns (bool) {
+        return _signer == keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", message)).recover(signature);
     }
 }

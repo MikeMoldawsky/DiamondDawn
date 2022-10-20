@@ -35,7 +35,7 @@ const ProcessPage = () => {
         return <Cut />;
       case SYSTEM_STAGE.POLISH:
         return <Polish />;
-      case SYSTEM_STAGE.SHIP:
+      case SYSTEM_STAGE.DAWN:
         return <Ship />;
       default:
         navigateToDefault();

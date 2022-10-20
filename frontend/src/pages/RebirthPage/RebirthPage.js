@@ -3,14 +3,14 @@ import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
 import { useNavigate, useParams } from "react-router-dom";
 import ActionButton from "components/ActionButton";
-import { rebirthApi } from "api/contractApi";
+import { dawnApi } from "api/contractApi";
 import { SYSTEM_STAGE } from "consts";
 import ActionView from "components/ActionView";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { setSelectedTokenId } from "store/uiReducer";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
-import { signRebirthApi } from "api/serverApi";
+import { signDawnApi } from "api/serverApi";
 import { useAccount } from "wagmi";
 import { getCDNObjectUrl } from "utils";
 
@@ -39,7 +39,7 @@ function RebirthPage() {
       const intTokenId = parseInt(tokenId);
       if (!_.isEmpty(tokens)) {
         const token = _.find(tokens, (t) => t.id === intTokenId);
-        if (token.stage === SYSTEM_STAGE.SHIP) {
+        if (token.stage === SYSTEM_STAGE.DAWN) {
           navigate(`/nft/${tokenId}`);
         } else if (!token || !token.isBurned) {
           navigateToDefault();
@@ -67,13 +67,13 @@ function RebirthPage() {
   const executeRebirth = async () => {
     let signature;
     try {
-      signature = await signRebirthApi(account.address);
+      signature = await signDawnApi(account.address);
     } catch (e) {
       navigateToDefault();
       throw new Error(e);
     }
 
-    return rebirthApi(contract, tokenId, signature);
+    return dawnApi(contract, tokenId, signature);
   };
 
   return (

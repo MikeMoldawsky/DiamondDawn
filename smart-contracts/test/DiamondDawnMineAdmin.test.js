@@ -153,7 +153,7 @@ describe("Diamond Dawn Mine Admin", () => {
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
         "Wrong shipment state"
       );
-      await mineContract.connect(diamondDawn).enter(tokenId);
+      await mineContract.connect(diamondDawn).forge(tokenId);
       await expect(mineContract.lostShipment(1, DIAMOND)).to.be.revertedWith(
         "Wrong shipment state"
       );
@@ -210,7 +210,7 @@ describe("Diamond Dawn Mine Admin", () => {
         points: DIAMOND.points + 20,
         shape: DIAMOND.shape + 1,
       };
-      await mineContract.connect(diamondDawn).rebirth(tokenId);
+      await mineContract.connect(diamondDawn).dawn(tokenId);
       await mineContract.lostShipment(tokenId, replacedDiamond2);
       await assertRebornMetadata(
         diamondDawn,
@@ -279,13 +279,13 @@ describe("Diamond Dawn Mine Admin", () => {
       const polishedManifest = "polished";
       const shipManifest = "dawn";
 
-      await mineContract.setManifest(STAGE.INVITE, inviteManifest);
+      await mineContract.setManifest(STAGE.FORGE, inviteManifest);
       await mineContract.setManifest(STAGE.MINE, mineManifest);
       await mineContract.setManifest(STAGE.CUT, cutManifest);
       await mineContract.setManifest(STAGE.POLISH, polishedManifest);
-      await mineContract.setManifest(STAGE.SHIP, shipManifest);
+      await mineContract.setManifest(STAGE.DAWN, shipManifest);
 
-      expect(await mineContract.manifests(STAGE.INVITE)).to.be.equal(
+      expect(await mineContract.manifests(STAGE.FORGE)).to.be.equal(
         inviteManifest
       );
       expect(await mineContract.manifests(STAGE.MINE)).to.be.equal(
@@ -296,7 +296,7 @@ describe("Diamond Dawn Mine Admin", () => {
         polishedManifest
       );
 
-      expect(await mineContract.manifests(STAGE.SHIP)).to.be.equal(
+      expect(await mineContract.manifests(STAGE.DAWN)).to.be.equal(
         shipManifest
       );
     });

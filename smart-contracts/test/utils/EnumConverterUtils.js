@@ -120,22 +120,22 @@ const enumToFluorescence = (i) => {
 
 const STAGE = {
   NO_STAGE: 0,
-  INVITE: 1,
+  FORGE: 1,
   MINE: 2,
   CUT: 3,
   POLISH: 4,
-  SHIP: 5,
-  DAWN: 6,
+  DAWN: 5,
+  COMPLETED: 6,
 };
 
 const ALL_STAGES = [
   STAGE.NO_STAGE,
-  STAGE.INVITE,
+  STAGE.FORGE,
   STAGE.MINE,
   STAGE.CUT,
   STAGE.POLISH,
-  STAGE.SHIP,
   STAGE.DAWN,
+  STAGE.COMPLETED,
 ];
 
 module.exports = {

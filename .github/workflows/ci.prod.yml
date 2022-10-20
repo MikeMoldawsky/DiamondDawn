@@ -1,0 +1,28 @@
+name: Diamond Dawn CI PROD
+
+concurrency:
+  group: '${{ github.workflow }}-${{ github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Check formatting - frontent
+        run: cd frontend && npm run check
+      - name: Check formatting - frontent-admin
+        run: cd frontend-admin && npm run check
+      - name: Check formatting - smart-contracts
+        run: cd smart-contracts && npm run check

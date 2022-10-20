@@ -74,7 +74,7 @@ export const getDiamondIcon = (token) => {
   let shape;
 
   switch (token.stage) {
-    case SYSTEM_STAGE.INVITE:
+    case SYSTEM_STAGE.FORGE:
       return faGem;
     case SYSTEM_STAGE.MINE:
       shape = ROUGH_SHAPE[_.toUpper(_.snakeCase(shapeName))];
@@ -113,7 +113,7 @@ export const getDiamondIcon = (token) => {
         default:
           return null;
       }
-    case SYSTEM_STAGE.SHIP:
+    case SYSTEM_STAGE.DAWN:
       return faGem;
     default:
       return null;
@@ -128,10 +128,10 @@ export const isTokenDone = (token, systemStage, isActive) => {
     (token.stage === systemStage - 1 && !isActive);
 
   switch (systemStage) {
-    case SYSTEM_STAGE.SHIP:
+    case SYSTEM_STAGE.DAWN:
       return (
         (!token.isBurned && isNotProcessedEnough) ||
-        token.stage === SYSTEM_STAGE.SHIP
+        token.stage === SYSTEM_STAGE.DAWN
       );
     default:
       return isNotProcessedEnough;
@@ -143,7 +143,7 @@ export const isTokenActionable = (token, systemStage, isActive) => {
 
   const isActionable = token.stage === systemStage - 1;
 
-  if (systemStage === SYSTEM_STAGE.SHIP) {
+  if (systemStage === SYSTEM_STAGE.DAWN) {
     return isActionable && !token.isBurned;
   }
 
