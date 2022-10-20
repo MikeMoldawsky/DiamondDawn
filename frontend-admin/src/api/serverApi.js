@@ -65,7 +65,11 @@ export const getInvitesApi = async (approved) => {
 };
 
 export const createInviteApi = async (address, twitter, email) => {
-  const res = await axios.post(`/api/create_invite`, { address, twitter, email });
+  const res = await axios.post(`/api/create_invite`, {
+    address,
+    twitter,
+    email,
+  });
   return res.data;
 };
 

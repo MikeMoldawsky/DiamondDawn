@@ -9,11 +9,7 @@ import ActionButton from "components/ActionButton";
 import "./RequestForm.scss";
 import { utils as ethersUtils } from "ethers";
 
-const RequestForm = ({
-  createInviteApi,
-  text,
-  onSuccess,
-}) => {
+const RequestForm = ({ createInviteApi, text, onSuccess }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const {
     register,
