@@ -92,6 +92,12 @@ a {
   }
 }
 
+.center-center-aligned-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .center-start-aligned-row {
   display: flex;
   align-items: center;

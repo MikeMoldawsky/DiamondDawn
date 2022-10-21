@@ -35,6 +35,22 @@ import Loading from "components/Loading";
 import EnterMine from "pages/ProcessPage/EnterMine";
 import Suspense, { useIsReady } from "components/Suspense";
 
+const NotConnectedView = ({ name }) => {
+  return (
+    <div className="center-aligned-column not-connected">
+      <div className="heading">
+        <div className="leading-text">WELCOME</div>
+        <div className="leading-text">TO {name}</div>
+      </div>
+      <div className="center-aligned-column bottom-content">
+        <img src={getCDNObjectUrl("/images/infinity_icon.png")} alt="" />
+        <div className="secondary-text">CONNECT WALLET TO CONTINUE</div>
+        <Wallet label="connect" className="button" />
+      </div>
+    </div>
+  );
+};
+
 const ContentBox = ({ className, children }) => {
   const account = useAccount();
 
@@ -46,31 +62,17 @@ const ContentBox = ({ className, children }) => {
   const isReady = useIsReady(suspense)
 
   return (
-    <Box className={classNames("main-box", isReady && className)}>
-      <Suspense withLoader actions={suspense}>
-        {children}
-      </Suspense>
+    <Box className={classNames("main-box", { "opaque": !account?.address }, isReady && className)}>
+      {account?.address ? (
+        <Suspense withLoader actions={suspense}>
+          {children}
+        </Suspense>
+      ) : (
+        <NotConnectedView name="THE COLLECTORS ROOM" />
+      )}
     </Box>
   )
 }
-
-const NotConnectedView = ({ name }) => {
-  return (
-    <ContentBox className="opaque not-connected">
-      <div className="center-aligned-column">
-        <div className="heading">
-          <div className="leading-text">WELCOME</div>
-          <div className="leading-text">TO {name}</div>
-        </div>
-        <div className="center-aligned-column bottom-content">
-          <img src={getCDNObjectUrl("/images/infinity_icon.png")} alt="" />
-          <div className="secondary-text">CONNECT WALLET TO CONTINUE</div>
-          <Wallet label="connect" className="button" />
-        </div>
-      </div>
-    </ContentBox>
-  );
-};
 
 const InviteView = ({ invite, loadInvite }) => {
   const account = useAccount();
@@ -178,10 +180,6 @@ function CollectorPage() {
   };
 
   const renderContent = () => {
-    if (!account?.address) return (
-      <NotConnectedView name="THE COLLECTORS ROOM" />
-    );
-
     if (size(tokens) > 0) return (
       <ContentBox>
         <div className="cards">{map(tokens, renderTokenCard)}</div>
@@ -201,6 +199,18 @@ function CollectorPage() {
           <Loading />
         </ContentBox>
       );
+
+    if (invite.revoked) return (
+      <ContentBox className="opaque">
+        <div className="center-center-aligned-row secondary-text">Invitations Used</div>
+      </ContentBox>
+    )
+
+    if (invite.revoked) return (
+      <ContentBox className="opaque">
+        <div className="center-center-aligned-row secondary-text">Invitations Expired</div>
+      </ContentBox>
+    )
 
     if (invite.approved)
       return (
