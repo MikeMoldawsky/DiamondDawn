@@ -59,9 +59,10 @@ const MainLayout = () => {
             <Route
               path="/"
               exact
-              element={
-                isDemoMode && !demoAuth ? <ComingSoonPage /> : <Homepage />
-              }
+              element={<ComingSoonPage />}
+              // element={
+              //   isDemoMode && !demoAuth ? <ComingSoonPage /> : <Homepage />
+              // }
             />
             <Route path="/coming-soon" element={<ComingSoonPage />} />
             <Route path="/">
