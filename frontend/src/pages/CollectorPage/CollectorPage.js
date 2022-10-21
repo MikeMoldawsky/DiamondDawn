@@ -17,8 +17,6 @@ import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
 import RequestForm from "components/RequestForm";
-import InviteStatus from "components/InviteStatus";
-import { createInviteRequestApi } from "api/serverApi";
 import useOnConnect from "hooks/useOnConnect";
 import { useAccount } from "wagmi";
 import useActionDispatch from "hooks/useActionDispatch";
@@ -29,9 +27,8 @@ import {
 import {
   clearInvite,
   inviteSelector,
-  loadInviteByAddress,
+  loadInviteByAddress, openInvite,
 } from "store/inviteReducer";
-import AccountProvider from "containers/AccountProvider";
 import TokensProvider from "containers/TokensProvider";
 import { SYSTEM_STAGE } from "consts";
 import Wallet from "components/Wallet";
@@ -39,6 +36,7 @@ import ReactPlayer from "react-player";
 import Box from "components/Box";
 import Loading from "components/Loading";
 import EnterMine from "pages/ProcessPage/EnterMine";
+import {openInviteApi} from "api/serverApi";
 
 const NotConnectedView = ({ name }) => {
   return (
@@ -126,8 +124,6 @@ function CollectorPage() {
     isActionFirstCompleteSelector("get-invite-by-address")
   );
 
-  const isForgeStage = systemStage === SYSTEM_STAGE.FORGE && isActive;
-
   const loadInvite = async (address) => dispatch(loadInviteByAddress(address));
 
   const clearInviteState = () => {
@@ -148,6 +144,12 @@ function CollectorPage() {
   useEffect(() => {
     return clearInviteState;
   }, []);
+
+  useEffect(() => {
+    if (invite?.approved && !invite?.opened) {
+      dispatch(openInvite(invite._id, account.address))
+    }
+  }, [invite?.approved, invite?.opened])
 
   const goToProcess = (tokenId) => (e) => {
     e.stopPropagation();
@@ -175,45 +177,27 @@ function CollectorPage() {
     );
   };
 
-  const renderContent = () => {
-    if (size(tokens) > 0)
-      return <div className="cards">{map(tokens, renderTokenCard)}</div>;
-    if (systemStage > SYSTEM_STAGE.FORGE)
-      return (
-        <>
+  const renderDemoContent = () => {
+    if (!account?.address) return (
+      <NotConnectedView name="THE COLLECTORS ROOM" />
+    );
+
+    if (!isDemo()) {
+      if (size(tokens) > 0) return (
+        <Box className="main-box">
+          <div className="cards">{map(tokens, renderTokenCard)}</div>
+        </Box>
+      );
+
+      if (systemStage > SYSTEM_STAGE.FORGE) return (
+        <Box className="main-box opaque">
           <div className="secondary-text">Invitations stage is complete</div>
           <div className="button link-opensea">BUY ON OPENSEA</div>
-        </>
+        </Box>
       );
-    if (!isForgeStage)
-      return (
-        <>
-          <div className="secondary-text">
-            Invitations stage not started yet
-          </div>
-        </>
-      );
-    if (!isInviteFetched) return null;
-    return (
-      <div className="invite-view">
-        {invite ? (
-          <InviteStatus />
-        ) : (
-          <RequestForm
-            createInviteApi={createInviteRequestApi}
-            text="Request Invitation"
-            onSuccess={() => loadInvite(account.address)}
-          />
-        )}
-      </div>
-    );
-  };
+    }
 
-  const renderDemoContent = () => {
-    if (!account?.address)
-      return <NotConnectedView name="THE COLLECTORS ROOM" />;
-
-    if (!isInviteFetched)
+    if (!isInviteFetched || (invite.approved && !invite.opened))
       return (
         <Box className="main-box">
           <Loading />
@@ -223,7 +207,7 @@ function CollectorPage() {
     if (invite.approved)
       return (
         <Box className="main-box">
-          <EnterMine />
+          <EnterMine invite={invite}/>
         </Box>
       );
 
@@ -234,10 +218,8 @@ function CollectorPage() {
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
         <h1>The Collector's Room</h1>
-        {!isDemo() ? (
-          <AccountProvider>
-            <TokensProvider withLoader>{renderContent()}</TokensProvider>
-          </AccountProvider>
+        {!isDemo() && account?.address ? (
+          <TokensProvider withLoader>{renderDemoContent()}</TokensProvider>
         ) : (
           renderDemoContent()
         )}

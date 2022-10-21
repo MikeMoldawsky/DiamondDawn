@@ -117,6 +117,39 @@
       }
     }
   }
+
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+
+    .card-container {
+      width: 50%;
+
+      .token-card {
+        border: solid 1px $darker-gray;
+        margin: 40px;
+        position: relative;
+
+        .token-id {
+          font-weight: 500;
+          font-size: 1.2em;
+          margin: 10px 0;
+          text-align: center;
+        }
+
+        .card-footer {
+          height: 80px;
+        }
+
+        .button {
+          height: 40px;
+          position: absolute;
+          right: 20px;
+          bottom: 20px;
+        }
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 1200px) {
