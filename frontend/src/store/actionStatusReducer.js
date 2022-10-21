@@ -50,5 +50,6 @@ export const actionStatusReducer = makeReducer(
       return _.omit(state, actionKey);
     },
   },
-  {}
+  {},
+  false
 );

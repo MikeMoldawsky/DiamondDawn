@@ -4,9 +4,13 @@ import { systemSelector } from "store/systemReducer";
 import Loading from "components/Loading";
 import isEmpty from "lodash/isEmpty";
 
-const ContractProvider = ({ children, withLoader }) => {
+const ContractProvider = ({ children, withLoader, goThrough }) => {
   const { ddContractInfo } = useSelector(systemSelector);
-  return !isEmpty(ddContractInfo) ? children : withLoader ? <Loading /> : null;
+  return !isEmpty(ddContractInfo) || goThrough ? (
+    children
+  ) : withLoader ? (
+    <Loading />
+  ) : null;
 };
 
 export default ContractProvider;

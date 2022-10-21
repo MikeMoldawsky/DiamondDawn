@@ -1,73 +1,89 @@
-import React from "react";
+import React, { useEffect } from "react";
+import _ from "lodash";
+import useDDContract from "hooks/useDDContract";
 import "./EnterMine.scss";
-import Countdown from "components/Countdown";
-import ActionButton from "components/ActionButton";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loadDiamondCount,
+  loadMaxDiamonds,
+  loadMinePrice,
+  systemSelector,
+} from "store/systemReducer";
+import { tokensSelector, watchTokenMinedBy } from "store/tokensReducer";
+import { useAccount } from "wagmi";
+import ActionView from "components/ActionView";
+import useMountLogger from "hooks/useMountLogger";
+import { forgeApi } from "api/contractApi";
+import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEthereum } from "@fortawesome/free-brands-svg-icons/faEthereum";
+import { isDemo, getCDNObjectUrl } from "utils";
+import EnterMineView from "pages/ProcessPage/EnterMine/EnterMineView";
+import { SYSTEM_STAGE } from "consts";
 
 const EnterMine = ({ invite }) => {
-  const minePrice = 3.33;
-  const maxDiamonds = 333;
-  const diamondCount = 0;
+  const { systemStage, isActive, minePrice, maxDiamonds, diamondCount } =
+    useSelector(systemSelector);
+  const account = useAccount();
+  const contract = useDDContract();
+  const dispatch = useDispatch();
+  const tokens = useSelector(tokensSelector);
   const navigateToDefault = useNavigateToDefault();
+
+  const maxTokenId = _.max(_.map(tokens, "id"));
+
+  useMountLogger("EnterMine");
+
+  useEffect(() => {
+    dispatch(loadMinePrice(contract));
+    dispatch(loadMaxDiamonds(contract));
+    dispatch(loadDiamondCount(contract));
+  }, []);
+
+  if (!invite || invite.revoked || invite.used) return null;
 
   const onInviteExpired = () => navigateToDefault();
 
+  const executeEnterMine = async () => {
+    let signature;
+    try {
+      const response = await signInviteApi(invite._id, account.address);
+      signature = response.signature;
+    } catch (e) {
+      navigateToDefault();
+      throw new Error(e);
+    }
+    const tx = await forgeApi(contract, minePrice, signature);
+    await tx.wait();
+    try {
+      await confirmInviteUsedApi(invite._id, account.address);
+    } catch (e) {
+      // do not show error not to confuse the user
+    }
+    return tx;
+  };
+
+  const EnterMineContent = ({ execute }) => (
+    <EnterMineView
+      minePrice={minePrice}
+      maxDiamonds={maxDiamonds}
+      diamondCount={diamondCount}
+      canMint={systemStage === SYSTEM_STAGE.FORGE && isActive}
+      enterMine={execute}
+      expiresAt={invite.expires}
+      onCountdownEnd={onInviteExpired}
+    />
+  );
+
   return (
-    <div className="action-view enter">
-      <div className="layout-box">
-        <div className="image-box" />
-        <div className="congrats-box">
-          <div className="center-aligned-column">
-            <div className="leading-text">CONGRATULATION</div>
-            <div className="secondary-text">
-              simply dummy text of the printing and typesetting industry. Lorem
-              Ipsum has been the industry's standard dummy text ever since
-            </div>
-          </div>
-        </div>
-        <div className="mint-box">
-          <div className="center-aligned-row">
-            <div className="center-start-aligned-row text-row">
-              <FontAwesomeIcon icon={faEthereum} />
-              <div className="price">{minePrice} GET YOUR KEY</div>
-            </div>
-            <div>
-              <ActionButton
-                actionKey="EnterMine"
-                className="action-button"
-                disabled
-              >
-                MINT
-              </ActionButton>
-            </div>
-          </div>
-        </div>
-        <div className="timer-box">
-          <div className="text-comment">
-            The offer will close when the clock runs out
-          </div>
-          <Countdown
-            parts={{ days: 3, hours: 3, minutes: 3, seconds: 0 }}
-            text={["Invite Expires in"]}
-            onComplete={onInviteExpired}
-            renderParts={{
-              days: true,
-              hours: true,
-              minutes: true,
-              seconds: true,
-            }}
-          />
-          <div className="or">OR</div>
-        </div>
-        <div className="status-box">
-          LIMITED OFFER OF {maxDiamonds} NFTS<span>/</span>
-          {maxDiamonds - diamondCount} REMAINING
-        </div>
-      </div>
-    </div>
+    <ActionView
+      isEnter
+      watch={watchTokenMinedBy(account.address, maxTokenId)}
+      transact={executeEnterMine}
+      videoUrl={getCDNObjectUrl("/videos/post_enter.mp4")}
+    >
+      <EnterMineContent />
+    </ActionView>
   );
 };
 
-export default EnterMine;
+export default isDemo() ? EnterMineView : EnterMine;

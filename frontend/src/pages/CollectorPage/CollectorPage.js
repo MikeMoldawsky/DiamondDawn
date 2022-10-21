@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import map from "lodash/map";
 import size from "lodash/size";
@@ -9,7 +9,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   getCDNObjectUrl,
   getTokenNextStageName,
-  isDemo,
   isTokenActionable,
   shortenEthAddress,
 } from "utils";
@@ -17,8 +16,6 @@ import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
 import RequestForm from "components/RequestForm";
-import InviteStatus from "components/InviteStatus";
-import { createInviteRequestApi } from "api/serverApi";
 import useOnConnect from "hooks/useOnConnect";
 import { useAccount } from "wagmi";
 import useActionDispatch from "hooks/useActionDispatch";
@@ -30,30 +27,56 @@ import {
   clearInvite,
   inviteSelector,
   loadInviteByAddress,
+  openInvite,
 } from "store/inviteReducer";
-import AccountProvider from "containers/AccountProvider";
-import TokensProvider from "containers/TokensProvider";
 import { SYSTEM_STAGE } from "consts";
 import Wallet from "components/Wallet";
-import ReactPlayer from "react-player";
 import Box from "components/Box";
 import Loading from "components/Loading";
 import EnterMine from "pages/ProcessPage/EnterMine";
+import Suspense, { useIsReady } from "components/Suspense";
 
 const NotConnectedView = ({ name }) => {
   return (
-    <Box className="main-box opaque">
-      <div className="center-aligned-column not-connected">
-        <div className="heading">
-          <div className="leading-text">WELCOME</div>
-          <div className="leading-text">TO {name}</div>
-        </div>
-        <div className="center-aligned-column bottom-content">
-          <img src={getCDNObjectUrl("/images/infinity_icon.png")} alt="" />
-          <div className="secondary-text">CONNECT WALLET TO CONTINUE</div>
-          <Wallet label="connect" className="button" />
-        </div>
+    <div className="center-aligned-column not-connected">
+      <div className="heading">
+        <div className="leading-text">WELCOME</div>
+        <div className="leading-text">TO {name}</div>
       </div>
+      <div className="center-aligned-column bottom-content">
+        <img src={getCDNObjectUrl("/images/infinity_icon.png")} alt="" />
+        <div className="secondary-text">CONNECT WALLET TO CONTINUE</div>
+        <Wallet label="connect" className="button" />
+      </div>
+    </div>
+  );
+};
+
+const ContentBox = ({ className, children }) => {
+  const account = useAccount();
+
+  const suspense = ["get-contract"];
+  if (account?.address) {
+    suspense.push({ isFirstComplete: true, key: "load-nfts" });
+  }
+
+  const isReady = useIsReady(suspense);
+
+  return (
+    <Box
+      className={classNames(
+        "main-box",
+        { opaque: !account?.address },
+        isReady && className
+      )}
+    >
+      {account?.address ? (
+        <Suspense withLoader actions={suspense}>
+          {children}
+        </Suspense>
+      ) : (
+        <NotConnectedView name="THE COLLECTORS ROOM" />
+      )}
     </Box>
   );
 };
@@ -64,21 +87,10 @@ const InviteView = ({ invite, loadInvite }) => {
   const title = invite ? "REQUEST STATUS" : "JOIN DIAMOND DAWN";
 
   return (
-    <Box className="main-box opaque invite">
+    <ContentBox className="opaque invite">
       <div className="layout-box">
         <div className="image-box">
           <div className="image-placeholder" />
-          {/*<ReactPlayer*/}
-          {/*  url={getCDNObjectUrl("/videos/infinity_logo.mp4")}*/}
-          {/*  playing*/}
-          {/*  playsinline*/}
-          {/*  controls={false}*/}
-          {/*  muted*/}
-          {/*  loop*/}
-          {/*  className="react-player loader"*/}
-          {/*  width="100%"*/}
-          {/*  height="100%"*/}
-          {/*/>*/}
           <div className="description">
             A video showing the evolution of the stone? The different types of
             cutting? Something intriguing and mysterious
@@ -98,19 +110,14 @@ const InviteView = ({ invite, loadInvite }) => {
           {invite ? (
             <div className="request-status">
               <div className="text-comment">Your request has been sent</div>
-              <div className="text-comment">
-                STATUS: {invite.approved ? "approved" : "pending"}
-              </div>
-              <button className="button" disabled={!invite.approved}>
-                GO TO MINT PAGE
-              </button>
+              <div className="text-comment">STATUS: Pending</div>
             </div>
           ) : (
             <RequestForm onSuccess={() => loadInvite(account.address)} />
           )}
         </div>
       </div>
-    </Box>
+    </ContentBox>
   );
 };
 
@@ -125,8 +132,6 @@ function CollectorPage() {
   const isInviteFetched = useSelector(
     isActionFirstCompleteSelector("get-invite-by-address")
   );
-
-  const isForgeStage = systemStage === SYSTEM_STAGE.FORGE && isActive;
 
   const loadInvite = async (address) => dispatch(loadInviteByAddress(address));
 
@@ -148,6 +153,12 @@ function CollectorPage() {
   useEffect(() => {
     return clearInviteState;
   }, []);
+
+  useEffect(() => {
+    if (invite?.approved && !invite?.opened) {
+      dispatch(openInvite(invite._id, account.address));
+    }
+  }, [invite?.approved, invite?.opened]);
 
   const goToProcess = (tokenId) => (e) => {
     e.stopPropagation();
@@ -177,54 +188,50 @@ function CollectorPage() {
 
   const renderContent = () => {
     if (size(tokens) > 0)
-      return <div className="cards">{map(tokens, renderTokenCard)}</div>;
+      return (
+        <ContentBox>
+          <div className="cards">{map(tokens, renderTokenCard)}</div>
+        </ContentBox>
+      );
+
     if (systemStage > SYSTEM_STAGE.FORGE)
       return (
-        <>
+        <ContentBox className="opaque">
           <div className="secondary-text">Invitations stage is complete</div>
           <div className="button link-opensea">BUY ON OPENSEA</div>
-        </>
+        </ContentBox>
       );
-    if (!isForgeStage)
-      return (
-        <>
-          <div className="secondary-text">
-            Invitations stage not started yet
-          </div>
-        </>
-      );
-    if (!isInviteFetched) return null;
-    return (
-      <div className="invite-view">
-        {invite ? (
-          <InviteStatus />
-        ) : (
-          <RequestForm
-            createInviteApi={createInviteRequestApi}
-            text="Request Invitation"
-            onSuccess={() => loadInvite(account.address)}
-          />
-        )}
-      </div>
-    );
-  };
 
-  const renderDemoContent = () => {
-    if (!account?.address)
-      return <NotConnectedView name="THE COLLECTORS ROOM" />;
-
-    if (!isInviteFetched)
+    if (!isInviteFetched || (invite.approved && !invite.opened))
       return (
-        <Box className="main-box">
+        <ContentBox>
           <Loading />
-        </Box>
+        </ContentBox>
+      );
+
+    if (invite.revoked)
+      return (
+        <ContentBox className="opaque">
+          <div className="center-center-aligned-row secondary-text">
+            Invitations Used
+          </div>
+        </ContentBox>
+      );
+
+    if (invite.revoked)
+      return (
+        <ContentBox className="opaque">
+          <div className="center-center-aligned-row secondary-text">
+            Invitations Expired
+          </div>
+        </ContentBox>
       );
 
     if (invite.approved)
       return (
-        <Box className="main-box">
-          <EnterMine />
-        </Box>
+        <ContentBox>
+          <EnterMine invite={invite} />
+        </ContentBox>
       );
 
     return <InviteView invite={invite} loadInvite={loadInvite} />;
@@ -234,13 +241,7 @@ function CollectorPage() {
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
         <h1>The Collector's Room</h1>
-        {!isDemo() ? (
-          <AccountProvider>
-            <TokensProvider withLoader>{renderContent()}</TokensProvider>
-          </AccountProvider>
-        ) : (
-          renderDemoContent()
-        )}
+        {renderContent()}
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -59,9 +58,10 @@ const MainLayout = () => {
             <Route
               path="/"
               exact
-              element={
-                isDemoMode && !demoAuth ? <ComingSoonPage /> : <Homepage />
-              }
+              element={<ComingSoonPage />}
+              // element={
+              //   isDemoMode && !demoAuth ? <ComingSoonPage /> : <Homepage />
+              // }
             />
             <Route path="/coming-soon" element={<ComingSoonPage />} />
             <Route path="/">
@@ -89,7 +89,14 @@ const MainLayout = () => {
                   </TokensProvider>
                 }
               />
-              <Route path="collector" element={<CollectorPage />} />
+              <Route
+                path="collector"
+                element={
+                  <TokensProvider goThrough>
+                    <CollectorPage />
+                  </TokensProvider>
+                }
+              />
               <Route
                 path="nft/:tokenId"
                 element={

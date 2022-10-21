@@ -22,6 +22,7 @@ const ActionView = ({
   transact,
   isBurn,
   isRebirth,
+  isEnter,
   requireActionable,
 }) => {
   const [actionTxId, setActionTxId] = useState(false);
@@ -120,7 +121,7 @@ const ActionView = ({
     }
 
     // Make sure stage is active OR rebirth (which doesn't require active stage)
-    if (!isActive && !isRebirth) return navigateToDefault();
+    if (!isActive && !isEnter && !isRebirth) return navigateToDefault();
 
     // Handle requireActionable
     if (requireActionable && !isTokenActionable(token, systemStage, isActive))
