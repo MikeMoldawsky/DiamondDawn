@@ -89,7 +89,7 @@ const MainLayout = () => {
                   </TokensProvider>
                 }
               />
-              <Route path="collector" element={<CollectorPage />} />
+              <Route path="collector" element={<TokensProvider goThrough><CollectorPage /></TokensProvider>} />
               <Route
                 path="nft/:tokenId"
                 element={

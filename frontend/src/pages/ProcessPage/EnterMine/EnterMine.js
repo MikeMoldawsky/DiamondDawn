@@ -66,6 +66,7 @@ const EnterMine = ({ invite }) => {
 
   return (
     <ActionView
+      isEnter
       watch={watchTokenMinedBy(account.address, maxTokenId)}
       transact={executeEnterMine}
       videoUrl={getCDNObjectUrl("/videos/post_enter.mp4")}
