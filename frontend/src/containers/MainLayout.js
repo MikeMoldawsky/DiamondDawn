@@ -7,7 +7,6 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -90,7 +89,14 @@ const MainLayout = () => {
                   </TokensProvider>
                 }
               />
-              <Route path="collector" element={<TokensProvider goThrough><CollectorPage /></TokensProvider>} />
+              <Route
+                path="collector"
+                element={
+                  <TokensProvider goThrough>
+                    <CollectorPage />
+                  </TokensProvider>
+                }
+              />
               <Route
                 path="nft/:tokenId"
                 element={

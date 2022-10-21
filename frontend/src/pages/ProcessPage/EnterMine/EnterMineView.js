@@ -4,10 +4,17 @@ import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEthereum } from "@fortawesome/free-brands-svg-icons/faEthereum";
-import isFunction from 'lodash/isFunction'
-import { utils as ethersUtils} from 'ethers'
+import isFunction from "lodash/isFunction";
+import { utils as ethersUtils } from "ethers";
 
-const EnterMineView = ({ minePrice = 3.33, maxDiamonds = 333, diamondCount = 0, enterMine, expiresAt, onCountdownEnd }) => {
+const EnterMineView = ({
+  minePrice = 3.33,
+  maxDiamonds = 333,
+  diamondCount = 0,
+  enterMine,
+  expiresAt,
+  onCountdownEnd,
+}) => {
   return (
     <div className="action-view enter">
       <div className="layout-box">
@@ -25,7 +32,9 @@ const EnterMineView = ({ minePrice = 3.33, maxDiamonds = 333, diamondCount = 0, 
           <div className="center-aligned-row">
             <div className="center-start-aligned-row text-row">
               <FontAwesomeIcon icon={faEthereum} />
-              <div className="price">{ethersUtils.formatUnits(minePrice)} GET YOUR KEY</div>
+              <div className="price">
+                {ethersUtils.formatUnits(minePrice)} GET YOUR KEY
+              </div>
             </div>
             <div>
               <ActionButton
@@ -44,7 +53,9 @@ const EnterMineView = ({ minePrice = 3.33, maxDiamonds = 333, diamondCount = 0, 
             The offer will close when the clock runs out
           </div>
           <Countdown
-            parts={expiresAt ? null : { days: 3, hours: 3, minutes: 3, seconds: 0 }}
+            parts={
+              expiresAt ? null : { days: 3, hours: 3, minutes: 3, seconds: 0 }
+            }
             date={expiresAt}
             onComplete={() => isFunction(onCountdownEnd) && onCountdownEnd()}
             renderParts={{

@@ -3,7 +3,12 @@ import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
 import "./EnterMine.scss";
 import { useDispatch, useSelector } from "react-redux";
-import {loadDiamondCount, loadMaxDiamonds, loadMinePrice, systemSelector} from "store/systemReducer";
+import {
+  loadDiamondCount,
+  loadMaxDiamonds,
+  loadMinePrice,
+  systemSelector,
+} from "store/systemReducer";
 import { tokensSelector, watchTokenMinedBy } from "store/tokensReducer";
 import { useAccount } from "wagmi";
 import ActionView from "components/ActionView";
@@ -56,12 +61,14 @@ const EnterMine = ({ invite }) => {
   };
 
   const EnterMineContent = ({ execute }) => (
-    <EnterMineView minePrice={minePrice}
-                   maxDiamonds={maxDiamonds}
-                   diamondCount={diamondCount}
-                   enterMine={execute}
-                   expiresAt={invite.expires}
-                   onCountdownEnd={onInviteExpired} />
+    <EnterMineView
+      minePrice={minePrice}
+      maxDiamonds={maxDiamonds}
+      diamondCount={diamondCount}
+      enterMine={execute}
+      expiresAt={invite.expires}
+      onCountdownEnd={onInviteExpired}
+    />
   );
 
   return (
@@ -76,4 +83,4 @@ const EnterMine = ({ invite }) => {
   );
 };
 
-export default isDemo() ? EnterMineView : EnterMine
+export default isDemo() ? EnterMineView : EnterMine;

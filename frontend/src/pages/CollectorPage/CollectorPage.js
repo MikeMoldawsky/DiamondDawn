@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import map from "lodash/map";
 import size from "lodash/size";
@@ -26,7 +26,8 @@ import {
 import {
   clearInvite,
   inviteSelector,
-  loadInviteByAddress, openInvite,
+  loadInviteByAddress,
+  openInvite,
 } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import Wallet from "components/Wallet";
@@ -54,15 +55,21 @@ const NotConnectedView = ({ name }) => {
 const ContentBox = ({ className, children }) => {
   const account = useAccount();
 
-  const suspense = ["get-contract"]
+  const suspense = ["get-contract"];
   if (account?.address) {
-    suspense.push({ isFirstComplete: true, key: "load-nfts" })
+    suspense.push({ isFirstComplete: true, key: "load-nfts" });
   }
 
-  const isReady = useIsReady(suspense)
+  const isReady = useIsReady(suspense);
 
   return (
-    <Box className={classNames("main-box", { "opaque": !account?.address }, isReady && className)}>
+    <Box
+      className={classNames(
+        "main-box",
+        { opaque: !account?.address },
+        isReady && className
+      )}
+    >
       {account?.address ? (
         <Suspense withLoader actions={suspense}>
           {children}
@@ -71,8 +78,8 @@ const ContentBox = ({ className, children }) => {
         <NotConnectedView name="THE COLLECTORS ROOM" />
       )}
     </Box>
-  )
-}
+  );
+};
 
 const InviteView = ({ invite, loadInvite }) => {
   const account = useAccount();
@@ -149,9 +156,9 @@ function CollectorPage() {
 
   useEffect(() => {
     if (invite?.approved && !invite?.opened) {
-      dispatch(openInvite(invite._id, account.address))
+      dispatch(openInvite(invite._id, account.address));
     }
-  }, [invite?.approved, invite?.opened])
+  }, [invite?.approved, invite?.opened]);
 
   const goToProcess = (tokenId) => (e) => {
     e.stopPropagation();
@@ -180,18 +187,20 @@ function CollectorPage() {
   };
 
   const renderContent = () => {
-    if (size(tokens) > 0) return (
-      <ContentBox>
-        <div className="cards">{map(tokens, renderTokenCard)}</div>
-      </ContentBox>
-    );
+    if (size(tokens) > 0)
+      return (
+        <ContentBox>
+          <div className="cards">{map(tokens, renderTokenCard)}</div>
+        </ContentBox>
+      );
 
-    if (systemStage > SYSTEM_STAGE.FORGE) return (
-      <ContentBox className="opaque">
-        <div className="secondary-text">Invitations stage is complete</div>
-        <div className="button link-opensea">BUY ON OPENSEA</div>
-      </ContentBox>
-    );
+    if (systemStage > SYSTEM_STAGE.FORGE)
+      return (
+        <ContentBox className="opaque">
+          <div className="secondary-text">Invitations stage is complete</div>
+          <div className="button link-opensea">BUY ON OPENSEA</div>
+        </ContentBox>
+      );
 
     if (!isInviteFetched || (invite.approved && !invite.opened))
       return (
@@ -200,22 +209,28 @@ function CollectorPage() {
         </ContentBox>
       );
 
-    if (invite.revoked) return (
-      <ContentBox className="opaque">
-        <div className="center-center-aligned-row secondary-text">Invitations Used</div>
-      </ContentBox>
-    )
+    if (invite.revoked)
+      return (
+        <ContentBox className="opaque">
+          <div className="center-center-aligned-row secondary-text">
+            Invitations Used
+          </div>
+        </ContentBox>
+      );
 
-    if (invite.revoked) return (
-      <ContentBox className="opaque">
-        <div className="center-center-aligned-row secondary-text">Invitations Expired</div>
-      </ContentBox>
-    )
+    if (invite.revoked)
+      return (
+        <ContentBox className="opaque">
+          <div className="center-center-aligned-row secondary-text">
+            Invitations Expired
+          </div>
+        </ContentBox>
+      );
 
     if (invite.approved)
       return (
         <ContentBox>
-          <EnterMine invite={invite}/>
+          <EnterMine invite={invite} />
         </ContentBox>
       );
 

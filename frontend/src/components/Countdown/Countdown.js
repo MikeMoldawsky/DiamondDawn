@@ -33,9 +33,7 @@ const CountdownComp = ({ date, renderParts, onComplete, parts }) => {
 
   if (!date) return null;
 
-  return (
-    <Countdown date={date} renderer={renderer} onComplete={onComplete} />
-  )
+  return <Countdown date={date} renderer={renderer} onComplete={onComplete} />;
 };
 
 export default CountdownComp;

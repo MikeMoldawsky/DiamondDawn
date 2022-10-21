@@ -1,5 +1,5 @@
 import { makeReducer, reduceSetFull } from "./reduxUtils";
-import {getInviteByAddressApi, openInviteApi} from "api/serverApi";
+import { getInviteByAddressApi, openInviteApi } from "api/serverApi";
 
 const INITIAL_STATE = null;
 

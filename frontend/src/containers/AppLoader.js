@@ -8,7 +8,7 @@ import { loadConfig, loadSystemStage } from "store/systemReducer";
 import { EVENTS } from "consts";
 import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
-import {clearActionStatus} from "store/actionStatusReducer";
+import { clearActionStatus } from "store/actionStatusReducer";
 
 const AppLoader = () => {
   const account = useAccount();
@@ -49,7 +49,7 @@ const AppLoader = () => {
       );
     },
     () => {
-      dispatch(clearActionStatus("load-nfts"))
+      dispatch(clearActionStatus("load-nfts"));
       dispatch({ type: "RESET_STATE" });
     }
   );
