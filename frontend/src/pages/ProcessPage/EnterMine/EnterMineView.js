@@ -11,6 +11,7 @@ const EnterMineView = ({
   minePrice = 3.33,
   maxDiamonds = 333,
   diamondCount = 0,
+  canMint,
   enterMine,
   expiresAt,
   onCountdownEnd,
@@ -40,7 +41,7 @@ const EnterMineView = ({
               <ActionButton
                 actionKey="EnterMine"
                 className="action-button"
-                disabled={!isFunction(enterMine)}
+                disabled={!canMint || !isFunction(enterMine)}
                 onClick={() => isFunction(enterMine) && enterMine()}
               >
                 MINT

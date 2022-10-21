@@ -18,9 +18,11 @@ import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { isDemo, getCDNObjectUrl } from "utils";
 import EnterMineView from "pages/ProcessPage/EnterMine/EnterMineView";
+import { SYSTEM_STAGE } from "consts";
 
 const EnterMine = ({ invite }) => {
-  const { minePrice, maxDiamonds, diamondCount } = useSelector(systemSelector);
+  const { systemStage, isActive, minePrice, maxDiamonds, diamondCount } =
+    useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
   const dispatch = useDispatch();
@@ -65,6 +67,7 @@ const EnterMine = ({ invite }) => {
       minePrice={minePrice}
       maxDiamonds={maxDiamonds}
       diamondCount={diamondCount}
+      canMint={systemStage === SYSTEM_STAGE.FORGE && isActive}
       enterMine={execute}
       expiresAt={invite.expires}
       onCountdownEnd={onInviteExpired}
