@@ -35,7 +35,8 @@ const ComingSoonPage = () => {
       {renderBgPlayer()}
       <div className="center-aligned-column content">
         <div className="leading-text">COMING SOON</div>
-        <div className="secondary-text">
+        // TODO: remove style from div
+        <div className="secondary-text" style="text-align: center">
           <br />
           Virtual or Physical.
           <br />
