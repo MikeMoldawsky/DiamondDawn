@@ -189,7 +189,7 @@ library Serializer {
     }
 
     function toTypeStr(Stage state_) public pure returns (string memory) {
-        if (state_ == Stage.FORGE) return "Forged";
+        if (state_ == Stage.FORGE) return "Forged"; // TODO - change name
         if (state_ == Stage.MINE) return "Rough";
         if (state_ == Stage.CUT) return "Cut";
         if (state_ == Stage.POLISH) return "Polished";
