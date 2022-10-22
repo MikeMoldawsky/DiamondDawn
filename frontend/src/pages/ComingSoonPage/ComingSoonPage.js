@@ -36,6 +36,7 @@ const ComingSoonPage = () => {
       <div className="center-aligned-column content">
         <div className="leading-text">COMING SOON</div>
         <div className="secondary-text">
+          <br />
           Virtual or Physical.
           <br />
           Which diamond will you choose?
