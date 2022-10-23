@@ -1,0 +1,34 @@
+@import "css/varsNEW";
+
+.not-connected {
+  height: 70%;
+  justify-content: space-between;
+  text-align: center;
+
+  .leading-text {
+    font-size: $font50px;
+    margin-bottom: 0.2em;
+  }
+
+  .secondary-text {
+    color: white;
+  }
+
+  .bottom-content {
+    img {
+      margin-bottom: -12.5%;
+      width: 300px;
+    }
+
+    button {
+      margin-top: 8%;
+      background-color: transparent;
+      color: $text_gray;
+      border: solid 1px $text_gray;
+      font-weight: 300;
+      padding: 0 3.5em;
+      height: 2.75em;
+      border-radius: 4.5em;
+    }
+  }
+}

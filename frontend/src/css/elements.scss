@@ -11,36 +11,33 @@
   flex-direction: column;
   padding: $padding_thin $padding_thin $padding_wide $padding_wide;
 
-  &:before {
-    content: "";
-    background-color: black;
-    position: absolute;
-    top: $padding_thin;
-    bottom: $padding_wide;
-    left: $padding_wide;
-    right: $padding_thin;
-    opacity: 1;
-    z-index: -1;
-  }
-
-  .box-inner {
+  .box-content {
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-  }
+    position: relative;
 
-  &.opaque {
     &:before {
-      background-color: #7e7d7d;
-      opacity: 0.3;
+      content: "";
+      background-color: black;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 1;
+      z-index: -1;
     }
 
-    .box-inner {
-      background: transparent url("../assets/images/collector-opaque-bg.svg") -2px -2px
-        no-repeat padding-box;
+    &.opaque {
       background-size: 101%;
-      backdrop-filter: blur(30px);
+      backdrop-filter: blur(24px);
+
+      &:before {
+        background-color: #7e7d7d;
+        opacity: 0.3;
+      }
     }
   }
 }

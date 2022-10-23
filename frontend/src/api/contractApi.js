@@ -10,7 +10,7 @@ export const getSystemStageApi = async (contract) => {
     return { systemStage, isActive };
   } catch (e) {
     logApiError(e, "getSystemStageApi");
-    return -1;
+    return { systemStage: -1, isActive: false };
   }
 };
 
