@@ -1,12 +1,23 @@
+@import "css/varsNEW";
+
 .page.coming-soon {
   position: relative;
+  text-align: center;
 
   .content {
     height: 100%;
-    font-size: 1.2em;
     margin: 0 auto;
-    padding-top: 1.4em;
     position: relative;
+
+    .leading-text {
+      font-size: $font50px;
+      padding: .75em 0 .25em;
+    }
+
+    .secondary-text {
+      font-size: $font30px;
+      line-height: 1.4em;
+    }
 
     .password-box {
       position: absolute;
