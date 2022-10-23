@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
+  getCDNObjectUrl,
   getTokenNextStageName,
   isTokenActionable,
   shortenEthAddress,
@@ -29,10 +30,56 @@ import {
   openInvite,
 } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
+import Wallet from "components/Wallet";
 import Box from "components/Box";
 import Loading from "components/Loading";
 import EnterMine from "pages/ProcessPage/EnterMine";
-import Suspense from "components/Suspense";
+import Suspense, { useIsReady } from "components/Suspense";
+
+const NotConnectedView = ({ name }) => {
+  return (
+    <div className="center-aligned-column not-connected">
+      <div className="heading">
+        <div className="leading-text">WELCOME</div>
+        <div className="leading-text">TO {name}</div>
+      </div>
+      <div className="center-aligned-column bottom-content">
+        <img src={getCDNObjectUrl("/images/infinity_icon.png")} alt="" />
+        <div className="secondary-text">CONNECT WALLET TO CONTINUE</div>
+        <Wallet label="connect" className="button" />
+      </div>
+    </div>
+  );
+};
+
+const ContentBox = ({ className, children }) => {
+  const account = useAccount();
+
+  const suspense = ["get-contract"];
+  if (account?.address) {
+    suspense.push({ isFirstComplete: true, key: "load-nfts" });
+  }
+
+  const isReady = useIsReady(suspense);
+
+  return (
+    <Box
+      className={classNames(
+        "main-box",
+        { opaque: !account?.address },
+        isReady && className
+      )}
+    >
+      {account?.address ? (
+        <Suspense withLoader actions={suspense}>
+          {children}
+        </Suspense>
+      ) : (
+        <NotConnectedView name="THE COLLECTORS ROOM" />
+      )}
+    </Box>
+  );
+};
 
 const InviteView = ({ invite, loadInvite }) => {
   const account = useAccount();
@@ -40,7 +87,7 @@ const InviteView = ({ invite, loadInvite }) => {
   const title = invite ? "REQUEST STATUS" : "JOIN DIAMOND DAWN";
 
   return (
-    <div className="box-content opaque invite">
+    <ContentBox className="opaque invite">
       <div className="layout-box">
         <div className="image-box">
           <div className="image-placeholder" />
@@ -70,7 +117,7 @@ const InviteView = ({ invite, loadInvite }) => {
           )}
         </div>
       </div>
-    </div>
+    </ContentBox>
   );
 };
 
@@ -142,66 +189,59 @@ function CollectorPage() {
   const renderContent = () => {
     if (size(tokens) > 0)
       return (
-        <div className="box-content nfts">{map(tokens, renderTokenCard)}</div>
+        <ContentBox>
+          <div className="cards">{map(tokens, renderTokenCard)}</div>
+        </ContentBox>
       );
 
     if (systemStage > SYSTEM_STAGE.FORGE)
       return (
-        <div className="box-content opaque opensea">
+        <ContentBox className="opaque">
           <div className="secondary-text">Invitations stage is complete</div>
           <div className="button link-opensea">BUY ON OPENSEA</div>
-        </div>
+        </ContentBox>
       );
 
     if (!isInviteFetched || (invite.approved && !invite.opened))
       return (
-        <div className="box-content box-loading">
+        <ContentBox>
           <Loading />
-        </div>
-      );
-
-    if (invite.used)
-      return (
-        <div className="box-content opaque">
-          <div className="center-center-aligned-row secondary-text">
-            Invitations Used
-          </div>
-        </div>
+        </ContentBox>
       );
 
     if (invite.revoked)
       return (
-        <div className="box-content opaque">
+        <ContentBox className="opaque">
+          <div className="center-center-aligned-row secondary-text">
+            Invitations Used
+          </div>
+        </ContentBox>
+      );
+
+    if (invite.revoked)
+      return (
+        <ContentBox className="opaque">
           <div className="center-center-aligned-row secondary-text">
             Invitations Expired
           </div>
-        </div>
+        </ContentBox>
       );
 
     if (invite.approved)
       return (
-        <div className="box-content approved">
+        <ContentBox>
           <EnterMine invite={invite} />
-        </div>
+        </ContentBox>
       );
 
     return <InviteView invite={invite} loadInvite={loadInvite} />;
   };
 
-  const suspenseActions = ["get-contract"];
-  if (account?.address) {
-    suspenseActions.push({ isFirstComplete: true, key: "load-nfts" });
-  }
-
   return (
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
         <h1>The Collector's Room</h1>
-        <Box className={"main-box"}>
-          <Suspense withLoader actions={suspenseActions} viewName={"THE COLLECTORS ROOM"}>
-            {renderContent()}
-          </Suspense>
-        </Box>
+        {renderContent()}
       </div>
     </div>
   );

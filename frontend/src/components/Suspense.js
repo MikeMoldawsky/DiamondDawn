@@ -7,6 +7,8 @@ import {
   isActionSuccessSelector,
 } from "store/actionStatusReducer";
 import Loading from "components/Loading";
+import {useAccount} from "wagmi";
+import NotConnected from "components/NotConnected";
 
 export const useIsReady = (actions) => {
   return useSelector((state) => {
@@ -30,11 +32,20 @@ export const useIsReady = (actions) => {
   });
 };
 
-const Suspense = ({ actions, withLoader, children }) => {
+export const Suspense = ({ actions, withLoader, viewName, children }) => {
+  const account = useAccount();
+
   const isReady = useIsReady(actions);
 
+  if (!account?.address) return (
+    <NotConnected viewName={viewName} />
+  )
   if (isReady) return children;
-  if (withLoader) return <Loading />;
+  if (withLoader) return (
+    <div className="box-content">
+      <Loading />
+    </div>
+  );
   return null;
 };
 
