@@ -9,8 +9,8 @@ import { useAccount } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
 import Box from "components/Box";
 import Suspense from "components/Suspense";
-import Invite from "components/Invite"
-import NFTs from 'components/NFTs';
+import Invite from "components/Invite";
+import NFTs from "components/NFTs";
 
 const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
@@ -18,9 +18,9 @@ const CollectorPage = () => {
   const account = useAccount();
 
   const renderContent = () => {
-    if (size(tokens) > 0) return (<NFTs />);
+    if (size(tokens) > 0) return <NFTs />;
 
-    if (systemStage <= SYSTEM_STAGE.FORGE) return (<Invite />)
+    if (systemStage <= SYSTEM_STAGE.FORGE) return <Invite />;
 
     return (
       <div className="box-content opaque opensea">
@@ -40,13 +40,17 @@ const CollectorPage = () => {
       <div className="inner-page">
         <h1>The Collector's Room</h1>
         <Box className={"main-box"}>
-          <Suspense withLoader actions={suspenseActions} viewName={"THE COLLECTOR'S ROOM"}>
+          <Suspense
+            withLoader
+            actions={suspenseActions}
+            viewName={"THE COLLECTOR'S ROOM"}
+          >
             {renderContent()}
           </Suspense>
         </Box>
       </div>
     </div>
   );
-}
+};
 
 export default CollectorPage;

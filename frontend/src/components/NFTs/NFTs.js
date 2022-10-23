@@ -5,10 +5,7 @@ import "./NFTs.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  getTokenNextStageName,
-  isTokenActionable,
-} from "utils";
+import { getTokenNextStageName, isTokenActionable } from "utils";
 import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
@@ -48,6 +45,6 @@ const NFTs = () => {
   return size(tokens) > 0 ? (
     <div className="box-content nfts">{map(tokens, renderNFTCard)}</div>
   ) : null;
-}
+};
 
 export default NFTs;

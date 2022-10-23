@@ -58,7 +58,7 @@ const Invite = () => {
     }
   }, [invite?.approved, invite?.opened]);
 
-  if (systemStage > SYSTEM_STAGE.FORGE) return null
+  if (systemStage > SYSTEM_STAGE.FORGE) return null;
 
   if (!isInviteFetched || (invite.approved && !invite.opened))
     return (
@@ -112,15 +112,21 @@ const Invite = () => {
         <div className="content-box">
           {invite ? (
             <div className="request-status">
-              <div className="leading-text">Your invitation request is pending approval</div>
-              <div className="text-comment">Once your request is approved, you will have a limited time to enter the mine. Remember, only 333 will embark on the journey toward a Diamond Dawn. Will you be among them?</div>
+              <div className="leading-text">
+                Your invitation request is pending approval
+              </div>
+              <div className="text-comment">
+                Once your request is approved, you will have a limited time to
+                enter the mine. Remember, only 333 will embark on the journey
+                toward a Diamond Dawn. Will you be among them?
+              </div>
             </div>
           ) : (
             <>
               <div className="leading-text">{title}</div>
               <div className="text">
-                To receive your unique key to the diamond mine,
-                Please enter your info below:
+                To receive your unique key to the diamond mine, Please enter
+                your info below:
               </div>
               <RequestForm onSuccess={() => loadInvite(account.address)} />
             </>
@@ -129,6 +135,6 @@ const Invite = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Invite;

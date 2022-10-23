@@ -7,7 +7,7 @@ import {
   isActionSuccessSelector,
 } from "store/actionStatusReducer";
 import Loading from "components/Loading";
-import {useAccount} from "wagmi";
+import { useAccount } from "wagmi";
 import NotConnected from "components/NotConnected";
 
 export const useIsReady = (actions) => {
@@ -37,15 +37,14 @@ export const Suspense = ({ actions, withLoader, viewName, children }) => {
 
   const isReady = useIsReady(actions);
 
-  if (!account?.address) return (
-    <NotConnected viewName={viewName} />
-  )
+  if (!account?.address) return <NotConnected viewName={viewName} />;
   if (isReady) return children;
-  if (withLoader) return (
-    <div className="box-content">
-      <Loading />
-    </div>
-  );
+  if (withLoader)
+    return (
+      <div className="box-content">
+        <Loading />
+      </div>
+    );
   return null;
 };
 
