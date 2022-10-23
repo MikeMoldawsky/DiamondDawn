@@ -27,6 +27,10 @@
     flex-grow: 2;
   }
 
+  input:nth-child(1) {
+    width: 70%;
+  }
+
   .button {
     margin-top: 0.8rem;
   }

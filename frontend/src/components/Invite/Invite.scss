@@ -48,8 +48,11 @@
       flex-direction: column;
 
       .request-status {
-        .text-comment,
-        button {
+        .leading-text {
+          font-size: $font34px;
+        }
+
+        .text-comment {
           margin-top: 1.5em;
         }
       }

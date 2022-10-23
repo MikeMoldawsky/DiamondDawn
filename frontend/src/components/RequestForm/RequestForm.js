@@ -8,9 +8,6 @@ import ActionButton from "components/ActionButton";
 import "./RequestForm.scss";
 import { createInviteRequestApi } from "api/serverApi";
 import { useAccount } from "wagmi";
-import Modal from "components/Modal";
-import { useAccountModal, useConnectModal } from "@rainbow-me/rainbowkit";
-import { shortenEthAddress } from "utils";
 import { useSelector } from "react-redux";
 import { isActionPendingSelector } from "store/actionStatusReducer";
 
@@ -22,15 +19,11 @@ const RequestForm = ({ onSuccess }) => {
     formState: { errors, isDirty },
     watch,
     reset,
-    trigger,
-    getValues,
   } = useForm({
     mode: "onChange",
   });
   const [isRequiredError, setIsRequiredError] = useState(false);
   const account = useAccount();
-  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
-  const { openAccountModal } = useAccountModal();
   const isSubmitting = useSelector(
     isActionPendingSelector("Request Invitation")
   );
@@ -64,24 +57,18 @@ const RequestForm = ({ onSuccess }) => {
     if (!twitter && !email) {
       setIsRequiredError(true);
     }
-    setIsApproveModalOpen(false);
     await createInviteRequestApi(account.address, { twitter, email, note });
     onSuccess && (await onSuccess());
     setIsSubmitSuccess(true);
   };
 
-  const onSubmitClick = async () => {
-    const { twitter, email } = getValues();
+  const onSubmitClick = async (data) => {
+    const { twitter, email } = data;
     if (!twitter && !email) {
       setIsRequiredError(true);
     } else {
-      setIsApproveModalOpen(true);
+      await requestInvitation(data);
     }
-  };
-
-  const onChangeWalletClick = (e) => {
-    e.preventDefault();
-    openAccountModal();
   };
 
   return (
@@ -102,37 +89,15 @@ const RequestForm = ({ onSuccess }) => {
           {...register("note")}
           disabled={isSubmitting}
           className="input"
-          placeholder="Tell us why"
+          placeholder="Tell us why you’d like to join"
         />
         <ActionButton
           actionKey="Request Invitation"
-          onClick={onSubmitClick}
+          onClick={handleSubmit(onSubmitClick)}
           disabled={!isDirty || !isEmpty(errors) || isRequiredError}
         >
           SUBMIT
         </ActionButton>
-        {isApproveModalOpen && (
-          <Modal close={() => setIsApproveModalOpen(false)}>
-            <div className="modal-heading">
-              {shortenEthAddress(account.address)}
-            </div>
-            <div className="modal-content">
-              Are you sure this is the wallet address you would like to submit
-              the request with?
-            </div>
-            <div className="modal-buttons">
-              <ActionButton
-                actionKey="Request Invitation"
-                onClick={handleSubmit(requestInvitation)}
-              >
-                YES
-              </ActionButton>
-              <button className="button inverted" onClick={onChangeWalletClick}>
-                Change Wallet
-              </button>
-            </div>
-          </Modal>
-        )}
       </form>
     </div>
   );

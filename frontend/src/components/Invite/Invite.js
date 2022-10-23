@@ -92,7 +92,7 @@ const Invite = () => {
       </div>
     );
 
-  const title = invite ? "REQUEST STATUS" : "JOIN DIAMOND DAWN";
+  const title = invite ? "REQUEST STATUS" : "BEGIN YOUR JOURNEY";
 
   return (
     <div className="box-content opaque invite-view">
@@ -110,18 +110,20 @@ const Invite = () => {
           </div>
         </div>
         <div className="content-box">
-          <div className="leading-text">{title}</div>
-          <div className="text">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the
-          </div>
           {invite ? (
             <div className="request-status">
-              <div className="text-comment">Your request has been sent</div>
-              <div className="text-comment">STATUS: Pending</div>
+              <div className="leading-text">Your invitation request is pending approval</div>
+              <div className="text-comment">Once your request is approved, you will have a limited time to enter the mine. Remember, only 333 will embark on the journey toward a Diamond Dawn. Will you be among them?</div>
             </div>
           ) : (
-            <RequestForm onSuccess={() => loadInvite(account.address)} />
+            <>
+              <div className="leading-text">{title}</div>
+              <div className="text">
+                To receive your unique key to the diamond mine,
+                Please enter your info below:
+              </div>
+              <RequestForm onSuccess={() => loadInvite(account.address)} />
+            </>
           )}
         </div>
       </div>

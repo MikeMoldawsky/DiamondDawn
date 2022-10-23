@@ -5,7 +5,7 @@ import ActionButton from "components/ActionButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEthereum } from "@fortawesome/free-brands-svg-icons/faEthereum";
 import isFunction from "lodash/isFunction";
-import { utils as ethersUtils } from "ethers";
+import {BigNumber, utils as ethersUtils} from "ethers";
 
 const EnterMineView = ({
   minePrice = 3.33,
@@ -22,10 +22,11 @@ const EnterMineView = ({
         <div className="image-box" />
         <div className="congrats-box">
           <div className="center-aligned-column">
-            <div className="leading-text">CONGRATULATION</div>
+            <div className="leading-text">CONGRATULATIONS!</div>
             <div className="secondary-text">
-              simply dummy text of the printing and typesetting industry. Lorem
-              Ipsum has been the industry's standard dummy text ever since
+              <div>You have been selected to participate in Diamond Dawn.</div>
+              During your journey, you will decide when to proceed and when to stop.
+              At the end, you will be faced with the ultimate choice: Which form of exquisite diamond art you value more, the virtual or the tangible.
             </div>
           </div>
         </div>
@@ -34,7 +35,7 @@ const EnterMineView = ({
             <div className="center-start-aligned-row text-row">
               <FontAwesomeIcon icon={faEthereum} />
               <div className="price">
-                {ethersUtils.formatUnits(minePrice)} GET YOUR KEY
+                {BigNumber.isBigNumber(minePrice) ? ethersUtils.formatUnits(minePrice) : 'N/A'} ACTIVATE YOUR KEY
               </div>
             </div>
             <div>
@@ -51,7 +52,7 @@ const EnterMineView = ({
         </div>
         <div className="timer-box">
           <div className="text-comment">
-            The offer will close when the clock runs out
+            The opportunity will close once the clock runs out
           </div>
           <Countdown
             parts={
@@ -69,8 +70,7 @@ const EnterMineView = ({
           <div className="or">OR</div>
         </div>
         <div className="status-box">
-          LIMITED OFFER OF {maxDiamonds} NFTS<span>/</span>
-          {maxDiamonds - diamondCount} REMAINING
+          {diamondCount} / {maxDiamonds} ALREADY MINTED
         </div>
       </div>
     </div>
