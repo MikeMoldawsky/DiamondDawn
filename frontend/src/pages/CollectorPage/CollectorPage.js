@@ -1,68 +1,30 @@
 import React from "react";
 import classNames from "classnames";
-import map from "lodash/map";
 import size from "lodash/size";
 import "./CollectorPage.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
-import { NavLink, useNavigate } from "react-router-dom";
-import {
-  getTokenNextStageName,
-  isTokenActionable,
-} from "utils";
-import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
-import Diamond from "components/Diamond";
 import { useAccount } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
 import Box from "components/Box";
 import Suspense from "components/Suspense";
 import Invite from "components/Invite"
+import NFTs from 'components/NFTs';
 
-function CollectorPage() {
+const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
-  const { systemStage, isActive } = useSelector(systemSelector);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { systemStage } = useSelector(systemSelector);
   const account = useAccount();
 
-  const goToProcess = (tokenId) => (e) => {
-    e.stopPropagation();
-    dispatch(setSelectedTokenId(tokenId));
-    navigate("/process");
-  };
-
-  const renderTokenCard = (token) => {
-    const { name, id } = token;
-    return (
-      <div key={`token-card-${id}`} className="card-container">
-        <div className="token-card">
-          <NavLink to={`/nft/${id}`}>
-            <div className="token-id">{name}</div>
-            <Diamond diamond={token} />
-            <div className="card-footer" />
-          </NavLink>
-          {isTokenActionable(token, systemStage, isActive) && (
-            <div className="button" onClick={goToProcess(token.id)}>
-              {getTokenNextStageName(token)}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
-
   const renderContent = () => {
-    if (size(tokens) > 0)
-      return (
-        <div className="box-content nfts">{map(tokens, renderTokenCard)}</div>
-      );
+    if (size(tokens) > 0) return (<NFTs />);
 
     if (systemStage <= SYSTEM_STAGE.FORGE) return (<Invite />)
 
     return (
       <div className="box-content opaque opensea">
-        <div className="secondary-text">You Collection is Empty</div>
+        <div className="secondary-text">Your Collection is Empty</div>
         <div className="button link-opensea">GO TO OPENSEA</div>
       </div>
     );
