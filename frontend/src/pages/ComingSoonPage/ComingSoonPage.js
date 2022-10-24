@@ -32,7 +32,7 @@ const ComingSoonPage = () => {
 
   const transition = () => {
     if (!process.env.REACT_APP_ENABLE_TRANSITIONS) {
-      return navigate("/enter");
+      return navigate("/explore");
     }
 
     setStartTransition(true);
@@ -40,7 +40,7 @@ const ComingSoonPage = () => {
     const EFFECT_TIME_MULTIPLIER = 1.7;
 
     setTimeout(() => {
-      navigate("/enter");
+      navigate("/explore");
     }, 1450 * EFFECT_TIME_MULTIPLIER);
   };
 
