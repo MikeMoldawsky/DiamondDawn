@@ -58,7 +58,7 @@ const Invite = () => {
     }
   }, [invite?.approved, invite?.opened]);
 
-  if (systemStage > SYSTEM_STAGE.FORGE) return null;
+  if (systemStage > SYSTEM_STAGE.KEY) return null;
 
   if (!isInviteFetched || (invite.approved && !invite.opened))
     return (

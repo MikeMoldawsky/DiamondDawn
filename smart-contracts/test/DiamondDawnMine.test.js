@@ -681,14 +681,14 @@ describe("Diamond Dawn Mine", () => {
     });
 
     it("should be TRUE only for ENTER_MINE", async () => {
-      expect(await ddMine.isReady(STAGE.FORGE)).to.be.false;
-      await ddMine.setManifest(STAGE.FORGE, "hi.mp4");
-      expect(await ddMine.isReady(STAGE.FORGE)).to.be.true;
+      expect(await ddMine.isReady(STAGE.KEY)).to.be.false;
+      await ddMine.setManifest(STAGE.KEY, "hi.mp4");
+      expect(await ddMine.isReady(STAGE.KEY)).to.be.true;
       const noReadyStages = _.without(
         ALL_STAGES,
         STAGE.NO_STAGE,
         STAGE.COMPLETED,
-        STAGE.FORGE
+        STAGE.KEY
       );
       for (const stage of noReadyStages) {
         expect(await ddMine.isReady(stage)).to.be.false;

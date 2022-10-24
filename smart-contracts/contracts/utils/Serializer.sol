@@ -173,7 +173,7 @@ library Serializer {
     }
 
     function getName(Metadata memory metadata, uint tokenId) public pure returns (string memory) {
-        if (metadata.state_ == Stage.FORGE) return string.concat("Mine Key #", Strings.toString(tokenId));
+        if (metadata.state_ == Stage.KEY) return string.concat("Mine Key #", Strings.toString(tokenId));
         if (metadata.state_ == Stage.MINE) return string.concat("Rough Stone #", Strings.toString(metadata.rough.id));
         if (metadata.state_ == Stage.CUT) return string.concat("Formation #", Strings.toString(metadata.cut.id));
         if (metadata.state_ == Stage.POLISH) return string.concat("Diamond #", Strings.toString(metadata.polished.id));
@@ -189,7 +189,13 @@ library Serializer {
     }
 
     function toTypeStr(Stage state_) public pure returns (string memory) {
-        if (state_ == Stage.FORGE) return "Forged"; // TODO - change name
+        if (state_ == Stage.KEY) return "Key";
+        if (state_ == Stage.MINE || state_ == Stage.CUT || state_ == Stage.POLISH) return "Diamond";
+        if (state_ == Stage.DAWN) return "Certificate";
+        revert();
+    }
+
+    function toStageStr(Stage state_) public pure returns (string memory) {
         if (state_ == Stage.MINE) return "Rough";
         if (state_ == Stage.CUT) return "Cut";
         if (state_ == Stage.POLISH) return "Polished";

@@ -1,6 +1,6 @@
 export const SYSTEM_STAGE = {
   NO_STAGE: 0,
-  FORGE: 1,
+  KEY: 1,
   MINE: 2,
   CUT: 3,
   POLISH: 4,
@@ -10,7 +10,7 @@ export const SYSTEM_STAGE = {
 
 export const SYSTEM_STAGE_NAME = {
   [SYSTEM_STAGE.NO_STAGE]: "No Stage",
-  [SYSTEM_STAGE.FORGE]: "Forge",
+  [SYSTEM_STAGE.KEY]: "Key",
   [SYSTEM_STAGE.MINE]: "Mine",
   [SYSTEM_STAGE.CUT]: "Cut",
   [SYSTEM_STAGE.POLISH]: "Polish",
@@ -73,7 +73,7 @@ export const SHAPE_NAME = {
 };
 
 export const DIAMOND_ANIMATION_MAPPING = {
-  [SYSTEM_STAGE.FORGE]: {
+  [SYSTEM_STAGE.KEY]: {
     [SHAPE_NAME.NO_SHAPE]: "infinity.mp4",
   },
   [SYSTEM_STAGE.MINE]: {
