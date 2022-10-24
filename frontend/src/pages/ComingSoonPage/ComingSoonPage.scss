@@ -3,6 +3,8 @@
 .page.coming-soon {
   position: relative;
   text-align: center;
+  $splitter_color: silver;
+  $splitter_width: 4px;
 
   .content {
     height: 100%;
@@ -19,9 +21,9 @@
       line-height: 1.4em;
     }
 
-    .password-box {
+    .password-box, .button {
       position: absolute;
-      bottom: 10%;
+      bottom: 20%;
       left: 50%;
       transform: translateX(-50%);
     }
@@ -31,8 +33,9 @@
     min-width: 102%;
     min-height: 100%;
     opacity: 0.7;
-    z-index: -1;
+    z-index: -2;
     position: absolute;
+    background-color: black;
 
     video {
       position: absolute;
@@ -41,6 +44,184 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+  }
+
+  .splitter {
+    content: '';
+    position: absolute;
+    top: 80%;
+    width: $splitter_width / 2;
+    height: 0;
+    z-index: 0;
+    background-color: $splitter_color;
+  }
+
+  .bg-image {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    top: 0;
+    left: 0;
+  }
+
+  .curtain-left, .curtain-right, .curtain-behind {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+
+  .curtain-left {
+    left: -50%;
+    z-index: -1;
+
+    &:before {
+      @extend .bg-image;
+      background: url("../../assets/images/coming-soon-image-left.png") no-repeat top right;
+    }
+
+    &:after {
+      @extend .splitter;
+      right: 0;
+    }
+  }
+
+  .curtain-right {
+    left: 50%;
+    z-index: -2;
+
+    &:before {
+      @extend .bg-image;
+      background: url("../../assets/images/coming-soon-image-right.png") no-repeat;
+    }
+
+    &:after {
+      @extend .splitter;
+      left: 0;
+    }
+  }
+
+  .curtain-behind {
+    z-index: -3;
+    background: url("../../assets/images/coming-soon-image-back.png") no-repeat center center;
+  }
+
+  &.transition-out {
+    overflow-y: hidden;
+    $fadeTime: .5s;
+    $shrinkTime: .25s;
+    $splitTime: .25s;
+    $pauseTime: .2s;
+    $curtainTime: 2s;
+    $zoomTime: 1.25s;
+
+    .button, .password-box {
+      animation: shrinkAndDisappear $shrinkTime ease-out forwards;
+    }
+
+    .leading-text, .secondary-text {
+      animation: fadeOut $fadeTime ease-out forwards;
+    }
+
+    .react-player {
+      animation: fadeOut 0ms linear forwards;
+      animation-delay: $shrinkTime + $splitTime + $pauseTime;
+    }
+
+    .curtain-left, .curtain-right {
+      &:before {
+        animation: fadeIn 0ms ease-in forwards;
+        animation-delay: $shrinkTime + $splitTime + $pauseTime;
+      }
+
+      &:after {
+        animation: pageSplitter $splitTime + $pauseTime linear forwards;
+        animation-delay: $shrinkTime / 2;
+      }
+    }
+
+    .curtain-left {
+      animation: curtainLeft $curtainTime running forwards;
+      animation-delay: $shrinkTime + $splitTime + $pauseTime;
+    }
+
+    .curtain-right {
+      animation: curtainRight $curtainTime running forwards;
+      animation-delay: $shrinkTime + $splitTime + $pauseTime;
+    }
+
+
+    .curtain-behind {
+      animation: zoomIn $zoomTime linear forwards;
+      animation-delay: $shrinkTime + $splitTime + $pauseTime;
+    }
+  }
+
+  @keyframes shrinkAndDisappear {
+    0% {
+      transform: translateX(-50%) scale(1);
+    }
+    100% {
+      transform: translateX(-50%) scale(0);
+    }
+  }
+
+  @keyframes pageSplitter {
+    0% {
+      top: 80%;
+      height: 0;
+    }
+    100% {
+      top: 0;
+      height: 100%;
+    }
+  }
+
+  @keyframes zoomIn {
+    0% {
+      transform: scale(1);
+    }
+
+    100% {
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes curtainLeft {
+    0% {
+      left: -50%;
+    }
+    100% {
+      left: -150%;
+    }
+  }
+
+  @keyframes curtainRight {
+    0% {
+      left: 50%;
+    }
+    100% {
+      left: 150%;
     }
   }
 }
