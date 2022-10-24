@@ -4,6 +4,7 @@
 .page.coming-soon {
   position: relative;
   text-align: center;
+  overflow: hidden;
   $splitter_color: silver;
   $splitter_width: 4px;
 
@@ -32,6 +33,7 @@
   }
 
   .react-player {
+    //display: none;
     min-width: 102%;
     min-height: 100%;
     opacity: 0.7;
@@ -62,11 +64,13 @@
   .bg-image {
     content: "";
     position: absolute;
-    width: 100%;
-    height: 100%;
+    min-width: 102%;
+    min-height: 100%;
+    left: -1%;
+    //opacity: 1;
     opacity: 0;
     top: 0;
-    left: 0;
+    //left: 0;
   }
 
   .curtain-left,
@@ -79,6 +83,7 @@
 
   .curtain-left {
     left: -50%;
+    //z-index: 5;
     z-index: -1;
 
     &:before {
@@ -90,11 +95,13 @@
     &:after {
       @extend .splitter;
       right: 0;
+      bottom: 0;
     }
   }
 
   .curtain-right {
     left: 50%;
+    //z-index: 4;
     z-index: -2;
 
     &:before {
@@ -119,16 +126,15 @@
     transform: scale(0.9);
   }
 
-  &.transition-out {
-    overflow-y: hidden;
-    $animationMultiplier: 1;
-    $fadeTime: 0.5s * $animationMultiplier;
-    $shrinkTime: 0.25s * $animationMultiplier;
-    $splitTime: 0.4s * $animationMultiplier;
-    $pauseTime: 0.2s * $animationMultiplier;
-    $curtainTime: 1.5s * $animationMultiplier;
-    $zoomTime: 0.6s * $animationMultiplier;
+  $animationMultiplier: 1.7;
+  $fadeTime: 0.5s * $animationMultiplier;
+  $shrinkTime: 0.25s * $animationMultiplier;
+  $splitTime: 0.4s * $animationMultiplier;
+  $pauseTime: 0.2s * $animationMultiplier;
+  $curtainTime: 1.2s * $animationMultiplier;
+  $zoomTime: 0.6s * $animationMultiplier;
 
+  &.transition-out {
     .button,
     .password-box {
       animation: shrinkAndDisappear $shrinkTime ease-out forwards;
@@ -173,6 +179,70 @@
     }
   }
 
+  &.horizontal {
+    $splitter_width: 6px;
+
+    .splitter {
+      left: 50%;
+      height: $splitter_width / 2;
+      width: 0;
+      z-index: 0;
+      background-color: $splitter_color;
+    }
+
+    .curtain-left {
+      top: -60%;
+      left: 0;
+
+      &:before {
+        background: url("../../assets/images/cs-curtain-up.png")
+        no-repeat bottom left;
+      }
+
+      &:after {
+        top: 100%;
+      }
+    }
+
+    .curtain-right {
+      top: 40%;
+      left: 0;
+
+      &:before {
+        background: url("../../assets/images/cs-curtain-down.png")
+        no-repeat top left;
+      }
+
+      &:after {
+        top: 0;
+      }
+    }
+
+    &.transition-out {
+      //.button, .password-box {
+      //  animation: shrinkMoveAndDisappear $shrinkTime ease-out forwards;
+      //}
+
+      .curtain-left,
+      .curtain-right {
+        &:after {
+          animation: horizontalPageSplitter $splitTime + $pauseTime linear forwards;
+          animation-delay: $shrinkTime / 2;
+        }
+      }
+
+      .curtain-left {
+        animation: curtainUp $curtainTime running forwards;
+        animation-delay: $shrinkTime + $splitTime + $pauseTime;
+      }
+
+      .curtain-right {
+        animation: curtainDown $curtainTime running forwards;
+        animation-delay: $shrinkTime + $splitTime + $pauseTime;
+      }
+    }
+  }
+
   @keyframes shrinkAndDisappear {
     0% {
       transform: translateX(-50%) scale(1);
@@ -182,14 +252,36 @@
     }
   }
 
+  @keyframes shrinkMoveAndDisappear {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      top: 80%;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(0);
+      top: 40%;
+    }
+  }
+
   @keyframes pageSplitter {
     0% {
       top: 80%;
       height: 0;
     }
     100% {
-      top: 0;
+      top: $headerHeight;
       height: 100%;
+    }
+  }
+
+  @keyframes horizontalPageSplitter {
+    0% {
+      left: 50%;
+      width: 0;
+    }
+    100% {
+      left: 0;
+      width: 100%;
     }
   }
 
@@ -218,6 +310,42 @@
     }
     100% {
       left: 150%;
+    }
+  }
+
+  @keyframes curtainUp {
+    0% {
+      top: -60%;
+    }
+    2% {
+      top: -61%;
+    }
+    6% {
+      top: -62.5%;
+    }
+    10% {
+      top: -63.5%;
+    }
+    100% {
+      top: -120%;
+    }
+  }
+
+  @keyframes curtainDown {
+    0% {
+      top: 40%;
+    }
+    2% {
+      top: 39%;
+    }
+    5% {
+      top: 37.5%;
+    }
+    10% {
+      top: 36.5%;
+    }
+    100% {
+      top: 140%;
     }
   }
 }

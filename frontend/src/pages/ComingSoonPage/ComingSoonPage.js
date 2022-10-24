@@ -33,7 +33,7 @@ const ComingSoonPage = () => {
   const transition = () => {
     setStartTransition(true);
 
-    const EFFECT_TIME_MULTIPLIER = 1;
+    const EFFECT_TIME_MULTIPLIER = 1.7;
 
     setTimeout(() => {
       navigate("/enter");
@@ -48,6 +48,7 @@ const ComingSoonPage = () => {
   return (
     <div
       className={classNames("page coming-soon", {
+        "horizontal": true,
         "transition-out": startTransition,
       })}
     >
@@ -66,7 +67,7 @@ const ComingSoonPage = () => {
           <PasswordBox onCorrect={onCorrectPassword} />
         ) : (
           <div className="button" onClick={transition}>
-            ENTER
+            EXPLORE
           </div>
         )}
       </div>

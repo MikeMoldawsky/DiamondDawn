@@ -21,6 +21,7 @@
     .common-view {
       position: relative;
       top: -10%;
+      opacity: 0;
       animation: fadeInGrow $fadeTime ease-out forwards;
 
       img {
