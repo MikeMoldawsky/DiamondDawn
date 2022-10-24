@@ -56,6 +56,7 @@ export const TRAIT = {
   symmetry: "Symmetry",
   width: "Width",
   type: "Type",
+  stage: "Stage",
 };
 
 export const ROUGH_SHAPE_NAME = {
