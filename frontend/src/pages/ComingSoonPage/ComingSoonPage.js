@@ -31,6 +31,10 @@ const ComingSoonPage = () => {
   );
 
   const transition = () => {
+    if (!process.env.REACT_APP_ENABLE_TRANSITIONS) {
+      return navigate("/enter");
+    }
+
     setStartTransition(true);
 
     const EFFECT_TIME_MULTIPLIER = 1.7;
@@ -48,7 +52,7 @@ const ComingSoonPage = () => {
   return (
     <div
       className={classNames("page coming-soon", {
-        "horizontal": true,
+        horizontal: true,
         "transition-out": startTransition,
       })}
     >

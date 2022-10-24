@@ -195,8 +195,8 @@
       left: 0;
 
       &:before {
-        background: url("../../assets/images/cs-curtain-up.png")
-        no-repeat bottom center;
+        background: url("../../assets/images/cs-curtain-up.png") no-repeat
+          bottom center;
       }
 
       &:after {
@@ -209,8 +209,8 @@
       left: 0;
 
       &:before {
-        background: url("../../assets/images/cs-curtain-down.png")
-        no-repeat top center;
+        background: url("../../assets/images/cs-curtain-down.png") no-repeat top
+          center;
       }
 
       &:after {
@@ -226,7 +226,8 @@
       .curtain-left,
       .curtain-right {
         &:after {
-          animation: horizontalPageSplitter $splitTime + $pauseTime linear forwards;
+          animation: horizontalPageSplitter $splitTime + $pauseTime linear
+            forwards;
           animation-delay: $shrinkTime / 2;
         }
       }
