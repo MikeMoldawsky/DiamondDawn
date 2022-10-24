@@ -12,6 +12,7 @@ import { tokensSelector } from "store/tokensReducer";
 import size from "lodash/size";
 import { getCDNObjectUrl, isDemo } from "utils";
 import HomeBackground from "components/HomeBackground";
+import Countdown from "components/Countdown";
 
 const EnterButton = () => {
   const { systemStage, isActive } = useSelector(systemSelector);
@@ -63,6 +64,9 @@ const Homepage = () => {
           <img src={getCDNObjectUrl("/images/infinity_logo.png")} alt="" />
           <div className="secondary-text">
             For the first time in history,<br />a gemological symbiosis of the virtual and the physical
+          </div>
+          <div className="countdown">
+            <Countdown renderParts={{ weeks: false }} parts={{ days: 3, hours: 3, minutes: 3, seconds: 0}} />
           </div>
         </div>
       </div>

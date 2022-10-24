@@ -1,4 +1,4 @@
-@import "css/vars";
+@import "css/varsNEW";
 @import "css/animations";
 
 .page.homepage {
@@ -6,6 +6,18 @@
   position: relative;
   height: 100vh;
   $animationMultiplier: 1;
+
+  .leading-text {
+    font-size: $font50px;
+  }
+
+  .secondary-text {
+    font-size: $font30px;
+  }
+
+  .text {
+    font-size: $font18px;
+  }
 
   .top-content {
     position: relative;
@@ -25,6 +37,20 @@
 
       img {
         width: 70%;
+      }
+    }
+
+    .countdown {
+      width: 42em;
+      position: relative;
+      top: 10%;
+
+      .value {
+        font-size: $font80px;
+        font-weight: 100;
+      }
+      .caption {
+        font-size: $font15px;
       }
     }
   }
