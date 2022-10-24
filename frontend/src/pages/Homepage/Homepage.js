@@ -59,7 +59,11 @@ const Homepage = () => {
       <div className="top-content center-aligned-column">
         <div className="common-view">
           <img src={getCDNObjectUrl("/images/infinity_logo.png")} alt="" />
-          <div className="secondary-text">Unearth your very own diamond<br />in the world's first virtual mine</div>
+          <div className="secondary-text">
+            Unearth your very own diamond
+            <br />
+            in the world's first virtual mine
+          </div>
         </div>
       </div>
       {/*<div className="bg-stars" />*/}

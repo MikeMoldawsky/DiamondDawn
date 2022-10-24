@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, { useCallback, useState } from "react";
 import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
@@ -6,12 +6,12 @@ import { updateUiState } from "store/uiReducer";
 import { useDispatch } from "react-redux";
 import { getCDNObjectUrl, isDemo } from "utils";
 import classNames from "classnames";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const [startTransition, setStartTransition] = useState(false)
+  const navigate = useNavigate();
+  const [startTransition, setStartTransition] = useState(false);
 
   const renderBgPlayer = useCallback(
     () => (
@@ -31,22 +31,26 @@ const ComingSoonPage = () => {
   );
 
   const transition = () => {
-    setStartTransition(true)
+    setStartTransition(true);
 
     const EFFECT_TIME_MULTIPLIER = 1;
 
     setTimeout(() => {
-      navigate("/enter")
-    }, 1450 * EFFECT_TIME_MULTIPLIER)
-  }
+      navigate("/enter");
+    }, 1450 * EFFECT_TIME_MULTIPLIER);
+  };
 
   const onCorrectPassword = () => {
     dispatch(updateUiState({ demoAuth: true }));
-    transition()
+    transition();
   };
 
   return (
-    <div className={classNames("page coming-soon", { 'transition-out': startTransition })}>
+    <div
+      className={classNames("page coming-soon", {
+        "transition-out": startTransition,
+      })}
+    >
       {renderBgPlayer()}
       <div className="curtain-left" />
       <div className="curtain-right" />
@@ -61,7 +65,9 @@ const ComingSoonPage = () => {
         {isDemo() ? (
           <PasswordBox onCorrect={onCorrectPassword} />
         ) : (
-          <div className="button" onClick={transition}>ENTER</div>
+          <div className="button" onClick={transition}>
+            ENTER
+          </div>
         )}
       </div>
     </div>
