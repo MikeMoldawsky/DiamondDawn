@@ -11,6 +11,7 @@ import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import { tokensSelector } from "store/tokensReducer";
 import size from "lodash/size";
 import { getCDNObjectUrl, isDemo } from "utils";
+import HomeBackground from "components/HomeBackground";
 
 const EnterButton = () => {
   const { systemStage, isActive } = useSelector(systemSelector);
@@ -57,12 +58,11 @@ const Homepage = () => {
   return (
     <div className="page homepage" onScroll={handleScroll}>
       <div className="top-content center-aligned-column">
+        <HomeBackground />
         <div className="common-view">
           <img src={getCDNObjectUrl("/images/infinity_logo.png")} alt="" />
           <div className="secondary-text">
-            Unearth your very own diamond
-            <br />
-            in the world's first virtual mine
+            For the first time in history,<br />a gemological symbiosis of the virtual and the physical
           </div>
         </div>
       </div>

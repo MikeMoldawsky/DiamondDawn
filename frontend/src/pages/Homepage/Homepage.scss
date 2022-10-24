@@ -8,21 +8,20 @@
   $animationMultiplier: 1;
 
   .top-content {
+    position: relative;
     height: 100%;
     width: 110%;
     margin-left: -5%;
-    background: url("../../assets/images/coming-soon-image-back.png") no-repeat
-      center center;
-    background-size: cover;
     text-align: center;
 
-    $fadeTime: 0.75s * $animationMultiplier;
+    $fadeTime: .75s * $animationMultiplier;
 
     .common-view {
       position: relative;
       top: -10%;
       opacity: 0;
       animation: fadeInGrow $fadeTime ease-out forwards;
+      animation-delay: .75s;
 
       img {
         width: 70%;
