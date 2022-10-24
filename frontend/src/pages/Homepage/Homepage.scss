@@ -1,120 +1,143 @@
 @import "css/vars";
+@import "css/animations";
 
 .page.homepage {
   $boxHeight: 98vh;
   position: relative;
   height: 100vh;
+  $animationMultiplier: 1;
 
-  .bg {
-    transition: all 0.5s ease-in-out;
-    transform: scale(1);
-  }
+  .top-content {
+    height: 100%;
+    width: 110%;
+    margin-left: -5%;
+    background: url("../../assets/images/coming-soon-image-back.png") no-repeat center center;
+    background-size: cover;
+    text-align: center;
 
-  .bg {
-    z-index: 0;
-    position: absolute;
-    height: calc($boxHeight * 3);
-    width: 100%;
-    background: url(../../assets/images/bg-image.png) no-repeat bottom -246vh center;
-    background-size: 105%;
-  }
-
-  .bg-stars {
-    position: absolute;
-    width: 100%;
-    height: calc($boxHeight * 3);
-    bottom: 0;
-    z-index: 0;
-    background: url("../../assets/images/bg-stars.png") no-repeat bottom -20vh left
-      0;
-    background-size: 100% auto;
-  }
-
-  .box {
-    height: $boxHeight;
-    z-index: 1;
-    position: relative;
-  }
-
-  .box-top {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    $fadeTime: .75s * $animationMultiplier;
 
     .common-view {
-      margin-top: -8%;
-    }
+      position: relative;
+      top: -10%;
+      animation: fadeInGrow $fadeTime ease-out forwards;
 
-    .leading-text {
-      font-size: 3.125em;
-    }
-
-    .secondary-text {
-      font-size: 1.875em;
-    }
-
-    .react-player {
-      min-height: 180px;
-      height: 240px !important;
-      width: auto !important;
-    }
-
-    .title {
-      font-size: 2.5em;
-      margin-bottom: 4.5%;
-    }
-
-    .scroll-marker {
-      position: absolute;
-      bottom: 12%;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-
-  .box-middle {
-    .video-player {
-      max-height: 95vh;
-      max-width: 95vw;
-      aspect-ratio: 16 / 9;
-      margin: 0 auto;
-
-      .react-player {
-        width: 100% !important;
-        height: 100% !important;
+      img {
+        width: 70%;
       }
     }
   }
 
-  .box-bottom {
-    .password-box {
-      margin-top: 3%;
-    }
-
-    .join-us {
-      letter-spacing: 2px;
-      margin: 6% 0 5%;
-      font-size: 1.25em;
-
-      .button {
-        margin-top: 5%;
-      }
-    }
-  }
-
-  &.entered {
-    .bg,
-    .bg-stars {
-      transform: scale(1.5);
-    }
-
-    .bg {
-      background-position: bottom -208vh left 0;
-    }
-
-    .bg-stars {
-      background-position: bottom 10vh left 0;
-    }
-  }
+  //.bg {
+  //  transition: all 0.5s ease-in-out;
+  //  transform: scale(1);
+  //}
+  //
+  //.bg {
+  //  z-index: 0;
+  //  position: absolute;
+  //  height: calc($boxHeight * 3);
+  //  width: 100%;
+  //  background: url(../../assets/images/bg-image.png) no-repeat bottom -246vh center;
+  //  background-size: 105%;
+  //}
+  //
+  //.bg-stars {
+  //  position: absolute;
+  //  width: 100%;
+  //  height: calc($boxHeight * 3);
+  //  bottom: 0;
+  //  z-index: 0;
+  //  background: url("../../assets/images/bg-stars.png") no-repeat bottom -20vh left
+  //    0;
+  //  background-size: 100% auto;
+  //}
+  //
+  //.box {
+  //  height: $boxHeight;
+  //  z-index: 1;
+  //  position: relative;
+  //}
+  //
+  //.box-top {
+  //  display: flex;
+  //  flex-direction: column;
+  //  align-items: center;
+  //  justify-content: center;
+  //
+  //  .common-view {
+  //    margin-top: -8%;
+  //  }
+  //
+  //  .leading-text {
+  //    font-size: 3.125em;
+  //  }
+  //
+  //  .secondary-text {
+  //    font-size: 1.875em;
+  //  }
+  //
+  //  .react-player {
+  //    min-height: 180px;
+  //    height: 240px !important;
+  //    width: auto !important;
+  //  }
+  //
+  //  .title {
+  //    font-size: 2.5em;
+  //    margin-bottom: 4.5%;
+  //  }
+  //
+  //  .scroll-marker {
+  //    position: absolute;
+  //    bottom: 12%;
+  //    left: 50%;
+  //    transform: translateX(-50%);
+  //  }
+  //}
+  //
+  //.box-middle {
+  //  .video-player {
+  //    max-height: 95vh;
+  //    max-width: 95vw;
+  //    aspect-ratio: 16 / 9;
+  //    margin: 0 auto;
+  //
+  //    .react-player {
+  //      width: 100% !important;
+  //      height: 100% !important;
+  //    }
+  //  }
+  //}
+  //
+  //.box-bottom {
+  //  .password-box {
+  //    margin-top: 3%;
+  //  }
+  //
+  //  .join-us {
+  //    letter-spacing: 2px;
+  //    margin: 6% 0 5%;
+  //    font-size: 1.25em;
+  //
+  //    .button {
+  //      margin-top: 5%;
+  //    }
+  //  }
+  //}
+  //
+  //&.entered {
+  //  .bg,
+  //  .bg-stars {
+  //    transform: scale(1.5);
+  //  }
+  //
+  //  .bg {
+  //    background-position: bottom -208vh left 0;
+  //  }
+  //
+  //  .bg-stars {
+  //    background-position: bottom 10vh left 0;
+  //  }
+  //}
 }

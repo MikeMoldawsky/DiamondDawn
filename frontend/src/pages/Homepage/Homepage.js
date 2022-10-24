@@ -37,7 +37,7 @@ const Homepage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    isDemo() && !demoAuth && navigate("/coming-soon");
+    isDemo() && !demoAuth && navigate("/");
     dispatch(setSelectedTokenId(-1));
   }, []);
 
@@ -56,26 +56,32 @@ const Homepage = () => {
 
   return (
     <div className="page homepage" onScroll={handleScroll}>
-      <div className="bg-stars" />
-      <div className="bg" />
-      <div className="box box-top">
-        <CommonView
-          leadingText="A BILLION YEARS IN THE MAKING"
-          secondaryText="the first ever diamond mining experience, from NFT to reality"
-        >
+      <div className="top-content center-aligned-column">
+        <div className="common-view">
           <img src={getCDNObjectUrl("/images/infinity_logo.png")} alt="" />
-        </CommonView>
-        <EnterButton />
+          <div className="secondary-text">Unearth your very own diamond<br />in the world's first virtual mine</div>
+        </div>
       </div>
-      <div id="video" className="box center-aligned-column box-middle">
-        <VideoPlayer
-          id="home-video"
-          videoPlayer={videoPlayer}
-          src={getCDNObjectUrl("/videos/teaser.mp4")}
-          controls
-          playing={playVideo}
-        />
-      </div>
+      {/*<div className="bg-stars" />*/}
+      {/*<div className="bg" />*/}
+      {/*<div className="box box-top">*/}
+      {/*  <CommonView*/}
+      {/*    leadingText="A BILLION YEARS IN THE MAKING"*/}
+      {/*    secondaryText="the first ever diamond mining experience, from NFT to reality"*/}
+      {/*  >*/}
+      {/*    <img src={getCDNObjectUrl("/images/infinity_logo.png")} alt="" />*/}
+      {/*  </CommonView>*/}
+      {/*  <EnterButton />*/}
+      {/*</div>*/}
+      {/*<div id="video" className="box center-aligned-column box-middle">*/}
+      {/*  <VideoPlayer*/}
+      {/*    id="home-video"*/}
+      {/*    videoPlayer={videoPlayer}*/}
+      {/*    src={getCDNObjectUrl("/videos/teaser.mp4")}*/}
+      {/*    controls*/}
+      {/*    playing={playVideo}*/}
+      {/*  />*/}
+      {/*</div>*/}
     </div>
   );
 };

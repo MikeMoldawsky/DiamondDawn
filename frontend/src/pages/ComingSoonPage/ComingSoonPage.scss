@@ -1,4 +1,5 @@
 @import "css/varsNEW";
+@import "css/animations";
 
 .page.coming-soon {
   position: relative;
@@ -106,16 +107,21 @@
   .curtain-behind {
     z-index: -3;
     background: url("../../assets/images/coming-soon-image-back.png") no-repeat center center;
+    width: 110%;
+    margin-left: -5%;
+    background-size: cover;
+    transform: scale(0.9);
   }
 
   &.transition-out {
     overflow-y: hidden;
-    $fadeTime: .5s;
-    $shrinkTime: .25s;
-    $splitTime: .25s;
-    $pauseTime: .2s;
-    $curtainTime: 2s;
-    $zoomTime: 1.25s;
+    $animationMultiplier: 1;
+    $fadeTime: .5s * $animationMultiplier;
+    $shrinkTime: .25s * $animationMultiplier;
+    $splitTime: .4s * $animationMultiplier;
+    $pauseTime: .2s * $animationMultiplier;
+    $curtainTime: 1.5s * $animationMultiplier;
+    $zoomTime: .6s * $animationMultiplier;
 
     .button, .password-box {
       animation: shrinkAndDisappear $shrinkTime ease-out forwards;
@@ -181,29 +187,11 @@
 
   @keyframes zoomIn {
     0% {
+      transform: scale(0.9);
+    }
+
+    100% {
       transform: scale(1);
-    }
-
-    100% {
-      transform: scale(1.1);
-    }
-  }
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes fadeOut {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
     }
   }
 
