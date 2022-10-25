@@ -1,4 +1,4 @@
-@import "css/vars";
+@import "css/varsNEW";
 
 header {
   position: fixed;
@@ -7,7 +7,7 @@ header {
   height: $headerHeight;
 
   .header-internal {
-    padding: 0 40px;
+    padding: 0 2.5rem;
     height: $headerHeight;
     display: flex;
     align-items: center;

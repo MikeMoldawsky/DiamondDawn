@@ -1,34 +1,11 @@
 @import "css/varsNEW";
 @import "css/animations";
 
-@function calc-font-size($min, $percWidth: 1, $percHeight: 1) {
-  $w-rel: 100vw * $percWidth / 108;
-  $h-rel: 100vh * $percHeight / 67.5;
-
-  @return max(min($w-rel, $h-rel), $min);
-}
-
 .page.homepage {
   $boxHeight: 98vh;
   position: relative;
   height: 100vh;
   $animationMultiplier: 1;
-  //font-size: calc-font-size(10px);
-
-  .leading-text {
-    font-size: $font50px;
-    //font-size: max($font50px, 24px);
-  }
-
-  .secondary-text {
-    font-size: $font30px;
-    //font-size: max($font30px, 20px);
-  }
-
-  .text {
-    font-size: $font18px;
-    //font-size: max($font18px, 12px);
-  }
 
   .top-content {
     position: relative;
@@ -60,12 +37,10 @@
 
       .value {
         font-size: $font80px;
-        //font-size: max($font80px, 40px);
         font-weight: 100;
       }
       .caption {
         font-size: $font15px;
-        //font-size: max($font15px, 10px);
       }
     }
   }
@@ -88,7 +63,6 @@
     }
 
     .grid {
-      height: 60%;
       width: 80%;
       margin: 0 auto;
       position: relative;

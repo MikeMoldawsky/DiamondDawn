@@ -1,5 +1,6 @@
 @import "vars";
 @import "varsNEW";
+@import "functions";
 @import "../assets/fonts/fonts.css";
 
 html,
@@ -13,10 +14,10 @@ body,
 
 html {
   scroll-behavior: smooth;
+  font-size: calc-font-size(1px);
 }
 
 body {
-  font-size: 16px;
   overflow: hidden;
   background-color: black;
   color: white;
@@ -46,8 +47,8 @@ b {
   position: relative;
 
   .inner-page {
-    padding-top: 100px;
-    max-width: 1440px;
+    padding-top: $headerHeight * 1.4;
+    //max-width: 1440px;
     margin: 0 auto;
     height: 100%;
 
@@ -55,8 +56,7 @@ b {
       text-align: center;
       color: $text_gray;
       text-transform: uppercase;
-      margin: 0 0 2em 0;
-      //margin-bottom: 2em;
+      margin: 0 0 3rem 0;
       font-size: $font30px;
     }
   }
@@ -153,18 +153,19 @@ b {
 }
 
 .leading-text {
-  font-size: 2.1875em;
-  //margin-bottom: 10px;
+  font-size: $font50px;
   text-transform: uppercase;
-  //text-align: center;
-  //line-height: 1.35em;
-  line-height: 1em;
+  line-height: 1.33em;
 }
 
 .secondary-text {
-  font-size: 1.5625em;
+  font-size: $font30px;
   color: $secondary_gray;
   line-height: 1.33em;
+}
+
+.text {
+  font-size: $font18px;
 }
 
 .video-placeholder {
