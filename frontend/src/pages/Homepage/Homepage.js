@@ -70,6 +70,34 @@ const Homepage = () => {
           </div>
         </div>
       </div>
+      <div className="eternal-treasures">
+        <div className="bg-stars" />
+        <div className="grid">
+          <div className="space-cell" />
+          <div className="title-cell">
+            <div className="leading-text">ETERNAL TREASURES</div>
+          </div>
+          <div className="text1-cell">
+            <p className="text">
+              Deep below the earth’s surface, under immense pressure and scorching heat over billions of years, a marvel of nature is formed. A diamond.
+            </p>
+            <p className="text">
+              For thousands of years, they have been the ultimate symbol of wealth and abundance, worshiped and fought over by emperors for their sparkle and beauty. The strongest, most enduring material on Earth, a single diamond, smaller than a pea, can cost tens of millions of dollars for its clarity and color.
+            </p>
+            <p className="text">
+              <b>But are diamonds REALLY that rare?</b>
+            </p>
+          </div>
+          <div className="text2-cell">
+            <p className="text">
+              The recent rise of lab-grown diamonds makes it impossible for anyone to distinguish a ‘real’ diamond from a man-made one without special equipment. Not only that, but it’s largely unknown that big diamond companies keep vast quantities of diamonds hidden away in huge vaults, controlling the circulation and supply of the diamond market. The less diamonds we think are the more ‘rare’ they appear to be.
+            </p>
+            <p className="text">
+              <b>So, if the supply of diamonds is unknown, and we can now produce them ourselves, How can we evaluate the actual worth of a physical diamond?</b>
+            </p>
+          </div>
+        </div>
+      </div>
       {/*<div className="bg-stars" />*/}
       {/*<div className="bg" />*/}
       {/*<div className="box box-top">*/}
