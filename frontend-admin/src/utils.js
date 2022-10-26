@@ -55,7 +55,7 @@ export const getEnumKeyByValue = (enm, value) => _.invert(enm)[value];
 
 export const getShapeName = (shape, stage) => {
   switch (stage) {
-    case SYSTEM_STAGE.FORGE:
+    case SYSTEM_STAGE.KEY:
     case SYSTEM_STAGE.MINE:
       return getEnumKeyByValue(ROUGH_SHAPE, shape);
     case SYSTEM_STAGE.CUT:

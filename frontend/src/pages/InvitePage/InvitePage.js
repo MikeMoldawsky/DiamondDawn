@@ -83,7 +83,7 @@ const InvitePage = () => {
   const renderInviteContent = () => {
     if (!isGetInviteSuccess) return null;
 
-    if (systemStage !== SYSTEM_STAGE.FORGE || !isActive)
+    if (systemStage !== SYSTEM_STAGE.KEY || !isActive)
       return navigateToDefault();
     if (!invite) return <InvalidInvitation title="Invitation Not Found" />;
     if (invite.address && invite.address !== account?.address)

@@ -20,7 +20,7 @@ const CollectorPage = () => {
   const renderContent = () => {
     if (size(tokens) > 0) return <NFTs />;
 
-    if (systemStage <= SYSTEM_STAGE.FORGE) return <Invite />;
+    if (systemStage <= SYSTEM_STAGE.KEY) return <Invite />;
 
     return (
       <div className="box-content opaque opensea">

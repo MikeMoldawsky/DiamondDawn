@@ -67,7 +67,7 @@ const EnterMine = ({ invite }) => {
       minePrice={minePrice}
       maxDiamonds={maxDiamonds}
       diamondCount={diamondCount}
-      canMint={systemStage === SYSTEM_STAGE.FORGE && isActive}
+      canMint={systemStage === SYSTEM_STAGE.KEY && isActive}
       enterMine={execute}
       expiresAt={invite.expires}
       onCountdownEnd={onInviteExpired}

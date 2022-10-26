@@ -19,14 +19,14 @@ const MAX_POLISH_EXTRA_POINTS = 4;
 const BASE_URI = "ar://";
 
 // constants for tests
-const FORGE_MANIFEST = "forge-manifest";
+const KEY_MANIFEST = "key-manifest";
 const MINE_MANIFEST = "mine-manifest";
 const CUT_MANIFEST = "cut-manifest";
 const POLISH_MANIFEST = "polish-manifest";
 const REBORN_MANIFEST = "reborn-manifest";
 
 async function setInviteManifest(mineContract) {
-  await mineContract.setManifest(STAGE.FORGE, FORGE_MANIFEST);
+  await mineContract.setManifest(STAGE.KEY, KEY_MANIFEST);
 }
 
 async function setMineManifest(mineContract) {
@@ -126,6 +126,7 @@ async function assertRoughMetadata(
     mineContract,
     tokenId,
     STAGE.MINE,
+    diamond,
     diamond.points + MIN_ROUGH_EXTRA_POINTS,
     diamond.points + MAX_ROUGH_EXTRA_POINTS
   );
@@ -154,6 +155,7 @@ async function assertCutMetadata(
     mineContract,
     tokenId,
     STAGE.CUT,
+    diamond,
     diamond.points + MIN_POLISH_EXTRA_POINTS,
     diamond.points + MAX_POLISH_EXTRA_POINTS
   );
@@ -187,6 +189,7 @@ async function assertPolishedMetadata(
     mineContract,
     tokenId,
     STAGE.POLISH,
+    diamond,
     diamond.points
   );
 }
@@ -223,6 +226,7 @@ async function assertRebornMetadata(
     mineContract,
     tokenId,
     STAGE.DAWN,
+    diamond,
     diamond.points
   );
 }
@@ -233,6 +237,7 @@ async function _assertMetadataByType(
   mineContract,
   tokenId,
   type,
+  diamond,
   minOrExactPoints,
   maxPoints
 ) {
@@ -244,11 +249,24 @@ async function _assertMetadataByType(
   const noCaratMetadata = await _validateAndRemoveCaratMetadata(
     parsedMetadata,
     minOrExactPoints,
-    maxPoints
+    maxPoints,
+    false
   );
   const noCaratShapeImageMetadata =
     await _validateAndRemoveShapeAndURIsMetadata(noCaratMetadata, type);
-  expect(noCaratShapeImageMetadata).to.deep.equal(
+  const noCaratShapeImageRoughMetadata =
+    await _validateAndRemoveRoughMetadataIfNeeded(
+      noCaratShapeImageMetadata,
+      type,
+      diamond
+    );
+  const noCaratShapeImageRoughCutMetadata =
+    await _validateAndRemoveCutMetadataIfNeeded(
+      noCaratShapeImageRoughMetadata,
+      type,
+      diamond
+    );
+  expect(noCaratShapeImageRoughCutMetadata).to.deep.equal(
     expectedMetadataNoCaratShapeImage
   );
 }
@@ -256,18 +274,24 @@ async function _assertMetadataByType(
 async function _validateAndRemoveCaratMetadata(
   parsedMetadata,
   minOrExactPoints,
-  maxPoints
+  maxPoints,
+  isRough,
+  isCut
 ) {
   // Validate carat attribute
   const actualCaratAttributeList = _.remove(
     parsedMetadata.attributes,
-    (currentObject) => currentObject.trait_type === "Carat"
+    (currentObject) =>
+      currentObject.trait_type ===
+      (isRough ? "Rough Carat" : isCut ? "Cut Carat" : "Carat")
   );
   expect(actualCaratAttributeList).to.satisfy((arr) => {
     expect(arr).to.have.lengthOf(1);
     const [actualCaratAttribute] = arr;
     expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
-    expect(actualCaratAttribute.trait_type).equal("Carat");
+    expect(actualCaratAttribute.trait_type).equal(
+      isRough ? "Rough Carat" : isCut ? "Cut Carat" : "Carat"
+    );
     if (maxPoints) {
       expect(actualCaratAttribute.value).to.be.within(
         minOrExactPoints / 100,
@@ -279,6 +303,64 @@ async function _validateAndRemoveCaratMetadata(
     return true;
   });
   return parsedMetadata;
+}
+
+async function _validateAndRemoveRoughMetadataIfNeeded(
+  actualParsedMetadata,
+  type,
+  diamond
+) {
+  switch (type) {
+    case STAGE.KEY:
+    case STAGE.MINE:
+      return actualParsedMetadata;
+  }
+  // Validate Rough Color, Rough Shape, Rough Carat
+  const actualRoughColorAttributeList = _.remove(
+    actualParsedMetadata.attributes,
+    (currentObject) => currentObject.trait_type === "Rough Shape"
+  );
+
+  expect(actualRoughColorAttributeList).to.satisfy((arr) => {
+    expect(arr).to.have.lengthOf(1);
+    const [actualRoughShapeAttribute] = arr;
+    expect(actualRoughShapeAttribute).to.have.all.keys("trait_type", "value");
+    expect(actualRoughShapeAttribute.trait_type).equal("Rough Shape");
+    expect(actualRoughShapeAttribute.value).to.be.oneOf([
+      "Makeable 1",
+      "Makeable 2",
+    ]);
+    return true;
+  });
+  _.unset(actualParsedMetadata, "Rough Shape");
+
+  return await _validateAndRemoveCaratMetadata(
+    actualParsedMetadata,
+    diamond.points + MIN_ROUGH_EXTRA_POINTS,
+    diamond.points + MAX_ROUGH_EXTRA_POINTS,
+    true,
+    false
+  );
+}
+
+async function _validateAndRemoveCutMetadataIfNeeded(
+  actualParsedMetadata,
+  type,
+  diamond
+) {
+  switch (type) {
+    case STAGE.KEY:
+    case STAGE.MINE:
+    case STAGE.CUT:
+      return actualParsedMetadata;
+  }
+  return await _validateAndRemoveCaratMetadata(
+    actualParsedMetadata,
+    diamond.points + MIN_POLISH_EXTRA_POINTS,
+    diamond.points + MAX_POLISH_EXTRA_POINTS,
+    false,
+    true
+  );
 }
 
 async function _validateAndRemoveShapeAndURIsMetadata(
@@ -403,9 +485,12 @@ async function assertBase64AndGetParsed(actualMetadata) {
 function _getExpectedMetadataEnterMine(tokenId) {
   return {
     name: `Mine Key #${tokenId}`,
-    image: `${BASE_URI}${FORGE_MANIFEST}/resource.jpeg`,
-    animation_url: `${BASE_URI}${FORGE_MANIFEST}/resource.mp4`,
-    attributes: [{ trait_type: "Type", value: "Forged" }],
+    image: `${BASE_URI}${KEY_MANIFEST}/resource.jpeg`,
+    animation_url: `${BASE_URI}${KEY_MANIFEST}/resource.mp4`,
+    attributes: [
+      { trait_type: "Origin", value: "Metaverse" },
+      { trait_type: "Type", value: "Key" },
+    ],
   };
 }
 
@@ -413,8 +498,9 @@ function _getRoughMetadataNoCaratShapeAndURIs(numMined, totalMined) {
   return {
     name: `Rough Stone #${numMined}`,
     attributes: [
-      { trait_type: "Type", value: "Rough" },
       { trait_type: "Origin", value: "Metaverse" },
+      { trait_type: "Type", value: "Diamond" },
+      { trait_type: "Stage", value: "Rough" },
       { trait_type: "Identification", value: "Natural" },
       {
         display_type: "number",
@@ -423,7 +509,6 @@ function _getRoughMetadataNoCaratShapeAndURIs(numMined, totalMined) {
         value: numMined,
       },
       { trait_type: "Color", value: "Cape" },
-      { trait_type: "Mine", value: "Underground" },
     ],
   };
 }
@@ -445,8 +530,9 @@ function _getCutMetadataNoCaratShapeAndURIs(
   return {
     name: `Formation #${numCut}`,
     attributes: [
-      { trait_type: "Type", value: "Cut" },
       { trait_type: "Origin", value: "Metaverse" },
+      { trait_type: "Type", value: "Diamond" },
+      { trait_type: "Stage", value: "Cut" },
       { trait_type: "Identification", value: "Natural" },
       {
         display_type: "number",
@@ -454,6 +540,7 @@ function _getCutMetadataNoCaratShapeAndURIs(
         trait_type: "Mined",
         value: numMined,
       },
+      { trait_type: "Rough Color", value: "Cape" },
       { trait_type: "Color", value: _expectedColor(diamond) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {
@@ -493,8 +580,9 @@ function _getPolishedMetadataNoCaratShapeAndURIs(
   return {
     name: `Diamond #${numPolished}`,
     attributes: [
-      { trait_type: "Type", value: "Polished" },
       { trait_type: "Origin", value: "Metaverse" },
+      { trait_type: "Type", value: "Diamond" },
+      { trait_type: "Stage", value: "Polished" },
       { trait_type: "Identification", value: "Natural" },
       {
         display_type: "number",
@@ -502,6 +590,7 @@ function _getPolishedMetadataNoCaratShapeAndURIs(
         trait_type: "Mined",
         value: numMined,
       },
+      { trait_type: "Rough Color", value: "Cape" },
       { trait_type: "Color", value: _expectedColor(diamond) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {
@@ -550,8 +639,9 @@ function _getRebirthMetadataNoCaratShapeAndURIs(
   return {
     name: `Dawn #${numPhysical}`,
     attributes: [
-      { trait_type: "Type", value: "Reborn" },
       { trait_type: "Origin", value: "Metaverse" },
+      { trait_type: "Type", value: "Certificate" },
+      { trait_type: "Stage", value: "Reborn" },
       { trait_type: "Identification", value: "Natural" },
       {
         display_type: "number",
@@ -559,6 +649,7 @@ function _getRebirthMetadataNoCaratShapeAndURIs(
         trait_type: "Mined",
         value: numMined,
       },
+      { trait_type: "Rough Color", value: "Cape" },
       { trait_type: "Color", value: _expectedColor(diamond) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {
@@ -602,7 +693,7 @@ function _expectedColor(diamond) {
 
 module.exports = {
   BASE_URI,
-  FORGE_MANIFEST,
+  KEY_MANIFEST,
   MINE_MANIFEST,
   CUT_MANIFEST,
   POLISH_MANIFEST,
