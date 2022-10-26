@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.scss";
-import {NavLink, useLocation} from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import DiamondList from "components/DiamondList";
 import Wallet from "components/Wallet";
 import ContractProvider from "containers/ContractProvider";
@@ -12,8 +12,8 @@ import { getCDNObjectUrl, isDemo } from "utils";
 import { DIAMOND_DAWN_TWITTER_URL } from "consts";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
-  const location = useLocation()
-  const showLogo = location.pathname !== '/explore'
+  const location = useLocation();
+  const showLogo = location.pathname !== "/explore";
 
   return (
     <header>
@@ -54,7 +54,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
         </div>
       </div>
     </header>
-  )
+  );
 };
 
 export default Header;

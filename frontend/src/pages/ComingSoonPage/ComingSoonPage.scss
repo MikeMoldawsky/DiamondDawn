@@ -226,8 +226,7 @@
       .curtain-left,
       .curtain-right {
         &:after {
-          animation: horizontalPageSplitter $splitTime linear
-            forwards;
+          animation: horizontalPageSplitter $splitTime linear forwards;
           animation-delay: $shrinkTime / 2;
         }
       }
