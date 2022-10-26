@@ -10,7 +10,7 @@ import { SYSTEM_STAGE, SYSTEM_STAGE_NAME } from "consts";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import { tokensSelector } from "store/tokensReducer";
 import size from "lodash/size";
-import { getCDNObjectUrl, isDemo } from "utils";
+import {getCDNObjectUrl, isDemo, isDemoAndAuthSelector} from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
 
@@ -35,25 +35,25 @@ const Homepage = () => {
   const videoPlayer = useRef(null);
   const [playVideo, setPlayVideo] = useState(false);
   const dispatch = useDispatch();
-  const { demoAuth } = useSelector(uiSelector);
   const navigate = useNavigate();
+  const isRestricted = useSelector(isDemoAndAuthSelector(false))
 
   useEffect(() => {
-    isDemo() && !demoAuth && navigate("/");
+    isRestricted && navigate("/");
     dispatch(setSelectedTokenId(-1));
   }, []);
 
   const handleScroll = (event) => {
-    if (playVideo) return;
-
-    const video = videoPlayer.current;
-    const scrollTop = event.currentTarget.scrollTop;
-    const videoTop = video.offsetTop + video.offsetParent.offsetTop;
-    const startPlayAt = videoTop - video.offsetHeight / 3;
-
-    if (scrollTop > startPlayAt) {
-      setPlayVideo(true);
-    }
+    // if (playVideo) return;
+    //
+    // const video = videoPlayer.current;
+    // const scrollTop = event.currentTarget.scrollTop;
+    // const videoTop = video.offsetTop + video.offsetParent.offsetTop;
+    // const startPlayAt = videoTop - video.offsetHeight / 3;
+    //
+    // if (scrollTop > startPlayAt) {
+    //   setPlayVideo(true);
+    // }
   };
 
   return (

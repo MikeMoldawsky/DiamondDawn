@@ -8,23 +8,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import AudioPlayer from "components/AudioPlayer";
-import { getCDNObjectUrl, isDemo } from "utils";
+import {getCDNObjectUrl, isDemo, isDemoAndAuthSelector} from "utils";
 import { DIAMOND_DAWN_TWITTER_URL } from "consts";
+import {useSelector} from "react-redux";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const location = useLocation();
   const showLogo = location.pathname !== "/explore";
+  const isRestricted = useSelector(isDemoAndAuthSelector(false))
 
   return (
     <header>
       <div className="header-internal">
         <div className="center-aligned-row header-side">
-          <div className="wallet">
-            <Wallet />
-          </div>
-          <ContractProvider>
-            <DiamondList />
-          </ContractProvider>
+          {!isRestricted && (
+            <>
+              <div className="wallet">
+                <Wallet />
+              </div>
+              <ContractProvider>
+                <DiamondList />
+              </ContractProvider>
+            </>
+          )}
         </div>
         <div className="logo-box">
           {showLogo && (
@@ -44,11 +50,13 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           <>
             <div className="vertical-sep" />
             <AudioPlayer />
-            <FontAwesomeIcon
-              className="menu-icon"
-              icon={isMenuOpen ? faX : faBars}
-              onClick={toggleMenu}
-            />
+            {!isRestricted && (
+              <FontAwesomeIcon
+                className="menu-icon"
+                icon={isMenuOpen ? faX : faBars}
+                onClick={toggleMenu}
+              />
+            )}
           </>
           {/*)}*/}
         </div>

@@ -11,6 +11,7 @@ import Box from "components/Box";
 import Suspense from "components/Suspense";
 import Invite from "components/Invite";
 import NFTs from "components/NFTs";
+import {isDemo} from "utils";
 
 const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
@@ -31,7 +32,7 @@ const CollectorPage = () => {
   };
 
   const suspenseActions = ["get-contract"];
-  if (account?.address) {
+  if (!isDemo() && account?.address) {
     suspenseActions.push({ isFirstComplete: true, key: "load-nfts" });
   }
 
