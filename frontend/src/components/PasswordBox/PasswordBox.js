@@ -3,12 +3,15 @@ import classNames from "classnames";
 import "./PasswordBox.scss";
 import { demoAuthApi } from "api/serverApi";
 import map from 'lodash/map'
+import ActionButton from "components/ActionButton";
+import useActionDispatch from "hooks/useActionDispatch";
 
 const PasswordBox = ({ onCorrect, passwordLength, buttonText }) => {
   const [password, setPassword] = useState("");
   const pwdInput = useRef(null);
   const [checkingPassword, setCheckingPassword] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const actionDispatch = useActionDispatch()
 
   const submitPassword = async () => {
     if (passwordLength !== password.length) return
@@ -65,9 +68,9 @@ const PasswordBox = ({ onCorrect, passwordLength, buttonText }) => {
           ))}
         </div>
       </div>
-      <div className="button" disabled={password.length !== passwordLength} onClick={submitPassword}>
+      <ActionButton actionKey="Submit Password" isLoading={checkingPassword} disabled={password.length !== passwordLength} onClick={submitPassword}>
         {buttonText}
-      </div>
+      </ActionButton>
     </div>
   );
 };
