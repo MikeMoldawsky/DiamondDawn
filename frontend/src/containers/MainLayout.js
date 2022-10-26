@@ -20,7 +20,7 @@ import ProcessPage from "pages/ProcessPage";
 import NFTPage from "pages/NFTPage";
 import RebirthPage from "pages/RebirthPage";
 import InvitePage from "pages/InvitePage";
-import TeamPage from "pages/TeamPage";
+import AboutPage from "pages/AboutPage";
 import Header from "components/Header";
 import SideMenu from "components/SideMenu";
 import CollectorPage from "pages/CollectorPage";
@@ -57,6 +57,7 @@ const MainLayout = () => {
               path="/"
               exact
               element={
+                // <Homepage />
                 isRestricted ? <ComingSoonPage /> : <Homepage />
               }
             />
@@ -103,7 +104,7 @@ const MainLayout = () => {
                     </TokensProvider>
                   }
                 />
-                <Route path="about" element={<TeamPage />} />
+                <Route path="about" element={<AboutPage />} />
               </>
             )}
             <Route path="*" element={<Navigate to="/" replace />} />

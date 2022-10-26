@@ -28,12 +28,16 @@
       }
     }
 
+    .text {
+      color: $text_gray;
+      letter-spacing: .2rem;
+    }
+
     .countdown {
       width: 42em;
       min-width: 42em;
       position: relative;
-      top: 10%;
-      font-size: max(1em, 10px);
+      top: 12%;
 
       .value {
         font-size: $font80px;

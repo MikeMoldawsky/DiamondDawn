@@ -67,9 +67,12 @@ const Homepage = () => {
             <br />a gemological symbiosis of the virtual and the physical
           </div>
           <div className="countdown">
+            <div className="text">
+              Mine will open in
+            </div>
             <Countdown
-              renderParts={{ weeks: false }}
-              parts={{ days: 3, hours: 3, minutes: 3, seconds: 0 }}
+              parts={{ days: 24, hours: 3, minutes: 0, seconds: 0 }}
+              smallParts={{ minutes: true, seconds: true}}
             />
           </div>
         </div>

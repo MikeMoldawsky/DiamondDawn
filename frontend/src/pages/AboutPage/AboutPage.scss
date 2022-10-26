@@ -1,0 +1,18 @@
+@import "css/varsNEW";
+
+.page.about-page {
+
+  .inner-page {
+    width: 75%;
+  }
+
+  h1 {
+    font-size: $font50px;
+    margin: 4rem 0 1rem;
+  }
+
+  h2 {
+    font-size: $font32px;
+    margin: 3rem 0 1rem;
+  }
+}
