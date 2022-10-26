@@ -279,13 +279,13 @@ describe("Diamond Dawn Mine Admin", () => {
       const polishedManifest = "polished";
       const shipManifest = "dawn";
 
-      await mineContract.setManifest(STAGE.FORGE, inviteManifest);
+      await mineContract.setManifest(STAGE.KEY, inviteManifest);
       await mineContract.setManifest(STAGE.MINE, mineManifest);
       await mineContract.setManifest(STAGE.CUT, cutManifest);
       await mineContract.setManifest(STAGE.POLISH, polishedManifest);
       await mineContract.setManifest(STAGE.DAWN, shipManifest);
 
-      expect(await mineContract.manifests(STAGE.FORGE)).to.be.equal(
+      expect(await mineContract.manifests(STAGE.KEY)).to.be.equal(
         inviteManifest
       );
       expect(await mineContract.manifests(STAGE.MINE)).to.be.equal(

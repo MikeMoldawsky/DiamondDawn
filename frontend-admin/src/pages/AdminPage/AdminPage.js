@@ -20,12 +20,11 @@ import {
 import useDDContract from "hooks/useDDContract";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
-import { getInvitesApi } from "api/serverApi";
 
 const TABS = [
   {
-    title: "Forge",
-    component: () => <StageTab stage={SYSTEM_STAGE.FORGE} />,
+    title: "Key",
+    component: () => <StageTab stage={SYSTEM_STAGE.KEY} />,
   },
   {
     title: "Mine",

@@ -74,7 +74,7 @@ export const getDiamondIcon = (token) => {
   let shape;
 
   switch (token.stage) {
-    case SYSTEM_STAGE.FORGE:
+    case SYSTEM_STAGE.KEY:
       return faGem;
     case SYSTEM_STAGE.MINE:
       shape = ROUGH_SHAPE[_.toUpper(_.snakeCase(shapeName))];

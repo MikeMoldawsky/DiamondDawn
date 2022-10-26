@@ -10,7 +10,7 @@ const {
   setRebornManifest,
   assertBase64AndGetParsed,
   BASE_URI,
-  FORGE_MANIFEST,
+  KEY_MANIFEST,
 } = require("./utils/MineTestUtils");
 const {
   deployDD,
@@ -41,7 +41,7 @@ describe("DiamondDawn", () => {
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithRebirthReady);
-      await diamondDawn.setStage(STAGE.FORGE);
+      await diamondDawn.setStage(STAGE.KEY);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
@@ -72,8 +72,8 @@ describe("DiamondDawn", () => {
       ).to.be.revertedWith(`Cost is: ${PRICE_MARRIAGE.toString()}`);
     });
 
-    it("Should REVERT when not FORGE stage", async () => {
-      const notAllowedStages = _.without(ALL_STAGES, STAGE.FORGE);
+    it("Should REVERT when not KEY stage", async () => {
+      const notAllowedStages = _.without(ALL_STAGES, STAGE.KEY);
       for (const stage of notAllowedStages) {
         await completeAndSetStage(dd, stage);
         expect(await dd.stage()).to.equal(stage);
@@ -87,8 +87,8 @@ describe("DiamondDawn", () => {
     });
 
     it("Should REVERT when stage is NOT active", async () => {
-      await dd.completeStage(STAGE.FORGE);
-      expect(await dd.stage()).to.equal(STAGE.FORGE);
+      await dd.completeStage(STAGE.KEY);
+      expect(await dd.stage()).to.equal(STAGE.KEY);
       expect(await dd.isActive()).to.be.false;
       await expect(dd.forge(adminSig, { value: PRICE })).to.be.revertedWith(
         "Stage is inactive"
@@ -115,7 +115,7 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when mine is NOT READY", async () => {
       // transform mine to be not ready
-      await ddMine.setManifest(STAGE.FORGE, "");
+      await ddMine.setManifest(STAGE.KEY, "");
       await expect(dd.forge(adminSig, { value: PRICE })).to.be.revertedWith(
         "Stage not ready"
       );
@@ -232,7 +232,7 @@ describe("DiamondDawn", () => {
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithMineReady);
-      await diamondDawn.setStage(STAGE.FORGE);
+      await diamondDawn.setStage(STAGE.KEY);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
@@ -343,7 +343,7 @@ describe("DiamondDawn", () => {
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithCutReady);
-      await diamondDawn.setStage(STAGE.FORGE);
+      await diamondDawn.setStage(STAGE.KEY);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
@@ -451,7 +451,7 @@ describe("DiamondDawn", () => {
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithPolishReady);
-      await diamondDawn.setStage(STAGE.FORGE);
+      await diamondDawn.setStage(STAGE.KEY);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
@@ -573,7 +573,7 @@ describe("DiamondDawn", () => {
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithRebirthReady);
-      await diamondDawn.setStage(STAGE.FORGE);
+      await diamondDawn.setStage(STAGE.KEY);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
@@ -736,7 +736,7 @@ describe("DiamondDawn", () => {
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithRebirthReady);
-      await diamondDawn.setStage(STAGE.FORGE);
+      await diamondDawn.setStage(STAGE.KEY);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
@@ -1060,7 +1060,7 @@ describe("DiamondDawn", () => {
     beforeEach(async () => {
       const { diamondDawn, diamondDawnMine, owner, signer, users } =
         await loadFixture(deployDDWithRebirthReady);
-      await diamondDawn.setStage(STAGE.FORGE);
+      await diamondDawn.setStage(STAGE.KEY);
       dd = diamondDawn;
       ddMine = diamondDawnMine;
       admin = owner;
@@ -1076,9 +1076,12 @@ describe("DiamondDawn", () => {
       const parsed = await assertBase64AndGetParsed(metadata);
       expect(parsed).to.deep.equal({
         name: "Mine Key #1",
-        image: `${BASE_URI}${FORGE_MANIFEST}/resource.jpeg`,
-        animation_url: `${BASE_URI}${FORGE_MANIFEST}/resource.mp4`,
-        attributes: [{ trait_type: "Type", value: "Forged" }],
+        image: `${BASE_URI}${KEY_MANIFEST}/resource.jpeg`,
+        animation_url: `${BASE_URI}${KEY_MANIFEST}/resource.mp4`,
+        attributes: [
+          { trait_type: "Origin", value: "Metaverse" },
+          { trait_type: "Type", value: "Key" },
+        ],
       });
     });
   });
