@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { getCDNObjectUrl, isDemo } from "utils";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
+import HomeBackground from "components/HomeBackground";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -32,16 +33,16 @@ const ComingSoonPage = () => {
 
   const transition = () => {
     if (!process.env.REACT_APP_ENABLE_TRANSITIONS) {
-      return navigate("/enter");
+      return navigate("/explore");
     }
 
     setStartTransition(true);
 
-    const EFFECT_TIME_MULTIPLIER = 1.7;
+    const EFFECT_TIME_MULTIPLIER = 2;
 
     setTimeout(() => {
-      navigate("/enter");
-    }, 1450 * EFFECT_TIME_MULTIPLIER);
+      navigate("/explore");
+    }, 2850 * EFFECT_TIME_MULTIPLIER);
   };
 
   const onCorrectPassword = () => {
@@ -59,7 +60,9 @@ const ComingSoonPage = () => {
       {renderBgPlayer()}
       <div className="curtain-left" />
       <div className="curtain-right" />
-      <div className="curtain-behind" />
+      <div className="curtain-behind">
+        <HomeBackground />
+      </div>
       <div className="center-aligned-column content">
         <div className="leading-text">COMING SOON</div>
         <div className="secondary-text">

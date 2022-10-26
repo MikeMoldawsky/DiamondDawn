@@ -11,6 +11,8 @@ import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import { tokensSelector } from "store/tokensReducer";
 import size from "lodash/size";
 import { getCDNObjectUrl, isDemo } from "utils";
+import HomeBackground from "components/HomeBackground";
+import Countdown from "components/Countdown";
 
 const EnterButton = () => {
   const { systemStage, isActive } = useSelector(systemSelector);
@@ -57,12 +59,62 @@ const Homepage = () => {
   return (
     <div className="page homepage" onScroll={handleScroll}>
       <div className="top-content center-aligned-column">
+        <HomeBackground />
         <div className="common-view">
           <img src={getCDNObjectUrl("/images/infinity_logo.png")} alt="" />
           <div className="secondary-text">
-            Unearth your very own diamond
-            <br />
-            in the world's first virtual mine
+            For the first time in history,
+            <br />a gemological symbiosis of the virtual and the physical
+          </div>
+          <div className="countdown">
+            <Countdown
+              renderParts={{ weeks: false }}
+              parts={{ days: 3, hours: 3, minutes: 3, seconds: 0 }}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="eternal-treasures">
+        <div className="bg-stars" />
+        <div className="grid">
+          <div className="space-cell" />
+          <div className="title-cell">
+            <div className="leading-text">ETERNAL TREASURES</div>
+          </div>
+          <div className="text1-cell">
+            <p className="text">
+              Deep below the earth’s surface, under immense pressure and
+              scorching heat over billions of years, a marvel of nature is
+              formed. A diamond.
+            </p>
+            <p className="text">
+              For thousands of years, they have been the ultimate symbol of
+              wealth and abundance, worshiped and fought over by emperors for
+              their sparkle and beauty. The strongest, most enduring material on
+              Earth, a single diamond, smaller than a pea, can cost tens of
+              millions of dollars for its clarity and color.
+            </p>
+            <p className="text">
+              <b>But are diamonds REALLY that rare?</b>
+            </p>
+          </div>
+          <div className="text2-cell">
+            <p className="text">
+              The recent rise of lab-grown diamonds makes it impossible for
+              anyone to distinguish a ‘real’ diamond from a man-made one without
+              special equipment. Not only that, but it’s largely unknown that
+              big diamond companies keep vast quantities of diamonds hidden away
+              in huge vaults, controlling the circulation and supply of the
+              diamond market. The less diamonds we think are the more ‘rare’
+              they appear to be.
+            </p>
+            <p className="text">
+              <b>
+                So, if the supply of diamonds is unknown, and we can now produce
+                them ourselves, How can we evaluate the actual worth of a
+                physical diamond?
+              </b>
+            </p>
           </div>
         </div>
       </div>

@@ -10,17 +10,17 @@
 
   .leading-text {
     color: white;
-    font-size: $font42px !important;
+    font-size: $font50px !important;
+    margin-bottom: 0.8rem;
   }
 
   .secondary-text {
-    margin-bottom: 0.8em;
-    font-size: 1em !important;
+    font-size: $font18px !important;
     line-height: 1.4em;
     font-weight: 300;
 
     div {
-      margin-bottom: 0.2em;
+      margin-bottom: 0.5rem;
       color: white;
       font-weight: 500;
     }
@@ -29,7 +29,7 @@
   .layout-box {
     display: grid;
     grid-template-columns: repeat(2, 7fr);
-    grid-template-rows: 6fr 4fr 6fr 3fr;
+    grid-template-rows: 6.5fr 4fr 6fr 3fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     height: 87.5%;

@@ -58,11 +58,10 @@
   width: auto;
   letter-spacing: 0;
   text-transform: uppercase;
-  //align-self: flex-start;
   border: none;
+  box-shadow: none !important;
 
   svg {
-    height: 1.4em;
     margin-right: 16px;
   }
 

@@ -10,9 +10,8 @@ export const NotConnected = ({ viewName }) => {
         <div className="leading-text">WELCOME</div>
         <div className="leading-text">TO {viewName}</div>
       </div>
-      <div className="center-aligned-column bottom-content">
-        <img src={getCDNObjectUrl("/images/infinity_icon.png")} alt="" />
-        {/*<div className="secondary-text">CONNECT WALLET TO CONTINUE</div>*/}
+      <img src={getCDNObjectUrl("/images/infinity_icon.png")} alt="" />
+      <div className="connect-wallet">
         <Wallet label="CONNECT WALLET TO CONTINUE" className="button" />
       </div>
     </div>

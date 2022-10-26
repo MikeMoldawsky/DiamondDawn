@@ -63,7 +63,7 @@ const MainLayout = () => {
               //   isDemoMode && !demoAuth ? <ComingSoonPage /> : <Homepage />
               // }
             />
-            <Route path="/enter" element={<Homepage />} />
+            <Route path="/explore" element={<Homepage />} />
             <Route path="/coming-soon" element={<ComingSoonPage />} />
             <Route path="/">
               <Route

@@ -2,10 +2,13 @@ import React from "react";
 import Countdown from "react-countdown";
 import "./Countdown.scss";
 import toLower from "lodash/toLower";
+import isNil from "lodash/isNil";
+import get from "lodash/get";
 
 const CountdownComp = ({ date, renderParts, onComplete, parts }) => {
-  const renderPart = (caption, value) =>
-    !renderParts || renderParts[toLower(caption)] ? (
+  const renderPart = (caption, value) => {
+    const key = toLower(caption);
+    return !renderParts || !isNil(get(parts, key)) || get(renderParts, key) ? (
       <div className="center-aligned-column">
         <div className="value">
           {value.toString().length === 1 ? "0" + value : value}
@@ -13,6 +16,7 @@ const CountdownComp = ({ date, renderParts, onComplete, parts }) => {
         <div className="caption">{caption}</div>
       </div>
     ) : null;
+  };
 
   const renderer = ({ days, hours, minutes, seconds }) => {
     const weeks = Math.floor(days / 7);
