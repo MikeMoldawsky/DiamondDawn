@@ -32,7 +32,8 @@ const ComingSoonPage = () => {
   );
 
   const transition = () => {
-    if (!process.env.REACT_APP_ENABLE_TRANSITIONS) {
+    console.log('process.env', process.env)
+    if (process.env.REACT_APP_ENABLE_TRANSITIONS !== "true") {
       return navigate("/explore");
     }
 
@@ -66,12 +67,12 @@ const ComingSoonPage = () => {
       <div className="center-aligned-column content">
         <div className="leading-text">COMING SOON</div>
         <div className="secondary-text">
-          Virtual or Physical.
+          The first-ever virtual diamond mining experience
           <br />
-          Which diamond will you choose?
+          that merges the digital with the tangible
         </div>
         {isDemo() ? (
-          <PasswordBox onCorrect={onCorrectPassword} />
+          <PasswordBox onCorrect={onCorrectPassword} passwordLength={8} buttonText="EXPLORE" />
         ) : (
           <div className="button" onClick={transition}>
             EXPLORE
