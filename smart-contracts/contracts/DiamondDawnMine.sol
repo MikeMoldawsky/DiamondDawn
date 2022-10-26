@@ -224,7 +224,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     ) private view returns (string memory) {
         Serializer.NFTMetadata memory nftMetadata = Serializer.NFTMetadata({
             name: Serializer.getName(metadata, tokenId),
-            image: string.concat(noExtensionURI, ".jpeg"),
+            image: string.concat(noExtensionURI, ".jpeg"), // TODO: change to jpg
             animationUrl: string.concat(noExtensionURI, ".mp4"),
             attributes: _getJsonAttributes(metadata)
         });
