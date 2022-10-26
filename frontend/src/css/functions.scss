@@ -1,6 +1,10 @@
+$widthRef: 1920;
+$heightRef: 1080;
+$fontRef: 18;
+
 @function calc-font-size($min, $percWidth: 1, $percHeight: 1) {
-  $w-rel: 100vw * $percWidth / 108;
-  $h-rel: 100vh * $percHeight / 67.5;
+  $w-rel: 100vw * $percWidth / ($widthRef / $fontRef);
+  $h-rel: 100vh * $percHeight / ($heightRef / $fontRef);
 
   @return max(min($w-rel, $h-rel), $min);
 }
