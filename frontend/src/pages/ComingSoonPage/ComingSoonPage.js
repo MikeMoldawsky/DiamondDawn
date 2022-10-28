@@ -48,6 +48,7 @@ const ComingSoonPage = () => {
 
   const onCorrectPassword = () => {
     dispatch(updateUiState({ demoAuth: true }));
+    localStorage.setItem('demoAuth', "true");
     transition();
   };
 
