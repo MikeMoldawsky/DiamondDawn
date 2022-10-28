@@ -74,7 +74,7 @@ const ComingSoonPage = () => {
         {isDemo() ? (
           <PasswordBox onCorrect={onCorrectPassword} passwordLength={8} buttonText="EXPLORE" />
         ) : (
-          <div className="button" onClick={transition}>
+          <div className="button transparent" onClick={transition}>
             EXPLORE
           </div>
         )}

@@ -68,7 +68,7 @@ const PasswordBox = ({ onCorrect, passwordLength, buttonText }) => {
           ))}
         </div>
       </div>
-      <ActionButton actionKey="Submit Password" isLoading={checkingPassword} disabled={password.length !== passwordLength} onClick={submitPassword}>
+      <ActionButton actionKey="Submit Password" className="transparent" isLoading={checkingPassword} disabled={password.length !== passwordLength} onClick={submitPassword}>
         {buttonText}
       </ActionButton>
     </div>

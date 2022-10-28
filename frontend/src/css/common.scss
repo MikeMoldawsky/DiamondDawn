@@ -175,6 +175,26 @@ b {
   font-size: $font18px;
 }
 
+.logo-box {
+  position: relative;
+
+  img {
+    width: 8em;
+  }
+
+  &:after {
+    content: 'DIAMOND DAWN';
+    position: absolute;
+    bottom: -1.5em;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: $font12px;
+    letter-spacing: .1em;
+    font-weight: 400;
+  }
+}
+
 .video-placeholder {
   height: 100% !important;
   width: 100% !important;

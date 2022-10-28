@@ -11,11 +11,13 @@ import AudioPlayer from "components/AudioPlayer";
 import {getCDNObjectUrl, isDemo, isDemoAndAuthSelector} from "utils";
 import { DIAMOND_DAWN_TWITTER_URL } from "consts";
 import {useSelector} from "react-redux";
+import Logo from "components/Logo";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const location = useLocation();
-  const showLogo = location.pathname !== "/explore";
   const isRestricted = useSelector(isDemoAndAuthSelector(false))
+  console.log({ location, isRestricted })
+  const showLogo = location.pathname !== "/explore" && (location.pathname !== "/" || isRestricted);
 
   return (
     <header>
@@ -32,16 +34,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             </>
           )}
         </div>
-        <div className="logo-box">
-          {showLogo && (
-            <NavLink to="/">
-              <img
-                src={getCDNObjectUrl("/images/infinity_logo.png")}
-                alt="DIAMOND DAWN"
-              />
-            </NavLink>
-          )}
-        </div>
+        {showLogo && <Logo withLink withText />}
         <div className="center-aligned-row header-side">
           <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
             <FontAwesomeIcon className="menu-icon" icon={faTwitter} />

@@ -1,18 +1,26 @@
 import React from "react";
 import ReactPlayer from "react-player";
 import { getCDNObjectUrl } from "utils";
+import logoVideo from 'assets/videos/logo.mp4'
 
 const AnimatedLogo = () => {
   return (
     <ReactPlayer
-      url={getCDNObjectUrl("/videos/infinity_logo.mp4")}
+      url={logoVideo}
       playing
       playsinline
       controls={false}
       muted
       loop
       className="react-player loader"
-      width={300}
+      width="100%"
+      config={{
+        file: {
+          attributes: {
+            type: "video/mp4"
+          }
+        }
+      }}
     />
   );
 };

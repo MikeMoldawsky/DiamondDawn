@@ -158,6 +158,7 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
 
 export const isDemo = () => process.env.REACT_APP_DEMO_MODE === "true";
 
+// export const isDemoAndAuthSelector = (isAuth) => state => isAuth
 export const isDemoAndAuthSelector = (isAuth) => state => isDemo() && state.ui.demoAuth === isAuth
 
 export const getCDNObjectUrl = (objectPath) =>

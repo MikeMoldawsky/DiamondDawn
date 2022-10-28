@@ -13,6 +13,8 @@ import size from "lodash/size";
 import {getCDNObjectUrl, isDemo, isDemoAndAuthSelector} from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
+import AnimatedLogo from "components/AnimatedLogo";
+import Logo from "components/Logo";
 
 const EnterButton = () => {
   const { systemStage, isActive } = useSelector(systemSelector);
@@ -61,12 +63,13 @@ const Homepage = () => {
       <div className="top-content center-aligned-column">
         <HomeBackground />
         <div className="common-view">
-          <img src={getCDNObjectUrl("/images/infinity_logo.png")} alt="" />
+          {/*<AnimatedLogo />*/}
+          <Logo withText />
           <div className="secondary-text">
-            For the first time in history,
-            <br />a gemological symbiosis of the virtual and the physical
+            For the first time in history, a gemological symbiosis
+            <br />of the virtual and the physical
           </div>
-          <div className="countdown">
+          <div className="countdown-container">
             <div className="text">
               Mine will open in
             </div>
@@ -74,6 +77,9 @@ const Homepage = () => {
               parts={{ days: 24, hours: 3, minutes: 0, seconds: 0 }}
               smallParts={{ minutes: true, seconds: true}}
             />
+          </div>
+          <div>
+            <div className="button transparent disabled">ENTER</div>
           </div>
         </div>
       </div>
