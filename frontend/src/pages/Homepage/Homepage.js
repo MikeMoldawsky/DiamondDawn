@@ -127,6 +127,13 @@ const Homepage = () => {
           </div>
         </div>
       </div>
+      <div className="value-text">
+        <div className="bg-left-hand" />
+        <div className="bg-right-hand" />
+        <div className="center-aligned-column text">
+          Today’s definition of value is a subject of debate. What makes a thing valuable?<br />With the surge in recent years of NFT artworks that are 100% virtual being auctioned in world renowned<br />auction houses, such as Christie’s and Sotheby’s, and selling for tens of<br /><br />millions of dollars, the lines between the physical and virtual are becoming progressively more blurred.<br />Who would have imagined, even as little as a decade ago, that it would be possible for a<br />digital creation to be equally (or even more) valuable than its physical counterpart?
+        </div>
+      </div>
       {/*<div className="bg-stars" />*/}
       {/*<div className="bg" />*/}
       {/*<div className="box box-top">*/}

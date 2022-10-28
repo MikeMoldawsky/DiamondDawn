@@ -7,6 +7,12 @@
   height: 100vh;
   $animationMultiplier: 1;
 
+  .bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
   .top-content {
     position: relative;
     height: 100%;
@@ -68,20 +74,20 @@
     }
   }
 
+  $viewHeightRef: calc(100vw * 9 / 16);
+
   .eternal-treasures {
     position: relative;
-    height: 120%;
+    height: 1.35 * $viewHeightRef;
     background: url("../../assets/images/homepage/homepage-ancient.png")
       no-repeat center 20%;
     background-size: 147%;
     z-index: 1;
 
     .bg-stars {
+      @extend .bg;
       background: url("../../assets/images/homepage/homepage-ancient-stars.png")
         no-repeat center center;
-      position: absolute;
-      width: 100%;
-      height: 100%;
       z-index: 1;
       background-size: 104%;
       top: -15%;
@@ -110,6 +116,35 @@
     }
     .text2-cell {
       grid-area: 3 / 2 / 4 / 3;
+    }
+  }
+
+  .value-text {
+    position: relative;
+    height: .85 * $viewHeightRef;
+    margin-top: -(.2 * $viewHeightRef);
+    z-index: 1;
+    text-align: center;
+    line-height: 2.2em;
+
+    .bg-left-hand {
+      @extend .bg;
+      background: url("../../assets/images/homepage/homepage-left-hand.png")
+      no-repeat left bottom;
+      background-size: auto 100%;
+    }
+
+    .bg-right-hand {
+      @extend .bg;
+      background: url("../../assets/images/homepage/homepage-right-hand.png")
+      no-repeat 113% top;
+      background-size: auto 100%;
+    }
+
+    .text {
+      position: relative;
+      height: 100%;
+      top: 6%;
     }
   }
 }
