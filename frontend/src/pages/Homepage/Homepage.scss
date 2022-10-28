@@ -50,14 +50,14 @@
           width: 100%;
           text-align: center;
           font-size: $font34px;
-          letter-spacing: .1em;
+          letter-spacing: 0.1em;
         }
       }
     }
 
     .text {
       color: $text_gray;
-      letter-spacing: .2rem;
+      letter-spacing: 0.2rem;
     }
 
     .countdown-container {
@@ -67,7 +67,7 @@
       margin: 3rem 0 2rem;
 
       .text {
-        margin-bottom: .4em;
+        margin-bottom: 0.4em;
       }
 
       .countdown {
@@ -129,8 +129,8 @@
 
   .value-text {
     position: relative;
-    height: .85 * $viewHeightRef;
-    margin-top: -(.2 * $viewHeightRef);
+    height: 0.85 * $viewHeightRef;
+    margin-top: -(0.2 * $viewHeightRef);
     z-index: 1;
     text-align: center;
     line-height: 2.2em;
@@ -138,14 +138,14 @@
     .bg-left-hand {
       @extend .bg;
       background: url("../../assets/images/homepage/homepage-left-hand.png")
-      no-repeat left bottom;
+        no-repeat left bottom;
       background-size: auto 100%;
     }
 
     .bg-right-hand {
       @extend .bg;
       background: url("../../assets/images/homepage/homepage-right-hand.png")
-      no-repeat 113% top;
+        no-repeat 113% top;
       background-size: auto 100%;
     }
 
@@ -165,7 +165,7 @@
     color: white;
 
     .react-player {
-      opacity: .4;
+      opacity: 0.4;
       position: absolute;
       width: 100%;
       height: 100%;
@@ -187,9 +187,14 @@
 
   footer {
     background-color: black;
-    height: .4 * $viewHeightRef;
-    -webkit-mask-image: -webkit-gradient(linear, left top, left 15%,
-            from(rgba(0,0,0,0)), to(rgba(0,0,0,1)));
+    height: 0.4 * $viewHeightRef;
+    -webkit-mask-image: -webkit-gradient(
+      linear,
+      left top,
+      left 15%,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
+    );
 
     .footer-inner {
       width: 25rem;

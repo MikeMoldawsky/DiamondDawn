@@ -8,16 +8,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import AudioPlayer from "components/AudioPlayer";
-import {getCDNObjectUrl, isDemo, isDemoAndAuthSelector} from "utils";
+import { getCDNObjectUrl, isDemo, isDemoAndAuthSelector } from "utils";
 import { DIAMOND_DAWN_TWITTER_URL } from "consts";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import Logo from "components/Logo";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const location = useLocation();
-  const isRestricted = useSelector(isDemoAndAuthSelector(false))
-  console.log({ location, isRestricted })
-  const showLogo = location.pathname !== "/explore" && (location.pathname !== "/" || isRestricted);
+  const isRestricted = useSelector(isDemoAndAuthSelector(false));
+  console.log({ location, isRestricted });
+  const showLogo =
+    location.pathname !== "/explore" &&
+    (location.pathname !== "/" || isRestricted);
 
   return (
     <header>

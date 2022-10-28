@@ -6,22 +6,31 @@ import isNil from "lodash/isNil";
 import get from "lodash/get";
 import classNames from "classnames";
 
-const CountdownComp = ({ date, renderParts, smallParts = {}, onComplete, parts, zeroMode="fill" }) => {
-  const renderValue = value => {
-    if (zeroMode === "no" || value.toString().length !== 1) return value
+const CountdownComp = ({
+  date,
+  renderParts,
+  smallParts = {},
+  onComplete,
+  parts,
+  zeroMode = "fill",
+}) => {
+  const renderValue = (value) => {
+    if (zeroMode === "no" || value.toString().length !== 1) return value;
     if (zeroMode === "fill" || (zeroMode === "zeroOnly" && value === 0)) {
-      return "0" + value
+      return "0" + value;
     }
-    return value
-  }
+    return value;
+  };
 
   const renderPart = (caption, value) => {
     const key = toLower(caption);
     return !renderParts || !isNil(get(parts, key)) || get(renderParts, key) ? (
-      <div className={classNames("center-aligned-column countdown-part", { small: smallParts[key] })}>
-        <div className="value">
-          {renderValue(value)}
-        </div>
+      <div
+        className={classNames("center-aligned-column countdown-part", {
+          small: smallParts[key],
+        })}
+      >
+        <div className="value">{renderValue(value)}</div>
         <div className="caption">{caption}</div>
       </div>
     ) : null;

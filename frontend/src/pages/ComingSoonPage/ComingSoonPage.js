@@ -32,7 +32,7 @@ const ComingSoonPage = () => {
   );
 
   const transition = () => {
-    console.log('process.env', process.env)
+    console.log("process.env", process.env);
     if (process.env.REACT_APP_ENABLE_TRANSITIONS !== "true") {
       return navigate("/explore");
     }
@@ -48,7 +48,7 @@ const ComingSoonPage = () => {
 
   const onCorrectPassword = () => {
     dispatch(updateUiState({ demoAuth: true }));
-    localStorage.setItem('demoAuth', "true");
+    localStorage.setItem("demoAuth", "true");
     transition();
   };
 
@@ -73,7 +73,11 @@ const ComingSoonPage = () => {
           that merges the digital with the tangible
         </div>
         {isDemo() ? (
-          <PasswordBox onCorrect={onCorrectPassword} passwordLength={8} buttonText="EXPLORE" />
+          <PasswordBox
+            onCorrect={onCorrectPassword}
+            passwordLength={8}
+            buttonText="EXPLORE"
+          />
         ) : (
           <div className="button transparent" onClick={transition}>
             EXPLORE

@@ -1,21 +1,21 @@
-import React, {useEffect, useCallback} from "react";
+import React, { useEffect, useCallback } from "react";
 import "./Homepage.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId } from "store/uiReducer";
-import {isDemoAndAuthSelector} from "utils";
+import { isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
 import AnimatedLogo from "components/AnimatedLogo";
 import Logo from "components/Logo";
-import teaserShortUrl from 'assets/videos/teaser-short.mp4'
+import teaserShortUrl from "assets/videos/teaser-short.mp4";
 import ReactPlayer from "react-player";
-import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
 const Homepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isRestricted = useSelector(isDemoAndAuthSelector(false))
+  const isRestricted = useSelector(isDemoAndAuthSelector(false));
 
   useEffect(() => {
     isRestricted && navigate("/");
@@ -48,15 +48,14 @@ const Homepage = () => {
           <Logo withText />
           <div className="secondary-text">
             For the first time in history, a gemological symbiosis
-            <br />of the virtual and the physical
+            <br />
+            of the virtual and the physical
           </div>
           <div className="countdown-container">
-            <div className="text">
-              Mine will open in
-            </div>
+            <div className="text">Mine will open in</div>
             <Countdown
               parts={{ days: 24, hours: 3, minutes: 0, seconds: 0 }}
-              smallParts={{ minutes: true, seconds: true}}
+              smallParts={{ minutes: true, seconds: true }}
             />
           </div>
           <div>
@@ -112,22 +111,62 @@ const Homepage = () => {
         <div className="bg-left-hand" />
         <div className="bg-right-hand" />
         <div className="center-aligned-column text">
-          Today’s definition of value is a subject of debate. What makes a thing valuable?<br />With the surge in recent years of NFT artworks that are 100% virtual being auctioned in world renowned<br />auction houses, such as Christie’s and Sotheby’s, and selling for tens of<br /><br />millions of dollars, the lines between the physical and virtual are becoming progressively more blurred.<br />Who would have imagined, even as little as a decade ago, that it would be possible for a<br />digital creation to be equally (or even more) valuable than its physical counterpart?
+          Today’s definition of value is a subject of debate. What makes a thing
+          valuable?
+          <br />
+          With the surge in recent years of NFT artworks that are 100% virtual
+          being auctioned in world renowned
+          <br />
+          auction houses, such as Christie’s and Sotheby’s, and selling for tens
+          of
+          <br />
+          <br />
+          millions of dollars, the lines between the physical and virtual are
+          becoming progressively more blurred.
+          <br />
+          Who would have imagined, even as little as a decade ago, that it would
+          be possible for a<br />
+          digital creation to be equally (or even more) valuable than its
+          physical counterpart?
         </div>
       </div>
       <div className="teaser">
         {renderTeaserBg()}
         <div className="center-aligned-column content">
           <div className="text">
-            Diamond Dawn is a social experiment that pushes this concept to the limit.<br />For the first time in history, collectors will have the choice to create their own digital artwork,<br />and at the end of their journey, face the ultimate decision - whether to keep their art piece<br />digital, or transform it into physical form.<br /><br />Will they stand by their past notions of the physical being more valuable, or follow their<br />confidence in the blockchain as the future?<br /><br /><b>What do YOU believe? What do YOU value?</b><br /><b>The final choice is yours to make.</b>
+            Diamond Dawn is a social experiment that pushes this concept to the
+            limit.
+            <br />
+            For the first time in history, collectors will have the choice to
+            create their own digital artwork,
+            <br />
+            and at the end of their journey, face the ultimate decision -
+            whether to keep their art piece
+            <br />
+            digital, or transform it into physical form.
+            <br />
+            <br />
+            Will they stand by their past notions of the physical being more
+            valuable, or follow their
+            <br />
+            confidence in the blockchain as the future?
+            <br />
+            <br />
+            <b>What do YOU believe? What do YOU value?</b>
+            <br />
+            <b>The final choice is yours to make.</b>
           </div>
           <PlayCircleOutlineIcon />
-          <div><b>PLAY FULL TRAILER</b></div>
+          <div>
+            <b>PLAY FULL TRAILER</b>
+          </div>
         </div>
       </div>
       <footer>
         <div className="footer-inner">
-          <div className="button transparent disabled">REQUEST AN INVITATION</div>
+          <div className="button transparent disabled">
+            REQUEST AN INVITATION
+          </div>
           <div className="center-aligned-row">
             <span className="link">Privacy Policy</span>
             <span className="link">Terms & Conditions</span>

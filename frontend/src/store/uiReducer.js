@@ -1,10 +1,10 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
-import isNil from 'lodash/isNil'
+import isNil from "lodash/isNil";
 
 const resolveDemoAuth = () => {
-  const demoAuth = localStorage.getItem('demoAuth')
-  return !isNil(demoAuth) ? Boolean(demoAuth) : false
-}
+  const demoAuth = localStorage.getItem("demoAuth");
+  return !isNil(demoAuth) ? Boolean(demoAuth) : false;
+};
 
 const INITIAL_STATE = {
   selectedTokenId: -1,

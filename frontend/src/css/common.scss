@@ -183,14 +183,14 @@ b {
   }
 
   &:after {
-    content: 'DIAMOND DAWN';
+    content: "DIAMOND DAWN";
     position: absolute;
     bottom: -1.5em;
     left: 0;
     width: 100%;
     text-align: center;
     font-size: $font12px;
-    letter-spacing: .1em;
+    letter-spacing: 0.1em;
     font-weight: 400;
   }
 }

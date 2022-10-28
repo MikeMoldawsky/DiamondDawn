@@ -1,7 +1,7 @@
 import React from "react";
 import ReactPlayer from "react-player";
 import { getCDNObjectUrl } from "utils";
-import logoVideo from 'assets/videos/logo.mp4'
+import logoVideo from "assets/videos/logo.mp4";
 
 const AnimatedLogo = () => {
   return (
@@ -17,9 +17,9 @@ const AnimatedLogo = () => {
       config={{
         file: {
           attributes: {
-            type: "video/mp4"
-          }
-        }
+            type: "video/mp4",
+          },
+        },
       }}
     />
   );

@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import classNames from "classnames";
 import "./PasswordBox.scss";
 import { demoAuthApi } from "api/serverApi";
-import map from 'lodash/map'
+import map from "lodash/map";
 import ActionButton from "components/ActionButton";
 import useActionDispatch from "hooks/useActionDispatch";
 
@@ -11,10 +11,10 @@ const PasswordBox = ({ onCorrect, passwordLength, buttonText }) => {
   const pwdInput = useRef(null);
   const [checkingPassword, setCheckingPassword] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const actionDispatch = useActionDispatch()
+  const actionDispatch = useActionDispatch();
 
   const submitPassword = async () => {
-    if (passwordLength !== password.length) return
+    if (passwordLength !== password.length) return;
 
     pwdInput.current.blur();
     setCheckingPassword(true);
@@ -68,7 +68,13 @@ const PasswordBox = ({ onCorrect, passwordLength, buttonText }) => {
           ))}
         </div>
       </div>
-      <ActionButton actionKey="Submit Password" className="transparent" isLoading={checkingPassword} disabled={password.length !== passwordLength} onClick={submitPassword}>
+      <ActionButton
+        actionKey="Submit Password"
+        className="transparent"
+        isLoading={checkingPassword}
+        disabled={password.length !== passwordLength}
+        onClick={submitPassword}
+      >
         {buttonText}
       </ActionButton>
     </div>

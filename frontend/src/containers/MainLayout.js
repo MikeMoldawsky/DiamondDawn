@@ -29,14 +29,14 @@ import { loadContractInfo } from "store/systemReducer";
 import AccountProvider from "containers/AccountProvider";
 import ComingSoonPage from "pages/ComingSoonPage";
 import { useSelector } from "react-redux";
-import {isDemo, isDemoAndAuthSelector} from "utils";
+import { isDemo, isDemoAndAuthSelector } from "utils";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const actionDispatch = useActionDispatch();
-  const isRestricted = useSelector(isDemoAndAuthSelector(false))
+  const isRestricted = useSelector(isDemoAndAuthSelector(false));
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");
