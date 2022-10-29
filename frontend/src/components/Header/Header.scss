@@ -35,14 +35,9 @@ header {
 
   .logo-box {
     position: absolute;
-    top: 0;
+    top: 2em;
     left: 50%;
     transform: translateX(-50%);
-
-    img {
-      height: 5.75em;
-      width: unset;
-    }
   }
 
   svg.menu-icon {

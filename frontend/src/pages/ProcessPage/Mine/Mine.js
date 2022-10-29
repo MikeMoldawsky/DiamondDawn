@@ -10,7 +10,7 @@ import useMountLogger from "hooks/useMountLogger";
 import { mineApi } from "api/contractApi";
 import { uiSelector } from "store/uiReducer";
 import DiamondPicker from "components/DiamondPicker";
-import { getCDNObjectUrl } from "utils";
+import { getCDNVideoUrl } from "utils";
 
 const Mine = () => {
   const contract = useDDContract();
@@ -43,7 +43,7 @@ const Mine = () => {
   return (
     <ActionView
       transact={() => mineApi(contract, selectedTokenId)}
-      videoUrl={getCDNObjectUrl("/videos/post_mine.mp4")}
+      videoUrl={getCDNVideoUrl("post_mine.mp4")}
       requireActionable
     >
       <MineContent />

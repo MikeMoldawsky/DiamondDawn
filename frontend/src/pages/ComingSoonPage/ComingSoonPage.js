@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch } from "react-redux";
-import { getCDNObjectUrl, isDemo } from "utils";
+import { getCDNVideoUrl, isDemo } from "utils";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import HomeBackground from "components/HomeBackground";
@@ -17,7 +17,7 @@ const ComingSoonPage = () => {
   const renderBgPlayer = useCallback(
     () => (
       <ReactPlayer
-        url={getCDNObjectUrl("/videos/coming_soon.mp4")}
+        url={getCDNVideoUrl("coming_soon.mp4")}
         playing
         playsinline
         controls={false}
@@ -32,7 +32,8 @@ const ComingSoonPage = () => {
   );
 
   const transition = () => {
-    if (!process.env.REACT_APP_ENABLE_TRANSITIONS) {
+    console.log("process.env", process.env);
+    if (process.env.REACT_APP_ENABLE_TRANSITIONS !== "true") {
       return navigate("/explore");
     }
 
@@ -47,6 +48,7 @@ const ComingSoonPage = () => {
 
   const onCorrectPassword = () => {
     dispatch(updateUiState({ demoAuth: true }));
+    localStorage.setItem("demoAuth", "true");
     transition();
   };
 
@@ -66,14 +68,18 @@ const ComingSoonPage = () => {
       <div className="center-aligned-column content">
         <div className="leading-text">COMING SOON</div>
         <div className="secondary-text">
-          Virtual or Physical.
+          The first-ever virtual diamond mining experience
           <br />
-          Which diamond will you choose?
+          that merges the digital with the tangible
         </div>
         {isDemo() ? (
-          <PasswordBox onCorrect={onCorrectPassword} />
+          <PasswordBox
+            onCorrect={onCorrectPassword}
+            passwordLength={8}
+            buttonText="EXPLORE"
+          />
         ) : (
-          <div className="button" onClick={transition}>
+          <div className="button transparent" onClick={transition}>
             EXPLORE
           </div>
         )}

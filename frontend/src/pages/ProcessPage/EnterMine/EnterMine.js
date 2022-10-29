@@ -16,7 +16,7 @@ import useMountLogger from "hooks/useMountLogger";
 import { forgeApi } from "api/contractApi";
 import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
-import { isDemo, getCDNObjectUrl } from "utils";
+import { isDemo, getCDNVideoUrl } from "utils";
 import EnterMineView from "pages/ProcessPage/EnterMine/EnterMineView";
 import { SYSTEM_STAGE } from "consts";
 
@@ -79,7 +79,7 @@ const EnterMine = ({ invite }) => {
       isEnter
       watch={watchTokenMinedBy(account.address, maxTokenId)}
       transact={executeEnterMine}
-      videoUrl={getCDNObjectUrl("/videos/post_enter.mp4")}
+      videoUrl={getCDNVideoUrl("post_enter.mp4")}
     >
       <EnterMineContent />
     </ActionView>

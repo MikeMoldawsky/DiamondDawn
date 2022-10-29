@@ -4,15 +4,33 @@ import "./Countdown.scss";
 import toLower from "lodash/toLower";
 import isNil from "lodash/isNil";
 import get from "lodash/get";
+import classNames from "classnames";
 
-const CountdownComp = ({ date, renderParts, onComplete, parts }) => {
+const CountdownComp = ({
+  date,
+  renderParts,
+  smallParts = {},
+  onComplete,
+  parts,
+  zeroMode = "fill",
+}) => {
+  const renderValue = (value) => {
+    if (zeroMode === "no" || value.toString().length !== 1) return value;
+    if (zeroMode === "fill" || (zeroMode === "zeroOnly" && value === 0)) {
+      return "0" + value;
+    }
+    return value;
+  };
+
   const renderPart = (caption, value) => {
     const key = toLower(caption);
     return !renderParts || !isNil(get(parts, key)) || get(renderParts, key) ? (
-      <div className="center-aligned-column">
-        <div className="value">
-          {value.toString().length === 1 ? "0" + value : value}
-        </div>
+      <div
+        className={classNames("center-aligned-column countdown-part", {
+          small: smallParts[key],
+        })}
+      >
+        <div className="value">{renderValue(value)}</div>
         <div className="caption">{caption}</div>
       </div>
     ) : null;

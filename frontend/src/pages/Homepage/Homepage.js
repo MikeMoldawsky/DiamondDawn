@@ -1,76 +1,63 @@
-import React, { useState, useRef, useEffect } from "react";
-import classNames from "classnames";
+import React, { useEffect, useCallback } from "react";
 import "./Homepage.scss";
-import CommonView from "components/CommonView";
-import VideoPlayer from "components/VideoPlayer";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { systemSelector } from "store/systemReducer";
-import { SYSTEM_STAGE, SYSTEM_STAGE_NAME } from "consts";
-import { setSelectedTokenId, uiSelector } from "store/uiReducer";
-import { tokensSelector } from "store/tokensReducer";
-import size from "lodash/size";
-import { getCDNObjectUrl, isDemo } from "utils";
+import { setSelectedTokenId } from "store/uiReducer";
+import { getCDNVideoUrl, isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
-
-const EnterButton = () => {
-  const { systemStage, isActive } = useSelector(systemSelector);
-  const tokens = useSelector(tokensSelector);
-  const visible = systemStage >= SYSTEM_STAGE.MINE && isActive;
-  const disabled = size(tokens) === 0;
-  return visible ? (
-    <NavLink to={`/process`}>
-      <div
-        className={classNames("button text-upper", { disabled })}
-        style={{ marginTop: 40 }}
-      >
-        ENTER {SYSTEM_STAGE_NAME[systemStage]}
-      </div>
-    </NavLink>
-  ) : null;
-};
+import Logo from "components/Logo";
+import ReactPlayer from "react-player";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
 const Homepage = () => {
-  const videoPlayer = useRef(null);
-  const [playVideo, setPlayVideo] = useState(false);
   const dispatch = useDispatch();
-  const { demoAuth } = useSelector(uiSelector);
   const navigate = useNavigate();
+  const isRestricted = useSelector(isDemoAndAuthSelector(false));
 
   useEffect(() => {
-    isDemo() && !demoAuth && navigate("/");
+    isRestricted && navigate("/");
     dispatch(setSelectedTokenId(-1));
   }, []);
 
-  const handleScroll = (event) => {
-    if (playVideo) return;
-
-    const video = videoPlayer.current;
-    const scrollTop = event.currentTarget.scrollTop;
-    const videoTop = video.offsetTop + video.offsetParent.offsetTop;
-    const startPlayAt = videoTop - video.offsetHeight / 3;
-
-    if (scrollTop > startPlayAt) {
-      setPlayVideo(true);
-    }
-  };
+  const renderTeaserBg = useCallback(
+    () => (
+      <ReactPlayer
+        url={getCDNVideoUrl("teaser-short.mp4")}
+        playing
+        playsinline
+        controls={false}
+        className="react-player"
+        muted
+        loop
+        width=""
+        height=""
+      />
+    ),
+    []
+  );
 
   return (
-    <div className="page homepage" onScroll={handleScroll}>
+    <div className="page homepage">
       <div className="top-content center-aligned-column">
         <HomeBackground />
         <div className="common-view">
-          <img src={getCDNObjectUrl("/images/infinity_logo.png")} alt="" />
+          {/*<AnimatedLogo />*/}
+          <Logo withText />
           <div className="secondary-text">
-            For the first time in history,
-            <br />a gemological symbiosis of the virtual and the physical
+            For the first time in history, a gemological symbiosis
+            <br />
+            of the virtual and the physical
           </div>
-          <div className="countdown">
+          <div className="countdown-container">
+            <div className="text">Mine will open in</div>
             <Countdown
-              renderParts={{ weeks: false }}
-              parts={{ days: 3, hours: 3, minutes: 3, seconds: 0 }}
+              parts={{ days: 24, hours: 3, minutes: 0, seconds: 0 }}
+              smallParts={{ minutes: true, seconds: true }}
             />
+          </div>
+          <div>
+            <div className="button transparent disabled">ENTER</div>
           </div>
         </div>
       </div>
@@ -118,26 +105,72 @@ const Homepage = () => {
           </div>
         </div>
       </div>
-      {/*<div className="bg-stars" />*/}
-      {/*<div className="bg" />*/}
-      {/*<div className="box box-top">*/}
-      {/*  <CommonView*/}
-      {/*    leadingText="A BILLION YEARS IN THE MAKING"*/}
-      {/*    secondaryText="the first ever diamond mining experience, from NFT to reality"*/}
-      {/*  >*/}
-      {/*    <img src={getCDNObjectUrl("/images/infinity_logo.png")} alt="" />*/}
-      {/*  </CommonView>*/}
-      {/*  <EnterButton />*/}
-      {/*</div>*/}
-      {/*<div id="video" className="box center-aligned-column box-middle">*/}
-      {/*  <VideoPlayer*/}
-      {/*    id="home-video"*/}
-      {/*    videoPlayer={videoPlayer}*/}
-      {/*    src={getCDNObjectUrl("/videos/teaser.mp4")}*/}
-      {/*    controls*/}
-      {/*    playing={playVideo}*/}
-      {/*  />*/}
-      {/*</div>*/}
+      <div className="value-text">
+        <div className="bg-left-hand" />
+        <div className="bg-right-hand" />
+        <div className="center-aligned-column text">
+          Today’s definition of value is a subject of debate. What makes a thing
+          valuable?
+          <br />
+          With the surge in recent years of NFT artworks that are 100% virtual
+          being auctioned in world renowned
+          <br />
+          auction houses, such as Christie’s and Sotheby’s, and selling for tens
+          of
+          <br />
+          <br />
+          millions of dollars, the lines between the physical and virtual are
+          becoming progressively more blurred.
+          <br />
+          Who would have imagined, even as little as a decade ago, that it would
+          be possible for a<br />
+          digital creation to be equally (or even more) valuable than its
+          physical counterpart?
+        </div>
+      </div>
+      <div className="teaser">
+        {renderTeaserBg()}
+        <div className="center-aligned-column content">
+          <div className="text">
+            Diamond Dawn is a social experiment that pushes this concept to the
+            limit.
+            <br />
+            For the first time in history, collectors will have the choice to
+            create their own digital artwork,
+            <br />
+            and at the end of their journey, face the ultimate decision -
+            whether to keep their art piece
+            <br />
+            digital, or transform it into physical form.
+            <br />
+            <br />
+            Will they stand by their past notions of the physical being more
+            valuable, or follow their
+            <br />
+            confidence in the blockchain as the future?
+            <br />
+            <br />
+            <b>What do YOU believe? What do YOU value?</b>
+            <br />
+            <b>The final choice is yours to make.</b>
+          </div>
+          <PlayCircleOutlineIcon />
+          <div>
+            <b>PLAY FULL TRAILER</b>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <div className="footer-inner">
+          <div className="button transparent disabled">
+            REQUEST AN INVITATION
+          </div>
+          <div className="center-aligned-row">
+            <span className="link">Privacy Policy</span>
+            <span className="link">Terms & Conditions</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

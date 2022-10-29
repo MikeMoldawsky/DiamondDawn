@@ -2,6 +2,7 @@
 
 .countdown {
   justify-content: space-between;
+  align-items: flex-end;
 
   .value {
     font-size: $font50px;
@@ -11,5 +12,13 @@
 
   .caption {
     font-size: $font15px;
+  }
+
+  .countdown-part.small {
+    opacity: 0.4;
+
+    .value {
+      font-size: $font50px !important;
+    }
   }
 }

@@ -8,7 +8,7 @@ import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import { polishApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
-import { getCDNObjectUrl } from "utils";
+import { getCDNVideoUrl } from "utils";
 
 const Polish = () => {
   const contract = useDDContract();
@@ -45,7 +45,7 @@ const Polish = () => {
   return (
     <ActionView
       transact={() => polishApi(contract, selectedTokenId)}
-      videoUrl={getCDNObjectUrl("/videos/post_polish.mp4")}
+      videoUrl={getCDNVideoUrl("post_polish.mp4")}
       requireActionable
     >
       <PolishContent />

@@ -12,7 +12,7 @@ import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import { shipApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
-import { getCDNObjectUrl } from "utils";
+import { getCDNVideoUrl } from "utils";
 
 const Ship = () => {
   const contract = useDDContract();
@@ -93,7 +93,7 @@ const Ship = () => {
   return (
     <ActionView
       transact={() => shipApi(contract, selectedTokenId)}
-      videoUrl={getCDNObjectUrl("/videos/post_ship.mp4")}
+      videoUrl={getCDNVideoUrl("post_ship.mp4")}
       isBurn
       requireActionable
     >

@@ -14,6 +14,7 @@ const ActionButton = ({
   className,
   onClick,
   disabled,
+  isLoading,
   children,
   ...props
 }) => {
@@ -40,7 +41,7 @@ const ActionButton = ({
       onClick={clickHandler}
       {...props}
     >
-      {isPending ? (
+      {isLoading || isPending ? (
         <BeatLoader color={"#000"} loading={true} size={10} />
       ) : (
         <div className="button-content">{children}</div>

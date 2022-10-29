@@ -2,7 +2,8 @@
 @import "css/functions";
 
 .page.collector-page {
-  background: url("../../assets/images/collector-bg.png") no-repeat top center;
+  background: url($CDN_URL + "/images/collector/collector-bg.png") no-repeat top
+    center;
   background-size: cover;
 
   .main-box {
@@ -14,9 +15,5 @@
 
   .secondary-text {
     font-size: $font25px;
-  }
-
-  .text {
-    font-size: $font18px;
   }
 }

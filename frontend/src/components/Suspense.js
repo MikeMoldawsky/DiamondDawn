@@ -41,7 +41,7 @@ export const Suspense = ({ actions, withLoader, viewName, children }) => {
   if (isReady) return children;
   if (withLoader)
     return (
-      <div className="box-content">
+      <div className="box-content loading-bg">
         <Loading />
       </div>
     );
