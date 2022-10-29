@@ -1,12 +1,11 @@
 import React from "react";
 import ReactPlayer from "react-player";
-import { getCDNObjectUrl } from "utils";
-import logoVideo from "assets/videos/logo.mp4";
+import { getCDNVideoUrl } from "utils";
 
 const AnimatedLogo = () => {
   return (
     <ReactPlayer
-      url={logoVideo}
+      url={getCDNVideoUrl("logo.mp4")}
       playing
       playsinline
       controls={false}

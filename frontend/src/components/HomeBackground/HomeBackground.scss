@@ -12,24 +12,24 @@
   }
 
   .bg-leaves:nth-child(1) {
-    background: url("../../assets/images/homepage/homepage-leaves-left.png")
+    background: url($CDN_URL + "/images/homepage/homepage-leaves-left.png")
       no-repeat top left;
     background-size: 20%;
   }
   .bg-leaves:nth-child(2) {
-    background: url("../../assets/images/homepage/homepage-leaves-right.png")
+    background: url($CDN_URL + "/images/homepage/homepage-leaves-right.png")
       no-repeat top right;
     background-size: 20%;
   }
   .bg:nth-child(3) {
-    background: url("../../assets/images/homepage/homepage-sky.png") center 93%;
+    background: url($CDN_URL + "/images/homepage/homepage-sky.png") center 93%;
   }
   .bg:nth-child(4) {
-    background: url("../../assets/images/homepage/homepage-mountains-back.png")
+    background: url($CDN_URL + "/images/homepage/homepage-mountains-back.png")
       no-repeat center 93%;
   }
   .bg:nth-child(5) {
-    background: url("../../assets/images/homepage/homepage-mountains-front.png")
+    background: url($CDN_URL + "/images/homepage/homepage-mountains-front.png")
       no-repeat center bottom;
   }
 }

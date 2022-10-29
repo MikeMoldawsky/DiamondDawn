@@ -158,12 +158,23 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
 
 export const isDemo = () => process.env.REACT_APP_DEMO_MODE === "true";
 
-// export const isDemoAndAuthSelector = (isAuth) => state => isAuth
 export const isDemoAndAuthSelector = (isAuth) => (state) =>
   isDemo() && state.ui.demoAuth === isAuth;
 
+const prependBackslash = (objectPath) =>
+  `${objectPath[0] !== "/" ? "/" : ""}${objectPath}`;
+
 export const getCDNObjectUrl = (objectPath) =>
-  `${process.env.REACT_APP_CDN_URL}${objectPath}`;
+  `${process.env.REACT_APP_CDN_URL}${prependBackslash(objectPath)}`;
+
+export const getCDNImageUrl = (objectPath) =>
+  getCDNObjectUrl(`/images${prependBackslash(objectPath)}`);
+
+export const getCDNVideoUrl = (objectPath) =>
+  getCDNObjectUrl(`/videos${prependBackslash(objectPath)}`);
+
+export const getCDNAudioUrl = (objectPath) =>
+  getCDNObjectUrl(`/audio${prependBackslash(objectPath)}`);
 
 export const shortenEthAddress = (address) =>
   `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;

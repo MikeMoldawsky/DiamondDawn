@@ -3,12 +3,10 @@ import "./Homepage.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId } from "store/uiReducer";
-import { isDemoAndAuthSelector } from "utils";
+import { getCDNVideoUrl, isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
-import AnimatedLogo from "components/AnimatedLogo";
 import Logo from "components/Logo";
-import teaserShortUrl from "assets/videos/teaser-short.mp4";
 import ReactPlayer from "react-player";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
@@ -25,7 +23,7 @@ const Homepage = () => {
   const renderTeaserBg = useCallback(
     () => (
       <ReactPlayer
-        url={teaserShortUrl}
+        url={getCDNVideoUrl("teaser-short.mp4")}
         playing
         playsinline
         controls={false}

@@ -182,7 +182,7 @@ b {
     width: 8em;
   }
 
-  &:after {
+  &.with-text:after {
     content: "DIAMOND DAWN";
     position: absolute;
     bottom: -1.5em;

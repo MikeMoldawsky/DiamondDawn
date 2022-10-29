@@ -78,7 +78,7 @@
 
     &:before {
       @extend .bg-image;
-      background: url("../../assets/images/coming-soon-image-left.png")
+      background: url($CDN_URL + "/images/coming-sooon/coming-soon-image-left.png")
         no-repeat top right;
     }
 
@@ -95,7 +95,7 @@
 
     &:before {
       @extend .bg-image;
-      background: url("../../assets/images/coming-soon-image-right.png")
+      background: url($CDN_URL + "/images/coming-sooon/coming-soon-image-right.png")
         no-repeat;
     }
 
@@ -184,8 +184,8 @@
       left: 0;
 
       &:before {
-        background: url("../../assets/images/cs-curtain-up.png") no-repeat
-          bottom center;
+        background: url($CDN_URL + "/images/coming-sooon/cs-curtain-up.png")
+          no-repeat bottom center;
       }
 
       &:after {
@@ -198,8 +198,8 @@
       left: 0;
 
       &:before {
-        background: url("../../assets/images/cs-curtain-down.png") no-repeat top
-          center;
+        background: url($CDN_URL + "/images/coming-sooon/cs-curtain-down.png")
+          no-repeat top center;
       }
 
       &:after {

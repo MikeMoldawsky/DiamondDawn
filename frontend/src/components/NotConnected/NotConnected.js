@@ -1,7 +1,7 @@
 import React from "react";
 import "./NotConnected.scss";
-import { getCDNObjectUrl } from "utils";
 import Wallet from "components/Wallet";
+import Logo from "components/Logo";
 
 export const NotConnected = ({ viewName }) => {
   return (
@@ -10,7 +10,7 @@ export const NotConnected = ({ viewName }) => {
         <div className="leading-text">WELCOME</div>
         <div className="leading-text">TO {viewName}</div>
       </div>
-      <img src={getCDNObjectUrl("/images/infinity_icon.png")} alt="" />
+      <Logo />
       <div className="connect-wallet">
         <Wallet label="CONNECT WALLET TO CONTINUE" className="button" />
       </div>

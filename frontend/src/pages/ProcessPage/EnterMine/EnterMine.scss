@@ -2,7 +2,7 @@
 
 .action-view.enter {
   height: 100%;
-  background: transparent url("../../../assets/images/enter-mine-bg.png") -2px -2px
+  background: transparent url($CDN_URL + "/images/mint/mint-hand.png") -2px -2px
     no-repeat padding-box;
   background-size: 100%;
   text-align: center;
@@ -42,8 +42,7 @@
     grid-area: 1 / 1 / 5 / 2;
     position: relative;
     padding: 10px;
-    background: url("../../../assets/images/enter-mine-bg-key.png") no-repeat
-      35% -10%;
+    background: url($CDN_URL + "/images/mint/mint-key.png") no-repeat 35% -10%;
     background-size: 62%;
   }
 

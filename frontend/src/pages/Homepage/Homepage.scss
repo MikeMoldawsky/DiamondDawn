@@ -87,14 +87,14 @@
   .eternal-treasures {
     position: relative;
     height: 1.35 * $viewHeightRef;
-    background: url("../../assets/images/homepage/homepage-ancient.png")
+    background: url($CDN_URL + "/images/homepage/homepage-ancient.png")
       no-repeat center 20%;
     background-size: 147%;
     z-index: 1;
 
     .bg-stars {
       @extend .bg;
-      background: url("../../assets/images/homepage/homepage-ancient-stars.png")
+      background: url($CDN_URL + "/images/homepage/homepage-ancient-stars.png")
         no-repeat center center;
       z-index: 1;
       background-size: 104%;
@@ -137,14 +137,14 @@
 
     .bg-left-hand {
       @extend .bg;
-      background: url("../../assets/images/homepage/homepage-left-hand.png")
+      background: url($CDN_URL + "/images/homepage/homepage-left-hand.png")
         no-repeat left bottom;
       background-size: auto 100%;
     }
 
     .bg-right-hand {
       @extend .bg;
-      background: url("../../assets/images/homepage/homepage-right-hand.png")
+      background: url($CDN_URL + "/images/homepage/homepage-right-hand.png")
         no-repeat 113% top;
       background-size: auto 100%;
     }
