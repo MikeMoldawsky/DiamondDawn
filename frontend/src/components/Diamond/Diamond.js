@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import "./Diamond.scss";
 import ReactPlayer from "react-player";
-import { getCDNObjectUrl, getTokenTrait } from "utils";
+import { getCDNNftUrl, getTokenTrait } from "utils";
 import { DIAMOND_ANIMATION_MAPPING, SHAPE_NAME } from "consts";
 
 const Diamond = ({ diamond }) => {
@@ -12,7 +12,7 @@ const Diamond = ({ diamond }) => {
   const fileName = isBurned
     ? "burn.mp4"
     : DIAMOND_ANIMATION_MAPPING[stage][shape];
-  const videoUrl = getCDNObjectUrl(`/diamond-dawn-nft-mocks/${fileName}`);
+  const videoUrl = getCDNNftUrl(fileName);
 
   console.log("Diamond", { diamond, shape, videoUrl, animation_url });
 

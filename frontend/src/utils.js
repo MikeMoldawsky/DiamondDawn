@@ -164,8 +164,11 @@ export const isDemoAndAuthSelector = (isAuth) => (state) =>
 const prependBackslash = (objectPath) =>
   `${objectPath[0] !== "/" ? "/" : ""}${objectPath}`;
 
-export const getCDNObjectUrl = (objectPath) =>
+const getCDNObjectUrl = (objectPath) =>
   `${process.env.REACT_APP_CDN_URL}${prependBackslash(objectPath)}`;
+
+export const getCDNNftUrl = (objectPath) =>
+  getCDNObjectUrl(`/diamond-dawn-nft-mocks${prependBackslash(objectPath)}`);
 
 export const getCDNImageUrl = (objectPath) =>
   getCDNObjectUrl(`/images${prependBackslash(objectPath)}`);

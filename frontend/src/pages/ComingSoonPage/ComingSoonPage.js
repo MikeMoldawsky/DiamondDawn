@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch } from "react-redux";
-import { getCDNObjectUrl, isDemo } from "utils";
+import { getCDNVideoUrl, isDemo } from "utils";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import HomeBackground from "components/HomeBackground";
@@ -17,7 +17,7 @@ const ComingSoonPage = () => {
   const renderBgPlayer = useCallback(
     () => (
       <ReactPlayer
-        url={getCDNObjectUrl("/videos/coming_soon.mp4")}
+        url={getCDNVideoUrl("coming_soon.mp4")}
         playing
         playsinline
         controls={false}

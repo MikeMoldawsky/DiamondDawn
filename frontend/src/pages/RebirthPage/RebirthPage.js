@@ -12,7 +12,7 @@ import { setSelectedTokenId } from "store/uiReducer";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { signDawnApi } from "api/serverApi";
 import { useAccount } from "wagmi";
-import { getCDNObjectUrl } from "utils";
+import { getCDNVideoUrl } from "utils";
 
 function RebirthPage() {
   const { tokenId } = useParams();
@@ -82,7 +82,7 @@ function RebirthPage() {
         <ActionView
           isRebirth
           transact={executeRebirth}
-          videoUrl={getCDNObjectUrl("/videos/post_rebirth.mp4")}
+          videoUrl={getCDNVideoUrl("post_rebirth.mp4")}
         >
           <RebirthContent />
         </ActionView>
