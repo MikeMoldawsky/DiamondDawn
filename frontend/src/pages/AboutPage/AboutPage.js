@@ -5,7 +5,7 @@ const AboutPage = () => {
   return (
     <div className="page about-page">
       <div className="inner-page">
-        <h1>About Diamond Dawn</h1>
+        <h1 className="leading-text">About Diamond Dawn</h1>
         <p className="text">
           Diamond Dawn is a social experiment developed by a world-class team of
           leading software engineers, visual artists, a world-class 3D designer
@@ -27,11 +27,13 @@ const AboutPage = () => {
           and feel your very own revolutionary diamond artwork containing your
           physical diamond at its heart.What will be your final choice?
         </p>
-        <p className="text">
+        <p className="secondary-text">
           Which diamond will you choose?The final choice is yours.
         </p>
 
-        <h1 id="journey">THE JOURNEY</h1>
+        <div id="journey" className="leading-text">
+          THE JOURNEY
+        </div>
         <p className="text">
           Your Diamond Dawn journey will be comprised of 4 steps. In each step
           you’ll be able to choose to transform your Diamond NFT to its next

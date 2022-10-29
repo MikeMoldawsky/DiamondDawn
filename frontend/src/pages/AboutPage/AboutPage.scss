@@ -1,17 +1,17 @@
 @import "css/varsNEW";
 
 .page.about-page {
+  text-align: center;
+
   .inner-page {
     width: 75%;
   }
 
-  h1 {
-    font-size: $font50px;
+  .leading-text {
     margin: 4rem 0 1rem;
   }
 
-  h2 {
-    font-size: $font32px;
+  .secondary-text {
     margin: 3rem 0 1rem;
   }
 }

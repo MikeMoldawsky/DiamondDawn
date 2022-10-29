@@ -1,8 +1,9 @@
 @import "css/varsNEW";
 @import "css/animations";
+@import "css/functions";
 
 .page.homepage {
-  $boxHeight: 98vh;
+  --base-font-size: 18;
   position: relative;
   height: 100vh;
   $animationMultiplier: 1;
@@ -108,7 +109,7 @@
       top: 10%;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: 1fr 5fr 3fr;
+      grid-template-rows: 1fr 10fr;
       grid-column-gap: 0px;
       grid-row-gap: 0px;
     }
@@ -119,11 +120,8 @@
     .title-cell {
       grid-area: 1 / 2 / 2 / 3;
     }
-    .text1-cell {
+    .text-cell {
       grid-area: 2 / 2 / 3 / 3;
-    }
-    .text2-cell {
-      grid-area: 3 / 2 / 4 / 3;
     }
   }
 
@@ -213,5 +211,18 @@
         line-height: 1em;
       }
     }
+  }
+}
+
+@media only screen and (max-width: 1365px) {
+  .page.homepage {
+    --base-font-size: 23.5;
+    font-size: calc-font-size(1px);
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .page.homepage {
+    font-size: 12.5px;
   }
 }

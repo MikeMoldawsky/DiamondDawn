@@ -5,6 +5,7 @@
   background: url($CDN_URL + "/images/collector/collector-bg.png") no-repeat top
     center;
   background-size: cover;
+  font-size: calc-font-size(1px);
 
   .main-box {
     max-width: 90%;

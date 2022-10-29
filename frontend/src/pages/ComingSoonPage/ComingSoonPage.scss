@@ -1,5 +1,6 @@
 @import "css/varsNEW";
 @import "css/animations";
+@import "css/functions";
 
 .page.coming-soon {
   position: relative;
@@ -7,6 +8,7 @@
   overflow: hidden;
   $splitter_color: silver;
   $splitter_width: 4px;
+  font-size: calc-font-size(1px);
 
   .content {
     position: relative;

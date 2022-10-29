@@ -13,8 +13,9 @@ body,
 }
 
 html {
+  --base-font-size: 18;
   scroll-behavior: smooth;
-  font-size: calc-font-size(1px);
+  //font-size: calc-font-size(1px);
 }
 
 body {

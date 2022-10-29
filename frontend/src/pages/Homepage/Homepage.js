@@ -68,7 +68,7 @@ const Homepage = () => {
           <div className="title-cell">
             <div className="leading-text">ETERNAL TREASURES</div>
           </div>
-          <div className="text1-cell">
+          <div className="text-cell">
             <p className="text">
               Deep below the earth’s surface, under immense pressure and
               scorching heat over billions of years, a marvel of nature is
@@ -84,8 +84,7 @@ const Homepage = () => {
             <p className="text">
               <b>But are diamonds REALLY that rare?</b>
             </p>
-          </div>
-          <div className="text2-cell">
+            <br />
             <p className="text">
               The recent rise of lab-grown diamonds makes it impossible for
               anyone to distinguish a ‘real’ diamond from a man-made one without
