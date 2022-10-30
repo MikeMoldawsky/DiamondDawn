@@ -2,15 +2,11 @@
 @import "css/functions";
 
 .page.about-page {
-  text-align: center;
   font-size: calc-font-size(1px);
-
-  .inner-page {
-    width: 70%;
-  }
 
   .leading-text {
     margin: 6rem 0 2rem;
+    text-align: center;
   }
 
   .secondary-text {
@@ -18,15 +14,20 @@
   }
 
   .text {
-    margin-bottom: .2rem;
+    margin-bottom: 0.2rem;
     letter-spacing: 0.1em;
+  }
+
+  .general {
+    width: 65%;
+    margin: 0 auto;
   }
 
   .journey {
     position: relative;
 
     &:before {
-      content: '';
+      content: "";
       position: absolute;
       height: 90%;
       width: 1px;
@@ -36,24 +37,36 @@
       z-index: -1;
     }
 
-    .leading-text, .journey-step {
+    .leading-text,
+    .journey-step {
       background-color: black;
       padding: 1em;
     }
 
     .secondary-text {
       margin: 1rem 0 1rem;
+      text-align: center;
     }
 
     .journey-step {
       margin-top: 10em;
       padding-bottom: 3em;
+      width: 40%;
     }
 
     .key-image {
       height: 7.5em;
-      background: url($CDN_URL + "/images/mint/mint-key.png") no-repeat center bottom;
+      background: url($CDN_URL + "/images/mint/mint-key.png") no-repeat center
+        bottom;
       background-size: auto 170%;
+      margin-bottom: 2em;
+    }
+
+    .stone-image {
+      height: 10em;
+      background: url($CDN_URL + "/images/rough-stone.png") no-repeat center
+        bottom;
+      background-size: auto 90%;
       margin-bottom: 2em;
     }
   }
@@ -61,7 +74,7 @@
   .team {
     .our-team {
       margin: 0 auto;
-      width: 70%;
+      width: 50%;
     }
 
     .team-members {
@@ -70,20 +83,20 @@
       justify-content: space-between;
       flex-wrap: wrap;
       text-align: left;
+      width: 78%;
 
       .team-member {
         width: 45%;
         margin-top: 6em;
 
-        .image {
-          background-color: $text_gray;
-          width: 10em;
-          aspect-ratio: 1;
-          border-radius: 50%;
+        svg {
+          width: 5em;
+          height: unset;
+          color: $text_gray;
         }
 
         .secondary-text {
-          margin-bottom: 0;
+          margin: 0.5rem 0 0;
         }
 
         .member-title {
@@ -93,6 +106,11 @@
         }
       }
     }
+  }
+
+  .faqs {
+    width: 80%;
+    margin: 0 auto 5em;
   }
 }
 

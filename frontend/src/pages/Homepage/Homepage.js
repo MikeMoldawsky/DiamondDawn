@@ -9,6 +9,7 @@ import Countdown from "components/Countdown";
 import Logo from "components/Logo";
 import ReactPlayer from "react-player";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import Footer from "components/Footer";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -54,10 +55,16 @@ const Homepage = () => {
             <Countdown
               parts={{ days: 24, hours: 3, minutes: 0, seconds: 0 }}
               smallParts={{ minutes: true, seconds: true }}
+              smallMinAndSec
             />
           </div>
           <div>
-            <div className="button transparent disabled">ENTER</div>
+            <div
+              className="button transparent disabled"
+              title="Mine open date will be announced soon!"
+            >
+              ENTER MINE
+            </div>
           </div>
         </div>
       </div>
@@ -149,27 +156,18 @@ const Homepage = () => {
             confidence in the blockchain as the future?
             <br />
             <br />
-            <b>What do YOU believe? What do YOU value?</b>
-            <br />
-            <b>The final choice is yours to make.</b>
+            <div className="text-center">
+              <b>What do YOU believe? What do YOU value?</b>
+              <br />
+              <b>The final choice is yours to make.</b>
+            </div>
           </div>
           <PlayCircleOutlineIcon />
-          <div>
-            <b>PLAY FULL TRAILER</b>
-          </div>
+          <div>PLAY FULL TRAILER</div>
+          <div className="button transparent">REQUEST AN INVITATION</div>
         </div>
       </div>
-      <footer>
-        <div className="footer-inner">
-          <div className="button transparent disabled">
-            REQUEST AN INVITATION
-          </div>
-          <div className="center-aligned-row">
-            <span className="link">Privacy Policy</span>
-            <span className="link">Terms & Conditions</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

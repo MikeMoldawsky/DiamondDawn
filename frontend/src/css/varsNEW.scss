@@ -1,6 +1,7 @@
 $CDN_URL: "https://d13hr0pwt5nq9j.cloudfront.net";
 
-$headerHeight: 6.25rem;
+$viewHeightRef: calc(100vw * 9 / 16);
+$headerHeight: 5rem;
 $videoHeight: 400px;
 $videoWidth: calc($videoHeight * 16 / 9);
 
@@ -15,6 +16,7 @@ $disabled_text_gray: #787878;
 $loading_bg: #05000c;
 
 // fonts
+$font10px: 0.625em;
 $font12px: 0.75em;
 $font15px: 0.9375em;
 $font18px: 1.125em;

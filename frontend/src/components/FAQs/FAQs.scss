@@ -1,47 +1,31 @@
 @import "css/varsNEW";
-//@import "css/mixins";
 
 .faqs {
-  .panel.faq-panel .panel-content {
-    padding: 36px;
+  .faq-item {
+    margin-top: 1.5em;
+    padding-top: 1.5em;
+    border-top: solid 1px white;
 
-    a {
-      text-decoration: underline;
+    &:last-child {
+      padding-bottom: 1.5em;
+      border-bottom: solid 1px white;
     }
-
-    p:last-child {
-      margin-bottom: 0;
-    }
-
-    .ReactCollapse--content {
-      padding: 0 18px 0 32px;
-    }
-  }
-
-  .page-title {
-    margin-bottom: 48px;
-  }
-
-  .faq-item:not(:last-child) {
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-    border-bottom: solid 1px $text_gray;
   }
 
   .faq-title {
     color: white;
-    font-size: 18px;
+    font-size: $font18px;
     cursor: pointer;
     margin: 0;
+    padding: 0 0.75em;
 
     svg {
-      width: 14px;
-      height: 14px;
-      margin-right: 18px;
-
-      path {
-        //fill: $main_red;
-      }
+      width: 0.75em;
+      height: 0.75em;
     }
+  }
+
+  .ReactCollapse--content {
+    padding: 0 1em 0 2em;
   }
 }
