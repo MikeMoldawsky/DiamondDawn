@@ -1,5 +1,12 @@
 const ENUM_TO_TYPE = {
   1: "Key",
+  2: "Diamond",
+  3: "Diamond",
+  4: "Diamond",
+  5: "Certificate",
+};
+
+const ENUM_TO_STAGE = {
   2: "Rough",
   3: "Cut",
   4: "Polished",
@@ -53,6 +60,7 @@ const ENUM_TO_FLUORESCENCE = {
 
 module.exports = {
   ENUM_TO_TYPE,
+  ENUM_TO_STAGE,
   ENUM_TO_SHAPE,
   ENUM_TO_COLOR,
   ENUM_TO_CLARITY,

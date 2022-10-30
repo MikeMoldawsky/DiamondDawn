@@ -1,143 +1,57 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import classNames from "classnames";
-import map from "lodash/map";
 import size from "lodash/size";
 import "./CollectorPage.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
-import { NavLink, useNavigate } from "react-router-dom";
-import { getTokenNextStageName, isDemo, isTokenActionable } from "utils";
-import { setSelectedTokenId } from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
-import Diamond from "components/Diamond";
-import RequestForm from "components/RequestForm";
-import InviteStatus from "components/InviteStatus";
-import { createInviteRequestApi } from "api/serverApi";
-import useOnConnect from "hooks/useOnConnect";
 import { useAccount } from "wagmi";
-import useActionDispatch from "hooks/useActionDispatch";
-import {
-  clearActionStatus,
-  isActionFirstCompleteSelector,
-} from "store/actionStatusReducer";
-import {
-  clearInvite,
-  inviteSelector,
-  loadInviteByAddress,
-} from "store/inviteReducer";
-import AccountProvider from "containers/AccountProvider";
-import TokensProvider from "containers/TokensProvider";
 import { SYSTEM_STAGE } from "consts";
+import Box from "components/Box";
+import Suspense from "components/Suspense";
+import Invite from "components/Invite";
+import NFTs from "components/NFTs";
+import { isDemo } from "utils";
 
-function CollectorPage() {
+const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
-  const { systemStage, isActive } = useSelector(systemSelector);
-  const actionDispatch = useActionDispatch();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { systemStage } = useSelector(systemSelector);
   const account = useAccount();
-  const invite = useSelector(inviteSelector);
-  const isInviteFetched = useSelector(
-    isActionFirstCompleteSelector("get-invite-by-address")
-  );
-
-  const isForgeStage = systemStage === SYSTEM_STAGE.FORGE && isActive;
-
-  const loadInvite = async (address) => dispatch(loadInviteByAddress(address));
-
-  const clearInviteState = () => {
-    dispatch(clearInvite());
-    dispatch(clearActionStatus("get-invite-by-address"));
-  };
-
-  useOnConnect(
-    async (address) => {
-      clearInviteState();
-      actionDispatch(() => loadInvite(address), "get-invite-by-address");
-    },
-    () => {
-      clearInviteState();
-    }
-  );
-
-  useEffect(() => {
-    return clearInviteState;
-  }, []);
-
-  const goToProcess = (tokenId) => (e) => {
-    e.stopPropagation();
-    dispatch(setSelectedTokenId(tokenId));
-    navigate("/process");
-  };
-
-  const renderTokenCard = (token) => {
-    const { name, id } = token;
-    return (
-      <div key={`token-card-${id}`} className="card-container">
-        <div className="token-card">
-          <NavLink to={`/nft/${id}`}>
-            <div className="token-id">{name}</div>
-            <Diamond diamond={token} />
-            <div className="card-footer" />
-          </NavLink>
-          {isTokenActionable(token, systemStage, isActive) && (
-            <div className="button" onClick={goToProcess(token.id)}>
-              {getTokenNextStageName(token)}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
 
   const renderContent = () => {
-    if (size(tokens) > 0)
-      return <div className="cards">{map(tokens, renderTokenCard)}</div>;
-    if (systemStage > SYSTEM_STAGE.FORGE)
-      return (
-        <>
-          <div className="secondary-text">Invitations stage is complete</div>
-          <div className="button link-opensea">BUY ON OPENSEA</div>
-        </>
-      );
-    if (!isForgeStage)
-      return (
-        <>
-          <div className="secondary-text">
-            Invitations stage not started yet
-          </div>
-        </>
-      );
-    if (!isInviteFetched) return null;
+    if (size(tokens) > 0) return <NFTs />;
+
+    if (systemStage <= SYSTEM_STAGE.KEY) return <Invite />;
+
     return (
-      <div className="invite-view">
-        {invite ? (
-          <InviteStatus />
-        ) : (
-          <RequestForm
-            createInviteApi={createInviteRequestApi}
-            text="Request Invitation"
-            onSuccess={() => loadInvite(account.address)}
-          />
-        )}
+      <div className="box-content opaque opensea">
+        <div className="secondary-text">Your Collection is Empty</div>
+        <div className="button link-opensea">GO TO OPENSEA</div>
       </div>
     );
   };
+
+  const suspenseActions = ["get-contract"];
+  if (!isDemo() && account?.address) {
+    suspenseActions.push({ isFirstComplete: true, key: "load-nfts" });
+  }
 
   return (
     <div className={classNames("page collector-page")}>
       <div className="inner-page">
-        <div className="leading-text">Collector's Room</div>
-        {!isDemo() ? (
-          <AccountProvider>
-            <TokensProvider withLoader>{renderContent()}</TokensProvider>
-          </AccountProvider>
-        ) : (
-          renderContent()
-        )}
+        <h1>The Collector's Room</h1>
+        <Box className={"main-box"}>
+          <Suspense
+            withLoader
+            actions={suspenseActions}
+            viewName={"THE COLLECTOR'S ROOM"}
+          >
+            {renderContent()}
+          </Suspense>
+        </Box>
       </div>
     </div>
   );
-}
+};
 
 export default CollectorPage;

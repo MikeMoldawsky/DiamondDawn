@@ -1,7 +1,12 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import { BigNumber } from "ethers";
 import { getConfigApi, getContractInfoApi } from "api/serverApi";
-import { getMinePriceApi, getSystemStageApi } from "api/contractApi";
+import {
+  getMaxDiamondsApi,
+  getMineDiamondCountApi,
+  getMinePriceApi,
+  getSystemStageApi,
+} from "api/contractApi";
 import get from "lodash/get";
 
 const INITIAL_STATE = {
@@ -10,6 +15,8 @@ const INITIAL_STATE = {
   paused: false,
   config: {},
   minePrice: BigNumber.from(0),
+  maxDiamonds: 333,
+  diamondCount: 0,
 };
 
 export const loadMinePrice = (contract) => async (dispatch) => {
@@ -25,6 +32,22 @@ export const loadSystemStage = (contract) => async (dispatch) => {
   dispatch({
     type: "SYSTEM.SET_STAGE",
     payload: { systemStage, isActive },
+  });
+};
+
+export const loadMaxDiamonds = (contract) => async (dispatch) => {
+  const maxDiamonds = await getMaxDiamondsApi(contract);
+  dispatch({
+    type: "SYSTEM.UPDATE_STATE",
+    payload: { maxDiamonds },
+  });
+};
+
+export const loadDiamondCount = (mineContract) => async (dispatch) => {
+  const diamondCount = await getMineDiamondCountApi(mineContract);
+  dispatch({
+    type: "SYSTEM.SET_DIAMOND_COUNT",
+    payload: { diamondCount },
   });
 };
 

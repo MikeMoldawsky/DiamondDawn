@@ -1,0 +1,144 @@
+@import "varsNEW";
+
+.box {
+  $padding_thin: 0.5em;
+  $padding_wide: 0.7em;
+
+  position: relative;
+  border: solid 2px $border_gray;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: $padding_thin $padding_thin $padding_wide $padding_wide;
+
+  .box-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+
+    &:before {
+      content: "";
+      background-color: black;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 1;
+      z-index: -1;
+    }
+
+    &.opaque {
+      background-size: 101%;
+      backdrop-filter: blur(24px);
+
+      &:before {
+        background-color: #7e7d7d;
+        opacity: 0.3;
+      }
+    }
+
+    &.loading-bg {
+      &:before {
+        background-color: $loading_bg;
+      }
+    }
+  }
+}
+
+.button {
+  --rk-radii-connectButton: 4.5em;
+  font-size: $font20px;
+  height: 2.75em;
+  border-radius: 4.5em;
+  color: black;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3.25em;
+  cursor: pointer;
+  font-weight: 500;
+  width: auto;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  border: none;
+  box-shadow: none !important;
+
+  svg {
+    margin-right: 16px;
+  }
+
+  &.icon-after {
+    svg {
+      margin-right: 0;
+      margin-left: 16px;
+    }
+  }
+
+  &.disabled,
+  &[disabled] {
+    cursor: not-allowed;
+    background-color: $disabled_gray;
+    color: $disabled_text_gray;
+  }
+
+  &.inverted,
+  &.link {
+    color: white;
+    background-color: transparent;
+    border: solid 1px white;
+  }
+
+  &.link {
+    border-color: transparent !important;
+
+    span > span {
+      background-color: white !important;
+    }
+  }
+
+  &.transparent {
+    color: white;
+    background-color: transparent;
+    border: solid 1px white;
+
+    .button-content {
+      font-weight: 400;
+    }
+
+    span > span {
+      background-color: white !important;
+    }
+
+    &.disabled,
+    &[disabled] {
+      opacity: 0.5;
+    }
+  }
+}
+
+.input {
+  width: 100%;
+  font-size: 1em;
+  height: 3.05em;
+  border-radius: 5em;
+  background-color: transparent;
+  color: white;
+  border: solid 1px white;
+  padding: 0.65em 1em;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.validation-error {
+    border-color: red;
+  }
+}
+
+textarea.input {
+  border-radius: 0.65em;
+}

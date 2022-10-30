@@ -1,39 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
-import { utils as ethersUtils } from "ethers";
-import classNames from "classnames";
 import "./EnterMine.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { loadMinePrice, systemSelector } from "store/systemReducer";
-import Countdown from "components/Countdown";
+import {
+  loadDiamondCount,
+  loadMaxDiamonds,
+  loadMinePrice,
+  systemSelector,
+} from "store/systemReducer";
 import { tokensSelector, watchTokenMinedBy } from "store/tokensReducer";
 import { useAccount } from "wagmi";
-import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
 import useMountLogger from "hooks/useMountLogger";
 import { forgeApi } from "api/contractApi";
 import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
-import { getCDNObjectUrl } from "utils";
-
-const PackageBox = ({ selected, select, index, text, cost }) => {
-  return (
-    <div
-      className={classNames("package", { selected: selected === index })}
-      onClick={() => select(index)}
-    >
-      <div className="package-content">
-        <div>{text}</div>
-        <div>{ethersUtils.formatUnits(cost)} ETH</div>
-      </div>
-    </div>
-  );
-};
+import { isDemo, getCDNVideoUrl } from "utils";
+import EnterMineView from "pages/ProcessPage/EnterMine/EnterMineView";
+import { SYSTEM_STAGE } from "consts";
 
 const EnterMine = ({ invite }) => {
-  const [selectedPackage, setSelectedPackage] = useState(0);
-  const { minePrice } = useSelector(systemSelector);
+  const { systemStage, isActive, minePrice, maxDiamonds, diamondCount } =
+    useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
   const dispatch = useDispatch();
@@ -46,6 +35,8 @@ const EnterMine = ({ invite }) => {
 
   useEffect(() => {
     dispatch(loadMinePrice(contract));
+    dispatch(loadMaxDiamonds(contract));
+    dispatch(loadDiamondCount(contract));
   }, []);
 
   if (!invite || invite.revoked || invite.used) return null;
@@ -71,53 +62,28 @@ const EnterMine = ({ invite }) => {
     return tx;
   };
 
-  const EnterMineContent = ({ execute }) => {
-    return (
-      <>
-        <div className="leading-text">You are invited...</div>
-        <div className="secondary-text">The first one is to believe</div>
-        <div className="center-aligned-row packages">
-          <PackageBox
-            selected={selectedPackage}
-            select={setSelectedPackage}
-            index={0}
-            text="Enter Mine"
-            cost={minePrice}
-          />
-        </div>
-        <div className="action">
-          <ActionButton
-            actionKey="EnterMine"
-            className="action-button"
-            onClick={execute}
-          >
-            ENTER MINE
-          </ActionButton>
-        </div>
-        <Countdown
-          date={invite.expires}
-          text={["Invite Expires in"]}
-          onComplete={onInviteExpired}
-          renderParts={{
-            days: true,
-            hours: true,
-            minutes: true,
-            seconds: true,
-          }}
-        />
-      </>
-    );
-  };
+  const EnterMineContent = ({ execute }) => (
+    <EnterMineView
+      minePrice={minePrice}
+      maxDiamonds={maxDiamonds}
+      diamondCount={diamondCount}
+      canMint={systemStage === SYSTEM_STAGE.KEY && isActive}
+      enterMine={execute}
+      expiresAt={invite.expires}
+      onCountdownEnd={onInviteExpired}
+    />
+  );
 
   return (
     <ActionView
+      isEnter
       watch={watchTokenMinedBy(account.address, maxTokenId)}
       transact={executeEnterMine}
-      videoUrl={getCDNObjectUrl("/videos/post_enter.mp4")}
+      videoUrl={getCDNVideoUrl("post_enter.mp4")}
     >
       <EnterMineContent />
     </ActionView>
   );
 };
 
-export default EnterMine;
+export default isDemo() ? EnterMineView : EnterMine;

@@ -1,23 +1,21 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import classNames from "classnames";
 import "./PasswordBox.scss";
 import { demoAuthApi } from "api/serverApi";
+import map from "lodash/map";
+import ActionButton from "components/ActionButton";
+import useActionDispatch from "hooks/useActionDispatch";
 
-const PASSWORD_LENGTH = 10;
-
-const PasswordBox = ({ onCorrect }) => {
+const PasswordBox = ({ onCorrect, passwordLength, buttonText }) => {
   const [password, setPassword] = useState("");
   const pwdInput = useRef(null);
   const [checkingPassword, setCheckingPassword] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-
-  useEffect(() => {
-    if (password.length === PASSWORD_LENGTH) {
-      submitPassword();
-    }
-  }, [password]);
+  const actionDispatch = useActionDispatch();
 
   const submitPassword = async () => {
+    if (passwordLength !== password.length) return;
+
     pwdInput.current.blur();
     setCheckingPassword(true);
     const isCorrect = await demoAuthApi(password);
@@ -54,7 +52,6 @@ const PasswordBox = ({ onCorrect }) => {
         "has-error": passwordError,
       })}
     >
-      <div className="password-title">TRY PASSWORD</div>
       <div className="input-container">
         <input
           ref={pwdInput}
@@ -63,9 +60,23 @@ const PasswordBox = ({ onCorrect }) => {
           value={password}
           onChange={onPasswordChange}
           onKeyPress={onPasswordEnter}
-          maxLength={PASSWORD_LENGTH}
+          maxLength={passwordLength}
         />
+        <div className="underscore">
+          {map(new Array(passwordLength), (v, i) => (
+            <div key={`char-underscore-${i}`} className="char-underscore" />
+          ))}
+        </div>
       </div>
+      <ActionButton
+        actionKey="Submit Password"
+        className="transparent"
+        isLoading={checkingPassword}
+        disabled={password.length !== passwordLength}
+        onClick={submitPassword}
+      >
+        {buttonText}
+      </ActionButton>
     </div>
   );
 };

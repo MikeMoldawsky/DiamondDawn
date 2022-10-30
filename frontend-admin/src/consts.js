@@ -2,7 +2,7 @@ export const NO_SHAPE_NUM = 0;
 
 export const SYSTEM_STAGE = {
   NO_STAGE: 0,
-  FORGE: 1,
+  KEY: 1,
   MINE: 2,
   CUT: 3,
   POLISH: 4,

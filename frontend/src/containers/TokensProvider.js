@@ -9,7 +9,7 @@ import { useAccount } from "wagmi";
 import { tokensSelector } from "store/tokensReducer";
 import { useNavigate } from "react-router-dom";
 
-const TokensProvider = ({ children, withLoader, isGated }) => {
+const TokensProvider = ({ children, withLoader, isGated, goThrough }) => {
   const account = useAccount();
   const isReady = useSelector(isActionFirstCompleteSelector("load-nfts"));
   const tokens = useSelector(tokensSelector);
@@ -30,14 +30,14 @@ const TokensProvider = ({ children, withLoader, isGated }) => {
   }, [isReady, isGated, account?.address]);
 
   const renderContent = () => {
-    if (isReady) return children;
+    if (isReady || goThrough) return children;
     if (withLoader) return <Loading />;
 
     return null;
   };
 
   return (
-    <ContractProvider withLoader={withLoader}>
+    <ContractProvider withLoader={withLoader} goThrough={goThrough}>
       {renderContent()}
     </ContractProvider>
   );

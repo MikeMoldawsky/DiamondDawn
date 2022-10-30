@@ -44,8 +44,8 @@ contract DiamondDawn is
     using EnumerableSet for EnumerableSet.UintSet;
     using ECDSA for bytes32;
 
-    uint public constant PRICE = 0.002 ether; // TODO: change to 3.33eth
-    uint public constant PRICE_MARRIAGE = 0.003 ether; // TODO: change to 3.66eth
+    uint public constant PRICE = 0.002 ether; // TODO: production - change to 3.33eth
+    uint public constant PRICE_MARRIAGE = 0.003 ether; // TODO: production - change to 3.66eth
     uint16 public constant MAX_ENTRANCE = 333;
 
     bool public isLocked; // immutable
@@ -56,7 +56,7 @@ contract DiamondDawn is
     uint16 private _numTokens;
     mapping(address => EnumerableSet.UintSet) private _shipped;
     mapping(address => bool) private _minted;
-    address private _signer; // TODO: set correct signer for production
+    address private _signer; // TODO: production - set correct signer for
 
     constructor(address mine_, address signer) ERC721("DiamondDawn", "DD") {
         ddMine = IDiamondDawnMine(mine_);
@@ -211,9 +211,9 @@ contract DiamondDawn is
 
     /**********************     Private Functions     ************************/
 
-    function _forge(bytes calldata signature) private isActiveStage(Stage.FORGE) isNotFull {
+    function _forge(bytes calldata signature) private isActiveStage(Stage.KEY) isNotFull {
         require(_isValid(signature, bytes32(uint256(uint160(_msgSender())))), "Not allowed to mint");
-        // TODO: uncomment before production
+        // TODO: production - uncomment before
         // require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
         uint256 tokenId = ++_numTokens;
@@ -222,6 +222,6 @@ contract DiamondDawn is
     }
 
     function _isValid(bytes calldata signature, bytes32 message) private view returns (bool) {
-        return _signer == keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", message)).recover(signature);
+        return _signer == message.toEthSignedMessageHash().recover(signature);
     }
 }

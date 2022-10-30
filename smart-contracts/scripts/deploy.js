@@ -163,8 +163,8 @@ async function populateDiamonds(mine) {
 
 async function setVideos(diamondDawnMine) {
   await diamondDawnMine.setManifest(
-    STAGE.FORGE,
-    "sMO6zq1xVt4w0kQIz5X0fmQuJhCL5fHoGJk3Qmo6PcY"
+    STAGE.KEY,
+    "qz0rbe1jbAPbx0GHGVvBxeKdHGAvmRTGXXyAdpgN_HA"
   );
   await diamondDawnMine.setManifest(
     STAGE.MINE,

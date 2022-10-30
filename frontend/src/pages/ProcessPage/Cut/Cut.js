@@ -9,7 +9,7 @@ import ActionView from "components/ActionView";
 import useMountLogger from "hooks/useMountLogger";
 import { cutApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
-import { getCDNObjectUrl } from "utils";
+import { getCDNVideoUrl } from "utils";
 
 const Cut = () => {
   const contract = useDDContract();
@@ -46,7 +46,7 @@ const Cut = () => {
   return (
     <ActionView
       transact={() => cutApi(contract, selectedTokenId)}
-      videoUrl={getCDNObjectUrl("/videos/post_cut.mp4")}
+      videoUrl={getCDNVideoUrl("post_cut.mp4")}
       requireActionable
     >
       <CutContent />

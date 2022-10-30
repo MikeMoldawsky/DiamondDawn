@@ -1,46 +1,20 @@
-@import "css/vars";
+@import "css/varsNEW";
+@import "css/functions";
 
 .page.collector-page {
-  .cards {
-    display: flex;
-    flex-wrap: wrap;
-  }
+  background: url($CDN_URL + "/images/collector/collector-bg.png") no-repeat top
+    center;
+  background-size: cover;
+  font-size: calc-font-size(1px);
 
-  .card-container {
-    width: 50%;
-  }
-
-  .token-card {
-    border: solid 1px $darker-gray;
-    margin: 40px;
-    position: relative;
-
-    .token-id {
-      font-weight: 500;
-      font-size: 1.2em;
-      margin: 10px 0;
-      text-align: center;
-    }
-
-    .card-footer {
-      height: 80px;
-    }
-
-    .button {
-      height: 40px;
-      position: absolute;
-      right: 20px;
-      bottom: 20px;
-    }
-  }
-
-  .invite-status {
-    width: 600px;
+  .main-box {
+    max-width: 90%;
+    max-height: 80%;
+    aspect-ratio: 2;
     margin: 0 auto;
   }
 
-  .link-opensea {
-    width: 320px !important;
-    margin: 0 auto;
+  .secondary-text {
+    font-size: $font25px;
   }
 }

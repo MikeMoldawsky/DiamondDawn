@@ -1,5 +1,5 @@
 import React from "react";
-import tweezersLogo from "assets/images/logo.png";
+import logo from "assets/images/logo.png";
 import "./Header.scss";
 
 const Header = ({ children }) => {
@@ -7,7 +7,7 @@ const Header = ({ children }) => {
     <header>
       <div className="header-internal">
         <div className="logo-box">
-          <img src={tweezersLogo} alt="TWEEZERS" />
+          <img src={logo} alt="DIAMOND DAWN" />
         </div>
         <div className="center-aligned-row">{children}</div>
       </div>

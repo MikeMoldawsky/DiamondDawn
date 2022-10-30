@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import "css/common.scss";
+import "css/elements.scss";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,8 +20,7 @@ import ProcessPage from "pages/ProcessPage";
 import NFTPage from "pages/NFTPage";
 import RebirthPage from "pages/RebirthPage";
 import InvitePage from "pages/InvitePage";
-import TeamPage from "pages/TeamPage";
-import FAQPage from "pages/FAQPage";
+import AboutPage from "pages/AboutPage";
 import Header from "components/Header";
 import SideMenu from "components/SideMenu";
 import CollectorPage from "pages/CollectorPage";
@@ -30,15 +29,14 @@ import { loadContractInfo } from "store/systemReducer";
 import AccountProvider from "containers/AccountProvider";
 import ComingSoonPage from "pages/ComingSoonPage";
 import { useSelector } from "react-redux";
-import { uiSelector } from "store/uiReducer";
-import { isDemo } from "utils";
+import { isDemo, isDemoAndAuthSelector } from "utils";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const actionDispatch = useActionDispatch();
-  const { demoAuth } = useSelector(uiSelector);
+  const isRestricted = useSelector(isDemoAndAuthSelector(false));
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");
@@ -59,48 +57,57 @@ const MainLayout = () => {
               path="/"
               exact
               element={
-                isDemoMode && !demoAuth ? <ComingSoonPage /> : <Homepage />
+                // <Homepage />
+                isRestricted ? <ComingSoonPage /> : <Homepage />
               }
             />
-            <Route path="/coming-soon" element={<ComingSoonPage />} />
-            <Route path="/">
-              <Route
-                path="invite/:inviteId"
-                element={
-                  <AccountProvider withLoader>
-                    <InvitePage />
-                  </AccountProvider>
-                }
-              />
-              <Route
-                path="process"
-                element={
-                  <TokensProvider withLoader isGated>
-                    <ProcessPage />
-                  </TokensProvider>
-                }
-              />
-              <Route
-                path="rebirth/:tokenId"
-                element={
-                  <TokensProvider withLoader isGated>
-                    <RebirthPage />
-                  </TokensProvider>
-                }
-              />
-              <Route path="collector" element={<CollectorPage />} />
-              <Route
-                path="nft/:tokenId"
-                element={
-                  <TokensProvider withLoader isGated>
-                    <NFTPage />
-                  </TokensProvider>
-                }
-              />
-              <Route path="team" element={<TeamPage />} />
-              <Route path="faq" element={<FAQPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Route>
+            {!isRestricted && (
+              <>
+                <Route path="/explore" element={<Homepage />} />
+                <Route
+                  path="invite/:inviteId"
+                  element={
+                    <AccountProvider withLoader>
+                      <InvitePage />
+                    </AccountProvider>
+                  }
+                />
+                <Route
+                  path="process"
+                  element={
+                    <TokensProvider withLoader isGated>
+                      <ProcessPage />
+                    </TokensProvider>
+                  }
+                />
+                <Route
+                  path="rebirth/:tokenId"
+                  element={
+                    <TokensProvider withLoader isGated>
+                      <RebirthPage />
+                    </TokensProvider>
+                  }
+                />
+                <Route
+                  path="collector"
+                  element={
+                    <TokensProvider goThrough>
+                      <CollectorPage />
+                    </TokensProvider>
+                  }
+                />
+                <Route
+                  path="nft/:tokenId"
+                  element={
+                    <TokensProvider withLoader isGated>
+                      <NFTPage />
+                    </TokensProvider>
+                  }
+                />
+                <Route path="about" element={<AboutPage />} />
+              </>
+            )}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           <SideMenu
             isOpen={drawerOpen}

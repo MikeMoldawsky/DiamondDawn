@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleMuted, uiSelector } from "store/uiReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeMute, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
-import { getCDNObjectUrl } from "utils";
+import { getCDNAudioUrl } from "utils";
 
 const AudioPlayer = () => {
   const dispatch = useDispatch();
   const { muted } = useSelector(uiSelector);
-  const [play, { pause }] = useSound(getCDNObjectUrl("/audio/bg_music.mp3"), {
+  const [play, { pause }] = useSound(getCDNAudioUrl("bg_music.mp3"), {
     volume: 0.5,
   });
 

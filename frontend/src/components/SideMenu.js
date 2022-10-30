@@ -12,10 +12,16 @@ const SideMenu = ({ isOpen, closeMenu }) => {
       <NavLink to={"/collector"} onClick={closeMenu}>
         <div className="menu-item">COLLECTOR'S ROOM</div>
       </NavLink>
-      <NavLink to={"/team"} onClick={closeMenu}>
+      <NavLink to={"/about"} onClick={closeMenu}>
+        <div className="menu-item">ABOUT</div>
+      </NavLink>
+      <NavLink to={"/about/#journey"} onClick={closeMenu}>
+        <div className="menu-item">THE JOURNEY</div>
+      </NavLink>
+      <NavLink to={"/about/#team"} onClick={closeMenu}>
         <div className="menu-item">OUR TEAM</div>
       </NavLink>
-      <NavLink to={"/faq"} onClick={closeMenu}>
+      <NavLink to={"/about/#faq"} onClick={closeMenu}>
         <div className="menu-item">FAQ</div>
       </NavLink>
     </Drawer>

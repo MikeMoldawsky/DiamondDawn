@@ -1,13 +1,21 @@
-@import "css/vars";
+@import "css/varsNEW";
 
 header {
   position: fixed;
   z-index: 10000;
-  width: 100%;
-  height: $headerHeight;
+  width: calc(100% - 15px);
+  height: calc($headerHeight + 1em);
+  -webkit-mask-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left 80%,
+    from(rgba(0, 0, 0, 0)),
+    to(rgba(0, 0, 0, 1))
+  );
+  backdrop-filter: blur(2.5em);
 
   .header-internal {
-    padding: 0 40px;
+    padding: 0 2.5rem;
     height: $headerHeight;
     display: flex;
     align-items: center;
@@ -35,14 +43,9 @@ header {
 
   .logo-box {
     position: absolute;
-    top: 0;
+    top: 1em;
     left: 50%;
     transform: translateX(-50%);
-
-    img {
-      height: 5.75em;
-      width: unset;
-    }
   }
 
   svg.menu-icon {

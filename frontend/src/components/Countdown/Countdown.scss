@@ -1,20 +1,40 @@
-.countdown-row {
-  width: 670px;
-  margin: 0 auto;
+@import "css/varsNEW";
 
-  .countdown {
+.countdown {
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+
+  .value {
+    font-size: $font50px;
+    line-height: 1em;
+    margin-bottom: 5px;
+  }
+
+  .caption {
+    font-size: $font15px;
+  }
+
+  .small-parts {
+    display: flex;
     justify-content: space-between;
-    flex-grow: 2;
-    max-width: 460px;
+    align-items: flex-end;
+    position: absolute;
+    right: -11em;
+    width: 9em;
+  }
+
+  .countdown-part.small {
+    opacity: 0.4;
 
     .value {
-      font-size: 3em;
-      line-height: 1em;
-      margin-bottom: 5px;
+      font-size: $font42px !important;
+      margin-bottom: 0.6rem;
     }
 
     .caption {
-      font-size: 0.8em;
+      font-size: $font12px !important;
+      margin-bottom: 0.2rem;
     }
   }
 }

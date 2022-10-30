@@ -54,7 +54,7 @@ export const updateStageTimeApi = async (timestamp) => {
   }
 };
 
-// FORGE
+// KEY
 export const getInvitesApi = async (approved) => {
   try {
     const res = await axios.post(`/api/get_invites`, { approved });
@@ -64,8 +64,12 @@ export const getInvitesApi = async (approved) => {
   }
 };
 
-export const createInviteApi = async (address, identifier) => {
-  const res = await axios.post(`/api/create_invite`, { address, identifier });
+export const createInviteApi = async (address, twitter, email) => {
+  const res = await axios.post(`/api/create_invite`, {
+    address,
+    twitter,
+    email,
+  });
   return res.data;
 };
 

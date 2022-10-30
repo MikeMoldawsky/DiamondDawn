@@ -10,7 +10,7 @@ export const getSystemStageApi = async (contract) => {
     return { systemStage, isActive };
   } catch (e) {
     logApiError(e, "getSystemStageApi");
-    return -1;
+    return { systemStage: -1, isActive: false };
   }
 };
 
@@ -21,6 +21,14 @@ export const getMinePriceApi = async (contract) => {
     logApiError(e, "getMinePriceApi");
     return undefined;
   }
+};
+
+export const getMaxDiamondsApi = async (contract) => {
+  return await contract.maxDiamonds();
+};
+
+export const getMineDiamondCountApi = async (mineContract) => {
+  return await mineContract.diamondCount();
 };
 
 // PROCESS

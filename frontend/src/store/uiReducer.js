@@ -1,10 +1,19 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
+import isNil from "lodash/isNil";
+
+const resolveDemoAuth = () => {
+  const demoAuth =
+    process.env.REACT_APP_USE_LOCAL_STORAGE === "true"
+      ? localStorage.getItem("demoAuth")
+      : null;
+  return !isNil(demoAuth) ? Boolean(demoAuth) : false;
+};
 
 const INITIAL_STATE = {
   selectedTokenId: -1,
   shouldIgnoreTokenTransferWatch: false,
   muted: true,
-  demoAuth: false,
+  demoAuth: resolveDemoAuth(),
 };
 
 export const setSelectedTokenId = (selectedTokenId) => ({

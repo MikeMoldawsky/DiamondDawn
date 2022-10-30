@@ -74,7 +74,7 @@ export const getDiamondIcon = (token) => {
   let shape;
 
   switch (token.stage) {
-    case SYSTEM_STAGE.FORGE:
+    case SYSTEM_STAGE.KEY:
       return faGem;
     case SYSTEM_STAGE.MINE:
       shape = ROUGH_SHAPE[_.toUpper(_.snakeCase(shapeName))];
@@ -158,5 +158,26 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
 
 export const isDemo = () => process.env.REACT_APP_DEMO_MODE === "true";
 
-export const getCDNObjectUrl = (objectPath) =>
-  `${process.env.REACT_APP_CDN_URL}${objectPath}`;
+export const isDemoAndAuthSelector = (isAuth) => (state) =>
+  isDemo() && state.ui.demoAuth === isAuth;
+
+const prependBackslash = (objectPath) =>
+  `${objectPath[0] !== "/" ? "/" : ""}${objectPath}`;
+
+const getCDNObjectUrl = (objectPath) =>
+  `${process.env.REACT_APP_CDN_URL}${prependBackslash(objectPath)}`;
+
+export const getCDNNftUrl = (objectPath) =>
+  getCDNObjectUrl(`/diamond-dawn-nft-mocks${prependBackslash(objectPath)}`);
+
+export const getCDNImageUrl = (objectPath) =>
+  getCDNObjectUrl(`/images${prependBackslash(objectPath)}`);
+
+export const getCDNVideoUrl = (objectPath) =>
+  getCDNObjectUrl(`/videos${prependBackslash(objectPath)}`);
+
+export const getCDNAudioUrl = (objectPath) =>
+  getCDNObjectUrl(`/audio${prependBackslash(objectPath)}`);
+
+export const shortenEthAddress = (address) =>
+  `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
