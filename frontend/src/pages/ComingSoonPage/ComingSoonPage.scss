@@ -17,21 +17,26 @@
 
     .leading-text {
       font-size: $font54px;
-      margin-bottom: 1.4rem;
+      margin-bottom: 2rem;
     }
 
     .secondary-text {
-      color: $light_gray;
+      color: #ccc;
+      font-weight: 400;
       font-size: $font30px;
       line-height: 1.5em;
       margin-bottom: 3.5rem;
+    }
+
+    .secondary-2 {
+      font-size: 1.1em;
     }
   }
 
   .react-player {
     min-width: 102%;
     min-height: 100%;
-    opacity: 0.7;
+    opacity: 0.65;
     z-index: -2;
     position: absolute;
     background-color: black;

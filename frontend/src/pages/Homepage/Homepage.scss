@@ -111,7 +111,7 @@
 
   .value-text {
     position: relative;
-    height: 0.85 * $viewHeightRef;
+    height: $viewHeightRef;
     margin-top: -(0.2 * $viewHeightRef);
     z-index: 1;
     line-height: 2.2em;
@@ -133,6 +133,8 @@
     .text {
       position: relative;
       height: 100%;
+      width: 55%;
+      margin: 0 auto;
       top: 6%;
     }
   }
@@ -145,7 +147,7 @@
     color: white;
 
     .react-player {
-      opacity: 0.4;
+      opacity: 0.3;
       position: absolute;
       width: 100%;
       height: 100%;
@@ -154,9 +156,12 @@
 
     .content {
       position: absolute;
-      width: 100%;
+      width: 50%;
+      left: 50%;
+      transform: translateX(-50%);
       height: 100%;
       z-index: 1;
+      //margin: 0 auto;
 
       .text-center {
         margin-top: 1rem;
@@ -176,7 +181,7 @@
 
 @media only screen and (max-width: 1365px) {
   .page.homepage {
-    --base-font-size: 23.5;
+    --base-font-size: 22;
     font-size: calc-font-size(1px);
   }
 }
