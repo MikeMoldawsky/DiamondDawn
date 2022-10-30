@@ -68,9 +68,7 @@ const ComingSoonPage = () => {
       <div className="center-aligned-column content">
         <div className="leading-text">COMING SOON</div>
         <div className="secondary-text">
-          <div className="secondary-2">
-            Physical or Digital
-          </div>
+          <div className="secondary-2">Physical or Digital</div>
           Which diamond will you choose?
         </div>
         {isDemo() ? (
