@@ -1,6 +1,7 @@
 $CDN_URL: "https://d13hr0pwt5nq9j.cloudfront.net";
 
-$headerHeight: 6.25rem;
+$viewHeightRef: calc(100vw * 9 / 16);
+$headerHeight: 5rem;
 $videoHeight: 400px;
 $videoWidth: calc($videoHeight * 16 / 9);
 
@@ -15,6 +16,7 @@ $disabled_text_gray: #787878;
 $loading_bg: #05000c;
 
 // fonts
+$font10px: 0.625em;
 $font12px: 0.75em;
 $font15px: 0.9375em;
 $font18px: 1.125em;
@@ -26,6 +28,9 @@ $font34px: 2.125em;
 $font36px: 2.25em;
 $font38px: 2.375em;
 $font42px: 2.625em;
+$font44px: 2.75em;
+$font46px: 2.875em;
+$font48px: 3em;
 $font50px: 3.125em;
 $font54px: 3.375em;
 $font80px: 5em;

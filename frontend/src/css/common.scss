@@ -13,8 +13,9 @@ body,
 }
 
 html {
+  --base-font-size: 18;
   scroll-behavior: smooth;
-  font-size: calc-font-size(1px);
+  //font-size: calc-font-size(1px);
 }
 
 body {
@@ -58,6 +59,36 @@ b {
       text-transform: uppercase;
       margin: 0 0 3rem 0;
       font-size: $font30px;
+    }
+  }
+}
+
+footer {
+  background-color: black;
+  height: 0.3 * $viewHeightRef;
+  -webkit-mask-image: -webkit-gradient(
+    linear,
+    left top,
+    left 15%,
+    from(rgba(0, 0, 0, 0)),
+    to(rgba(0, 0, 0, 1))
+  );
+
+  .footer-inner {
+    width: 25rem;
+    margin: -2rem auto;
+    padding-top: 4rem;
+    height: 100%;
+  }
+
+  .center-aligned-row {
+    justify-content: space-evenly;
+    margin-top: 2rem;
+
+    .link {
+      font-weight: 100;
+      border-bottom: solid 1px $text_gray;
+      line-height: 1em;
     }
   }
 }
@@ -179,17 +210,17 @@ b {
   position: relative;
 
   img {
-    width: 8em;
+    width: 6em;
   }
 
   &.with-text:after {
     content: "DIAMOND DAWN";
     position: absolute;
-    bottom: -1.5em;
+    bottom: -1.2em;
     left: 0;
     width: 100%;
     text-align: center;
-    font-size: $font12px;
+    font-size: $font10px;
     letter-spacing: 0.1em;
     font-weight: 400;
   }

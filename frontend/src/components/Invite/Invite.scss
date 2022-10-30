@@ -47,6 +47,10 @@
       display: flex;
       flex-direction: column;
 
+      .leading-text {
+        font-size: $font44px;
+      }
+
       .request-status {
         .leading-text {
           font-size: $font34px;

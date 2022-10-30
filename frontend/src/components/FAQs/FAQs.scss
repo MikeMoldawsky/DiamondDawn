@@ -1,0 +1,31 @@
+@import "css/varsNEW";
+
+.faqs {
+  .faq-item {
+    margin-top: 1.5em;
+    padding-top: 1.5em;
+    border-top: solid 1px white;
+
+    &:last-child {
+      padding-bottom: 1.5em;
+      border-bottom: solid 1px white;
+    }
+  }
+
+  .faq-title {
+    color: white;
+    font-size: $font18px;
+    cursor: pointer;
+    margin: 0;
+    padding: 0 0.75em;
+
+    svg {
+      width: 0.75em;
+      height: 0.75em;
+    }
+  }
+
+  .ReactCollapse--content {
+    padding: 0 1em 0 2em;
+  }
+}
