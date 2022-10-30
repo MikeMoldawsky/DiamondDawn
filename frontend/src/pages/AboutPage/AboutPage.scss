@@ -38,7 +38,8 @@
     }
 
     .leading-text,
-    .journey-step {
+    .journey-step,
+    .journey-desc {
       background-color: black;
       padding: 1em;
     }
@@ -51,7 +52,13 @@
     .journey-step {
       margin-top: 10em;
       padding-bottom: 3em;
-      width: 40%;
+      width: 50%;
+    }
+
+    .journey-desc {
+      width: 50%;
+      margin-top: -3em;
+      padding-bottom: 1em;
     }
 
     .key-image {
@@ -119,9 +126,9 @@
     --base-font-size: 23.5;
     font-size: calc-font-size(1px);
 
-    .inner-page {
-      width: 70%;
-    }
+    //.inner-page {
+    //  width: 70%;
+    //}
   }
 }
 
@@ -129,8 +136,8 @@
   .page.about-page {
     font-size: 12.5px;
 
-    .inner-page {
-      width: 85%;
-    }
+    //.inner-page {
+    //  width: 85%;
+    //}
   }
 }

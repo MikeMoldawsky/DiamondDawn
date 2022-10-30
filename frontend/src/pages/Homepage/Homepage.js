@@ -80,26 +80,28 @@ const Homepage = () => {
               Deep below the earth’s surface, under immense pressure and
               scorching heat over billions of years, a marvel of nature is
               formed. A diamond.
-            </p>
-            <p className="text">
+              <br />
               For thousands of years, they have been the ultimate symbol of
-              wealth and abundance, worshiped and fought over by emperors for
-              their sparkle and beauty. The strongest, most enduring material on
-              Earth, a single diamond, smaller than a pea, can cost tens of
-              millions of dollars for its clarity and color.
+              wealth and abundance.
+              <br />
+              Precious and enduring, we crown royalty with them, hand them down
+              as family heirlooms, and swear our eternal love with them. A
+              single diamond, smaller than a pea, can cost tens of millions of
+              dollars for its clarity and color.
             </p>
             <p className="text">
               <b>But are diamonds REALLY that rare?</b>
             </p>
             <br />
+            <div className="leading-text">SCARCITY</div>
             <p className="text">
               The recent rise of lab-grown diamonds makes it impossible for
               anyone to distinguish a ‘real’ diamond from a man-made one without
-              special equipment. Not only that, but it’s largely unknown that
-              big diamond companies keep vast quantities of diamonds hidden away
-              in huge vaults, controlling the circulation and supply of the
-              diamond market. The less diamonds we think are the more ‘rare’
-              they appear to be.
+              special equipment.
+              <br />
+              Not only that, but it’s largely unknown that big diamond companies
+              keep vast quantities of diamonds hidden away in massive vaults,
+              controlling the circulating supply of the diamond market.
             </p>
             <p className="text">
               <b>
@@ -115,45 +117,42 @@ const Homepage = () => {
         <div className="bg-left-hand" />
         <div className="bg-right-hand" />
         <div className="center-aligned-column text">
-          Today’s definition of value is a subject of debate. What makes a thing
-          valuable?
-          <br />
-          With the surge in recent years of NFT artworks that are 100% virtual
-          being auctioned in world renowned
-          <br />
-          auction houses, such as Christie’s and Sotheby’s, and selling for tens
-          of
-          <br />
-          <br />
-          millions of dollars, the lines between the physical and virtual are
-          becoming progressively more blurred.
-          <br />
-          Who would have imagined, even as little as a decade ago, that it would
-          be possible for a<br />
-          digital creation to be equally (or even more) valuable than its
-          physical counterpart?
+          <div className="leading-text">VALUE</div>
+          <p>
+            Today’s definition of value is a subject of debate. What makes a
+            thing valuable?
+            <br />
+            With the recent rise of NFT technology, the lines between the
+            physical and virtual worlds have become blurred.
+            <br />
+            Purely digital artworks are auctioned in world-renowned auction
+            houses, such as Christie’s and Sotheby’s, selling for tens of
+            millions of dollars.
+            <br />
+            Who would have imagined, even as little as a decade ago, that it
+            would be possible for a digital creation to be equally (or even
+            more) valuable than its physical counterpart?
+          </p>
         </div>
       </div>
       <div className="teaser">
         {renderTeaserBg()}
         <div className="center-aligned-column content">
-          <div className="text">
+          <div className="leading-text">DIAMOND DAWN</div>
+          <p className="text">
             Diamond Dawn is a social experiment that pushes this concept to the
             limit.
             <br />
+            <br />
             For the first time in history, collectors will have the choice to
-            create their own digital artwork,
-            <br />
-            and at the end of their journey, face the ultimate decision -
-            whether to keep their art piece
-            <br />
-            digital, or transform it into physical form.
+            create their digital diamond and, at the end of their journey, face
+            the ultimate decision - whether to keep their diamond art digital or
+            transform it into physical form.
             <br />
             <br />
             Will they stand by their past notions of the physical being more
-            valuable, or follow their
-            <br />
-            confidence in the blockchain as the future?
+            valuable, or follow their confidence in the blockchain as the
+            future?
             <br />
             <br />
             <div className="text-center">
@@ -161,7 +160,7 @@ const Homepage = () => {
               <br />
               <b>The final choice is yours to make.</b>
             </div>
-          </div>
+          </p>
           <PlayCircleOutlineIcon />
           <div>PLAY FULL TRAILER</div>
           <div className="button transparent">REQUEST AN INVITATION</div>

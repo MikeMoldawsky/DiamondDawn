@@ -19,37 +19,36 @@ const AboutPage = () => {
           </div>
           <br />
           <div className="text">
-            Your Diamond Dawn journey will consist of 4 steps. At each step, you
-            must choose whether to evolve your Diamond NFT to its next form.
-            You’ll have exactly <b>3 weeks, 3 days, and 3 hours</b> to complete
-            each step.
+            Your Diamond Dawn journey will consist of 4 steps.
+            <br />
+            At each step, you must choose whether to evolve your Diamond NFT to
+            its next form or keep it in its current state for eternity. You’ll
+            have exactly <b>3 weeks, 3 days, and 3 hours</b> to complete each
+            step.
           </div>
-          <div className="text">
-            If you don’t continue to the next phase, your NFT will remain in its
-            current state for eternity.
-          </div>
-          <div className="text">
-            Sometimes the hardest decision is whether to decide at all...
-          </div>
-          <br />
           <div className="text">
             In the last phase, you will be faced with the <b>final choice</b>:
           </div>
-          <div className="text">Keep your Diamond NFT digital?</div>
-          <div className="text">or</div>
+          <div className="text">Physical or Virtual.</div>
+          <br />
           <div className="text">
-            Transform it into a physical, limited-edition art of work that
-            contains your GIA-certified diamond at its heart (and which will be
-            shipped to you)?
+            You’ll decide wether to keep your diamond NFT digital or transform
+            it into a physical, limited-edition artwork that contains your
+            diamond (GIA-certified).
           </div>
-          <div className="secondary-text">
-            Which diamond will you choose? The final choice is yours.
-          </div>
+          <div className="secondary-text">Which diamond will you choose?</div>
         </div>
 
         <div className="center-aligned-column journey">
           <div id="journey" className="leading-text">
             THE JOURNEY
+          </div>
+          <div className="journey-desc text">
+            Throughout your Diamond Dawn journey you’ll learn about the secret
+            world of the diamonds’ industry and how diamonds are created.
+            <br />
+            Diamond Dawn journey is completely on-chain and your outcome will
+            depend on the choices you make along the project’s 4 steps.
           </div>
           <div className="journey-step">
             <div className="key-image" />
@@ -57,8 +56,8 @@ const AboutPage = () => {
             <div className="text">
               If your request to join Diamond Dawn is approved, you will have a
               limited-time window of 3 days, 3 hours, and 3 minutes to activate
-              your key for 3.33 $ETH. The key grants you access to the virtual
-              diamond mine, where your Diamond Dawn journey begins.
+              your key for 3.33 $ETH. The key grants you full access to Diamond
+              Dawn, starting in the virtual mine, where your journey begins.
               <br />
               <br />
               The application phase will automatically end when one of the
@@ -103,14 +102,15 @@ const AboutPage = () => {
             from various fields who share a common set of values.
             <br />
             <br />
-            All of us share the belief that decentralization is key to the
-            Internet’s survival. The technology behind Web3 and NFTs will
-            disrupt most industries as we know them today and will shift the
-            “power” from corporates back to individuals.
+            We all share the belief that decentralization is key to the
+            Internet’s survival. We look forward to the day when the robust
+            technology behind Web3 and NFTs will disrupt most industries as we
+            know them today, resulting in a shift in “power” from corporations
+            back to individuals.
             <br />
             <br />
             Diamond Dawn was specifically architectured to demonstrate how
-            decentralized technology will create REAL life impact.
+            decentralized technology can create a REAL-LIFE impact
           </div>
           <div className="team-members">
             <div className="team-member">
@@ -124,15 +124,9 @@ const AboutPage = () => {
                 NFTs will become a transforming force for most industries,
                 digital communities, and how we consume content on the whole. He
                 has since vowed to become an active member and architect of the
-                crypto revolution, making it [his life’s
-                mission](https://linktr.ee/tweezers0xffff)
-                <br />
-                to push forward decentralized technology to a state where it
-                creates REAL LIFE impact that will, in turn, change society at
-                large.
-                <br />
-                This project is Mike’s ‘baby’ - it has taken 9 months to put
-                together, and very clearly  manifests some of his beliefs.
+                crypto revolution, making it his life’s mission to push forward
+                decentralized technology to a state where it creates REAL LIFE
+                impact that will, in turn, change society at large.
               </div>
             </div>
             <div className="team-member">
@@ -148,20 +142,12 @@ const AboutPage = () => {
                 the music, to creating overly ambitious, full CG short films,
                 and mesmerizing animations. David has also had several major
                 successes in web3, including being part of the Pak's ASH 2 drop,
-                creating two NFTs for
-                <br />
-                [Beeple x
-                Madonn](https://twitter.com/beeple/status/1525142908680257536)
-                <br />
-                a (one of which sold for $346,000) and
-                <br />
-                [a collab with famous artist Jia
-                Alli](https://www.sothebys.com/en/buy/auction/2022/contemporary-art-evening-sale/jia-aili-x-david-ariew-jia-ai-li-x-da-weiai-lu-the)
-                <br />
-                on a piece entitled "The Road Ahead", which sold at Sotheby’s.
-                David’s mission as an artist is not only to grow the NFT
-                community, but also to help up-and-coming 3D artists gain
-                traction in the field.
+                creating two NFTs for Beeple x Madonn a (one of which sold for
+                $346,000) and a collab with famous artist Jia Alli on a piece
+                entitled "The Road Ahead", which sold at Sotheby’s. David’s
+                mission as an artist is not only to grow the NFT community, but
+                also to help up-and-coming 3D artists gain traction in the
+                field.
               </div>
             </div>
             <div className="team-member">
