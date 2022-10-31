@@ -1,4 +1,5 @@
 @import "css/varsNEW";
+@import "css/elements";
 
 .not-connected {
   height: 70%;
@@ -6,15 +7,19 @@
   text-align: center;
 
   img {
-    width: 15rem;
-    margin: 5rem 0 2.5rem;
+    width: 18em;
+    margin: 7em 0 2.5em;
   }
 
   .connect-wallet button {
-    background-color: transparent !important;
+    @extend .button;
+    @extend .transparent;
     color: $text_gray;
-    font-weight: 300;
-    font-size: $font25px;
-    box-shadow: none;
+    border: solid 1px $text_gray;
+
+    &:hover {
+      color: white;
+      border-color: white;
+    }
   }
 }

@@ -92,7 +92,7 @@ const Invite = () => {
       </div>
     );
 
-  const title = invite ? "REQUEST STATUS" : "BEGIN YOUR JOURNEY";
+  const title = invite ? "REQUEST STATUS" : "APPLY FOR DIAMOND DAWN";
 
   return (
     <div className="box-content opaque invite-view">
@@ -104,17 +104,18 @@ const Invite = () => {
             cutting? Something intriguing and mysterious
           </div>
         </div>
-        <div className="title-box">
-          <div className="secondary-text">
-            Hello {shortenEthAddress(account?.address)}
-          </div>
-        </div>
+
         <div className="content-box">
           {invite ? (
             <div className="request-status">
               <div className="leading-text">
-                Your invitation request is pending approval
+                DIAMOND DAWN APPLICATION
+                {/*Your invitation request is pending approval*/}
               </div>
+              <div className="account-text">
+                Hello {shortenEthAddress(account?.address)}
+              </div>
+              <div className="secondary-text">Application status: PENDING</div>
               <div className="text-comment">
                 Once your request is approved, you will have a limited time to
                 enter the mine. Remember, only 333 will embark on the journey
@@ -123,7 +124,15 @@ const Invite = () => {
             </div>
           ) : (
             <>
-              <div className="leading-text">{title}</div>
+              <div className="title-box">
+                <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
+                {/*<div className="secondary-text">*/}
+                {/*  Hello {shortenEthAddress(account?.address)}*/}
+                {/*</div>*/}
+              </div>
+              <div className="account-text">
+                Hello {shortenEthAddress(account?.address)}
+              </div>
               <div className="text">
                 To receive your unique key to the diamond mine, Please enter
                 your info below:

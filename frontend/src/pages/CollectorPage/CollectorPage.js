@@ -44,7 +44,6 @@ const CollectorPage = () => {
           <Suspense
             withLoader
             actions={suspenseActions}
-            viewName={"THE COLLECTOR'S ROOM"}
           >
             {renderContent()}
           </Suspense>

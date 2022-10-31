@@ -75,7 +75,7 @@ const RequestForm = ({ onSuccess }) => {
     <div className="request-form">
       <form>
         <div className="center-aligned-row inputs-row">
-          {renderInput("twitter", "Twitter link", {
+          {renderInput("twitter", "Twitter handle", {
             required: false,
             pattern: /^[a-zA-Z0-9_]{4,15}$/i,
           })}
@@ -84,7 +84,9 @@ const RequestForm = ({ onSuccess }) => {
             pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
           })}
         </div>
-        <div className="text-comment">Fill in one or more</div>
+        <div className="center-start-aligned-row checkbox">
+          <input type="checkbox" /> We are a DAO
+        </div>
         <textarea
           {...register("note")}
           disabled={isSubmitting}

@@ -46,9 +46,7 @@ const Homepage = () => {
           {/*<AnimatedLogo />*/}
           <Logo withText />
           <div className="secondary-text">
-            For the first time in history, a gemological symbiosis
-            <br />
-            of the virtual and the physical
+            The first ever virtual diamond mining experience
           </div>
           <div className="countdown-container">
             <div className="text">Mine will open in</div>

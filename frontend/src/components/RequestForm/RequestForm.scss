@@ -11,6 +11,10 @@
     flex-direction: column;
     position: relative;
 
+    .text-comment {
+      margin-top: .4rem;
+    }
+
     .modal {
       width: 110%;
       transform: translate(-50%, -70%);
@@ -34,5 +38,16 @@
   .button {
     margin-top: 0.8em;
     align-self: flex-start;
+  }
+
+  .checkbox {
+    width: 10em;
+    font-size: 1.125em;
+    white-space: nowrap;
+
+    input {
+      margin-right: .5em;
+      width: 1em !important;
+    }
   }
 }
