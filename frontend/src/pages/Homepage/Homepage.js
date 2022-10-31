@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback } from "react";
 import "./Homepage.scss";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedTokenId } from "store/uiReducer";
+import {setSelectedTokenId, updateUiState} from "store/uiReducer";
 import { getCDNVideoUrl, isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
@@ -10,11 +10,18 @@ import Logo from "components/Logo";
 import ReactPlayer from "react-player";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import Footer from "components/Footer";
+import ScrollingPage from "components/ScrollingPage";
 
 const Homepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
+
+  useEffect(() => {
+    return () => {
+      dispatch(updateUiState({ scroll: 0 }))
+    }
+  }, [])
 
   useEffect(() => {
     isRestricted && navigate("/");
@@ -39,7 +46,7 @@ const Homepage = () => {
   );
 
   return (
-    <div className="page homepage">
+    <ScrollingPage className="homepage">
       <div className="top-content center-aligned-column">
         <HomeBackground />
         <div className="common-view">
@@ -165,7 +172,7 @@ const Homepage = () => {
         </div>
       </div>
       <Footer />
-    </div>
+    </ScrollingPage>
   );
 };
 

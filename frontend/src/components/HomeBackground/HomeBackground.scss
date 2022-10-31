@@ -2,13 +2,21 @@
 
 .home-background {
   background-color: black;
+  position: relative;
 
   &,
   .bg,
   .bg-leaves {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+
+    &.parallax {
+      position: fixed;
+    }
   }
 
   .bg-leaves:nth-child(1) {
@@ -23,6 +31,7 @@
   }
   .bg:nth-child(3) {
     background: url($CDN_URL + "/images/homepage/homepage-sky.png") center 93%;
+    animation: moveBackground 180s linear infinite;
   }
   .bg:nth-child(4) {
     background: url($CDN_URL + "/images/homepage/homepage-mountains-back.png")
@@ -31,5 +40,17 @@
   .bg:nth-child(5) {
     background: url($CDN_URL + "/images/homepage/homepage-mountains-front.png")
       no-repeat center bottom;
+  }
+
+  @keyframes moveBackground {
+    0% {
+      background-position-x: 0;
+    }
+    50% {
+      background-position-x: -1000px;
+    }
+    100% {
+      background-position-x: 0;
+    }
   }
 }
