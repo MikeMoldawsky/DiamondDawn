@@ -4,14 +4,14 @@
   background-color: black;
   position: relative;
   $stoneHigh: -4%;
-  $stoneLow: -2.5%;
+  $stoneLow: -3%;
 
   .bg-element {
     position: absolute;
 
     &.rough-diamond {
       top: $stoneLow;
-      left: 24.2%;
+      left: 22%;
       width: 7%;
       animation: moveStone 6s linear infinite;
     }
@@ -69,7 +69,7 @@
     }
     &.bg-right-hand {
       background: url($CDN_URL + "/images/homepage/homepage-right-hand.png")
-      no-repeat 104% 75%;
+      no-repeat 104% 85%;
       background-size: 37% auto;
     }
     &.bg-left-hand {

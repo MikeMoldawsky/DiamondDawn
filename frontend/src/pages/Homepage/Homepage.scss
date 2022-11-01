@@ -19,6 +19,7 @@
     width: 110%;
     margin-left: -5%;
     text-align: center;
+    z-index: 1;
 
     $fadeTime: 0.75s * $animationMultiplier;
 
@@ -95,42 +96,37 @@
 
   .info-section {
     position: relative;
-    height: 2 * $viewHeightRef;
-    z-index: 0;
+    height: 1.8 * $viewHeightRef;
+    z-index: 2;
   }
 
   .eternal-treasures, .scarcity, .value-section {
     position: relative;
     display: flex;
     padding-top: 7%;
+    height: 33.33%;
   }
 
   .eternal-treasures {
-    height: 38%;
-
     .text-section {
       left: 52.5%;
     }
   }
 
   .scarcity {
-    height: 31%;
-
     .text-section {
       left: 12.5%;
     }
   }
 
   .value-section {
-    height: 31%;
-
     .text-section {
-      left: 45%;
+      left: 35%;
     }
   }
 
   .teaser {
-    z-index: 0;
+    z-index: 1;
     position: relative;
     height: $viewHeightRef;
     color: white;
@@ -150,6 +146,10 @@
       transform: translateX(-50%);
       height: 100%;
       z-index: 1;
+
+      .leading-text {
+        align-self: flex-start;
+      }
 
       .text-center {
         margin-top: 1rem;
