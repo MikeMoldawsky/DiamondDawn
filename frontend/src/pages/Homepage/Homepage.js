@@ -73,71 +73,72 @@ const Homepage = () => {
           </div>
         </div>
       </div>
-      <div className="eternal-treasures">
+      <div className="info-section">
         <EternalTreasuresBackground />
-        <div className="text-section">
-          <div className="leading-text">ETERNAL TREASURES</div>
-          <div className="text">
-            Deep below the earth’s surface, under immense pressure and
-            scorching heat over billions of years, a marvel of nature is
-            formed. A diamond.
-            <br />
-            For thousands of years, they have been the ultimate symbol of
-            wealth and abundance.
-            <br />
-            Precious and enduring, we crown royalty with them, hand them down
-            as family heirlooms, and swear our eternal love with them. A
-            single diamond, smaller than a pea, can cost tens of millions of
-            dollars for its clarity and color.
+        <div className="eternal-treasures">
+          <div className="text-section">
+            <div className="leading-text">ETERNAL TREASURES</div>
+            <div className="text">
+              Deep below the earth’s surface, under immense pressure and
+              scorching heat over billions of years, a marvel of nature is
+              formed. A diamond.
+              <br />
+              For thousands of years, they have been the ultimate symbol of
+              wealth and abundance.
+              <br />
+              Precious and enduring, we crown royalty with them, hand them down
+              as family heirlooms, and swear our eternal love with them. A
+              single diamond, smaller than a pea, can cost tens of millions of
+              dollars for its clarity and color.
+            </div>
+            <div className="text">
+              <b>But are diamonds REALLY that rare?</b>
+            </div>
           </div>
-          <div className="text">
-            <b>But are diamonds REALLY that rare?</b>
+        </div>
+        <div className="scarcity">
+          <div className="text-section">
+            <div className="leading-text">SCARCITY</div>
+            <p className="text">
+              The recent rise of lab-grown diamonds makes it impossible for
+              anyone to distinguish a ‘real’ diamond from a man-made one without
+              special equipment.
+              <br />
+              Not only that, but it’s largely unknown that big diamond companies
+              keep vast quantities of diamonds hidden away in massive vaults,
+              controlling the circulating supply of the diamond market.
+            </p>
+            <p className="text">
+              <b>
+                So, if the supply of diamonds is unknown, and we can now produce
+                them ourselves, How can we evaluate the actual worth of a
+                physical diamond?
+              </b>
+            </p>
+          </div>
+        </div>
+        <div className="value-section">
+          <div className="text-section">
+            <div className="leading-text">VALUE</div>
+            <p className="text">
+              Today’s definition of value is a subject of debate. What makes a
+              thing valuable?
+              <br />
+              With the recent rise of NFT technology, the lines between the
+              physical and virtual worlds have become blurred.
+              <br />
+              Purely digital artworks are auctioned in world-renowned auction
+              houses, such as Christie’s and Sotheby’s, selling for tens of
+              millions of dollars.
+              <br />
+              Who would have imagined, even as little as a decade ago, that it
+              would be possible for a digital creation to be equally (or even
+              more) valuable than its physical counterpart?
+            </p>
           </div>
         </div>
       </div>
-      <div className="scarcity">
-        <div className="text-section">
-          <div className="leading-text">SCARCITY</div>
-          <p className="text">
-            The recent rise of lab-grown diamonds makes it impossible for
-            anyone to distinguish a ‘real’ diamond from a man-made one without
-            special equipment.
-            <br />
-            Not only that, but it’s largely unknown that big diamond companies
-            keep vast quantities of diamonds hidden away in massive vaults,
-            controlling the circulating supply of the diamond market.
-          </p>
-          <p className="text">
-            <b>
-              So, if the supply of diamonds is unknown, and we can now produce
-              them ourselves, How can we evaluate the actual worth of a
-              physical diamond?
-            </b>
-          </p>
-        </div>
-      </div>
-      <div className="value-text">
-        <div className="bg-left-hand" />
-        <div className="bg-right-hand" />
-        <div className="center-aligned-column text">
-          <div className="leading-text">VALUE</div>
-          <p>
-            Today’s definition of value is a subject of debate. What makes a
-            thing valuable?
-            <br />
-            With the recent rise of NFT technology, the lines between the
-            physical and virtual worlds have become blurred.
-            <br />
-            Purely digital artworks are auctioned in world-renowned auction
-            houses, such as Christie’s and Sotheby’s, selling for tens of
-            millions of dollars.
-            <br />
-            Who would have imagined, even as little as a decade ago, that it
-            would be possible for a digital creation to be equally (or even
-            more) valuable than its physical counterpart?
-          </p>
-        </div>
-      </div>
+
       <div className="teaser">
         {renderTeaserBg()}
         <div className="center-aligned-column content">

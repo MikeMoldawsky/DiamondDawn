@@ -3,15 +3,17 @@
 .eternal-treasures-background {
   background-color: black;
   position: relative;
+  $stoneHigh: -4%;
+  $stoneLow: -2.5%;
 
   .bg-element {
     position: absolute;
 
     &.rough-diamond {
-      top: 0;
-      left: 20%;
-      width: 6em;
-      animation: moveStone 4s linear infinite;
+      top: $stoneLow;
+      left: 24.2%;
+      width: 7%;
+      animation: moveStone 6s linear infinite;
     }
   }
 
@@ -40,9 +42,9 @@
 
     &.stars {
       width: 200%;
-      height: 200%;
+      height: 100%;
       left: -50%;
-      top: -50%;
+      top: -25%;
       background: url($CDN_URL + "/images/homepage/homepage-ancient-stars.png")
       no-repeat center center;
       background-size: cover;
@@ -52,19 +54,29 @@
     }
     &.statue {
       background: url("../../assets/images/statue.png")
-      no-repeat 10% bottom;
-      background-size: auto 90%;
+      no-repeat 8% 7%;
+      background-size: auto 45%;
     }
     &.mine-rocks {
       background: url("../../assets/images/mine-rocks.png")
-      no-repeat right 140%;
-      background-size: auto 65%;
+      no-repeat right 36%;
+      background-size: 75% auto;
     }
     &.mine-rock-front {
       background: url("../../assets/images/mine-rock-front.png")
-      no-repeat left top;
-      background-size: auto 100%;
-      transform: translateY(-30%);
+      no-repeat -2% -30%;
+      background-size: auto 50%;
+    }
+    &.bg-right-hand {
+      background: url($CDN_URL + "/images/homepage/homepage-right-hand.png")
+      no-repeat 104% 75%;
+      background-size: 37% auto;
+    }
+    &.bg-left-hand {
+      background: url($CDN_URL + "/images/homepage/homepage-left-hand.png")
+      no-repeat left bottom;
+      background-size: 22.5% auto;
+      transform: translateY(3.5%);
     }
   }
 
@@ -76,13 +88,13 @@
 
   @keyframes moveStone {
     0% {
-      top: -1%;
+      top: $stoneLow;
     }
     50% {
-      top: -5%;
+      top: $stoneHigh;
     }
     100% {
-      top: -1%;
+      top: $stoneLow;
     }
   }
 }

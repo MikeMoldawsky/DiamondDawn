@@ -78,7 +78,7 @@
 
   .text-section {
     position: relative;
-    width: 40%;
+    width: 42.5%;
 
     .leading-text {
       margin-bottom: 2rem;
@@ -93,53 +93,45 @@
     }
   }
 
-  .eternal-treasures {
+  .info-section {
     position: relative;
-    height: 90%;
+    height: 2 * $viewHeightRef;
+    z-index: 0;
+  }
+
+  .eternal-treasures, .scarcity, .value-section {
+    position: relative;
+    display: flex;
+    padding-top: 7%;
+  }
+
+  .eternal-treasures {
+    height: 38%;
 
     .text-section {
-      left: 50%;
-
-      .leading-text {
-        padding-top: 8rem;
-      }
+      left: 52.5%;
     }
   }
 
-  .value-text {
-    position: relative;
-    height: $viewHeightRef;
-    margin-top: -(0.2 * $viewHeightRef);
-    z-index: 1;
-    line-height: 2.2em;
+  .scarcity {
+    height: 31%;
 
-    .bg-left-hand {
-      @extend .bg;
-      background: url($CDN_URL + "/images/homepage/homepage-left-hand.png")
-        no-repeat left bottom;
-      background-size: auto 100%;
+    .text-section {
+      left: 12.5%;
     }
+  }
 
-    .bg-right-hand {
-      @extend .bg;
-      background: url($CDN_URL + "/images/homepage/homepage-right-hand.png")
-        no-repeat 113% top;
-      background-size: auto 100%;
-    }
+  .value-section {
+    height: 31%;
 
-    .text {
-      position: relative;
-      height: 100%;
-      width: 55%;
-      margin: 0 auto;
-      top: 6%;
+    .text-section {
+      left: 45%;
     }
   }
 
   .teaser {
     z-index: 0;
     position: relative;
-    margin-top: -5%;
     height: $viewHeightRef;
     color: white;
 
