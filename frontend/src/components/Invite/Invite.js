@@ -62,7 +62,7 @@ const Invite = () => {
 
   if (!isInviteFetched || (invite.approved && !invite.opened))
     return (
-      <div className="box-content box-loading">
+      <div className="box-content opaque box-loading">
         <Loading />
       </div>
     );

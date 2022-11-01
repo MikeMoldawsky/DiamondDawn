@@ -1,0 +1,88 @@
+@import "css/varsNEW";
+
+.eternal-treasures-background {
+  background-color: black;
+  position: relative;
+
+  .bg-element {
+    position: absolute;
+
+    &.rough-diamond {
+      top: 0;
+      left: 20%;
+      width: 6em;
+      animation: moveStone 4s linear infinite;
+    }
+  }
+
+  &,
+  .bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+
+    &.contained {
+      overflow: hidden;
+    }
+
+    &.parallax {
+      position: fixed;
+    }
+
+    &.black-box {
+      background-color: black;
+      top: 100%;
+      height: 150%;
+    }
+
+    &.stars {
+      width: 200%;
+      height: 200%;
+      left: -50%;
+      top: -50%;
+      background: url($CDN_URL + "/images/homepage/homepage-ancient-stars.png")
+      no-repeat center center;
+      background-size: cover;
+      transform: rotate(-90deg);
+      animation: rotateStars 720s linear infinite;
+      z-index: -10;
+    }
+    &.statue {
+      background: url("../../assets/images/statue.png")
+      no-repeat 10% bottom;
+      background-size: auto 90%;
+    }
+    &.mine-rocks {
+      background: url("../../assets/images/mine-rocks.png")
+      no-repeat right 140%;
+      background-size: auto 65%;
+    }
+    &.mine-rock-front {
+      background: url("../../assets/images/mine-rock-front.png")
+      no-repeat left top;
+      background-size: auto 100%;
+      transform: translateY(-30%);
+    }
+  }
+
+  @keyframes rotateStars {
+    100% {
+      transform: rotate(270deg);
+    }
+  }
+
+  @keyframes moveStone {
+    0% {
+      top: -1%;
+    }
+    50% {
+      top: -5%;
+    }
+    100% {
+      top: -1%;
+    }
+  }
+}

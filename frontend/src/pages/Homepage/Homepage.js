@@ -6,11 +6,12 @@ import {setSelectedTokenId, updateUiState} from "store/uiReducer";
 import { getCDNVideoUrl, isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
-import Logo from "components/Logo";
 import ReactPlayer from "react-player";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import Footer from "components/Footer";
 import ScrollingPage from "components/ScrollingPage";
+import EternalTreasuresBackground from "components/EternalTreasuresBackground";
+import AnimatedLogo from "components/AnimatedLogo";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -50,8 +51,7 @@ const Homepage = () => {
       <div className="top-content center-aligned-column">
         <HomeBackground />
         <div className="common-view">
-          {/*<AnimatedLogo />*/}
-          <Logo withText />
+          <AnimatedLogo withText />
           <div className="secondary-text">
             The first ever virtual diamond mining experience
           </div>
@@ -74,48 +74,46 @@ const Homepage = () => {
         </div>
       </div>
       <div className="eternal-treasures">
-        <div className="bg-stars" />
-        <div className="grid">
-          <div className="space-cell" />
-          <div className="title-cell">
-            <div className="leading-text">ETERNAL TREASURES</div>
-          </div>
-          <div className="text-cell">
-            <p className="text">
-              Deep below the earth’s surface, under immense pressure and
-              scorching heat over billions of years, a marvel of nature is
-              formed. A diamond.
-              <br />
-              For thousands of years, they have been the ultimate symbol of
-              wealth and abundance.
-              <br />
-              Precious and enduring, we crown royalty with them, hand them down
-              as family heirlooms, and swear our eternal love with them. A
-              single diamond, smaller than a pea, can cost tens of millions of
-              dollars for its clarity and color.
-            </p>
-            <p className="text">
-              <b>But are diamonds REALLY that rare?</b>
-            </p>
+        <EternalTreasuresBackground />
+        <div className="text-section">
+          <div className="leading-text">ETERNAL TREASURES</div>
+          <div className="text">
+            Deep below the earth’s surface, under immense pressure and
+            scorching heat over billions of years, a marvel of nature is
+            formed. A diamond.
             <br />
-            <div className="leading-text">SCARCITY</div>
-            <p className="text">
-              The recent rise of lab-grown diamonds makes it impossible for
-              anyone to distinguish a ‘real’ diamond from a man-made one without
-              special equipment.
-              <br />
-              Not only that, but it’s largely unknown that big diamond companies
-              keep vast quantities of diamonds hidden away in massive vaults,
-              controlling the circulating supply of the diamond market.
-            </p>
-            <p className="text">
-              <b>
-                So, if the supply of diamonds is unknown, and we can now produce
-                them ourselves, How can we evaluate the actual worth of a
-                physical diamond?
-              </b>
-            </p>
+            For thousands of years, they have been the ultimate symbol of
+            wealth and abundance.
+            <br />
+            Precious and enduring, we crown royalty with them, hand them down
+            as family heirlooms, and swear our eternal love with them. A
+            single diamond, smaller than a pea, can cost tens of millions of
+            dollars for its clarity and color.
           </div>
+          <div className="text">
+            <b>But are diamonds REALLY that rare?</b>
+          </div>
+        </div>
+      </div>
+      <div className="scarcity">
+        <div className="text-section">
+          <div className="leading-text">SCARCITY</div>
+          <p className="text">
+            The recent rise of lab-grown diamonds makes it impossible for
+            anyone to distinguish a ‘real’ diamond from a man-made one without
+            special equipment.
+            <br />
+            Not only that, but it’s largely unknown that big diamond companies
+            keep vast quantities of diamonds hidden away in massive vaults,
+            controlling the circulating supply of the diamond market.
+          </p>
+          <p className="text">
+            <b>
+              So, if the supply of diamonds is unknown, and we can now produce
+              them ourselves, How can we evaluate the actual worth of a
+              physical diamond?
+            </b>
+          </p>
         </div>
       </div>
       <div className="value-text">

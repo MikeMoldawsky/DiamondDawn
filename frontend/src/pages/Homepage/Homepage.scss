@@ -27,14 +27,19 @@
       opacity: 0;
       animation: fadeInGrow $fadeTime ease-out forwards;
       animation-delay: 0.75s;
+      margin-top: -8em;
 
-      .logo-box {
-        margin-bottom: 5rem;
+      .logo-box, .react-player {
+        margin-bottom: 5em;
         width: 20em;
         aspect-ration: 2.55;
 
         img {
           width: 100%;
+        }
+
+        video {
+          margin-top: 6em;
         }
 
         &.with-text:after {
@@ -71,44 +76,33 @@
     }
   }
 
+  .text-section {
+    position: relative;
+    width: 40%;
+
+    .leading-text {
+      margin-bottom: 2rem;
+    }
+
+    .text {
+      line-height: 2em;
+
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
   .eternal-treasures {
     position: relative;
-    height: 1.35 * $viewHeightRef;
-    background: url($CDN_URL + "/images/homepage/homepage-ancient.png")
-      no-repeat center 20%;
-    background-size: 147%;
-    z-index: 1;
+    height: 90%;
 
-    .bg-stars {
-      @extend .bg;
-      background: url($CDN_URL + "/images/homepage/homepage-ancient-stars.png")
-        no-repeat center center;
-      z-index: 1;
-      background-size: 104%;
-      top: -5%;
-      background-attachment: fixed;
-    }
+    .text-section {
+      left: 50%;
 
-    .grid {
-      width: 80%;
-      margin: 0 auto;
-      position: relative;
-      top: 10%;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: 1fr 10fr;
-      grid-column-gap: 0px;
-      grid-row-gap: 0px;
-    }
-
-    .space-cell {
-      grid-area: 1 / 1 / 4 / 2;
-    }
-    .title-cell {
-      grid-area: 1 / 2 / 2 / 3;
-    }
-    .text-cell {
-      grid-area: 2 / 2 / 3 / 3;
+      .leading-text {
+        padding-top: 8rem;
+      }
     }
   }
 
@@ -164,7 +158,6 @@
       transform: translateX(-50%);
       height: 100%;
       z-index: 1;
-      //margin: 0 auto;
 
       .text-center {
         margin-top: 1rem;
