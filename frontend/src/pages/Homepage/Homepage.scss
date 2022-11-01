@@ -25,15 +25,15 @@
 
     .common-view {
       position: relative;
-      opacity: 0;
-      animation: fadeInGrow $fadeTime ease-out forwards;
-      animation-delay: 0.75s;
+      opacity: 1;
+      //animation: fadeInGrow $fadeTime ease-out forwards;
+      //animation-delay: 0.75s;
       margin-top: -8em;
 
       .logo-box, .react-player {
         margin-bottom: 5em;
         width: 20em;
-        aspect-ration: 2.55;
+        aspect-ratio: 2.55;
 
         img {
           width: 100%;

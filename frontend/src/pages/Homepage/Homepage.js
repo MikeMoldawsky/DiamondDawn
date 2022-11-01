@@ -1,8 +1,8 @@
-import React, { useEffect, useCallback } from "react";
+import React, {useEffect, useCallback, useMemo} from "react";
 import "./Homepage.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {setSelectedTokenId, updateUiState} from "store/uiReducer";
+import {setSelectedTokenId, uiSelector, updateUiState} from "store/uiReducer";
 import { getCDNVideoUrl, isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
@@ -12,11 +12,14 @@ import Footer from "components/Footer";
 import ScrollingPage from "components/ScrollingPage";
 import EternalTreasuresBackground from "components/EternalTreasuresBackground";
 import AnimatedLogo from "components/AnimatedLogo";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 const Homepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
+  const { scroll } = useSelector(uiSelector)
+  const { height, width } = useWindowDimensions();
 
   useEffect(() => {
     return () => {
@@ -46,11 +49,23 @@ const Homepage = () => {
     []
   );
 
+  const winHeightLimit = height / 2
+
+  const topViewEffectScrollLimit = scroll < winHeightLimit ? scroll : winHeightLimit
+
+  const topViewStyles = useMemo(() => {
+    return {
+      opacity: 1 - (scroll * 1.5 / winHeightLimit),
+      transform: `scale(${1 - (scroll / winHeightLimit / 1.5)})`,
+    }
+  }, [topViewEffectScrollLimit])
+
+  console.log({ document, winHeightLimit, topViewEffectScrollLimit, topViewStyles })
   return (
     <ScrollingPage className="homepage">
       <div className="top-content center-aligned-column">
         <HomeBackground />
-        <div className="common-view">
+        <div className="common-view" style={topViewStyles}>
           <AnimatedLogo withText />
           <div className="secondary-text">
             The first ever virtual diamond mining experience
