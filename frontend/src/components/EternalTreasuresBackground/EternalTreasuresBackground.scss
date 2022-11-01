@@ -26,31 +26,28 @@
     left: 0;
     z-index: -1;
 
-    &.contained {
-      overflow: hidden;
-    }
-
     &.parallax {
       position: fixed;
     }
 
-    &.black-box {
-      background-color: black;
-      top: 100%;
-      height: 150%;
+    &.contained {
+      overflow: hidden;
     }
 
     &.stars {
-      width: 200%;
-      height: 100%;
-      left: -50%;
-      top: -25%;
       background: url($CDN_URL + "/images/homepage/homepage-ancient-stars.png")
       no-repeat center center;
       background-size: cover;
-      transform: rotate(-90deg);
-      animation: rotateStars 720s linear infinite;
+      background-attachment: fixed;
       z-index: -10;
+
+      // ROTATION
+      //width: 200%;
+      //height: 100%;
+      //left: -50%;
+      //top: -25%;
+      //transform: rotate(-90deg);
+      //animation: rotateStars 720s linear infinite;
     }
     &.statue {
       background: url("../../assets/images/statue.png")
@@ -76,7 +73,7 @@
       background: url($CDN_URL + "/images/homepage/homepage-left-hand.png")
       no-repeat left bottom;
       background-size: 22.5% auto;
-      transform: translateY(3.5%);
+      transform: translateY(5%);
     }
   }
 

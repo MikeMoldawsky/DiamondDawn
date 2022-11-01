@@ -7,9 +7,7 @@ import ReactPlayer from "react-player";
 const EternalTreasuresBackground = () => {
   return (
     <div className="eternal-treasures-background">
-      <div className="bg contained">
-        <div className="bg stars" />
-      </div>
+      <div className="bg stars" />
       <div className="bg statue" />
       <div className="bg mine-rocks" />
       <div className="bg mine-rock-front" />
