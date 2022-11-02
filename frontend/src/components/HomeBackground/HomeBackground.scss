@@ -20,35 +20,51 @@
     &.black-box {
       background-color: black;
       top: 99%;
-      height: 150%;
+      height: 350%;
       z-index: -20;
+    }
+
+    &.stars {
+      background: black url($CDN_URL + "/images/homepage/stars.png") repeat-y
+        center center;
+      background-size: 100% auto;
+      background-attachment: fixed;
+      z-index: -20;
+
+      // ROTATION
+      //width: 200%;
+      //height: 100%;
+      //left: -50%;
+      //top: -25%;
+      //transform: rotate(-90deg);
+      //animation: rotateStars 720s linear infinite;
     }
 
     &.leaves-left {
       background: url($CDN_URL + "/images/homepage/homepage-leaves-left.png")
-      no-repeat top left;
+        no-repeat top left;
       background-size: 20%;
       z-index: -15;
     }
     &.leaves-right {
       background: url($CDN_URL + "/images/homepage/homepage-leaves-right.png")
-      no-repeat top right;
+        no-repeat top right;
       background-size: 20%;
       z-index: -15;
     }
     &.sky {
-      background: url($CDN_URL + "/images/homepage/homepage-sky.png") center 93%;
+      background: url($CDN_URL + "/images/homepage/sky.png") center 60%;
       animation: moveBackground 180s linear infinite;
       z-index: -30;
     }
     &.mountains-back {
       background: url($CDN_URL + "/images/homepage/homepage-mountains-back.png")
-      no-repeat center 93%;
+        no-repeat center 93%;
       z-index: -20;
     }
     &.mountains-front {
       background: url($CDN_URL + "/images/homepage/homepage-mountains-front.png")
-      no-repeat center bottom;
+        no-repeat center bottom;
       z-index: -10;
     }
   }

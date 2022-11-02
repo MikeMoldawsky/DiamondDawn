@@ -26,15 +26,18 @@
     $fadeTime: 0.75s * $animationMultiplier;
 
     .common-view {
+      font-size: calc-font-size(1px);
       position: relative;
       opacity: 1;
       //animation: fadeInGrow $fadeTime ease-out forwards;
       //animation-delay: 0.75s;
       margin-top: -8em;
 
-      .logo-box, .react-player {
+      .logo-box,
+      .react-player {
         margin-bottom: 5em;
-        width: 20em;
+        width: unset !important;
+        height: 22em !important;
         aspect-ratio: 2.55;
 
         img {
@@ -46,7 +49,7 @@
         }
 
         &.with-text:after {
-          bottom: -1.5em;
+          bottom: -1em;
           font-size: $font30px;
         }
       }
@@ -64,6 +67,7 @@
       margin: 3rem 0 2rem;
 
       .text {
+        color: white;
         margin-bottom: 0.4em;
       }
 
@@ -104,7 +108,9 @@
     }
   }
 
-  .eternal-treasures, .scarcity, .value-section {
+  .eternal-treasures,
+  .scarcity,
+  .value-section {
     position: relative;
     display: flex;
     height: 33.33%;
@@ -114,13 +120,14 @@
     .et-bg {
       flex-grow: 2;
       position: relative;
+      z-index: -2;
 
       .statue {
         height: 150%;
         top: 10%;
         z-index: -1;
-        background: url("../../assets/images/statue.png")
-        no-repeat right -25%;
+        background: url($CDN_URL + "/images/homepage/statue.png") no-repeat
+          right -25%;
         background-size: auto 100%;
         background-position-y: 0;
       }
@@ -211,7 +218,6 @@
       top: $stoneHigh;
     }
     100% {
-
       top: $stoneLow;
     }
   }
@@ -246,17 +252,3 @@
     }
   }
 }
-
-//@media only screen and (max-width: 1200px) {
-//  .page.homepage {
-//    //--base-font-size: 22;
-//    //font-size: calc-font-size(1px);
-//    font-size: $font14px;
-//  }
-//}
-
-//@media only screen and (max-width: 1024px) {
-//  .page.homepage {
-//    font-size: 12.5px;
-//  }
-//}

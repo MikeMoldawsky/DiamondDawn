@@ -1,8 +1,8 @@
-import React, {useEffect, useCallback, useMemo} from "react";
+import React, { useEffect, useCallback, useMemo } from "react";
 import "./Homepage.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {setSelectedTokenId, uiSelector, updateUiState} from "store/uiReducer";
+import { setSelectedTokenId, uiSelector, updateUiState } from "store/uiReducer";
 import { getCDNVideoUrl, isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
@@ -13,22 +13,26 @@ import ScrollingPage from "components/ScrollingPage";
 import EternalTreasuresBackground from "components/EternalTreasuresBackground";
 import AnimatedLogo from "components/AnimatedLogo";
 import useWindowDimensions from "hooks/useWindowDimensions";
-import roughStone from "assets/videos/rough-stone.webm";
 import classNames from "classnames";
-import {EternalTreasuresText, ScarcityText, TeaserText, ValueText} from "pages/Homepage/HompageContent";
+import {
+  EternalTreasuresText,
+  ScarcityText,
+  TeaserText,
+  ValueText,
+} from "pages/Homepage/HompageContent";
 
 const Homepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
-  const { scroll } = useSelector(uiSelector)
+  const { scroll } = useSelector(uiSelector);
   const { height, width } = useWindowDimensions();
 
   useEffect(() => {
     return () => {
-      dispatch(updateUiState({ scroll: 0 }))
-    }
-  }, [])
+      dispatch(updateUiState({ scroll: 0 }));
+    };
+  }, []);
 
   useEffect(() => {
     isRestricted && navigate("/");
@@ -52,37 +56,39 @@ const Homepage = () => {
     []
   );
 
-  const winHeightLimit = height / 2
+  const winHeightLimit = height / 2;
 
-  const topViewEffectScrollLimit = scroll < winHeightLimit ? scroll : winHeightLimit
+  const topViewEffectScrollLimit =
+    scroll < winHeightLimit ? scroll : winHeightLimit;
 
   const topViewStyles = useMemo(() => {
     return {
-      opacity: 1 - (scroll * 1.5 / winHeightLimit),
-      transform: `scale(${1 - (scroll / winHeightLimit / 1.5)})`,
-    }
-  }, [topViewEffectScrollLimit])
+      opacity: 1 - (scroll * 1.5) / winHeightLimit,
+      transform: `scale(${1 - scroll / winHeightLimit / 1.5})`,
+    };
+  }, [topViewEffectScrollLimit]);
 
   const stoneStyles = useMemo(() => {
-    if (width > 1500 && width > 1024) return {}
-    let ref
+    if (width > 1500 && width > 1024) return {};
+    let ref;
     if (width > 1200) {
-      ref = 65 + 275 * (width - 1200) / (1500 - 1200)
-    }
-    else {
-      ref = 10 + 165 * (width - 1024) / (1200 - 1024)
+      ref = 65 + (275 * (width - 1200)) / (1500 - 1200);
+    } else {
+      ref = 10 + (165 * (width - 1024)) / (1200 - 1024);
     }
     return {
       left: `${ref}px`,
-    }
-  }, [width])
+    };
+  }, [width]);
 
   return (
     <ScrollingPage className="homepage">
       <div className="top-content center-aligned-column">
         <HomeBackground />
         <div className="common-view" style={topViewStyles}>
-          <AnimatedLogo withText />
+          <div className="logo">
+            <AnimatedLogo withText />
+          </div>
           <div className="secondary-text">
             The first ever virtual diamond mining experience
           </div>
@@ -110,7 +116,7 @@ const Homepage = () => {
           <div className="et-bg">
             <div className="bg statue" />
             <ReactPlayer
-              url={roughStone}
+              url={getCDNVideoUrl("rough-stone.webm")}
               playing
               playsinline
               controls={false}

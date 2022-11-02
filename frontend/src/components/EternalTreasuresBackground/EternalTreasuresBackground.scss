@@ -1,7 +1,6 @@
 @import "css/varsNEW";
 
 .eternal-treasures-background {
-  background-color: black;
   position: relative;
   $stoneHigh: -4%;
   $stoneLow: -3%;
@@ -23,40 +22,29 @@
       overflow: hidden;
     }
 
-    &.stars {
-      //background: url("../../assets/images/stars.png")
-      background: url($CDN_URL + "/images/homepage/homepage-ancient-stars.png")
-      no-repeat center center;
-      background-size: cover;
-      background-attachment: fixed;
-      z-index: -10;
-
-      // ROTATION
-      //width: 200%;
-      //height: 100%;
-      //left: -50%;
-      //top: -25%;
-      //transform: rotate(-90deg);
-      //animation: rotateStars 720s linear infinite;
-    }
-    &.mine-rocks {
-      background: url("../../assets/images/mine-rocks.png")
-      no-repeat right 36%;
+    //&.glow {
+    //  background: url($CDN_URL + "/images/homepage/glow.png")
+    //  no-repeat left center;
+    //}
+    &.mine-wall-bottom {
+      background: url($CDN_URL + "/images/homepage/mine-wall-bottom.png")
+        no-repeat right 36%;
       background-size: 75% auto;
     }
-    &.mine-rock-front {
-      background: url("../../assets/images/mine-rock-front.png")
-      no-repeat -2% -30%;
+    &.mine-wall-left {
+      background: url($CDN_URL + "/images/homepage/mine-wall-left.png")
+        no-repeat 0 0;
       background-size: auto 50%;
+      transform: translate(0, -12%);
     }
     &.bg-right-hand {
       background: url($CDN_URL + "/images/homepage/homepage-right-hand.png")
-      no-repeat 104% 85%;
+        no-repeat 104% 85%;
       background-size: 37% auto;
     }
     &.bg-left-hand {
       background: url($CDN_URL + "/images/homepage/homepage-left-hand.png")
-      no-repeat left bottom;
+        no-repeat left bottom;
       background-size: 22.5% auto;
       transform: translateY(5%);
     }
@@ -65,6 +53,30 @@
   @keyframes rotateStars {
     100% {
       transform: rotate(270deg);
+    }
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .page.homepage {
+    .bg.mine-wall-left {
+      transform: translate(-3.5%, -12%);
+    }
+  }
+}
+
+@media only screen and (max-width: 1300px) {
+  .page.homepage {
+    .bg.mine-wall-left {
+      transform: translate(-5%, -12%);
+    }
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .page.homepage {
+    .bg.mine-wall-left {
+      display: none;
     }
   }
 }
