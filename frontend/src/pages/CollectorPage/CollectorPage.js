@@ -41,11 +41,7 @@ const CollectorPage = () => {
       <div className="inner-page">
         <h1>The Collector's Room</h1>
         <Box className={"main-box"}>
-          <Suspense
-            withLoader
-            actions={suspenseActions}
-            viewName={"THE COLLECTOR'S ROOM"}
-          >
+          <Suspense withLoader actions={suspenseActions}>
             {renderContent()}
           </Suspense>
         </Box>

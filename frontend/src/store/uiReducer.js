@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   selectedTokenId: -1,
   shouldIgnoreTokenTransferWatch: false,
   muted: true,
+  scroll: 0,
   demoAuth: resolveDemoAuth(),
 };
 

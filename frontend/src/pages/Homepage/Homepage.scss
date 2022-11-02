@@ -6,6 +6,8 @@
   position: relative;
   height: 100vh;
   $animationMultiplier: 1;
+  $stoneHigh: -15%;
+  $stoneLow: -10%;
 
   .bg {
     position: absolute;
@@ -19,24 +21,35 @@
     width: 110%;
     margin-left: -5%;
     text-align: center;
+    z-index: 1;
 
     $fadeTime: 0.75s * $animationMultiplier;
 
     .common-view {
+      font-size: calc-font-size(1px);
       position: relative;
-      opacity: 0;
-      animation: fadeInGrow $fadeTime ease-out forwards;
-      animation-delay: 0.75s;
+      opacity: 1;
+      //animation: fadeInGrow $fadeTime ease-out forwards;
+      //animation-delay: 0.75s;
+      margin-top: -8em;
 
-      .logo-box {
-        margin-bottom: 5rem;
+      .logo-box,
+      .react-player {
+        margin-bottom: 5em;
+        width: unset !important;
+        height: 22em !important;
+        aspect-ratio: 2.55;
 
         img {
-          width: 20em;
+          width: 100%;
+        }
+
+        video {
+          margin-top: 6em;
         }
 
         &.with-text:after {
-          bottom: -1.5em;
+          bottom: -1em;
           font-size: $font30px;
         }
       }
@@ -54,6 +67,7 @@
       margin: 3rem 0 2rem;
 
       .text {
+        color: white;
         margin-bottom: 0.4em;
       }
 
@@ -69,85 +83,100 @@
     }
   }
 
-  .eternal-treasures {
+  .info-section {
     position: relative;
-    height: 1.35 * $viewHeightRef;
-    background: url($CDN_URL + "/images/homepage/homepage-ancient.png")
-      no-repeat center 20%;
-    background-size: 147%;
-    z-index: 1;
-
-    .bg-stars {
-      @extend .bg;
-      background: url($CDN_URL + "/images/homepage/homepage-ancient-stars.png")
-        no-repeat center center;
-      z-index: 1;
-      background-size: 104%;
-      top: -15%;
-    }
-
-    .grid {
-      width: 80%;
-      margin: 0 auto;
-      position: relative;
-      top: 10%;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: 1fr 10fr;
-      grid-column-gap: 0px;
-      grid-row-gap: 0px;
-    }
-
-    .space-cell {
-      grid-area: 1 / 1 / 4 / 2;
-    }
-    .title-cell {
-      grid-area: 1 / 2 / 2 / 3;
-    }
-    .text-cell {
-      grid-area: 2 / 2 / 3 / 3;
-    }
+    height: 1.8 * $viewHeightRef;
+    z-index: 2;
+    min-height: 1500px;
   }
 
-  .value-text {
+  .text-section {
     position: relative;
-    height: $viewHeightRef;
-    margin-top: -(0.2 * $viewHeightRef);
-    z-index: 1;
-    line-height: 2.2em;
+    width: 42.5%;
 
-    .bg-left-hand {
-      @extend .bg;
-      background: url($CDN_URL + "/images/homepage/homepage-left-hand.png")
-        no-repeat left bottom;
-      background-size: auto 100%;
-    }
-
-    .bg-right-hand {
-      @extend .bg;
-      background: url($CDN_URL + "/images/homepage/homepage-right-hand.png")
-        no-repeat 113% top;
-      background-size: auto 100%;
+    .leading-text {
+      margin-bottom: 2rem;
+      padding-top: 10%;
     }
 
     .text {
+      line-height: 2em;
+
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .eternal-treasures,
+  .scarcity,
+  .value-section {
+    position: relative;
+    display: flex;
+    height: 33.33%;
+  }
+
+  .eternal-treasures {
+    .et-bg {
+      flex-grow: 2;
       position: relative;
-      height: 100%;
-      width: 55%;
-      margin: 0 auto;
-      top: 6%;
+      z-index: -2;
+
+      .statue {
+        height: 150%;
+        top: 10%;
+        z-index: -1;
+        background: url($CDN_URL + "/images/homepage/statue.png") no-repeat
+          right -25%;
+        background-size: auto 100%;
+        background-position-y: 0;
+      }
+
+      .rough-diamond {
+        position: absolute;
+        top: $stoneLow;
+        left: 45%;
+        height: 20%;
+        animation: moveStone 5s linear infinite;
+      }
+    }
+
+    .text-section {
+      margin-right: 7.5%;
+      min-width: 42em;
+    }
+  }
+
+  .scarcity {
+    justify-content: flex-start;
+
+    .text-section {
+      margin-left: 12.5%;
+      min-width: 40em;
+
+      .leading-text {
+        padding-top: 12.5%;
+      }
+    }
+  }
+
+  .value-section {
+    justify-content: center;
+
+    .text-section {
+      margin-left: 12.5%;
+      min-width: 46em;
     }
   }
 
   .teaser {
-    z-index: 0;
+    z-index: 1;
     position: relative;
-    margin-top: -5%;
     height: $viewHeightRef;
     color: white;
 
     .react-player {
-      opacity: 0.3;
+      opacity: 0.25;
       position: absolute;
       width: 100%;
       height: 100%;
@@ -161,7 +190,10 @@
       transform: translateX(-50%);
       height: 100%;
       z-index: 1;
-      //margin: 0 auto;
+
+      .leading-text {
+        align-self: flex-start;
+      }
 
       .text-center {
         margin-top: 1rem;
@@ -173,21 +205,50 @@
       }
 
       .button {
-        margin-top: 3rem;
+        margin-top: 1rem;
+      }
+    }
+  }
+
+  @keyframes moveStone {
+    0% {
+      top: $stoneLow;
+    }
+    50% {
+      top: $stoneHigh;
+    }
+    100% {
+      top: $stoneLow;
+    }
+  }
+}
+
+@media only screen and (max-width: 1500px) {
+  .page.homepage {
+    .eternal-treasures {
+      .et-bg {
+        .rough-diamond {
+          left: 25%;
+        }
+      }
+    }
+
+    .scarcity {
+      .text-section {
+        margin-left: 7.5%;
       }
     }
   }
 }
 
-@media only screen and (max-width: 1365px) {
+@media only screen and (max-width: 1200px) {
   .page.homepage {
-    --base-font-size: 22;
-    font-size: calc-font-size(1px);
-  }
-}
+    font-size: $font14px;
 
-@media only screen and (max-width: 1024px) {
-  .page.homepage {
-    font-size: 12.5px;
+    .eternal-treasures {
+      .text-section {
+        margin-right: 5%;
+      }
+    }
   }
 }

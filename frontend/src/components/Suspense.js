@@ -32,16 +32,16 @@ export const useIsReady = (actions) => {
   });
 };
 
-export const Suspense = ({ actions, withLoader, viewName, children }) => {
+export const Suspense = ({ actions, withLoader, children }) => {
   const account = useAccount();
 
   const isReady = useIsReady(actions);
 
-  if (!account?.address) return <NotConnected viewName={viewName} />;
+  if (!account?.address) return <NotConnected />;
   if (isReady) return children;
   if (withLoader)
     return (
-      <div className="box-content loading-bg">
+      <div className="box-content opaque">
         <Loading />
       </div>
     );
