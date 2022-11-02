@@ -6,6 +6,8 @@
   position: relative;
   height: 100vh;
   $animationMultiplier: 1;
+  $stoneHigh: -15%;
+  $stoneLow: -10%;
 
   .bg {
     position: absolute;
@@ -77,12 +79,20 @@
     }
   }
 
+  .info-section {
+    position: relative;
+    height: 1.8 * $viewHeightRef;
+    z-index: 2;
+    min-height: 1500px;
+  }
+
   .text-section {
     position: relative;
     width: 42.5%;
 
     .leading-text {
       margin-bottom: 2rem;
+      padding-top: 10%;
     }
 
     .text {
@@ -94,34 +104,57 @@
     }
   }
 
-  .info-section {
-    position: relative;
-    height: 1.8 * $viewHeightRef;
-    z-index: 2;
-  }
-
   .eternal-treasures, .scarcity, .value-section {
     position: relative;
     display: flex;
-    padding-top: 7%;
     height: 33.33%;
   }
 
   .eternal-treasures {
+    .et-bg {
+      flex-grow: 2;
+      position: relative;
+
+      .statue {
+        height: 150%;
+        top: 10%;
+        z-index: -1;
+        background: url("../../assets/images/statue.png")
+        no-repeat right -25%;
+        background-size: auto 100%;
+        background-position-y: 0;
+      }
+
+      .rough-diamond {
+        position: absolute;
+        top: $stoneLow;
+        left: 45%;
+        height: 20%;
+        animation: moveStone 5s linear infinite;
+      }
+    }
+
     .text-section {
-      left: 52.5%;
+      margin-right: 7.5%;
+      min-width: 40em;
     }
   }
 
   .scarcity {
+    justify-content: flex-start;
+
     .text-section {
-      left: 12.5%;
+      margin-left: 12.5%;
+      min-width: 40em;
     }
   }
 
   .value-section {
+    justify-content: center;
+
     .text-section {
-      left: 35%;
+      margin-left: 12.5%;
+      min-width: 45em;
     }
   }
 
@@ -165,15 +198,53 @@
       }
     }
   }
+
+  @keyframes moveStone {
+    0% {
+      top: $stoneLow;
+    }
+    50% {
+      top: $stoneHigh;
+    }
+    100% {
+
+      top: $stoneLow;
+    }
+  }
 }
 
-//@media only screen and (max-width: 1365px) {
+@media only screen and (max-width: 1500px) {
+  .page.homepage {
+    .eternal-treasures {
+      .et-bg {
+        .rough-diamond {
+          left: 25%;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .page.homepage {
+    font-size: $font14px;
+
+    .eternal-treasures {
+      .text-section {
+        margin-right: 5%;
+      }
+    }
+  }
+}
+
+//@media only screen and (max-width: 1200px) {
 //  .page.homepage {
-//    --base-font-size: 22;
-//    font-size: calc-font-size(1px);
+//    //--base-font-size: 22;
+//    //font-size: calc-font-size(1px);
+//    font-size: $font14px;
 //  }
 //}
-//
+
 //@media only screen and (max-width: 1024px) {
 //  .page.homepage {
 //    font-size: 12.5px;

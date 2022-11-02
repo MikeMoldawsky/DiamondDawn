@@ -13,6 +13,8 @@ import ScrollingPage from "components/ScrollingPage";
 import EternalTreasuresBackground from "components/EternalTreasuresBackground";
 import AnimatedLogo from "components/AnimatedLogo";
 import useWindowDimensions from "hooks/useWindowDimensions";
+import roughStone from "assets/videos/rough-stone.webm";
+import classNames from "classnames";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -60,7 +62,20 @@ const Homepage = () => {
     }
   }, [topViewEffectScrollLimit])
 
-  console.log({ document, winHeightLimit, topViewEffectScrollLimit, topViewStyles })
+  const stoneStyles = useMemo(() => {
+    if (width > 1500 && width > 1024) return {}
+    let ref
+    if (width > 1200) {
+      ref = 65 + 275 * (width - 1200) / (1500 - 1200)
+    }
+    else {
+      ref = 10 + 165 * (width - 1024) / (1200 - 1024)
+    }
+    return {
+      left: `${ref}px`,
+    }
+  }, [width])
+
   return (
     <ScrollingPage className="homepage">
       <div className="top-content center-aligned-column">
@@ -91,6 +106,21 @@ const Homepage = () => {
       <div className="info-section">
         <EternalTreasuresBackground />
         <div className="eternal-treasures">
+          <div className="et-bg">
+            <div className="bg statue" />
+            <ReactPlayer
+              url={roughStone}
+              playing
+              playsinline
+              controls={false}
+              muted
+              loop
+              className={classNames("react-player bg-element rough-diamond")}
+              width=""
+              height=""
+              style={stoneStyles}
+            />
+          </div>
           <div className="text-section">
             <div className="leading-text">ETERNAL TREASURES</div>
             <div className="text">
