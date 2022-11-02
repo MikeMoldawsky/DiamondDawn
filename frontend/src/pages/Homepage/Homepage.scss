@@ -136,7 +136,7 @@
 
     .text-section {
       margin-right: 7.5%;
-      min-width: 40em;
+      min-width: 42em;
     }
   }
 
@@ -146,6 +146,10 @@
     .text-section {
       margin-left: 12.5%;
       min-width: 40em;
+
+      .leading-text {
+        padding-top: 12.5%;
+      }
     }
   }
 
@@ -154,7 +158,7 @@
 
     .text-section {
       margin-left: 12.5%;
-      min-width: 45em;
+      min-width: 46em;
     }
   }
 
@@ -165,7 +169,7 @@
     color: white;
 
     .react-player {
-      opacity: 0.3;
+      opacity: 0.25;
       position: absolute;
       width: 100%;
       height: 100%;
@@ -194,7 +198,7 @@
       }
 
       .button {
-        margin-top: 3rem;
+        margin-top: 1rem;
       }
     }
   }
@@ -220,6 +224,12 @@
         .rough-diamond {
           left: 25%;
         }
+      }
+    }
+
+    .scarcity {
+      .text-section {
+        margin-left: 7.5%;
       }
     }
   }

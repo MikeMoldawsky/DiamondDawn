@@ -15,6 +15,7 @@ import AnimatedLogo from "components/AnimatedLogo";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import roughStone from "assets/videos/rough-stone.webm";
 import classNames from "classnames";
+import {EternalTreasuresText, ScarcityText, TeaserText, ValueText} from "pages/Homepage/HompageContent";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -122,64 +123,17 @@ const Homepage = () => {
             />
           </div>
           <div className="text-section">
-            <div className="leading-text">ETERNAL TREASURES</div>
-            <div className="text">
-              Deep below the earth’s surface, under immense pressure and
-              scorching heat over billions of years, a marvel of nature is
-              formed. A diamond.
-              <br />
-              For thousands of years, they have been the ultimate symbol of
-              wealth and abundance.
-              <br />
-              Precious and enduring, we crown royalty with them, hand them down
-              as family heirlooms, and swear our eternal love with them. A
-              single diamond, smaller than a pea, can cost tens of millions of
-              dollars for its clarity and color.
-            </div>
-            <div className="text">
-              <b>But are diamonds REALLY that rare?</b>
-            </div>
+            <EternalTreasuresText />
           </div>
         </div>
         <div className="scarcity">
           <div className="text-section">
-            <div className="leading-text">SCARCITY</div>
-            <p className="text">
-              The recent rise of lab-grown diamonds makes it impossible for
-              anyone to distinguish a ‘real’ diamond from a man-made one without
-              special equipment.
-              <br />
-              Not only that, but it’s largely unknown that big diamond companies
-              keep vast quantities of diamonds hidden away in massive vaults,
-              controlling the circulating supply of the diamond market.
-            </p>
-            <p className="text">
-              <b>
-                So, if the supply of diamonds is unknown, and we can now produce
-                them ourselves, How can we evaluate the actual worth of a
-                physical diamond?
-              </b>
-            </p>
+            <ScarcityText />
           </div>
         </div>
         <div className="value-section">
           <div className="text-section">
-            <div className="leading-text">VALUE</div>
-            <p className="text">
-              Today’s definition of value is a subject of debate. What makes a
-              thing valuable?
-              <br />
-              With the recent rise of NFT technology, the lines between the
-              physical and virtual worlds have become blurred.
-              <br />
-              Purely digital artworks are auctioned in world-renowned auction
-              houses, such as Christie’s and Sotheby’s, selling for tens of
-              millions of dollars.
-              <br />
-              Who would have imagined, even as little as a decade ago, that it
-              would be possible for a digital creation to be equally (or even
-              more) valuable than its physical counterpart?
-            </p>
+            <ValueText />
           </div>
         </div>
       </div>
@@ -187,31 +141,9 @@ const Homepage = () => {
       <div className="teaser">
         {renderTeaserBg()}
         <div className="center-aligned-column content">
-          <div className="leading-text">DIAMOND DAWN</div>
-          <p className="text">
-            Diamond Dawn is a social experiment that pushes this concept to the
-            limit.
-            <br />
-            <br />
-            For the first time in history, collectors will have the choice to
-            create their digital diamond and, at the end of their journey, face
-            the ultimate decision - whether to keep their diamond art digital or
-            transform it into physical form.
-            <br />
-            <br />
-            Will they stand by their past notions of the physical being more
-            valuable, or follow their confidence in the blockchain as the
-            future?
-            <br />
-            <br />
-            <div className="text-center">
-              <b>What do YOU believe? What do YOU value?</b>
-              <br />
-              <b>The final choice is yours to make.</b>
-            </div>
-          </p>
-          <PlayCircleOutlineIcon />
-          <div>PLAY FULL TRAILER</div>
+          <TeaserText />
+          {/*<PlayCircleOutlineIcon />*/}
+          {/*<div>PLAY FULL TRAILER</div>*/}
           <div className="button transparent">REQUEST AN INVITATION</div>
         </div>
       </div>
