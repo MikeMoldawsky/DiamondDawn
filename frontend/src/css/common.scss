@@ -255,15 +255,16 @@ footer {
 }
 
 .MuiDrawer-root .MuiPaper-root {
-  padding-top: 150px;
-  width: 300px;
+  font-size: .9em;
+  padding-top: 8em;
+  width: 20em;
   background: #ffffff55;
-  box-shadow: 0 10px 30px #00000029;
+  box-shadow: 0 .4em 1.2em #00000029;
   color: white;
-  padding-left: 50px;
+  padding-left: 3em;
 
   .menu-item {
-    margin-bottom: 20px;
+    margin-bottom: .8em;
     font-size: 1.4em;
   }
 }
@@ -310,5 +311,15 @@ footer {
   40%,
   60% {
     transform: translate3d(4px, 0, 0);
+  }
+}
+
+@media only screen and (min-width: 1921px) {
+  html {
+    font-size: calc-font-size(1px);
+  }
+
+  .MuiDrawer-root .MuiPaper-root {
+    font-size: 1em;
   }
 }
