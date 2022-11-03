@@ -12,7 +12,7 @@ import { isDemoAndAuthSelector } from "utils";
 import { DIAMOND_DAWN_TWITTER_URL } from "consts";
 import { useSelector } from "react-redux";
 import Logo from "components/Logo";
-import {uiSelector} from "store/uiReducer";
+import { uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
@@ -20,9 +20,10 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
   const { showHPLogo } = useSelector(uiSelector);
 
-  const isHomepage = location.pathname === "/" || location.pathname === "/explore"
-  const animateShowLogo = isHomepage && showHPLogo
-  const animateHideLogo = isHomepage && showHPLogo === false
+  const isHomepage =
+    location.pathname === "/" || location.pathname === "/explore";
+  const animateShowLogo = isHomepage && showHPLogo;
+  const animateHideLogo = isHomepage && showHPLogo === false;
 
   return (
     <>
@@ -41,7 +42,15 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
               </>
             )}
           </div>
-          <Logo withLink withText className={classNames({ "hidden": isHomepage, "animate-show": animateShowLogo, "animate-hide": animateHideLogo })} />
+          <Logo
+            withLink
+            withText
+            className={classNames({
+              hidden: isHomepage,
+              "animate-show": animateShowLogo,
+              "animate-hide": animateHideLogo,
+            })}
+          />
           <div className="center-aligned-row header-side">
             <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
               <FontAwesomeIcon className="menu-icon" icon={faTwitter} />

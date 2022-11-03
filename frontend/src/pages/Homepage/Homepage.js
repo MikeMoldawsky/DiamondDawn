@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback, useMemo, useState} from "react";
+import React, { useEffect, useCallback, useMemo, useState } from "react";
 import "./Homepage.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +27,7 @@ const Homepage = () => {
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
   const { scroll, showHPLogo } = useSelector(uiSelector);
   const { height } = useWindowDimensions();
-  const [showStone, setShowStone] = useState(false)
+  const [showStone, setShowStone] = useState(false);
 
   const winHeightLimit = height / 2;
   const topViewEffectScrollLimit =
@@ -37,7 +37,6 @@ const Homepage = () => {
   const topViewEffectScrollLimitForLogo =
     scroll < winHeightLimitForLogo ? scroll : winHeightLimitForLogo;
 
-
   const topViewStyles = useMemo(() => {
     return {
       opacity: 1 - (scroll * 1.5) / winHeightLimit,
@@ -46,14 +45,13 @@ const Homepage = () => {
   }, [topViewEffectScrollLimit]);
 
   useEffect(() => {
-    console.log({ topViewEffectScrollLimitForLogo, winHeightLimitForLogo })
+    console.log({ topViewEffectScrollLimitForLogo, winHeightLimitForLogo });
     if (topViewEffectScrollLimitForLogo === winHeightLimitForLogo) {
-      dispatch(updateUiState({ showHPLogo: true }))
+      dispatch(updateUiState({ showHPLogo: true }));
+    } else if (showHPLogo) {
+      dispatch(updateUiState({ showHPLogo: false }));
     }
-    else if (showHPLogo) {
-      dispatch(updateUiState({ showHPLogo: false }))
-    }
-  }, [topViewEffectScrollLimitForLogo])
+  }, [topViewEffectScrollLimitForLogo]);
 
   useEffect(() => {
     return () => {
@@ -67,8 +65,8 @@ const Homepage = () => {
   }, []);
 
   setTimeout(() => {
-    setShowStone(true)
-  }, 8000)
+    setShowStone(true);
+  }, 8000);
 
   const renderTeaserBg = useCallback(
     () => (
@@ -130,7 +128,7 @@ const Homepage = () => {
                 className={classNames("react-player bg-element rough-diamond")}
                 width=""
                 height=""
-                style={{opacity: showStone ? 1 : 0}}
+                style={{ opacity: showStone ? 1 : 0 }}
               />
             </div>
           </div>

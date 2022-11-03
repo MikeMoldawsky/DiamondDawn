@@ -8,7 +8,9 @@ const Logo = ({ className, withText, withLink }) => {
     <img src={getCDNImageUrl("infinity_logo.png")} alt="DIAMOND DAWN" />
   );
   return (
-    <div className={classNames("logo-box", { "with-text": withText }, className)}>
+    <div
+      className={classNames("logo-box", { "with-text": withText }, className)}
+    >
       {withLink ? <NavLink to="/">{renderImage()}</NavLink> : renderImage()}
     </div>
   );

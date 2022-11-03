@@ -53,12 +53,12 @@ header {
 
     &.animate-show {
       opacity: 0;
-      transform: translateX(calc(-50% - 7.5px)) scale(.9);
-      animation: fadeInGrowLogo .5s ease-out forwards;
+      transform: translateX(calc(-50% - 7.5px)) scale(0.9);
+      animation: fadeInGrowLogo 0.5s ease-out forwards;
     }
 
     &.animate-hide {
-      animation: fadeOutShrinkLogo .5s ease-out forwards;
+      animation: fadeOutShrinkLogo 0.5s ease-out forwards;
     }
   }
 
