@@ -25,27 +25,27 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const animateHideLogo = isHomepage && showHPLogo === false
 
   return (
-    <header>
-      <div className="header-internal">
-        <div className="center-aligned-row header-side">
-          {!isRestricted && (
-            <>
-              <div className="wallet">
-                <Wallet />
-              </div>
-              <ContractProvider>
-                <DiamondList />
-              </ContractProvider>
-            </>
-          )}
-        </div>
-        <Logo withLink withText className={classNames({ "hidden": isHomepage, "animate-show": animateShowLogo, "animate-hide": animateHideLogo })} />
-        <div className="center-aligned-row header-side">
-          <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
-            <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
-          </a>
-          {/*{!isDemo() && (*/}
-          <>
+    <>
+      <div className="header-fix" />
+      <header>
+        <div className="header-internal">
+          <div className="center-aligned-row header-side">
+            {!isRestricted && (
+              <>
+                <div className="wallet">
+                  <Wallet />
+                </div>
+                <ContractProvider>
+                  <DiamondList />
+                </ContractProvider>
+              </>
+            )}
+          </div>
+          <Logo withLink withText className={classNames({ "hidden": isHomepage, "animate-show": animateShowLogo, "animate-hide": animateHideLogo })} />
+          <div className="center-aligned-row header-side">
+            <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
+              <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
+            </a>
             <div className="vertical-sep" />
             <AudioPlayer />
             {!isRestricted && (
@@ -55,11 +55,10 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
                 onClick={toggleMenu}
               />
             )}
-          </>
-          {/*)}*/}
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 };
 

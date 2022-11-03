@@ -263,6 +263,16 @@ footer {
   color: white;
   padding-left: 3em;
 
+  &:before {
+    content: '';
+    width: 100%;
+    height: $headerHeight;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+  }
+
   .menu-item {
     margin-bottom: .8em;
     font-size: 1.4em;
