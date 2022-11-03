@@ -37,4 +37,45 @@
       margin-bottom: 0.2rem;
     }
   }
+
+  &.custom {
+    align-items: flex-end;
+
+    .w-d {
+      height: 100%;
+      border-right: solid 1px white;
+      margin-right: 2em;
+      padding-right: 2em;
+
+      .countdown-part {
+        flex-direction: row;
+        justify-content: flex-start;
+        width: 7em;
+
+        .value {
+          font-size: $font44px !important;
+          margin-right: 0.4em;
+        }
+
+        .caption {
+          font-size: $font11px !important;
+        }
+      }
+    }
+
+    .colon {
+      font-size: 4.5em;
+      margin: 0 0.4em;
+      align-self: flex-start;
+      line-height: 1em;
+      font-weight: 100;
+    }
+
+    .h-m-s {
+      .countdown-part {
+        &:not(:last-child) {
+        }
+      }
+    }
+  }
 }

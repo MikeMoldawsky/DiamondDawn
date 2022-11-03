@@ -6,8 +6,6 @@
   position: relative;
   height: 100vh;
   $animationMultiplier: 1;
-  $stoneHigh: -15%;
-  $stoneLow: -10%;
 
   .bg {
     position: absolute;
@@ -61,14 +59,12 @@
     }
 
     .countdown-container {
-      width: 26em;
-      min-width: 26em;
       position: relative;
-      margin: 3rem 0 2rem;
+      margin: 3.5em 0 3.5em;
 
       .text {
         color: white;
-        margin-bottom: 0.4em;
+        margin-bottom: 1.2em;
       }
 
       .countdown {
@@ -116,8 +112,11 @@
     height: 33.33%;
   }
 
+  $stoneHigh: translate(-50%, -130%);
+  $stoneLow: translate(-50%, -100%);
+
   .eternal-treasures {
-    .et-bg {
+    .statue-container {
       flex-grow: 2;
       position: relative;
       z-index: -2;
@@ -127,17 +126,20 @@
         top: 10%;
         z-index: -1;
         background: url($CDN_URL + "/images/homepage/statue.png") no-repeat
-          right -25%;
+          center -25%;
         background-size: auto 100%;
         background-position-y: 0;
-      }
 
-      .rough-diamond {
-        position: absolute;
-        top: $stoneLow;
-        left: 45%;
-        height: 20%;
-        animation: moveStone 5s linear infinite;
+        .rough-diamond {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: $stoneLow;
+          height: 15%;
+          animation: moveStone 8s linear infinite;
+          opacity: 0;
+          transition: opacity ease-in 0.5s;
+        }
       }
     }
 
@@ -212,13 +214,13 @@
 
   @keyframes moveStone {
     0% {
-      top: $stoneLow;
+      transform: $stoneLow;
     }
     50% {
-      top: $stoneHigh;
+      transform: $stoneHigh;
     }
     100% {
-      top: $stoneLow;
+      transform: $stoneLow;
     }
   }
 }

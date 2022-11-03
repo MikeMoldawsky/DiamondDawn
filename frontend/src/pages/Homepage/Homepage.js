@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from "react";
+import React, { useEffect, useCallback, useMemo, useState } from "react";
 import "./Homepage.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,12 +25,37 @@ const Homepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
-  const { scroll } = useSelector(uiSelector);
-  const { height, width } = useWindowDimensions();
+  const { scroll, showHPLogo } = useSelector(uiSelector);
+  const { height } = useWindowDimensions();
+  const [showStone, setShowStone] = useState(false);
+
+  const winHeightLimit = height / 2;
+  const topViewEffectScrollLimit =
+    scroll < winHeightLimit ? scroll : winHeightLimit;
+
+  const winHeightLimitForLogo = height / 3.5;
+  const topViewEffectScrollLimitForLogo =
+    scroll < winHeightLimitForLogo ? scroll : winHeightLimitForLogo;
+
+  const topViewStyles = useMemo(() => {
+    return {
+      opacity: 1 - (scroll * 1.5) / winHeightLimit,
+      transform: `scale(${1 - scroll / winHeightLimit / 1.5})`,
+    };
+  }, [topViewEffectScrollLimit]);
+
+  useEffect(() => {
+    console.log({ topViewEffectScrollLimitForLogo, winHeightLimitForLogo });
+    if (topViewEffectScrollLimitForLogo === winHeightLimitForLogo) {
+      dispatch(updateUiState({ showHPLogo: true }));
+    } else if (showHPLogo) {
+      dispatch(updateUiState({ showHPLogo: false }));
+    }
+  }, [topViewEffectScrollLimitForLogo]);
 
   useEffect(() => {
     return () => {
-      dispatch(updateUiState({ scroll: 0 }));
+      dispatch(updateUiState({ scroll: 0, showHPLogo: null }));
     };
   }, []);
 
@@ -38,6 +63,10 @@ const Homepage = () => {
     isRestricted && navigate("/");
     dispatch(setSelectedTokenId(-1));
   }, []);
+
+  setTimeout(() => {
+    setShowStone(true);
+  }, 8000);
 
   const renderTeaserBg = useCallback(
     () => (
@@ -56,31 +85,6 @@ const Homepage = () => {
     []
   );
 
-  const winHeightLimit = height / 2;
-
-  const topViewEffectScrollLimit =
-    scroll < winHeightLimit ? scroll : winHeightLimit;
-
-  const topViewStyles = useMemo(() => {
-    return {
-      opacity: 1 - (scroll * 1.5) / winHeightLimit,
-      transform: `scale(${1 - scroll / winHeightLimit / 1.5})`,
-    };
-  }, [topViewEffectScrollLimit]);
-
-  const stoneStyles = useMemo(() => {
-    if (width > 1500 && width > 1024) return {};
-    let ref;
-    if (width > 1200) {
-      ref = 65 + (275 * (width - 1200)) / (1500 - 1200);
-    } else {
-      ref = 10 + (165 * (width - 1024)) / (1200 - 1024);
-    }
-    return {
-      left: `${ref}px`,
-    };
-  }, [width]);
-
   return (
     <ScrollingPage className="homepage">
       <div className="top-content center-aligned-column">
@@ -93,11 +97,10 @@ const Homepage = () => {
             The first ever virtual diamond mining experience
           </div>
           <div className="countdown-container">
-            <div className="text">Mine will open in</div>
+            <div className="text">MINE WILL OPEN IN</div>
             <Countdown
+              customMode
               parts={{ days: 24, hours: 3, minutes: 0, seconds: 0 }}
-              smallParts={{ minutes: true, seconds: true }}
-              smallMinAndSec
             />
           </div>
           <div>
@@ -113,20 +116,21 @@ const Homepage = () => {
       <div className="info-section">
         <EternalTreasuresBackground />
         <div className="eternal-treasures">
-          <div className="et-bg">
-            <div className="bg statue" />
-            <ReactPlayer
-              url={getCDNVideoUrl("rough-stone.webm")}
-              playing
-              playsinline
-              controls={false}
-              muted
-              loop
-              className={classNames("react-player bg-element rough-diamond")}
-              width=""
-              height=""
-              style={stoneStyles}
-            />
+          <div className="statue-container">
+            <div className="bg statue">
+              <ReactPlayer
+                url={getCDNVideoUrl("rough-stone.webm")}
+                playing
+                playsinline
+                controls={false}
+                muted
+                loop
+                className={classNames("react-player bg-element rough-diamond")}
+                width=""
+                height=""
+                style={{ opacity: showStone ? 1 : 0 }}
+              />
+            </div>
           </div>
           <div className="text-section">
             <EternalTreasuresText />
