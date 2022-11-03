@@ -46,11 +46,47 @@ header {
     top: 1em;
     left: 50%;
     transform: translateX(-50%);
+
+    &.hidden {
+      opacity: 0;
+    }
+
+    &.animate-show {
+      opacity: 0;
+      transform: translateX(-50%) scale(.9);
+      animation: fadeInGrowLogo .5s ease-out forwards;
+    }
+
+    &.animate-hide {
+      animation: fadeOutShrinkLogo .5s ease-out forwards;
+    }
   }
 
   svg.menu-icon {
     height: 1.4em;
     cursor: pointer;
+  }
+
+  @keyframes fadeInGrowLogo {
+    0% {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+  }
+
+  @keyframes fadeOutShrinkLogo {
+    0% {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.9);
+    }
   }
 }
 

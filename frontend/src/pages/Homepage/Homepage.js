@@ -25,13 +25,39 @@ const Homepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
-  const { scroll } = useSelector(uiSelector);
+  const { scroll, showHPLogo } = useSelector(uiSelector);
   const { height } = useWindowDimensions();
   const [showStone, setShowStone] = useState(false)
 
+  const winHeightLimit = height / 2;
+  const topViewEffectScrollLimit =
+    scroll < winHeightLimit ? scroll : winHeightLimit;
+
+  const winHeightLimitForLogo = height / 3.5;
+  const topViewEffectScrollLimitForLogo =
+    scroll < winHeightLimitForLogo ? scroll : winHeightLimitForLogo;
+
+
+  const topViewStyles = useMemo(() => {
+    return {
+      opacity: 1 - (scroll * 1.5) / winHeightLimit,
+      transform: `scale(${1 - scroll / winHeightLimit / 1.5})`,
+    };
+  }, [topViewEffectScrollLimit]);
+
+  useEffect(() => {
+    console.log({ topViewEffectScrollLimitForLogo, winHeightLimitForLogo })
+    if (topViewEffectScrollLimitForLogo === winHeightLimitForLogo) {
+      dispatch(updateUiState({ showHPLogo: true }))
+    }
+    else if (showHPLogo) {
+      dispatch(updateUiState({ showHPLogo: false }))
+    }
+  }, [topViewEffectScrollLimitForLogo])
+
   useEffect(() => {
     return () => {
-      dispatch(updateUiState({ scroll: 0 }));
+      dispatch(updateUiState({ scroll: 0, showHPLogo: null }));
     };
   }, []);
 
@@ -60,18 +86,6 @@ const Homepage = () => {
     ),
     []
   );
-
-  const winHeightLimit = height / 2;
-
-  const topViewEffectScrollLimit =
-    scroll < winHeightLimit ? scroll : winHeightLimit;
-
-  const topViewStyles = useMemo(() => {
-    return {
-      opacity: 1 - (scroll * 1.5) / winHeightLimit,
-      transform: `scale(${1 - scroll / winHeightLimit / 1.5})`,
-    };
-  }, [topViewEffectScrollLimit]);
 
   return (
     <ScrollingPage className="homepage">

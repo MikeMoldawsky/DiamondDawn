@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   muted: true,
   scroll: 0,
   demoAuth: resolveDemoAuth(),
+  showHPLogo: null,
 };
 
 export const setSelectedTokenId = (selectedTokenId) => ({
