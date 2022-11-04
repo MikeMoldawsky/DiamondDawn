@@ -1,19 +1,16 @@
-import React, { useEffect, useCallback, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import "./Homepage.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector, updateUiState } from "store/uiReducer";
-import { getCDNVideoUrl, isDemoAndAuthSelector } from "utils";
+import { isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
-import ReactPlayer from "react-player";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import Footer from "components/Footer";
 import ScrollingPage from "components/ScrollingPage";
 import EternalTreasuresBackground from "components/EternalTreasuresBackground";
 import AnimatedLogo from "components/AnimatedLogo";
 import useWindowDimensions from "hooks/useWindowDimensions";
-import classNames from "classnames";
 import {
   EternalTreasuresText,
   ScarcityText,

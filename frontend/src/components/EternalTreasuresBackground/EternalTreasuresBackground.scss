@@ -43,15 +43,14 @@
         animation: moveStone 6s ease-in-out infinite;
       }
     }
-    //&.glow {
-    //  background: url($CDN_URL + "/images/homepage/glow.png")
-    //  no-repeat left center;
-    //}
-    //&.mine-wall-bottom {
-    //  background: url($CDN_URL + "/images/homepage/mine-wall-bottom.png")
-    //    no-repeat right 36%;
-    //  background-size: 75% auto;
-    //}
+    &.glow {
+      background: url($CDN_URL + "/images/homepage/glow.png") no-repeat -25% center;
+      background-size: 150% 100%;
+      width: 100vw;
+      height: 35%;
+      left: unset;
+      transform: translateY(-23%);
+    }
     &.mine-wall-left {
       background: url($CDN_URL + "/images/homepage/mine-wall-left.png")
         no-repeat 0 0;
