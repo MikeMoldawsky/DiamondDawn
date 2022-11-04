@@ -59,19 +59,19 @@ export const ValueText = () => (
     <div className="text">
       <p>What makes a thing valuable?</p>
       <p>
-        With the recent rise of NFT technology, the lines between the physical and
-        virtual worlds have become blurred, and the definition of value has become
-        a subject of debate.
+        With the recent rise of NFT technology, the lines between the physical
+        and virtual worlds have become blurred, and the definition of value has
+        become a subject of debate.
       </p>
       <p>
         Nowadays, artworks that are 100% digital are being sold for tens of
-        millions of dollars and auctioned by world-renowned auction houses such as
-        Christie’s and Sotheby’s.
+        millions of dollars and auctioned by world-renowned auction houses such
+        as Christie’s and Sotheby’s.
       </p>
       <p>
-        Who would have imagined, even as little as a few years ago, that it would
-        be possible for a digital creation to be equally (or even more) valuable
-        than its physical counterpart?
+        Who would have imagined, even as little as a few years ago, that it
+        would be possible for a digital creation to be equally (or even more)
+        valuable than its physical counterpart?
       </p>
     </div>
   </>
@@ -82,22 +82,23 @@ export const TeaserText = () => (
     <div className="leading-text">THE EXPERIMENT</div>
     <p className="text">
       <p>
-        Diamond Dawn is a blockchain social experiment that pushes this concept to
-        the limit.
+        Diamond Dawn is a blockchain social experiment that pushes this concept
+        to the limit.
       </p>
       <p>
         For the first time in history, collectors will have the choice to create
         their own digital diamond on the blockchain and, at the end of their
-        journey, face the ultimate decision - <b>burn</b> their NFT and transform
-        it into a physical diamond, or <b>keep</b> their diamond digital forever.
+        journey, face the ultimate decision - <b>burn</b> their NFT and
+        transform it into a physical diamond, or <b>keep</b> their diamond
+        digital forever.
       </p>
       <p>
         Will collectors stand by their past notions of the physical being more
         valuable, or follow their confidence in the blockchain as the future?
       </p>
       <p>
-        <b>What do YOU believe? What do YOU value?</b> The results will be visible for
-        all to see on the blockchain forever…
+        <b>What do YOU believe? What do YOU value?</b> The results will be
+        visible for all to see on the blockchain forever…
       </p>
       <p>
         <b>The final choice is yours to make.</b>

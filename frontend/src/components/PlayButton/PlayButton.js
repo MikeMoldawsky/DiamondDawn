@@ -1,5 +1,5 @@
-import React from 'react'
-import './PlayButton.scss'
+import React from "react";
+import "./PlayButton.scss";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
 const PlayButton = () => (
@@ -7,6 +7,6 @@ const PlayButton = () => (
     <PlayCircleOutlineIcon />
     <div>PLAY FULL TRAILER</div>
   </div>
-)
+);
 
-export default PlayButton
+export default PlayButton;

@@ -61,7 +61,6 @@ const Homepage = () => {
     dispatch(setSelectedTokenId(-1));
   }, []);
 
-
   return (
     <ScrollingPage className="homepage">
       <div className="top-content center-aligned-column">

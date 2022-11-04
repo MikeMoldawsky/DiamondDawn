@@ -1,11 +1,10 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import "./EternalTreasuresBackground.scss";
 import ReactPlayer from "react-player";
-import {getCDNVideoUrl} from "utils";
+import { getCDNVideoUrl } from "utils";
 import classNames from "classnames";
 
 const EternalTreasuresBackground = () => {
-
   const renderTeaserBg = useCallback(
     () => (
       <ReactPlayer
@@ -42,9 +41,7 @@ const EternalTreasuresBackground = () => {
       <div className="bg mine-wall-left" />
       <div className="bg bg-right-hand" />
       <div className="bg bg-left-hand" />
-      <div className="bg bg-teaser">
-        {renderTeaserBg()}
-      </div>
+      <div className="bg bg-teaser">{renderTeaserBg()}</div>
     </div>
   );
 };

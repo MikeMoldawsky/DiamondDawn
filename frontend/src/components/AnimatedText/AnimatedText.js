@@ -1,12 +1,12 @@
-import React, {useState, useRef, useEffect} from 'react'
-import {useSelector} from "react-redux";
-import {uiSelector} from "store/uiReducer";
+import React, { useState, useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 
 const AnimatedText = ({ children, animationDirection = "rtl" }) => {
-  const [visible, setVisible] = useState(false)
-  const ref = useRef(null)
-  const { scroll } = useSelector(uiSelector)
+  const [visible, setVisible] = useState(false);
+  const ref = useRef(null);
+  const { scroll } = useSelector(uiSelector);
 
   useEffect(() => {
     if (!visible) {
@@ -18,13 +18,20 @@ const AnimatedText = ({ children, animationDirection = "rtl" }) => {
         setVisible(true);
       }
     }
-  }, [visible, scroll])
+  }, [visible, scroll]);
 
   return (
-    <div ref={ref} className={classNames("text-section animated-text", { visible }, animationDirection)}>
+    <div
+      ref={ref}
+      className={classNames(
+        "text-section animated-text",
+        { visible },
+        animationDirection
+      )}
+    >
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default AnimatedText
+export default AnimatedText;

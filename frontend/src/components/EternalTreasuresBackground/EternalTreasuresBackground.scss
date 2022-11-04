@@ -30,8 +30,8 @@
       left: 61%;
       right: unset;
       z-index: -1;
-      background: url($CDN_URL + "/images/homepage/statue.png") no-repeat
-      right 0;
+      background: url($CDN_URL + "/images/homepage/statue.png") no-repeat right
+        0;
       background-size: 100%;
 
       .rough-diamond {
@@ -65,7 +65,7 @@
     &.bg-left-hand {
       background: url($CDN_URL + "/images/homepage/homepage-left-hand.png")
         no-repeat left 41%;
-      background-size: auto 27% ;
+      background-size: auto 27%;
       z-index: 1;
       transform: translateX(var(--edge-offset));
     }
