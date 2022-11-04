@@ -1,41 +1,41 @@
-import React, { useEffect, useCallback, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import "./Homepage.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedTokenId, uiSelector, updateUiState } from "store/uiReducer";
-import { getCDNVideoUrl, isDemoAndAuthSelector } from "utils";
+import { setSelectedTokenId, uiSelector } from "store/uiReducer";
+import { isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
-import ReactPlayer from "react-player";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import Footer from "components/Footer";
 import ScrollingPage from "components/ScrollingPage";
-import EternalTreasuresBackground from "components/EternalTreasuresBackground";
+import HomepageContentBackground from "components/HomepageContentBackground";
 import AnimatedLogo from "components/AnimatedLogo";
 import useWindowDimensions from "hooks/useWindowDimensions";
-import classNames from "classnames";
 import {
   EternalTreasuresText,
   ScarcityText,
   TeaserText,
   ValueText,
 } from "pages/Homepage/HompageContent";
+import AnimatedText from "components/AnimatedText/AnimatedText";
+import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 
 const Homepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
-  const { scroll, showHPLogo } = useSelector(uiSelector);
+  const { scroll } = useSelector(uiSelector);
   const { height } = useWindowDimensions();
-  const [showStone, setShowStone] = useState(false);
+  useShowLogoOnScroll(3.5);
+
+  useEffect(() => {
+    isRestricted && navigate("/");
+    dispatch(setSelectedTokenId(-1));
+  }, []);
 
   const winHeightLimit = height / 2;
   const topViewEffectScrollLimit =
     scroll < winHeightLimit ? scroll : winHeightLimit;
-
-  const winHeightLimitForLogo = height / 3.5;
-  const topViewEffectScrollLimitForLogo =
-    scroll < winHeightLimitForLogo ? scroll : winHeightLimitForLogo;
 
   const topViewStyles = useMemo(() => {
     return {
@@ -43,47 +43,6 @@ const Homepage = () => {
       transform: `scale(${1 - scroll / winHeightLimit / 1.5})`,
     };
   }, [topViewEffectScrollLimit]);
-
-  useEffect(() => {
-    console.log({ topViewEffectScrollLimitForLogo, winHeightLimitForLogo });
-    if (topViewEffectScrollLimitForLogo === winHeightLimitForLogo) {
-      dispatch(updateUiState({ showHPLogo: true }));
-    } else if (showHPLogo) {
-      dispatch(updateUiState({ showHPLogo: false }));
-    }
-  }, [topViewEffectScrollLimitForLogo]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(updateUiState({ scroll: 0, showHPLogo: null }));
-    };
-  }, []);
-
-  useEffect(() => {
-    isRestricted && navigate("/");
-    dispatch(setSelectedTokenId(-1));
-  }, []);
-
-  setTimeout(() => {
-    setShowStone(true);
-  }, 8000);
-
-  const renderTeaserBg = useCallback(
-    () => (
-      <ReactPlayer
-        url={getCDNVideoUrl("teaser-short.mp4")}
-        playing
-        playsinline
-        controls={false}
-        className="react-player"
-        muted
-        loop
-        width=""
-        height=""
-      />
-    ),
-    []
-  );
 
   return (
     <ScrollingPage className="homepage">
@@ -113,48 +72,27 @@ const Homepage = () => {
           </div>
         </div>
       </div>
-      <div className="info-section">
-        <EternalTreasuresBackground />
+      <div className="homepage-content">
+        <HomepageContentBackground />
         <div className="eternal-treasures">
-          <div className="statue-container">
-            <div className="bg statue">
-              <ReactPlayer
-                url={getCDNVideoUrl("rough-stone.webm")}
-                playing
-                playsinline
-                controls={false}
-                muted
-                loop
-                className={classNames("react-player bg-element rough-diamond")}
-                width=""
-                height=""
-                style={{ opacity: showStone ? 1 : 0 }}
-              />
-            </div>
-          </div>
-          <div className="text-section">
+          <AnimatedText>
             <EternalTreasuresText />
-          </div>
+          </AnimatedText>
         </div>
         <div className="scarcity">
-          <div className="text-section">
+          <AnimatedText animationDirection="ltr">
             <ScarcityText />
-          </div>
+          </AnimatedText>
         </div>
         <div className="value-section">
-          <div className="text-section">
+          <AnimatedText>
             <ValueText />
-          </div>
+          </AnimatedText>
         </div>
-      </div>
-
-      <div className="teaser">
-        {renderTeaserBg()}
-        <div className="center-aligned-column content">
-          <TeaserText />
-          {/*<PlayCircleOutlineIcon />*/}
-          {/*<div>PLAY FULL TRAILER</div>*/}
-          <div className="button transparent">REQUEST AN INVITATION</div>
+        <div className="the-experiment">
+          <AnimatedText animationDirection="ltr">
+            <TeaserText />
+          </AnimatedText>
         </div>
       </div>
       <Footer />

@@ -79,20 +79,22 @@
     }
   }
 
-  .info-section {
+  .homepage-content {
     position: relative;
-    height: 1.8 * $viewHeightRef;
+    height: 148em;
     z-index: 2;
-    min-height: 1500px;
+    min-height: 1200px;
+    display: flex;
+    flex-direction: column;
+    top: 9vh;
   }
 
   .text-section {
     position: relative;
-    width: 42.5%;
+    margin-left: 20vw;
 
     .leading-text {
-      margin-bottom: 2rem;
-      padding-top: 10%;
+      margin: 4rem 0 2rem;
     }
 
     .text {
@@ -106,68 +108,57 @@
 
   .eternal-treasures,
   .scarcity,
-  .value-section {
+  .value-section,
+  .the-experiment {
     position: relative;
     display: flex;
-    height: 33.33%;
   }
 
-  $stoneHigh: translate(-50%, -130%);
-  $stoneLow: translate(-50%, -100%);
-
   .eternal-treasures {
-    .statue-container {
-      flex-grow: 2;
-      position: relative;
-      z-index: -2;
-
-      .statue {
-        height: 150%;
-        top: 10%;
-        z-index: -1;
-        background: url($CDN_URL + "/images/homepage/statue.png") no-repeat
-          center -25%;
-        background-size: auto 100%;
-        background-position-y: 0;
-
-        .rough-diamond {
-          position: absolute;
-          top: 0;
-          left: 50%;
-          transform: $stoneLow;
-          height: 15%;
-          animation: moveStone 8s linear infinite;
-          opacity: 0;
-          transition: opacity ease-in 0.5s;
-        }
-      }
-    }
-
     .text-section {
-      margin-right: 7.5%;
+      width: 40%;
       min-width: 42em;
+
+      .leading-text {
+        margin-top: 0;
+      }
     }
   }
 
   .scarcity {
-    justify-content: flex-start;
-
     .text-section {
-      margin-left: 12.5%;
-      min-width: 40em;
-
-      .leading-text {
-        padding-top: 12.5%;
-      }
+      width: 49%;
+      min-width: 50em;
     }
   }
 
   .value-section {
-    justify-content: center;
-
     .text-section {
-      margin-left: 12.5%;
+      width: 45%;
       min-width: 46em;
+    }
+  }
+
+  .the-experiment {
+    .text-section {
+      width: 40%;
+      min-width: 48em;
+    }
+
+    .buttons-row {
+      justify-content: flex-start;
+      margin-top: 2.5em;
+
+      .play-button {
+        border-left: solid 1px white;
+        margin-left: 3em;
+        padding-left: 3em;
+        opacity: 0.5;
+      }
+
+      svg {
+        font-size: $font30px;
+      }
     }
   }
 
@@ -184,61 +175,37 @@
       height: 100%;
       z-index: 0;
     }
-
-    .content {
-      position: absolute;
-      width: 50%;
-      left: 50%;
-      transform: translateX(-50%);
-      height: 100%;
-      z-index: 1;
-
-      .leading-text {
-        align-self: flex-start;
-      }
-
-      .text-center {
-        margin-top: 1rem;
-      }
-
-      svg {
-        font-size: $font30px;
-        margin: 3rem 0 1rem;
-      }
-
-      .button {
-        margin-top: 1rem;
-      }
-    }
   }
+}
 
-  @keyframes moveStone {
-    0% {
-      transform: $stoneLow;
+@media only screen and (max-width: 1540px) {
+  .page.homepage {
+    .text-section {
+      margin-left: 15vw;
     }
-    50% {
-      transform: $stoneHigh;
-    }
-    100% {
-      transform: $stoneLow;
+
+    .eternal-treasures-background {
+      --edge-offset: -5%;
+
+      .bg {
+        &.bg-right-hand {
+          background-position-y: 52%;
+        }
+
+        &.bg-left-hand {
+          background-position-y: 53%;
+        }
+      }
     }
   }
 }
 
-@media only screen and (max-width: 1500px) {
+@media only screen and (max-width: 1366px) {
   .page.homepage {
-    .eternal-treasures {
-      .et-bg {
-        .rough-diamond {
-          left: 25%;
-        }
-      }
-    }
+    font-size: $font15px;
 
-    .scarcity {
-      .text-section {
-        margin-left: 7.5%;
-      }
+    .homepage-content-background {
+      --edge-offset: -7%;
     }
   }
 }
@@ -247,10 +214,12 @@
   .page.homepage {
     font-size: $font14px;
 
-    .eternal-treasures {
-      .text-section {
-        margin-right: 5%;
-      }
+    .text-section {
+      margin-left: 10vw;
+    }
+
+    .homepage-content-background {
+      --edge-offset: -12%;
     }
   }
 }

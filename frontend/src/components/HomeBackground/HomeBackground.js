@@ -9,29 +9,29 @@ const HomeBackground = () => {
   const parallaxRef = 0.5;
 
   return (
-    <div className="home-background">
+    <div className="bg home-background">
       <div className="bg leaves-left" />
       <div className="bg leaves-right" />
       <div
-        className="bg parallax sky"
+        className="bg sky"
         style={{
           transform: `translate3D(0px, -${(scroll * parallaxRef) / 10}px, 0px)`,
         }}
       />
       <div
-        className="bg parallax mountains-back"
+        className="bg mountains-back"
         style={{
           transform: `translate3D(0px, -${(scroll * parallaxRef) / 5}px, 0px)`,
         }}
       />
       <div
-        className="bg parallax mountains-front"
+        className="bg mountains-front"
         style={{
           transform: `translate3D(0px, -${scroll * parallaxRef}px, 0px)`,
         }}
       />
       <div
-        className="bg parallax black-box stars"
+        className="bg stars"
         style={{
           transform: `translate3D(0px, -${scroll * parallaxRef}px, 0px)`,
         }}

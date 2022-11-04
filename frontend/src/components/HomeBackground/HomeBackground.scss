@@ -4,33 +4,17 @@
   background-color: black;
   position: relative;
 
-  &,
   .bg {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
     z-index: -25;
 
-    &.parallax {
-      //position: fixed;
-    }
-
-    &.black-box {
-      background-color: black;
-      top: 99%;
-      height: 350%;
-      z-index: -20;
-    }
-
     &.stars {
+      height: 300%;
+      top: 99%;
       background: black url($CDN_URL + "/images/homepage/stars.png") repeat-y
         center center;
       background-size: 100% auto;
       background-attachment: fixed;
       z-index: -20;
-
       // ROTATION
       //width: 200%;
       //height: 100%;
@@ -53,8 +37,8 @@
       z-index: -15;
     }
     &.sky {
-      background: url($CDN_URL + "/images/homepage/sky.png") center 60%;
-      animation: moveBackground 180s linear infinite;
+      background: url($CDN_URL + "/images/homepage/sky.png") left center;
+      animation: moveBackground 240s linear infinite;
       z-index: -30;
       background-size: auto 100%;
     }
@@ -76,11 +60,8 @@
     0% {
       background-position-x: 0;
     }
-    50% {
-      background-position-x: -1000px;
-    }
     100% {
-      background-position-x: 0;
+      background-position-x: -315.2585vh;
     }
   }
 }
