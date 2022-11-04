@@ -1,28 +1,12 @@
 @import "css/varsNEW";
 
-.eternal-treasures-background {
+.homepage-content-background {
   position: relative;
   $stoneHigh: translate(-55%, -115%);
   $stoneLow: translate(-55%, -105%);
   --edge-offset: 0;
 
-  &,
   .bg {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: -1;
-
-    &.parallax {
-      position: fixed;
-    }
-
-    &.contained {
-      overflow: hidden;
-    }
-
     &.statue {
       width: auto;
       height: 27%;
@@ -69,7 +53,6 @@
       z-index: 1;
       transform: translateX(var(--edge-offset));
     }
-
     &.bg-teaser {
       height: $viewHeightRef;
       top: unset;

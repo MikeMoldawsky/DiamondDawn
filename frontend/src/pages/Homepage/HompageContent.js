@@ -80,7 +80,7 @@ export const ValueText = () => (
 export const TeaserText = () => (
   <>
     <div className="leading-text">THE EXPERIMENT</div>
-    <p className="text">
+    <div className="text">
       <p>
         Diamond Dawn is a blockchain social experiment that pushes this concept
         to the limit.
@@ -107,6 +107,6 @@ export const TeaserText = () => (
         <div className="button transparent">APPLY TO DIAMOND DAWN</div>
         <PlayButton />
       </div>
-    </p>
+    </div>
   </>
 );

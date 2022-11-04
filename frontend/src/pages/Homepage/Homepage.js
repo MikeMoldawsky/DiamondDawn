@@ -2,13 +2,13 @@ import React, { useEffect, useMemo } from "react";
 import "./Homepage.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedTokenId, uiSelector, updateUiState } from "store/uiReducer";
+import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import { isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
 import Footer from "components/Footer";
 import ScrollingPage from "components/ScrollingPage";
-import EternalTreasuresBackground from "components/EternalTreasuresBackground";
+import HomepageContentBackground from "components/HomepageContentBackground";
 import AnimatedLogo from "components/AnimatedLogo";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import {
@@ -18,21 +18,24 @@ import {
   ValueText,
 } from "pages/Homepage/HompageContent";
 import AnimatedText from "components/AnimatedText/AnimatedText";
+import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 
 const Homepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
-  const { scroll, showHPLogo } = useSelector(uiSelector);
+  const { scroll } = useSelector(uiSelector);
   const { height } = useWindowDimensions();
+  useShowLogoOnScroll(3.5);
+
+  useEffect(() => {
+    isRestricted && navigate("/");
+    dispatch(setSelectedTokenId(-1));
+  }, []);
 
   const winHeightLimit = height / 2;
   const topViewEffectScrollLimit =
     scroll < winHeightLimit ? scroll : winHeightLimit;
-
-  const winHeightLimitForLogo = height / 3.5;
-  const topViewEffectScrollLimitForLogo =
-    scroll < winHeightLimitForLogo ? scroll : winHeightLimitForLogo;
 
   const topViewStyles = useMemo(() => {
     return {
@@ -40,26 +43,6 @@ const Homepage = () => {
       transform: `scale(${1 - scroll / winHeightLimit / 1.5})`,
     };
   }, [topViewEffectScrollLimit]);
-
-  useEffect(() => {
-    console.log({ topViewEffectScrollLimitForLogo, winHeightLimitForLogo });
-    if (topViewEffectScrollLimitForLogo === winHeightLimitForLogo) {
-      dispatch(updateUiState({ showHPLogo: true }));
-    } else if (showHPLogo) {
-      dispatch(updateUiState({ showHPLogo: false }));
-    }
-  }, [topViewEffectScrollLimitForLogo]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(updateUiState({ scroll: 0, showHPLogo: null }));
-    };
-  }, []);
-
-  useEffect(() => {
-    isRestricted && navigate("/");
-    dispatch(setSelectedTokenId(-1));
-  }, []);
 
   return (
     <ScrollingPage className="homepage">
@@ -89,8 +72,8 @@ const Homepage = () => {
           </div>
         </div>
       </div>
-      <div className="info-section">
-        <EternalTreasuresBackground />
+      <div className="homepage-content">
+        <HomepageContentBackground />
         <div className="eternal-treasures">
           <AnimatedText>
             <EternalTreasuresText />

@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
-import "./EternalTreasuresBackground.scss";
+import "./HomepageContentBackground.scss";
 import ReactPlayer from "react-player";
 import { getCDNVideoUrl } from "utils";
 import classNames from "classnames";
 
-const EternalTreasuresBackground = () => {
+const HomepageContentBackground = () => {
   const renderTeaserBg = useCallback(
     () => (
       <ReactPlayer
@@ -23,7 +23,7 @@ const EternalTreasuresBackground = () => {
   );
 
   return (
-    <div className="eternal-treasures-background">
+    <div className="bg homepage-content-background">
       <div className="bg glow" />
       <div className="bg statue">
         <ReactPlayer
@@ -33,7 +33,7 @@ const EternalTreasuresBackground = () => {
           controls={false}
           muted
           loop
-          className={classNames("react-player bg-element rough-diamond")}
+          className={classNames("react-player rough-diamond")}
           width=""
           height=""
         />
@@ -46,4 +46,4 @@ const EternalTreasuresBackground = () => {
   );
 };
 
-export default EternalTreasuresBackground;
+export default HomepageContentBackground;
