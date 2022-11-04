@@ -2,10 +2,9 @@
 
 .eternal-treasures-background {
   position: relative;
-  $stoneHigh: translate(-55%, -130%);
-  $stoneLow: translate(-55%, -100%);
+  $stoneHigh: translate(-55%, -115%);
+  $stoneLow: translate(-55%, -105%);
   --edge-offset: 0;
-  $edgeOffset: 0;
 
   &,
   .bg {
@@ -41,9 +40,7 @@
         left: 50%;
         transform: $stoneLow;
         width: 20%;
-        animation: moveStone 8s linear infinite;
-        opacity: 0;
-        transition: opacity ease-in 0.5s;
+        animation: moveStone 6s ease-in-out infinite;
       }
     }
     //&.glow {

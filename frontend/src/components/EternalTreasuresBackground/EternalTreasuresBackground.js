@@ -5,11 +5,6 @@ import {getCDNVideoUrl} from "utils";
 import classNames from "classnames";
 
 const EternalTreasuresBackground = () => {
-  const [showStone, setShowStone] = useState(false);
-
-  setTimeout(() => {
-    setShowStone(true);
-  }, 8000);
 
   const renderTeaserBg = useCallback(
     () => (
@@ -42,7 +37,6 @@ const EternalTreasuresBackground = () => {
           className={classNames("react-player bg-element rough-diamond")}
           width=""
           height=""
-          style={{ opacity: showStone ? 1 : 0 }}
         />
       </div>
       {/*<div className="bg mine-wall-bottom" />*/}
