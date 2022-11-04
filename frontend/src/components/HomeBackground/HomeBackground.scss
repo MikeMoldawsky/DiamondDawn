@@ -21,6 +21,7 @@
     }
 
     &.stars {
+
       background: black url($CDN_URL + "/images/homepage/stars.png") repeat-y
         center center;
       background-size: 100% auto;
@@ -49,8 +50,8 @@
       z-index: -15;
     }
     &.sky {
-      background: url($CDN_URL + "/images/homepage/sky.png") center 60%;
-      animation: moveBackground 180s linear infinite;
+      background: url($CDN_URL + "/images/homepage/sky.png") left center;
+      animation: moveBackground 240s linear infinite;
       z-index: -30;
       background-size: auto 100%;
     }
@@ -72,11 +73,8 @@
     0% {
       background-position-x: 0;
     }
-    50% {
-      background-position-x: -1000px;
-    }
     100% {
-      background-position-x: 0;
+      background-position-x: -315.2585vh;
     }
   }
 }
