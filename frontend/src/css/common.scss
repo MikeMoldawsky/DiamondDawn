@@ -152,6 +152,28 @@ footer {
   justify-content: space-between;
 }
 
+.animated-text {
+  opacity: 0;
+  position: relative;
+  left: 5em;
+  transition: all .25s ease-in;
+
+  &.visible {
+    opacity: 1;
+    left: 0;
+    top: 0;
+  }
+
+  &.ltr {
+    left: unset;
+    right: 5em;
+
+    &.visible {
+      right: 0;
+    }
+  }
+}
+
 .text-comment {
   font-size: $font15px;
   color: $text_gray;

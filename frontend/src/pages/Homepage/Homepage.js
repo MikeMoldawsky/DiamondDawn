@@ -20,6 +20,7 @@ import {
   TeaserText,
   ValueText,
 } from "pages/Homepage/HompageContent";
+import AnimatedText from "components/AnimatedText/AnimatedText";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -132,19 +133,19 @@ const Homepage = () => {
               />
             </div>
           </div>
-          <div className="text-section">
+          <AnimatedText>
             <EternalTreasuresText />
-          </div>
+          </AnimatedText>
         </div>
         <div className="scarcity">
-          <div className="text-section">
+          <AnimatedText animationDirection="ltr">
             <ScarcityText />
-          </div>
+          </AnimatedText>
         </div>
         <div className="value-section">
-          <div className="text-section">
+          <AnimatedText>
             <ValueText />
-          </div>
+          </AnimatedText>
         </div>
       </div>
 
