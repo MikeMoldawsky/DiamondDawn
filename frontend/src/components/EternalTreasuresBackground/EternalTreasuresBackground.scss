@@ -2,8 +2,10 @@
 
 .eternal-treasures-background {
   position: relative;
-  $stoneHigh: -4%;
-  $stoneLow: -3%;
+  $stoneHigh: translate(-55%, -130%);
+  $stoneLow: translate(-55%, -100%);
+  --edge-offset: 0;
+  $edgeOffset: 0;
 
   &,
   .bg {
@@ -22,31 +24,67 @@
       overflow: hidden;
     }
 
+    &.statue {
+      width: auto;
+      height: 27%;
+      aspect-ratio: 1;
+      left: 61%;
+      right: unset;
+      z-index: -1;
+      background: url($CDN_URL + "/images/homepage/statue.png") no-repeat
+      right 0;
+      background-size: 100%;
+
+      .rough-diamond {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: $stoneLow;
+        width: 20%;
+        animation: moveStone 8s linear infinite;
+        opacity: 0;
+        transition: opacity ease-in 0.5s;
+      }
+    }
     //&.glow {
     //  background: url($CDN_URL + "/images/homepage/glow.png")
     //  no-repeat left center;
     //}
-    &.mine-wall-bottom {
-      background: url($CDN_URL + "/images/homepage/mine-wall-bottom.png")
-        no-repeat right 36%;
-      background-size: 75% auto;
-    }
+    //&.mine-wall-bottom {
+    //  background: url($CDN_URL + "/images/homepage/mine-wall-bottom.png")
+    //    no-repeat right 36%;
+    //  background-size: 75% auto;
+    //}
     &.mine-wall-left {
       background: url($CDN_URL + "/images/homepage/mine-wall-left.png")
         no-repeat 0 0;
-      background-size: auto 50%;
-      transform: translate(0, -12%);
+      background-size: auto 40%;
+      transform: translateX(calc(var(--edge-offset) / 2));
     }
     &.bg-right-hand {
       background: url($CDN_URL + "/images/homepage/homepage-right-hand.png")
-        no-repeat 104% 85%;
-      background-size: 37% auto;
+        no-repeat 101% 40%;
+      background-size: auto 26%;
     }
     &.bg-left-hand {
       background: url($CDN_URL + "/images/homepage/homepage-left-hand.png")
-        no-repeat left bottom;
-      background-size: 22.5% auto;
-      transform: translateY(5%);
+        no-repeat left 41%;
+      background-size: auto 27% ;
+      z-index: 1;
+      transform: translateX(var(--edge-offset));
+    }
+
+    &.bg-teaser {
+      height: $viewHeightRef;
+      top: unset;
+
+      .react-player {
+        opacity: 0.25;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
     }
   }
 
@@ -55,20 +93,16 @@
       transform: rotate(270deg);
     }
   }
-}
 
-@media only screen and (max-width: 1400px) {
-  .page.homepage {
-    .bg.mine-wall-left {
-      transform: translate(-3.5%, -12%);
+  @keyframes moveStone {
+    0% {
+      transform: $stoneLow;
     }
-  }
-}
-
-@media only screen and (max-width: 1300px) {
-  .page.homepage {
-    .bg.mine-wall-left {
-      transform: translate(-5%, -12%);
+    50% {
+      transform: $stoneHigh;
+    }
+    100% {
+      transform: $stoneLow;
     }
   }
 }

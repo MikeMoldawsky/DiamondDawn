@@ -28,7 +28,6 @@ const Homepage = () => {
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
   const { scroll, showHPLogo } = useSelector(uiSelector);
   const { height } = useWindowDimensions();
-  const [showStone, setShowStone] = useState(false);
 
   const winHeightLimit = height / 2;
   const topViewEffectScrollLimit =
@@ -65,26 +64,6 @@ const Homepage = () => {
     dispatch(setSelectedTokenId(-1));
   }, []);
 
-  setTimeout(() => {
-    setShowStone(true);
-  }, 8000);
-
-  const renderTeaserBg = useCallback(
-    () => (
-      <ReactPlayer
-        url={getCDNVideoUrl("teaser-short.mp4")}
-        playing
-        playsinline
-        controls={false}
-        className="react-player"
-        muted
-        loop
-        width=""
-        height=""
-      />
-    ),
-    []
-  );
 
   return (
     <ScrollingPage className="homepage">
@@ -117,22 +96,6 @@ const Homepage = () => {
       <div className="info-section">
         <EternalTreasuresBackground />
         <div className="eternal-treasures">
-          <div className="statue-container">
-            <div className="bg statue">
-              <ReactPlayer
-                url={getCDNVideoUrl("rough-stone.webm")}
-                playing
-                playsinline
-                controls={false}
-                muted
-                loop
-                className={classNames("react-player bg-element rough-diamond")}
-                width=""
-                height=""
-                style={{ opacity: showStone ? 1 : 0 }}
-              />
-            </div>
-          </div>
           <AnimatedText>
             <EternalTreasuresText />
           </AnimatedText>
@@ -147,15 +110,10 @@ const Homepage = () => {
             <ValueText />
           </AnimatedText>
         </div>
-      </div>
-
-      <div className="teaser">
-        {renderTeaserBg()}
-        <div className="center-aligned-column content">
-          <TeaserText />
-          {/*<PlayCircleOutlineIcon />*/}
-          {/*<div>PLAY FULL TRAILER</div>*/}
-          <div className="button transparent">REQUEST AN INVITATION</div>
+        <div className="the-experiment">
+          <AnimatedText animationDirection="ltr">
+            <TeaserText />
+          </AnimatedText>
         </div>
       </div>
       <Footer />

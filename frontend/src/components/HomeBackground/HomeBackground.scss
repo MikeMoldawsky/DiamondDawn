@@ -13,14 +13,10 @@
     left: 0;
     z-index: -25;
 
-    &.parallax {
-      //position: fixed;
-    }
-
     &.black-box {
       background-color: black;
       top: 99%;
-      height: 350%;
+      height: 300%;
       z-index: -20;
     }
 
