@@ -145,13 +145,20 @@
       min-width: 48em;
     }
 
-    svg {
-      font-size: $font30px;
-      margin: 3rem 0 1rem;
-    }
+    .buttons-row {
+      justify-content: flex-start;
+      margin-top: 2.5em;
 
-    .button {
-      margin-top: 1rem;
+      .play-button {
+        border-left: solid 1px white;
+        margin-left: 3em;
+        padding-left: 3em;
+        opacity: .5;
+      }
+      
+      svg {
+        font-size: $font30px;
+       }
     }
   }
 

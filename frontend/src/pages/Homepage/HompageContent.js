@@ -1,4 +1,5 @@
 import React from "react";
+import PlayButton from "components/PlayButton";
 
 export const EternalTreasuresText = () => (
   <>
@@ -80,32 +81,31 @@ export const TeaserText = () => (
   <>
     <div className="leading-text">THE EXPERIMENT</div>
     <p className="text">
-      Diamond Dawn is a blockchain social experiment that pushes this concept to
-      the limit.
-      <br />
-      <br />
-      For the first time in history, collectors will have the choice to create
-      their own digital diamond on the blockchain and, at the end of their
-      journey, face the ultimate decision - <b>burn</b> their NFT and transform
-      it into a physical diamond, or <b>keep</b> their diamond digital forever.
-      <br />
-      <br />
-      Will collectors stand by their past notions of the physical being more
-      valuable, or follow their confidence in the blockchain as the future?
-      <br />
-      <br />
-      What do YOU believe? What do YOU value? The results will be visible for
-      all to see on the blockchain forever…
-      <br />
-      <div className="text-center">
+      <p>
+        Diamond Dawn is a blockchain social experiment that pushes this concept to
+        the limit.
+      </p>
+      <p>
+        For the first time in history, collectors will have the choice to create
+        their own digital diamond on the blockchain and, at the end of their
+        journey, face the ultimate decision - <b>burn</b> their NFT and transform
+        it into a physical diamond, or <b>keep</b> their diamond digital forever.
+      </p>
+      <p>
+        Will collectors stand by their past notions of the physical being more
+        valuable, or follow their confidence in the blockchain as the future?
+      </p>
+      <p>
+        <b>What do YOU believe? What do YOU value?</b> The results will be visible for
+        all to see on the blockchain forever…
+      </p>
+      <p>
         <b>The final choice is yours to make.</b>
+      </p>
+      <div className="center-aligned-row buttons-row">
+        <div className="button transparent">REQUEST AN INVITATION</div>
+        <PlayButton />
       </div>
-      {/*<div className="center-aligned-column content">*/}
-      {/*  <TeaserText />*/}
-      {/*  /!*<PlayCircleOutlineIcon />*!/*/}
-      {/*  /!*<div>PLAY FULL TRAILER</div>*!/*/}
-      {/*  <div className="button transparent">REQUEST AN INVITATION</div>*/}
-      {/*</div>*/}
     </p>
   </>
 );
