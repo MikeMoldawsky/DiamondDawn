@@ -152,6 +152,37 @@ footer {
   justify-content: space-between;
 }
 
+.bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.animated-text {
+  opacity: 0;
+  position: relative;
+  left: 5em;
+  transition: all 0.25s ease-in;
+
+  &.visible {
+    opacity: 1;
+    left: 0;
+    top: 0;
+  }
+
+  &.ltr {
+    left: unset;
+    right: 5em;
+
+    &.visible {
+      right: 0;
+    }
+  }
+}
+
 .text-comment {
   font-size: $font15px;
   color: $text_gray;
@@ -206,7 +237,8 @@ footer {
   font-size: $font18px;
 }
 
-.logo-box {
+.logo-box,
+.react-player {
   position: relative;
 
   img {
@@ -254,15 +286,26 @@ footer {
 }
 
 .MuiDrawer-root .MuiPaper-root {
-  padding-top: 150px;
-  width: 300px;
+  font-size: 0.9em;
+  padding-top: 8em;
+  width: 20em;
   background: #ffffff55;
-  box-shadow: 0 10px 30px #00000029;
+  box-shadow: 0 0.4em 1.2em #00000029;
   color: white;
-  padding-left: 50px;
+  padding-left: 3em;
+
+  &:before {
+    content: "";
+    width: 100%;
+    height: $headerHeight;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+  }
 
   .menu-item {
-    margin-bottom: 20px;
+    margin-bottom: 0.8em;
     font-size: 1.4em;
   }
 }
@@ -309,5 +352,15 @@ footer {
   40%,
   60% {
     transform: translate3d(4px, 0, 0);
+  }
+}
+
+@media only screen and (min-width: 1921px) {
+  html {
+    font-size: calc-font-size(1px);
+  }
+
+  .MuiDrawer-root .MuiPaper-root {
+    font-size: 1em;
   }
 }

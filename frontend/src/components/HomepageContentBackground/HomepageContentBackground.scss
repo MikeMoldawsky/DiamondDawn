@@ -1,0 +1,87 @@
+@import "css/varsNEW";
+
+.homepage-content-background {
+  position: relative;
+  $stoneHigh: translate(-55%, -115%);
+  $stoneLow: translate(-55%, -105%);
+  --edge-offset: 0;
+
+  .bg {
+    &.statue {
+      width: auto;
+      height: 27%;
+      aspect-ratio: 1;
+      left: 61%;
+      right: unset;
+      z-index: -1;
+      background: url($CDN_URL + "/images/homepage/statue.png") no-repeat right
+        0;
+      background-size: 100%;
+
+      .rough-diamond {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: $stoneLow;
+        width: 20%;
+        animation: moveStone 6s ease-in-out infinite;
+      }
+    }
+    &.glow {
+      background: url($CDN_URL + "/images/homepage/glow.png") no-repeat -25% center;
+      background-size: 150% 100%;
+      width: 100vw;
+      height: 35%;
+      left: unset;
+      transform: translateY(-23%);
+    }
+    &.mine-wall-left {
+      background: url($CDN_URL + "/images/homepage/mine-wall-left.png")
+        no-repeat 0 0;
+      background-size: auto 40%;
+      transform: translateX(calc(var(--edge-offset) / 2));
+    }
+    &.bg-right-hand {
+      background: url($CDN_URL + "/images/homepage/homepage-right-hand.png")
+        no-repeat 101% 40%;
+      background-size: auto 26%;
+    }
+    &.bg-left-hand {
+      background: url($CDN_URL + "/images/homepage/homepage-left-hand.png")
+        no-repeat left 41%;
+      background-size: auto 27%;
+      z-index: 1;
+      transform: translateX(var(--edge-offset));
+    }
+    &.bg-teaser {
+      height: $viewHeightRef;
+      top: unset;
+
+      .react-player {
+        opacity: 0.25;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+    }
+  }
+
+  @keyframes rotateStars {
+    100% {
+      transform: rotate(270deg);
+    }
+  }
+
+  @keyframes moveStone {
+    0% {
+      transform: $stoneLow;
+    }
+    50% {
+      transform: $stoneHigh;
+    }
+    100% {
+      transform: $stoneLow;
+    }
+  }
+}

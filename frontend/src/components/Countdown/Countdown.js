@@ -14,6 +14,7 @@ const CountdownComp = ({
   parts,
   zeroMode = "fill",
   smallMinAndSec,
+  customMode,
 }) => {
   const renderValue = (value) => {
     if (zeroMode === "no" || value.toString().length !== 1) return value;
@@ -40,6 +41,23 @@ const CountdownComp = ({
   const renderer = ({ days, hours, minutes, seconds }) => {
     const weeks = Math.floor(days / 7);
     days = days % 7;
+
+    if (customMode)
+      return (
+        <div className="center-aligned-row countdown custom">
+          <div className="center-spaced-column w-d">
+            {renderPart("WEEKS", weeks)}
+            {renderPart("DAYS", days)}
+          </div>
+          <div className="center-aligned-row h-m-s">
+            {renderPart("HOURS", hours)}
+            <div className="colon">:</div>
+            {renderPart("MINUTES", minutes)}
+            <div className="colon">:</div>
+            {renderPart("SECONDS", seconds)}
+          </div>
+        </div>
+      );
 
     const renderSmallParts = () => (
       <>
