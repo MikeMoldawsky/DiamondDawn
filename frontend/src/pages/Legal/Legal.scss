@@ -1,0 +1,82 @@
+@import "css/varsNEW";
+
+.page.tnc-page,
+.page.privacy-page {
+  color: white;
+  $border: solid 1px white;
+
+  .inner-page {
+    width: 70%;
+    max-width: 1400px;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  h1 {
+    margin: 0 0 0.8em;
+    line-height: 1.4em;
+  }
+
+  h2 {
+    text-align: center;
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: 0.8em;
+  }
+
+  table {
+    border: $border;
+    text-align: left;
+
+    tr:not(:last-child) {
+      border-bottom: $border;
+    }
+
+    th {
+      font-weight: 700;
+    }
+
+    td,
+    th {
+      border-bottom: $border;
+      padding: 0.5em;
+      vertical-align: top;
+
+      &:not(:last-child) {
+        border-right: $border;
+      }
+    }
+  }
+
+  .start-start-aligned-row {
+    div:nth-child(1) {
+      width: 3em;
+      min-width: 3em;
+    }
+
+    p {
+      margin-top: 0;
+    }
+  }
+
+  .heading {
+    margin: 2em 0 1em;
+
+    * {
+      font-weight: 700;
+    }
+
+    div:nth-child(2) {
+      text-decoration: underline;
+      font-size: $font18px;
+    }
+  }
+
+  footer {
+    margin-top: 1em;
+  }
+}

@@ -19,6 +19,7 @@ import {
 } from "pages/Homepage/HompageContent";
 import AnimatedText from "components/AnimatedText/AnimatedText";
 import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
+import useMusic from "hooks/useMusic";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,8 @@ const Homepage = () => {
   const { scroll } = useSelector(uiSelector);
   const { height } = useWindowDimensions();
   useShowLogoOnScroll(3.5);
+
+  useMusic("homepage.mp3");
 
   useEffect(() => {
     isRestricted && navigate("/");
