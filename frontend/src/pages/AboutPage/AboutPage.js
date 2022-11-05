@@ -24,18 +24,27 @@ const AboutPage = () => {
             At each step, you must choose whether to evolve your Diamond NFT to
             its next form or keep it in its current state for eternity.
             <br />
-          <br />
-            You’ll have exactly <b>3 weeks, 3 days, and 3 hours</b> to complete each
-            step.
+            <br />
+            You’ll have exactly <b>3 weeks, 3 days, and 3 hours</b> to complete
+            each step.
           </div>
           <br />
           <div className="text">
-            In the last phase, you will be faced with <b>The Final Choice:</b><br/>
-            Keep your diamond NFT digital or burn it in exchange for a physical, limited-edition artwork that contains your
-            diamond (GIA-certified). <br/>
-            Once your decision is finalized on the blockchain, your artwork will be shipped to your specified address.
+            In the last phase, you will be faced with <b>The Final Choice:</b>
+            <br />
+            Keep your diamond NFT digital or burn it in exchange for a physical,
+            limited-edition artwork that contains your diamond (GIA-certified).{" "}
+            <br />
+            Once your decision is finalized on the blockchain, your artwork will
+            be shipped to your specified address.
           </div>
-          <div className="secondary-text"> <br />Physical vs. Digital<br />Which diamond will you choose?</div>
+          <div className="secondary-text">
+            {" "}
+            <br />
+            Physical vs. Digital
+            <br />
+            Which diamond will you choose?
+          </div>
         </div>
 
         <div className="center-aligned-column journey">
@@ -43,25 +52,32 @@ const AboutPage = () => {
             THE JOURNEY
           </div>
           <div className="journey-desc text">
-            Diamond Dawn does NOT hold your NFT attributes on a centralized server - the project is <b>entirely on-chain</b>.
-            <br/>
-            Throughout this historical journey, you’ll learn about the hidden world of the diamond industry,
-            take part in the creation of the <b>first digital diamonds</b> that live on the blockchain, and discover the secrets behind their famous sparkle.
-            <br/>
+            Diamond Dawn does NOT hold your NFT attributes on a centralized
+            server - the project is <b>entirely on-chain</b>.
+            <br />
+            Throughout this historical journey, you’ll learn about the hidden
+            world of the diamond industry, take part in the creation of the{" "}
+            <b>first digital diamonds</b> that live on the blockchain, and
+            discover the secrets behind their famous sparkle.
+            <br />
             Diamond Dawn has 4 steps.
           </div>
           <div className="journey-step">
             <div className="key-image" />
             <div className="secondary-text">Step 0 - Activate Your Key</div>
             <div className="text">
-              If your application to join Diamond Dawn is accepted, you will have a
-              limited time window of <b>3 days, 3 hours, and 3 minutes</b> to activate
-              your key for 3.33 $ETH.<br/>
+              If your application to join Diamond Dawn is accepted, you will
+              have a limited time window of{" "}
+              <b>3 days, 3 hours, and 3 minutes</b> to activate your key for
+              3.33 $ETH.
               <br />
-              The key grants you <b>full access</b> to the 4 steps of DD's journey, starting in the virtual mine, where your journey begins.
+              <br />
+              The key grants you <b>full access</b> to the 4 steps of DD's
+              journey, starting in the virtual mine, where your journey begins.
               <br />
               <br />
-              The application phase will automatically end when one of the following things happens:
+              The application phase will automatically end when one of the
+              following things happens:
               <br />
               <br />
               <div className="text-center">
@@ -76,7 +92,7 @@ const AboutPage = () => {
           <div className="journey-step">
             <div className="stone-image" />
             <div className="secondary-text">Step 1 - Enter & Mine</div>
-            <div className="text">The virtual mine opens in XX:XX<div/>
+            <div className="text">The virtual mine opens in XX:XX</div>
           </div>
           <div className="journey-step">
             <div className="secondary-text">Step 2 - ?</div>
@@ -87,10 +103,18 @@ const AboutPage = () => {
           <div className="journey-step">
             <div className="secondary-text">Step 4 - Final Choice</div>
             <div className="text">
-              In this final phase, you will be faced with the ultimate choice:
+              The final step is unique, and that's why you’ll have a longer time
+              window to decide about your actions. <br />
               <br />
-              Keep your digital diamond artwork or <b>burn</b> it in exchange for
+              You'll have exactly <b>3 months, 3 weeks, and 3 days</b> to
+              decide.
+              <br />
+              <br />
+              In this final phase, you'll be faced with the ultimate choice:
+              <br />
+              Keep your diamond digital (NFT) or <b>burn</b> it in exchange for
               your physical diamond artwork (GIA-certified).
+              <br />
             </div>
           </div>
         </div>
@@ -103,11 +127,16 @@ const AboutPage = () => {
             from various fields who share a common set of values.
             <br />
             <br />
-            We all believe that decentralization is key to the Internet’s survival. We look forward to the day when the robust technology behind Web3 and NFTs will disrupt most industries as we know them today, resulting in a shift in “power” from corporations to individuals.
+            We all believe that <b>decentralization</b> is key to the Internet’s
+            survival.
+            <br />
+            <br /> We look forward to the day when the robust technology behind
+            Web3 and NFTs will disrupt most industries as we know them today,
+            resulting in a shift in “power” from corporations to individuals.
             <br />
             <br />
             Diamond Dawn was specifically architectured to demonstrate how
-            decentralized technology can create a REAL-LIFE impact.
+            decentralized technology can create a <b>REAL-LIFE</b> impact.
           </div>
           <div className="team-members">
             <div className="team-member">
