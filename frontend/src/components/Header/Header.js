@@ -60,7 +60,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           <div className="center-aligned-row header-side">
             {!isRestricted && (
               <NavLink to="/collector">
-                <div className="link">APPLY TO DIAMOND DAWN</div>
+                <div className="link">APPLY FOR DIAMOND DAWN</div>
               </NavLink>
             )}
             <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
