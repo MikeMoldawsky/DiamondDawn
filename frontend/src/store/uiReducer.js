@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   scroll: 0,
   demoAuth: resolveDemoAuth(),
   showHPLogo: null,
+  musicSrc: "",
 };
 
 export const setSelectedTokenId = (selectedTokenId) => ({
