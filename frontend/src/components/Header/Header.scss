@@ -62,9 +62,19 @@ header {
     }
   }
 
+  .link {
+    margin-right: 2.5em;
+    padding-bottom: .1em;
+    font-size: .9em;
+  }
+
   svg.menu-icon {
     height: 1.4em;
     cursor: pointer;
+  }
+
+  .fa-twitter {
+    margin-top: 0.2em;
   }
 
   @keyframes fadeInGrowLogo {
@@ -106,4 +116,10 @@ header {
   right: 0;
   background-color: black;
   z-index: 1;
+}
+
+@media only screen and (max-width: 1366px) {
+  header {
+    font-size: $font15px;
+  }
 }

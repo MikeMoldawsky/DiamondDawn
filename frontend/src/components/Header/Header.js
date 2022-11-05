@@ -52,6 +52,11 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             })}
           />
           <div className="center-aligned-row header-side">
+            {!isRestricted && (
+              <NavLink to="/collector">
+                <div className="link">APPLY TO DIAMOND DAWN</div>
+              </NavLink>
+            )}
             <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
               <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
             </a>
