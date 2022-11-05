@@ -91,7 +91,7 @@ const RequestForm = ({ onSuccess }) => {
           {...register("note")}
           disabled={isSubmitting}
           className="input"
-          placeholder="Tell us why you’d like to join"
+          placeholder="Tell us why you’d like to join (optional)"
         />
         <ActionButton
           actionKey="Request Invitation"
