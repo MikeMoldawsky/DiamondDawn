@@ -5,20 +5,21 @@ import DiamondList from "components/DiamondList";
 import Wallet from "components/Wallet";
 import ContractProvider from "containers/ContractProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
+import {faBars, faVolumeMute, faVolumeUp, faX} from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import AudioPlayer from "components/AudioPlayer";
 import { isDemoAndAuthSelector } from "utils";
 import { DIAMOND_DAWN_TWITTER_URL } from "consts";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Logo from "components/Logo";
-import { uiSelector } from "store/uiReducer";
+import {toggleMuted, uiSelector} from "store/uiReducer";
 import classNames from "classnames";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
+  const dispatch = useDispatch()
   const location = useLocation();
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
-  const { showHPLogo } = useSelector(uiSelector);
+  const { muted, showHPLogo } = useSelector(uiSelector);
 
   const isHomepage =
     location.pathname === "/" || location.pathname === "/explore";
@@ -61,6 +62,11 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
               <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
             </a>
             <div className="vertical-sep" />
+            <FontAwesomeIcon
+              className="menu-icon mute-icon"
+              icon={muted ? faVolumeMute : faVolumeUp}
+              onClick={() => dispatch(toggleMuted())}
+            />
             <AudioPlayer />
             {!isRestricted && (
               <FontAwesomeIcon

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, {useCallback, useState} from "react";
 import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
@@ -8,11 +8,14 @@ import { getCDNVideoUrl, isDemo } from "utils";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import HomeBackground from "components/HomeBackground";
+import useMusic from "hooks/useMusic";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [startTransition, setStartTransition] = useState(false);
+
+  useMusic("coming-soon.mp3")
 
   const renderBgPlayer = useCallback(
     () => (

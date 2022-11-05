@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import "./Homepage.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedTokenId, uiSelector } from "store/uiReducer";
+import {setSelectedTokenId, uiSelector} from "store/uiReducer";
 import { isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
@@ -19,6 +19,7 @@ import {
 } from "pages/Homepage/HompageContent";
 import AnimatedText from "components/AnimatedText/AnimatedText";
 import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
+import useMusic from "hooks/useMusic";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,8 @@ const Homepage = () => {
   const { scroll } = useSelector(uiSelector);
   const { height } = useWindowDimensions();
   useShowLogoOnScroll(3.5);
+
+  useMusic("homepage.mp3")
 
   useEffect(() => {
     isRestricted && navigate("/");

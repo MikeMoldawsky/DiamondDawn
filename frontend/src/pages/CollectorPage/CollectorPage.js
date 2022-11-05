@@ -12,11 +12,14 @@ import Suspense from "components/Suspense";
 import Invite from "components/Invite";
 import NFTs from "components/NFTs";
 import { isDemo } from "utils";
+import useMusic from "hooks/useMusic";
 
 const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
   const { systemStage } = useSelector(systemSelector);
   const account = useAccount();
+
+  useMusic("collector.mp3")
 
   const renderContent = () => {
     if (size(tokens) > 0) return <NFTs />;
