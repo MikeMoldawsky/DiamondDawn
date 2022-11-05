@@ -9,9 +9,6 @@ const SideMenu = ({ isOpen, closeMenu }) => {
       open={isOpen}
       ModalProps={{ onBackdropClick: closeMenu }}
     >
-      <NavLink to={"/collector"} onClick={closeMenu}>
-        <div className="menu-item">COLLECTOR'S ROOM</div>
-      </NavLink>
       <NavLink to={"/about"} onClick={closeMenu}>
         <div className="menu-item">ABOUT</div>
       </NavLink>
@@ -23,6 +20,9 @@ const SideMenu = ({ isOpen, closeMenu }) => {
       </NavLink>
       <NavLink to={"/about/#faq"} onClick={closeMenu}>
         <div className="menu-item">FAQ</div>
+      </NavLink>
+      <NavLink to={"/collector"} onClick={closeMenu}>
+        <div className="menu-item">APPLY DIAMOND DAWN</div>
       </NavLink>
     </Drawer>
   );
