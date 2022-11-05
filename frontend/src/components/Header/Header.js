@@ -5,18 +5,23 @@ import DiamondList from "components/DiamondList";
 import Wallet from "components/Wallet";
 import ContractProvider from "containers/ContractProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faBars, faVolumeMute, faVolumeUp, faX} from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faVolumeMute,
+  faVolumeUp,
+  faX,
+} from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import AudioPlayer from "components/AudioPlayer";
 import { isDemoAndAuthSelector } from "utils";
 import { DIAMOND_DAWN_TWITTER_URL } from "consts";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/Logo";
-import {toggleMuted, uiSelector} from "store/uiReducer";
+import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const location = useLocation();
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
   const { muted, showHPLogo } = useSelector(uiSelector);

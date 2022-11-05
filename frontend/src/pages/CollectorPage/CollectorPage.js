@@ -19,7 +19,7 @@ const CollectorPage = () => {
   const { systemStage } = useSelector(systemSelector);
   const account = useAccount();
 
-  useMusic("collector.mp3")
+  useMusic("collector.mp3");
 
   const renderContent = () => {
     if (size(tokens) > 0) return <NFTs />;

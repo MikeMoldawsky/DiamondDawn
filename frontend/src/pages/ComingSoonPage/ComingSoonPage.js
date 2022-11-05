@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, { useCallback, useState } from "react";
 import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
@@ -15,7 +15,7 @@ const ComingSoonPage = () => {
   const navigate = useNavigate();
   const [startTransition, setStartTransition] = useState(false);
 
-  useMusic("coming-soon.mp3")
+  useMusic("coming-soon.mp3");
 
   const renderBgPlayer = useCallback(
     () => (
