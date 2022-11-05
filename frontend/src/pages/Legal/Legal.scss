@@ -2,10 +2,15 @@
 
 .page.tnc-page, .page.privacy-page {
   color: white;
+  $border: solid 1px white;
 
   .inner-page {
     width: 70%;
     max-width: 1400px;
+  }
+
+  a {
+    text-decoration: underline;
   }
 
   h1 {
@@ -16,6 +21,33 @@
   h2 {
     text-align: center;
     margin: 0;
+  }
+
+  li {
+    margin-bottom: .8em;
+  }
+
+  table {
+    border: $border;
+    text-align: left;
+
+    tr:not(:last-child) {
+      border-bottom: $border;
+    }
+
+    th {
+      font-weight: 700;
+    }
+
+    td, th {
+      border-bottom: $border;
+      padding: .5em;
+      vertical-align: top;
+
+      &:not(:last-child) {
+        border-right: $border;
+      }
+    }
   }
 
   .start-start-aligned-row {
