@@ -127,6 +127,12 @@ footer {
   justify-content: flex-start;
 }
 
+.start-start-aligned-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
 .center-aligned-column {
   display: flex;
   flex-direction: column;

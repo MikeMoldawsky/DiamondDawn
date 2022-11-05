@@ -30,6 +30,8 @@ import AccountProvider from "containers/AccountProvider";
 import ComingSoonPage from "pages/ComingSoonPage";
 import { useSelector } from "react-redux";
 import { isDemo, isDemoAndAuthSelector } from "utils";
+import PrivacyPage from "pages/Legal/PrivacyPage";
+import TNCPage from "pages/Legal/TNCPage";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
@@ -105,6 +107,8 @@ const MainLayout = () => {
                   }
                 />
                 <Route path="about" element={<AboutPage />} />
+                <Route path="privacy" element={<PrivacyPage />} />
+                <Route path="tnc" element={<TNCPage />} />
               </>
             )}
             <Route path="*" element={<Navigate to="/" replace />} />
