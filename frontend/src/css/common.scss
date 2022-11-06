@@ -63,6 +63,31 @@ b {
   }
 }
 
+.loader-container {
+  height: 100%;
+}
+
+.page-loader {
+  position: fixed;
+  z-index: 100;
+  background-color: black;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  text-align: center;
+
+  .loader-container {
+    height: unset;
+    margin: -8.5% 0;
+  }
+
+  .secondary-text {
+    color: white;
+    font-size: $font25px;
+  }
+}
+
 .link {
   border-bottom: solid 1px $text_gray;
   line-height: 1em;
@@ -94,10 +119,6 @@ footer {
       font-weight: 100;
     }
   }
-}
-
-.loader-container {
-  height: 100%;
 }
 
 .center-aligned-row {
