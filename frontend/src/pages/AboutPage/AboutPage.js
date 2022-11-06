@@ -4,9 +4,11 @@ import { getCDNImageUrl } from "utils";
 import FAQs from "components/FAQs";
 import Footer from "components/Footer";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PageSizeLimit from "components/PageSizeLimit";
 
 const AboutPage = () => {
   return (
+    <PageSizeLimit>
     <div className="page about-page">
       <div className="inner-page">
         <div className="general">
@@ -223,6 +225,7 @@ const AboutPage = () => {
         <Footer />
       </div>
     </div>
+    </PageSizeLimit>
   );
 };
 

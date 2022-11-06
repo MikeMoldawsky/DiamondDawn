@@ -14,6 +14,7 @@ import NFTs from "components/NFTs";
 import {getCDNImageUrl, isDemo} from "utils";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
+import PageSizeLimit from "components/PageSizeLimit";
 
 const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
@@ -41,18 +42,20 @@ const CollectorPage = () => {
   }
 
   return (
-    <PageLoader pageName="collector" images={[getCDNImageUrl("/collector/collector-bg.png")]}>
-      <div className={classNames("page collector-page")}>
-        <div className="inner-page">
-          <h1>The Collector's Room</h1>
-          <Box className={"main-box"}>
-            <Suspense withLoader actions={suspenseActions}>
-              {renderContent()}
-            </Suspense>
-          </Box>
+    <PageSizeLimit>
+      <PageLoader pageName="collector" images={[getCDNImageUrl("/collector/collector-bg.png")]}>
+        <div className={classNames("page collector-page")}>
+          <div className="inner-page">
+            <h1>The Collector's Room</h1>
+            <Box className={"main-box"}>
+              <Suspense withLoader actions={suspenseActions}>
+                {renderContent()}
+              </Suspense>
+            </Box>
+          </div>
         </div>
-      </div>
-    </PageLoader>
+      </PageLoader>
+    </PageSizeLimit>
   );
 };
 
