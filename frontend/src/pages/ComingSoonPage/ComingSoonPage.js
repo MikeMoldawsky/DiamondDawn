@@ -4,16 +4,18 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch } from "react-redux";
-import { getCDNVideoUrl, isDemo } from "utils";
+import {getCDNImageUrl, getCDNVideoUrl, isDemo} from "utils";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import HomeBackground from "components/HomeBackground";
 import useMusic from "hooks/useMusic";
+import PageLoader from "components/PageLoader";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [startTransition, setStartTransition] = useState(false);
+  const [videoProgress, setVideoProgress] = useState({})
 
   useMusic("coming-soon.mp3");
 
@@ -29,6 +31,7 @@ const ComingSoonPage = () => {
         loop
         width=""
         height=""
+        onProgress={setVideoProgress}
       />
     ),
     []
@@ -56,37 +59,45 @@ const ComingSoonPage = () => {
   };
 
   return (
-    <div
-      className={classNames("page coming-soon", {
-        horizontal: true,
-        "transition-out": startTransition,
-      })}
-    >
-      {renderBgPlayer()}
-      <div className="curtain-left" />
-      <div className="curtain-right" />
-      <div className="curtain-behind">
-        <HomeBackground />
-      </div>
-      <div className="center-aligned-column content">
-        <div className="leading-text">COMING SOON</div>
-        <div className="secondary-text">
-          <div className="secondary-2">Physical or Digital</div>
-          Which diamond will you choose?
+    <PageLoader pageName="coming-soon" videos={[{ progress: videoProgress, threshold: .5 }]} timeout={5000}>
+      <div
+        className={classNames("page coming-soon", {
+          horizontal: true,
+          "transition-out": startTransition,
+        })}
+      >
+        {renderBgPlayer()}
+        <div className="curtain-left" />
+        <div className="curtain-right" />
+        <div className="curtain-behind">
+          <PageLoader pageName="homepage" withLoader={false} images={[
+            getCDNImageUrl("/homepage/sky.png"),
+            getCDNImageUrl("/homepage/homepage-mountains-back.png"),
+            getCDNImageUrl("/homepage/homepage-mountains-front.png"),
+          ]}>
+            <HomeBackground />
+          </PageLoader>
         </div>
-        {isDemo() ? (
-          <PasswordBox
-            onCorrect={onCorrectPassword}
-            passwordLength={8}
-            buttonText="EXPLORE"
-          />
-        ) : (
-          <div className="button transparent" onClick={transition}>
-            EXPLORE
+        <div className="center-aligned-column content">
+          <div className="leading-text">COMING SOON</div>
+          <div className="secondary-text">
+            <div className="secondary-2">Physical or Digital</div>
+            Which diamond will you choose?
           </div>
-        )}
+          {isDemo() ? (
+            <PasswordBox
+              onCorrect={onCorrectPassword}
+              passwordLength={8}
+              buttonText="EXPLORE"
+            />
+          ) : (
+            <div className="button transparent" onClick={transition}>
+              EXPLORE
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </PageLoader>
   );
 };
 

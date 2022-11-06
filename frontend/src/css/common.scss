@@ -79,12 +79,16 @@ b {
 
   .loader-container {
     height: unset;
-    margin: -8.5% 0;
+    margin: -6.8em 0;
   }
 
   .secondary-text {
     color: white;
     font-size: $font25px;
+  }
+
+  &.hide {
+    animation: fadeOut .15s ease-in;
   }
 }
 

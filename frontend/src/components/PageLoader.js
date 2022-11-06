@@ -1,58 +1,84 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import forEach from "lodash/forEach";
+import sumBy from "lodash/sumBy";
+import get from "lodash/get";
 import Loading from "components/Loading";
 import useTimeout from "hooks/useTimeout";
 import {useDispatch, useSelector} from "react-redux";
 import {uiSelector, updateUiState} from "store/uiReducer";
+import classNames from "classnames";
 
-const PageLoader = ({ pageName, images = [], videos = [], timeout = 10000, children }) => {
+const PageLoader = ({ pageName, images = [], videos = [], timeout = 10000, withLoader = true, children }) => {
   const { assetReadyPages } = useSelector(uiSelector)
   const imagesLoaded = useRef(0)
   const videosLoaded = useRef(0)
   const dispatch = useDispatch()
+  const [hidden, setHidden] = useState(false)
+  const [fade, setFade] = useState(false)
+  const [showText, setShowText] = useState(false)
 
   const assetsReady = assetReadyPages[pageName]
 
   const setAssetsReady = () => {
-    dispatch(updateUiState({
-      assetReadyPages: { ...assetReadyPages, [pageName]: true }
-    }))
+    setFade(true)
+    setTimeout(() => {
+      dispatch(updateUiState({
+        assetReadyPages: { ...assetReadyPages, [pageName]: true }
+      }))
+      setHidden(true)
+    }, 150)
   }
 
   const onAssetLoaded = () => {
     if (imagesLoaded.current === images.length && videosLoaded.current === videos.length) {
-      setAssetsReady(true)
-      console.log('ASSETS READY')
+      setAssetsReady()
     }
   }
 
+  // images
   useEffect(() => {
     if (assetReadyPages[pageName]) {
-      setAssetsReady(true);
+      setFade(true);
       return
     }
     forEach(images, src => {
       const img = new Image();
       img.src = src;
       img.onload = () => {
-        console.log('IMAGE READY')
-        imagesLoaded.current = imagesLoaded.current + 1;
+        imagesLoaded.current++;
         onAssetLoaded()
       };
     })
   }, []);
 
+  // videos
+  const videosProgress = sumBy(videos, ({ progress }) => get(progress, 'loaded', 0))
+  useEffect(() => {
+    forEach(videos, ({ progress, threshold = 1 }) => {
+      const loaded = get(progress, 'loaded', 0)
+      if (loaded >= threshold) {
+        videosLoaded.current++;
+        onAssetLoaded()
+      }
+    })
+  }, [videosProgress])
+
+  // timeout
   useTimeout(() => {
-    setAssetsReady(true)
+    setAssetsReady()
   }, timeout)
+
+  setTimeout(() => {
+    setShowText(true)
+  }, 100)
 
   return (
     <>
       {children}
-      {!assetsReady && (
-        <div className="center-aligned-column page-loader">
+      {withLoader && !assetsReady && !hidden && (
+        <div className={classNames("center-aligned-column page-loader", { hide: fade })}>
           <Loading />
-          <div className="secondary-text">Please wait while<br/>DIAMOND DOWN is loading</div>
+          <div className="secondary-text">{showText && "Please wait while"}<br/>{showText && "DIAMOND DOWN is loading"}</div>
         </div>
       )}
     </>
