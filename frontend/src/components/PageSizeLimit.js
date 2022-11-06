@@ -14,7 +14,7 @@ const PageSizeLimit = ({ minWidth = DEFAULT_MIN_WIDTH, children }) => {
     setShowText(true)
   }, SHOW_TEXT_TIME)
 
-  return width > minWidth ? children : (
+  return width >= minWidth ? children : (
     <div className={classNames("center-aligned-column page-loader")}>
       <Loading />
       <div className="secondary-text">{showText && "Mobile compatibility"}<br/>{showText && "under construction"}</div>
