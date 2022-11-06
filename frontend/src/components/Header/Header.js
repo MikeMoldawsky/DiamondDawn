@@ -19,11 +19,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/Logo";
 import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
+import {usePageSizeLimit} from "components/PageSizeLimit";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const isRestricted = useSelector(isDemoAndAuthSelector(false));
+  const isPageSizeLimitOk = usePageSizeLimit()
   const { muted, showHPLogo } = useSelector(uiSelector);
 
   const isHomepage =
@@ -37,7 +39,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
       <header>
         <div className="header-internal">
           <div className="center-aligned-row header-side">
-            {!isRestricted && (
+            {!isRestricted && isPageSizeLimitOk && (
               <>
                 <div className="wallet">
                   <Wallet />
@@ -52,13 +54,13 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             withLink
             withText
             className={classNames({
-              hidden: isHomepage,
+              hidden: isHomepage || !isPageSizeLimitOk,
               "animate-show": animateShowLogo,
               "animate-hide": animateHideLogo,
             })}
           />
           <div className="center-aligned-row header-side">
-            {!isRestricted && (
+            {!isRestricted && isPageSizeLimitOk && (
               <NavLink to="/collector">
                 <div className="link">APPLY FOR DIAMOND DAWN</div>
               </NavLink>
@@ -73,7 +75,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
               onClick={() => dispatch(toggleMuted())}
             />
             <AudioPlayer />
-            {!isRestricted && (
+            {!isRestricted && isPageSizeLimitOk && (
               <FontAwesomeIcon
                 className="menu-icon"
                 icon={isMenuOpen ? faX : faBars}

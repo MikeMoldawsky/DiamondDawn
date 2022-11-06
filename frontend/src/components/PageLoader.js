@@ -80,7 +80,7 @@ const PageLoader = ({ pageName, images = [], videos = [], timeout = DEFAULT_TIME
     <>
       {children}
       {withLoader && !assetsReady && !hidden && (
-        <div className={classNames("center-aligned-column page-loader", { hide: fade })}>
+        <div className={classNames("center-aligned-column page-cover", { hide: fade })}>
           <Loading />
           <div className="secondary-text">{showText && "Please wait while"}<br/>{showText && "DIAMOND DOWN is loading"}</div>
         </div>

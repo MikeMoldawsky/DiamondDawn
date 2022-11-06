@@ -67,7 +67,7 @@ b {
   height: 100%;
 }
 
-.page-loader {
+.page-cover {
   position: fixed;
   z-index: 100;
   background-color: black;
@@ -80,6 +80,11 @@ b {
   .loader-container {
     height: unset;
     margin: -6.8em 0;
+  }
+
+  .leading-text {
+    font-size: $font32px;
+    margin: -.5em 0 .8em;
   }
 
   .secondary-text {
