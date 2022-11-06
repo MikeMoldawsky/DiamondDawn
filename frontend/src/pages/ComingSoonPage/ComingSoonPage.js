@@ -70,7 +70,7 @@ const ComingSoonPage = () => {
         <div className="curtain-left" />
         <div className="curtain-right" />
         <div className="curtain-behind">
-          <PageLoader pageName="homepage" withLoader={false} images={[
+          <PageLoader pageName="homepage" withLoader={false} timeout={-1} images={[
             getCDNImageUrl("/homepage/sky.png"),
             getCDNImageUrl("/homepage/homepage-mountains-back.png"),
             getCDNImageUrl("/homepage/homepage-mountains-front.png"),

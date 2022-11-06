@@ -8,7 +8,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {uiSelector, updateUiState} from "store/uiReducer";
 import classNames from "classnames";
 
-const PageLoader = ({ pageName, images = [], videos = [], timeout = 10000, withLoader = true, children }) => {
+const DEFAULT_TIMEOUT = 10000
+const SHOW_TEXT_TIME = 100
+const FADE_DURATION = 150
+
+const PageLoader = ({ pageName, images = [], videos = [], timeout = DEFAULT_TIMEOUT, withLoader = true, children }) => {
   const { assetReadyPages } = useSelector(uiSelector)
   const imagesLoaded = useRef(0)
   const videosLoaded = useRef(0)
@@ -26,7 +30,7 @@ const PageLoader = ({ pageName, images = [], videos = [], timeout = 10000, withL
         assetReadyPages: { ...assetReadyPages, [pageName]: true }
       }))
       setHidden(true)
-    }, 150)
+    }, FADE_DURATION)
   }
 
   const onAssetLoaded = () => {
@@ -65,12 +69,12 @@ const PageLoader = ({ pageName, images = [], videos = [], timeout = 10000, withL
 
   // timeout
   useTimeout(() => {
-    setAssetsReady()
+    timeout > -1 && setAssetsReady()
   }, timeout)
 
   setTimeout(() => {
     setShowText(true)
-  }, 100)
+  }, SHOW_TEXT_TIME)
 
   return (
     <>
