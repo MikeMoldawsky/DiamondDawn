@@ -11,7 +11,6 @@ import HomeBackground from "components/HomeBackground";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import useWindowDimensions from "hooks/useWindowDimensions";
-import mobileVideo from "assets/videos/coming-soon-mobile.webm"
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -27,7 +26,7 @@ const ComingSoonPage = () => {
   const renderBgPlayer = useCallback(
     () => (
       <ReactPlayer
-        url={usePortraitAsset ? mobileVideo : getCDNVideoUrl("coming_soon.mp4")}
+        url={getCDNVideoUrl(usePortraitAsset ? "coming_soon_mobile.webm" : "coming_soon.mp4")}
         playing
         playsinline
         controls={false}
