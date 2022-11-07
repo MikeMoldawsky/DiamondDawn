@@ -19,7 +19,7 @@ const ComingSoonPage = () => {
   const [videoProgress, setVideoProgress] = useState({});
   const { width, height } = useWindowDimensions();
   const isPortrait = height > width;
-  const usePortraitAsset = isPortrait && width <= 1024;
+  const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
 
   useMusic("coming-soon.mp3");
 
