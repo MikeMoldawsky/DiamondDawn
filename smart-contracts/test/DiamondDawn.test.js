@@ -708,12 +708,12 @@ describe("DiamondDawn", () => {
           1
         )
         .and.to.emit(ddMine, "Ship")
-        .withArgs(
-          tokenId,
-          1,
-          (number) =>
+        .withArgs(tokenId, 1, (number) => {
+          number = Number(number);
+          return (
             number === DIAMOND.number || number === DIAMOND_TO_COLOR.number
-        );
+          );
+        });
       expect(await dd.balanceOf(userA.address)).to.equal(0);
       await expect(dd.ownerOf(1)).to.be.revertedWith(
         "ERC721: owner query for nonexistent token"
