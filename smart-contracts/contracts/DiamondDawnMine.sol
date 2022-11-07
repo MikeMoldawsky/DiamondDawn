@@ -261,7 +261,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         Certificate memory certificate = metadata.certificate;
         if (uint(Stage.CUT) <= uint(state_)) {
             attributes[8] = Serializer.toAttribute(
-                "Rough Carat",
+                "Carat Rough Stone",
                 Serializer.toDecimalStr(_getPoints(metadata, Stage.MINE)),
                 ""
             );
@@ -293,9 +293,9 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
         }
         if (uint(Stage.POLISH) <= uint(state_)) {
-            // TODO: change "Cut Carat" name to professional term
+            // TODO: change "Carat Pre Polish" name to professional term
             attributes[15] = Serializer.toAttribute(
-                "Cut Carat",
+                "Carat Pre Polish",
                 Serializer.toDecimalStr(_getPoints(metadata, Stage.CUT)),
                 ""
             );

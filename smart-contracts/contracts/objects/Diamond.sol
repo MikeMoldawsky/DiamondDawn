@@ -51,7 +51,7 @@ enum Color {
 }
 
 struct Certificate {
-    uint32 number; // TODO: check that all certificates are smaller than 4,294,967,296
+    uint64 number;
     uint32 date;
     uint16 length;
     uint16 width;
