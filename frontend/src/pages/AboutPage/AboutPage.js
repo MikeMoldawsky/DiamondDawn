@@ -38,6 +38,7 @@ const AboutPage = () => {
               complete each step.
             </div>
             <br />
+            <br />
             <div className="secondary-text">Which diamond will you choose?</div>
             <div className="text">
               In the last phase, you will be faced with <b>The Final Choice:</b>
