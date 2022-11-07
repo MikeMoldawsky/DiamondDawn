@@ -35,14 +35,16 @@ const AboutPage = () => {
               complete each step.
             </div>
             <br />
+            <br />
+            <div className="secondary-text">Which diamond will you choose?</div>
             <div className="text">
               In the last phase, you will be faced with <b>The Final Choice:</b>
               <br />
               Keep your diamond NFT digital or burn it in exchange for a
               physical, limited-edition artwork that contains your diamond
-              (GIA-certified). <br />
+              (GIA-certified). <br /> <br />
               Once your decision is finalized on the blockchain, your artwork
-              will be shipped to your specified address.
+              will be <b>shipped</b> to your specified address.
             </div>
             <br />
             {/*<br />*/}
