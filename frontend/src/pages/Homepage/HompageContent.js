@@ -103,7 +103,7 @@ export const TeaserText = () => (
         The final choice is yours.
       </p>
       <div className="center-aligned-row buttons-row">
-        <div className="button gold">APPLY FOR DIAMOND DAWN</div>
+        <div className="button transparent">APPLY FOR DIAMOND DAWN</div>
         <PlayButton />
       </div>
     </div>
