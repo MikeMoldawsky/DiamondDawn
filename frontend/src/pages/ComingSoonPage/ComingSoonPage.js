@@ -10,19 +10,24 @@ import { useNavigate } from "react-router-dom";
 import HomeBackground from "components/HomeBackground";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
+import useWindowDimensions from "hooks/useWindowDimensions";
+import mobileVideo from "assets/videos/coming-soon-mobile.webm"
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [startTransition, setStartTransition] = useState(false);
   const [videoProgress, setVideoProgress] = useState({})
+  const { width, height } = useWindowDimensions()
+  const isPortrait = height > width
+  const usePortraitAsset = isPortrait && width <= 1024
 
   useMusic("coming-soon.mp3");
 
   const renderBgPlayer = useCallback(
     () => (
       <ReactPlayer
-        url={getCDNVideoUrl("coming_soon.mp4")}
+        url={usePortraitAsset ? mobileVideo : getCDNVideoUrl("coming_soon.mp4")}
         playing
         playsinline
         controls={false}
@@ -34,7 +39,7 @@ const ComingSoonPage = () => {
         onProgress={setVideoProgress}
       />
     ),
-    []
+    [usePortraitAsset]
   );
 
   const transition = () => {
@@ -79,10 +84,12 @@ const ComingSoonPage = () => {
           </PageLoader>
         </div>
         <div className="center-aligned-column content">
-          <div className="leading-text">COMING SOON</div>
-          <div className="secondary-text">
-            <div className="secondary-2">Physical or Digital</div>
-            Which diamond will you choose?
+          <div className="center-aligned-column">
+            <div className="leading-text">COMING SOON</div>
+            <div className="secondary-text">
+              <div className="secondary-2">Physical or Digital</div>
+              Which diamond will you choose?
+            </div>
           </div>
           {isDemo() ? (
             <PasswordBox

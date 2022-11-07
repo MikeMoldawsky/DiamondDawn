@@ -15,7 +15,11 @@ body,
 html {
   --base-font-size: 18;
   scroll-behavior: smooth;
-  //font-size: calc-font-size(1px);
+  font-size: $font16px;
+}
+
+:root {
+  --header-height: 5rem;
 }
 
 body {
@@ -48,8 +52,7 @@ b {
   position: relative;
 
   .inner-page {
-    padding-top: $headerHeight * 1.4;
-    //max-width: 1440px;
+    padding-top: calc(var(--header-height) * 1.4);
     margin: 0 auto;
     height: 100%;
 
@@ -336,7 +339,7 @@ footer {
   &:before {
     content: "";
     width: 100%;
-    height: $headerHeight;
+    height: var(--header-height);
     position: absolute;
     top: 0;
     left: 0;
@@ -401,5 +404,27 @@ footer {
 
   .MuiDrawer-root .MuiPaper-root {
     font-size: 1em;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  :root {
+    --header-height: 4rem;
+  }
+
+  html {
+    font-size: $font14px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  html {
+    font-size: $font12px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  html {
+    font-size: $font11px;
   }
 }
