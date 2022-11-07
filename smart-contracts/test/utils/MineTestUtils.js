@@ -283,14 +283,14 @@ async function _validateAndRemoveCaratMetadata(
     parsedMetadata.attributes,
     (currentObject) =>
       currentObject.trait_type ===
-      (isRough ? "Rough Carat" : isCut ? "Cut Carat" : "Carat")
+      (isRough ? "Carat Rough Stone" : isCut ? "Carat Pre Polish" : "Carat")
   );
   expect(actualCaratAttributeList).to.satisfy((arr) => {
     expect(arr).to.have.lengthOf(1);
     const [actualCaratAttribute] = arr;
     expect(actualCaratAttribute).to.have.all.keys("trait_type", "value");
     expect(actualCaratAttribute.trait_type).equal(
-      isRough ? "Rough Carat" : isCut ? "Cut Carat" : "Carat"
+      isRough ? "Carat Rough Stone" : isCut ? "Carat Pre Polish" : "Carat"
     );
     if (maxPoints) {
       expect(actualCaratAttribute.value).to.be.within(

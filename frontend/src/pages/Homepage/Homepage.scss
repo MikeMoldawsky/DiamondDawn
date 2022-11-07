@@ -33,7 +33,7 @@
 
       .logo-box,
       .react-player {
-        margin-bottom: 5em;
+        margin-bottom: 3.5em;
         width: unset !important;
         height: 22em !important;
         aspect-ratio: 2.55;
@@ -60,7 +60,7 @@
 
     .countdown-container {
       position: relative;
-      margin: 3.5em 0 3.5em;
+      margin: 5em 0 3.5em;
 
       .text {
         color: white;
@@ -94,7 +94,7 @@
     margin-left: 20vw;
 
     .leading-text {
-      color: $gold;
+      //color: $gold;
       margin: 4rem 0 2rem;
     }
 

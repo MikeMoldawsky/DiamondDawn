@@ -1,15 +1,21 @@
 import React from "react";
 import "./AboutPage.scss";
-import { getCDNImageUrl } from "utils";
+import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import FAQs from "components/FAQs";
 import Footer from "components/Footer";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PageSizeLimit from "components/PageSizeLimit";
+import classNames from "classnames";
+import ReactPlayer from "react-player";
 
 const AboutPage = () => {
   return (
     <PageSizeLimit>
       <div className="page about-page">
+        <div className="bg about-background">
+          <div className="bg walls" />
+          <div className="bg cave" />
+        </div>
         <div className="inner-page">
           <div className="general">
             <div className="leading-text">About Diamond Dawn</div>
@@ -22,6 +28,7 @@ const AboutPage = () => {
             <br />
             <div className="text">
               Your Diamond Dawn journey will consist of 4 steps.
+              <br />
               <br />
               At each step, you must choose whether to evolve your Diamond NFT
               to its next form or keep it in its current state for eternity.
@@ -40,13 +47,11 @@ const AboutPage = () => {
               Once your decision is finalized on the blockchain, your artwork
               will be shipped to your specified address.
             </div>
-            <div className="secondary-text">
-              {" "}
-              <br />
-              Physical vs. Digital
-              <br />
-              Which diamond will you choose?
-            </div>
+            <br />
+            {/*<br />*/}
+            <div className="text">Physical vs. Digital</div>
+            <br />
+            <div className="secondary-text">Which diamond will you choose?</div>
           </div>
 
           <div className="center-aligned-column journey">
@@ -65,7 +70,17 @@ const AboutPage = () => {
               Diamond Dawn has 4 steps.
             </div>
             <div className="journey-step">
-              <div className="key-image" />
+              <ReactPlayer
+                url={getCDNVideoUrl("key-static.webm")}
+                playing
+                playsinline
+                controls={false}
+                muted
+                loop
+                className={classNames("react-player key-image")}
+                width=""
+                height=""
+              />
               <div className="secondary-text">Step 0 - Activate Your Key</div>
               <div className="text">
                 If your application to join Diamond Dawn is accepted, you will
@@ -93,7 +108,18 @@ const AboutPage = () => {
               </div>
             </div>
             <div className="journey-step">
-              <div className="stone-image" />
+              <ReactPlayer
+                url={getCDNVideoUrl("rough-stone-static.webm")}
+                playing
+                playsinline
+                controls={false}
+                muted
+                loop
+                className={classNames("react-player stone-image")}
+                width=""
+                height=""
+              />
+              {/*<div className="stone-image" />*/}
               <div className="secondary-text">Step 1 - Enter & Mine</div>
               <div className="text">The virtual mine opens in XX:XX</div>
             </div>

@@ -4,13 +4,28 @@
 .page.about-page {
   font-size: calc-font-size(1px);
 
+  .about-background {
+    .walls {
+      height: 400%;
+      background: url("../../assets/images/about-walls.png") no-repeat left
+        bottom;
+      background-size: 100%;
+    }
+
+    .cave {
+      background: url("../../assets/images/about-cave.png") no-repeat 27% top;
+      background-size: auto 110%;
+    }
+  }
+
   .leading-text {
-    margin: 6rem 0 2rem;
-    text-align: center;
+    margin: 4rem 0 2rem;
+    //text-align: center;
   }
 
   .secondary-text {
-    margin: 3rem 0 1rem;
+    //margin: 3rem 0 1rem;
+    //margin-top:
   }
 
   .text {
@@ -19,8 +34,12 @@
   }
 
   .general {
-    width: 65%;
-    margin: 0 auto;
+    width: 50%;
+    margin-left: 10%;
+
+    .leading-text {
+      margin-top: 2rem;
+    }
   }
 
   .journey {
@@ -62,19 +81,13 @@
     }
 
     .key-image {
-      height: 7.5em;
-      background: url($CDN_URL + "/images/mint/mint-key.png") no-repeat center
-        bottom;
-      background-size: auto 170%;
-      margin-bottom: 2em;
+      height: 24em;
+      margin: -7em 0;
     }
 
     .stone-image {
-      height: 10em;
-      background: url($CDN_URL + "/images/rough-stone.png") no-repeat center
-        bottom;
-      background-size: auto 90%;
-      margin-bottom: 2em;
+      height: 16em;
+      margin: -7em 0 -1.5em;
     }
   }
 
@@ -99,7 +112,7 @@
         svg {
           width: 5em;
           height: unset;
-          color: $gold;
+          color: white;
         }
 
         .secondary-text {
@@ -112,6 +125,12 @@
           margin-bottom: 1em;
         }
       }
+    }
+  }
+
+  .faq {
+    .leading-text {
+      margin-left: 10%;
     }
   }
 

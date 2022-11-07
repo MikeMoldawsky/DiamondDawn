@@ -9,7 +9,7 @@ interface IDiamondDawnMine {
     event Mine(uint tokenId);
     event Cut(uint tokenId);
     event Polish(uint tokenId);
-    event Ship(uint tokenId, uint16 physicalId, uint32 number);
+    event Ship(uint tokenId, uint16 physicalId, uint64 number);
     event Dawn(uint tokenId);
 
     function initialize(uint16 maxDiamond) external;
