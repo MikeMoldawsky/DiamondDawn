@@ -9,23 +9,24 @@
   $splitter_color: silver;
   $splitter_width: 4px;
   min-height: 500px;
+  font-size: calc-font-size(11px);
 
   .content {
     position: relative;
-    top: 43%;
+    top: 45%;
     margin: 0 auto;
 
     .leading-text {
       font-size: $font54px;
-      margin-bottom: 2rem;
+      margin-bottom: .2em;
     }
 
     .secondary-text {
-      color: #ccc;
+      color: $gold;
       font-weight: 400;
       font-size: $font30px;
-      line-height: 1.5em;
-      margin-bottom: 3.5rem;
+      line-height: 1.4em;
+      margin-bottom: 2.5em;
     }
 
     .secondary-2 {
@@ -35,7 +36,7 @@
 
   .react-player {
     min-width: 102%;
-    min-height: 100%;
+    min-height: 104%;
     opacity: 0.65;
     z-index: -2;
     position: absolute;
@@ -348,14 +349,24 @@
 
 @media only screen and (max-width: 1024px) {
   .page.coming-soon {
+    font-size: $font14px;
+
     .content {
       justify-content: space-between;
       height: 75%;
       top: 15%;
-
-      .leading-text {
-        margin-bottom: 1rem;
-      }
     }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .page.coming-soon {
+    font-size: $font12px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .page.coming-soon {
+    font-size: $font11px;
   }
 }

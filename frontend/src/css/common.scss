@@ -15,7 +15,6 @@ body,
 html {
   --base-font-size: 18;
   scroll-behavior: smooth;
-  font-size: $font16px;
 }
 
 :root {
@@ -410,21 +409,5 @@ footer {
 @media only screen and (max-width: 1024px) {
   :root {
     --header-height: 4rem;
-  }
-
-  html {
-    font-size: $font14px;
-  }
-}
-
-@media only screen and (max-width: 768px) {
-  html {
-    font-size: $font12px;
-  }
-}
-
-@media only screen and (max-width: 375px) {
-  html {
-    font-size: $font11px;
   }
 }
