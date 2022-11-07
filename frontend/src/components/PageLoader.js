@@ -103,7 +103,7 @@ const PageLoader = ({
           <div className="secondary-text">
             {showText && "DIAMOND DAWN"}
             <br />
-            {showText && "is loading"}
+            {showText && "loading..."}
           </div>
         </div>
       )}
