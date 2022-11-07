@@ -4,7 +4,7 @@ header {
   position: fixed;
   z-index: 10000;
   width: 100%;
-  height: calc($headerHeight + 1em);
+  height: calc(var(--header-height) + 1em);
   -webkit-mask-image: -webkit-gradient(
     linear,
     left bottom,
@@ -16,7 +16,7 @@ header {
 
   .header-internal {
     padding: 0 2.5rem;
-    height: $headerHeight;
+    height: var(--header-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -110,7 +110,7 @@ header {
 
 .header-fix {
   width: 15px;
-  height: $headerHeight;
+  height: var(--header-height);
   position: absolute;
   top: 0;
   right: 0;
@@ -121,5 +121,13 @@ header {
 @media only screen and (max-width: 1366px) {
   header {
     font-size: $font15px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  header {
+    .header-internal {
+      padding: 0 1rem;
+    }
   }
 }

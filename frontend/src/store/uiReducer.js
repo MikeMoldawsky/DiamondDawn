@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   demoAuth: resolveDemoAuth(),
   showHPLogo: null,
   musicSrc: "",
+  assetReadyPages: {},
 };
 
 export const setSelectedTokenId = (selectedTokenId) => ({
