@@ -31,10 +31,7 @@ const AboutPage = () => {
               <br />
               <br />
               At each step, you must choose whether to evolve your Diamond NFT
-              to its next form or keep it in its current state for eternity.
-              <br />
-              <br />
-              You’ll have exactly <b>3 weeks, 3 days, and 3 hours</b> to
+              to its next form or keep it in its current state for eternity. You’ll have exactly <b>3 weeks, 3 days, and 3 hours</b> to
               complete each step.
             </div>
             <br />

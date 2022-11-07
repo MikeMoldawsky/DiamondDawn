@@ -6,15 +6,16 @@
 
   .about-background {
     .walls {
-      height: 400%;
+      height: 1000%;
       background: url("../../assets/images/about-walls.png") no-repeat left
-        bottom;
+        4.2%;
       background-size: 100%;
     }
 
     .cave {
-      background: url("../../assets/images/about-cave.png") no-repeat 27% top;
-      background-size: auto 110%;
+      background: url("../../assets/images/about-cave.png") no-repeat 28% top;
+      background-size: 130%;
+      z-index: -2;
     }
   }
 
