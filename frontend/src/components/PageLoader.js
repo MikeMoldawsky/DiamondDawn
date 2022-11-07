@@ -101,9 +101,9 @@ const PageLoader = ({
         >
           <Loading />
           <div className="secondary-text">
-            {showText && "Please wait while"}
+            {showText && "DIAMOND DAWN"}
             <br />
-            {showText && "DIAMOND DOWN is loading"}
+            {showText && "is loading"}
           </div>
         </div>
       )}
