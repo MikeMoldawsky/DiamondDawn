@@ -3,7 +3,7 @@ import "./Homepage.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
-import {getCDNImageUrl, isDemoAndAuthSelector} from "utils";
+import { getCDNImageUrl, isDemoAndAuthSelector } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
 import Footer from "components/Footer";
@@ -51,11 +51,14 @@ const Homepage = () => {
 
   return (
     <PageSizeLimit>
-      <PageLoader pageName="homepage" images={[
-        getCDNImageUrl("/homepage/sky.png"),
-        getCDNImageUrl("/homepage/homepage-mountains-back.png"),
-        getCDNImageUrl("/homepage/homepage-mountains-front.png"),
-      ]}>
+      <PageLoader
+        pageName="homepage"
+        images={[
+          getCDNImageUrl("/homepage/sky.png"),
+          getCDNImageUrl("/homepage/homepage-mountains-back.png"),
+          getCDNImageUrl("/homepage/homepage-mountains-front.png"),
+        ]}
+      >
         <ScrollingPage className="homepage">
           <div className="top-content center-aligned-column">
             <HomeBackground />

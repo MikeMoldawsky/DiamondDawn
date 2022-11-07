@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch } from "react-redux";
-import {getCDNImageUrl, getCDNVideoUrl, isDemo} from "utils";
+import { getCDNImageUrl, getCDNVideoUrl, isDemo } from "utils";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import HomeBackground from "components/HomeBackground";
@@ -16,17 +16,19 @@ const ComingSoonPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [startTransition, setStartTransition] = useState(false);
-  const [videoProgress, setVideoProgress] = useState({})
-  const { width, height } = useWindowDimensions()
-  const isPortrait = height > width
-  const usePortraitAsset = isPortrait && width <= 1024
+  const [videoProgress, setVideoProgress] = useState({});
+  const { width, height } = useWindowDimensions();
+  const isPortrait = height > width;
+  const usePortraitAsset = isPortrait && width <= 1024;
 
   useMusic("coming-soon.mp3");
 
   const renderBgPlayer = useCallback(
     () => (
       <ReactPlayer
-        url={getCDNVideoUrl(usePortraitAsset ? "coming_soon_mobile.webm" : "coming_soon.mp4")}
+        url={getCDNVideoUrl(
+          usePortraitAsset ? "coming_soon_mobile.webm" : "coming_soon.mp4"
+        )}
         playing
         playsinline
         controls={false}
@@ -63,7 +65,11 @@ const ComingSoonPage = () => {
   };
 
   return (
-    <PageLoader pageName="coming-soon" videos={[{ progress: videoProgress, threshold: .5 }]} timeout={5000}>
+    <PageLoader
+      pageName="coming-soon"
+      videos={[{ progress: videoProgress, threshold: 0.5 }]}
+      timeout={5000}
+    >
       <div
         className={classNames("page coming-soon", {
           horizontal: true,
@@ -74,11 +80,16 @@ const ComingSoonPage = () => {
         <div className="curtain-left" />
         <div className="curtain-right" />
         <div className="curtain-behind">
-          <PageLoader pageName="homepage" withLoader={false} timeout={-1} images={[
-            getCDNImageUrl("/homepage/sky.png"),
-            getCDNImageUrl("/homepage/homepage-mountains-back.png"),
-            getCDNImageUrl("/homepage/homepage-mountains-front.png"),
-          ]}>
+          <PageLoader
+            pageName="homepage"
+            withLoader={false}
+            timeout={-1}
+            images={[
+              getCDNImageUrl("/homepage/sky.png"),
+              getCDNImageUrl("/homepage/homepage-mountains-back.png"),
+              getCDNImageUrl("/homepage/homepage-mountains-front.png"),
+            ]}
+          >
             <HomeBackground />
           </PageLoader>
         </div>
