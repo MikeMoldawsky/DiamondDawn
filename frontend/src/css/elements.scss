@@ -112,6 +112,17 @@
       opacity: 0.5;
     }
   }
+
+  &.gold {
+    color: white;
+    background-color: $gold;
+
+    &.transparent {
+      color: $gold;
+      border-color: $gold;
+      background-color: transparent;
+    }
+  }
 }
 
 .input {
