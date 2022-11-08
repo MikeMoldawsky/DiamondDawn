@@ -8,6 +8,9 @@ import PageSizeLimit from "components/PageSizeLimit";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
 import {AboutDiamondDawnText, TheJourneyText, Step0Text, Step1Text, Step2Text, Step3Text, Step4Text, OurTeamText, MikeText, DavidText, TonyText, AvivaText, AsafText} from "pages/AboutPage/AboutContent";
+import journeyQuestionMark from 'assets/images/question-mark.svg'
+import journeyFinal from 'assets/images/physcal-digital.png'
+import mikeProfile from 'assets/images/mike.jpg'
 
 const AboutPage = () => {
   return (
@@ -22,52 +25,105 @@ const AboutPage = () => {
             <div className="leading-text">About Diamond Dawn</div>
             <AboutDiamondDawnText />
           </div>
-          <div className="center-aligned-column journey">
-            <div id="journey" className="leading-text">THE JOURNEY</div>
-            <TheJourneyText />
-            <div className="journey-step">
-              <ReactPlayer
-                url={getCDNVideoUrl("key-static.webm")}
-                playing
-                playsinline
-                controls={false}
-                muted
-                loop
-                className={classNames("react-player key-image")}
-                width=""
-                height=""
-              />
-              <div className="secondary-text">Step 0 - Activate Your Key</div>
-              <Step0Text />
+          <div id="journey" className="center-aligned-column journey">
+            <div className="center-aligned-row journey-row">
+              <div className="image-side"/>
+              <div className="text-side">
+                <div className="leading-text">THE JOURNEY</div>
+                <TheJourneyText />
+              </div>
             </div>
-            <div className="journey-step">
-              <ReactPlayer
-                url={getCDNVideoUrl("rough-stone-static.webm")}
-                playing
-                playsinline
-                controls={false}
-                muted
-                loop
-                className={classNames("react-player stone-image")}
-                width=""
-                height=""
-              />
-              <div className="secondary-text">Step 1 - Enter & Mine</div>
-              <Step1Text />
-            </div>
-            <div className="journey-step">
-              <div className="secondary-text">Step 2 - ?</div>
-              <Step2Text />
-            </div>
-            <div className="journey-step">
-              <div className="secondary-text">Step 3 - ?</div>
-              <Step3Text />
-            </div>
-            <div className="journey-step">
-              <div className="secondary-text">Step 4 - Final Choice</div>
-              <Step4Text />
+            <div className="journey-steps">
+              <div className="scale">
+                <div className="marker marker0">0.0</div>
+                <div className="marker marker30">-30</div>
+                <div className="marker marker60">-60</div>
+                <div className="marker marker90">-90</div>
+                <div className="mask"/>
+              </div>
+              <div className="center-aligned-row journey-row step-0">
+                <div className="image-side">
+                  <div className="image">
+                    <ReactPlayer
+                      url={getCDNVideoUrl("key-static.webm")}
+                      playing
+                      playsinline
+                      controls={false}
+                      muted
+                      loop
+                      className={classNames("react-player key-image")}
+                      width=""
+                      height=""
+                    />
+                  </div>
+                </div>
+                <div className="text-side">
+                  <div className="meter active" />
+                  <div className="secondary-text">Step 0 - Activate Your Key</div>
+                  <Step0Text />
+                </div>
+              </div>
+              <div className="center-aligned-row journey-row step-1">
+                <div className="image-side">
+                  <div className="image">
+                    <ReactPlayer
+                      url={getCDNVideoUrl("rough-stone-static.webm")}
+                      playing
+                      playsinline
+                      controls={false}
+                      muted
+                      loop
+                      className={classNames("react-player stone-image")}
+                      width=""
+                      height=""
+                    />
+                  </div>
+                </div>
+                <div className="text-side">
+                  <div className="meter" />
+                  <div className="secondary-text">Step 1 - Enter & Mine</div>
+                  <Step1Text />
+                </div>
+              </div>
+              <div className="center-aligned-row journey-row step-2">
+                <div className="image-side">
+                  <div className="image">
+                    <img src={journeyQuestionMark} alt="?" />
+                  </div>
+                </div>
+                <div className="text-side">
+                  <div className="meter" />
+                  <div className="secondary-text">Step 2 - ?</div>
+                  <Step2Text />
+                </div>
+              </div>
+              <div className="center-aligned-row journey-row step-3">
+                <div className="image-side">
+                  <div className="image">
+                    <img src={journeyQuestionMark} alt="?" />
+                  </div>
+                </div>
+                <div className="text-side">
+                  <div className="meter" />
+                  <div className="secondary-text">Step 3 - ?</div>
+                  <Step3Text />
+                </div>
+              </div>
+              <div className="center-aligned-row journey-row step-4">
+                <div className="image-side">
+                  <div className="image">
+                    <img src={journeyFinal} alt="?" />
+                  </div>
+                </div>
+                <div className="text-side">
+                  <div className="meter" />
+                  <div className="secondary-text">Step 4 - The Final Choice</div>
+                  <Step4Text />
+                </div>
+              </div>
             </div>
           </div>
+
           <div className="center-aligned-column team">
             <div id="team" className="leading-text">
               OUR TEAM
@@ -75,23 +131,23 @@ const AboutPage = () => {
             <OurTeamText />
             <div className="team-members">
               <div className="team-member">
-                <AccountCircleIcon />
+                <div className="profile-image mike" />
                 <div className="secondary-text">Mike Moldawsky (Tweezers)</div>
                 <div className="member-title">Project Creator</div>
                 <MikeText />
               </div>
               <div className="team-member">
-                <AccountCircleIcon />
+                <div className="profile-image david" />
                 <div className="secondary-text">David Ariew</div>
                 <div className="member-title">Artist</div>
                 <DavidText />
               </div>
-              <div className="team-member">
-                <AccountCircleIcon />
-                <div className="secondary-text">Tony</div>
-                <div className="member-title">Advisor</div>
-                <TonyText />
-              </div>
+              {/*<div className="team-member">*/}
+              {/*  <AccountCircleIcon />*/}
+              {/*  <div className="secondary-text">Tony</div>*/}
+              {/*  <div className="member-title">Advisor</div>*/}
+              {/*  <TonyText />*/}
+              {/*</div>*/}
               <div className="team-member">
                 <AccountCircleIcon />
                 <div className="secondary-text">Aviva Moldawsky</div>

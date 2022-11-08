@@ -104,6 +104,23 @@ b {
   line-height: 1em;
 }
 
+.profile-image {
+  width: 11.65em;
+  height: 11.65em;
+  border-radius: 50%;
+  filter: grayscale(1);
+
+  &.mike {
+    background: url("../assets/images/mike.jpg") no-repeat center center;
+    background-size: auto 100%;
+  }
+
+  &.david {
+    background: url("../assets/images/david.jpeg") no-repeat center center;
+    background-size: auto 100%;
+  }
+}
+
 footer {
   background-color: black;
   height: 0.3 * $viewHeightRef;
