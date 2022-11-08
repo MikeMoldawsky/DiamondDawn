@@ -41,7 +41,9 @@ const HomepageContentBackground = () => {
       <div className="bg mine-wall-left" />
       <div className="bg bg-right-hand" />
       <div className="bg bg-left-hand" />
-      <div className="bg bg-teaser">{renderTeaserBg()}</div>
+      <div className="bg bg-teaser">
+        {renderTeaserBg()}
+      </div>
     </div>
   );
 };

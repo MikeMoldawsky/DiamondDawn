@@ -2,40 +2,39 @@ import React from 'react'
 import certificate from 'assets/images/certificate.svg'
 
 export const AboutDiamondDawnText = () => (
-  <>
-    <div className="text">
+  <div className="text">
+    <p>
       Diamond Dawn is a social experiment developed by a passionate team
       that’s made up of software engineers, visual artists, and a
       world-renowned 3D designer alongside one of the most respected
       companies in the diamond industry.
-    </div>
-    <br />
-    <div className="text">
+    </p>
+    <p>
       Your Diamond Dawn journey will consist of 4 steps.
-      <br />
-      <br />
+    </p>
+    <p>
       At each step, you must choose whether to evolve your Diamond NFT
       to its next form or keep it in its current state for eternity. You’ll have exactly <b>3 weeks, 3 days, and 3 hours</b> to
       complete each step.
-    </div>
-    <br />
-    <br />
+    </p>
     <div className="secondary-text">Which diamond will you choose?</div>
-    <br />
-    <div className="text">
+    <p>
       In the last phase, you will be faced with <b>The Final Choice:</b>
-      <br />
+    </p>
+    <p>
       Keep your diamond NFT digital or burn it in exchange for a
       physical, limited-edition artwork that contains your diamond
-      (GIA-certified). <br /> <br />
+      (GIA-certified).
+    </p>
+    <p>
       Once your decision is finalized on the blockchain, your artwork
       will be <b>shipped</b> to your specified address.
-    </div>
-  </>
+    </p>
+  </div>
 )
 
 export const TheJourneyText = () => (
-  <div className="journey-desc text">
+  <div className="text">
     <p>
       Diamond Dawn project is <b>entirely on-chain</b> - we do NOT hold your NFTs on a centralized server.
     </p>

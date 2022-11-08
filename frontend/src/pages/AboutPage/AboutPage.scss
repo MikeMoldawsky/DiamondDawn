@@ -6,9 +6,9 @@
 
   .about-background {
     .walls {
-      height: 1000%;
+      height: 6.9 * $viewHeightRef;
       background: url("../../assets/images/mine-walls.png") no-repeat left
-        4.2%;
+        16.5%;
       background-size: 100%;
     }
 
@@ -20,7 +20,8 @@
   }
 
   .leading-text {
-    margin: 8rem 0 2rem;
+    margin: 3em 0 1em;
+    color: $gold;
   }
 
   .secondary-text {
@@ -28,7 +29,7 @@
   }
 
   .text {
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.2em;
     letter-spacing: 0.1em;
   }
 
@@ -41,11 +42,15 @@
   }
 
   .general {
-    width: 50%;
+    width: 42%;
     margin-left: 10%;
 
     .leading-text {
-      margin-top: 6rem;
+      margin-top: 2em;
+    }
+
+    .secondary-text {
+      margin-top: 2em;
     }
   }
 
@@ -53,11 +58,6 @@
     position: relative;
     width: 72%;
     margin-left: 13%;
-
-    .journey-desc {
-      width: 70%;
-      padding-bottom: 6em;
-    }
 
     .journey-steps {
       position: relative;
@@ -69,7 +69,7 @@
       width: 3.75em;
       left: 14em;
       background: url("../../assets/images/scale.svg") no-repeat center top;
-      height: 95%;
+      height: 97%;
       background-size: auto 100%;
 
       .marker {
@@ -110,7 +110,7 @@
     }
 
     .secondary-text {
-      margin: 0 0 1rem;
+      margin: 0 0 .5em;
     }
 
     .journey-row {
@@ -179,14 +179,21 @@
         }
       }
 
+      &.journey-desc {
+        justify-content: flex-start;
+
+        .text-side {
+          width: 50%;
+          padding-bottom: 6em;
+          padding-left: 0;
+          flex-grow: unset;
+        }
+      }
+
       &.step-0 {
         .key-image {
           height: 10em;
           transform: rotate(145deg) rotateY(180deg) rotateZ(180deg) translate(-20%, -20%);
-        }
-
-        .text-side {
-          padding-bottom: 0;
         }
       }
 
@@ -238,8 +245,13 @@
     width: 70%;
     margin-left: 15%;
 
+    .leading-text {
+      margin-top: 1em;
+    }
+
     .our-team {
       width: 65%;
+      margin-bottom: 2em;
     }
 
     .team-members {
@@ -262,7 +274,7 @@
         }
 
         .secondary-text {
-          margin: 0.5rem 0 0;
+          margin: 1em 0 0;
         }
 
         .member-title {
@@ -274,14 +286,47 @@
     }
   }
 
-  .faq {
-    .leading-text {
-      margin-left: 10%;
+  .teaser {
+    height: $viewHeightRef;
+    top: unset;
+    position: relative;
+
+    .react-player {
+      opacity: 0.5;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .play-button {
+      position: relative;
+      top: calc(100% - 8em);
     }
   }
 
-  .faqs {
+  .faq {
     width: 80%;
     margin: 0 auto 5em;
+
+    .leading-text {
+      text-align: center;
+    }
+
+    .secondary-text {
+      margin-top: 1.8em;
+    }
+  }
+}
+
+@media only screen and (max-width: 1366px) {
+  .page.about-page {
+    font-size: $font15px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .page.about-page {
+    font-size: $font14px;
   }
 }

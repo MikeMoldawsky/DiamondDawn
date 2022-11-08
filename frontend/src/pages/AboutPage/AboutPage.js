@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import "./AboutPage.scss";
 import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import FAQs from "components/FAQs";
@@ -10,9 +10,27 @@ import ReactPlayer from "react-player";
 import {AboutDiamondDawnText, TheJourneyText, Step0Text, Step1Text, Step2Text, Step3Text, Step4Text, OurTeamText, MikeText, DavidText, TonyText, AvivaText, AsafText} from "pages/AboutPage/AboutContent";
 import journeyQuestionMark from 'assets/images/question-mark.svg'
 import journeyFinal from 'assets/images/physcal-digital.png'
-import mikeProfile from 'assets/images/mike.jpg'
+import PlayButton from "components/PlayButton";
 
 const AboutPage = () => {
+
+  const renderTeaserBg = useCallback(
+    () => (
+      <ReactPlayer
+        url={getCDNVideoUrl("teaser_physical.mp4")}
+        playing
+        playsinline
+        controls={false}
+        className="react-player"
+        muted
+        loop
+        width=""
+        height=""
+      />
+    ),
+    []
+  );
+
   return (
     <PageSizeLimit>
       <div className="page about-page">
@@ -26,7 +44,7 @@ const AboutPage = () => {
             <AboutDiamondDawnText />
           </div>
           <div id="journey" className="center-aligned-column journey">
-            <div className="center-aligned-row journey-row">
+            <div className="center-aligned-row journey-row journey-desc">
               <div className="image-side"/>
               <div className="text-side">
                 <div className="leading-text">THE JOURNEY</div>
@@ -124,7 +142,7 @@ const AboutPage = () => {
             </div>
           </div>
 
-          <div className="center-aligned-column team">
+          <div className="left-aligned-column team">
             <div id="team" className="leading-text">
               OUR TEAM
             </div>
@@ -161,6 +179,10 @@ const AboutPage = () => {
                 <AsafText />
               </div>
             </div>
+          </div>
+          <div className="teaser">
+            {renderTeaserBg()}
+            <PlayButton />
           </div>
           <div className="faq">
             <div id="faq" className="leading-text">
