@@ -109,6 +109,8 @@ b {
   height: 11.65em;
   border-radius: 50%;
   filter: grayscale(1);
+  background: url("../assets/images/avatar.png") no-repeat center center;
+  background-size: auto 100%;
 
   &.mike {
     background: url("../assets/images/mike.jpg") no-repeat center center;

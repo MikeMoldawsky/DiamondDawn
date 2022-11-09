@@ -178,19 +178,19 @@ const AboutPage = () => {
                 <DavidText />
               </div>
               {/*<div className="team-member">*/}
-              {/*  <AccountCircleIcon />*/}
+              {/*  <div className="profile-image" />*/}
               {/*  <div className="secondary-text">Tony</div>*/}
               {/*  <div className="member-title">Advisor</div>*/}
               {/*  <TonyText />*/}
               {/*</div>*/}
               <div className="team-member">
-                <AccountCircleIcon />
+                <div className="profile-image" />
                 <div className="secondary-text">Aviva Moldawsky</div>
                 <div className="member-title">Diamond Art Designer</div>
                 <AvivaText />
               </div>
               <div className="team-member">
-                <AccountCircleIcon />
+                <div className="profile-image" />
                 <div className="secondary-text">Asaf Snir</div>
                 <div className="member-title">Frontend Master</div>
                 <AsafText />
