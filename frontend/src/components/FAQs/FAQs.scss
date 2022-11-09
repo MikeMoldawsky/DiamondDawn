@@ -2,14 +2,8 @@
 
 .faqs {
   .faq-item {
-    margin-top: 1.5em;
-    padding-top: 1.5em;
-    border-top: solid 1px white;
-
-    &:last-child {
-      padding-bottom: 1.5em;
-      border-bottom: solid 1px white;
-    }
+    padding: 1.5em 0;
+    border-bottom: solid 1px white;
   }
 
   .faq-title {
