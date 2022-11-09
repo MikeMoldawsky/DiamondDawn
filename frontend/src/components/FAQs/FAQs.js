@@ -1,42 +1,40 @@
 import React, { useState } from "react";
 import "./FAQs.scss";
 import { Collapse } from "react-collapse";
-import _ from "lodash";
+import map from "lodash/map";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
-const FAQS = [
-  {
-    title: "the first ever diamond mining experience, from NFT to reality",
-    content: () => (
-      <p>the first ever diamond mining experience, from NFT to reality</p>
-    ),
-  },
-  {
-    title: "the first ever diamond mining experience, from NFT to reality",
-    content: () => (
-      <p>the first ever diamond mining experience, from NFT to reality</p>
-    ),
-  },
-  {
-    title: "the first ever diamond mining experience, from NFT to reality",
-    content: () => (
-      <p>the first ever diamond mining experience, from NFT to reality</p>
-    ),
-  },
-  {
-    title: "the first ever diamond mining experience, from NFT to reality",
-    content: () => (
-      <p>the first ever diamond mining experience, from NFT to reality</p>
-    ),
-  },
-  {
-    title: "the first ever diamond mining experience, from NFT to reality",
-    content: () => (
-      <p>the first ever diamond mining experience, from NFT to reality</p>
-    ),
-  },
-];
+const FAQS = {
+  "The Project": [
+    {
+      title: "How many NFT per wallet?",
+      content: () => (
+        <p>
+          Only 1 per wallet To keep the social experiment as fair as possible{" "}
+        </p>
+      ),
+    },
+  ],
+  "The Diamonds": [
+    {
+      title: "Are the diamonds real?",
+      content: () => <p>Yes!!!</p>,
+    },
+  ],
+  "The Final Choice": [
+    {
+      title: "What countries do you ship to?",
+      content: () => (
+        <p>We offer worldwide shipping. Restrictions apply please see here.</p>
+      ),
+    },
+    {
+      title: "Will I have to pay VAT, Duties, and Fees?",
+      content: () => <p></p>,
+    },
+  ],
+};
 
 const FAQ = ({ title, content }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,16 +55,27 @@ const FAQ = ({ title, content }) => {
   );
 };
 
-const FAQs = () => {
+const FAQGroup = ({ faqs, groupName }) => {
   return (
-    <div className="panel faqs">
-      <div className="panel-content">
-        {_.map(FAQS, (faq) => (
-          <FAQ {...faq} />
+    <>
+      <div className="secondary-text">{groupName}</div>
+      <div className="faqs">
+        {map(faqs, (faq) => (
+          <FAQ key={`faq-${groupName}-${faq.title}`} {...faq} />
         ))}
       </div>
-    </div>
+    </>
   );
+};
+
+const FAQs = () => {
+  return map(FAQS, (faqs, groupName) => (
+    <FAQGroup
+      key={`faq-group-${groupName}`}
+      faqs={faqs}
+      groupName={groupName}
+    />
+  ));
 };
 
 export default FAQs;

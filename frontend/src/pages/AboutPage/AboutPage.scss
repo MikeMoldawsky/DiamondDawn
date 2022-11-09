@@ -2,121 +2,296 @@
 @import "css/functions";
 
 .page.about-page {
-  font-size: calc-font-size(1px);
+  --base-font-size: 16;
 
   .about-background {
     .walls {
-      height: 400%;
-      background: url("../../assets/images/about-walls.png") no-repeat left
-        bottom;
+      height: 6.25 * $viewHeightRef;
+      background: url("../../assets/images/mine-walls.png") no-repeat left 43.5%;
       background-size: 100%;
     }
 
     .cave {
-      background: url("../../assets/images/about-cave.png") no-repeat 27% top;
-      background-size: auto 110%;
+      background: url("../../assets/images/cave.png") no-repeat 28% top;
+      background-size: 130%;
+      z-index: -2;
     }
   }
 
   .leading-text {
-    margin: 4rem 0 2rem;
-    //text-align: center;
+    margin: 3em 0 1em;
+    color: $gold;
   }
 
   .secondary-text {
-    //margin: 3rem 0 1rem;
-    //margin-top:
   }
 
   .text {
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.2em;
     letter-spacing: 0.1em;
   }
 
+  ul {
+    display: flex;
+
+    li:not(:first-child) {
+      margin-left: 4em;
+    }
+  }
+
   .general {
-    width: 50%;
+    width: 48%;
+    min-width: 54em;
     margin-left: 10%;
 
     .leading-text {
-      margin-top: 2rem;
+      margin-top: 2em;
+    }
+
+    .secondary-text {
+      margin-top: 1.5em;
     }
   }
 
   .journey {
     position: relative;
+    width: 72%;
+    margin-left: 13%;
 
-    &:before {
-      content: "";
-      position: absolute;
-      height: 90%;
-      width: 1px;
-      left: 50%;
-      top: 10em;
-      background-color: white;
-      z-index: -1;
+    .journey-steps {
+      position: relative;
     }
 
-    .leading-text,
-    .journey-step,
-    .journey-desc {
-      background-color: black;
-      padding: 1em;
+    .scale {
+      position: absolute;
+      top: 1.3em;
+      width: 3.75em;
+      left: 14em;
+      background: url("../../assets/images/scale.svg") no-repeat center top;
+      height: 96%;
+      background-size: auto 100%;
+
+      .marker {
+        position: absolute;
+        left: -2.2em;
+        top: 0;
+        font-size: 1.6em;
+        color: $gray_blur;
+        transform: translateY(-50%);
+
+        &.marker30 {
+          top: 25%;
+        }
+
+        &.marker60 {
+          top: 50%;
+        }
+
+        &.marker90 {
+          top: 75%;
+        }
+      }
+
+      .mask {
+        background-color: black;
+        position: absolute;
+        bottom: 0;
+        height: 15%;
+        width: 100%;
+        -webkit-mask-image: -webkit-gradient(
+          linear,
+          left top,
+          left bottom,
+          from(rgba(0, 0, 0, 0)),
+          to(rgba(0, 0, 0, 1))
+        );
+      }
     }
 
     .secondary-text {
-      margin: 1rem 0 1rem;
-      text-align: center;
+      margin: 0 0 0.5em;
     }
 
-    .journey-step {
-      margin-top: 10em;
-      padding-bottom: 3em;
-      width: 50%;
-    }
+    .journey-row {
+      width: 100%;
 
-    .journey-desc {
-      width: 50%;
-      margin-top: -3em;
-      padding-bottom: 1em;
-    }
+      .image-side {
+        width: 20em;
+        min-width: 20em;
+        text-align: left;
 
-    .key-image {
-      height: 24em;
-      margin: -7em 0;
-    }
+        .image {
+          width: 10em;
+          height: 10em;
+          text-align: center;
+        }
+      }
 
-    .stone-image {
-      height: 16em;
-      margin: -7em 0 -1.5em;
+      .text-side {
+        flex-grow: 2;
+        position: relative;
+        padding: 0 0 4em 4em;
+        min-height: 12em;
+      }
+
+      .meter {
+        position: absolute;
+        top: 2.25em;
+        bottom: -0.3em;
+        left: 0;
+        width: 1px;
+        background-color: $border_gray;
+
+        &:before {
+          content: "";
+          position: absolute;
+          top: -0.8em;
+          left: 50%;
+          transform: translate(-50%, -65%);
+          width: 1em;
+          height: 1em;
+          border-radius: 50%;
+          background-color: $border_gray;
+        }
+
+        &.active {
+          background-color: white;
+          top: 2.75em;
+          bottom: -0.25em;
+
+          &:before {
+            background-color: white;
+            top: -1.3em;
+          }
+
+          &:after {
+            content: "";
+            position: absolute;
+            top: -1.3em;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            width: 1.5em;
+            height: 1.5em;
+            border-radius: 50%;
+            border: solid 2px white;
+          }
+        }
+      }
+
+      &.journey-desc {
+        justify-content: flex-start;
+
+        .text-side {
+          width: 50%;
+          padding-bottom: 6em;
+          padding-left: 0;
+          flex-grow: unset;
+        }
+      }
+
+      &.step-0 {
+        .key-image {
+          height: 10em;
+          transform: rotate(145deg) rotateY(180deg) rotateZ(180deg)
+            translate(-20%, -20%);
+        }
+      }
+
+      &.step-1 {
+        .stone-image {
+          height: 10em;
+        }
+      }
+
+      &.step-1,
+      &.step-2,
+      &.step-3 {
+        .image-side {
+          .image {
+            img,
+            .react-player {
+              transform: translateY(-50%);
+            }
+          }
+        }
+      }
+
+      &.step-2,
+      &.step-3 {
+        .image-side {
+          .image {
+            img,
+            .react-player {
+              max-width: 30%;
+            }
+          }
+        }
+      }
+
+      &.step-4 {
+        .image-side {
+          align-self: flex-start;
+
+          img {
+            transform: translateY(1em);
+            max-width: 75%;
+          }
+        }
+
+        .text {
+          width: 80%;
+          position: relative;
+
+          img.certificate {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            transform: translateX(160%);
+            width: 6em;
+          }
+        }
+
+        .meter {
+          bottom: unset;
+        }
+      }
     }
   }
 
   .team {
+    width: 70%;
+    margin-left: 15%;
+
+    .leading-text {
+      margin-top: 1em;
+    }
+
     .our-team {
-      margin: 0 auto;
-      width: 50%;
+      width: 65%;
+      margin-bottom: 2em;
     }
 
     .team-members {
       display: flex;
       align-items: flex-start;
-      justify-content: space-between;
+      justify-content: flex-start;
       flex-wrap: wrap;
       text-align: left;
-      width: 78%;
 
       .team-member {
         width: 45%;
-        margin-top: 6em;
+        margin-top: 4em;
+        margin-right: 5%;
 
         svg {
-          width: 5em;
-          height: unset;
+          font-size: $font18px;
+          width: 11.65em;
+          height: 11.65em;
           color: white;
         }
 
         .secondary-text {
-          margin: 0.5rem 0 0;
+          margin: 1em 0 0;
         }
 
         .member-title {
@@ -128,35 +303,144 @@
     }
   }
 
-  .faq {
-    .leading-text {
-      margin-left: 10%;
+  .teaser {
+    height: $viewHeightRef;
+    top: unset;
+    position: relative;
+
+    .react-player {
+      opacity: 0.5;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .play-button {
+      position: relative;
+      top: calc(100% - 8em);
     }
   }
 
-  .faqs {
+  .faq {
     width: 80%;
     margin: 0 auto 5em;
+
+    .leading-text {
+      text-align: center;
+    }
+
+    .secondary-text {
+      margin-top: 1.8em;
+    }
   }
 }
 
-//@media only screen and (max-width: 1365px) {
-//  .page.about-page {
-//    --base-font-size: 23.5;
-//    font-size: calc-font-size(1px);
-//
-//    //.inner-page {
-//    //  width: 70%;
-//    //}
-//  }
-//}
-//
-//@media only screen and (max-width: 1024px) {
-//  .page.about-page {
-//    font-size: 12.5px;
-//
-//    //.inner-page {
-//    //  width: 85%;
-//    //}
-//  }
-//}
+@media only screen and (max-width: 1680px) {
+  .page.about-page {
+    font-size: $font15px;
+
+    .general {
+      .leading-text {
+        margin-top: 1em;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1540px) {
+  .page.about-page {
+    --base-font-size: 22;
+    font-size: $font14px;
+
+    .leading-text {
+      margin-top: 2em;
+    }
+
+    .general {
+      margin-left: 7.5%;
+
+      .leading-text {
+        margin: 0.5em 0 0.5em;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1366px) {
+  .page.about-page {
+    font-size: $font13px;
+
+    .general {
+      width: 57%;
+      margin-left: 5%;
+
+      .leading-text {
+        margin: 0.5em 0 0.5em;
+      }
+    }
+
+    .journey {
+      width: 80%;
+      margin-left: 13%;
+
+      .scale {
+        left: 11em;
+      }
+
+      .journey-row {
+        .text-side {
+          padding-bottom: 2em;
+          min-height: 10em;
+        }
+
+        .image-side {
+          width: 16em;
+          min-width: 16em;
+
+          .image {
+            width: 8em;
+            height: 8em;
+          }
+        }
+
+        &.journey-desc {
+          .text-side {
+            width: 65%;
+          }
+        }
+
+        &.step-4 {
+          .text {
+            img.certificate {
+              right: 3em;
+              width: 5em;
+              height: 5em;
+            }
+          }
+        }
+      }
+    }
+
+    .team {
+      width: 80%;
+      margin-left: 13%;
+
+      .our-team {
+        width: 70%;
+      }
+
+      .team-members {
+        .team-member {
+          margin-top: 2em;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .page.about-page {
+    font-size: $font12px;
+  }
+}
