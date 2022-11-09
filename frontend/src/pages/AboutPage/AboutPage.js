@@ -3,7 +3,6 @@ import "./AboutPage.scss";
 import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import FAQs from "components/FAQs";
 import Footer from "components/Footer";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PageSizeLimit from "components/PageSizeLimit";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
@@ -22,8 +21,6 @@ import {
   AvivaText,
   AsafText,
 } from "pages/AboutPage/AboutContent";
-import journeyQuestionMark from "assets/images/question-mark.svg";
-import journeyFinal from "assets/images/physcal-digital.png";
 import PlayButton from "components/PlayButton";
 
 const AboutPage = () => {
@@ -121,7 +118,7 @@ const AboutPage = () => {
               <div className="center-aligned-row journey-row step-2">
                 <div className="image-side">
                   <div className="image">
-                    <img src={journeyQuestionMark} alt="?" />
+                    <img src={getCDNImageUrl("question-mark.svg")} alt="?" />
                   </div>
                 </div>
                 <div className="text-side">
@@ -133,7 +130,7 @@ const AboutPage = () => {
               <div className="center-aligned-row journey-row step-3">
                 <div className="image-side">
                   <div className="image">
-                    <img src={journeyQuestionMark} alt="?" />
+                    <img src={getCDNImageUrl("question-mark.svg")} alt="?" />
                   </div>
                 </div>
                 <div className="text-side">
@@ -145,7 +142,7 @@ const AboutPage = () => {
               <div className="center-aligned-row journey-row step-4">
                 <div className="image-side">
                   <div className="image">
-                    <img src={journeyFinal} alt="?" />
+                    <img src={getCDNImageUrl("physical-digital.png")} alt="?" />
                   </div>
                 </div>
                 <div className="text-side">
@@ -177,12 +174,12 @@ const AboutPage = () => {
                 <div className="member-title">Artist</div>
                 <DavidText />
               </div>
-              {/*<div className="team-member">*/}
-              {/*  <div className="profile-image" />*/}
-              {/*  <div className="secondary-text">Tony</div>*/}
-              {/*  <div className="member-title">Advisor</div>*/}
-              {/*  <TonyText />*/}
-              {/*</div>*/}
+              <div className="team-member">
+                <div className="profile-image" />
+                <div className="secondary-text">Tony Hererra</div>
+                <div className="member-title">Advisor</div>
+                <TonyText />
+              </div>
               <div className="team-member">
                 <div className="profile-image" />
                 <div className="secondary-text">Aviva Moldawsky</div>

@@ -109,16 +109,16 @@ b {
   height: 11.65em;
   border-radius: 50%;
   filter: grayscale(1);
-  background: url("../assets/images/avatar.png") no-repeat center center;
+  background: url($CDN_URL + "/images/avatar.png") no-repeat center center;
   background-size: auto 100%;
 
   &.mike {
-    background: url("../assets/images/mike.jpg") no-repeat center center;
+    background: url($CDN_URL + "/images/team/mike.jpg") no-repeat center center;
     background-size: auto 100%;
   }
 
   &.david {
-    background: url("../assets/images/david.jpeg") no-repeat center center;
+    background: url($CDN_URL + "/images/team/david.jpeg") no-repeat center center;
     background-size: auto 100%;
   }
 }

@@ -8,12 +8,12 @@
     .walls {
       height: 6 * $viewHeightRef;
       top: 9%;
-      background: url("../../assets/images/mine-walls.png") no-repeat left center;
+      background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left center;
       background-size: 100%;
     }
 
     .cave {
-      background: url("../../assets/images/cave.png") no-repeat 28% top;
+      background: url($CDN_URL + "/images/about/cave.png") no-repeat 28% top;
       background-size: 130%;
       z-index: -2;
     }
@@ -68,7 +68,7 @@
       top: 1.3em;
       width: 3.75em;
       left: 14em;
-      background: url("../../assets/images/scale.svg") no-repeat center top;
+      background: url($CDN_URL + "/images/about/scale.svg") no-repeat center top;
       height: 96%;
       background-size: auto 100%;
 

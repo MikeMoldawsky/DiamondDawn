@@ -1,5 +1,5 @@
 import React from "react";
-import certificate from "assets/images/certificate.svg";
+import {getCDNImageUrl} from "utils";
 
 export const AboutDiamondDawnText = () => (
   <div className="text">
@@ -92,7 +92,7 @@ export const Step4Text = () => (
       Keep your diamond digital (NFT) or <b>burn</b> it in exchange for your
       physical diamond artwork (GIA-certified).
     </p>
-    <img className="certificate" src={certificate} alt="" />
+    <img className="certificate" src={getCDNImageUrl("certificate.svg")} alt="" />
   </div>
 );
 
@@ -163,7 +163,9 @@ export const DavidText = () => (
 
 export const TonyText = () => (
   <div className="text">
-    <p></p>
+    <p>
+      Tony is an immigrant activist who happened to also collect a lot of Cryptopunks. He has since become a major NFT collector.
+    </p>
   </div>
 );
 
