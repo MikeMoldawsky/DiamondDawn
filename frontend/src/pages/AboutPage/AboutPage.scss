@@ -7,8 +7,7 @@
   .about-background {
     .walls {
       height: 6.25 * $viewHeightRef;
-      background: url("../../assets/images/mine-walls.png") no-repeat left
-        43.5%;
+      background: url("../../assets/images/mine-walls.png") no-repeat left 43.5%;
       background-size: 100%;
     }
 
@@ -25,7 +24,6 @@
   }
 
   .secondary-text {
-
   }
 
   .text {
@@ -101,17 +99,17 @@
         height: 15%;
         width: 100%;
         -webkit-mask-image: -webkit-gradient(
-                        linear,
-                        left top,
-                        left bottom,
-                        from(rgba(0, 0, 0, 0)),
-                        to(rgba(0, 0, 0, 1))
+          linear,
+          left top,
+          left bottom,
+          from(rgba(0, 0, 0, 0)),
+          to(rgba(0, 0, 0, 1))
         );
       }
     }
 
     .secondary-text {
-      margin: 0 0 .5em;
+      margin: 0 0 0.5em;
     }
 
     .journey-row {
@@ -147,7 +145,7 @@
         &:before {
           content: "";
           position: absolute;
-          top: -.8em;
+          top: -0.8em;
           left: 50%;
           transform: translate(-50%, -65%);
           width: 1em;
@@ -194,7 +192,8 @@
       &.step-0 {
         .key-image {
           height: 10em;
-          transform: rotate(145deg) rotateY(180deg) rotateZ(180deg) translate(-20%, -20%);
+          transform: rotate(145deg) rotateY(180deg) rotateZ(180deg)
+            translate(-20%, -20%);
         }
       }
 
@@ -204,20 +203,25 @@
         }
       }
 
-      &.step-1, &.step-2, &.step-3 {
+      &.step-1,
+      &.step-2,
+      &.step-3 {
         .image-side {
           .image {
-            img, .react-player {
+            img,
+            .react-player {
               transform: translateY(-50%);
             }
           }
         }
       }
 
-      &.step-2, &.step-3 {
+      &.step-2,
+      &.step-3 {
         .image-side {
           .image {
-            img, .react-player {
+            img,
+            .react-player {
               max-width: 30%;
             }
           }
@@ -344,7 +348,6 @@
   }
 }
 
-
 @media only screen and (max-width: 1540px) {
   .page.about-page {
     --base-font-size: 22;
@@ -358,12 +361,11 @@
       margin-left: 7.5%;
 
       .leading-text {
-        margin: .5em 0 .5em;
+        margin: 0.5em 0 0.5em;
       }
     }
   }
 }
-
 
 @media only screen and (max-width: 1366px) {
   .page.about-page {
@@ -374,7 +376,7 @@
       margin-left: 5%;
 
       .leading-text {
-        margin: .5em 0 .5em;
+        margin: 0.5em 0 0.5em;
       }
     }
 
@@ -436,7 +438,6 @@
     }
   }
 }
-
 
 @media only screen and (max-width: 1200px) {
   .page.about-page {

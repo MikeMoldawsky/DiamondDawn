@@ -10,16 +10,16 @@ const FAQS = {
     {
       title: "How many NFT per wallet?",
       content: () => (
-        <p>Only 1 per wallet To keep the social experiment as fair as possible </p>
+        <p>
+          Only 1 per wallet To keep the social experiment as fair as possible{" "}
+        </p>
       ),
     },
   ],
   "The Diamonds": [
     {
       title: "Are the diamonds real?",
-      content: () => (
-        <p>Yes!!!</p>
-      ),
+      content: () => <p>Yes!!!</p>,
     },
   ],
   "The Final Choice": [
@@ -31,12 +31,10 @@ const FAQS = {
     },
     {
       title: "Will I have to pay VAT, Duties, and Fees?",
-      content: () => (
-        <p></p>
-      ),
+      content: () => <p></p>,
     },
-  ]
-}
+  ],
+};
 
 const FAQ = ({ title, content }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,7 +70,11 @@ const FAQGroup = ({ faqs, groupName }) => {
 
 const FAQs = () => {
   return map(FAQS, (faqs, groupName) => (
-    <FAQGroup key={`faq-group-${groupName}`} faqs={faqs} groupName={groupName} />
+    <FAQGroup
+      key={`faq-group-${groupName}`}
+      faqs={faqs}
+      groupName={groupName}
+    />
   ));
 };
 

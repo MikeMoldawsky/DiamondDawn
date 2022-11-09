@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import "./AboutPage.scss";
 import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import FAQs from "components/FAQs";
@@ -7,13 +7,26 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PageSizeLimit from "components/PageSizeLimit";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
-import {AboutDiamondDawnText, TheJourneyText, Step0Text, Step1Text, Step2Text, Step3Text, Step4Text, OurTeamText, MikeText, DavidText, TonyText, AvivaText, AsafText} from "pages/AboutPage/AboutContent";
-import journeyQuestionMark from 'assets/images/question-mark.svg'
-import journeyFinal from 'assets/images/physcal-digital.png'
+import {
+  AboutDiamondDawnText,
+  TheJourneyText,
+  Step0Text,
+  Step1Text,
+  Step2Text,
+  Step3Text,
+  Step4Text,
+  OurTeamText,
+  MikeText,
+  DavidText,
+  TonyText,
+  AvivaText,
+  AsafText,
+} from "pages/AboutPage/AboutContent";
+import journeyQuestionMark from "assets/images/question-mark.svg";
+import journeyFinal from "assets/images/physcal-digital.png";
 import PlayButton from "components/PlayButton";
 
 const AboutPage = () => {
-
   const renderTeaserBg = useCallback(
     () => (
       <ReactPlayer
@@ -45,7 +58,7 @@ const AboutPage = () => {
           </div>
           <div id="journey" className="center-aligned-column journey">
             <div className="center-aligned-row journey-row journey-desc">
-              <div className="image-side"/>
+              <div className="image-side" />
               <div className="text-side">
                 <div className="leading-text">THE JOURNEY</div>
                 <TheJourneyText />
@@ -57,7 +70,7 @@ const AboutPage = () => {
                 <div className="marker marker30">-30</div>
                 <div className="marker marker60">-60</div>
                 <div className="marker marker90">-90</div>
-                <div className="mask"/>
+                <div className="mask" />
               </div>
               <div className="center-aligned-row journey-row step-0">
                 <div className="image-side">
@@ -77,7 +90,9 @@ const AboutPage = () => {
                 </div>
                 <div className="text-side">
                   <div className="meter active" />
-                  <div className="secondary-text">Step 0 - Activate Your Key</div>
+                  <div className="secondary-text">
+                    Step 0 - Activate Your Key
+                  </div>
                   <Step0Text />
                 </div>
               </div>
@@ -135,7 +150,9 @@ const AboutPage = () => {
                 </div>
                 <div className="text-side">
                   <div className="meter" />
-                  <div className="secondary-text">Step 4 - The Final Choice</div>
+                  <div className="secondary-text">
+                    Step 4 - The Final Choice
+                  </div>
                   <Step4Text />
                 </div>
               </div>
