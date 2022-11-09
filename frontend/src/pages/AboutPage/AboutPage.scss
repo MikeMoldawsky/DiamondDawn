@@ -2,13 +2,13 @@
 @import "css/functions";
 
 .page.about-page {
-  font-size: calc-font-size(1px);
+  --base-font-size: 16;
 
   .about-background {
     .walls {
-      height: 6.9 * $viewHeightRef;
+      height: 6.25 * $viewHeightRef;
       background: url("../../assets/images/mine-walls.png") no-repeat left
-        16.5%;
+        43.5%;
       background-size: 100%;
     }
 
@@ -42,7 +42,8 @@
   }
 
   .general {
-    width: 42%;
+    width: 48%;
+    min-width: 54em;
     margin-left: 10%;
 
     .leading-text {
@@ -50,7 +51,7 @@
     }
 
     .secondary-text {
-      margin-top: 2em;
+      margin-top: 1.5em;
     }
   }
 
@@ -69,7 +70,7 @@
       width: 3.75em;
       left: 14em;
       background: url("../../assets/images/scale.svg") no-repeat center top;
-      height: 97%;
+      height: 96%;
       background-size: auto 100%;
 
       .marker {
@@ -213,12 +214,23 @@
         }
       }
 
+      &.step-2, &.step-3 {
+        .image-side {
+          .image {
+            img, .react-player {
+              max-width: 30%;
+            }
+          }
+        }
+      }
+
       &.step-4 {
         .image-side {
           align-self: flex-start;
 
           img {
             transform: translateY(1em);
+            max-width: 75%;
           }
         }
 
@@ -226,11 +238,12 @@
           width: 80%;
           position: relative;
 
-          img {
+          img.certificate {
             position: absolute;
             bottom: 0;
             right: 0;
-            transform: translate(160%, 40%);
+            transform: translateX(160%);
+            width: 6em;
           }
         }
 
@@ -319,14 +332,114 @@
   }
 }
 
-@media only screen and (max-width: 1366px) {
+@media only screen and (max-width: 1680px) {
   .page.about-page {
     font-size: $font15px;
+
+    .general {
+      .leading-text {
+        margin-top: 1em;
+      }
+    }
   }
 }
 
+
+@media only screen and (max-width: 1540px) {
+  .page.about-page {
+    --base-font-size: 22;
+    font-size: $font14px;
+
+    .leading-text {
+      margin-top: 2em;
+    }
+
+    .general {
+      margin-left: 7.5%;
+
+      .leading-text {
+        margin: .5em 0 .5em;
+      }
+    }
+  }
+}
+
+
+@media only screen and (max-width: 1366px) {
+  .page.about-page {
+    font-size: $font13px;
+
+    .general {
+      width: 57%;
+      margin-left: 5%;
+
+      .leading-text {
+        margin: .5em 0 .5em;
+      }
+    }
+
+    .journey {
+      width: 80%;
+      margin-left: 13%;
+
+      .scale {
+        left: 11em;
+      }
+
+      .journey-row {
+        .text-side {
+          padding-bottom: 2em;
+          min-height: 10em;
+        }
+
+        .image-side {
+          width: 16em;
+          min-width: 16em;
+
+          .image {
+            width: 8em;
+            height: 8em;
+          }
+        }
+
+        &.journey-desc {
+          .text-side {
+            width: 65%;
+          }
+        }
+
+        &.step-4 {
+          .text {
+            img.certificate {
+              right: 3em;
+              width: 5em;
+              height: 5em;
+            }
+          }
+        }
+      }
+    }
+
+    .team {
+      width: 80%;
+      margin-left: 13%;
+
+      .our-team {
+        width: 70%;
+      }
+
+      .team-members {
+        .team-member {
+          margin-top: 2em;
+        }
+      }
+    }
+  }
+}
+
+
 @media only screen and (max-width: 1200px) {
   .page.about-page {
-    font-size: $font14px;
+    font-size: $font12px;
   }
 }

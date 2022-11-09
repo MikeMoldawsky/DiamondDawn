@@ -91,7 +91,7 @@ export const Step4Text = () => (
       Keep your diamond digital (NFT) or <b>burn</b> it in exchange
       for your physical diamond artwork (GIA-certified).
     </p>
-    <img src={certificate} alt="" />
+    <img className="certificate" src={certificate} alt="" />
   </div>
 )
 
