@@ -57,9 +57,9 @@ b {
 
     h1 {
       text-align: center;
-      color: $text_gray;
+      color: $gold;
       text-transform: uppercase;
-      margin: 0 0 3rem 0;
+      margin: 0 0 0 0;
       font-size: $font30px;
     }
   }
@@ -205,6 +205,13 @@ footer {
   justify-content: flex-start;
 }
 
+.left-centered-aligned-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
 .left-spaced-aligned-column {
   display: flex;
   flex-direction: column;
@@ -282,14 +289,15 @@ footer {
 }
 
 .leading-text {
+  color: $gold;
   font-size: $font50px;
   text-transform: uppercase;
   line-height: 1.33em;
 }
 
 .secondary-text {
-  font-size: $font30px;
   color: $gold;
+  font-size: $font30px;
   line-height: 1.33em;
 }
 

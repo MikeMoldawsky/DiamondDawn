@@ -77,7 +77,7 @@ const RequestForm = ({ onSuccess }) => {
         <div className="center-aligned-row inputs-row">
           {renderInput("twitter", "Twitter handle", {
             required: false,
-            pattern: /^[a-zA-Z0-9_]{4,15}$/i,
+            pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
           })}
           {renderInput("email", "E-mail", {
             required: false,
@@ -95,6 +95,7 @@ const RequestForm = ({ onSuccess }) => {
         />
         <ActionButton
           actionKey="Request Invitation"
+          className="gold"
           onClick={handleSubmit(onSubmitClick)}
           disabled={!isDirty || !isEmpty(errors) || isRequiredError}
         >

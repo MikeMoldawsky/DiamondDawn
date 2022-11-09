@@ -42,7 +42,7 @@ const ActionButton = ({
       {...props}
     >
       {isLoading || isPending ? (
-        <BeatLoader color={"#000"} loading={true} size={10} />
+        <BeatLoader color={"#fff"} loading={true} size={10} />
       ) : (
         <div className="button-content">{children}</div>
       )}

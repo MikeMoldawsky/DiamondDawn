@@ -7,6 +7,19 @@
   background-size: cover;
   font-size: calc-font-size(1px);
 
+  .account {
+    font-size: $font18px;
+    margin: 0 0 2em;
+    color: $gold;
+    text-align: center;
+
+    svg {
+      width: $font11px;
+      height: $font11px;
+      margin-left: .4em;
+    }
+  }
+
   .main-box {
     max-width: 90%;
     max-height: 80%;
