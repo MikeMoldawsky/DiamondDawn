@@ -176,12 +176,6 @@ const AboutPage = () => {
               </div>
               <div className="team-member">
                 <div className="profile-image" />
-                <div className="secondary-text">Tony Hererra</div>
-                <div className="member-title">Advisor</div>
-                <TonyText />
-              </div>
-              <div className="team-member">
-                <div className="profile-image" />
                 <div className="secondary-text">Aviva Moldawsky</div>
                 <div className="member-title">Diamond Art Designer</div>
                 <AvivaText />
@@ -191,6 +185,12 @@ const AboutPage = () => {
                 <div className="secondary-text">Asaf Snir</div>
                 <div className="member-title">Frontend Master</div>
                 <AsafText />
+              </div>
+              <div className="team-member">
+                <div className="profile-image" />
+                <div className="secondary-text">Tony Hererra</div>
+                <div className="member-title">Advisor</div>
+                <TonyText />
               </div>
             </div>
           </div>
