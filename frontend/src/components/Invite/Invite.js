@@ -127,13 +127,16 @@ const Invite = () => {
                 <div className="leading-text">DIAMOND DAWN APPLICATION</div>
                 <div className="secondary-text">STATUS: PENDING APPROVAL</div>
                 <div className="text-comment">
-                  If you’ve been accepted for Diamond Dawn, you will have a limited time window of <b>3 days, 3 hours, and 3 minutes</b> to activate your key for 3.33 $ETH.
+                  If you’ve been accepted for Diamond Dawn, you will have a
+                  limited time window of <b>3 days, 3 hours, and 3 minutes</b>
+                   to activate your key for 3.33 $ETH.
                 </div>
               </div>
               {!showSubmittedModal && (
                 <div className="left-top-aligned-column">
                   <div className="follow-text">
-                    * Make sure to follow request @DiamondDawnNFT so that we confirm your identity and inform you if you’re accepted.
+                    * Make sure to follow request @DiamondDawnNFT so that we
+                    confirm your identity and inform you if you’re accepted.
                   </div>
                   <div className="button gold icon-after">
                     Follow <FontAwesomeIcon icon={faTwitter} />
