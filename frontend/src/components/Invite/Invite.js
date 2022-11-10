@@ -22,6 +22,8 @@ import EnterMine from "pages/ProcessPage/EnterMine";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
+import ReactPlayer from "react-player";
+import { getCDNVideoUrl } from "utils";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -104,11 +106,18 @@ const Invite = () => {
     <div className="box-content opaque invite-view">
       <div className="layout-box">
         <div className="image-box">
-          <div className="image-placeholder" />
-          <div className="description">
-            A video showing the evolution of the stone? The different types of
-            cutting? Something intriguing and mysterious
-          </div>
+          <ReactPlayer
+            url={getCDNVideoUrl(
+              invite ? "embedded-diamonds.webm" : "diamond-evolution.webm"
+            )}
+            playing
+            playsinline
+            controls={false}
+            className="react-player"
+            loop
+            width="100%"
+            height="100%"
+          />
         </div>
 
         <div className="content-box">
