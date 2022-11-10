@@ -28,8 +28,6 @@ const EnterMineView = ({
                 You’ve been accepted to participate in Diamond Dawn’s historical
                 journey.
                 <br />
-                {/*In order to allow other participants to join, you’ll have exactly <b>3 days, 3 hours, and 3 minutes</b> to activate your key.*/}
-                {/*<br/>*/}
                 The key grants you <b>full access</b> to the 4 steps of DD's
                 journey, starting in the virtual mine, where your journey
                 begins.
@@ -42,7 +40,7 @@ const EnterMineView = ({
               <div className="price">
                 {BigNumber.isBigNumber(minePrice)
                   ? ethersUtils.formatUnits(minePrice)
-                  : ""}{" "}
+                  : "3.33"}{" "}
                 ACTIVATE YOUR KEY
               </div>
             </div>
