@@ -48,7 +48,7 @@
     justify-content: flex-start;
 
     .congrats-text {
-      margin-top: .5em;
+      margin-top: 0.5em;
       text-align: left;
       color: white;
     }
@@ -87,7 +87,7 @@
 
     .countdown {
       width: 72%;
-      margin: 1em auto .5em;
+      margin: 1em auto 0.5em;
       font-size: $font14px;
     }
   }
@@ -106,15 +106,16 @@
         position: absolute;
         height: 100%;
         width: 100%;
-        background: url($CDN_URL + "/images/mint/mint-key.png") no-repeat center center;
+        background: url($CDN_URL + "/images/mint/mint-key.png") no-repeat center
+          center;
         background-size: 100%;
 
         &:nth-child(1) {
-          transform: rotate(45deg) translateY(.7em) rotateX(180deg);
+          transform: rotate(45deg) translateY(0.7em) rotateX(180deg);
         }
 
         &:nth-child(2) {
-          transform: rotate(135deg) translateY(-.7em);
+          transform: rotate(135deg) translateY(-0.7em);
         }
       }
     }

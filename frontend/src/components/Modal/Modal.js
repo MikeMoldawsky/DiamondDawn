@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import useOnClickOutside from "hooks/useClickOutside";
 import "./Modal.scss";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 const Modal = ({ close, children }) => {
   const ref = useRef(null);

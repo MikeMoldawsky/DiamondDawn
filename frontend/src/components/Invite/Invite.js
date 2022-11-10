@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
@@ -19,9 +19,9 @@ import {
 import { SYSTEM_STAGE } from "consts";
 import Loading from "components/Loading";
 import EnterMine from "pages/ProcessPage/EnterMine";
-import RequestSubmittedModal from 'components/RequestSubmittedModal'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTwitter} from "@fortawesome/free-brands-svg-icons";
+import RequestSubmittedModal from "components/RequestSubmittedModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -32,14 +32,14 @@ const Invite = () => {
   const isInviteFetched = useSelector(
     isActionFirstCompleteSelector("get-invite-by-address")
   );
-  const [showSubmittedModal, setShowSubmittedModal] = useState(false)
+  const [showSubmittedModal, setShowSubmittedModal] = useState(false);
 
   const loadInvite = async (address) => dispatch(loadInviteByAddress(address));
 
   const onSubmitSuccess = () => {
-    setShowSubmittedModal(true)
-    loadInvite(account.address)
-  }
+    setShowSubmittedModal(true);
+    loadInvite(account.address);
+  };
 
   const clearInviteState = () => {
     dispatch(clearInvite());
@@ -114,9 +114,7 @@ const Invite = () => {
         <div className="content-box">
           {invite ? (
             <div className="left-centered-aligned-column request-status">
-              <div className="leading-text">
-                DIAMOND DAWN APPLICATION
-              </div>
+              <div className="leading-text">DIAMOND DAWN APPLICATION</div>
               <div className="secondary-text">STATUS: PENDING APPROVAL</div>
               <div className="text-comment">
                 Once your request is approved, you will have a limited time to
@@ -141,7 +139,9 @@ const Invite = () => {
               <RequestForm onSuccess={onSubmitSuccess} />
             </>
           )}
-          {showSubmittedModal && <RequestSubmittedModal close={() => setShowSubmittedModal(false)} />}
+          {showSubmittedModal && (
+            <RequestSubmittedModal close={() => setShowSubmittedModal(false)} />
+          )}
         </div>
       </div>
     </div>

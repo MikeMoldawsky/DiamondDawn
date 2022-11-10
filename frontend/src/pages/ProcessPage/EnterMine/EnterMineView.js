@@ -25,11 +25,14 @@ const EnterMineView = ({
             <div className="center-aligned-column">
               <div className="leading-text">CONGRATULATIONS</div>
               <div className="congrats-text">
-                You’ve been accepted to participate in Diamond Dawn’s historical journey.
-                <br/>
+                You’ve been accepted to participate in Diamond Dawn’s historical
+                journey.
+                <br />
                 {/*In order to allow other participants to join, you’ll have exactly <b>3 days, 3 hours, and 3 minutes</b> to activate your key.*/}
                 {/*<br/>*/}
-                The key grants you <b>full access</b> to the 4 steps of DD's journey, starting in the virtual mine, where your journey begins.
+                The key grants you <b>full access</b> to the 4 steps of DD's
+                journey, starting in the virtual mine, where your journey
+                begins.
               </div>
             </div>
           </div>
@@ -77,7 +80,10 @@ const EnterMineView = ({
               <div className="key" />
               <div className="key" />
             </div>
-            <div className="text-sm">Now that you’re accepted you can share 2 unique links and invite other collectors to the private sale</div>
+            <div className="text-sm">
+              Now that you’re accepted you can share 2 unique links and invite
+              other collectors to the private sale
+            </div>
             <div className="button gold">INVITE</div>
           </div>
           <div className="status-box">
