@@ -52,7 +52,7 @@ const CollectorPage = () => {
           <div className="inner-page">
             <h1>The Collector's Room</h1>
             <div className="center-center-aligned-row account">
-              Hello - {shortenEthAddress(account?.address)} <EditIcon />
+              {shortenEthAddress(account?.address)} <EditIcon />
             </div>
             <Box className={"main-box"}>
               <Suspense withLoader actions={suspenseActions}>

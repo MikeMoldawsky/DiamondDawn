@@ -22,6 +22,8 @@ import EnterMine from "pages/ProcessPage/EnterMine";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
+import ReactPlayer from "react-player";
+import { getCDNVideoUrl } from "utils";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -104,26 +106,41 @@ const Invite = () => {
     <div className="box-content opaque invite-view">
       <div className="layout-box">
         <div className="image-box">
-          <div className="image-placeholder" />
-          <div className="description">
-            A video showing the evolution of the stone? The different types of
-            cutting? Something intriguing and mysterious
-          </div>
+          <ReactPlayer
+            url={getCDNVideoUrl(
+              invite ? "embedded-diamonds.webm" : "diamond-evolution.webm"
+            )}
+            playing
+            playsinline
+            controls={false}
+            className="react-player"
+            loop
+            width="100%"
+            height="100%"
+          />
         </div>
 
         <div className="content-box">
           {invite ? (
-            <div className="left-centered-aligned-column request-status">
-              <div className="leading-text">DIAMOND DAWN APPLICATION</div>
-              <div className="secondary-text">STATUS: PENDING APPROVAL</div>
-              <div className="text-comment">
-                Once your request is approved, you will have a limited time to
-                enter the mine. Remember, only 333 will embark on the journey
-                toward a Diamond Dawn. Will you be among them?
+            <div className="left-spaced-aligned-column request-status">
+              <div className="left-top-aligned-column">
+                <div className="leading-text">DIAMOND DAWN APPLICATION</div>
+                <div className="secondary-text">STATUS: PENDING APPROVAL</div>
+                <div className="text-comment">
+                  If you’ve been accepted for Diamond Dawn, you will have a
+                  limited time window of <b>3 days, 3 hours, and 3 minutes</b>
+                   to activate your key for 3.33 $ETH.
+                </div>
               </div>
               {!showSubmittedModal && (
-                <div className="button gold icon-after">
-                  Follow <FontAwesomeIcon icon={faTwitter} />
+                <div className="left-top-aligned-column">
+                  <div className="follow-text">
+                    * Make sure to follow request @DiamondDawnNFT so that we
+                    confirm your identity and inform you if you’re accepted.
+                  </div>
+                  <div className="button gold icon-after">
+                    Follow <FontAwesomeIcon icon={faTwitter} />
+                  </div>
                 </div>
               )}
             </div>

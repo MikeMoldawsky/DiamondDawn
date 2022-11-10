@@ -13,7 +13,8 @@ const AnimatedLogo = ({ withText }) => {
       muted
       loop
       className={classNames("react-player loader", { "with-text": withText })}
-      width="100%"
+      width=""
+      height=""
     />
   );
 };
