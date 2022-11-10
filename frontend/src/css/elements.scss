@@ -122,6 +122,10 @@
       background-color: transparent;
     }
   }
+
+  &.lg {
+    font-size: $font20px;
+  }
 }
 
 .input {
