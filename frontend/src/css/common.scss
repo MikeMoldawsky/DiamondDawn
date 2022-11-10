@@ -44,6 +44,11 @@ b {
   font-weight: 700;
 }
 
+input[type="checkbox"] {
+  accent-color: $gold !important;
+  height: 1em;
+}
+
 .page {
   overflow-x: hidden;
   overflow-y: auto;
