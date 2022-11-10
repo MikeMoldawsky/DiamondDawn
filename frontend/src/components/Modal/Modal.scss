@@ -12,6 +12,17 @@
     -webkit-backdrop-filter: blur(30px);
     padding: 2em 3em 3em;
     text-align: center;
+    position: relative;
+  }
+
+  .close {
+    width: 1.2em;
+    height: 1.2em;
+    color: $close_modal;
+    position: absolute;
+    top: 0.25em;
+    left: 0.25em;
+    cursor: pointer;
   }
 
   .modal-heading {
@@ -21,7 +32,6 @@
   .modal-content {
     font-size: $font20px;
     line-height: 1em;
-    margin: 1em 0;
   }
 
   .modal-buttons {

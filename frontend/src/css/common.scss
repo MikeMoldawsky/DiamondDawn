@@ -44,6 +44,11 @@ b {
   font-weight: 700;
 }
 
+input[type="checkbox"] {
+  accent-color: $gold !important;
+  height: 1em;
+}
+
 .page {
   overflow-x: hidden;
   overflow-y: auto;
@@ -51,15 +56,15 @@ b {
   position: relative;
 
   .inner-page {
-    padding-top: calc(var(--header-height) * 1.4);
+    padding-top: calc(var(--header-height) + 1rem);
     margin: 0 auto;
     height: 100%;
 
     h1 {
       text-align: center;
-      color: $text_gray;
+      color: $gold;
       text-transform: uppercase;
-      margin: 0 0 3rem 0;
+      margin: 0 0 0 0;
       font-size: $font30px;
     }
   }
@@ -109,21 +114,24 @@ b {
   height: 11.65em;
   border-radius: 50%;
   filter: grayscale(1);
+  background: url($CDN_URL + "/images/avatar.png") no-repeat center center;
+  background-size: auto 100%;
 
   &.mike {
-    background: url("../assets/images/mike.jpg") no-repeat center center;
+    background: url($CDN_URL + "/images/team/mike.jpg") no-repeat center center;
     background-size: auto 100%;
   }
 
   &.david {
-    background: url("../assets/images/david.jpeg") no-repeat center center;
+    background: url($CDN_URL + "/images/team/david.jpeg") no-repeat center
+      center;
     background-size: auto 100%;
   }
 }
 
 footer {
   background-color: black;
-  height: 0.3 * $viewHeightRef;
+  height: 0.2 * $viewHeightRef;
   -webkit-mask-image: -webkit-gradient(
     linear,
     left top,
@@ -203,6 +211,13 @@ footer {
   justify-content: flex-start;
 }
 
+.left-centered-aligned-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
 .left-spaced-aligned-column {
   display: flex;
   flex-direction: column;
@@ -255,6 +270,10 @@ footer {
   text-transform: uppercase;
 }
 
+.text-sm {
+  font-size: $font14px;
+}
+
 .common-view {
   display: flex;
   flex-direction: column;
@@ -280,14 +299,15 @@ footer {
 }
 
 .leading-text {
+  color: $gold;
   font-size: $font50px;
   text-transform: uppercase;
   line-height: 1.33em;
 }
 
 .secondary-text {
-  font-size: $font30px;
   color: $gold;
+  font-size: $font30px;
   line-height: 1.33em;
 }
 
