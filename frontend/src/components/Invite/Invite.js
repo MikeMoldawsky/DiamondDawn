@@ -23,7 +23,7 @@ import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import ReactPlayer from "react-player";
-import {getCDNVideoUrl} from "utils";
+import { getCDNVideoUrl } from "utils";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -107,7 +107,9 @@ const Invite = () => {
       <div className="layout-box">
         <div className="image-box">
           <ReactPlayer
-            url={getCDNVideoUrl(invite ? "embedded-diamonds.webm" : "diamond-evolution.webm")}
+            url={getCDNVideoUrl(
+              invite ? "embedded-diamonds.webm" : "diamond-evolution.webm"
+            )}
             playing
             playsinline
             controls={false}
