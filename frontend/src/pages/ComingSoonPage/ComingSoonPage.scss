@@ -17,11 +17,13 @@
     margin: 0 auto;
 
     .leading-text {
+      color: $gold;
       font-size: $font54px;
       margin-bottom: 0.2em;
     }
 
     .secondary-text {
+      color: white;
       font-weight: 400;
       font-size: $font30px;
       line-height: 1.4em;

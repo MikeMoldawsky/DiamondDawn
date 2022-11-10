@@ -8,80 +8,68 @@
   text-align: center;
   color: $text_gray;
 
-  .leading-text {
-    color: white;
-    font-size: $font50px !important;
-    margin-bottom: 0.8rem;
-  }
-
-  .secondary-text {
-    font-size: $font18px !important;
-    line-height: 1.4em;
-    font-weight: 300;
-
-    div {
-      margin-bottom: 0.5rem;
-      color: white;
-      font-weight: 500;
-    }
-  }
-
   .layout-box {
-    display: grid;
-    grid-template-columns: repeat(2, 7fr);
-    grid-template-rows: 6.5fr 4fr 6fr 3fr;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    height: 87.5%;
+    height: 94%;
     position: relative;
-    top: 12.5%;
+    top: 6%;
     padding: 0 6%;
+    display: flex;
   }
 
   .image-box {
-    grid-area: 1 / 1 / 5 / 2;
+    width: 50%;
     position: relative;
     padding: 10px;
     background: url($CDN_URL + "/images/mint/mint-key.png") no-repeat 35% -10%;
     background-size: 62%;
   }
 
-  .right-box {
-    margin-left: -4%;
+  .content-box {
+    width: 50%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .right-box {
+    margin-left: -4%;
   }
 
   .right-box-with-sep {
     @extend .right-box;
     position: relative;
-    border-bottom: solid 1px $border_gray;
+    border-bottom: solid 1px #ffffff22;
   }
 
   .congrats-box {
     grid-area: 1 / 2 / 2 / 3;
-    @extend .right-box-with-sep;
+    @extend .right-box;
     align-items: center;
     justify-content: flex-start;
 
-    .center-aligned-column {
-      width: 90%;
+    .congrats-text {
+      margin-top: 0.5em;
+      text-align: left;
+      color: white;
     }
   }
 
   .mint-box {
     grid-area: 2 / 2 / 3 / 3;
     color: white;
-    @extend .right-box-with-sep;
+    @extend .right-box;
+    position: relative;
+    border-bottom: solid 1px #ffffff22;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
+    flex-grow: 2;
 
     .center-aligned-row {
-      width: 86%;
-      margin: 0 auto;
+      width: 100%;
+      justify-content: space-evenly;
     }
 
-    .text-row {
+    .price-text {
       font-size: $font20px;
 
       svg {
@@ -92,23 +80,49 @@
 
   .timer-box {
     grid-area: 3 / 2 / 4 / 3;
-    @extend .right-box-with-sep;
+    @extend .right-box;
     align-items: stretch;
     justify-content: space-evenly;
+    padding: 1.5em 0;
 
     .countdown {
-      width: 75%;
-      margin: 0 auto;
+      width: 72%;
+      margin: 1em auto 0.5em;
+      font-size: $font14px;
+    }
+  }
+
+  .invites-box {
+    @extend .right-box;
+    border: solid 1px $border_gray;
+    padding: 1em;
+
+    .keys-image {
+      width: 8em;
+      height: 4em;
+      position: relative;
+
+      .key {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: url($CDN_URL + "/images/mint/mint-key.png") no-repeat center
+          center;
+        background-size: 100%;
+
+        &:nth-child(1) {
+          transform: rotate(45deg) translateY(0.7em) rotateX(180deg);
+        }
+
+        &:nth-child(2) {
+          transform: rotate(135deg) translateY(-0.7em);
+        }
+      }
     }
 
-    .or {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translate(-50%, 50%);
-      background-color: #101010;
-      padding: 0 0.5em;
-      z-index: 1;
+    .text-sm {
+      text-align: left;
+      margin: 0 1em;
     }
   }
 
@@ -119,6 +133,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    padding: 1.5em 0;
 
     span {
       margin: 0 1em;

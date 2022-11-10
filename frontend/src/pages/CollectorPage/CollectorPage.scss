@@ -7,6 +7,19 @@
   background-size: cover;
   font-size: calc-font-size(1px);
 
+  .account {
+    font-size: $font18px;
+    margin: 0 0 1em;
+    color: $gold;
+    text-align: center;
+
+    svg {
+      width: $font11px;
+      height: $font11px;
+      margin-left: 0.4em;
+    }
+  }
+
   .main-box {
     max-width: 90%;
     max-height: 80%;
@@ -16,5 +29,31 @@
 
   .secondary-text {
     font-size: $font25px;
+  }
+}
+
+@media only screen and (max-width: 1540px) {
+  .page.collector-page {
+    .main-box {
+      max-width: 92%;
+      max-height: 83%;
+    }
+
+    .action-view.enter {
+      --base-font-size: 19;
+    }
+  }
+}
+
+@media only screen and (max-width: 1366px) {
+  .page.collector-page {
+    .main-box {
+      max-width: 95%;
+      max-height: 85%;
+    }
+
+    .action-view.enter {
+      --base-font-size: 20;
+    }
   }
 }
