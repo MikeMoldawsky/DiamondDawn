@@ -12,12 +12,17 @@ export const AboutDiamondDawnText = () => (
     <p>Your Diamond Dawn journey will consist of 4 steps.</p>
     <p>
       At each step, you must choose whether to evolve your Diamond NFT to its
-      next form or keep it in its current state for eternity. You’ll have
-      exactly <b>3 weeks, 3 days, and 3 hours</b> to complete each step.
+      next form or keep it in its current state for eternity.
+    </p>
+    <p>
+      You’ll have exactly <b>3 weeks, 3 days, and 3 hours</b> to complete each
+      step.
     </p>
     <div className="secondary-text">Which diamond will you choose?</div>
+    <p>The last step is longer.</p>
     <p>
-      In the last phase, you will be faced with <b>The Final Choice:</b>
+      You’ll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide on your{" "}
+      <b>Final Choice</b>:
     </p>
     <p>
       Keep your diamond NFT digital or burn it in exchange for a physical,
@@ -58,19 +63,15 @@ export const Step0Text = () => (
       starting in the virtual mine, where your journey begins.
     </p>
     <p>
-      The application phase will automatically end when one of the following
-      things happens:
+      The application phase will automatically end when 333 participants
+      activated their keys.
     </p>
-    <ul>
-      <li>333 participants activated their keys</li>
-      <li>The mine opens in...</li>
-    </ul>
   </div>
 );
 
 export const Step1Text = () => (
   <div className="text">
-    <p>The virtual mine opens in XX:XX</p>
+    <p>Diamond Dawn's mine will open in 3 weeks, 3 days, and 3 hours.</p>
   </div>
 );
 
