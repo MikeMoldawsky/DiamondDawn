@@ -13,7 +13,6 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "./interface/IDiamondDawn.sol";
 import "./interface/IDiamondDawnAdmin.sol";
 import "./interface/IDiamondDawnMine.sol";
-
 /**
  *    ________    .__                                           .___
  *    \______ \   |__| _____      _____     ____     ____     __| _/
@@ -41,6 +40,7 @@ contract DiamondDawn is
     IDiamondDawn,
     IDiamondDawnAdmin
 {
+    // TODO: import DefaultOperatorFilterer721.sol to enforce royalties
     using EnumerableSet for EnumerableSet.UintSet;
     using ECDSA for bytes32;
 
