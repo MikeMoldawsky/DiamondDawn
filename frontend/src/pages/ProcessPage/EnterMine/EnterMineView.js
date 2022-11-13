@@ -57,7 +57,8 @@ const EnterMineView = ({
           </div>
           <div className="timer-box">
             <div className="text-comment">
-              The opportunity will close once the clock runs out
+              When the time runs out, you'll no longer be able to join Diamond
+              Dawn's journey.
             </div>
             <Countdown
               parts={
@@ -78,10 +79,7 @@ const EnterMineView = ({
               <div className="key" />
               <div className="key" />
             </div>
-            <div className="text-sm">
-              Now that you’re accepted you can share 2 unique links and invite
-              other collectors to the private sale
-            </div>
+            <div className="text-sm">You’ve been granted 2 invitations.</div>
             <div className="button gold">INVITE</div>
           </div>
           <div className="status-box">
