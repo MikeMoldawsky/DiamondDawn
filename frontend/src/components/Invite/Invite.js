@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
-import RequestForm from "components/RequestForm";
+import ApplyForm from "components/RequestForm";
 import useOnConnect from "hooks/useOnConnect";
 import { useAccount } from "wagmi";
 import useActionDispatch from "hooks/useActionDispatch";
@@ -24,6 +24,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import ReactPlayer from "react-player";
 import { getCDNVideoUrl } from "utils";
+import {clearCollector, collectorSelector, loadCollectorByAddress} from "store/collectorReducer";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -34,23 +35,37 @@ const Invite = () => {
   const isInviteFetched = useSelector(
     isActionFirstCompleteSelector("get-invite-by-address")
   );
+  const collector = useSelector(collectorSelector);
+  const isCollectorFetched = useSelector(
+    isActionFirstCompleteSelector("get-collector-by-address")
+  );
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
 
   const loadInvite = async (address) => dispatch(loadInviteByAddress(address));
+  const loadCollector = async (address) => dispatch(loadCollectorByAddress(address));
 
   const onSubmitSuccess = () => {
     setShowSubmittedModal(true);
+    loadCollector(account.address);
     loadInvite(account.address);
   };
 
   const clearInviteState = () => {
+    dispatch(clearCollector());
     dispatch(clearInvite());
+    dispatch(clearActionStatus("get-collector-by-address"));
     dispatch(clearActionStatus("get-invite-by-address"));
   };
+
+  // const clearInviteState = () => {
+  //   dispatch(clearInvite());
+  //   dispatch(clearActionStatus("get-invite-by-address"));
+  // };
 
   useOnConnect(
     async (address) => {
       clearInviteState();
+      actionDispatch(() => loadCollector(address), "get-collector-by-address");
       actionDispatch(() => loadInvite(address), "get-invite-by-address");
     },
     () => {
@@ -58,44 +73,46 @@ const Invite = () => {
     }
   );
 
-  useEffect(() => {
-    return clearInviteState;
-  }, []);
+  // useEffect(() => {
+  //   return clearInviteState;
+  // }, []);
 
-  useEffect(() => {
-    if (invite?.approved && !invite?.opened) {
-      dispatch(openInvite(invite._id, account.address));
-    }
-  }, [invite?.approved, invite?.opened]);
+  // useEffect(() => {
+  //   if (invite?.approved && !invite?.opened) {
+  //     dispatch(openInvite(invite._id, account.address));
+  //   }
+  // }, [invite?.approved, invite?.opened]);
 
   if (systemStage > SYSTEM_STAGE.KEY) return null;
 
-  if (!isInviteFetched || (invite.approved && !invite.opened))
+  // if (!isCollectorFetched || (invite.approved && !invite.opened))
+  // if (!isCollectorFetched || (collector.approved && !collector.mintWindowStart))
+  if (!isCollectorFetched)
     return (
       <div className="box-content opaque box-loading">
         <Loading />
       </div>
     );
 
-  if (invite.used)
+  if (collector?.minted)
     return (
       <div className="box-content opaque">
         <div className="center-center-aligned-row secondary-text">
-          Invitations Used
+          Address already minted
         </div>
       </div>
     );
 
-  if (invite.revoked)
-    return (
-      <div className="box-content opaque">
-        <div className="center-center-aligned-row secondary-text">
-          Invitations Expired
-        </div>
-      </div>
-    );
+  // if (invite.revoked)
+  //   return (
+  //     <div className="box-content opaque">
+  //       <div className="center-center-aligned-row secondary-text">
+  //         Invitations Expired
+  //       </div>
+  //     </div>
+  //   );
 
-  if (invite.approved)
+  if (collector?.approved)
     return (
       <div className="box-content approved">
         <EnterMine invite={invite} />
@@ -121,7 +138,7 @@ const Invite = () => {
         </div>
 
         <div className="content-box">
-          {invite ? (
+          {collector ? (
             <div className="left-spaced-aligned-column request-status">
               <div className="left-top-aligned-column">
                 <div className="leading-text">DIAMOND DAWN APPLICATION</div>
@@ -153,7 +170,7 @@ const Invite = () => {
                 To receive your unique key to the diamond mine, Please enter
                 your info below:
               </div>
-              <RequestForm onSuccess={onSubmitSuccess} />
+              <ApplyForm onSuccess={onSubmitSuccess} />
             </>
           )}
           {showSubmittedModal && (

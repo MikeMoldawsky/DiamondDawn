@@ -11,7 +11,7 @@ import Box from "components/Box";
 import Suspense from "components/Suspense";
 import Invite from "components/Invite";
 import NFTs from "components/NFTs";
-import { getCDNImageUrl, isDemo, shortenEthAddress } from "utils";
+import {getCDNImageUrl, isNoContractMode, isPrivateSale, shortenEthAddress} from "utils";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import PageSizeLimit from "components/PageSizeLimit";
@@ -38,7 +38,7 @@ const CollectorPage = () => {
   };
 
   const suspenseActions = ["get-contract"];
-  if (!isDemo() && account?.address) {
+  if (!isNoContractMode() && account?.address) {
     suspenseActions.push({ isFirstComplete: true, key: "load-nfts" });
   }
 

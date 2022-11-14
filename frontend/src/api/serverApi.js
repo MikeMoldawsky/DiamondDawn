@@ -26,6 +26,30 @@ export const getConfigApi = async () => {
   }
 };
 
+// COLLECTOR
+export const getCollectorByAddressApi = async address => {
+  try {
+    const { data: collector } = await axios.post(`/api/get_collector_by_address`, {
+      address,
+    });
+    return collector;
+  } catch (e) {
+    return null;
+  }
+}
+
+export const applyToDDApi = async (inviteId, address, requestData) => {
+  const { country, state } = getLocation();
+  const { data: invite } = await axios.post(`/api/apply_to_dd`, {
+    inviteId,
+    address,
+    ...requestData,
+    country,
+    state,
+  });
+  return invite;
+};
+
 // INVITATION
 export const getInviteApi = async (inviteId) => {
   try {

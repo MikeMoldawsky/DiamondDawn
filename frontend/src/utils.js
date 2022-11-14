@@ -156,10 +156,9 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
   );
 };
 
-export const isDemo = () => process.env.REACT_APP_DEMO_MODE === "true";
+export const isPrivateSale = () => process.env.REACT_APP_DEMO_MODE === "true";
 
-export const isDemoAndAuthSelector = (isAuth) => (state) =>
-  isDemo() && state.ui.privateSaleAuth === isAuth;
+export const isNoContractMode = () => process.env.REACT_APP_NO_CONTRACT === "true";
 
 const prependBackslash = (objectPath) =>
   `${objectPath[0] !== "/" ? "/" : ""}${objectPath}`;

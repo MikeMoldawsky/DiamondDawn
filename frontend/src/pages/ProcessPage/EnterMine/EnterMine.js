@@ -16,7 +16,7 @@ import useMountLogger from "hooks/useMountLogger";
 import { forgeApi } from "api/contractApi";
 import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
-import { isDemo, getCDNVideoUrl } from "utils";
+import {isPrivateSale, getCDNVideoUrl, isNoContractMode} from "utils";
 import EnterMineView from "pages/ProcessPage/EnterMine/EnterMineView";
 import { SYSTEM_STAGE } from "consts";
 
@@ -86,4 +86,4 @@ const EnterMine = ({ invite }) => {
   );
 };
 
-export default isDemo() ? EnterMineView : EnterMine;
+export default isNoContractMode() ? EnterMineView : EnterMine;

@@ -3,6 +3,8 @@ const Invitation = require("./models/InvitationModel");
 const add = require("date-fns/add");
 const ethers = require("ethers");
 const signer = require("../helpers/signer");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Schema.Types.ObjectId
 
 async function getInviteObjectById(inviteId) {
   return Invitation.findById(inviteId).populate("createdBy");
@@ -48,6 +50,16 @@ function validateInviteBeforeAction(invite, address) {
   if (!invite.approved) {
     throw new Error("Invitation pending approval");
   }
+}
+
+async function useInvite(inviteId, collectorId) {
+  // validateAddress(address);
+  const invite = await getInviteObjectById(inviteId);
+  // validateInviteBeforeAction(invite, address);
+
+  await Invitation.findOneAndUpdate({ _id: inviteId }, { usedBy: collectorId });
+
+  return await getInviteObjectById(inviteId);
 }
 
 async function openInvite(inviteId, address, country, state) {
@@ -116,6 +128,8 @@ async function getInviteByAddress(address) {
 
 module.exports = {
   getInviteObjectById,
+  useInvite,
+
   openInvite,
   signInvite,
   confirmInviteUsed,

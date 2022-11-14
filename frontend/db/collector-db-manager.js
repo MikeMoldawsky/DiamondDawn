@@ -1,6 +1,7 @@
 const Collector = require("./models/CollectorModel");
 const _ = require("lodash");
 const add = require("date-fns/add");
+const ethers = require("ethers");
 
 async function getCollectorObjectById(collectorId) {
   try {
@@ -24,6 +25,40 @@ async function getCollectorObjectById(collectorId) {
   }
 }
 
+async function getCollectorByAddress(address) {
+  const invite = await Collector.findOne({ address });
+  return invite ? getCollectorObjectById(invite._id) : null;
+}
+
+function validateAddress(address) {
+  if (!ethers.utils.isAddress(address)) {
+    throw new Error("Invalid Ethereum address");
+  }
+}
+
+async function createCollector(
+  address,
+  twitter,
+  email,
+  note,
+  country,
+  state
+) {
+  validateAddress(address);
+  let collector = await Collector.findOne({ address });
+  if (collector) {
+    throw new Error("Collector with this address already exists");
+  }
+  collector = new Collector({
+    address,
+    twitter,
+    email,
+    note,
+    location: `${state}, ${country}`,
+  });
+  return collector.save();
+}
+
 async function updateCollector(update) {
   try {
     await Collector.findOneAndUpdate(
@@ -39,5 +74,7 @@ async function updateCollector(update) {
 
 module.exports = {
   getCollectorById: getCollectorObjectById,
+  getCollectorByAddress,
+  createCollector,
   updateCollector,
 };

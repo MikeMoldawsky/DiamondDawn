@@ -4,15 +4,17 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import {useDispatch, useSelector} from "react-redux";
-import { getCDNImageUrl, getCDNVideoUrl, isDemo } from "utils";
+import { getCDNImageUrl, getCDNVideoUrl, isPrivateSale } from "utils";
 import classNames from "classnames";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import HomeBackground from "components/HomeBackground";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import useWindowDimensions from "hooks/useWindowDimensions";
-import {inviteSelector, loadInviteByAddress, loadInviteById} from "store/inviteReducer";
+import {inviteSelector, loadInviteById} from "store/inviteReducer";
 import InvitedModal from "components/InvitedModal/InvitedModal";
+import {collectorSelector} from "store/collectorReducer";
+import {isActionSuccessSelector} from "store/actionStatusReducer";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -20,6 +22,10 @@ const ComingSoonPage = () => {
   const [searchParams] = useSearchParams()
   const inviteId = searchParams.get("invite")
   const invite = useSelector(inviteSelector)
+  const collector = useSelector(collectorSelector)
+  const isCollectorFetched = useSelector(
+    isActionSuccessSelector("get-collector-by-address")
+  );
   const [showInvitedModal, setShowInvitedModal] = useState(false)
   const [startTransition, setStartTransition] = useState(false);
   const [videoProgress, setVideoProgress] = useState({});
@@ -36,7 +42,7 @@ const ComingSoonPage = () => {
   }, [inviteId])
 
   useEffect(() => {
-    if (invite && !invite.used && !invite.revoked) {
+    if (invite && !invite.usedBy && !invite.revoked) {
       setShowInvitedModal(true)
     }
   }, [invite])
@@ -82,12 +88,32 @@ const ComingSoonPage = () => {
     transition();
   };
 
+  const renderEntrance = () => {
+    if (!isCollectorFetched) return null
+
+    if (collector || !isPrivateSale()) return (
+      <div className="button transparent" onClick={transition}>
+        EXPLORE
+      </div>
+    )
+
+    return (
+      <PasswordBox
+        inviteId={invite?._id}
+        onCorrect={onCorrectPassword}
+        passwordLength={8}
+        buttonText="EXPLORE"
+      />
+    )
+  }
+
   return (
     <PageLoader
       pageName="coming-soon"
+      requireAccess={false}
       images={[getCDNImageUrl("envelop-wings.png")]}
       videos={[{ progress: videoProgress, threshold: 0.5 }]}
-      timeout={5000}
+      timeout={7000}
     >
       <div
         className={classNames("page coming-soon", {
@@ -120,18 +146,7 @@ const ComingSoonPage = () => {
               Which diamond will you choose?
             </div>
           </div>
-          {isDemo() ? (
-            <PasswordBox
-              inviteId={invite?._id}
-              onCorrect={onCorrectPassword}
-              passwordLength={8}
-              buttonText="EXPLORE"
-            />
-          ) : (
-            <div className="button transparent" onClick={transition}>
-              EXPLORE
-            </div>
-          )}
+          {renderEntrance()}
         </div>
         {showInvitedModal && (<InvitedModal invite={invite} close={() => setShowInvitedModal(false)}/>)}
       </div>

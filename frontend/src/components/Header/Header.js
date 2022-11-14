@@ -13,18 +13,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import AudioPlayer from "components/AudioPlayer";
-import { isDemoAndAuthSelector } from "utils";
+import {isNoContractMode} from "utils";
 import { DIAMOND_DAWN_TWITTER_URL } from "consts";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/Logo";
 import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import { usePageSizeLimit } from "components/PageSizeLimit";
+import {canAccessDDSelector} from "store/selectors";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const isRestricted = useSelector(isDemoAndAuthSelector(false));
+  const canAccessDD = useSelector(canAccessDDSelector);
   const isPageSizeLimitOk = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
 
@@ -39,15 +40,15 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
       <header>
         <div className="header-internal">
           <div className="center-aligned-row header-side">
-            {!isRestricted && isPageSizeLimitOk && (
-              <>
-                <div className="wallet">
-                  <Wallet />
-                </div>
-                <ContractProvider>
-                  <DiamondList />
-                </ContractProvider>
-              </>
+            {isPageSizeLimitOk && (
+              <div className="wallet">
+                <Wallet />
+              </div>
+            )}
+            {!isNoContractMode() && isPageSizeLimitOk && (
+              <ContractProvider>
+                <DiamondList />
+              </ContractProvider>
             )}
           </div>
           <Logo
@@ -60,7 +61,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             })}
           />
           <div className="center-aligned-row header-side">
-            {!isRestricted && isPageSizeLimitOk && (
+            {canAccessDD && isPageSizeLimitOk && (
               <NavLink to="/collector">
                 <div className="link">APPLY FOR DIAMOND DAWN</div>
               </NavLink>
@@ -75,7 +76,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
               onClick={() => dispatch(toggleMuted())}
             />
             <AudioPlayer />
-            {!isRestricted && isPageSizeLimitOk && (
+            {canAccessDD && isPageSizeLimitOk && (
               <FontAwesomeIcon
                 className="menu-icon"
                 icon={isMenuOpen ? faX : faBars}
