@@ -7,11 +7,7 @@ const PrivacyPage = () => (
   <PageSizeLimit>
     <div className="page tnc-page">
       <div className="inner-page">
-        <h1>
-          Diamond Dawn
-          <br />
-          Privacy Policy
-        </h1>
+        <h1>Privacy Policy</h1>
         <h2>Effective Date: October 26, 2022</h2>
 
         <div className="start-start-aligned-row heading">
