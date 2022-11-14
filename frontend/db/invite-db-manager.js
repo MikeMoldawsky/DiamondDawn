@@ -121,11 +121,6 @@ async function createInviteRequest(
   return invite.save();
 }
 
-async function getInviteByAddress(address) {
-  const invite = await Invitation.findOne({ address });
-  return invite ? getInviteObjectById(invite) : null;
-}
-
 module.exports = {
   getInviteObjectById,
   useInvite,
@@ -134,5 +129,4 @@ module.exports = {
   signInvite,
   confirmInviteUsed,
   createInviteRequest,
-  getInviteByAddress,
 };

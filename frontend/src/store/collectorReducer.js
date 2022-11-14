@@ -1,5 +1,5 @@
 import { makeReducer, reduceSetFull } from "./reduxUtils";
-import {getCollectorByAddressApi, getInviteApi, getInviteByAddressApi, openInviteApi} from "api/serverApi";
+import {getCollectorByAddressApi, getInviteApi, openInviteApi} from "api/serverApi";
 import isEmpty from 'lodash/isEmpty'
 
 const INITIAL_STATE = null;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
@@ -11,9 +11,8 @@ import {
   isActionFirstCompleteSelector,
 } from "store/actionStatusReducer";
 import {
-  clearInvite,
   inviteSelector,
-  loadInviteByAddress,
+  loadInviteById,
   openInvite,
 } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
@@ -24,7 +23,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import ReactPlayer from "react-player";
 import { getCDNVideoUrl } from "utils";
-import {clearCollector, collectorSelector, loadCollectorByAddress} from "store/collectorReducer";
+import {collectorSelector, loadCollectorByAddress} from "store/collectorReducer";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -32,50 +31,31 @@ const Invite = () => {
   const dispatch = useDispatch();
   const account = useAccount();
   const invite = useSelector(inviteSelector);
-  const isInviteFetched = useSelector(
-    isActionFirstCompleteSelector("get-invite-by-address")
-  );
   const collector = useSelector(collectorSelector);
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );
+
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
 
-  const loadInvite = async (address) => dispatch(loadInviteByAddress(address));
+  const loadInvite = async () => dispatch(loadInviteById(invite._id));
   const loadCollector = async (address) => dispatch(loadCollectorByAddress(address));
 
   const onSubmitSuccess = () => {
     setShowSubmittedModal(true);
     loadCollector(account.address);
-    loadInvite(account.address);
+    loadInvite();
   };
-
-  const clearInviteState = () => {
-    dispatch(clearCollector());
-    dispatch(clearInvite());
-    dispatch(clearActionStatus("get-collector-by-address"));
-    dispatch(clearActionStatus("get-invite-by-address"));
-  };
-
-  // const clearInviteState = () => {
-  //   dispatch(clearInvite());
-  //   dispatch(clearActionStatus("get-invite-by-address"));
-  // };
 
   useOnConnect(
     async (address) => {
-      clearInviteState();
       actionDispatch(() => loadCollector(address), "get-collector-by-address");
-      actionDispatch(() => loadInvite(address), "get-invite-by-address");
+      actionDispatch(() => loadInvite(address), "get-invite-by-id");
     },
     () => {
-      clearInviteState();
+      dispatch(clearActionStatus("get-collector-by-address"));
     }
   );
-
-  // useEffect(() => {
-  //   return clearInviteState;
-  // }, []);
 
   // useEffect(() => {
   //   if (invite?.approved && !invite?.opened) {
@@ -125,7 +105,7 @@ const Invite = () => {
         <div className="image-box">
           <ReactPlayer
             url={getCDNVideoUrl(
-              invite ? "embedded-diamonds.webm" : "diamond-evolution.webm"
+              collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"
             )}
             playing
             playsinline

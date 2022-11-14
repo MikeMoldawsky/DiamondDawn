@@ -9,7 +9,7 @@ import { EVENTS } from "consts";
 import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
-import {loadCollectorByAddress} from "store/collectorReducer";
+import {clearCollector, loadCollectorByAddress} from "store/collectorReducer";
 
 const AppLoader = () => {
   const provider = useProvider();
@@ -50,6 +50,7 @@ const AppLoader = () => {
       );
     },
     () => {
+      dispatch(clearCollector());
       dispatch(clearActionStatus("load-nfts"));
       dispatch({ type: "RESET_STATE" });
     }

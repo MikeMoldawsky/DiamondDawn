@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import {useDispatch, useSelector} from "react-redux";
-import { getCDNImageUrl, getCDNVideoUrl, isPrivateSale } from "utils";
+import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import classNames from "classnames";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import HomeBackground from "components/HomeBackground";
@@ -13,8 +13,8 @@ import PageLoader from "components/PageLoader";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import {inviteSelector, loadInviteById} from "store/inviteReducer";
 import InvitedModal from "components/InvitedModal/InvitedModal";
-import {collectorSelector} from "store/collectorReducer";
 import {isActionSuccessSelector} from "store/actionStatusReducer";
+import {canAccessDDSelector} from "store/selectors";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -22,10 +22,10 @@ const ComingSoonPage = () => {
   const [searchParams] = useSearchParams()
   const inviteId = searchParams.get("invite")
   const invite = useSelector(inviteSelector)
-  const collector = useSelector(collectorSelector)
   const isCollectorFetched = useSelector(
     isActionSuccessSelector("get-collector-by-address")
   );
+  const canAccessDD = useSelector(canAccessDDSelector);
   const [showInvitedModal, setShowInvitedModal] = useState(false)
   const [startTransition, setStartTransition] = useState(false);
   const [videoProgress, setVideoProgress] = useState({});
@@ -68,7 +68,6 @@ const ComingSoonPage = () => {
   );
 
   const transition = () => {
-    console.log("process.env", process.env);
     if (process.env.REACT_APP_ENABLE_TRANSITIONS !== "true") {
       return navigate("/explore");
     }
@@ -91,7 +90,7 @@ const ComingSoonPage = () => {
   const renderEntrance = () => {
     if (!isCollectorFetched) return null
 
-    if (collector || !isPrivateSale()) return (
+    if (canAccessDD) return (
       <div className="button transparent" onClick={transition}>
         EXPLORE
       </div>
@@ -127,6 +126,7 @@ const ComingSoonPage = () => {
         <div className="curtain-behind">
           <PageLoader
             pageName="homepage"
+            requireAccess={false}
             withLoader={false}
             timeout={-1}
             images={[

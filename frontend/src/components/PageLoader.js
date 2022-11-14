@@ -96,9 +96,9 @@ const PageLoader = ({
   }, [videosProgress]);
 
   // timeout
-  useTimeout(() => {
-    timeout > -1 && setAssetsReady();
-  }, timeout);
+  // useTimeout(() => {
+  //   timeout > -1 && setAssetsReady();
+  // }, timeout);
 
   // canAccessDD
   useEffect(() => {
@@ -108,7 +108,8 @@ const PageLoader = ({
   }, [canAccessDD, requireAccess])
 
   useEffect(() => {
-    if (requireAccess && isCollectorFetched && !collector) {
+    if (requireAccess && isCollectorFetched && !canAccessDD) {
+      console.log("PageLoader - navigating to /")
       navigate("/")
     }
   }, [isCollectorFetched])

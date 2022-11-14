@@ -16,7 +16,7 @@ import useMountLogger from "hooks/useMountLogger";
 import { forgeApi } from "api/contractApi";
 import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
-import {isPrivateSale, getCDNVideoUrl, isNoContractMode} from "utils";
+import {getCDNVideoUrl, isNoContractMode} from "utils";
 import EnterMineView from "pages/ProcessPage/EnterMine/EnterMineView";
 import { SYSTEM_STAGE } from "consts";
 
@@ -39,7 +39,7 @@ const EnterMine = ({ invite }) => {
     dispatch(loadDiamondCount(contract));
   }, []);
 
-  if (!invite || invite.revoked || invite.used) return null;
+  if (!invite || invite.revoked || invite.usedBy) return null;
 
   const onInviteExpired = () => navigateToDefault();
 
