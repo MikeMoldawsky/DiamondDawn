@@ -2,6 +2,7 @@ const Collector = require("./models/CollectorModel");
 const _ = require("lodash");
 const add = require("date-fns/add");
 const ethers = require("ethers");
+const signer = require("../helpers/signer");
 
 async function getCollectorObjectById(collectorId) {
   try {
@@ -35,7 +36,7 @@ function validateAddress(address) {
   }
 }
 
-function validateCollectorBeforeAction(collector, address) {
+function validateCollector(collector, address) {
   if (!collector) {
     throw new Error("Collector not found");
   }
@@ -89,7 +90,7 @@ async function updateCollector(update) {
 async function openMintWindow(collectorId, address) {
   validateAddress(address);
   const collector = await getCollectorObjectById(collectorId);
-  validateCollectorBeforeAction(collector, address);
+  validateCollector(collector, address);
 
   await Collector.findOneAndUpdate(
     { _id: collectorId },
@@ -101,6 +102,25 @@ async function openMintWindow(collectorId, address) {
   return await collector(collectorId);
 }
 
+async function signMint(collectorId, address) {
+  validateAddress(address);
+  const collector = await getCollectorObjectById(collectorId);
+  validateCollector(collector, address);
+
+  const signature = await signer.signAddress(address);
+
+  return { collector, signature };
+}
+
+async function confirmMinted(collectorId, address) {
+  validateAddress(address);
+  const collector = await getCollectorObjectById(collectorId);
+  validateCollector(collector, address);
+
+  await Collector.findOneAndUpdate({ _id: collectorId }, { minted: true });
+
+  return await getCollectorObjectById(collectorId);
+}
 
 module.exports = {
   getCollectorById: getCollectorObjectById,
@@ -108,4 +128,6 @@ module.exports = {
   createCollector,
   updateCollector,
   openMintWindow,
+  signMint,
+  confirmMinted,
 };

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 import "./RequestForm.scss";
-import {applyToDDApi, createInviteRequestApi} from "api/serverApi";
+import {applyToDDApi} from "api/serverApi";
 import { useAccount } from "wagmi";
 import { useSelector } from "react-redux";
 import { isActionPendingSelector } from "store/actionStatusReducer";

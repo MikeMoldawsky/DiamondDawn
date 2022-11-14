@@ -58,6 +58,19 @@ export const openMintWindowApi = async (collectorId, address) => {
   return collector;
 };
 
+export const signMintApi = async (collectorId, address) => {
+  const res = await axios.post(`/api/sign_mint`, { collectorId, address });
+  return res.data;
+};
+
+export const confirmMintedApi = async (collectorId, address) => {
+  const res = await axios.post(`/api/confirm_minted`, {
+    collectorId,
+    address,
+  });
+  return res.data;
+};
+
 // INVITATION
 export const getInviteApi = async (inviteId) => {
   try {
@@ -68,30 +81,6 @@ export const getInviteApi = async (inviteId) => {
   }
 };
 
-export const signInviteApi = async (inviteId, address) => {
-  const res = await axios.post(`/api/sign_invite`, { inviteId, address });
-  return res.data;
-};
-
-export const confirmInviteUsedApi = async (inviteId, address) => {
-  const res = await axios.post(`/api/confirm_invite_used`, {
-    inviteId,
-    address,
-  });
-  return res.data;
-};
-
-export const createInviteRequestApi = async (address, requestData) => {
-  const { country, state } = getLocation();
-  const { data: invite } = await axios.post(`/api/request_invite`, {
-    address,
-    ...requestData,
-    country,
-    state,
-  });
-  return invite;
-};
-
 // Signature
 export const signDawnApi = async (address, tokenId) => {
   const res = await axios.post(`/api/sign_dawn`, { address, tokenId });
@@ -99,7 +88,7 @@ export const signDawnApi = async (address, tokenId) => {
 };
 
 // Demo
-export const demoAuthApi = async (pwd, inviteId) => {
+export const privateSaleAuthApi = async (pwd, inviteId) => {
   const res = await axios.post(`/api/demo_auth`, { pwd, inviteId });
   return res.data?.auth;
 };

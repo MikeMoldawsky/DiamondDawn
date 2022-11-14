@@ -1,8 +1,12 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
 import { NavLink } from "react-router-dom";
+import {useSelector} from "react-redux";
+import {collectorSelector} from "store/collectorReducer";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
+  const collector = useSelector(collectorSelector)
+
   return (
     <Drawer
       anchor="right"
@@ -22,7 +26,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
         <div className="menu-item">FAQ</div>
       </NavLink>
       <NavLink to={"/collector"} onClick={closeMenu}>
-        <div className="menu-item">APPLY DIAMOND DAWN</div>
+        <div className="menu-item">{collector ? "COLLECTOR'S ROOM" : "APPLY FOR DIAMOND DAWN"}</div>
       </NavLink>
     </Drawer>
   );

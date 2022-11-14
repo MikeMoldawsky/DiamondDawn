@@ -14,13 +14,14 @@ import { useAccount } from "wagmi";
 import ActionView from "components/ActionView";
 import useMountLogger from "hooks/useMountLogger";
 import { forgeApi } from "api/contractApi";
-import { confirmInviteUsedApi, signInviteApi } from "api/serverApi";
+import {confirmMintedApi, signMintApi} from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import {getCDNVideoUrl, isNoContractMode} from "utils";
 import EnterMineView from "pages/ProcessPage/EnterMine/EnterMineView";
 import { SYSTEM_STAGE } from "consts";
+import {collectorSelector} from "store/collectorReducer";
 
-const EnterMine = ({ invite }) => {
+const EnterMine = () => {
   const { systemStage, isActive, minePrice, maxDiamonds, diamondCount } =
     useSelector(systemSelector);
   const account = useAccount();
@@ -28,6 +29,7 @@ const EnterMine = ({ invite }) => {
   const dispatch = useDispatch();
   const tokens = useSelector(tokensSelector);
   const navigateToDefault = useNavigateToDefault();
+  const collector = useSelector(collectorSelector)
 
   const maxTokenId = _.max(_.map(tokens, "id"));
 
@@ -39,14 +41,14 @@ const EnterMine = ({ invite }) => {
     dispatch(loadDiamondCount(contract));
   }, []);
 
-  if (!invite || invite.revoked || invite.usedBy) return null;
+  if (!collector || collector.minted || collector.mintClosed) return null;
 
-  const onInviteExpired = () => navigateToDefault();
+  const onMintWindowClose = () => navigateToDefault();
 
   const executeEnterMine = async () => {
     let signature;
     try {
-      const response = await signInviteApi(invite._id, account.address);
+      const response = await signMintApi(collector._id, account.address);
       signature = response.signature;
     } catch (e) {
       navigateToDefault();
@@ -55,7 +57,7 @@ const EnterMine = ({ invite }) => {
     const tx = await forgeApi(contract, minePrice, signature);
     await tx.wait();
     try {
-      await confirmInviteUsedApi(invite._id, account.address);
+      await confirmMintedApi(collector._id, account.address);
     } catch (e) {
       // do not show error not to confuse the user
     }
@@ -69,8 +71,8 @@ const EnterMine = ({ invite }) => {
       diamondCount={diamondCount}
       canMint={systemStage === SYSTEM_STAGE.KEY && isActive}
       enterMine={execute}
-      expiresAt={invite.expires}
-      onCountdownEnd={onInviteExpired}
+      expiresAt={collector.mintWindowClose}
+      onCountdownEnd={onMintWindowClose}
     />
   );
 

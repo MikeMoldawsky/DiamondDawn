@@ -7,7 +7,6 @@ import {useDispatch, useSelector} from "react-redux";
 import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import classNames from "classnames";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import HomeBackground from "components/HomeBackground";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import useWindowDimensions from "hooks/useWindowDimensions";
@@ -121,23 +120,6 @@ const ComingSoonPage = () => {
         })}
       >
         {renderBgPlayer()}
-        <div className="curtain-left" />
-        <div className="curtain-right" />
-        <div className="curtain-behind">
-          <PageLoader
-            pageName="homepage"
-            requireAccess={false}
-            withLoader={false}
-            timeout={-1}
-            images={[
-              getCDNImageUrl("/homepage/sky.png"),
-              getCDNImageUrl("/homepage/homepage-mountains-back.png"),
-              getCDNImageUrl("/homepage/homepage-mountains-front.png"),
-            ]}
-          >
-            <HomeBackground />
-          </PageLoader>
-        </div>
         <div className="center-aligned-column content">
           <div className="center-aligned-column">
             <div className="leading-text">COMING SOON</div>

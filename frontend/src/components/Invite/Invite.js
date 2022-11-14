@@ -37,7 +37,7 @@ const Invite = () => {
 
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
 
-  const loadInvite = async () => dispatch(loadInviteById(invite._id));
+  const loadInvite = async () => invite && dispatch(loadInviteById(invite._id));
   const loadCollector = async (address) => dispatch(loadCollectorByAddress(address));
 
   const onSubmitSuccess = () => {
@@ -48,8 +48,9 @@ const Invite = () => {
 
   useOnConnect(
     async (address) => {
+      dispatch(clearActionStatus("get-collector-by-address"));
       actionDispatch(() => loadCollector(address), "get-collector-by-address");
-      actionDispatch(() => loadInvite(address), "get-invite-by-id");
+      actionDispatch(() => loadInvite(), "get-invite-by-id");
     },
     () => {
       dispatch(clearActionStatus("get-collector-by-address"));
@@ -64,7 +65,7 @@ const Invite = () => {
 
   if (systemStage > SYSTEM_STAGE.KEY) return null;
 
-  if (!isCollectorFetched || (collector.approved && !collector.mintWindowStart))
+  if (!isCollectorFetched)
     return (
       <div className="box-content opaque box-loading">
         <Loading />
@@ -83,7 +84,7 @@ const Invite = () => {
   if (collector?.approved)
     return (
       <div className="box-content approved">
-        <EnterMine invite={invite} />
+        <EnterMine />
       </div>
     );
 
