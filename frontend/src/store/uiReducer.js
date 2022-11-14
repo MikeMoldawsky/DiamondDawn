@@ -2,11 +2,11 @@ import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import isNil from "lodash/isNil";
 
 const resolveDemoAuth = () => {
-  const demoAuth =
+  const privateSaleAuth =
     process.env.REACT_APP_USE_LOCAL_STORAGE === "true"
-      ? localStorage.getItem("demoAuth")
+      ? localStorage.getItem("privateSaleAuth")
       : null;
-  return !isNil(demoAuth) ? Boolean(demoAuth) : false;
+  return !isNil(privateSaleAuth) ? Boolean(privateSaleAuth) : false;
 };
 
 const INITIAL_STATE = {
@@ -14,7 +14,7 @@ const INITIAL_STATE = {
   shouldIgnoreTokenTransferWatch: false,
   muted: true,
   scroll: 0,
-  demoAuth: resolveDemoAuth(),
+  privateSaleAuth: resolveDemoAuth(),
   showHPLogo: null,
   musicSrc: "",
   assetReadyPages: {},

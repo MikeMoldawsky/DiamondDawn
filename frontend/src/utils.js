@@ -159,7 +159,7 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
 export const isDemo = () => process.env.REACT_APP_DEMO_MODE === "true";
 
 export const isDemoAndAuthSelector = (isAuth) => (state) =>
-  isDemo() && state.ui.demoAuth === isAuth;
+  isDemo() && state.ui.privateSaleAuth === isAuth;
 
 const prependBackslash = (objectPath) =>
   `${objectPath[0] !== "/" ? "/" : ""}${objectPath}`;

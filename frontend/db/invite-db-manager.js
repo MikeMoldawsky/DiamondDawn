@@ -1,23 +1,29 @@
-const InviteModel = require("./models/InviteModel");
+// const InviteModel = require("./models/InviteModel");
+const Invitation = require("./models/InvitationModel");
 const add = require("date-fns/add");
 const ethers = require("ethers");
 const signer = require("../helpers/signer");
 
 async function getInviteObjectById(inviteId) {
-  const invite = (await InviteModel.findById(inviteId)).toObject();
-  if (!invite) return invite;
+  return Invitation.findById(inviteId).populate("createdBy");
+  // return Invitation.findById(inviteId).populate("createdBy");
 
-  if (invite.opened && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {
-    invite.expires = add(invite.opened, {
-      seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
-    });
 
-    if (invite.used || invite.expires < new Date()) {
-      invite.revoked = true;
-    }
-  }
 
-  return invite;
+  // const invite = (await InviteModel.findById(inviteId)).toObject();
+  // if (!invite) return invite;
+  //
+  // if (invite.opened && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {
+  //   invite.expires = add(invite.opened, {
+  //     seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
+  //   });
+  //
+  //   if (invite.used || invite.expires < new Date()) {
+  //     invite.revoked = true;
+  //   }
+  // }
+  //
+  // return invite;
 }
 
 function validateAddress(address) {
@@ -49,7 +55,7 @@ async function openInvite(inviteId, address, country, state) {
   const invite = await getInviteObjectById(inviteId);
   validateInviteBeforeAction(invite, address);
 
-  await InviteModel.findOneAndUpdate(
+  await Invitation.findOneAndUpdate(
     { _id: inviteId },
     {
       opened: invite.opened || Date.now(),
@@ -75,7 +81,7 @@ async function confirmInviteUsed(inviteId, address) {
   const invite = await getInviteObjectById(inviteId);
   validateInviteBeforeAction(invite, address);
 
-  await InviteModel.findOneAndUpdate({ _id: inviteId }, { used: true });
+  await Invitation.findOneAndUpdate({ _id: inviteId }, { used: true });
 
   return await getInviteObjectById(inviteId);
 }
@@ -89,11 +95,11 @@ async function createInviteRequest(
   state
 ) {
   validateAddress(address);
-  let invite = await InviteModel.findOne({ address });
+  let invite = await Invitation.findOne({ address });
   if (invite) {
     throw new Error("Address already invited");
   }
-  invite = new InviteModel({
+  invite = new Invitation({
     address,
     twitter,
     email,
@@ -104,7 +110,7 @@ async function createInviteRequest(
 }
 
 async function getInviteByAddress(address) {
-  const invite = await InviteModel.findOne({ address });
+  const invite = await Invitation.findOne({ address });
   return invite ? getInviteObjectById(invite) : null;
 }
 

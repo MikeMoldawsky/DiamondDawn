@@ -1,20 +1,26 @@
-import React, { useCallback, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { getCDNImageUrl, getCDNVideoUrl, isDemo } from "utils";
 import classNames from "classnames";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import HomeBackground from "components/HomeBackground";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import useWindowDimensions from "hooks/useWindowDimensions";
+import {inviteSelector, loadInviteByAddress, loadInviteById} from "store/inviteReducer";
+import InvitedModal from "components/InvitedModal/InvitedModal";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams()
+  const inviteId = searchParams.get("invite")
+  const invite = useSelector(inviteSelector)
+  const [showInvitedModal, setShowInvitedModal] = useState(false)
   const [startTransition, setStartTransition] = useState(false);
   const [videoProgress, setVideoProgress] = useState({});
   const { width, height } = useWindowDimensions();
@@ -22,6 +28,18 @@ const ComingSoonPage = () => {
   const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
 
   useMusic("coming-soon.mp3");
+
+  useEffect(() => {
+    if (inviteId) {
+      dispatch(loadInviteById(inviteId))
+    }
+  }, [inviteId])
+
+  useEffect(() => {
+    if (invite && !invite.used && !invite.revoked) {
+      setShowInvitedModal(true)
+    }
+  }, [invite])
 
   const renderBgPlayer = useCallback(
     () => (
@@ -59,14 +77,15 @@ const ComingSoonPage = () => {
   };
 
   const onCorrectPassword = () => {
-    dispatch(updateUiState({ demoAuth: true }));
-    localStorage.setItem("demoAuth", "true");
+    dispatch(updateUiState({ privateSaleAuth: true }));
+    localStorage.setItem("privateSaleAuth", "true");
     transition();
   };
 
   return (
     <PageLoader
       pageName="coming-soon"
+      images={[getCDNImageUrl("envelop-wings.png")]}
       videos={[{ progress: videoProgress, threshold: 0.5 }]}
       timeout={5000}
     >
@@ -103,6 +122,7 @@ const ComingSoonPage = () => {
           </div>
           {isDemo() ? (
             <PasswordBox
+              inviteId={invite?._id}
               onCorrect={onCorrectPassword}
               passwordLength={8}
               buttonText="EXPLORE"
@@ -113,6 +133,7 @@ const ComingSoonPage = () => {
             </div>
           )}
         </div>
+        {showInvitedModal && (<InvitedModal invite={invite} close={() => setShowInvitedModal(false)}/>)}
       </div>
     </PageLoader>
   );

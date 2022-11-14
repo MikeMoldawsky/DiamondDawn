@@ -89,7 +89,7 @@ export const signDawnApi = async (address, tokenId) => {
 };
 
 // Demo
-export const demoAuthApi = async (pwd) => {
-  const res = await axios.post(`/api/demo_auth`, { pwd });
+export const demoAuthApi = async (pwd, inviteId) => {
+  const res = await axios.post(`/api/demo_auth`, { pwd, inviteId });
   return res.data?.auth;
 };
