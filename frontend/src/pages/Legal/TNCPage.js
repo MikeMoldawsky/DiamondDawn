@@ -7,11 +7,7 @@ const TNCPage = () => (
   <PageSizeLimit>
     <div className="page tnc-page">
       <div className="inner-page">
-        <h1>
-          Diamond Dawn
-          <br />
-          Terms and Conditions
-        </h1>
+        <h1>Terms and Conditions</h1>
         <h2>Effective Date: October 26, 2022</h2>
         <div className="start-start-aligned-row heading">
           <div>1.</div>
@@ -43,7 +39,7 @@ const TNCPage = () => (
             </p>
             <p>
               <b>“Creator”</b> means the entity which released to the public the
-              Diamond-NFT and related Art, Tweezer Hands LTD (the{" "}
+              Diamond-NFT and related Art, Tweezers Hands LTD (the{" "}
               <b>"Company"</b>, <b>"We"</b> or <b>"Us"</b>).
             </p>
             <p>
