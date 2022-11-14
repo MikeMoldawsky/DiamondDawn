@@ -48,7 +48,7 @@ const Invite = () => {
 
   useOnConnect(
     async (address) => {
-      dispatch(clearActionStatus("get-collector-by-address"));
+      // dispatch(clearActionStatus("get-collector-by-address"));
       actionDispatch(() => loadCollector(address), "get-collector-by-address");
       actionDispatch(() => loadInvite(), "get-invite-by-id");
     },

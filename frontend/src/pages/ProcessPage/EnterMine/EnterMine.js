@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
 import "./EnterMine.scss";
@@ -29,7 +29,7 @@ const EnterMine = () => {
   const dispatch = useDispatch();
   const tokens = useSelector(tokensSelector);
   const navigateToDefault = useNavigateToDefault();
-  const collector = useSelector(collectorSelector)
+  const collector = useSelector(collectorSelector);
 
   const maxTokenId = _.max(_.map(tokens, "id"));
 

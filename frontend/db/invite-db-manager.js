@@ -1,10 +1,22 @@
 const Invitation = require("./models/InvitationModel");
 
-async function getInviteObjectById(inviteId) {
+const MAX_INVITES_FOR_COLLECTOR = 2
+
+async function createInvitation(createdBy, note) {
+  let inviterInvitations = await Invitation.count({ createdBy });
+  if (inviterInvitations >= MAX_INVITES_FOR_COLLECTOR) {
+    throw new Error("Invitation limit reached");
+  }
+
+  const invitation = new Invitation({ createdBy, note });
+  return invitation.save();
+}
+
+async function getInviteById(inviteId) {
   return Invitation.findById(inviteId).populate("createdBy");
 }
 
-function validateInviteBeforeAction(invite) {
+function validateInvite(invite) {
   if (!invite) {
     throw new Error("Invitation not found");
   }
@@ -16,9 +28,8 @@ function validateInviteBeforeAction(invite) {
   }
 }
 async function validateInviteById(inviteId) {
-  const invite = await getInviteObjectById(inviteId);
-  validateInviteBeforeAction(invite);
-
+  const invite = await getInviteById(inviteId);
+  validateInvite(invite);
 }
 
 async function useInvite(inviteId, collectorId) {
@@ -26,11 +37,12 @@ async function useInvite(inviteId, collectorId) {
 
   await Invitation.findOneAndUpdate({ _id: inviteId }, { usedBy: collectorId });
 
-  return await getInviteObjectById(inviteId);
+  return await getInviteById(inviteId);
 }
 
 module.exports = {
+  createInvitation,
   validateInviteById,
-  getInviteObjectById,
+  getInviteById,
   useInvite,
 };

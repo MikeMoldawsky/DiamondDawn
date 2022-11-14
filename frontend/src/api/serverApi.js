@@ -26,7 +26,16 @@ export const getConfigApi = async () => {
   }
 };
 
-// COLLECTOR
+// COLLECTOR & INVITATION
+export const getInviteApi = async (inviteId) => {
+  try {
+    const res = await axios.post(`/api/get_invite`, { inviteId });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+};
+
 export const getCollectorByAddressApi = async address => {
   try {
     const { data: collector } = await axios.post(`/api/get_collector_by_address`, {
@@ -71,14 +80,9 @@ export const confirmMintedApi = async (collectorId, address) => {
   return res.data;
 };
 
-// INVITATION
-export const getInviteApi = async (inviteId) => {
-  try {
-    const res = await axios.post(`/api/get_invite`, { inviteId });
-    return res.data;
-  } catch (e) {
-    return null;
-  }
+export const generateInvitationsApi = async (collectorId) => {
+  const res = await axios.post(`/api/generate_invitations`, { collectorId });
+  return res.data;
 };
 
 // Signature
