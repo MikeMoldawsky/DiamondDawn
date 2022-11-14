@@ -1,5 +1,5 @@
 import { makeReducer, reduceSetFull } from "./reduxUtils";
-import {getCollectorByAddressApi, getInviteApi, openInviteApi} from "api/serverApi";
+import {getCollectorByAddressApi, openMintWindowApi} from "api/serverApi";
 import isEmpty from 'lodash/isEmpty'
 
 const INITIAL_STATE = null;
@@ -18,10 +18,10 @@ export const loadCollectorByAddress = (address) => async (dispatch) => {
   }
 };
 
-// export const openCollectorMintWindow = (collectorId) => async (dispatch) => {
-//   const invite = await openInviteApi(collectorId);
-//   dispatch(updateInvite(invite));
-// };
+export const openMintWindow = (collectorId, address) => async (dispatch) => {
+  const collector = await openMintWindowApi(collectorId, address);
+  dispatch(updateCollector(collector));
+};
 
 export const clearCollector = () => ({
   type: "COLLECTOR.CLEAR",

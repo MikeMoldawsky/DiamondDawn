@@ -8,24 +8,6 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 async function getInviteObjectById(inviteId) {
   return Invitation.findById(inviteId).populate("createdBy");
-  // return Invitation.findById(inviteId).populate("createdBy");
-
-
-
-  // const invite = (await InviteModel.findById(inviteId)).toObject();
-  // if (!invite) return invite;
-  //
-  // if (invite.opened && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {
-  //   invite.expires = add(invite.opened, {
-  //     seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
-  //   });
-  //
-  //   if (invite.used || invite.expires < new Date()) {
-  //     invite.revoked = true;
-  //   }
-  // }
-  //
-  // return invite;
 }
 
 function validateAddress(address) {
@@ -34,28 +16,21 @@ function validateAddress(address) {
   }
 }
 
-function validateInviteBeforeAction(invite, address) {
-  if (!invite || invite.used || invite.revoked || !invite.approved) {
-    throw new Error("Invalid invitation");
+function validateInviteBeforeAction(invite) {
+  if (!invite) {
+    throw new Error("Invitation not found");
   }
-  if (address !== invite.address) {
-    throw new Error(`Wrong Ethereum address`);
-  }
-  if (invite.used) {
+  if (invite.usedBy) {
     throw new Error("Invitation already used");
   }
   if (invite.revoked) {
     throw new Error("Invitation revoked");
   }
-  if (!invite.approved) {
-    throw new Error("Invitation pending approval");
-  }
 }
 
 async function useInvite(inviteId, collectorId) {
-  // validateAddress(address);
   const invite = await getInviteObjectById(inviteId);
-  // validateInviteBeforeAction(invite, address);
+  validateInviteBeforeAction(invite);
 
   await Invitation.findOneAndUpdate({ _id: inviteId }, { usedBy: collectorId });
 

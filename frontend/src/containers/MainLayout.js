@@ -19,7 +19,6 @@ import Homepage from "pages/Homepage";
 import ProcessPage from "pages/ProcessPage";
 import NFTPage from "pages/NFTPage";
 import RebirthPage from "pages/RebirthPage";
-import InvitePage from "pages/InvitePage";
 import AboutPage from "pages/AboutPage";
 import Header from "components/Header";
 import SideMenu from "components/SideMenu";
@@ -33,14 +32,12 @@ import { isNoContractMode } from "utils";
 import PrivacyPage from "pages/Legal/PrivacyPage";
 import TNCPage from "pages/Legal/TNCPage";
 import NoContractAppLoader from "containers/NoContractAppLoader";
-import {canAccessDDSelector} from "store/selectors";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const actionDispatch = useActionDispatch();
-  const canAccessDD = useSelector(canAccessDDSelector);
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");
@@ -64,14 +61,6 @@ const MainLayout = () => {
               }
             />
             <Route path="/explore" element={<Homepage />} />
-            <Route
-              path="invite/:inviteId"
-              element={
-                <AccountProvider withLoader>
-                  <InvitePage />
-                </AccountProvider>
-              }
-            />
             <Route
               path="process"
               element={

@@ -8,7 +8,6 @@ async function getCollectorObjectById(collectorId) {
     const collector = (await Collector.findById(collectorId)).toObject()
     if (!collector) return null;
 
-    // let expires, expired
     if (collector.mintWindowOpen && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {
       collector.mintWindowClose = add(collector.mintWindowOpen, {
         seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
@@ -33,6 +32,21 @@ async function getCollectorByAddress(address) {
 function validateAddress(address) {
   if (!ethers.utils.isAddress(address)) {
     throw new Error("Invalid Ethereum address");
+  }
+}
+
+function validateCollectorBeforeAction(collector, address) {
+  if (!collector) {
+    throw new Error("Collector not found");
+  }
+  if (address !== collector.address) {
+    throw new Error(`Wrong Ethereum address`);
+  }
+  if (collector.minted) {
+    throw new Error("collector already minted");
+  }
+  if (!collector.approved) {
+    throw new Error("Collector pending approval");
   }
 }
 
@@ -72,9 +86,26 @@ async function updateCollector(update) {
   }
 }
 
+async function openMintWindow(collectorId, address) {
+  validateAddress(address);
+  const collector = await getCollectorObjectById(collectorId);
+  validateCollectorBeforeAction(collector, address);
+
+  await Collector.findOneAndUpdate(
+    { _id: collectorId },
+    {
+      mintWindowStart: collector.mintWindowStart || Date.now(),
+    }
+  );
+
+  return await collector(collectorId);
+}
+
+
 module.exports = {
   getCollectorById: getCollectorObjectById,
   getCollectorByAddress,
   createCollector,
   updateCollector,
+  openMintWindow,
 };

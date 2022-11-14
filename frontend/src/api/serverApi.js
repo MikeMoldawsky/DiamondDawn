@@ -50,6 +50,14 @@ export const applyToDDApi = async (inviteId, address, requestData) => {
   return invite;
 };
 
+export const openMintWindowApi = async (collectorId, address) => {
+  const { data: collector } = await axios.post(`/api/open_mint_window`, {
+    collectorId,
+    address,
+  });
+  return collector;
+};
+
 // INVITATION
 export const getInviteApi = async (inviteId) => {
   try {
@@ -58,17 +66,6 @@ export const getInviteApi = async (inviteId) => {
   } catch (e) {
     return null;
   }
-};
-
-export const openInviteApi = async (inviteId, address) => {
-  const { country, state } = getLocation();
-  const { data: invite } = await axios.post(`/api/open_invite`, {
-    inviteId,
-    address,
-    country,
-    state,
-  });
-  return invite;
 };
 
 export const signInviteApi = async (inviteId, address) => {
@@ -93,17 +90,6 @@ export const createInviteRequestApi = async (address, requestData) => {
     state,
   });
   return invite;
-};
-
-export const getInviteByAddressApi = async (address) => {
-  try {
-    const { data: invite } = await axios.post(`/api/get_invite_by_address`, {
-      address,
-    });
-    return invite;
-  } catch (e) {
-    return null;
-  }
 };
 
 // Signature

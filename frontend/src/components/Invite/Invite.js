@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
@@ -13,7 +13,6 @@ import {
 import {
   inviteSelector,
   loadInviteById,
-  openInvite,
 } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import Loading from "components/Loading";
@@ -23,7 +22,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import ReactPlayer from "react-player";
 import { getCDNVideoUrl } from "utils";
-import {collectorSelector, loadCollectorByAddress} from "store/collectorReducer";
+import {collectorSelector, loadCollectorByAddress, openMintWindow} from "store/collectorReducer";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -57,17 +56,15 @@ const Invite = () => {
     }
   );
 
-  // useEffect(() => {
-  //   if (invite?.approved && !invite?.opened) {
-  //     dispatch(openInvite(invite._id, account.address));
-  //   }
-  // }, [invite?.approved, invite?.opened]);
+  useEffect(() => {
+    if (systemStage === SYSTEM_STAGE.KEY && collector?.approved && !collector?.mintWindowStart) {
+      dispatch(openMintWindow(collector._id, account.address));
+    }
+  }, [systemStage, collector?.approved, collector?.mintWindowStart]);
 
   if (systemStage > SYSTEM_STAGE.KEY) return null;
 
-  // if (!isCollectorFetched || (invite.approved && !invite.opened))
-  // if (!isCollectorFetched || (collector.approved && !collector.mintWindowStart))
-  if (!isCollectorFetched)
+  if (!isCollectorFetched || (collector.approved && !collector.mintWindowStart))
     return (
       <div className="box-content opaque box-loading">
         <Loading />
@@ -82,15 +79,6 @@ const Invite = () => {
         </div>
       </div>
     );
-
-  // if (invite.revoked)
-  //   return (
-  //     <div className="box-content opaque">
-  //       <div className="center-center-aligned-row secondary-text">
-  //         Invitations Expired
-  //       </div>
-  //     </div>
-  //   );
 
   if (collector?.approved)
     return (
