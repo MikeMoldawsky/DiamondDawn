@@ -1,33 +1,33 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import classNames from "classnames";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import useWindowDimensions from "hooks/useWindowDimensions";
-import {inviteSelector, loadInviteById} from "store/inviteReducer";
+import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import InvitedModal from "components/InvitedModal/InvitedModal";
-import {isActionSuccessSelector} from "store/actionStatusReducer";
-import {canAccessDDSelector} from "store/selectors";
-import {collectorSelector} from "store/collectorReducer";
+import { isActionSuccessSelector } from "store/actionStatusReducer";
+import { canAccessDDSelector } from "store/selectors";
+import { collectorSelector } from "store/collectorReducer";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams()
-  const inviteId = searchParams.get("invite")
-  const invite = useSelector(inviteSelector)
-  const collector = useSelector(collectorSelector)
+  const [searchParams] = useSearchParams();
+  const inviteId = searchParams.get("invite");
+  const invite = useSelector(inviteSelector);
+  const collector = useSelector(collectorSelector);
   const isCollectorFetched = useSelector(
     isActionSuccessSelector("get-collector-by-address")
   );
   const canAccessDD = useSelector(canAccessDDSelector);
-  const [showInvitedModal, setShowInvitedModal] = useState(false)
+  const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [startTransition, setStartTransition] = useState(false);
   const [videoProgress, setVideoProgress] = useState({});
   const { width, height } = useWindowDimensions();
@@ -38,15 +38,21 @@ const ComingSoonPage = () => {
 
   useEffect(() => {
     if (inviteId) {
-      dispatch(loadInviteById(inviteId))
+      dispatch(loadInviteById(inviteId));
     }
-  }, [inviteId])
+  }, [inviteId]);
 
   useEffect(() => {
-    if (invite && !invite.usedBy && !invite.revoked && isCollectorFetched && !collector) {
-      setShowInvitedModal(true)
+    if (
+      invite &&
+      !invite.usedBy &&
+      !invite.revoked &&
+      isCollectorFetched &&
+      !collector
+    ) {
+      setShowInvitedModal(true);
     }
-  }, [invite, isCollectorFetched, collector])
+  }, [invite, isCollectorFetched, collector]);
 
   const renderBgPlayer = useCallback(
     () => (
@@ -89,13 +95,14 @@ const ComingSoonPage = () => {
   };
 
   const renderEntrance = () => {
-    if (!isCollectorFetched) return null
+    if (!isCollectorFetched) return null;
 
-    if (canAccessDD) return (
-      <div className="button transparent" onClick={transition}>
-        EXPLORE
-      </div>
-    )
+    if (canAccessDD)
+      return (
+        <div className="button transparent" onClick={transition}>
+          EXPLORE
+        </div>
+      );
 
     return (
       <PasswordBox
@@ -104,8 +111,8 @@ const ComingSoonPage = () => {
         passwordLength={8}
         buttonText="EXPLORE"
       />
-    )
-  }
+    );
+  };
 
   return (
     <PageLoader
@@ -132,7 +139,12 @@ const ComingSoonPage = () => {
           </div>
           {renderEntrance()}
         </div>
-        {showInvitedModal && (<InvitedModal invite={invite} close={() => setShowInvitedModal(false)}/>)}
+        {showInvitedModal && (
+          <InvitedModal
+            invite={invite}
+            close={() => setShowInvitedModal(false)}
+          />
+        )}
       </div>
     </PageLoader>
   );

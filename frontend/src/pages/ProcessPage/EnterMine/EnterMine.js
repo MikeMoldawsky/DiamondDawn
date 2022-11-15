@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
 import "./EnterMine.scss";
@@ -14,12 +14,12 @@ import { useAccount } from "wagmi";
 import ActionView from "components/ActionView";
 import useMountLogger from "hooks/useMountLogger";
 import { forgeApi } from "api/contractApi";
-import {confirmMintedApi, signMintApi} from "api/serverApi";
+import { confirmMintedApi, signMintApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
-import {getCDNVideoUrl, isNoContractMode} from "utils";
+import { getCDNVideoUrl, isNoContractMode } from "utils";
 import EnterMineView from "pages/ProcessPage/EnterMine/EnterMineView";
 import { SYSTEM_STAGE } from "consts";
-import {collectorSelector} from "store/collectorReducer";
+import { collectorSelector } from "store/collectorReducer";
 
 const EnterMine = () => {
   const { systemStage, isActive, minePrice, maxDiamonds, diamondCount } =

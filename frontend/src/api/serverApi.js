@@ -36,16 +36,19 @@ export const getInviteApi = async (inviteId) => {
   }
 };
 
-export const getCollectorByAddressApi = async address => {
+export const getCollectorByAddressApi = async (address) => {
   try {
-    const { data: collector } = await axios.post(`/api/get_collector_by_address`, {
-      address,
-    });
+    const { data: collector } = await axios.post(
+      `/api/get_collector_by_address`,
+      {
+        address,
+      }
+    );
     return collector;
   } catch (e) {
     return null;
   }
-}
+};
 
 export const applyToDDApi = async (inviteId, address, requestData) => {
   const { country, state } = getLocation();

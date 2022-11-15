@@ -158,7 +158,8 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
 
 // export const isPrivateSale = () => process.env.REACT_APP_DEMO_MODE === "true";
 
-export const isNoContractMode = () => process.env.REACT_APP_NO_CONTRACT === "true";
+export const isNoContractMode = () =>
+  process.env.REACT_APP_NO_CONTRACT === "true";
 
 const prependBackslash = (objectPath) =>
   `${objectPath[0] !== "/" ? "/" : ""}${objectPath}`;
@@ -178,10 +179,14 @@ export const getCDNVideoUrl = (objectPath) =>
 export const getCDNAudioUrl = (objectPath) =>
   getCDNObjectUrl(`/audio${prependBackslash(objectPath)}`);
 
-export const shortenEthAddress = (address) => address ?
-  `${address.substring(0, 6)}...${address.substring(address.length - 4)}` :
-  "";
+export const shortenEthAddress = (address) =>
+  address
+    ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
+    : "";
 
-export const collectorDisplayName = collector => collector ?
-  (collector.twitter || collector.email || shortenEthAddress(collector.address)) :
-  ""
+export const collectorDisplayName = (collector) =>
+  collector
+    ? collector.twitter ||
+      collector.email ||
+      shortenEthAddress(collector.address)
+    : "";

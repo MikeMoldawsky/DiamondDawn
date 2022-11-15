@@ -1,16 +1,20 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
 import { NavLink } from "react-router-dom";
-import {useSelector} from "react-redux";
-import {collectorSelector} from "store/collectorReducer";
+import { useSelector } from "react-redux";
+import { collectorSelector } from "store/collectorReducer";
 import InvitationsStatus from "components/InvitationsStatus";
-import {collectorDisplayName, getCDNImageUrl, shortenEthAddress} from "utils";
-import "./SideMenu.scss"
+import { collectorDisplayName, getCDNImageUrl, shortenEthAddress } from "utils";
+import "./SideMenu.scss";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
-  const collector = useSelector(collectorSelector)
+  const collector = useSelector(collectorSelector);
 
-  const invitedBy = collector?.invitedBy ? (collector.invitedBy.twitter || collector.invitedBy.email || shortenEthAddress(collector.invitedBy.address)) : null
+  const invitedBy = collector?.invitedBy
+    ? collector.invitedBy.twitter ||
+      collector.invitedBy.email ||
+      shortenEthAddress(collector.invitedBy.address)
+    : null;
 
   return (
     <Drawer
@@ -40,15 +44,15 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           <InvitationsStatus />
         </div>
       )}
-      {!collector && (
-        <div className="button gold">APPLY FOR DIAMOND DAWN</div>
-      )}
+      {!collector && <div className="button gold">APPLY FOR DIAMOND DAWN</div>}
       {collector?.invitedBy?.createdBy && (
         <div className="invited-by">
           <div className="image">
             <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
           </div>
-          <div className="">INVITED BY {collectorDisplayName(collector?.invitedBy?.createdBy)}</div>
+          <div className="">
+            INVITED BY {collectorDisplayName(collector?.invitedBy?.createdBy)}
+          </div>
         </div>
       )}
     </Drawer>

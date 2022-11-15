@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const db = require("../db");
-const ObjectId = mongoose.Schema.Types.ObjectId
+const ObjectId = mongoose.Schema.Types.ObjectId;
 require("./InvitationModel");
 
 const CollectorSchema = new mongoose.Schema({

@@ -7,11 +7,14 @@ import useTimeout from "hooks/useTimeout";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import classNames from "classnames";
-import {canAccessDDSelector} from "store/selectors";
-import {collectorSelector} from "store/collectorReducer";
-import {isActionFirstCompleteSelector, isActionSuccessSelector} from "store/actionStatusReducer";
-import {useNavigate} from "react-router-dom";
-import {useAccount} from "wagmi";
+import { canAccessDDSelector } from "store/selectors";
+import { collectorSelector } from "store/collectorReducer";
+import {
+  isActionFirstCompleteSelector,
+  isActionSuccessSelector,
+} from "store/actionStatusReducer";
+import { useNavigate } from "react-router-dom";
+import { useAccount } from "wagmi";
 
 const DEFAULT_TIMEOUT = 10000;
 const SHOW_TEXT_TIME = 100;
@@ -34,13 +37,13 @@ const PageLoader = ({
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
   const canAccessDD = useSelector(canAccessDDSelector);
-  const collector = useSelector(collectorSelector)
+  const collector = useSelector(collectorSelector);
   const isCollectorFetched = useSelector(
     // isActionSuccessSelector("get-collector-by-address")
     isActionFirstCompleteSelector("get-collector-by-address")
   );
-  const navigate = useNavigate()
-  const account = useAccount()
+  const navigate = useNavigate();
+  const account = useAccount();
 
   const assetsReady = assetReadyPages[pageName];
 
@@ -105,16 +108,19 @@ const PageLoader = ({
   // canAccessDD
   useEffect(() => {
     if (!requireAccess || canAccessDD) {
-      setAssetsReady()
+      setAssetsReady();
     }
-  }, [canAccessDD, requireAccess])
+  }, [canAccessDD, requireAccess]);
 
   useEffect(() => {
-    if (requireAccess && (!account?.address || (isCollectorFetched && !canAccessDD))) {
-      console.log("PageLoader - navigating to /")
-      navigate("/")
+    if (
+      requireAccess &&
+      (!account?.address || (isCollectorFetched && !canAccessDD))
+    ) {
+      console.log("PageLoader - navigating to /");
+      navigate("/");
     }
-  }, [isCollectorFetched, account?.address])
+  }, [isCollectorFetched, account?.address]);
 
   setTimeout(() => {
     setShowText(true);

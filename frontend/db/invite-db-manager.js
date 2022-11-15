@@ -1,6 +1,6 @@
 const Invitation = require("./models/InvitationModel");
 
-const MAX_INVITES_FOR_COLLECTOR = 2
+const MAX_INVITES_FOR_COLLECTOR = 2;
 
 async function createInvitation(createdBy, note) {
   let inviterInvitations = await Invitation.count({ createdBy });

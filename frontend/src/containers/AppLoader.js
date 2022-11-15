@@ -9,7 +9,7 @@ import { EVENTS } from "consts";
 import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
-import {clearCollector, loadCollectorByAddress} from "store/collectorReducer";
+import { clearCollector, loadCollectorByAddress } from "store/collectorReducer";
 
 const AppLoader = () => {
   const provider = useProvider();
@@ -38,15 +38,13 @@ const AppLoader = () => {
 
   useOnConnect(
     (address) => {
-      actionDispatch(loadCollectorByAddress(address), "get-collector-by-address");
+      actionDispatch(
+        loadCollectorByAddress(address),
+        "get-collector-by-address"
+      );
       dispatch(clearTokens());
       dispatch(
-        readAndWatchAccountTokens(
-          actionDispatch,
-          contract,
-          provider,
-          address
-        )
+        readAndWatchAccountTokens(actionDispatch, contract, provider, address)
       );
     },
     () => {

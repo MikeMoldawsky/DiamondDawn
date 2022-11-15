@@ -13,15 +13,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import AudioPlayer from "components/AudioPlayer";
-import {isNoContractMode} from "utils";
+import { isNoContractMode } from "utils";
 import { DIAMOND_DAWN_TWITTER_URL } from "consts";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/Logo";
 import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import { usePageSizeLimit } from "components/PageSizeLimit";
-import {canAccessDDSelector} from "store/selectors";
-import {collectorSelector} from "store/collectorReducer";
+import { canAccessDDSelector } from "store/selectors";
+import { collectorSelector } from "store/collectorReducer";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const canAccessDD = useSelector(canAccessDDSelector);
   const isPageSizeLimitOk = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
-  const collector = useSelector(collectorSelector)
+  const collector = useSelector(collectorSelector);
 
   const isHomepage =
     location.pathname === "/" || location.pathname === "/explore";
@@ -65,7 +65,9 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           <div className="center-aligned-row header-side">
             {canAccessDD && isPageSizeLimitOk && (
               <NavLink to="/collector">
-                <div className="button gold sm collector-btn">{collector ? "COLLECTOR'S ROOM" : "APPLY FOR DIAMOND DAWN"}</div>
+                <div className="button gold sm collector-btn">
+                  {collector ? "COLLECTOR'S ROOM" : "APPLY FOR DIAMOND DAWN"}
+                </div>
               </NavLink>
             )}
             <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>

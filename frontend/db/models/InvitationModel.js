@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const db = require("../db");
-require("./CollectorModel")
-const ObjectId = mongoose.Schema.Types.ObjectId
+require("./CollectorModel");
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const InvitationSchema = new mongoose.Schema({
   createdAt: { type: Date, required: true, default: Date.now },

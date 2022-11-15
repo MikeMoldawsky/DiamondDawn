@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
@@ -10,10 +10,7 @@ import {
   clearActionStatus,
   isActionFirstCompleteSelector,
 } from "store/actionStatusReducer";
-import {
-  inviteSelector,
-  loadInviteById,
-} from "store/inviteReducer";
+import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import Loading from "components/Loading";
 import EnterMine from "pages/ProcessPage/EnterMine";
@@ -22,7 +19,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import ReactPlayer from "react-player";
 import { getCDNVideoUrl } from "utils";
-import {collectorSelector, loadCollectorByAddress, openMintWindow} from "store/collectorReducer";
+import {
+  collectorSelector,
+  loadCollectorByAddress,
+  openMintWindow,
+} from "store/collectorReducer";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -38,7 +39,8 @@ const Invite = () => {
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
 
   const loadInvite = async () => invite && dispatch(loadInviteById(invite._id));
-  const loadCollector = async (address) => dispatch(loadCollectorByAddress(address));
+  const loadCollector = async (address) =>
+    dispatch(loadCollectorByAddress(address));
 
   const onSubmitSuccess = () => {
     setShowSubmittedModal(true);
@@ -58,7 +60,11 @@ const Invite = () => {
   );
 
   useEffect(() => {
-    if (systemStage === SYSTEM_STAGE.KEY && collector?.approved && !collector?.mintWindowStart) {
+    if (
+      systemStage === SYSTEM_STAGE.KEY &&
+      collector?.approved &&
+      !collector?.mintWindowStart
+    ) {
       dispatch(openMintWindow(collector._id, account.address));
     }
   }, [systemStage, collector?.approved, collector?.mintWindowStart]);

@@ -12,7 +12,12 @@ const Modal = ({ className, close, withCloseBtn, withBorder, children }) => {
   return (
     <>
       <div className="modal-backdrop" />
-      <div ref={ref} className={classNames("modal", className, { "with-border": withBorder })}>
+      <div
+        ref={ref}
+        className={classNames("modal", className, {
+          "with-border": withBorder,
+        })}
+      >
         <div className="modal-inner">
           {children}
           {withCloseBtn && (

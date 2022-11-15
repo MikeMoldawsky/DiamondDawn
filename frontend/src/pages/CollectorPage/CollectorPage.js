@@ -11,7 +11,7 @@ import Box from "components/Box";
 import Suspense from "components/Suspense";
 import Invite from "components/Invite";
 import NFTs from "components/NFTs";
-import {getCDNImageUrl, isNoContractMode, shortenEthAddress} from "utils";
+import { getCDNImageUrl, isNoContractMode, shortenEthAddress } from "utils";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import PageSizeLimit from "components/PageSizeLimit";

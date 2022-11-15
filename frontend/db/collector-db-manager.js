@@ -6,16 +6,23 @@ const signer = require("../helpers/signer");
 
 async function getCollectorObjectById(collectorId) {
   try {
-    const collector = (await Collector.findById(collectorId).populate({
-      path: "invitations",
-      populate: "usedBy"
-    }).populate({
-      path: "invitedBy",
-      populate: "createdBy"
-    })).toObject()
+    const collector = (
+      await Collector.findById(collectorId)
+        .populate({
+          path: "invitations",
+          populate: "usedBy",
+        })
+        .populate({
+          path: "invitedBy",
+          populate: "createdBy",
+        })
+    ).toObject();
     if (!collector) return null;
 
-    if (collector.mintWindowOpen && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {
+    if (
+      collector.mintWindowOpen &&
+      process.env.REACT_APP_INVITE_TTL_SECONDS > 0
+    ) {
       collector.mintWindowClose = add(collector.mintWindowOpen, {
         seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
       });
@@ -57,14 +64,7 @@ function validateCollector(collector, address) {
   }
 }
 
-async function createCollector(
-  address,
-  twitter,
-  email,
-  note,
-  country,
-  state
-) {
+async function createCollector(address, twitter, email, note, country, state) {
   validateAddress(address);
   let collector = await Collector.findOne({ address });
   if (collector) {
@@ -82,11 +82,9 @@ async function createCollector(
 
 async function updateCollector(update) {
   try {
-    await Collector.findOneAndUpdate(
-      { _id: update._id },
-      update,
-      { new: true }
-    );
+    await Collector.findOneAndUpdate({ _id: update._id }, update, {
+      new: true,
+    });
     return getCollectorObjectById(update._id);
   } catch (e) {
     console.log(`Failed to UPDATE Invite`, e);
