@@ -122,4 +122,47 @@
       margin: 0 1em;
     }
   }
+
+  .invites-view {
+    position: relative;
+    border: solid 1px white;
+    height: 94%;
+    padding: 3em 6em;
+    justify-content: flex-start;
+
+    img {
+      height: 12em;
+    }
+
+    .back-button {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 3em;
+      height: 3em;
+      border-radius: 50%;
+      border: solid 1px white;
+      background-color: #4D4D4D;
+      cursor: pointer;
+      display: flex;
+      align-self: center;
+      justify-content: center;
+
+      svg {
+        height: unset;
+        margin-left: -.1em;
+        font-size: 1.5em;
+      }
+    }
+
+    .text {
+      text-align: left;
+    }
+
+    .invitations-status {
+      margin-top: 2em;
+      font-size: 1.5em;
+    }
+  }
 }

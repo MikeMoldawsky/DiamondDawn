@@ -18,6 +18,7 @@ const INITIAL_STATE = {
   showHPLogo: null,
   musicSrc: "",
   assetReadyPages: {},
+  mintViewShowInvites: false,
 };
 
 export const setSelectedTokenId = (selectedTokenId) => ({

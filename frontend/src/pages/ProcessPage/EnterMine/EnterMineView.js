@@ -7,10 +7,10 @@ import { faEthereum } from "@fortawesome/free-brands-svg-icons/faEthereum";
 import isFunction from "lodash/isFunction";
 import { BigNumber, utils as ethersUtils } from "ethers";
 import InvitationsStatus from "components/InvitationsStatus";
-import { useSelector } from "react-redux";
-import useActionDispatch from "hooks/useActionDispatch";
-import { collectorSelector, generateInvitations } from "store/collectorReducer";
+import {useDispatch, useSelector} from "react-redux";
 import {getCDNImageUrl} from "utils";
+import {uiSelector, updateUiState} from "store/uiReducer";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const EnterMineView = ({
   minePrice = 3.33,
@@ -21,14 +21,12 @@ const EnterMineView = ({
   expiresAt,
   onCountdownEnd,
 }) => {
-  const [showInvites, setShowInvites] = useState(false);
-  const actionDispatch = useActionDispatch();
-  const collector = useSelector(collectorSelector);
+  const dispatch = useDispatch()
+  const { mintViewShowInvites: showInvites } = useSelector(uiSelector)
 
-  const onInviteClick = () => {
-    actionDispatch(generateInvitations(collector._id), "generate-invitations");
-    setShowInvites(true);
-  };
+  const toggleInvites = (show) => {
+    dispatch(updateUiState({ mintViewShowInvites: show }))
+  }
 
   const mintPriceText = BigNumber.isBigNumber(minePrice)
     ? ethersUtils.formatUnits(minePrice)
@@ -40,7 +38,21 @@ const EnterMineView = ({
         <div className="image-box" />
         <div className="content-box">
           {showInvites ? (
-            <InvitationsStatus />
+            <div className="center-aligned-column invites-view">
+              <div className="back-button" onClick={() => toggleInvites(false)}>
+                <ArrowBackIosNewIcon />
+              </div>
+              <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+              <div className="text">
+                As a future Diamond Dawn participant, you can invite 2 collectors to Diamond Dawn’s historical journey.
+                <br/>
+                These unique links will allow them to bypass Diamond Dawn’s password into the private sale.
+                <br />
+                <br />
+                <b>These links can only be used ONCE - make sure to use them wisely.</b>
+              </div>
+              <InvitationsStatus />
+            </div>
           ) : (
             <>
               <div className="congrats-box">
@@ -78,7 +90,7 @@ const EnterMineView = ({
                 <div className="text">
                   You’ve been granted 2 invitations
                 </div>
-                <div className="button gold" onClick={onInviteClick}>
+                <div className="button gold" onClick={() => toggleInvites(true)}>
                   INVITE
                 </div>
               </div>
