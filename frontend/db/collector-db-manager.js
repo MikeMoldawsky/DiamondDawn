@@ -64,7 +64,15 @@ function validateCollector(collector, address) {
   }
 }
 
-async function createCollector(address, twitter, email, note, country, state, isDao) {
+async function createCollector(
+  address,
+  twitter,
+  email,
+  note,
+  country,
+  state,
+  isDao
+) {
   validateAddress(address);
   let collector = await Collector.findOne({ address });
   if (collector) {

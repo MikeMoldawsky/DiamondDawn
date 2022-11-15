@@ -15,13 +15,13 @@ import InvitedModal from "components/InvitedModal/InvitedModal";
 import { isActionSuccessSelector } from "store/actionStatusReducer";
 import { canAccessDDSelector } from "store/selectors";
 import { collectorSelector } from "store/collectorReducer";
-import {useAccount} from "wagmi";
+import { useAccount } from "wagmi";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const account = useAccount()
+  const account = useAccount();
   const inviteId = searchParams.get("invite");
   const invite = useSelector(inviteSelector);
   const collector = useSelector(collectorSelector);

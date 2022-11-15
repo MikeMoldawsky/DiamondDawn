@@ -5,7 +5,7 @@ import { loadConfig } from "store/systemReducer";
 import useOnConnect from "hooks/useOnConnect";
 import { loadCollectorByAddress } from "store/collectorReducer";
 import useActionDispatch from "hooks/useActionDispatch";
-import {clearActionStatus} from "store/actionStatusReducer";
+import { clearActionStatus } from "store/actionStatusReducer";
 
 const NoContractAppLoader = () => {
   const dispatch = useDispatch();

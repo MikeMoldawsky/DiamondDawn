@@ -17,8 +17,9 @@ const InvitedModal = ({ close, invite }) => {
         </div>
         <div className="leading-text">CONGRATULATIONS</div>
         <div className="text">
-          You’ve been invited by <span className="text-gold">{inviter.twitter}</span> to participate in Diamond
-          Dawn’s private sale.
+          You’ve been invited by{" "}
+          <span className="text-gold">{inviter.twitter}</span> to participate in
+          Diamond Dawn’s private sale.
         </div>
         <div className="text">
           The following password can ONLY be used for one application - make

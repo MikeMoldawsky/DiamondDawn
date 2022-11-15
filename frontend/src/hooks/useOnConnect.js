@@ -1,9 +1,9 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 const useOnConnect = (onConnect, onDisconnect) => {
   const account = useAccount();
-  const [isConnected, setIsConnected] = useState(false)
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     if (account?.address) {
@@ -13,11 +13,11 @@ const useOnConnect = (onConnect, onDisconnect) => {
         onDisconnect && onDisconnect();
       }
       onConnect && onConnect(account?.address);
-      setIsConnected(true)
+      setIsConnected(true);
     } else {
       console.log("USER DISCONNECTED");
       onDisconnect && onDisconnect();
-      setIsConnected(false)
+      setIsConnected(false);
     }
   }, [account?.address]);
 };

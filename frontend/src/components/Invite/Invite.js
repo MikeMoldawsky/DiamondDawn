@@ -122,9 +122,7 @@ const Invite = () => {
           ) : (
             <>
               <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
-              <div className="text">
-                Please fill the details below
-              </div>
+              <div className="text">Please fill the details below</div>
               <ApplyForm onSuccess={onSubmitSuccess} />
             </>
           )}

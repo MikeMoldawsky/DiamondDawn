@@ -59,7 +59,7 @@
     position: relative;
     flex-grow: 2;
     padding: 0 1em 0 0;
-    margin-top: -.8em;
+    margin-top: -0.8em;
 
     .center-aligned-row {
       width: 100%;
@@ -70,7 +70,7 @@
       color: $gold;
       font-size: $font20px;
       font-weight: 500;
-      margin-bottom: .4em;
+      margin-bottom: 0.4em;
       line-height: 1em;
     }
 
@@ -93,7 +93,7 @@
       width: 72%;
       margin: 1em auto 0.5em;
       font-size: $font14px;
-      color: $text_gray
+      color: $text_gray;
     }
   }
 
@@ -147,7 +147,7 @@
       height: 3em;
       border-radius: 50%;
       border: solid 1px white;
-      background-color: #4D4D4D;
+      background-color: #4d4d4d;
       cursor: pointer;
       display: flex;
       align-self: center;
@@ -155,7 +155,7 @@
 
       svg {
         height: unset;
-        margin-left: -.1em;
+        margin-left: -0.1em;
         font-size: 1.5em;
       }
     }

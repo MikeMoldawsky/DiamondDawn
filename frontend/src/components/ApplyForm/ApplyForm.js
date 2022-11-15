@@ -37,9 +37,9 @@ const ApplyForm = ({ onSuccess }) => {
   }, [isSubmitSuccess]);
 
   const clearErrors = () => {
-    setIsRequiredError(false)
+    setIsRequiredError(false);
     // setIsAddressApprovedError(false)
-  }
+  };
 
   const renderInput = (name, placeholder, opts = {}) => {
     const emptyValue = isEmpty(watch(name));
@@ -79,13 +79,13 @@ const ApplyForm = ({ onSuccess }) => {
   // };
 
   const applyToDD = async (data) => {
-    clearErrors()
+    clearErrors();
     // const { addressApproved, ...payload } = data
     // if (!addressApproved) {
     //   setIsAddressApprovedError(true)
     //   return;
     // }
-    const { twitter, email } = data
+    const { twitter, email } = data;
     if (!twitter && !email) {
       setIsRequiredError(true);
       return;
@@ -99,7 +99,13 @@ const ApplyForm = ({ onSuccess }) => {
     <div className="request-form">
       <form>
         <div className="center-aligned-row address-row">
-          <input type="text" className="input full-width" disabled value={account.address} title="If approved, this address will be the one eligible for mint" />
+          <input
+            type="text"
+            className="input full-width"
+            disabled
+            value={account.address}
+            title="If approved, this address will be the one eligible for mint"
+          />
         </div>
         <div className="center-aligned-row inputs-row">
           {renderInput("twitter", "Twitter handle", {

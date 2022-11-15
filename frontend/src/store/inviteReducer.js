@@ -25,5 +25,5 @@ export const inviteReducer = makeReducer(
     "INVITE.CLEAR": () => INITIAL_STATE,
   },
   INITIAL_STATE,
-  false,
+  false
 );

@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.scss";
-import {NavLink, useLocation, useNavigate} from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import DiamondList from "components/DiamondList";
 import Wallet from "components/Wallet";
 import ContractProvider from "containers/ContractProvider";
@@ -31,27 +31,26 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const isPageSizeLimitOk = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
   const collector = useSelector(collectorSelector);
-  const goToInvites = useGoToInvites()
-  const navigate = useNavigate()
+  const goToInvites = useGoToInvites();
+  const navigate = useNavigate();
 
   const isHomepage =
     location.pathname === "/" || location.pathname === "/explore";
   const animateShowLogo = isHomepage && showHPLogo;
   const animateHideLogo = isHomepage && showHPLogo === false;
 
-  const onVolumeClick = e => {
-    e.stopPropagation()
-    dispatch(toggleMuted())
-  }
+  const onVolumeClick = (e) => {
+    e.stopPropagation();
+    dispatch(toggleMuted());
+  };
 
   const onCTAClick = () => {
     if (collector) {
-      goToInvites()
+      goToInvites();
+    } else {
+      navigate("/collector");
     }
-    else {
-      navigate("/collector")
-    }
-  }
+  };
 
   return (
     <>
@@ -81,7 +80,10 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           />
           <div className="center-aligned-row header-side">
             {canAccessDD && isPageSizeLimitOk && (
-              <div className="button gold sm collector-btn" onClick={onCTAClick}>
+              <div
+                className="button gold sm collector-btn"
+                onClick={onCTAClick}
+              >
                 {collector ? "MY INVITATIONS" : "APPLY FOR DIAMOND DAWN"}
               </div>
             )}

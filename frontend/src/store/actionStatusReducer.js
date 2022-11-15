@@ -1,6 +1,6 @@
 import { makeReducer } from "store/reduxUtils";
 import _ from "lodash";
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from "lodash/isEmpty";
 
 // ACTIONS
 export const setActionPending = (actionKey) => ({

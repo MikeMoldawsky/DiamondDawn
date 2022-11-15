@@ -33,7 +33,9 @@ const InvitationsStatus = () => {
             <div className="status">
               {usedBy ? "USED BY" : "AVAILABLE"}
               {usedBy && (
-                <span className="text-gold">{" " + collectorDisplayName(usedBy)}</span>
+                <span className="text-gold">
+                  {" " + collectorDisplayName(usedBy)}
+                </span>
               )}
             </div>
           </div>

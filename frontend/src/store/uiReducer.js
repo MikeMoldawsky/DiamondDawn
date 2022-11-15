@@ -57,5 +57,5 @@ export const uiReducer = makeReducer(
     "UI.UPDATE_STATE": reduceUpdateFull,
   },
   INITIAL_STATE,
-  false,
+  false
 );

@@ -1,14 +1,14 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
-import {NavLink} from "react-router-dom";
-import {useSelector} from "react-redux";
+import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import InvitationsStatus from "components/InvitationsStatus";
 import { collectorDisplayName, getCDNImageUrl } from "utils";
 import "./SideMenu.scss";
-import {inviteSelector} from "store/inviteReducer";
-import useGoToInvites from 'hooks/useGoToInvites'
-import TelegramIcon from '@mui/icons-material/Telegram';
+import { inviteSelector } from "store/inviteReducer";
+import useGoToInvites from "hooks/useGoToInvites";
+import TelegramIcon from "@mui/icons-material/Telegram";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
@@ -16,14 +16,14 @@ const SideMenu = ({ isOpen, closeMenu }) => {
   const collector = useSelector(collectorSelector);
   const invite = useSelector(inviteSelector);
 
-  const invitedBy = collector?.invitedBy || invite
+  const invitedBy = collector?.invitedBy || invite;
 
-  const goToInvites = useGoToInvites()
+  const goToInvites = useGoToInvites();
 
   const onInvitesTitleClick = () => {
-    goToInvites()
-    closeMenu()
-  }
+    goToInvites();
+    closeMenu();
+  };
 
   return (
     <Drawer
@@ -52,7 +52,9 @@ const SideMenu = ({ isOpen, closeMenu }) => {
         </NavLink>
         {collector && collector.invitations.length > 0 && (
           <div className="invitations-menu">
-            <div className="menu-item sm" onClick={onInvitesTitleClick}>MY INVITATION</div>
+            <div className="menu-item sm" onClick={onInvitesTitleClick}>
+              MY INVITATION
+            </div>
             <InvitationsStatus />
           </div>
         )}
@@ -71,7 +73,10 @@ const SideMenu = ({ isOpen, closeMenu }) => {
             <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
           </div>
           <div className="">
-            INVITED BY <span className="text-gold">{collectorDisplayName(invitedBy?.createdBy)}</span>
+            INVITED BY{" "}
+            <span className="text-gold">
+              {collectorDisplayName(invitedBy?.createdBy)}
+            </span>
           </div>
         </div>
       )}

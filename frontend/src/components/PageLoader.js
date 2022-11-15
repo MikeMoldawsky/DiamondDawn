@@ -8,9 +8,7 @@ import { uiSelector, updateUiState } from "store/uiReducer";
 import classNames from "classnames";
 import { canAccessDDSelector } from "store/selectors";
 import { collectorSelector } from "store/collectorReducer";
-import {
-  isActionFirstCompleteSelector,
-} from "store/actionStatusReducer";
+import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 
@@ -110,9 +108,7 @@ const PageLoader = ({
   }, [canAccessDD, requireAccess]);
 
   useEffect(() => {
-    if (
-      requireAccess && isCollectorFetched && !canAccessDD
-    ) {
+    if (requireAccess && isCollectorFetched && !canAccessDD) {
       console.log("PageLoader - navigating to /");
       navigate("/");
     }
