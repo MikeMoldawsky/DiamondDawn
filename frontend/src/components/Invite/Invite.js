@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
-import ApplyForm from "components/RequestForm";
+import ApplyForm from "components/ApplyForm";
 import { useAccount } from "wagmi";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { inviteSelector, loadInviteById } from "store/inviteReducer";

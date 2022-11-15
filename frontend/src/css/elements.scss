@@ -153,6 +153,15 @@
   &.validation-error {
     border-color: red;
   }
+
+  &[disabled], &.disabled {
+    cursor: not-allowed;
+    opacity: .4;
+  }
+
+  &.full-width {
+    width: 100% !important;
+  }
 }
 
 textarea.input {
