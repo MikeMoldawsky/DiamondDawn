@@ -1,20 +1,33 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
-import { useDispatch } from "react-redux";
-import { getCDNImageUrl, getCDNVideoUrl, isDemo } from "utils";
+import { useDispatch, useSelector } from "react-redux";
+import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import classNames from "classnames";
-import { useNavigate } from "react-router-dom";
-import HomeBackground from "components/HomeBackground";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import useWindowDimensions from "hooks/useWindowDimensions";
+import { inviteSelector, loadInviteById } from "store/inviteReducer";
+import InvitedModal from "components/InvitedModal/InvitedModal";
+import { isActionSuccessSelector } from "store/actionStatusReducer";
+import { canAccessDDSelector } from "store/selectors";
+import { collectorSelector } from "store/collectorReducer";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const inviteId = searchParams.get("invite");
+  const invite = useSelector(inviteSelector);
+  const collector = useSelector(collectorSelector);
+  const isCollectorFetched = useSelector(
+    isActionSuccessSelector("get-collector-by-address")
+  );
+  const canAccessDD = useSelector(canAccessDDSelector);
+  const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [startTransition, setStartTransition] = useState(false);
   const [videoProgress, setVideoProgress] = useState({});
   const { width, height } = useWindowDimensions();
@@ -22,6 +35,24 @@ const ComingSoonPage = () => {
   const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
 
   useMusic("coming-soon.mp3");
+
+  useEffect(() => {
+    if (inviteId) {
+      dispatch(loadInviteById(inviteId));
+    }
+  }, [inviteId]);
+
+  useEffect(() => {
+    if (
+      invite &&
+      !invite.usedBy &&
+      !invite.revoked &&
+      isCollectorFetched &&
+      !collector
+    ) {
+      setShowInvitedModal(true);
+    }
+  }, [invite, isCollectorFetched, collector]);
 
   const renderBgPlayer = useCallback(
     () => (
@@ -44,7 +75,6 @@ const ComingSoonPage = () => {
   );
 
   const transition = () => {
-    console.log("process.env", process.env);
     if (process.env.REACT_APP_ENABLE_TRANSITIONS !== "true") {
       return navigate("/explore");
     }
@@ -59,16 +89,38 @@ const ComingSoonPage = () => {
   };
 
   const onCorrectPassword = () => {
-    dispatch(updateUiState({ demoAuth: true }));
-    localStorage.setItem("demoAuth", "true");
+    dispatch(updateUiState({ privateSaleAuth: true }));
+    localStorage.setItem("privateSaleAuth", "true");
     transition();
+  };
+
+  const renderEntrance = () => {
+    if (!isCollectorFetched) return null;
+
+    if (canAccessDD)
+      return (
+        <div className="button transparent" onClick={transition}>
+          EXPLORE
+        </div>
+      );
+
+    return (
+      <PasswordBox
+        inviteId={invite?._id}
+        onCorrect={onCorrectPassword}
+        passwordLength={8}
+        buttonText="EXPLORE"
+      />
+    );
   };
 
   return (
     <PageLoader
       pageName="coming-soon"
+      requireAccess={false}
+      images={[getCDNImageUrl("envelop-wings.png")]}
       videos={[{ progress: videoProgress, threshold: 0.5 }]}
-      timeout={5000}
+      timeout={7000}
     >
       <div
         className={classNames("page coming-soon", {
@@ -77,22 +129,6 @@ const ComingSoonPage = () => {
         })}
       >
         {renderBgPlayer()}
-        <div className="curtain-left" />
-        <div className="curtain-right" />
-        <div className="curtain-behind">
-          <PageLoader
-            pageName="homepage"
-            withLoader={false}
-            timeout={-1}
-            images={[
-              getCDNImageUrl("/homepage/sky.png"),
-              getCDNImageUrl("/homepage/homepage-mountains-back.png"),
-              getCDNImageUrl("/homepage/homepage-mountains-front.png"),
-            ]}
-          >
-            <HomeBackground />
-          </PageLoader>
-        </div>
         <div className="center-aligned-column content">
           <div className="center-aligned-column">
             <div className="leading-text">COMING SOON</div>
@@ -101,18 +137,14 @@ const ComingSoonPage = () => {
               Which diamond will you choose?
             </div>
           </div>
-          {isDemo() ? (
-            <PasswordBox
-              onCorrect={onCorrectPassword}
-              passwordLength={8}
-              buttonText="EXPLORE"
-            />
-          ) : (
-            <div className="button transparent" onClick={transition}>
-              EXPLORE
-            </div>
-          )}
+          {renderEntrance()}
         </div>
+        {showInvitedModal && (
+          <InvitedModal
+            invite={invite}
+            close={() => setShowInvitedModal(false)}
+          />
+        )}
       </div>
     </PageLoader>
   );

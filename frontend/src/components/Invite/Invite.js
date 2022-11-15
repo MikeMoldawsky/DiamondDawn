@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
-import RequestForm from "components/RequestForm";
+import ApplyForm from "components/RequestForm";
 import useOnConnect from "hooks/useOnConnect";
 import { useAccount } from "wagmi";
 import useActionDispatch from "hooks/useActionDispatch";
@@ -10,12 +10,7 @@ import {
   clearActionStatus,
   isActionFirstCompleteSelector,
 } from "store/actionStatusReducer";
-import {
-  clearInvite,
-  inviteSelector,
-  loadInviteByAddress,
-  openInvite,
-} from "store/inviteReducer";
+import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import Loading from "components/Loading";
 import EnterMine from "pages/ProcessPage/EnterMine";
@@ -24,6 +19,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import ReactPlayer from "react-player";
 import { getCDNVideoUrl } from "utils";
+import {
+  collectorSelector,
+  loadCollectorByAddress,
+  openMintWindow,
+} from "store/collectorReducer";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -31,74 +31,66 @@ const Invite = () => {
   const dispatch = useDispatch();
   const account = useAccount();
   const invite = useSelector(inviteSelector);
-  const isInviteFetched = useSelector(
-    isActionFirstCompleteSelector("get-invite-by-address")
+  const collector = useSelector(collectorSelector);
+  const isCollectorFetched = useSelector(
+    isActionFirstCompleteSelector("get-collector-by-address")
   );
+
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
 
-  const loadInvite = async (address) => dispatch(loadInviteByAddress(address));
+  const loadInvite = async () => invite && dispatch(loadInviteById(invite._id));
+  const loadCollector = async (address) =>
+    dispatch(loadCollectorByAddress(address));
 
   const onSubmitSuccess = () => {
     setShowSubmittedModal(true);
-    loadInvite(account.address);
-  };
-
-  const clearInviteState = () => {
-    dispatch(clearInvite());
-    dispatch(clearActionStatus("get-invite-by-address"));
+    loadCollector(account.address);
+    loadInvite();
   };
 
   useOnConnect(
     async (address) => {
-      clearInviteState();
-      actionDispatch(() => loadInvite(address), "get-invite-by-address");
+      // dispatch(clearActionStatus("get-collector-by-address"));
+      actionDispatch(() => loadCollector(address), "get-collector-by-address");
+      actionDispatch(() => loadInvite(), "get-invite-by-id");
     },
     () => {
-      clearInviteState();
+      dispatch(clearActionStatus("get-collector-by-address"));
     }
   );
 
   useEffect(() => {
-    return clearInviteState;
-  }, []);
-
-  useEffect(() => {
-    if (invite?.approved && !invite?.opened) {
-      dispatch(openInvite(invite._id, account.address));
+    if (
+      systemStage === SYSTEM_STAGE.KEY &&
+      collector?.approved &&
+      !collector?.mintWindowStart
+    ) {
+      dispatch(openMintWindow(collector._id, account.address));
     }
-  }, [invite?.approved, invite?.opened]);
+  }, [systemStage, collector?.approved, collector?.mintWindowStart]);
 
   if (systemStage > SYSTEM_STAGE.KEY) return null;
 
-  if (!isInviteFetched || (invite.approved && !invite.opened))
+  if (!isCollectorFetched)
     return (
       <div className="box-content opaque box-loading">
         <Loading />
       </div>
     );
 
-  if (invite.used)
+  if (collector?.minted)
     return (
       <div className="box-content opaque">
         <div className="center-center-aligned-row secondary-text">
-          Invitations Used
+          Address already minted
         </div>
       </div>
     );
 
-  if (invite.revoked)
-    return (
-      <div className="box-content opaque">
-        <div className="center-center-aligned-row secondary-text">
-          Invitations Expired
-        </div>
-      </div>
-    );
-
-  if (invite.approved)
+  if (collector?.approved)
     return (
       <div className="box-content approved">
-        <EnterMine invite={invite} />
+        <EnterMine />
       </div>
     );
 
@@ -108,7 +100,7 @@ const Invite = () => {
         <div className="image-box">
           <ReactPlayer
             url={getCDNVideoUrl(
-              invite ? "embedded-diamonds.webm" : "diamond-evolution.webm"
+              collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"
             )}
             playing
             playsinline
@@ -121,7 +113,7 @@ const Invite = () => {
         </div>
 
         <div className="content-box">
-          {invite ? (
+          {collector ? (
             <div className="left-spaced-aligned-column request-status">
               <div className="left-top-aligned-column">
                 <div className="leading-text">DIAMOND DAWN APPLICATION</div>
@@ -153,7 +145,7 @@ const Invite = () => {
                 To receive your unique key to the diamond mine, Please enter
                 your info below:
               </div>
-              <RequestForm onSuccess={onSubmitSuccess} />
+              <ApplyForm onSuccess={onSubmitSuccess} />
             </>
           )}
           {showSubmittedModal && (

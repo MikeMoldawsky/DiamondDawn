@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import isEmpty from "lodash/isEmpty";
 import isNil from "lodash/isNil";
 import get from "lodash/get";
-import toUpper from "lodash/toUpper";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import ActionButton from "components/ActionButton";
-import "./RequestForm.scss";
-import { utils as ethersUtils } from "ethers";
+import "./NewInvitationForm.scss";
+import { createInvitationApi, getDDCollectorApi } from "api/serverApi";
 
-const RequestForm = ({ createInviteApi, text, onSuccess }) => {
+const NewInvitationForm = ({ onSuccess }) => {
+  const [ddCollector, setDDCollector] = useState([]);
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const {
     register,
@@ -20,6 +20,14 @@ const RequestForm = ({ createInviteApi, text, onSuccess }) => {
   } = useForm({
     mode: "onChange",
   });
+
+  const fetchDDCollector = async () => {
+    setDDCollector(await getDDCollectorApi());
+  };
+
+  useEffect(() => {
+    fetchDDCollector();
+  }, []);
 
   useEffect(() => {
     reset();
@@ -43,39 +51,29 @@ const RequestForm = ({ createInviteApi, text, onSuccess }) => {
     );
   };
 
-  const requestInvitation = async ({ twitter, email, address }) => {
-    await createInviteApi(address, twitter, email);
+  const createInvitation = async ({ note }) => {
+    await createInvitationApi(ddCollector._id, note);
     setIsSubmitSuccess(true);
     onSuccess && (await onSuccess());
   };
 
   return (
     <div className="request-form">
-      <div className="secondary-text">{toUpper(text)}</div>
+      <div className="secondary-text">CREATE INVITATION</div>
       <form>
-        {renderInput("twitter", "Twitter link", {
+        {renderInput("note", "Note", {
           required: false,
-          pattern: /^[a-zA-Z0-9_]{4,15}$/i,
-        })}
-        {renderInput("email", "E-mail", {
-          required: false,
-          pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-        })}
-        {renderInput("address", "ETH Address", {
-          validate: {
-            ethaddress: ethersUtils.isAddress,
-          },
         })}
         <ActionButton
-          actionKey="Request Invitation"
-          onClick={handleSubmit(requestInvitation)}
+          actionKey="Create Invitation"
+          onClick={handleSubmit(createInvitation)}
           disabled={!isEmpty(errors)}
         >
-          {text}
+          CREATE
         </ActionButton>
       </form>
     </div>
   );
 };
 
-export default RequestForm;
+export default NewInvitationForm;

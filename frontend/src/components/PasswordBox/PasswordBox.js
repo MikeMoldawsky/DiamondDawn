@@ -1,12 +1,12 @@
 import React, { useState, useRef } from "react";
 import classNames from "classnames";
 import "./PasswordBox.scss";
-import { demoAuthApi } from "api/serverApi";
+import { privateSaleAuthApi } from "api/serverApi";
 import map from "lodash/map";
 import ActionButton from "components/ActionButton";
 import useActionDispatch from "hooks/useActionDispatch";
 
-const PasswordBox = ({ onCorrect, passwordLength, buttonText }) => {
+const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
   const [password, setPassword] = useState("");
   const pwdInput = useRef(null);
   const [checkingPassword, setCheckingPassword] = useState(false);
@@ -18,7 +18,7 @@ const PasswordBox = ({ onCorrect, passwordLength, buttonText }) => {
 
     pwdInput.current.blur();
     setCheckingPassword(true);
-    const isCorrect = await demoAuthApi(password);
+    const isCorrect = await privateSaleAuthApi(password, inviteId);
     setCheckingPassword(false);
 
     if (isCorrect) {

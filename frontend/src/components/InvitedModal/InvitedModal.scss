@@ -1,0 +1,29 @@
+@import "css/varsNEW";
+
+.modal.invited-modal {
+  padding: 0.4em;
+
+  .modal-inner {
+    padding: 5em 4em;
+
+    &:before {
+      transform: translate(-50%, -5em);
+    }
+  }
+
+  .leading-text {
+    font-size: $font36px;
+    margin-bottom: 1.5rem;
+  }
+
+  .text {
+    margin-bottom: 1.5rem;
+    line-height: 1.5em;
+  }
+
+  .pwd-row {
+    color: $gold;
+    font-size: $font18px;
+    margin-bottom: 2rem;
+  }
+}

@@ -7,6 +7,14 @@ import useTimeout from "hooks/useTimeout";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import classNames from "classnames";
+import { canAccessDDSelector } from "store/selectors";
+import { collectorSelector } from "store/collectorReducer";
+import {
+  isActionFirstCompleteSelector,
+  isActionSuccessSelector,
+} from "store/actionStatusReducer";
+import { useNavigate } from "react-router-dom";
+import { useAccount } from "wagmi";
 
 const DEFAULT_TIMEOUT = 10000;
 const SHOW_TEXT_TIME = 100;
@@ -18,6 +26,7 @@ const PageLoader = ({
   videos = [],
   timeout = DEFAULT_TIMEOUT,
   withLoader = true,
+  requireAccess = true,
   children,
 }) => {
   const { assetReadyPages } = useSelector(uiSelector);
@@ -27,6 +36,14 @@ const PageLoader = ({
   const [hidden, setHidden] = useState(false);
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
+  const canAccessDD = useSelector(canAccessDDSelector);
+  const collector = useSelector(collectorSelector);
+  const isCollectorFetched = useSelector(
+    // isActionSuccessSelector("get-collector-by-address")
+    isActionFirstCompleteSelector("get-collector-by-address")
+  );
+  const navigate = useNavigate();
+  const account = useAccount();
 
   const assetsReady = assetReadyPages[pageName];
 
@@ -44,6 +61,7 @@ const PageLoader = ({
 
   const onAssetLoaded = () => {
     if (
+      (!requireAccess || canAccessDD) &&
       imagesLoaded.current === images.length &&
       videosLoaded.current === videos.length
     ) {
@@ -71,6 +89,7 @@ const PageLoader = ({
   const videosProgress = sumBy(videos, ({ progress }) =>
     get(progress, "loaded", 0)
   );
+
   useEffect(() => {
     forEach(videos, ({ progress, threshold = 1 }) => {
       const loaded = get(progress, "loaded", 0);
@@ -82,9 +101,26 @@ const PageLoader = ({
   }, [videosProgress]);
 
   // timeout
-  useTimeout(() => {
-    timeout > -1 && setAssetsReady();
-  }, timeout);
+  // useTimeout(() => {
+  //   timeout > -1 && setAssetsReady();
+  // }, timeout);
+
+  // canAccessDD
+  useEffect(() => {
+    if (!requireAccess || canAccessDD) {
+      setAssetsReady();
+    }
+  }, [canAccessDD, requireAccess]);
+
+  useEffect(() => {
+    if (
+      requireAccess &&
+      (!account?.address || (isCollectorFetched && !canAccessDD))
+    ) {
+      console.log("PageLoader - navigating to /");
+      navigate("/");
+    }
+  }, [isCollectorFetched, account?.address]);
 
   setTimeout(() => {
     setShowText(true);

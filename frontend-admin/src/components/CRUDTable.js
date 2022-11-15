@@ -127,7 +127,7 @@ const CRUDTable = ({
   };
 
   const processRowUpdate = async (newRow) => {
-    if (!_.isFunction(CRUD.create) || !_.isFunction(CRUD.update)) return;
+    if (!_.isFunction(CRUD.update)) return;
 
     let _newRow = await (newRow.isNew
       ? CRUD.create(_.omit(newRow, ["_id", "isNew"]))

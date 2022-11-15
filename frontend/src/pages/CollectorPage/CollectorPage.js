@@ -11,11 +11,10 @@ import Box from "components/Box";
 import Suspense from "components/Suspense";
 import Invite from "components/Invite";
 import NFTs from "components/NFTs";
-import { getCDNImageUrl, isDemo, shortenEthAddress } from "utils";
+import { getCDNImageUrl, isNoContractMode, shortenEthAddress } from "utils";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import PageSizeLimit from "components/PageSizeLimit";
-import EditIcon from "@mui/icons-material/Edit";
 
 const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
@@ -38,7 +37,7 @@ const CollectorPage = () => {
   };
 
   const suspenseActions = ["get-contract"];
-  if (!isDemo() && account?.address) {
+  if (!isNoContractMode() && account?.address) {
     suspenseActions.push({ isFirstComplete: true, key: "load-nfts" });
   }
 
@@ -52,7 +51,7 @@ const CollectorPage = () => {
           <div className="inner-page">
             <h1>The Collector's Room</h1>
             <div className="center-center-aligned-row account">
-              {shortenEthAddress(account?.address)} <EditIcon />
+              {shortenEthAddress(account?.address)}
             </div>
             <Box className={"main-box"}>
               <Suspense withLoader actions={suspenseActions}>

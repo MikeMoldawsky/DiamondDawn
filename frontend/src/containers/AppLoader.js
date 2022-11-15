@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useMountLogger from "hooks/useMountLogger";
-import { useAccount, useProvider } from "wagmi";
+import { useProvider } from "wagmi";
 import { useDispatch } from "react-redux";
 import useActionDispatch from "hooks/useActionDispatch";
 import useDDContract from "hooks/useDDContract";
@@ -9,9 +9,9 @@ import { EVENTS } from "consts";
 import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
+import { clearCollector, loadCollectorByAddress } from "store/collectorReducer";
 
 const AppLoader = () => {
-  const account = useAccount();
   const provider = useProvider();
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
@@ -37,18 +37,18 @@ const AppLoader = () => {
   }, []);
 
   useOnConnect(
-    () => {
+    (address) => {
+      actionDispatch(
+        loadCollectorByAddress(address),
+        "get-collector-by-address"
+      );
       dispatch(clearTokens());
       dispatch(
-        readAndWatchAccountTokens(
-          actionDispatch,
-          contract,
-          provider,
-          account?.address
-        )
+        readAndWatchAccountTokens(actionDispatch, contract, provider, address)
       );
     },
     () => {
+      dispatch(clearCollector());
       dispatch(clearActionStatus("load-nfts"));
       dispatch({ type: "RESET_STATE" });
     }

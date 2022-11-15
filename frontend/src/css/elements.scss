@@ -67,15 +67,10 @@
   &.icon-after {
     svg {
       margin-right: 0;
-      margin-left: 16px;
+      margin-left: 1em;
+      width: 1em;
+      height: 1em;
     }
-  }
-
-  &.disabled,
-  &[disabled] {
-    cursor: not-allowed;
-    background-color: $disabled_gray;
-    color: $disabled_text_gray;
   }
 
   &.inverted,
@@ -91,6 +86,32 @@
     span > span {
       background-color: white !important;
     }
+  }
+
+  &.gold {
+    color: white;
+    background-color: $gold;
+
+    &.transparent {
+      color: $gold;
+      border-color: $gold;
+      background-color: transparent;
+    }
+  }
+
+  &.lg {
+    font-size: $font20px;
+  }
+
+  &.sm {
+    font-size: $font11px;
+  }
+
+  &.disabled,
+  &[disabled] {
+    cursor: not-allowed;
+    background-color: $disabled_gray;
+    color: $disabled_text_gray;
   }
 
   &.transparent {
@@ -110,21 +131,6 @@
     &[disabled] {
       opacity: 0.5;
     }
-  }
-
-  &.gold {
-    color: white;
-    background-color: $gold;
-
-    &.transparent {
-      color: $gold;
-      border-color: $gold;
-      background-color: transparent;
-    }
-  }
-
-  &.lg {
-    font-size: $font20px;
   }
 }
 

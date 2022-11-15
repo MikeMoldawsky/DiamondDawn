@@ -6,10 +6,11 @@ import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 import "./RequestForm.scss";
-import { createInviteRequestApi } from "api/serverApi";
+import { applyToDDApi } from "api/serverApi";
 import { useAccount } from "wagmi";
 import { useSelector } from "react-redux";
 import { isActionPendingSelector } from "store/actionStatusReducer";
+import { inviteSelector } from "store/inviteReducer";
 
 const RequestForm = ({ onSuccess }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
@@ -27,6 +28,7 @@ const RequestForm = ({ onSuccess }) => {
   const isSubmitting = useSelector(
     isActionPendingSelector("Request Invitation")
   );
+  const invite = useSelector(inviteSelector);
 
   useEffect(() => {
     reset();
@@ -53,11 +55,12 @@ const RequestForm = ({ onSuccess }) => {
     );
   };
 
-  const requestInvitation = async ({ twitter, email, note }) => {
+  const applyToDD = async ({ twitter, email, note }) => {
     if (!twitter && !email) {
       setIsRequiredError(true);
+      return;
     }
-    await createInviteRequestApi(account.address, { twitter, email, note });
+    await applyToDDApi(invite._id, account.address, { twitter, email, note });
     onSuccess && (await onSuccess());
     setIsSubmitSuccess(true);
   };
@@ -67,7 +70,7 @@ const RequestForm = ({ onSuccess }) => {
     if (!twitter && !email) {
       setIsRequiredError(true);
     } else {
-      await requestInvitation(data);
+      await applyToDD(data);
     }
   };
 

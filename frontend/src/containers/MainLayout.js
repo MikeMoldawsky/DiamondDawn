@@ -19,32 +19,27 @@ import Homepage from "pages/Homepage";
 import ProcessPage from "pages/ProcessPage";
 import NFTPage from "pages/NFTPage";
 import RebirthPage from "pages/RebirthPage";
-import InvitePage from "pages/InvitePage";
 import AboutPage from "pages/AboutPage";
 import Header from "components/Header";
 import SideMenu from "components/SideMenu";
 import CollectorPage from "pages/CollectorPage";
 import useActionDispatch from "hooks/useActionDispatch";
 import { loadContractInfo } from "store/systemReducer";
-import AccountProvider from "containers/AccountProvider";
 import ComingSoonPage from "pages/ComingSoonPage";
-import { useSelector } from "react-redux";
-import { isDemo, isDemoAndAuthSelector } from "utils";
+import { isNoContractMode } from "utils";
 import PrivacyPage from "pages/Legal/PrivacyPage";
 import TNCPage from "pages/Legal/TNCPage";
+import NoContractAppLoader from "containers/NoContractAppLoader";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const actionDispatch = useActionDispatch();
-  const isRestricted = useSelector(isDemoAndAuthSelector(false));
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");
   }, []);
-
-  const isDemoMode = isDemo();
 
   return (
     <div className={classNames("main-layout", { "drawer-open": drawerOpen })}>
@@ -59,65 +54,55 @@ const MainLayout = () => {
               path="/"
               exact
               element={
-                // <Homepage />
-                isRestricted ? <ComingSoonPage /> : <Homepage />
+                <ComingSoonPage />
+                // canAccessDD ? <Homepage/> : <ComingSoonPage />
               }
             />
-            {!isRestricted && (
-              <>
-                <Route path="/explore" element={<Homepage />} />
-                <Route
-                  path="invite/:inviteId"
-                  element={
-                    <AccountProvider withLoader>
-                      <InvitePage />
-                    </AccountProvider>
-                  }
-                />
-                <Route
-                  path="process"
-                  element={
-                    <TokensProvider withLoader isGated>
-                      <ProcessPage />
-                    </TokensProvider>
-                  }
-                />
-                <Route
-                  path="rebirth/:tokenId"
-                  element={
-                    <TokensProvider withLoader isGated>
-                      <RebirthPage />
-                    </TokensProvider>
-                  }
-                />
-                <Route
-                  path="collector"
-                  element={
-                    <TokensProvider goThrough>
-                      <CollectorPage />
-                    </TokensProvider>
-                  }
-                />
-                <Route
-                  path="nft/:tokenId"
-                  element={
-                    <TokensProvider withLoader isGated>
-                      <NFTPage />
-                    </TokensProvider>
-                  }
-                />
-                <Route path="about" element={<AboutPage />} />
-                <Route path="privacy" element={<PrivacyPage />} />
-                <Route path="tnc" element={<TNCPage />} />
-              </>
-            )}
+            <Route path="/explore" element={<Homepage />} />
+            <Route
+              path="process"
+              element={
+                <TokensProvider withLoader isGated>
+                  <ProcessPage />
+                </TokensProvider>
+              }
+            />
+            <Route
+              path="rebirth/:tokenId"
+              element={
+                <TokensProvider withLoader isGated>
+                  <RebirthPage />
+                </TokensProvider>
+              }
+            />
+            <Route
+              path="collector"
+              element={
+                <TokensProvider goThrough>
+                  <CollectorPage />
+                </TokensProvider>
+              }
+            />
+            <Route
+              path="nft/:tokenId"
+              element={
+                <TokensProvider withLoader isGated>
+                  <NFTPage />
+                </TokensProvider>
+              }
+            />
+            <Route path="about" element={<AboutPage />} />
+            <Route path="privacy" element={<PrivacyPage />} />
+            <Route path="tnc" element={<TNCPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           <SideMenu
             isOpen={drawerOpen}
             closeMenu={() => setDrawerOpen(false)}
           />
-          {!isDemoMode && (
+          {isNoContractMode() ? (
+            <NoContractAppLoader />
+          ) : (
             <ContractProvider>
               <AppLoader />
             </ContractProvider>

@@ -1,0 +1,29 @@
+@import "css/varsNEW";
+
+.invitations-status {
+  .status-row {
+    margin-bottom: 1em;
+  }
+
+  .button {
+    padding: unset;
+    width: 11em;
+    margin-right: 1em;
+
+    &.icon-after {
+      svg {
+        font-size: 1em !important;
+        margin-left: 0.5em;
+      }
+    }
+  }
+
+  .status {
+    font-size: $font12px;
+  }
+
+  .used-by {
+    font-size: $font10px;
+    color: #878787;
+  }
+}
