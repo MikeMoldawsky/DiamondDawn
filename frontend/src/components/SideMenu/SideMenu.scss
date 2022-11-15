@@ -80,11 +80,15 @@
           height: 90%;
           margin-top: 5%;
         }
+
+        &.MuiSvgIcon-root {
+          width: unset;
+        }
       }
 
       &:not(:last-child) {
         padding-right: 1em;
-        margin-right: .2em;
+        margin-right: .6em;
         position: relative;
 
         &:after {
