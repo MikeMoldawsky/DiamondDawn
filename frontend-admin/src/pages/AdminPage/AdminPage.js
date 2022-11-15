@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import classNames from "classnames";
 import "../App/App.scss";
 import "./AdminPage.scss";
+import CollectorsTab from "./CollectorsTab";
 import InvitationsTab from "./InvitationsTab";
 import Tabs from "components/Tabs";
 import Header from "components/Header/Header";
@@ -37,8 +38,9 @@ const TABS = [
   },
   { title: "Dawn", component: () => <StageTab stage={SYSTEM_STAGE.DAWN} /> },
   { title: "Config", component: () => <ConfigTab /> },
-  { title: "Invitations", component: () => <InvitationsTab approved={true} /> },
-  { title: "Requests", component: () => <InvitationsTab approved={false} /> },
+  { title: "Invitations", component: () => <InvitationsTab /> },
+  { title: "Pending Collectors", component: () => <CollectorsTab approved={false} /> },
+  { title: "Collectors", component: () => <CollectorsTab approved={true} /> },
   { title: "Diamonds", component: () => <DiamondsTab /> },
 ];
 
