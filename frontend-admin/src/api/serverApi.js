@@ -82,6 +82,17 @@ export const updateCollectorApi = async (update) => {
   }
 };
 
+export const approveCollectorApi = async (collectorId) => {
+  try {
+    const { data } = await axios.post(`/api/approve_collector`, {
+      collectorId,
+    });
+    return data;
+  } catch (e) {
+    return null;
+  }
+};
+
 // KEY
 export const getInvitationsApi = async () => {
   try {

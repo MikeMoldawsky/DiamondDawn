@@ -6,7 +6,7 @@ const { useInvite, validateInviteById } = require("../db/invite-db-manager");
 
 module.exports = async function (req, res) {
   try {
-    const { inviteId, address, twitter, email, note, country, state } =
+    const { inviteId, address, twitter, email, note, country, state, isDao } =
       req.body;
     await validateInviteById(inviteId);
     let collector = await createCollector(
@@ -15,7 +15,8 @@ module.exports = async function (req, res) {
       email,
       note,
       country,
-      state
+      state,
+      isDao
     );
     const invite = await useInvite(inviteId, collector.id);
     collector = await updateCollector({

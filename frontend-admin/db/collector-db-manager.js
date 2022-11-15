@@ -1,30 +1,7 @@
 const Collector = require("./models/CollectorModel");
 const _ = require("lodash");
-const add = require("date-fns/add");
-
-async function getCollectorObjectById(collectorId) {
-  try {
-    const collector = (await Collector.findById(collectorId)).toObject();
-    if (!collector) return null;
-
-    if (
-      collector.mintWindowOpen &&
-      process.env.REACT_APP_INVITE_TTL_SECONDS > 0
-    ) {
-      collector.mintWindowClose = add(collector.mintWindowOpen, {
-        seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
-      });
-
-      if (collector.minted || collector.mintWindowClose < new Date()) {
-        collector.mintClosed = true;
-      }
-    }
-
-    return collector;
-  } catch (e) {
-    console.log(`Failed to get Collector ${collectorId}`, e);
-  }
-}
+const { createInvitation } = require("./invitation-db-manager");
+const { getCollectorObjectById } = require("./common");
 
 async function getCollectors(approved) {
   try {
@@ -40,28 +17,34 @@ async function getCollectors(approved) {
   }
 }
 
-async function getDDCollector() {
-  try {
-    const ddCollector = await Collector.findOne({ address: "0xffff" });
-    return await getCollectorObjectById(ddCollector._id);
-  } catch (e) {
-    console.log(`Failed to get DD collector`, e);
-  }
+async function updateCollector(update) {
+  await Collector.findOneAndUpdate({ _id: update._id }, update, {
+    new: true,
+  });
+  return getCollectorObjectById(update._id);
 }
 
-async function updateCollector(update) {
-  try {
-    await Collector.findOneAndUpdate({ _id: update._id }, update, {
-      new: true,
-    });
-    return getCollectorObjectById(update._id);
-  } catch (e) {
-    console.log(`Failed to UPDATE Invite`, e);
+async function approveCollector(collectorId) {
+  const collector = await Collector.findById(collectorId);
+  if (!collector) {
+    throw new Error(`Collector ${collectorId} not found`);
   }
+
+  const update = {
+    _id: collectorId,
+    approved: true,
+  };
+  if (collector.invitations.length === 0) {
+    const noteName = collector.twitter || collector.address;
+    const i1 = await createInvitation(collector, `${noteName} - Invite 1`);
+    const i2 = await createInvitation(collector, `${noteName} - Invite 2`);
+    update.invitations = [i1, i2];
+  }
+  return updateCollector(update);
 }
 
 module.exports = {
   getCollectors,
-  getDDCollector,
   updateCollector,
+  approveCollector,
 };

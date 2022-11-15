@@ -10,22 +10,20 @@ const InvitedModal = ({ close, invite }) => {
   const { createdBy: inviter } = invite;
 
   return (
-    <Modal className="invited-modal" close={close}>
+    <Modal className="invited-modal" close={close} implicitClose withCloseBtn>
       <div className="center-aligned-column modal-content">
         <div className="image">
           <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
         </div>
         <div className="leading-text">CONGRATULATIONS</div>
         <div className="text">
-          You’ve been invited by {inviter.twitter} to participate in Diamond
-          Dawn’s private sale.
+          You’ve been invited by{" "}
+          <span className="text-gold">{inviter.twitter}</span> to participate in
+          Diamond Dawn’s private sale.
         </div>
         <div className="text">
           The following password can ONLY be used for one application - make
           sure to keep it safe.
-        </div>
-        <div className="pwd-row">
-          Your password to enter Diamond Dawn XXXXXXXX
         </div>
         <div className="text-center">
           <CopyToClipboard

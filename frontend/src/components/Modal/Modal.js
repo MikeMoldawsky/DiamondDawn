@@ -4,10 +4,17 @@ import "./Modal.scss";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import classNames from "classnames";
 
-const Modal = ({ className, close, withCloseBtn, withBorder, children }) => {
+const Modal = ({
+  className,
+  close,
+  implicitClose,
+  withCloseBtn,
+  withBorder,
+  children,
+}) => {
   const ref = useRef(null);
 
-  useOnClickOutside(ref, close);
+  useOnClickOutside(ref, close, implicitClose);
 
   return (
     <>

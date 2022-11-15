@@ -5,14 +5,14 @@ import get from "lodash/get";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import ActionButton from "components/ActionButton";
-import "./RequestForm.scss";
+import "./ApplyForm.scss";
 import { applyToDDApi } from "api/serverApi";
 import { useAccount } from "wagmi";
 import { useSelector } from "react-redux";
 import { isActionPendingSelector } from "store/actionStatusReducer";
 import { inviteSelector } from "store/inviteReducer";
 
-const RequestForm = ({ onSuccess }) => {
+const ApplyForm = ({ onSuccess }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const {
     register,
@@ -24,6 +24,7 @@ const RequestForm = ({ onSuccess }) => {
     mode: "onChange",
   });
   const [isRequiredError, setIsRequiredError] = useState(false);
+  // const [isAddressApprovedError, setIsAddressApprovedError] = useState(false);
   const account = useAccount();
   const isSubmitting = useSelector(
     isActionPendingSelector("Request Invitation")
@@ -35,6 +36,11 @@ const RequestForm = ({ onSuccess }) => {
     setIsSubmitSuccess(false);
   }, [isSubmitSuccess]);
 
+  const clearErrors = () => {
+    setIsRequiredError(false);
+    // setIsAddressApprovedError(false)
+  };
+
   const renderInput = (name, placeholder, opts = {}) => {
     const emptyValue = isEmpty(watch(name));
     const hasError = !isNil(get(errors, name));
@@ -42,7 +48,7 @@ const RequestForm = ({ onSuccess }) => {
       <input
         {...register(name, {
           required: true,
-          onChange: () => setIsRequiredError(false),
+          onChange: clearErrors,
           ...opts,
         })}
         disabled={isSubmitting}
@@ -55,28 +61,52 @@ const RequestForm = ({ onSuccess }) => {
     );
   };
 
-  const applyToDD = async ({ twitter, email, note }) => {
+  // const renderCheckbox = (name, required, opts = {}) => {
+  //   const hasError = required && !watch(name);
+  //   return (
+  //     <input
+  //       type="checkbox"
+  //       {...register(name, {
+  //         onChange: clearErrors,
+  //         ...opts,
+  //       })}
+  //       disabled={isSubmitting}
+  //       className={classNames("input", {
+  //         "validation-error": hasError || isAddressApprovedError,
+  //       })}
+  //     />
+  //   );
+  // };
+
+  const applyToDD = async (data) => {
+    clearErrors();
+    // const { addressApproved, ...payload } = data
+    // if (!addressApproved) {
+    //   setIsAddressApprovedError(true)
+    //   return;
+    // }
+    const { twitter, email } = data;
     if (!twitter && !email) {
       setIsRequiredError(true);
       return;
     }
-    await applyToDDApi(invite._id, account.address, { twitter, email, note });
+    await applyToDDApi(invite._id, account.address, data);
     onSuccess && (await onSuccess());
     setIsSubmitSuccess(true);
-  };
-
-  const onSubmitClick = async (data) => {
-    const { twitter, email } = data;
-    if (!twitter && !email) {
-      setIsRequiredError(true);
-    } else {
-      await applyToDD(data);
-    }
   };
 
   return (
     <div className="request-form">
       <form>
+        <div className="center-aligned-row address-row">
+          <input
+            type="text"
+            className="input full-width"
+            disabled
+            value={account.address}
+            title="If approved, this address will be the one eligible for mint"
+          />
+        </div>
         <div className="center-aligned-row inputs-row">
           {renderInput("twitter", "Twitter handle", {
             required: false,
@@ -88,18 +118,22 @@ const RequestForm = ({ onSuccess }) => {
           })}
         </div>
         <div className="center-start-aligned-row checkbox">
-          <input type="checkbox" /> We are a DAO
+          <input type="checkbox" {...register("isDao")} /> We are a DAO
         </div>
         <textarea
           {...register("note")}
           disabled={isSubmitting}
           className="input"
-          placeholder="Tell us why you’d like to join (optional)"
+          placeholder="Why are you a good fit for Diamond Dawn? (optional)"
         />
+        {/*<div className={classNames("center-start-aligned-row checkbox", { "with-error": isAddressApprovedError })}>*/}
+        {/*  {renderCheckbox("addressApproved", true)}*/}
+        {/*  Mint address {account.address}*/}
+        {/*</div>*/}
         <ActionButton
           actionKey="Request Invitation"
           className="gold"
-          onClick={handleSubmit(onSubmitClick)}
+          onClick={handleSubmit(applyToDD)}
           disabled={!isDirty || !isEmpty(errors) || isRequiredError}
         >
           SUBMIT
@@ -109,4 +143,4 @@ const RequestForm = ({ onSuccess }) => {
   );
 };
 
-export default RequestForm;
+export default ApplyForm;

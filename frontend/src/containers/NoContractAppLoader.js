@@ -3,8 +3,9 @@ import useMountLogger from "hooks/useMountLogger";
 import { useDispatch } from "react-redux";
 import { loadConfig } from "store/systemReducer";
 import useOnConnect from "hooks/useOnConnect";
-import { clearCollector, loadCollectorByAddress } from "store/collectorReducer";
+import { loadCollectorByAddress } from "store/collectorReducer";
 import useActionDispatch from "hooks/useActionDispatch";
+import { clearActionStatus } from "store/actionStatusReducer";
 
 const NoContractAppLoader = () => {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ const NoContractAppLoader = () => {
       );
     },
     () => {
-      dispatch(clearCollector());
+      dispatch(clearActionStatus("get-collector-by-address"));
       dispatch({ type: "RESET_STATE" });
     }
   );

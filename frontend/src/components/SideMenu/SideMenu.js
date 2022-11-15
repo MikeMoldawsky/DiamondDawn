@@ -4,17 +4,26 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import InvitationsStatus from "components/InvitationsStatus";
-import { collectorDisplayName, getCDNImageUrl, shortenEthAddress } from "utils";
+import { collectorDisplayName, getCDNImageUrl } from "utils";
 import "./SideMenu.scss";
+import { inviteSelector } from "store/inviteReducer";
+import useGoToInvites from "hooks/useGoToInvites";
+import TelegramIcon from "@mui/icons-material/Telegram";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
   const collector = useSelector(collectorSelector);
+  const invite = useSelector(inviteSelector);
 
-  const invitedBy = collector?.invitedBy
-    ? collector.invitedBy.twitter ||
-      collector.invitedBy.email ||
-      shortenEthAddress(collector.invitedBy.address)
-    : null;
+  const invitedBy = collector?.invitedBy || invite;
+
+  const goToInvites = useGoToInvites();
+
+  const onInvitesTitleClick = () => {
+    goToInvites();
+    closeMenu();
+  };
 
   return (
     <Drawer
@@ -22,36 +31,52 @@ const SideMenu = ({ isOpen, closeMenu }) => {
       open={isOpen}
       ModalProps={{ onBackdropClick: closeMenu }}
     >
-      <div className="menu">
-        <NavLink to={"/explore"} onClick={closeMenu}>
-          <div className="menu-item">HOMEPAGE</div>
-        </NavLink>
-        <NavLink to={"/about"} onClick={closeMenu}>
-          <div className="menu-item">THE JOURNEY</div>
-        </NavLink>
-        <NavLink to={"/about"} onClick={closeMenu}>
-          <div className="menu-item">ABOUT US</div>
-        </NavLink>
-        {collector && (
-          <NavLink to={"/collector"} onClick={closeMenu}>
-            <div className="menu-item">COLLECTOR'S ROOM</div>
+      <div className="stretch-top-aligned-column">
+        <div className="menu">
+          <NavLink to={"/explore"} onClick={closeMenu}>
+            <div className="menu-item">HOMEPAGE</div>
           </NavLink>
-        )}
-      </div>
-      {collector && collector.invitations.length > 0 && (
-        <div className="invitations-menu">
-          <div className="menu-item">MY INVITATIONS</div>
-          <InvitationsStatus />
+          <NavLink to={"/about"} onClick={closeMenu}>
+            <div className="menu-item">THE JOURNEY</div>
+          </NavLink>
+          <NavLink to={"/about"} onClick={closeMenu}>
+            <div className="menu-item">ABOUT US</div>
+          </NavLink>
         </div>
-      )}
-      {!collector && <div className="button gold">APPLY FOR DIAMOND DAWN</div>}
-      {collector?.invitedBy?.createdBy && (
+        <NavLink to={"/collector"} onClick={closeMenu}>
+          {collector ? (
+            <div className="menu-item sm">COLLECTOR'S ROOM</div>
+          ) : (
+            <div className="button gold sm">APPLY FOR DIAMOND DAWN</div>
+          )}
+        </NavLink>
+        {collector && collector.invitations.length > 0 && (
+          <div className="invitations-menu">
+            <div className="menu-item sm" onClick={onInvitesTitleClick}>
+              MY INVITATION
+            </div>
+            <InvitationsStatus />
+          </div>
+        )}
+        <div className="center-center-aligned-row social-icons">
+          <div className="icon">
+            <FontAwesomeIcon icon={faTwitter} />
+          </div>
+          <div className="icon">
+            <TelegramIcon />
+          </div>
+        </div>
+      </div>
+      {invitedBy?.createdBy && (
         <div className="invited-by">
           <div className="image">
             <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
           </div>
           <div className="">
-            INVITED BY {collectorDisplayName(collector?.invitedBy?.createdBy)}
+            INVITED BY{" "}
+            <span className="text-gold">
+              {collectorDisplayName(invitedBy?.createdBy)}
+            </span>
           </div>
         </div>
       )}

@@ -1,12 +1,13 @@
 @import "css/varsNEW";
 
 .MuiDrawer-root .MuiPaper-root {
-  padding: 8em 2em 2em;
-  width: 20em;
+  padding: 8em 2em 3em;
+  width: 18em;
   background: #4a4a4a;
   box-shadow: 0 0.4em 1.2em #00000029;
   color: white;
   backdrop-filter: blur(30px);
+  justify-content: space-between;
 
   &:before {
     content: "";
@@ -18,30 +19,102 @@
     background-color: black;
   }
 
+  .menu {
+    margin-bottom: 1.5em;
+
+    .button {
+      margin-top: 1em;
+    }
+  }
+
   .menu-item {
     margin-bottom: 0.8em;
     font-size: $font20px;
+    cursor: pointer;
+
+    &.sm {
+      font-size: $font16px;
+    }
+
+    &:hover {
+      font-weight: 500;
+    }
   }
 
-  .menu {
-    padding-bottom: 2em;
-    margin-bottom: 2em;
-    border-bottom: solid 1px #707070;
+  a.active {
+    .menu-item {
+      font-weight: 500;
+      position: relative;
+      padding-left: 0.3em;
+
+      &:before {
+        content: "";
+        width: 0.15em;
+        height: 0.15em;
+        position: absolute;
+        left: -0.3em;
+        top: calc(50% - 0.075em);
+        background-color: white;
+      }
+    }
   }
 
   .invitations-menu {
-    padding-bottom: 1em;
-    margin-bottom: 2em;
-    border-bottom: solid 1px #707070;
+    padding-top: 1.5em;
+    margin-top: 1.5em;
+    border-top: solid 1px #707070;
+  }
+
+  .social-icons {
+    padding-top: 1.5em;
+    margin-top: 1em;
+    border-top: solid 1px #707070;
+
+    .icon {
+      height: $font34px;
+
+      svg {
+        height: 100%;
+
+        &.fa-twitter {
+          height: 90%;
+          margin-top: 5%;
+        }
+
+        &.MuiSvgIcon-root {
+          width: unset;
+        }
+      }
+
+      &:not(:last-child) {
+        padding-right: 1em;
+        margin-right: 0.6em;
+        position: relative;
+
+        &:after {
+          content: "";
+          position: absolute;
+          top: 0.3em;
+          bottom: 0.3em;
+          width: 1px;
+          right: 0;
+          background-color: white;
+        }
+      }
+    }
   }
 
   .invited-by {
     font-size: $font12px;
     text-align: center;
 
+    * {
+      font-weight: 500;
+    }
+
     img {
       width: 100%;
-      margin-bottom: -2em;
+      margin-bottom: -1.5em;
     }
   }
 }

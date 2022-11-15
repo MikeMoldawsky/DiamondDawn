@@ -48,7 +48,7 @@
   border-radius: 4.5em;
   color: black;
   background-color: white;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0 3.25em;
@@ -101,10 +101,12 @@
 
   &.lg {
     font-size: $font20px;
+    padding: 0 2em;
   }
 
   &.sm {
     font-size: $font11px;
+    padding: 0 2em;
   }
 
   &.disabled,
@@ -150,6 +152,16 @@
 
   &.validation-error {
     border-color: red;
+  }
+
+  &[disabled],
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  &.full-width {
+    width: 100% !important;
   }
 }
 

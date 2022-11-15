@@ -6,7 +6,11 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { utils as ethersUtils } from "ethers";
-import { getCollectorsApi, updateCollectorApi } from "api/serverApi";
+import {
+  approveCollectorApi,
+  getCollectorsApi,
+  updateCollectorApi,
+} from "api/serverApi";
 
 const INVITATION_COLUMNS = [
   {
@@ -49,6 +53,13 @@ const INVITATION_COLUMNS = [
     showIfRequest: true,
   },
   {
+    field: "isDao",
+    headerName: "DAO",
+    type: "boolean",
+    width: 100,
+    showIfRequest: true,
+  },
+  {
     field: "note",
     headerName: "Notes",
     width: 300,
@@ -67,7 +78,6 @@ const INVITATION_COLUMNS = [
     headerName: "Approved",
     type: "boolean",
     width: 100,
-    editable: true,
     showIfRequest: true,
   },
   {
@@ -98,9 +108,9 @@ const INVITATION_COLUMNS = [
   },
 ];
 
-const ApproveButton = ({ inviteId, onApprove }) => {
+const ApproveButton = ({ collectorId, onApprove }) => {
   const approve = async () => {
-    await updateCollectorApi({ _id: inviteId, approved: true });
+    await approveCollectorApi(collectorId);
     onApprove();
   };
 
@@ -147,7 +157,7 @@ const InvitationsTab = ({ approved }) => {
   const renderActions = ({ id }) =>
     approved
       ? []
-      : [<ApproveButton inviteId={id} onApprove={() => setApproved(id)} />];
+      : [<ApproveButton collectorId={id} onApprove={() => setApproved(id)} />];
 
   return (
     <div className={classNames("tab-content invitations")}>

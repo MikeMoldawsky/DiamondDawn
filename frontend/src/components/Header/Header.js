@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.scss";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import DiamondList from "components/DiamondList";
 import Wallet from "components/Wallet";
 import ContractProvider from "containers/ContractProvider";
@@ -22,6 +22,7 @@ import classNames from "classnames";
 import { usePageSizeLimit } from "components/PageSizeLimit";
 import { canAccessDDSelector } from "store/selectors";
 import { collectorSelector } from "store/collectorReducer";
+import useGoToInvites from "hooks/useGoToInvites";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
@@ -30,16 +31,31 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const isPageSizeLimitOk = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
   const collector = useSelector(collectorSelector);
+  const goToInvites = useGoToInvites();
+  const navigate = useNavigate();
 
   const isHomepage =
     location.pathname === "/" || location.pathname === "/explore";
   const animateShowLogo = isHomepage && showHPLogo;
   const animateHideLogo = isHomepage && showHPLogo === false;
 
+  const onVolumeClick = (e) => {
+    e.stopPropagation();
+    dispatch(toggleMuted());
+  };
+
+  const onCTAClick = () => {
+    if (collector) {
+      goToInvites();
+    } else {
+      navigate("/collector");
+    }
+  };
+
   return (
     <>
       <div className="header-fix" />
-      <header>
+      <header onClick={() => isMenuOpen && toggleMenu()}>
         <div className="header-internal">
           <div className="center-aligned-row header-side">
             {isPageSizeLimitOk && (
@@ -64,11 +80,12 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           />
           <div className="center-aligned-row header-side">
             {canAccessDD && isPageSizeLimitOk && (
-              <NavLink to="/collector">
-                <div className="button gold sm collector-btn">
-                  {collector ? "COLLECTOR'S ROOM" : "APPLY FOR DIAMOND DAWN"}
-                </div>
-              </NavLink>
+              <div
+                className="button gold sm collector-btn"
+                onClick={onCTAClick}
+              >
+                {collector ? "MY INVITATIONS" : "APPLY FOR DIAMOND DAWN"}
+              </div>
             )}
             <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
               <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
@@ -77,7 +94,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             <FontAwesomeIcon
               className="menu-icon mute-icon"
               icon={muted ? faVolumeMute : faVolumeUp}
-              onClick={() => dispatch(toggleMuted())}
+              onClick={onVolumeClick}
             />
             <AudioPlayer />
             {canAccessDD && isPageSizeLimitOk && (

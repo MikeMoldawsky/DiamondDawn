@@ -6,7 +6,7 @@
   }
 
   .button {
-    padding: unset;
+    padding: unset !important;
     width: 11em;
     margin-right: 1em;
 
@@ -20,10 +20,5 @@
 
   .status {
     font-size: $font12px;
-  }
-
-  .used-by {
-    font-size: $font10px;
-    color: #878787;
   }
 }
