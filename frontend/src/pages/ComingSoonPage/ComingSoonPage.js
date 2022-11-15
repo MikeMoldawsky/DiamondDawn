@@ -14,6 +14,7 @@ import {inviteSelector, loadInviteById} from "store/inviteReducer";
 import InvitedModal from "components/InvitedModal/InvitedModal";
 import {isActionSuccessSelector} from "store/actionStatusReducer";
 import {canAccessDDSelector} from "store/selectors";
+import {collectorSelector} from "store/collectorReducer";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const ComingSoonPage = () => {
   const [searchParams] = useSearchParams()
   const inviteId = searchParams.get("invite")
   const invite = useSelector(inviteSelector)
+  const collector = useSelector(collectorSelector)
   const isCollectorFetched = useSelector(
     isActionSuccessSelector("get-collector-by-address")
   );
@@ -41,10 +43,10 @@ const ComingSoonPage = () => {
   }, [inviteId])
 
   useEffect(() => {
-    if (invite && !invite.usedBy && !invite.revoked) {
+    if (invite && !invite.usedBy && !invite.revoked && isCollectorFetched && !collector) {
       setShowInvitedModal(true)
     }
-  }, [invite])
+  }, [invite, isCollectorFetched, collector])
 
   const renderBgPlayer = useCallback(
     () => (

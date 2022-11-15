@@ -11,6 +11,7 @@ import {canAccessDDSelector} from "store/selectors";
 import {collectorSelector} from "store/collectorReducer";
 import {isActionFirstCompleteSelector, isActionSuccessSelector} from "store/actionStatusReducer";
 import {useNavigate} from "react-router-dom";
+import {useAccount} from "wagmi";
 
 const DEFAULT_TIMEOUT = 10000;
 const SHOW_TEXT_TIME = 100;
@@ -39,6 +40,7 @@ const PageLoader = ({
     isActionFirstCompleteSelector("get-collector-by-address")
   );
   const navigate = useNavigate()
+  const account = useAccount()
 
   const assetsReady = assetReadyPages[pageName];
 
@@ -108,11 +110,11 @@ const PageLoader = ({
   }, [canAccessDD, requireAccess])
 
   useEffect(() => {
-    if (requireAccess && isCollectorFetched && !canAccessDD) {
+    if (requireAccess && (!account?.address || (isCollectorFetched && !canAccessDD))) {
       console.log("PageLoader - navigating to /")
       navigate("/")
     }
-  }, [isCollectorFetched])
+  }, [isCollectorFetched, account?.address])
 
   setTimeout(() => {
     setShowText(true);

@@ -67,15 +67,10 @@
   &.icon-after {
     svg {
       margin-right: 0;
-      margin-left: 16px;
+      margin-left: 1em;
+      width: 1em;
+      height: 1em;
     }
-  }
-
-  &.disabled,
-  &[disabled] {
-    cursor: not-allowed;
-    background-color: $disabled_gray;
-    color: $disabled_text_gray;
   }
 
   &.inverted,
@@ -90,25 +85,6 @@
 
     span > span {
       background-color: white !important;
-    }
-  }
-
-  &.transparent {
-    color: white;
-    background-color: transparent;
-    border: solid 1px white;
-
-    .button-content {
-      font-weight: 400;
-    }
-
-    span > span {
-      background-color: white !important;
-    }
-
-    &.disabled,
-    &[disabled] {
-      opacity: 0.5;
     }
   }
 
@@ -129,6 +105,32 @@
 
   &.sm {
     font-size: $font11px;
+  }
+
+  &.disabled,
+  &[disabled] {
+    cursor: not-allowed;
+    background-color: $disabled_gray;
+    color: $disabled_text_gray;
+  }
+
+  &.transparent {
+    color: white;
+    background-color: transparent;
+    border: solid 1px white;
+
+    .button-content {
+      font-weight: 400;
+    }
+
+    span > span {
+      background-color: white !important;
+    }
+
+    &.disabled,
+    &[disabled] {
+      opacity: 0.5;
+    }
   }
 }
 

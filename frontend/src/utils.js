@@ -178,5 +178,10 @@ export const getCDNVideoUrl = (objectPath) =>
 export const getCDNAudioUrl = (objectPath) =>
   getCDNObjectUrl(`/audio${prependBackslash(objectPath)}`);
 
-export const shortenEthAddress = (address) =>
-  `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+export const shortenEthAddress = (address) => address ?
+  `${address.substring(0, 6)}...${address.substring(address.length - 4)}` :
+  "";
+
+export const collectorDisplayName = collector => collector ?
+  (collector.twitter || collector.email || shortenEthAddress(collector.address)) :
+  ""

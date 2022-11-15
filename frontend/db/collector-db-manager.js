@@ -6,7 +6,13 @@ const signer = require("../helpers/signer");
 
 async function getCollectorObjectById(collectorId) {
   try {
-    const collector = (await Collector.findById(collectorId).populate("invitations")).toObject()
+    const collector = (await Collector.findById(collectorId).populate({
+      path: "invitations",
+      populate: "usedBy"
+    }).populate({
+      path: "invitedBy",
+      populate: "createdBy"
+    })).toObject()
     if (!collector) return null;
 
     if (collector.mintWindowOpen && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {

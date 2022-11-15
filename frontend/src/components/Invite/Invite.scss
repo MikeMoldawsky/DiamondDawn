@@ -87,6 +87,10 @@
 
         .modal-inner {
           height: 100%;
+
+          &:before {
+            opacity: 1;
+          }
         }
 
         .modal-content {

@@ -6,7 +6,7 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const RequestSubmittedModal = ({ close }) => {
   return (
-    <Modal close={close} withCloseBtn>
+    <Modal className="request-submitted" close={close} withCloseBtn>
       <div className="center-aligned-column modal-content">
         <FontAwesomeIcon icon={faCheck} />
         <div className="heading">You're On The Waitlist!</div>

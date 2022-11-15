@@ -1,0 +1,47 @@
+@import "css/varsNEW";
+
+.MuiDrawer-root .MuiPaper-root {
+  padding: 8em 2em 2em;
+  width: 20em;
+  background: #4a4a4a;
+  box-shadow: 0 0.4em 1.2em #00000029;
+  color: white;
+  backdrop-filter: blur(30px);
+
+  &:before {
+    content: "";
+    width: 100%;
+    height: var(--header-height);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+  }
+
+  .menu-item {
+    margin-bottom: 0.8em;
+    font-size: $font20px;
+  }
+
+  .menu {
+    padding-bottom: 2em;
+    margin-bottom: 2em;
+    border-bottom: solid 1px #707070;
+  }
+
+  .invitations-menu {
+    padding-bottom: 1em;
+    margin-bottom: 2em;
+    border-bottom: solid 1px #707070;
+  }
+
+  .invited-by {
+    font-size: $font12px;
+    text-align: center;
+
+    img {
+      width: 100%;
+      margin-bottom: -2em;
+    }
+  }
+}

@@ -371,31 +371,6 @@ footer {
   background-color: white !important;
 }
 
-.MuiDrawer-root .MuiPaper-root {
-  font-size: 0.9em;
-  padding-top: 8em;
-  width: 24em;
-  background: #ffffff55;
-  box-shadow: 0 0.4em 1.2em #00000029;
-  color: white;
-  padding-left: 3em;
-
-  &:before {
-    content: "";
-    width: 100%;
-    height: var(--header-height);
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: black;
-  }
-
-  .menu-item {
-    margin-bottom: 0.8em;
-    font-size: 1.4em;
-  }
-}
-
 // ANIMATIONS
 @keyframes scale {
   0% {
