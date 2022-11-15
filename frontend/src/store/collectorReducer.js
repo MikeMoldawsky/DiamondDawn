@@ -14,8 +14,6 @@ export const updateCollector = (collector) => ({
 });
 
 export const loadCollectorByAddress = (address) => async (dispatch) => {
-  console.log("loadCollectorByAddress");
-  dispatch(clearCollector());
   const collector = await getCollectorByAddressApi(address);
   if (!isEmpty(collector)) {
     dispatch(updateCollector(collector));

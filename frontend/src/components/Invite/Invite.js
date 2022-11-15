@@ -3,13 +3,8 @@ import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import ApplyForm from "components/RequestForm";
-import useOnConnect from "hooks/useOnConnect";
 import { useAccount } from "wagmi";
-import useActionDispatch from "hooks/useActionDispatch";
-import {
-  clearActionStatus,
-  isActionFirstCompleteSelector,
-} from "store/actionStatusReducer";
+import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import Loading from "components/Loading";
@@ -27,7 +22,6 @@ import {
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
-  const actionDispatch = useActionDispatch();
   const dispatch = useDispatch();
   const account = useAccount();
   const invite = useSelector(inviteSelector);
@@ -47,17 +41,6 @@ const Invite = () => {
     loadCollector(account.address);
     loadInvite();
   };
-
-  useOnConnect(
-    async (address) => {
-      // dispatch(clearActionStatus("get-collector-by-address"));
-      actionDispatch(() => loadCollector(address), "get-collector-by-address");
-      actionDispatch(() => loadInvite(), "get-invite-by-id");
-    },
-    () => {
-      dispatch(clearActionStatus("get-collector-by-address"));
-    }
-  );
 
   useEffect(() => {
     if (

@@ -24,5 +24,6 @@ export const inviteReducer = makeReducer(
     "INVITE.SET": reduceSetFull,
     "INVITE.CLEAR": () => INITIAL_STATE,
   },
-  INITIAL_STATE
+  INITIAL_STATE,
+  false,
 );

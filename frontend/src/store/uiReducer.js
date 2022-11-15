@@ -55,5 +55,6 @@ export const uiReducer = makeReducer(
     "UI.SET_SHOULD_IGNORE_TOKEN_TRANSFER_WATCH": reduceUpdateFull,
     "UI.UPDATE_STATE": reduceUpdateFull,
   },
-  INITIAL_STATE
+  INITIAL_STATE,
+  false,
 );
