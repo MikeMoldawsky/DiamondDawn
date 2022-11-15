@@ -121,12 +121,9 @@ const Invite = () => {
             </div>
           ) : (
             <>
-              <div className="title-box">
-                <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
-              </div>
+              <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
               <div className="text">
-                To receive your unique key to the diamond mine, Please enter
-                your info below:
+                Please fill the details below
               </div>
               <ApplyForm onSuccess={onSubmitSuccess} />
             </>

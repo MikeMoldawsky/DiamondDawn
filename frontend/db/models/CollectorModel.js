@@ -14,6 +14,7 @@ const CollectorSchema = new mongoose.Schema({
   approved: { type: Boolean, required: true, default: false },
   mintWindowStart: { type: Date },
   minted: { type: Boolean, default: false },
+  isDao: { type: Boolean, default: false },
   invitations: { type: [{ type: ObjectId, ref: "Invitation" }], default: [] },
 });
 

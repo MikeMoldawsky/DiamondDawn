@@ -24,6 +24,7 @@ const RequestForm = ({ onSuccess }) => {
     mode: "onChange",
   });
   const [isRequiredError, setIsRequiredError] = useState(false);
+  const [isAddressApprovedError, setIsAddressApprovedError] = useState(false);
   const account = useAccount();
   const isSubmitting = useSelector(
     isActionPendingSelector("Request Invitation")
@@ -35,6 +36,11 @@ const RequestForm = ({ onSuccess }) => {
     setIsSubmitSuccess(false);
   }, [isSubmitSuccess]);
 
+  const clearErrors = () => {
+    setIsRequiredError(false)
+    setIsAddressApprovedError(false)
+  }
+
   const renderInput = (name, placeholder, opts = {}) => {
     const emptyValue = isEmpty(watch(name));
     const hasError = !isNil(get(errors, name));
@@ -42,7 +48,7 @@ const RequestForm = ({ onSuccess }) => {
       <input
         {...register(name, {
           required: true,
-          onChange: () => setIsRequiredError(false),
+          onChange: clearErrors,
           ...opts,
         })}
         disabled={isSubmitting}
@@ -55,23 +61,38 @@ const RequestForm = ({ onSuccess }) => {
     );
   };
 
-  const applyToDD = async ({ twitter, email, note }) => {
+  const renderCheckbox = (name, required, opts = {}) => {
+    const hasError = required && !watch(name);
+    return (
+      <input
+        type="checkbox"
+        {...register(name, {
+          onChange: clearErrors,
+          ...opts,
+        })}
+        disabled={isSubmitting}
+        className={classNames("input", {
+          "validation-error": hasError || isAddressApprovedError,
+        })}
+      />
+    );
+  };
+
+  const applyToDD = async (data) => {
+    clearErrors()
+    const { addressApproved, ...payload } = data
+    if (!addressApproved) {
+      setIsAddressApprovedError(true)
+      return;
+    }
+    const { twitter, email } = payload
     if (!twitter && !email) {
       setIsRequiredError(true);
       return;
     }
-    await applyToDDApi(invite._id, account.address, { twitter, email, note });
+    await applyToDDApi(invite._id, account.address, payload);
     onSuccess && (await onSuccess());
     setIsSubmitSuccess(true);
-  };
-
-  const onSubmitClick = async (data) => {
-    const { twitter, email } = data;
-    if (!twitter && !email) {
-      setIsRequiredError(true);
-    } else {
-      await applyToDD(data);
-    }
   };
 
   return (
@@ -88,7 +109,7 @@ const RequestForm = ({ onSuccess }) => {
           })}
         </div>
         <div className="center-start-aligned-row checkbox">
-          <input type="checkbox" /> We are a DAO
+          <input type="checkbox" {...register("isDao")} /> We are a DAO
         </div>
         <textarea
           {...register("note")}
@@ -96,11 +117,15 @@ const RequestForm = ({ onSuccess }) => {
           className="input"
           placeholder="Tell us why you’d like to join (optional)"
         />
+        <div className={classNames("center-start-aligned-row checkbox", { "with-error": isAddressApprovedError })}>
+          {renderCheckbox("addressApproved", true)}
+          Mint address {account.address}
+        </div>
         <ActionButton
           actionKey="Request Invitation"
           className="gold"
-          onClick={handleSubmit(onSubmitClick)}
-          disabled={!isDirty || !isEmpty(errors) || isRequiredError}
+          onClick={handleSubmit(applyToDD)}
+          disabled={!isDirty || !isEmpty(errors) || isRequiredError || isAddressApprovedError}
         >
           SUBMIT
         </ActionButton>

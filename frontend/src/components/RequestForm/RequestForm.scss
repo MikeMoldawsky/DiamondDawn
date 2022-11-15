@@ -41,13 +41,19 @@
   }
 
   .checkbox {
-    width: 10em;
     font-size: 1.125em;
     white-space: nowrap;
 
     input {
       margin-right: 0.5em;
       width: 1em !important;
+    }
+
+    &.with-error {
+
+      input {
+        outline: solid 1px red;
+      }
     }
   }
 }
