@@ -74,14 +74,14 @@ const EnterMineView = ({
                   </div>
                 </div>
               </div>
-              <div className="center-aligned-row mint-box">
+              <div className="left-centered-aligned-column mint-box">
                 <div className="center-start-aligned-row price-text">
                   ACTIVATE YOUR KEY
                 </div>
                 <div>
                   <ActionButton
                     actionKey="EnterMine"
-                    className="action-button lg"
+                    className="action-button"
                     disabled={!canMint || !isFunction(enterMine)}
                     onClick={() => isFunction(enterMine) && enterMine()}
                   >

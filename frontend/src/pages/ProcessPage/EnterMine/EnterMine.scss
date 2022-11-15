@@ -59,6 +59,7 @@
     position: relative;
     flex-grow: 2;
     padding: 0 1em 0 0;
+    margin-top: -.8em;
 
     .center-aligned-row {
       width: 100%;
@@ -66,8 +67,11 @@
     }
 
     .price-text {
+      color: $gold;
       font-size: $font20px;
       font-weight: 500;
+      margin-bottom: .4em;
+      line-height: 1em;
     }
 
     svg {
