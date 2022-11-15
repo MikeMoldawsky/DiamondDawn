@@ -1,6 +1,6 @@
 const Invitation = require("./models/InvitationModel");
 const Collector = require("./models/CollectorModel");
-const { getOrCreateDDCollector } = require("./common")
+const { getOrCreateDDCollector } = require("./common");
 
 const MAX_INVITES_FOR_COLLECTOR = 2;
 const DD_TWITTER_HANDLE = "@DiamondDawnNFT";
@@ -18,7 +18,7 @@ async function createInvitation(createdBy, note) {
 
   if (inviter.twitter === DD_TWITTER_HANDLE) {
     // make sure DD "Collector" exists
-    inviter = await getOrCreateDDCollector()
+    inviter = await getOrCreateDDCollector();
   }
 
   const invitation = new Invitation({ createdBy: inviter, note });

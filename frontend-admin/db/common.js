@@ -2,7 +2,6 @@ const Collector = require("./models/CollectorModel");
 const _ = require("lodash");
 const add = require("date-fns/add");
 
-
 async function getCollectorObjectById(collectorId) {
   try {
     const collector = (await Collector.findById(collectorId)).toObject();
@@ -35,7 +34,7 @@ async function getOrCreateDDCollector() {
         address: "0xffff",
         twitter: "@DiamondDawnNFT",
         approved: true,
-      })
+      });
     }
     return await getCollectorObjectById(ddCollector._id);
   } catch (e) {
@@ -46,4 +45,4 @@ async function getOrCreateDDCollector() {
 module.exports = {
   getCollectorObjectById,
   getOrCreateDDCollector,
-}
+};

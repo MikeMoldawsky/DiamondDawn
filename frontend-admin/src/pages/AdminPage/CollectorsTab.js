@@ -6,7 +6,11 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { utils as ethersUtils } from "ethers";
-import {approveCollectorApi, getCollectorsApi, updateCollectorApi} from "api/serverApi";
+import {
+  approveCollectorApi,
+  getCollectorsApi,
+  updateCollectorApi,
+} from "api/serverApi";
 
 const INVITATION_COLUMNS = [
   {

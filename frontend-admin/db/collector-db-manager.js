@@ -1,7 +1,7 @@
 const Collector = require("./models/CollectorModel");
 const _ = require("lodash");
-const { createInvitation } = require("./invitation-db-manager")
-const { getCollectorObjectById } = require("./common")
+const { createInvitation } = require("./invitation-db-manager");
+const { getCollectorObjectById } = require("./common");
 
 async function getCollectors(approved) {
   try {
@@ -25,22 +25,22 @@ async function updateCollector(update) {
 }
 
 async function approveCollector(collectorId) {
-  const collector = await Collector.findById(collectorId)
+  const collector = await Collector.findById(collectorId);
   if (!collector) {
-    throw new Error(`Collector ${collectorId} not found`)
+    throw new Error(`Collector ${collectorId} not found`);
   }
 
   const update = {
     _id: collectorId,
     approved: true,
+  };
+  if (collector.invitations.length === 0) {
+    const noteName = collector.twitter || collector.address;
+    const i1 = await createInvitation(collector, `${noteName} - Invite 1`);
+    const i2 = await createInvitation(collector, `${noteName} - Invite 2`);
+    update.invitations = [i1, i2];
   }
-  if (collector.invitations.length  === 0) {
-    const noteName = collector.twitter || collector.address
-    const i1 = await createInvitation(collector, `${noteName} - Invite 1`)
-    const i2 = await createInvitation(collector, `${noteName} - Invite 2`)
-    update.invitations = [i1, i2]
-  }
-  return updateCollector(update)
+  return updateCollector(update);
 }
 
 module.exports = {
