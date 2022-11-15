@@ -3,7 +3,6 @@ import forEach from "lodash/forEach";
 import sumBy from "lodash/sumBy";
 import get from "lodash/get";
 import Loading from "components/Loading";
-import useTimeout from "hooks/useTimeout";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import classNames from "classnames";
@@ -11,7 +10,6 @@ import { canAccessDDSelector } from "store/selectors";
 import { collectorSelector } from "store/collectorReducer";
 import {
   isActionFirstCompleteSelector,
-  isActionSuccessSelector,
 } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
@@ -39,7 +37,6 @@ const PageLoader = ({
   const canAccessDD = useSelector(canAccessDDSelector);
   const collector = useSelector(collectorSelector);
   const isCollectorFetched = useSelector(
-    // isActionSuccessSelector("get-collector-by-address")
     isActionFirstCompleteSelector("get-collector-by-address")
   );
   const navigate = useNavigate();
@@ -114,8 +111,7 @@ const PageLoader = ({
 
   useEffect(() => {
     if (
-      requireAccess &&
-      (!account?.address || (isCollectorFetched && !canAccessDD))
+      requireAccess && isCollectorFetched && !canAccessDD
     ) {
       console.log("PageLoader - navigating to /");
       navigate("/");

@@ -4,17 +4,15 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import InvitationsStatus from "components/InvitationsStatus";
-import { collectorDisplayName, getCDNImageUrl, shortenEthAddress } from "utils";
+import { collectorDisplayName, getCDNImageUrl } from "utils";
 import "./SideMenu.scss";
+import {inviteSelector} from "store/inviteReducer";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
   const collector = useSelector(collectorSelector);
+  const invite = useSelector(inviteSelector);
 
-  const invitedBy = collector?.invitedBy
-    ? collector.invitedBy.twitter ||
-      collector.invitedBy.email ||
-      shortenEthAddress(collector.invitedBy.address)
-    : null;
+  const invitedBy = collector?.invitedBy || invite
 
   return (
     <Drawer
@@ -22,36 +20,37 @@ const SideMenu = ({ isOpen, closeMenu }) => {
       open={isOpen}
       ModalProps={{ onBackdropClick: closeMenu }}
     >
-      <div className="menu">
-        <NavLink to={"/explore"} onClick={closeMenu}>
-          <div className="menu-item">HOMEPAGE</div>
-        </NavLink>
-        <NavLink to={"/about"} onClick={closeMenu}>
-          <div className="menu-item">THE JOURNEY</div>
-        </NavLink>
-        <NavLink to={"/about"} onClick={closeMenu}>
-          <div className="menu-item">ABOUT US</div>
-        </NavLink>
-        {collector && (
-          <NavLink to={"/collector"} onClick={closeMenu}>
-            <div className="menu-item">COLLECTOR'S ROOM</div>
+      <div className="left-top-aligned-column">
+        <div className="menu">
+          <NavLink to={"/explore"} onClick={closeMenu}>
+            <div className="menu-item">HOMEPAGE</div>
           </NavLink>
+          <NavLink to={"/about"} onClick={closeMenu}>
+            <div className="menu-item">THE JOURNEY</div>
+          </NavLink>
+          <NavLink to={"/about"} onClick={closeMenu}>
+            <div className="menu-item">ABOUT US</div>
+          </NavLink>
+          <NavLink to={"/collector"} onClick={closeMenu}>
+            <div className="button gold sm">
+              {collector ? "COLLECTOR'S ROOM" : "APPLY FOR DIAMOND DAWN"}
+            </div>
+          </NavLink>
+        </div>
+        {collector && collector.invitations.length > 0 && (
+          <div className="invitations-menu">
+            <div className="menu-item">INVITE</div>
+            <InvitationsStatus />
+          </div>
         )}
       </div>
-      {collector && collector.invitations.length > 0 && (
-        <div className="invitations-menu">
-          <div className="menu-item">MY INVITATIONS</div>
-          <InvitationsStatus />
-        </div>
-      )}
-      {!collector && <div className="button gold">APPLY FOR DIAMOND DAWN</div>}
-      {collector?.invitedBy?.createdBy && (
+      {invitedBy?.createdBy && (
         <div className="invited-by">
           <div className="image">
             <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
           </div>
           <div className="">
-            INVITED BY {collectorDisplayName(collector?.invitedBy?.createdBy)}
+            INVITED BY <span className="text-gold">{collectorDisplayName(invitedBy?.createdBy)}</span>
           </div>
         </div>
       )}

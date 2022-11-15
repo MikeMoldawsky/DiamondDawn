@@ -30,12 +30,10 @@ const InvitationsStatus = () => {
                 INVITATION 0{i + 1} <ContentCopyIcon />
               </div>
             </CopyToClipboard>
-            <div className="left-centered-aligned-column">
-              <div className="status">
-                STATUS: {usedBy ? "USED" : "AVAILABLE"}
-              </div>
+            <div className="status">
+              {usedBy ? "USED BY" : "AVAILABLE"}
               {usedBy && (
-                <div className="used-by">BY {collectorDisplayName(usedBy)}</div>
+                <span className="text-gold">{" " + collectorDisplayName(usedBy)}</span>
               )}
             </div>
           </div>
