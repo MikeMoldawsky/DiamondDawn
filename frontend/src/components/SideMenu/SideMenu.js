@@ -1,18 +1,29 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
-import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import {NavLink} from "react-router-dom";
+import {useSelector} from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import InvitationsStatus from "components/InvitationsStatus";
 import { collectorDisplayName, getCDNImageUrl } from "utils";
 import "./SideMenu.scss";
 import {inviteSelector} from "store/inviteReducer";
+import useGoToInvites from 'hooks/useGoToInvites'
+import TelegramIcon from '@mui/icons-material/Telegram';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
   const collector = useSelector(collectorSelector);
   const invite = useSelector(inviteSelector);
 
   const invitedBy = collector?.invitedBy || invite
+
+  const goToInvites = useGoToInvites()
+
+  const onInvitesTitleClick = () => {
+    goToInvites()
+    closeMenu()
+  }
 
   return (
     <Drawer
@@ -31,18 +42,28 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           <NavLink to={"/about"} onClick={closeMenu}>
             <div className="menu-item">ABOUT US</div>
           </NavLink>
-          <NavLink to={"/collector"} onClick={closeMenu}>
-            <div className="button gold sm">
-              {collector ? "COLLECTOR'S ROOM" : "APPLY FOR DIAMOND DAWN"}
-            </div>
-          </NavLink>
         </div>
+        <NavLink to={"/collector"} onClick={closeMenu}>
+          {collector ? (
+            <div className="menu-item sm">COLLECTOR'S ROOM</div>
+          ) : (
+            <div className="button gold sm">APPLY FOR DIAMOND DAWN</div>
+          )}
+        </NavLink>
         {collector && collector.invitations.length > 0 && (
           <div className="invitations-menu">
-            <div className="menu-item">INVITE</div>
+            <div className="menu-item sm" onClick={onInvitesTitleClick}>MY INVITATION</div>
             <InvitationsStatus />
           </div>
         )}
+        <div className="center-center-aligned-row social-icons">
+          <div className="icon">
+            <FontAwesomeIcon icon={faTwitter} />
+          </div>
+          <div className="icon">
+            <TelegramIcon />
+          </div>
+        </div>
       </div>
       {invitedBy?.createdBy && (
         <div className="invited-by">

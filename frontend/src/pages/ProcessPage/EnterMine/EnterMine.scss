@@ -127,11 +127,11 @@
     position: relative;
     border: solid 1px white;
     height: 94%;
-    padding: 3em 6em;
+    padding: 2em 6em;
     justify-content: flex-start;
 
     img {
-      height: 12em;
+      height: 10em;
     }
 
     .back-button {
@@ -158,6 +158,7 @@
 
     .text {
       text-align: left;
+      font-size: $font16px;
     }
 
     .invitations-status {

@@ -19,22 +19,85 @@
     background-color: black;
   }
 
-  .menu-item {
-    margin-bottom: 0.8em;
-    font-size: $font20px;
-  }
-
   .menu {
+    margin-bottom: 1.5em;
+
     .button {
       margin-top: 1em;
     }
   }
 
+  .menu-item {
+    margin-bottom: 0.8em;
+    font-size: $font20px;
+    cursor: pointer;
+
+    &.sm {
+      font-size: $font16px;
+    }
+
+    &:hover {
+      font-weight: 500;
+    }
+  }
+
+  a.active {
+    .menu-item {
+      font-weight: 500;
+      position: relative;
+      padding-left: .3em;
+
+      &:before {
+        content: '';
+        width: .15em;
+        height: .15em;
+        position: absolute;
+        left: -.3em;
+        top: calc(50% - .075em);
+        background-color: white;
+      }
+    }
+  }
+
   .invitations-menu {
-    padding: 1.5em 0 1em;
-    margin: 2em 0;
+    padding-top: 1.5em;
+    margin-top: 1.5em;
     border-top: solid 1px #707070;
-    border-bottom: solid 1px #707070;
+  }
+
+  .social-icons {
+    padding-top: 1.5em;
+    margin-top: 1em;
+    border-top: solid 1px #707070;
+
+    .icon {
+      height: $font34px;
+
+      svg {
+        height: 100%;
+
+        &.fa-twitter {
+          height: 90%;
+          margin-top: 5%;
+        }
+      }
+
+      &:not(:last-child) {
+        padding-right: 1em;
+        margin-right: .2em;
+        position: relative;
+
+        &:after {
+          content: '';
+          position: absolute;
+          top: .3em;
+          bottom: .3em;
+          width: 1px;
+          right: 0;
+          background-color: white;
+        }
+      }
+    }
   }
 
   .invited-by {

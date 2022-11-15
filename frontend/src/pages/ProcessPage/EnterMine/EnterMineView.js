@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./EnterMine.scss";
 import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
@@ -27,6 +27,12 @@ const EnterMineView = ({
   const toggleInvites = (show) => {
     dispatch(updateUiState({ mintViewShowInvites: show }))
   }
+
+  useEffect(() => {
+    return () => {
+      toggleInvites(false)
+    }
+  }, [])
 
   const mintPriceText = BigNumber.isBigNumber(minePrice)
     ? ethersUtils.formatUnits(minePrice)
