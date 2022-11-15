@@ -83,7 +83,7 @@
     @extend .right-box;
     align-items: stretch;
     justify-content: space-evenly;
-    padding: 2em 0 1em;
+    padding: 1.5em 0 1em;
 
     .text-comment {
       color: white;
@@ -120,7 +120,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 1.5em 0;
+    padding-bottom: 1.5em;
 
     span {
       margin: 0 1em;
@@ -131,7 +131,7 @@
     position: relative;
     border: solid 1px white;
     height: 94%;
-    padding: 2em 6em;
+    padding: 1em 5em;
     justify-content: flex-start;
 
     img {
