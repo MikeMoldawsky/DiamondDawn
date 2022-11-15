@@ -39,7 +39,10 @@ const TABS = [
   { title: "Dawn", component: () => <StageTab stage={SYSTEM_STAGE.DAWN} /> },
   { title: "Config", component: () => <ConfigTab /> },
   { title: "Invitations", component: () => <InvitationsTab /> },
-  { title: "Pending Collectors", component: () => <CollectorsTab approved={false} /> },
+  {
+    title: "Pending Collectors",
+    component: () => <CollectorsTab approved={false} />,
+  },
   { title: "Collectors", component: () => <CollectorsTab approved={true} /> },
   { title: "Diamonds", component: () => <DiamondsTab /> },
 ];

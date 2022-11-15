@@ -4,10 +4,13 @@ const add = require("date-fns/add");
 
 async function getCollectorObjectById(collectorId) {
   try {
-    const collector = (await Collector.findById(collectorId)).toObject()
+    const collector = (await Collector.findById(collectorId)).toObject();
     if (!collector) return null;
 
-    if (collector.mintWindowOpen && process.env.REACT_APP_INVITE_TTL_SECONDS > 0) {
+    if (
+      collector.mintWindowOpen &&
+      process.env.REACT_APP_INVITE_TTL_SECONDS > 0
+    ) {
       collector.mintWindowClose = add(collector.mintWindowOpen, {
         seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
       });
@@ -26,9 +29,14 @@ async function getCollectorObjectById(collectorId) {
 async function getCollectors(approved) {
   try {
     const dbCollectors = await Collector.find({ approved });
-    return await Promise.all(_.map(dbCollectors, ({ _id }) => getCollectorObjectById(_id)));
+    return await Promise.all(
+      _.map(dbCollectors, ({ _id }) => getCollectorObjectById(_id))
+    );
   } catch (e) {
-    console.log(`Failed to get ${approved ? "Approved" : "Pending"} collectors`, e);
+    console.log(
+      `Failed to get ${approved ? "Approved" : "Pending"} collectors`,
+      e
+    );
   }
 }
 
@@ -43,11 +51,9 @@ async function getDDCollector() {
 
 async function updateCollector(update) {
   try {
-    await Collector.findOneAndUpdate(
-      { _id: update._id },
-      update,
-      { new: true }
-    );
+    await Collector.findOneAndUpdate({ _id: update._id }, update, {
+      new: true,
+    });
     return getCollectorObjectById(update._id);
   } catch (e) {
     console.log(`Failed to UPDATE Invite`, e);

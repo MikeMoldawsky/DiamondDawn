@@ -91,7 +91,7 @@ const InvitationsTab = () => {
     update: updateInvitationApi,
   };
 
-  const renderActions = ({ id }) => ([<ClipboardButton inviteId={id} />])
+  const renderActions = ({ id }) => [<ClipboardButton inviteId={id} />];
 
   const onCreateSuccess = async () => {
     setInvitations(await getInvitationsApi());

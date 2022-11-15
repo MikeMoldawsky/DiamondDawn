@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 import "./NewInvitationForm.scss";
-import {createInvitationApi, getDDCollectorApi} from "api/serverApi";
+import { createInvitationApi, getDDCollectorApi } from "api/serverApi";
 
 const NewInvitationForm = ({ onSuccess }) => {
   const [ddCollector, setDDCollector] = useState([]);
@@ -22,11 +22,11 @@ const NewInvitationForm = ({ onSuccess }) => {
   });
 
   const fetchDDCollector = async () => {
-    setDDCollector(await getDDCollectorApi())
-  }
+    setDDCollector(await getDDCollectorApi());
+  };
 
   useEffect(() => {
-    fetchDDCollector()
+    fetchDDCollector();
   }, []);
 
   useEffect(() => {

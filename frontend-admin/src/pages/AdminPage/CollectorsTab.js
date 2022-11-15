@@ -6,10 +6,7 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { utils as ethersUtils } from "ethers";
-import {
-  getCollectorsApi,
-  updateCollectorApi,
-} from "api/serverApi";
+import { getCollectorsApi, updateCollectorApi } from "api/serverApi";
 
 const INVITATION_COLUMNS = [
   {
@@ -73,7 +70,12 @@ const INVITATION_COLUMNS = [
     editable: true,
     showIfRequest: true,
   },
-  { field: "mintWindowStart", headerName: "Mint Window Start", type: "dateTime", width: 180 },
+  {
+    field: "mintWindowStart",
+    headerName: "Mint Window Start",
+    type: "dateTime",
+    width: 180,
+  },
   {
     field: "minted",
     headerName: "Minted",
@@ -115,7 +117,7 @@ const ApproveButton = ({ inviteId, onApprove }) => {
 const InvitationsTab = ({ approved }) => {
   const [collectors, setCollectors] = useState([]);
 
-  console.log({ collectors })
+  console.log({ collectors });
 
   const fetchCollectors = async () => {
     setCollectors(await getCollectorsApi(approved));

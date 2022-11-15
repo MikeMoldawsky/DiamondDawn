@@ -1,13 +1,16 @@
 const Invitation = require("./models/InvitationModel");
 const Collector = require("./models/CollectorModel");
 
-const MAX_INVITES_FOR_COLLECTOR = 2
-const DD_TWITTER_HANDLE = "@DiamondDawnNFT"
+const MAX_INVITES_FOR_COLLECTOR = 2;
+const DD_TWITTER_HANDLE = "@DiamondDawnNFT";
 
-async function createInvitation({createdBy, note}) {
-  const inviter = await Collector.findById(createdBy)
+async function createInvitation({ createdBy, note }) {
+  const inviter = await Collector.findById(createdBy);
   let inviterInvitations = await Invitation.count({ createdBy });
-  if (inviterInvitations >= MAX_INVITES_FOR_COLLECTOR && inviter.twitter !== DD_TWITTER_HANDLE) {
+  if (
+    inviterInvitations >= MAX_INVITES_FOR_COLLECTOR &&
+    inviter.twitter !== DD_TWITTER_HANDLE
+  ) {
     throw new Error("Invitation limit reached");
   }
 
@@ -17,7 +20,7 @@ async function createInvitation({createdBy, note}) {
 
 async function getInvitationObjectById(inviteId) {
   try {
-    return await Invitation.findById(inviteId)
+    return await Invitation.findById(inviteId);
   } catch (e) {
     console.log(`Failed to get invite ${inviteId}`, e);
   }
@@ -33,12 +36,10 @@ async function getInvitations() {
 
 async function updateInvitation(update) {
   try {
-    await Invitation.findOneAndUpdate(
-      { _id: update._id },
-      update,
-      { new: true }
-    );
-    return getInvitationObjectById(update._id)
+    await Invitation.findOneAndUpdate({ _id: update._id }, update, {
+      new: true,
+    });
+    return getInvitationObjectById(update._id);
   } catch (e) {
     console.log(`Failed to UPDATE Invitation`, e);
   }
