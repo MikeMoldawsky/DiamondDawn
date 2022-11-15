@@ -1,5 +1,5 @@
-const { getDDCollector } = require("../db/collector-db-manager");
+const { getOrCreateDDCollector } = require("../db/common");
 
 module.exports = async function (req, res) {
-  res.send(await getDDCollector());
+  res.send(await getOrCreateDDCollector());
 };
