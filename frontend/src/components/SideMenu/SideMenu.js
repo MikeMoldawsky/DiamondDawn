@@ -20,7 +20,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
       open={isOpen}
       ModalProps={{ onBackdropClick: closeMenu }}
     >
-      <div className="left-top-aligned-column">
+      <div className="stretch-top-aligned-column">
         <div className="menu">
           <NavLink to={"/explore"} onClick={closeMenu}>
             <div className="menu-item">HOMEPAGE</div>

@@ -36,10 +36,15 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const animateShowLogo = isHomepage && showHPLogo;
   const animateHideLogo = isHomepage && showHPLogo === false;
 
+  const onVolumeClick = e => {
+    e.stopPropagation()
+    dispatch(toggleMuted())
+  }
+
   return (
     <>
       <div className="header-fix" />
-      <header>
+      <header onClick={() => isMenuOpen && toggleMenu()}>
         <div className="header-internal">
           <div className="center-aligned-row header-side">
             {isPageSizeLimitOk && (
@@ -77,7 +82,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             <FontAwesomeIcon
               className="menu-icon mute-icon"
               icon={muted ? faVolumeMute : faVolumeUp}
-              onClick={() => dispatch(toggleMuted())}
+              onClick={onVolumeClick}
             />
             <AudioPlayer />
             {canAccessDD && isPageSizeLimitOk && (

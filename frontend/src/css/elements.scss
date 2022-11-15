@@ -101,10 +101,12 @@
 
   &.lg {
     font-size: $font20px;
+    padding: 0 2em;
   }
 
   &.sm {
     font-size: $font11px;
+    padding: 0 2em;
   }
 
   &.disabled,

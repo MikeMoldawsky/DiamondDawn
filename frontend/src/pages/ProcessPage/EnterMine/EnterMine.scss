@@ -6,7 +6,7 @@
     no-repeat padding-box;
   background-size: 100%;
   text-align: center;
-  color: $text_gray;
+  color: white;
 
   .layout-box {
     height: 94%;
@@ -42,7 +42,6 @@
   }
 
   .congrats-box {
-    grid-area: 1 / 2 / 2 / 3;
     @extend .right-box;
     align-items: center;
     justify-content: flex-start;
@@ -55,14 +54,11 @@
   }
 
   .mint-box {
-    grid-area: 2 / 2 / 3 / 3;
     color: white;
     @extend .right-box;
     position: relative;
-    border-bottom: solid 1px #ffffff22;
-    align-items: center;
-    justify-content: space-evenly;
     flex-grow: 2;
+    padding: 0 1em 0 0;
 
     .center-aligned-row {
       width: 100%;
@@ -71,63 +67,50 @@
 
     .price-text {
       font-size: $font20px;
+      font-weight: 500;
+    }
 
-      svg {
-        margin-right: 0.5em;
-      }
+    svg {
+      margin: 0 0.5em 0 0;
     }
   }
 
   .timer-box {
-    grid-area: 3 / 2 / 4 / 3;
     @extend .right-box;
     align-items: stretch;
     justify-content: space-evenly;
-    padding: 1.5em 0;
+    padding: 2em 0 1em;
+
+    .text-comment {
+      color: white;
+    }
 
     .countdown {
       width: 72%;
       margin: 1em auto 0.5em;
       font-size: $font14px;
+      color: $text_gray
     }
   }
 
   .invites-box {
     @extend .right-box;
-    border: solid 1px $border_gray;
+    border: solid 1px #ffffff22;
+    background-color: #ffffff22;
     padding: 1em;
 
-    .keys-image {
-      width: 8em;
-      height: 4em;
-      position: relative;
-
-      .key {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        background: url($CDN_URL + "/images/mint/mint-key.png") no-repeat center
-          center;
-        background-size: 100%;
-
-        &:nth-child(1) {
-          transform: rotate(45deg) translateY(0.7em) rotateX(180deg);
-        }
-
-        &:nth-child(2) {
-          transform: rotate(135deg) translateY(-0.7em);
-        }
-      }
+    .image img {
+      height: 6em;
+      margin: -1em -2em -2em -1.5em;
     }
 
-    .text-sm {
-      text-align: left;
+    .text {
       margin: 0 1em;
+      font-size: $font14px;
     }
   }
 
   .status-box {
-    grid-area: 4 / 2 / 5 / 3;
     color: white;
     @extend .right-box;
     flex-direction: row;
