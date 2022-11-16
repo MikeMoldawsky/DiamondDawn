@@ -11,8 +11,9 @@ import { collectorSelector } from "store/collectorReducer";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
+import useTimeout from "hooks/useTimeout";
 
-const DEFAULT_TIMEOUT = 10000;
+const DEFAULT_TIMEOUT = 15000;
 const SHOW_TEXT_TIME = 100;
 const FADE_DURATION = 150;
 
@@ -33,7 +34,6 @@ const PageLoader = ({
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
   const canAccessDD = useSelector(canAccessDDSelector);
-  const collector = useSelector(collectorSelector);
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );
@@ -56,6 +56,7 @@ const PageLoader = ({
 
   const onAssetLoaded = () => {
     if (
+      isCollectorFetched &&
       (!requireAccess || canAccessDD) &&
       imagesLoaded.current === images.length &&
       videosLoaded.current === videos.length
@@ -96,16 +97,15 @@ const PageLoader = ({
   }, [videosProgress]);
 
   // timeout
-  // useTimeout(() => {
-  //   timeout > -1 && setAssetsReady();
-  // }, timeout);
+  useTimeout(() => {
+    timeout > -1 && setAssetsReady();
+  }, timeout);
 
-  // canAccessDD
   useEffect(() => {
-    if (!requireAccess || canAccessDD) {
-      setAssetsReady();
+    if (isCollectorFetched) {
+      onAssetLoaded()
     }
-  }, [canAccessDD, requireAccess]);
+  }, [isCollectorFetched])
 
   useEffect(() => {
     if (requireAccess && isCollectorFetched && !canAccessDD) {

@@ -122,7 +122,6 @@ const ComingSoonPage = () => {
       requireAccess={false}
       images={[getCDNImageUrl("envelop-wings.png")]}
       videos={[{ progress: videoProgress, threshold: 0.5 }]}
-      timeout={7000}
     >
       <div
         className={classNames("page coming-soon", {
