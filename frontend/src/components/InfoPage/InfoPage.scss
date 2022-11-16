@@ -8,7 +8,7 @@
     .walls {
       top: 3%;
       background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left
-      top;
+        top;
       background-size: 100%;
     }
 
@@ -65,11 +65,11 @@
     position: relative;
     background-color: black;
     -webkit-mask-image: -webkit-gradient(
-                    linear,
-                    left top,
-                    left 5%,
-                    from(rgba(0, 0, 0, 0)),
-                    to(rgba(0, 0, 0, 1))
+      linear,
+      left top,
+      left 5%,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
     );
 
     .leading-text {

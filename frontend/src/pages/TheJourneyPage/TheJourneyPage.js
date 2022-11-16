@@ -16,12 +16,19 @@ import InfoPage from "components/InfoPage";
 
 const TheJourneyPage = () => {
   return (
-    <InfoPage className="the-journey-page" teaser={{ src: "teaser_physical.mp4", overlap: true }} withFAQ>
+    <InfoPage
+      className="the-journey-page"
+      teaser={{ src: "teaser_physical.mp4", overlap: true }}
+      withFAQ
+    >
       <div className="general">
         <div className="leading-text">About Diamond Dawn</div>
         <TheJourneyMainText />
       </div>
-      <div id="journey" className="center-aligned-column content-section journey">
+      <div
+        id="journey"
+        className="center-aligned-column content-section journey"
+      >
         <div className="center-aligned-row journey-row journey-desc">
           <div className="image-side" />
           <div className="text-side">
@@ -55,9 +62,7 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter active" />
-              <div className="secondary-text">
-                Step 0 - Activate Your Key
-              </div>
+              <div className="secondary-text">Step 0 - Activate Your Key</div>
               <Step0Text />
             </div>
           </div>
@@ -118,16 +123,14 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">
-                Step 4 - The Final Choice
-              </div>
+              <div className="secondary-text">Step 4 - The Final Choice</div>
               <Step4Text />
             </div>
           </div>
         </div>
       </div>
     </InfoPage>
-  )
+  );
 };
 
 export default TheJourneyPage;

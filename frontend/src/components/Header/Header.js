@@ -23,7 +23,7 @@ import { usePageSizeLimit } from "components/PageSizeLimit";
 import { canAccessDDSelector } from "store/selectors";
 import { collectorSelector } from "store/collectorReducer";
 import useGoToInvites from "hooks/useGoToInvites";
-import {isActionFirstCompleteSelector} from "store/actionStatusReducer";
+import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();

@@ -2,10 +2,10 @@ import React from "react";
 import "./InfoPage.scss";
 import Footer from "components/Footer";
 import PageSizeLimit from "components/PageSizeLimit";
-import TeaserVideo from "components/TeaserVideo"
+import TeaserVideo from "components/TeaserVideo";
 import classNames from "classnames";
 import FAQs from "components/FAQs";
-import {getCDNImageUrl} from "utils";
+import { getCDNImageUrl } from "utils";
 import PageLoader from "components/PageLoader";
 
 const InfoPage = ({ className, teaser, withFAQ, children }) => {

@@ -45,7 +45,10 @@ const SocialButtons = ({ member, links }) => (
 
 const AboutUsPage = () => {
   return (
-    <InfoPage className="about-page" teaser={{ src: "teaser_physical.mp4", overlap: true }}>
+    <InfoPage
+      className="about-page"
+      teaser={{ src: "teaser_physical.mp4", overlap: true }}
+    >
       <div className="left-aligned-column general">
         <div className="leading-text">ABOUT US</div>
         <AboutUsText />
@@ -134,7 +137,7 @@ const AboutUsPage = () => {
         </div>
       </div>
     </InfoPage>
-  )
+  );
 };
 
 export default AboutUsPage;

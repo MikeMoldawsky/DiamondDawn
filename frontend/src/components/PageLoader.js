@@ -103,9 +103,9 @@ const PageLoader = ({
 
   useEffect(() => {
     if (isCollectorFetched) {
-      onAssetLoaded()
+      onAssetLoaded();
     }
-  }, [isCollectorFetched])
+  }, [isCollectorFetched]);
 
   useEffect(() => {
     if (requireAccess && isCollectorFetched && !canAccessDD) {

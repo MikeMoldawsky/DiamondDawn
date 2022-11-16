@@ -7,7 +7,9 @@ import {
   Decentralization,
   TimelessNFT,
   DecentralizedFiles,
-  TimelessFiles, Decentralized99, OnChainScarcity,
+  TimelessFiles,
+  Decentralized99,
+  OnChainScarcity,
 } from "./TechPageContent";
 import InfoPage from "components/InfoPage";
 
@@ -41,7 +43,7 @@ const TechPage = () => {
         <OnChainScarcity />
       </div>
     </InfoPage>
-  )
+  );
 };
 
 export default TechPage;
