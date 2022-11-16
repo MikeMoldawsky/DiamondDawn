@@ -37,11 +37,11 @@ const AboutUsPage = () => {
   return (
     <PageSizeLimit>
       <div className="page about-page">
-        <div className="bg mine-background">
-          <div className="bg walls" />
-          <div className="bg cave" />
-        </div>
         <div className="inner-page">
+          <div className="bg mine-background">
+            <div className="bg walls" />
+            <div className="bg cave" />
+          </div>
           <div className="left-aligned-column general">
             <div className="leading-text">
               ABOUT US
@@ -62,19 +62,19 @@ const AboutUsPage = () => {
           <div className="left-top-aligned-column team">
             <div className="leading-text">Our Team</div>
             <div className="team-members">
-              <div className="team-member">
+              <div className="left-spaced-aligned-column team-member">
                 <div className="profile-image mike" />
                 <div className="secondary-text">Mike Moldawsky (Tweezers)</div>
                 <div className="member-title">Project Creator</div>
                 <MikeText />
               </div>
-              <div className="team-member">
+              <div className="left-spaced-aligned-column team-member">
                 <div className="profile-image david" />
                 <div className="secondary-text">David Ariew</div>
                 <div className="member-title">Artist</div>
                 <DavidText />
               </div>
-              <div className="team-member">
+              <div className="left-spaced-aligned-column team-member">
                 <div className="profile-image" />
                 <div className="secondary-text">Asaf Snir</div>
                 <div className="member-title">Frontend Master</div>
@@ -82,13 +82,13 @@ const AboutUsPage = () => {
               </div>
             </div>
             <div className="team-members team-members-2">
-              <div className="team-member">
+              <div className="left-spaced-aligned-column team-member">
                 <div className="profile-image" />
                 <div className="secondary-text">Aviva Moldawsky</div>
                 <div className="member-title">Diamond Art Designer</div>
                 <AvivaText />
               </div>
-              <div className="team-member">
+              <div className="left-spaced-aligned-column team-member">
                 <div className="profile-image" />
                 <div className="secondary-text">Tony Hererra</div>
                 <div className="member-title">Advisor</div>

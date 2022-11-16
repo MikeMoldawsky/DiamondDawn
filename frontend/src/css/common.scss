@@ -58,7 +58,7 @@ input[type="checkbox"] {
   .inner-page {
     padding-top: calc(var(--header-height) + 1rem);
     margin: 0 auto;
-    height: 100%;
+    position: relative;
 
     h1 {
       text-align: center;
@@ -135,7 +135,7 @@ input[type="checkbox"] {
 
 footer {
   background-color: black;
-  height: 0.2 * $viewHeightRef;
+  height: 0.225 * $viewHeightRef;
   -webkit-mask-image: -webkit-gradient(
     linear,
     left top,
@@ -147,7 +147,7 @@ footer {
   .footer-inner {
     width: 25rem;
     margin: -2rem auto;
-    padding-top: 4rem;
+    padding: 4rem 0 4rem;
     height: 100%;
   }
 
@@ -288,8 +288,7 @@ footer {
 
 .mine-background {
   .walls {
-    height: 4.9 * $viewHeightRef;
-    top: 16%;
+    top: 3%;
     background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left
     top;
     background-size: 100%;

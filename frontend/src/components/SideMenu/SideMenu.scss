@@ -20,7 +20,7 @@
   }
 
   .menu {
-    margin-bottom: 1.5em;
+    margin-bottom: 1em;
 
     .button {
       margin-top: 1em;
@@ -29,7 +29,7 @@
 
   .menu-item {
     margin-bottom: 0.8em;
-    font-size: $font20px;
+    font-size: $font18px;
     cursor: pointer;
 
     &.sm {
@@ -67,7 +67,7 @@
 
   .social-icons {
     padding-top: 1.5em;
-    margin-top: 1em;
+    margin-top: 1.5em;
     border-top: solid 1px #707070;
 
     .icon {
