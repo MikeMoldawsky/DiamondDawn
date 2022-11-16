@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import "./TheJourneyPage.scss";
 import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import FAQs from "components/FAQs";
@@ -15,26 +15,9 @@ import {
   Step3Text,
   Step4Text,
 } from "./TheJourneyContent";
-import PlayButton from "components/PlayButton";
+import TeaserVideo from "components/TeaserVideo";
 
 const TheJourneyPage = () => {
-  const renderTeaserBg = useCallback(
-    () => (
-      <ReactPlayer
-        url={getCDNVideoUrl("teaser_physical.mp4")}
-        playing
-        playsinline
-        controls={false}
-        className="react-player"
-        muted
-        loop
-        width=""
-        height=""
-      />
-    ),
-    []
-  );
-
   return (
     <PageSizeLimit>
       <div className="page the-journey-page">
@@ -152,10 +135,7 @@ const TheJourneyPage = () => {
               </div>
             </div>
           </div>
-          <div className="teaser">
-            {renderTeaserBg()}
-            <PlayButton />
-          </div>
+          <TeaserVideo src="teaser_physical.mp4" overlap />
           <div className="faq">
             <div id="faq" className="leading-text">
               FAQ

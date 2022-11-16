@@ -1,11 +1,7 @@
-import React, { useCallback } from "react";
+import React from "react";
 import "./AboutUsPage.scss";
-import { getCDNImageUrl, getCDNVideoUrl } from "utils";
-import FAQs from "components/FAQs";
 import Footer from "components/Footer";
 import PageSizeLimit from "components/PageSizeLimit";
-import classNames from "classnames";
-import ReactPlayer from "react-player";
 import {
   AboutUsText,
   MikeText,
@@ -18,13 +14,13 @@ import {
   IRLImpactText,
   DigitalValueText,
 } from "./AboutUsPageContent";
-import PlayButton from "components/PlayButton";
 import map from "lodash/map";
 import SVG from "components/SVG";
 import twitterIcon from "assets/images/twitter.svg";
 import instagramIcon from "assets/images/instagram.svg";
 import linkedinIcon from "assets/images/linkedin.svg";
 import websiteIcon from "assets/images/website.svg";
+import TeaserVideo from "components/TeaserVideo";
 
 const SOCIAL_ICONS = {
   // twitter: getCDNImageUrl("/social/twitter.svg"),
@@ -50,23 +46,6 @@ const SocialButtons = ({ member, links }) => (
 );
 
 const AboutUsPage = () => {
-  const renderTeaserBg = useCallback(
-    () => (
-      <ReactPlayer
-        url={getCDNVideoUrl("teaser_physical.mp4")}
-        playing
-        playsinline
-        controls={false}
-        className="react-player"
-        muted
-        loop
-        width=""
-        height=""
-      />
-    ),
-    []
-  );
-
   return (
     <PageSizeLimit>
       <div className="page about-page">
@@ -162,10 +141,7 @@ const AboutUsPage = () => {
               </div>
             </div>
           </div>
-          <div className="teaser">
-            {renderTeaserBg()}
-            <PlayButton />
-          </div>
+          <TeaserVideo src="teaser_physical.mp4" overlap />
           <Footer />
         </div>
       </div>
