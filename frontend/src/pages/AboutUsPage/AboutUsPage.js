@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import "./AboutUsPage.scss";
-import {getCDNImageUrl, getCDNVideoUrl} from "utils";
+import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import FAQs from "components/FAQs";
 import Footer from "components/Footer";
 import PageSizeLimit from "components/PageSizeLimit";
@@ -12,15 +12,19 @@ import {
   DavidText,
   TonyText,
   AvivaText,
-  AsafText, DecentralizationText, InnovationText, IRLImpactText, DigitalValueText,
+  AsafText,
+  DecentralizationText,
+  InnovationText,
+  IRLImpactText,
+  DigitalValueText,
 } from "./AboutUsPageContent";
 import PlayButton from "components/PlayButton";
-import map from 'lodash/map'
+import map from "lodash/map";
 import SVG from "components/SVG";
-import twitterIcon from "assets/images/twitter.svg"
-import instagramIcon from "assets/images/instagram.svg"
-import linkedinIcon from "assets/images/linkedin.svg"
-import websiteIcon from "assets/images/website.svg"
+import twitterIcon from "assets/images/twitter.svg";
+import instagramIcon from "assets/images/instagram.svg";
+import linkedinIcon from "assets/images/linkedin.svg";
+import websiteIcon from "assets/images/website.svg";
 
 const SOCIAL_ICONS = {
   // twitter: getCDNImageUrl("/social/twitter.svg"),
@@ -31,7 +35,7 @@ const SOCIAL_ICONS = {
   instagram: instagramIcon,
   linkedin: linkedinIcon,
   website: websiteIcon,
-}
+};
 
 const SocialButtons = ({ member, links }) => (
   <div className="social-buttons">
@@ -43,7 +47,7 @@ const SocialButtons = ({ member, links }) => (
       </div>
     ))}
   </div>
-)
+);
 
 const AboutUsPage = () => {
   const renderTeaserBg = useCallback(
@@ -72,9 +76,7 @@ const AboutUsPage = () => {
             <div className="bg cave" />
           </div>
           <div className="left-aligned-column general">
-            <div className="leading-text">
-              ABOUT US
-            </div>
+            <div className="leading-text">ABOUT US</div>
             <AboutUsText />
           </div>
           <div className="left-top-aligned-column our-values">
@@ -97,7 +99,10 @@ const AboutUsPage = () => {
                 <div className="member-title">Project Creator</div>
                 <div className="text">
                   <MikeText />
-                  <SocialButtons member="mike" links={{ twitter: "", instagram: "", linkedin: "" }} />
+                  <SocialButtons
+                    member="mike"
+                    links={{ twitter: "", instagram: "", linkedin: "" }}
+                  />
                 </div>
               </div>
               <div className="left-spaced-aligned-column team-member">
@@ -106,7 +111,15 @@ const AboutUsPage = () => {
                 <div className="member-title">Artist</div>
                 <div className="text">
                   <DavidText />
-                  <SocialButtons member="mike" links={{ twitter: "", instagram: "", linkedin: "", website: "" }} />
+                  <SocialButtons
+                    member="mike"
+                    links={{
+                      twitter: "",
+                      instagram: "",
+                      linkedin: "",
+                      website: "",
+                    }}
+                  />
                 </div>
               </div>
               <div className="left-spaced-aligned-column team-member">
@@ -115,7 +128,10 @@ const AboutUsPage = () => {
                 <div className="member-title">Frontend Master</div>
                 <div className="text">
                   <AsafText />
-                  <SocialButtons member="mike" links={{ twitter: "", linkedin: "" }} />
+                  <SocialButtons
+                    member="mike"
+                    links={{ twitter: "", linkedin: "" }}
+                  />
                 </div>
               </div>
             </div>
@@ -126,7 +142,10 @@ const AboutUsPage = () => {
                 <div className="member-title">Diamond Art Designer</div>
                 <div className="text">
                   <AvivaText />
-                  <SocialButtons member="mike" links={{ twitter: "", instagram: "", linkedin: "" }} />
+                  <SocialButtons
+                    member="mike"
+                    links={{ twitter: "", instagram: "", linkedin: "" }}
+                  />
                 </div>
               </div>
               <div className="left-spaced-aligned-column team-member">
@@ -135,7 +154,10 @@ const AboutUsPage = () => {
                 <div className="member-title">Advisor</div>
                 <div className="text">
                   <TonyText />
-                  <SocialButtons member="mike" links={{ twitter: "", instagram: "", linkedin: "" }} />
+                  <SocialButtons
+                    member="mike"
+                    links={{ twitter: "", instagram: "", linkedin: "" }}
+                  />
                 </div>
               </div>
             </div>

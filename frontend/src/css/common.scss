@@ -133,20 +133,18 @@ input[type="checkbox"] {
   }
 
   &.asaf {
-    background: url($CDN_URL + "/images/team/asaf.jpeg") no-repeat center
-    center;
+    background: url($CDN_URL + "/images/team/asaf.jpeg") no-repeat center center;
     background-size: 100% auto;
   }
 
   &.aviva {
     background: url($CDN_URL + "/images/team/aviva.jpeg") no-repeat center
-    center;
+      center;
     background-size: auto 100%;
   }
 
   &.tony {
-    background: url($CDN_URL + "/images/team/tony.png") no-repeat center
-    center;
+    background: url($CDN_URL + "/images/team/tony.png") no-repeat center center;
     background-size: auto 100%;
     filter: unset;
   }
@@ -309,7 +307,7 @@ footer {
   .walls {
     top: 3%;
     background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left
-    top;
+      top;
     background-size: 100%;
   }
 
