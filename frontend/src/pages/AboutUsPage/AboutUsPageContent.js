@@ -157,7 +157,7 @@ export const DavidText = () => (
       Beeple X Madonna
     </a>{" "}
     NFTs (one of which sold for $346K) and has collaborated with artists such as
-    Katy Perry, Deadmau5, and Intel.
+    Katy Perry, and Deadmau5.
     <br /> David holds a Master's degree in Neuroscience from UVA.
   </p>
 );
