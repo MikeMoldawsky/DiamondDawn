@@ -1,4 +1,5 @@
 import React from "react";
+import {getCDNImageUrl} from "utils";
 
 export const AboutUsText = () => (
   <div className="text our-team">
@@ -67,33 +68,35 @@ export const InnovationText = () => (
 );
 
 export const IRLImpactText = () => (
-  <div className="text">
-    <p>
-      The ongoing breakthrough of NFT tech enables us to perform once-impossible
-      feats. With NFTs, you truly own assets, track provenance and verify
-      publicly - with zero third-party reliance.
-    </p>
-    <p>
-      <b>
-        NFT technology will disrupt all traditional technologies in remarkable
-        ways.
-      </b>
-    </p>
-    <p>
-      These “simple” breakthroughs will impact every part of every process, from
-      supply chain maintenance and deed creation to the very way goods are
-      traded.
-    </p>
-    <p>
-      Right now, the countless certifications of a $100B diamond industry are
-      kept in paper ledgers held by major players - can their transparency,
-      provenance and record really be considered 100% tamper-free?
-    </p>
-    <p>
-      What do you think the certification of industries like the diamond sector
-      will look like in 10 years?
-    </p>
-    <p></p>
+  <div>
+    <div className="text" style={{float: "right"}}>
+      <p>
+        The ongoing breakthrough of NFT tech enables us to perform once-impossible
+        feats. With NFTs, you truly own assets, track provenance and verify
+        publicly - with zero third-party reliance.
+      </p>
+      <p>
+        <b>
+          NFT technology will disrupt all traditional technologies in remarkable
+          ways.
+        </b>
+      </p>
+      <img className="gia-report" src={getCDNImageUrl("gia-report.jpeg")} alt="" />
+      <p>
+        These “simple” breakthroughs will impact every part of every process, from
+        supply chain maintenance and deed creation to the very way goods are
+        traded.
+      </p>
+      <p>
+        Right now, the countless certifications of a $100B diamond industry are
+        kept in paper ledgers held by major players - can their transparency,
+        provenance and record really be considered 100% tamper-free?
+      </p>
+      <p>
+        What do you think the certification of industries like the diamond sector
+        will look like in 10 years?
+      </p>
+    </div>
   </div>
 );
 

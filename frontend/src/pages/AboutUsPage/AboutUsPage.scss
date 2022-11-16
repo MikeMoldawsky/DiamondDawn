@@ -40,6 +40,19 @@
     .secondary-text {
       margin: 1em 0 0;
     }
+
+    .gia-report {
+      width: 33%;
+      float: right;
+      position: relative;
+      margin: 1.5em 0 1.5em 3em;
+      transition: width .25s ease-in;
+      transition-delay: .25s;
+
+      &:hover {
+        width: 100%;
+      }
+    }
   }
 
   .team {
