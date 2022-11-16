@@ -1,46 +1,8 @@
 @import "css/varsNEW";
-@import "css/functions";
 
-.page.about-page {
-  --base-font-size: 16;
-
-  .leading-text {
-    margin: 3em 0 1em;
-    color: $gold;
-  }
-
-  .text {
-    margin-bottom: 0.2em;
-    letter-spacing: 0.1em;
-  }
-
-  .general {
-    width: 48%;
-    min-width: 54em;
-    margin-left: 10%;
-
-    .leading-text {
-      margin-top: 2em;
-    }
-
-    .secondary-text {
-      margin-top: 1.5em;
-    }
-  }
+.page.info-page.about-page {
 
   .our-values {
-    position: relative;
-    width: 65%;
-    margin: 0 auto;
-
-    .leading-text {
-      margin-bottom: 0;
-    }
-
-    .secondary-text {
-      margin: 1em 0 0;
-    }
-
     .gia-report {
       width: 33%;
       float: right;
@@ -57,13 +19,6 @@
 
   .team {
     width: 75%;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-
-    .leading-text {
-      margin-bottom: 0;
-    }
 
     .team-members {
       display: flex;
@@ -123,57 +78,5 @@
         }
       }
     }
-  }
-}
-
-@media only screen and (max-width: 1680px) {
-  .page.about-page {
-    font-size: $font15px;
-
-    .general {
-      .leading-text {
-        margin-top: 1em;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 1540px) {
-  .page.about-page {
-    --base-font-size: 22;
-    font-size: $font14px;
-
-    .leading-text {
-      margin-top: 2em;
-    }
-
-    .general {
-      margin-left: 7.5%;
-
-      .leading-text {
-        margin: 0.5em 0 0.5em;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 1366px) {
-  .page.about-page {
-    font-size: $font13px;
-
-    .general {
-      width: 57%;
-      margin-left: 5%;
-
-      .leading-text {
-        margin: 0.5em 0 0.5em;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 1200px) {
-  .page.about-page {
-    font-size: $font12px;
   }
 }
