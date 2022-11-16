@@ -22,10 +22,14 @@ html {
 }
 
 body {
-  overflow: hidden;
   background-color: black;
   color: white;
   margin: 0;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 * {
@@ -50,9 +54,6 @@ input[type="checkbox"] {
 }
 
 .page {
-  overflow-x: hidden;
-  overflow-y: auto;
-  scroll-behavior: smooth;
   position: relative;
 
   .inner-page {
