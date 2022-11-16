@@ -9,20 +9,9 @@
     color: $gold;
   }
 
-  .secondary-text {
-  }
-
   .text {
     margin-bottom: 0.2em;
     letter-spacing: 0.1em;
-  }
-
-  ul {
-    display: flex;
-
-    li:not(:first-child) {
-      margin-left: 4em;
-    }
   }
 
   .general {
@@ -78,13 +67,7 @@
       .team-member {
         width: 30%;
         margin-top: 4em;
-
-        svg {
-          font-size: $font18px;
-          width: 11.65em;
-          height: 11.65em;
-          color: white;
-        }
+        position: relative;
 
         .secondary-text {
           margin: 1em 0 0;
@@ -100,10 +83,25 @@
           flex-grow: 2;
           border: solid 1px $border_opaque;
           background-color: $border_opaque;
-          padding: 1em 1.5em;
+          padding: 1em 1.5em 6em;
+          position: relative;
 
           p {
             margin: 0;
+          }
+        }
+
+        .social-buttons {
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-end;
+          position: absolute;
+          bottom: 1em;
+          right: 1em;
+
+          svg {
+            width: 3em;
+            height: 2em;
           }
         }
       }

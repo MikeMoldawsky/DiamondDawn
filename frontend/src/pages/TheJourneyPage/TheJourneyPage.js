@@ -38,11 +38,11 @@ const TheJourneyPage = () => {
   return (
     <PageSizeLimit>
       <div className="page the-journey-page">
-        <div className="bg mine-background">
-          <div className="bg walls" />
-          <div className="bg cave" />
-        </div>
         <div className="inner-page">
+          <div className="bg mine-background">
+            <div className="bg walls" />
+            <div className="bg cave" />
+          </div>
           <div className="general">
             <div className="leading-text">About Diamond Dawn</div>
             <TheJourneyMainText />

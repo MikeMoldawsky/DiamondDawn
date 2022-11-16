@@ -65,79 +65,69 @@ export const DigitalValueText = () => (
 )
 
 export const MikeText = () => (
-  <div className="text">
-    <p>
-      An entrepreneur and early adopter by nature, Mike foresaw the immense
-      power behind web3’s disruptive tech several years ago. He has since left
-      his position at Palantir R&D to pursue his passion for decentralized
-      technology. His projects aim to push the technology forward to a state
-      where it creates a REAL-LIFE impact for society at large.
-      <br /> Mike holds a BSc in Computer Science from Tel Aviv University.
-    </p>
-  </div>
+  <p>
+    An entrepreneur and early adopter by nature, Mike foresaw the immense
+    power behind web3’s disruptive tech several years ago. He has since left
+    his position at Palantir R&D to pursue his passion for decentralized
+    technology. His projects aim to push the technology forward to a state
+    where it creates a REAL-LIFE impact for society at large.
+    <br /> Mike holds a BSc in Computer Science from Tel Aviv University.
+  </p>
 );
 
 export const DavidText = () => (
-  <div className="text">
-    <p>
-      A digital artist and educator for over 10 years, David has worked on NFT
-      projects with some of the world's biggest digital artists, such as Beeple
-      and Pak. Recently, he sold his first{" "}
-      <a
-        target="_blank"
-        rel="noreferrer"
-        href="https://www.sothebys.com/en/buy/auction/2022/contemporary-art-evening-sale/jia-aili-x-david-ariew-jia-ai-li-x-da-weiai-lu-the"
-      >
-        artwork
-      </a>
-      at Sotheby’s Contemporary Art Evening for $224K, alongside artworks by
-      Banksy and Basquiat. In addition, he created 2 out of the 3{" "}
-      <a
-        target="_blank"
-        rel="noreferrer"
-        href="https://twitter.com/beeple/status/1525142908680257536"
-      >
-        Beeple X Madonna
-      </a>{" "}
-      NFTs (one of which sold for $346K) and has collaborated with top artists
-      and brands such as Katy Perry, Deadmau5, and Intel.
-      <br /> David holds a Master's degree in Neuroscience from UVA.
-    </p>
-  </div>
+  <p>
+    A digital artist and educator for over 10 years, David has worked on NFT
+    projects with some of the world's biggest digital artists, such as Beeple
+    and Pak. Recently, he sold his first{" "}
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href="https://www.sothebys.com/en/buy/auction/2022/contemporary-art-evening-sale/jia-aili-x-david-ariew-jia-ai-li-x-da-weiai-lu-the"
+    >
+      artwork
+    </a>
+    at Sotheby’s Contemporary Art Evening for $224K, alongside artworks by
+    Banksy and Basquiat. In addition, he created 2 out of the 3{" "}
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href="https://twitter.com/beeple/status/1525142908680257536"
+    >
+      Beeple X Madonna
+    </a>{" "}
+    NFTs (one of which sold for $346K) and has collaborated with top artists
+    and brands such as Katy Perry, Deadmau5, and Intel.
+    <br /> David holds a Master's degree in Neuroscience from UVA.
+  </p>
 );
 
 export const TonyText = () => (
-  <div className="text">
-    <p>
-      Tony is an immigrant activist turned entrepreneur in the cryptocurrency, blockchain, and NFT space. Founding member of <a target="_blank" rel="noreferrer" href="http://galaxis.xyz">http://galaxis.xyz</a> (formerly Ether Cards). A founding member of several DAOs dedicated to the metaverse including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
-    </p>
-  </div>
+  <p>
+    Tony is an immigrant activist turned entrepreneur in the cryptocurrency, blockchain, and NFT space. Founding member of <a target="_blank" rel="noreferrer" href="http://galaxis.xyz">http://galaxis.xyz</a> (formerly Ether Cards). A founding member of several DAOs dedicated to the metaverse including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
+  </p>
 );
 
 export const AvivaText = () => (
-  <div className="text">
-    <p>
-      Born to a family of diamond merchants, Aviva has known the diamond
-      industry intimately for over 35 years. A highly-respected name in the
-      diamond world, the Moldawsky family, has supplied precious stones to
-      Tiffany’s, Sterling, JC Penny, and more of the world’s largest diamond
-      sellers. As a passionate diamond designer, Aviva oversees the entire
-      design process for her clients - from selecting the right stone, to the
-      most exquisite setting and design, right down to the display and packaging
-      in which it is delivered to the client.
-    </p>
-  </div>
+  <p>
+    Born to a family of diamond merchants, Aviva has known the diamond
+    industry intimately for over 35 years. A highly-respected name in the
+    diamond world, the Moldawsky family, has supplied precious stones to
+    Tiffany’s, Sterling, JC Penny, and more of the world’s largest diamond
+    sellers. As a passionate diamond designer, Aviva oversees the entire
+    design process for her clients - from selecting the right stone, to the
+    most exquisite setting and design, right down to the display and packaging
+    in which it is delivered to the client.
+  </p>
 );
 
 export const AsafText = () => (
-  <div className="text">
-    <p>
-      A front-end developer for over 15 years. Asaf discovered the world of
-      blockchain technology 3 years ago and has worked exclusively on web3
-      projects. Asaf lives and breathes crypto and is an active member of
-      several DAOs (decentralized autonomous organizations). He believes that
-      decentralization is the key to the Internet’s survival and insists that
-      music and art set us apart and make us shine as a species.
-    </p>
-  </div>
+  <p>
+    A front-end developer for over 15 years. Asaf discovered the world of
+    blockchain technology 3 years ago and has worked exclusively on web3
+    projects. Asaf lives and breathes crypto and is an active member of
+    several DAOs (decentralized autonomous organizations). He believes that
+    decentralization is the key to the Internet’s survival and insists that
+    music and art set us apart and make us shine as a species.
+  </p>
 );

@@ -56,7 +56,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
         {collector && collector.invitations.length > 0 && (
           <div className="invitations-menu">
             <div className="menu-item sm" onClick={onInvitesTitleClick}>
-              MY INVITATION
+              MY INVITATIONS
             </div>
             <InvitationsStatus />
           </div>
