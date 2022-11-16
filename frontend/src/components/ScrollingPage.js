@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateUiState } from "store/uiReducer";
-import { useScrollPosition } from '@n8tb1t/use-scroll-position'
+import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
 const ScrollingPage = ({ children }) => {
   const dispatch = useDispatch();
 
   useScrollPosition(({ prevPos, currPos }) => {
     dispatch(updateUiState({ scroll: Math.abs(currPos.y) }));
-  }, [])
+  }, []);
 
   useEffect(() => {
     return () => {

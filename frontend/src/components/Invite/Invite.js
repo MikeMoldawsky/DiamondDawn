@@ -110,7 +110,13 @@ const Invite = () => {
               {!showSubmittedModal && (
                 <div className="center-aligned-row follow-box">
                   <div className="follow-text">
-                    <b>Make sure to follow request <span className="text-gold"><b>@DiamondDawnNFT</b></span></b><br/>
+                    <b>
+                      Make sure to follow request{" "}
+                      <span className="text-gold">
+                        <b>@DiamondDawnNFT</b>
+                      </span>
+                    </b>
+                    <br />
                     We’ll send you a Twitter DM if you are accepted.
                   </div>
                   <div className="button gold icon-after">

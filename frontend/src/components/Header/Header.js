@@ -81,10 +81,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
         />
         <div className="center-aligned-row header-side">
           {isCollectorFetched && canAccessDD && isPageSizeLimitOk && (
-            <div
-              className="button gold sm collector-btn"
-              onClick={onCTAClick}
-            >
+            <div className="button gold sm collector-btn" onClick={onCTAClick}>
               {collector ? "MY INVITATIONS" : "APPLY FOR DIAMOND DAWN"}
             </div>
           )}

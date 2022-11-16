@@ -18,14 +18,13 @@ const SHOW_TEXT_TIME = 100;
 const FADE_DURATION = 150;
 
 const PageCover = ({ fade, showText }) => {
-
   useEffect(() => {
-    document.body.classList.add('no-scroll');
+    document.body.classList.add("no-scroll");
 
     return () => {
-      document.body.classList.remove('no-scroll');
-    }
-  }, [])
+      document.body.classList.remove("no-scroll");
+    };
+  }, []);
 
   return (
     <div
@@ -40,8 +39,8 @@ const PageCover = ({ fade, showText }) => {
         {showText && "loading..."}
       </div>
     </div>
-  )
-}
+  );
+};
 
 const PageLoader = ({
   pageName,

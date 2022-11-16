@@ -105,7 +105,14 @@ const ApplyForm = ({ onSuccess }) => {
           </div>
         </div>
         <div className="center-start-aligned-row checkbox">
-          <Checkbox register={register} watch={watch} setValue={setValue} name="isDao">We are a DAO</Checkbox>
+          <Checkbox
+            register={register}
+            watch={watch}
+            setValue={setValue}
+            name="isDao"
+          >
+            We are a DAO
+          </Checkbox>
         </div>
         <div className="input-container textarea-container">
           <div className="label">Reason</div>

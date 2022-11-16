@@ -15,15 +15,15 @@
     width: unset;
     margin: 0 0 0 1em;
 
-    input[type=checkbox] {
-      margin-right: .2px;
+    input[type="checkbox"] {
+      margin-right: 0.2px;
     }
   }
 
-  input[type=checkbox] {
+  input[type="checkbox"] {
     width: 1em;
     height: 1em;
-    margin-right: .25em;
+    margin-right: 0.25em;
     visibility: hidden;
   }
 
@@ -41,8 +41,8 @@
       top: 50%;
       left: 50%;
       border-radius: 50%;
-      width: .4em;
-      height: .4em;
+      width: 0.4em;
+      height: 0.4em;
       transform: translate(-50%, -50%);
     }
   }
