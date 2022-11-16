@@ -11,6 +11,7 @@ import { useAccount } from "wagmi";
 import { useSelector } from "react-redux";
 import { isActionPendingSelector } from "store/actionStatusReducer";
 import { inviteSelector } from "store/inviteReducer";
+import Checkbox from "components/Checkbox";
 
 const ApplyForm = ({ onSuccess }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
@@ -20,11 +21,11 @@ const ApplyForm = ({ onSuccess }) => {
     formState: { errors, isDirty },
     watch,
     reset,
+    setValue,
   } = useForm({
     mode: "onChange",
   });
   const [isRequiredError, setIsRequiredError] = useState(false);
-  // const [isAddressApprovedError, setIsAddressApprovedError] = useState(false);
   const account = useAccount();
   const isSubmitting = useSelector(
     isActionPendingSelector("Request Invitation")
@@ -38,7 +39,6 @@ const ApplyForm = ({ onSuccess }) => {
 
   const clearErrors = () => {
     setIsRequiredError(false);
-    // setIsAddressApprovedError(false)
   };
 
   const renderInput = (name, placeholder, opts = {}) => {
@@ -61,30 +61,8 @@ const ApplyForm = ({ onSuccess }) => {
     );
   };
 
-  // const renderCheckbox = (name, required, opts = {}) => {
-  //   const hasError = required && !watch(name);
-  //   return (
-  //     <input
-  //       type="checkbox"
-  //       {...register(name, {
-  //         onChange: clearErrors,
-  //         ...opts,
-  //       })}
-  //       disabled={isSubmitting}
-  //       className={classNames("input", {
-  //         "validation-error": hasError || isAddressApprovedError,
-  //       })}
-  //     />
-  //   );
-  // };
-
   const applyToDD = async (data) => {
     clearErrors();
-    // const { addressApproved, ...payload } = data
-    // if (!addressApproved) {
-    //   setIsAddressApprovedError(true)
-    //   return;
-    // }
     const { twitter, email } = data;
     if (!twitter && !email) {
       setIsRequiredError(true);
@@ -127,7 +105,7 @@ const ApplyForm = ({ onSuccess }) => {
           </div>
         </div>
         <div className="center-start-aligned-row checkbox">
-          <input type="checkbox" {...register("isDao")} /> We are a DAO
+          <Checkbox register={register} watch={watch} setValue={setValue} name="isDao">We are a DAO</Checkbox>
         </div>
         <div className="input-container textarea-container">
           <div className="label">Reason</div>

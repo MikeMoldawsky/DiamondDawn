@@ -1,0 +1,49 @@
+@import "css/varsNEW";
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  cursor: pointer;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.cbx-inline {
+    width: unset;
+    margin: 0 0 0 1em;
+
+    input[type=checkbox] {
+      margin-right: .2px;
+    }
+  }
+
+  input[type=checkbox] {
+    width: 1em;
+    height: 1em;
+    margin-right: .25em;
+    visibility: hidden;
+  }
+
+  .cbx {
+    width: $font13px;
+    height: $font13px;
+    position: absolute;
+    border: solid 1px white;
+    border-radius: 50%;
+
+    &.checked:after {
+      content: "";
+      background-color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      width: .4em;
+      height: .4em;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
