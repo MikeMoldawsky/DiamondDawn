@@ -156,10 +156,10 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
   );
 };
 
-export const isDemo = () => process.env.REACT_APP_DEMO_MODE === "true";
+// export const isPrivateSale = () => process.env.REACT_APP_DEMO_MODE === "true";
 
-export const isDemoAndAuthSelector = (isAuth) => (state) =>
-  isDemo() && state.ui.demoAuth === isAuth;
+export const isNoContractMode = () =>
+  process.env.REACT_APP_NO_CONTRACT === "true";
 
 const prependBackslash = (objectPath) =>
   `${objectPath[0] !== "/" ? "/" : ""}${objectPath}`;
@@ -180,4 +180,13 @@ export const getCDNAudioUrl = (objectPath) =>
   getCDNObjectUrl(`/audio${prependBackslash(objectPath)}`);
 
 export const shortenEthAddress = (address) =>
-  `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+  address
+    ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
+    : "";
+
+export const collectorDisplayName = (collector) =>
+  collector
+    ? collector.twitter ||
+      collector.email ||
+      shortenEthAddress(collector.address)
+    : "";

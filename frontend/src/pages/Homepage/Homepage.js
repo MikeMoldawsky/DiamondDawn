@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo } from "react";
 import "./Homepage.scss";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
-import { getCDNImageUrl, isDemoAndAuthSelector } from "utils";
+import { getCDNImageUrl } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
 import Footer from "components/Footer";
@@ -25,8 +24,6 @@ import PageSizeLimit from "components/PageSizeLimit";
 
 const Homepage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const isRestricted = useSelector(isDemoAndAuthSelector(false));
   const { scroll } = useSelector(uiSelector);
   const { height } = useWindowDimensions();
   useShowLogoOnScroll(3.5);
@@ -34,7 +31,6 @@ const Homepage = () => {
   useMusic("homepage.mp3");
 
   useEffect(() => {
-    isRestricted && navigate("/");
     dispatch(setSelectedTokenId(-1));
   }, []);
 

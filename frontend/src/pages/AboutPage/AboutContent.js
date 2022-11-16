@@ -12,12 +12,17 @@ export const AboutDiamondDawnText = () => (
     <p>Your Diamond Dawn journey will consist of 4 steps.</p>
     <p>
       At each step, you must choose whether to evolve your Diamond NFT to its
-      next form or keep it in its current state for eternity. You’ll have
-      exactly <b>3 weeks, 3 days, and 3 hours</b> to complete each step.
+      next form or keep it in its current state for eternity.
+    </p>
+    <p>
+      You’ll have exactly <b>3 weeks, 3 days, and 3 hours</b> to complete each
+      step.
     </p>
     <div className="secondary-text">Which diamond will you choose?</div>
+    <p>The last step is longer.</p>
     <p>
-      In the last phase, you will be faced with <b>The Final Choice:</b>
+      You’ll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide on your{" "}
+      <b>Final Choice</b>:
     </p>
     <p>
       Keep your diamond NFT digital or burn it in exchange for a physical,
@@ -49,28 +54,23 @@ export const TheJourneyText = () => (
 export const Step0Text = () => (
   <div className="text">
     <p>
-      If your application to join Diamond Dawn is accepted, you will have a
-      limited time window of <b>3 days, 3 hours, and 3 minutes</b> to activate
-      your key for 3.33 $ETH.
+      If your are accepted to Diamond Dawn, you'll have exactly{" "}
+      <b>3 days, 3 hours, and 3 minutes</b> to activate your key for 3.33 $ETH.
     </p>
     <p>
       The key grants you <b>full access</b> to the 4 steps of DD's journey,
       starting in the virtual mine, where your journey begins.
     </p>
     <p>
-      The application phase will automatically end when one of the following
-      things happens:
+      The application phase will automatically end when 333 participants
+      activated their keys.
     </p>
-    <ul>
-      <li>333 participants activated their keys</li>
-      <li>The mine opens in...</li>
-    </ul>
   </div>
 );
 
 export const Step1Text = () => (
   <div className="text">
-    <p>The virtual mine opens in XX:XX</p>
+    <p>Diamond Dawn's mine will open in 3 weeks, 3 days, and 3 hours.</p>
   </div>
 );
 
@@ -81,13 +81,8 @@ export const Step3Text = () => null;
 export const Step4Text = () => (
   <div className="text">
     <p>
-      The final step is unique, and that's why you’ll have a longer time window
-      to decide about your actions.
+      You'll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide:
     </p>
-    <p>
-      You'll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide.
-    </p>
-    <p>In this final phase, you'll be faced with the ultimate decision:</p>
     <p>
       Keep your diamond digital (NFT) or <b>burn</b> it in exchange for your
       physical diamond artwork (GIA-certified).
@@ -127,11 +122,10 @@ export const MikeText = () => (
     <p>
       An entrepreneur and early adopter by nature, Mike foresaw the immense
       power behind web3’s disruptive tech several years ago. He has since left
-      his position at Palantir R&D (where he worked as a software engineer for 4
-      years) to pursue his passion for decentralized technology. His projects
-      aim to push the technology forward to a state where it creates a REAL-LIFE
-      impact for society at large. Mike holds a BSc in Computer Science from Tel
-      Aviv University.
+      his position at Palantir R&D to pursue his passion for decentralized
+      technology. His projects aim to push the technology forward to a state
+      where it creates a REAL-LIFE impact for society at large.
+      <br /> Mike holds a BSc in Computer Science from Tel Aviv University.
     </p>
   </div>
 );
@@ -159,8 +153,8 @@ export const DavidText = () => (
         Beeple X Madonna
       </a>{" "}
       NFTs (one of which sold for $346K) and has collaborated with top artists
-      and brands such as Katy Perry, Deadmau5, and Intel. David holds a Master's
-      degree in Neuroscience from UVA.
+      and brands such as Katy Perry, Deadmau5, and Intel.
+      <br /> David holds a Master's degree in Neuroscience from UVA.
     </p>
   </div>
 );

@@ -54,37 +54,63 @@ export const updateStageTimeApi = async (timestamp) => {
   }
 };
 
-// KEY
-export const getInvitesApi = async (approved) => {
+// COLLECTORS
+export const getCollectorsApi = async (approved) => {
   try {
-    const res = await axios.post(`/api/get_invites`, { approved });
+    const res = await axios.post(`/api/get_collectors`, { approved });
     return res.data;
   } catch (e) {
     return [];
   }
 };
 
-export const createInviteApi = async (address, twitter, email) => {
-  const res = await axios.post(`/api/create_invite`, {
-    address,
-    twitter,
-    email,
-  });
-  return res.data;
+export const getDDCollectorApi = async () => {
+  try {
+    const res = await axios.post(`/api/get_dd_collector`);
+    return res.data;
+  } catch (e) {
+    return [];
+  }
 };
 
-export const updateInviteApi = async (invite) => {
+export const updateCollectorApi = async (update) => {
   try {
-    const { data } = await axios.post(`/api/update_invite`, invite);
+    const { data } = await axios.post(`/api/update_collector`, update);
     return data;
   } catch (e) {
     return null;
   }
 };
 
-export const deleteInviteApi = async (inviteId) => {
+export const approveCollectorApi = async (collectorId) => {
   try {
-    const { data } = await axios.post(`/api/delete_invite`, { inviteId });
+    const { data } = await axios.post(`/api/approve_collector`, {
+      collectorId,
+    });
+    return data;
+  } catch (e) {
+    return null;
+  }
+};
+
+// KEY
+export const getInvitationsApi = async () => {
+  try {
+    const res = await axios.post(`/api/get_invitations`);
+    return res.data;
+  } catch (e) {
+    return [];
+  }
+};
+
+export const createInvitationApi = async (createdBy, note) => {
+  const res = await axios.post(`/api/create_invitation`, { createdBy, note });
+  return res.data;
+};
+
+export const updateInvitationApi = async (invitation) => {
+  try {
+    const { data } = await axios.post(`/api/update_invitation`, invitation);
     return data;
   } catch (e) {
     return null;

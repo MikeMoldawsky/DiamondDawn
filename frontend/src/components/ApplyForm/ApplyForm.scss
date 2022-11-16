@@ -1,0 +1,58 @@
+@import "css/varsNEW";
+
+.request-form {
+  width: 100%;
+  text-align: left;
+  flex-grow: 2;
+
+  form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .text-comment {
+      margin-top: 0.4rem;
+    }
+
+    .modal {
+      width: 110%;
+      transform: translate(-50%, -70%);
+    }
+  }
+
+  input,
+  textarea {
+    margin: 0.8em 0;
+    font-size: $font18px;
+  }
+
+  textarea {
+    flex-grow: 2;
+  }
+
+  input:nth-child(1) {
+    width: 70%;
+  }
+
+  .button {
+    margin-top: 0.8em;
+    align-self: flex-start;
+  }
+
+  .checkbox {
+    font-size: 1.125em;
+    white-space: nowrap;
+
+    input {
+      margin-right: 0.5em;
+      width: 1em !important;
+    }
+
+    &.with-error {
+      input {
+        outline: solid 1px red;
+      }
+    }
+  }
+}

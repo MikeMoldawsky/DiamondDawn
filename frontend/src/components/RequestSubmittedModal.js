@@ -6,16 +6,14 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const RequestSubmittedModal = ({ close }) => {
   return (
-    <Modal close={close}>
+    <Modal className="request-submitted" close={close} withCloseBtn>
       <div className="center-aligned-column modal-content">
         <FontAwesomeIcon icon={faCheck} />
         <div className="heading">You're On The Waitlist!</div>
         <div>
-          Thank you for applying for Diamond Dawn.
+          If you’re accepted, we’ll send you an email and a Twitter DM. <br />
           <br />
-          We carefully examine each application to ensure the best Diamond Dawn
-          experience. Make sure to follow request @DiamondDawnNFT so that we
-          confirm your identity and inform you if you’re accepted.
+          Make sure to follow request @DiamondDawnNFT.
         </div>
         <div className="text-center">
           <div className="button gold icon-after">

@@ -2,20 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
-import RequestForm from "components/RequestForm";
-import useOnConnect from "hooks/useOnConnect";
+import ApplyForm from "components/ApplyForm";
 import { useAccount } from "wagmi";
-import useActionDispatch from "hooks/useActionDispatch";
-import {
-  clearActionStatus,
-  isActionFirstCompleteSelector,
-} from "store/actionStatusReducer";
-import {
-  clearInvite,
-  inviteSelector,
-  loadInviteByAddress,
-  openInvite,
-} from "store/inviteReducer";
+import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
+import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import Loading from "components/Loading";
 import EnterMine from "pages/ProcessPage/EnterMine";
@@ -24,81 +14,66 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import ReactPlayer from "react-player";
 import { getCDNVideoUrl } from "utils";
+import {
+  collectorSelector,
+  loadCollectorByAddress,
+  openMintWindow,
+} from "store/collectorReducer";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
-  const actionDispatch = useActionDispatch();
   const dispatch = useDispatch();
   const account = useAccount();
   const invite = useSelector(inviteSelector);
-  const isInviteFetched = useSelector(
-    isActionFirstCompleteSelector("get-invite-by-address")
+  const collector = useSelector(collectorSelector);
+  const isCollectorFetched = useSelector(
+    isActionFirstCompleteSelector("get-collector-by-address")
   );
+
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
 
-  const loadInvite = async (address) => dispatch(loadInviteByAddress(address));
+  const loadInvite = async () => invite && dispatch(loadInviteById(invite._id));
+  const loadCollector = async (address) =>
+    dispatch(loadCollectorByAddress(address));
 
   const onSubmitSuccess = () => {
     setShowSubmittedModal(true);
-    loadInvite(account.address);
+    loadCollector(account.address);
+    loadInvite();
   };
 
-  const clearInviteState = () => {
-    dispatch(clearInvite());
-    dispatch(clearActionStatus("get-invite-by-address"));
-  };
-
-  useOnConnect(
-    async (address) => {
-      clearInviteState();
-      actionDispatch(() => loadInvite(address), "get-invite-by-address");
-    },
-    () => {
-      clearInviteState();
-    }
-  );
-
   useEffect(() => {
-    return clearInviteState;
-  }, []);
-
-  useEffect(() => {
-    if (invite?.approved && !invite?.opened) {
-      dispatch(openInvite(invite._id, account.address));
+    if (
+      systemStage === SYSTEM_STAGE.KEY &&
+      collector?.approved &&
+      !collector?.mintWindowStart
+    ) {
+      dispatch(openMintWindow(collector._id, account.address));
     }
-  }, [invite?.approved, invite?.opened]);
+  }, [systemStage, collector?.approved, collector?.mintWindowStart]);
 
   if (systemStage > SYSTEM_STAGE.KEY) return null;
 
-  if (!isInviteFetched || (invite.approved && !invite.opened))
+  if (!isCollectorFetched)
     return (
       <div className="box-content opaque box-loading">
         <Loading />
       </div>
     );
 
-  if (invite.used)
+  if (collector?.minted)
     return (
       <div className="box-content opaque">
         <div className="center-center-aligned-row secondary-text">
-          Invitations Used
+          Address already minted
         </div>
       </div>
     );
 
-  if (invite.revoked)
-    return (
-      <div className="box-content opaque">
-        <div className="center-center-aligned-row secondary-text">
-          Invitations Expired
-        </div>
-      </div>
-    );
-
-  if (invite.approved)
+  if (collector?.approved)
     return (
       <div className="box-content approved">
-        <EnterMine invite={invite} />
+        <EnterMine />
       </div>
     );
 
@@ -108,7 +83,7 @@ const Invite = () => {
         <div className="image-box">
           <ReactPlayer
             url={getCDNVideoUrl(
-              invite ? "embedded-diamonds.webm" : "diamond-evolution.webm"
+              collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"
             )}
             playing
             playsinline
@@ -121,22 +96,22 @@ const Invite = () => {
         </div>
 
         <div className="content-box">
-          {invite ? (
+          {collector ? (
             <div className="left-spaced-aligned-column request-status">
               <div className="left-top-aligned-column">
                 <div className="leading-text">DIAMOND DAWN APPLICATION</div>
                 <div className="secondary-text">STATUS: PENDING APPROVAL</div>
                 <div className="text-comment">
-                  If you’ve been accepted for Diamond Dawn, you will have a
-                  limited time window of <b>3 days, 3 hours, and 3 minutes</b>
-                   to activate your key for 3.33 $ETH.
+                  If you're accepted to Diamond Dawn, you'll have exactly
+                  <b> 3 days, 3 hours, and 3 minutes</b> to activate your key
+                  for 3.33 $ETH.
                 </div>
               </div>
               {!showSubmittedModal && (
                 <div className="left-top-aligned-column">
                   <div className="follow-text">
-                    * Make sure to follow request @DiamondDawnNFT so that we
-                    confirm your identity and inform you if you’re accepted.
+                    * Make sure to follow request <b>@DiamondDawnNFT</b> - we’ll
+                    send you a Twitter DM if you are accepted.
                   </div>
                   <div className="button gold icon-after">
                     Follow <FontAwesomeIcon icon={faTwitter} />
@@ -146,14 +121,9 @@ const Invite = () => {
             </div>
           ) : (
             <>
-              <div className="title-box">
-                <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
-              </div>
-              <div className="text">
-                To receive your unique key to the diamond mine, Please enter
-                your info below:
-              </div>
-              <RequestForm onSuccess={onSubmitSuccess} />
+              <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
+              <div className="text">Please fill the details below</div>
+              <ApplyForm onSuccess={onSubmitSuccess} />
             </>
           )}
           {showSubmittedModal && (
