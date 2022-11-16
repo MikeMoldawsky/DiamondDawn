@@ -19,7 +19,8 @@ import Homepage from "pages/Homepage";
 import ProcessPage from "pages/ProcessPage";
 import NFTPage from "pages/NFTPage";
 import RebirthPage from "pages/RebirthPage";
-import AboutPage from "pages/AboutPage";
+import AboutUsPage from "pages/AboutUsPage";
+import TheJourneyPage from "pages/TheJourneyPage";
 import Header from "components/Header";
 import SideMenu from "components/SideMenu";
 import CollectorPage from "pages/CollectorPage";
@@ -91,7 +92,8 @@ const MainLayout = () => {
                 </TokensProvider>
               }
             />
-            <Route path="about" element={<AboutPage />} />
+            <Route path="the-journey" element={<TheJourneyPage />} />
+            <Route path="about-us" element={<AboutUsPage />} />
             <Route path="privacy" element={<PrivacyPage />} />
             <Route path="tnc" element={<TNCPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />

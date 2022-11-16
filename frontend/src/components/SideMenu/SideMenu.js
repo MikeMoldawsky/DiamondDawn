@@ -36,11 +36,14 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           <NavLink to={"/explore"} onClick={closeMenu}>
             <div className="menu-item">HOMEPAGE</div>
           </NavLink>
-          <NavLink to={"/about"} onClick={closeMenu}>
+          <NavLink to={"/the-journey"} onClick={closeMenu}>
             <div className="menu-item">THE JOURNEY</div>
           </NavLink>
-          <NavLink to={"/about"} onClick={closeMenu}>
+          <NavLink to={"/about-us"} onClick={closeMenu}>
             <div className="menu-item">ABOUT US</div>
+          </NavLink>
+          <NavLink to={"/technology"} onClick={closeMenu}>
+            <div className="menu-item">TIMELESS TECHNOLOGY</div>
           </NavLink>
         </div>
         <NavLink to={"/collector"} onClick={closeMenu}>
@@ -53,7 +56,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
         {collector && collector.invitations.length > 0 && (
           <div className="invitations-menu">
             <div className="menu-item sm" onClick={onInvitesTitleClick}>
-              MY INVITATION
+              MY INVITATIONS
             </div>
             <InvitationsStatus />
           </div>

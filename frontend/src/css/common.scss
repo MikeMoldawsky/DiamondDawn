@@ -58,7 +58,7 @@ input[type="checkbox"] {
   .inner-page {
     padding-top: calc(var(--header-height) + 1rem);
     margin: 0 auto;
-    height: 100%;
+    position: relative;
 
     h1 {
       text-align: center;
@@ -131,11 +131,28 @@ input[type="checkbox"] {
       center;
     background-size: auto 100%;
   }
+
+  &.asaf {
+    background: url($CDN_URL + "/images/team/asaf.jpeg") no-repeat center center;
+    background-size: 100% auto;
+  }
+
+  &.aviva {
+    background: url($CDN_URL + "/images/team/aviva.jpeg") no-repeat center
+      center;
+    background-size: auto 100%;
+  }
+
+  &.tony {
+    background: url($CDN_URL + "/images/team/tony.png") no-repeat center center;
+    background-size: auto 100%;
+    filter: unset;
+  }
 }
 
 footer {
   background-color: black;
-  height: 0.2 * $viewHeightRef;
+  height: 0.225 * $viewHeightRef;
   -webkit-mask-image: -webkit-gradient(
     linear,
     left top,
@@ -147,7 +164,7 @@ footer {
   .footer-inner {
     width: 25rem;
     margin: -2rem auto;
-    padding-top: 4rem;
+    padding: 4rem 0 4rem;
     height: 100%;
   }
 
@@ -165,15 +182,6 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  input {
-    &:not(:last-child) {
-      margin-right: 0.5em;
-    }
-    &:not(:first-child) {
-      margin-left: 0.5em;
-    }
-  }
 }
 
 .center-center-aligned-row {
@@ -293,6 +301,21 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.mine-background {
+  .walls {
+    top: 3%;
+    background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left
+      top;
+    background-size: 100%;
+  }
+
+  .cave {
+    background: url($CDN_URL + "/images/about/cave.png") no-repeat 28% top;
+    background-size: 130%;
+    z-index: -2;
+  }
 }
 
 .action-view {

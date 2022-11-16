@@ -99,37 +99,45 @@ const ApplyForm = ({ onSuccess }) => {
     <div className="request-form">
       <form>
         <div className="center-aligned-row address-row">
-          <input
-            type="text"
-            className="input full-width"
-            disabled
-            value={account.address}
-            title="If approved, this address will be the one eligible for mint"
-          />
+          <div className="input-container">
+            <div className="label">Ethereum Address</div>
+            <input
+              type="text"
+              className="input full-width"
+              disabled
+              value={account.address}
+              title="If approved, this address will be the one eligible for mint"
+            />
+          </div>
         </div>
         <div className="center-aligned-row inputs-row">
-          {renderInput("twitter", "Twitter handle", {
-            required: false,
-            pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
-          })}
-          {renderInput("email", "E-mail", {
-            required: false,
-            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-          })}
+          <div className="input-container">
+            <div className="label">Twitter Handle</div>
+            {renderInput("twitter", "@example", {
+              required: false,
+              pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
+            })}
+          </div>
+          <div className="input-container">
+            <div className="label">E-Mail</div>
+            {renderInput("email", "email@example.com", {
+              required: false,
+              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            })}
+          </div>
         </div>
         <div className="center-start-aligned-row checkbox">
           <input type="checkbox" {...register("isDao")} /> We are a DAO
         </div>
-        <textarea
-          {...register("note")}
-          disabled={isSubmitting}
-          className="input"
-          placeholder="Why are you a good fit for Diamond Dawn? (optional)"
-        />
-        {/*<div className={classNames("center-start-aligned-row checkbox", { "with-error": isAddressApprovedError })}>*/}
-        {/*  {renderCheckbox("addressApproved", true)}*/}
-        {/*  Mint address {account.address}*/}
-        {/*</div>*/}
+        <div className="input-container textarea-container">
+          <div className="label">Reason</div>
+          <textarea
+            {...register("note")}
+            disabled={isSubmitting}
+            className="input"
+            placeholder="Why are you a good fit for Diamond Dawn? (optional)"
+          />
+        </div>
         <ActionButton
           actionKey="Request Invitation"
           className="gold"
