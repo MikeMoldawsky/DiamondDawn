@@ -252,11 +252,11 @@
     z-index: 0;
     margin-top: -25%;
     -webkit-mask-image: -webkit-gradient(
-                    linear,
-                    left top,
-                    left 5%,
-                    from(rgba(0, 0, 0, 0)),
-                    to(rgba(0, 0, 0, 1))
+      linear,
+      left top,
+      left 5%,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
     );
 
     .react-player {

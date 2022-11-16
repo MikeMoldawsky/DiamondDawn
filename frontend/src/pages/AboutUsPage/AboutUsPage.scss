@@ -46,8 +46,8 @@
       float: right;
       position: relative;
       margin: 1.5em 0 1.5em 3em;
-      transition: width .25s ease-in;
-      transition-delay: .25s;
+      transition: width 0.25s ease-in;
+      transition-delay: 0.25s;
 
       &:hover {
         width: 100%;
@@ -132,11 +132,11 @@
     z-index: 0;
     margin-top: -25%;
     -webkit-mask-image: -webkit-gradient(
-            linear,
-            left top,
-            left 5%,
-            from(rgba(0, 0, 0, 0)),
-            to(rgba(0, 0, 0, 1))
+      linear,
+      left top,
+      left 5%,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
     );
 
     .react-player {

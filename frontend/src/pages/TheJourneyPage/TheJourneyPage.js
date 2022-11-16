@@ -136,7 +136,10 @@ const TheJourneyPage = () => {
               <div className="center-aligned-row journey-row step-4">
                 <div className="image-side">
                   <div className="image">
-                    <img src={getCDNImageUrl("/about/physical-digital.png")} alt="?" />
+                    <img
+                      src={getCDNImageUrl("/about/physical-digital.png")}
+                      alt="?"
+                    />
                   </div>
                 </div>
                 <div className="text-side">
