@@ -14,7 +14,6 @@ body,
 
 html {
   --base-font-size: 18;
-  scroll-behavior: smooth;
 }
 
 :root {
@@ -115,7 +114,6 @@ input[type="checkbox"] {
 }
 
 .link {
-  border-bottom: solid 1px $text_gray;
   line-height: 1em;
 }
 
@@ -158,7 +156,6 @@ input[type="checkbox"] {
 
 footer {
   background-color: black;
-  height: 0.225 * $viewHeightRef;
   -webkit-mask-image: -webkit-gradient(
     linear,
     left top,
@@ -168,15 +165,46 @@ footer {
   );
 
   .footer-inner {
-    width: 25rem;
-    margin: -2rem auto;
-    padding: 4rem 0 4rem;
+    width: 50%;
+    margin: -2rem auto 0;
+    padding: 6rem 0 4rem;
+    min-width: 40em;
     height: 100%;
   }
 
-  .center-aligned-row {
-    justify-content: space-evenly;
-    margin-top: 2rem;
+  .footer-sitemap {
+    font-size: $font20px;
+    padding-right: 1em;
+
+    a {
+      position: relative;
+
+      &:after {
+        content: ">";
+        width: 0.15em;
+        height: 0.15em;
+        position: absolute;
+        right: -0.5em;
+      }
+    }
+
+    a.active {
+      transform: scale(1.1);
+
+      * {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .legal-links {
+    width: 50%;
+    justify-content: center;
+    margin: 4em auto 0;
+
+    a:not(:last-child) {
+      margin-right: 3em;
+    }
 
     .link {
       font-weight: 100;
