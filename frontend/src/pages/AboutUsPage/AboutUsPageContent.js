@@ -137,9 +137,9 @@ export const MikeText = () => (
 
 export const DavidText = () => (
   <p>
-    A digital artist and educator for over 10 years, David has worked on NFT
-    projects with some of the world's biggest digital artists, such as Beeple
-    and Pak. Recently, he sold his first{" "}
+    A digital artist and educator for over 10 years, David has worked with some
+    of the world's biggest digital artists, such as Beeple and Pak. Recently, he
+    sold his first{" "}
     <a
       target="_blank"
       rel="noreferrer"
@@ -156,8 +156,8 @@ export const DavidText = () => (
     >
       Beeple X Madonna
     </a>{" "}
-    NFTs (one of which sold for $346K) and has collaborated with top artists and
-    brands such as Katy Perry, Deadmau5, and Intel.
+    NFTs (one of which sold for $346K) and has collaborated with artists such as
+    Katy Perry, Deadmau5, and Intel.
     <br /> David holds a Master's degree in Neuroscience from UVA.
   </p>
 );
@@ -178,12 +178,11 @@ export const AvivaText = () => (
   <p>
     Born to a family of diamond merchants, Aviva has known the diamond industry
     intimately for over 35 years. A highly-respected name in the diamond world,
-    the Moldawsky family, has supplied precious stones to Tiffany’s, Sterling,
-    JC Penny, and more of the world’s largest diamond sellers. As a passionate
-    diamond designer, Aviva oversees the entire design process for her clients -
-    from selecting the right stone, to the most exquisite setting and design,
-    right down to the display and packaging in which it is delivered to the
-    client.
+    the Moldawsky family, has supplied precious stones to the world’s largest
+    diamond sellers. As a passionate diamond designer, Aviva oversees the entire
+    design process - from selecting the right stone, to the most exquisite
+    setting and design, right down to the display and packaging in which it is
+    delivered to the client.
   </p>
 );
 
