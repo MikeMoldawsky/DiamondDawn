@@ -21,18 +21,54 @@
     }
   }
 
+  .input-container {
+    width: 100%;
+    position: relative;
+
+    .label {
+      position: absolute;
+      top: 0.2em;
+      left: 2em;
+      padding: 0.3em 0.6em;
+      background-color: #353535;
+      z-index: 1;
+      font-size: 0.7em;
+    }
+  }
+
+  .address-row {
+    input {
+      margin-left: 0;
+      border-color: $gold;
+      color: $gold;
+    }
+  }
+
+  .inputs-row {
+    .input-container {
+      &:nth-child(1) {
+        width: 35%;
+      }
+
+      &:nth-child(2) {
+        width: 61%;
+      }
+    }
+  }
+
   input,
   textarea {
     margin: 0.8em 0;
     font-size: $font18px;
+    width: 100%;
   }
 
-  textarea {
+  .textarea-container {
     flex-grow: 2;
-  }
 
-  input:nth-child(1) {
-    width: 70%;
+    textarea {
+      height: 85%;
+    }
   }
 
   .button {

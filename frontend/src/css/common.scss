@@ -165,15 +165,6 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  input {
-    &:not(:last-child) {
-      margin-right: 0.5em;
-    }
-    &:not(:first-child) {
-      margin-left: 0.5em;
-    }
-  }
 }
 
 .center-center-aligned-row {
@@ -293,6 +284,22 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.mine-background {
+  .walls {
+    height: 4.9 * $viewHeightRef;
+    top: 16%;
+    background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left
+    top;
+    background-size: 100%;
+  }
+
+  .cave {
+    background: url($CDN_URL + "/images/about/cave.png") no-repeat 28% top;
+    background-size: 130%;
+    z-index: -2;
+  }
 }
 
 .action-view {

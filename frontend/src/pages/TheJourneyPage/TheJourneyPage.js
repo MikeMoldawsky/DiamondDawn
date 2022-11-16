@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import "./AboutPage.scss";
+import "./TheJourneyPage.scss";
 import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import FAQs from "components/FAQs";
 import Footer from "components/Footer";
@@ -7,23 +7,17 @@ import PageSizeLimit from "components/PageSizeLimit";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
 import {
-  AboutDiamondDawnText,
+  TheJourneyMainText,
   TheJourneyText,
   Step0Text,
   Step1Text,
   Step2Text,
   Step3Text,
   Step4Text,
-  OurTeamText,
-  MikeText,
-  DavidText,
-  TonyText,
-  AvivaText,
-  AsafText,
-} from "pages/AboutPage/AboutContent";
+} from "./TheJourneyContent";
 import PlayButton from "components/PlayButton";
 
-const AboutPage = () => {
+const TheJourneyPage = () => {
   const renderTeaserBg = useCallback(
     () => (
       <ReactPlayer
@@ -43,15 +37,15 @@ const AboutPage = () => {
 
   return (
     <PageSizeLimit>
-      <div className="page about-page">
-        <div className="bg about-background">
+      <div className="page the-journey-page">
+        <div className="bg mine-background">
           <div className="bg walls" />
           <div className="bg cave" />
         </div>
         <div className="inner-page">
           <div className="general">
             <div className="leading-text">About Diamond Dawn</div>
-            <AboutDiamondDawnText />
+            <TheJourneyMainText />
           </div>
           <div id="journey" className="center-aligned-column journey">
             <div className="center-aligned-row journey-row journey-desc">
@@ -155,45 +149,6 @@ const AboutPage = () => {
               </div>
             </div>
           </div>
-
-          <div className="left-aligned-column team">
-            <div id="team" className="leading-text">
-              OUR TEAM
-            </div>
-            <OurTeamText />
-            <div className="team-members">
-              <div className="team-member">
-                <div className="profile-image mike" />
-                <div className="secondary-text">Mike Moldawsky (Tweezers)</div>
-                <div className="member-title">Project Creator</div>
-                <MikeText />
-              </div>
-              <div className="team-member">
-                <div className="profile-image david" />
-                <div className="secondary-text">David Ariew</div>
-                <div className="member-title">Artist</div>
-                <DavidText />
-              </div>
-              <div className="team-member">
-                <div className="profile-image" />
-                <div className="secondary-text">Aviva Moldawsky</div>
-                <div className="member-title">Diamond Art Designer</div>
-                <AvivaText />
-              </div>
-              <div className="team-member">
-                <div className="profile-image" />
-                <div className="secondary-text">Asaf Snir</div>
-                <div className="member-title">Frontend Master</div>
-                <AsafText />
-              </div>
-              <div className="team-member">
-                <div className="profile-image" />
-                <div className="secondary-text">Tony Hererra</div>
-                <div className="member-title">Advisor</div>
-                <TonyText />
-              </div>
-            </div>
-          </div>
           <div className="teaser">
             {renderTeaserBg()}
             <PlayButton />
@@ -211,4 +166,4 @@ const AboutPage = () => {
   );
 };
 
-export default AboutPage;
+export default TheJourneyPage;
