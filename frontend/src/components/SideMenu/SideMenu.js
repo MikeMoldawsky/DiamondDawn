@@ -45,14 +45,14 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           <NavLink to={"/technology"} onClick={closeMenu}>
             <div className="menu-item">TIMELESS TECHNOLOGY</div>
           </NavLink>
+          <NavLink to={"/collector"} onClick={closeMenu}>
+            {collector ? (
+              <div className="menu-item sm text-gold">COLLECTOR'S ROOM</div>
+            ) : (
+              <div className="button gold sm">APPLY FOR DIAMOND DAWN</div>
+            )}
+          </NavLink>
         </div>
-        <NavLink to={"/collector"} onClick={closeMenu}>
-          {collector ? (
-            <div className="menu-item sm">COLLECTOR'S ROOM</div>
-          ) : (
-            <div className="button gold sm">APPLY FOR DIAMOND DAWN</div>
-          )}
-        </NavLink>
         {collector && collector.invitations.length > 0 && (
           <div className="invitations-menu">
             <div className="menu-item sm" onClick={onInvitesTitleClick}>

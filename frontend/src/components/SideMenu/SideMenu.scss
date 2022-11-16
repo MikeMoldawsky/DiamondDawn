@@ -2,7 +2,7 @@
 
 .MuiDrawer-root .MuiPaper-root {
   padding: 8em 2em 3em;
-  width: 18em;
+  width: 19em;
   background: #4a4a4a;
   box-shadow: 0 0.4em 1.2em #00000029;
   color: white;
@@ -20,8 +20,6 @@
   }
 
   .menu {
-    margin-bottom: 1em;
-
     .button {
       margin-top: 1em;
     }
@@ -116,5 +114,29 @@
       width: 100%;
       margin-bottom: -1.5em;
     }
+  }
+}
+
+@media only screen and (max-width: 1680px) {
+  .MuiDrawer-root .MuiPaper-root {
+    font-size: $font15px;
+  }
+}
+
+@media only screen and (max-width: 1540px) {
+  .MuiDrawer-root .MuiPaper-root {
+    font-size: $font14px;
+  }
+}
+
+@media only screen and (max-width: 1366px) {
+  .MuiDrawer-root .MuiPaper-root {
+    font-size: $font13px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .MuiDrawer-root .MuiPaper-root {
+    font-size: $font12px;
   }
 }
