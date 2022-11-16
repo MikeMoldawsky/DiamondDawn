@@ -45,7 +45,7 @@ header {
     position: absolute;
     top: 1em;
     left: 50%;
-    transform: translateX(calc(-50% + .5em));
+    transform: translateX(-50%);
 
     &.hidden {
       opacity: 0;
@@ -69,7 +69,7 @@ header {
   }
 
   svg.menu-icon {
-    height: 1.4em;
+    height: 1.25em;
     cursor: pointer;
   }
 
@@ -106,16 +106,6 @@ header {
       margin-left: 3px;
     }
   }
-}
-
-.header-fix {
-  width: 15px;
-  height: var(--header-height);
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: black;
-  z-index: 1;
 }
 
 @media only screen and (max-width: 1366px) {

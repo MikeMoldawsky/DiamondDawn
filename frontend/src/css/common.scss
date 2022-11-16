@@ -30,6 +30,11 @@ body {
   overflow-y: auto;
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
+
+  &.no-scroll {
+    overflow: hidden;
+    padding-right: 14px;
+  }
 }
 
 * {

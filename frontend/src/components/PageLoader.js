@@ -17,6 +17,32 @@ const DEFAULT_TIMEOUT = 15000;
 const SHOW_TEXT_TIME = 100;
 const FADE_DURATION = 150;
 
+const PageCover = ({ fade, showText }) => {
+
+  useEffect(() => {
+    document.body.classList.add('no-scroll');
+
+    return () => {
+      document.body.classList.remove('no-scroll');
+    }
+  }, [])
+
+  return (
+    <div
+      className={classNames("center-aligned-column page-cover", {
+        hide: fade,
+      })}
+    >
+      <Loading />
+      <div className="secondary-text">
+        {showText && "DIAMOND DAWN"}
+        <br />
+        {showText && "loading..."}
+      </div>
+    </div>
+  )
+}
+
 const PageLoader = ({
   pageName,
   images = [],
@@ -122,18 +148,7 @@ const PageLoader = ({
     <>
       {children}
       {withLoader && !assetsReady && !hidden && (
-        <div
-          className={classNames("center-aligned-column page-cover", {
-            hide: fade,
-          })}
-        >
-          <Loading />
-          <div className="secondary-text">
-            {showText && "DIAMOND DAWN"}
-            <br />
-            {showText && "loading..."}
-          </div>
-        </div>
+        <PageCover fade={fade} showText={showText} />
       )}
     </>
   );
