@@ -36,9 +36,19 @@
         color: white;
       }
 
-      .follow-text {
-        margin-bottom: 1em;
-        font-size: 1em;
+      .follow-box {
+        border: solid 1px #ffffff22;
+        background-color: #ffffff22;
+        padding: 1em;
+        width: 100%;
+
+        font-size: $font15px;
+
+        .button {
+          padding-left: 2em;
+          padding-right: 2em;
+          margin-left: 2em;
+        }
       }
 
       .request-form {
