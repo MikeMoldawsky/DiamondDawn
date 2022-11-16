@@ -23,6 +23,7 @@ import { usePageSizeLimit } from "components/PageSizeLimit";
 import { canAccessDDSelector } from "store/selectors";
 import { collectorSelector } from "store/collectorReducer";
 import useGoToInvites from "hooks/useGoToInvites";
+import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
@@ -33,7 +34,9 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const collector = useSelector(collectorSelector);
   const goToInvites = useGoToInvites();
   const navigate = useNavigate();
-
+  const isCollectorFetched = useSelector(
+    isActionFirstCompleteSelector("get-collector-by-address")
+  );
   const isHomepage =
     location.pathname === "/" || location.pathname === "/explore";
   const animateShowLogo = isHomepage && showHPLogo;
@@ -79,7 +82,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             })}
           />
           <div className="center-aligned-row header-side">
-            {canAccessDD && isPageSizeLimitOk && (
+            {isCollectorFetched && canAccessDD && isPageSizeLimitOk && (
               <div
                 className="button gold sm collector-btn"
                 onClick={onCTAClick}
@@ -97,7 +100,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
               onClick={onVolumeClick}
             />
             <AudioPlayer />
-            {canAccessDD && isPageSizeLimitOk && (
+            {isCollectorFetched && canAccessDD && isPageSizeLimitOk && (
               <FontAwesomeIcon
                 className="menu-icon"
                 icon={isMenuOpen ? faX : faBars}

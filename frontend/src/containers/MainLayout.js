@@ -21,6 +21,7 @@ import NFTPage from "pages/NFTPage";
 import RebirthPage from "pages/RebirthPage";
 import AboutUsPage from "pages/AboutUsPage";
 import TheJourneyPage from "pages/TheJourneyPage";
+import TechPage from "pages/TechPage";
 import Header from "components/Header";
 import SideMenu from "components/SideMenu";
 import CollectorPage from "pages/CollectorPage";
@@ -94,6 +95,7 @@ const MainLayout = () => {
             />
             <Route path="the-journey" element={<TheJourneyPage />} />
             <Route path="about-us" element={<AboutUsPage />} />
+            <Route path="technology" element={<TechPage />} />
             <Route path="privacy" element={<PrivacyPage />} />
             <Route path="tnc" element={<TNCPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
