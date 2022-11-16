@@ -92,7 +92,7 @@ const AboutUsPage = () => {
           </div>
           <div className="left-top-aligned-column team">
             <div className="leading-text">Our Team</div>
-            <div className="team-members">
+            <div className="team-members team-members-2">
               <div className="left-spaced-aligned-column team-member">
                 <div className="profile-image mike" />
                 <div className="secondary-text">Mike Moldawsky (Tweezers)</div>
@@ -122,6 +122,8 @@ const AboutUsPage = () => {
                   />
                 </div>
               </div>
+            </div>
+            <div className="team-members team-members">
               <div className="left-spaced-aligned-column team-member">
                 <div className="profile-image asaf" />
                 <div className="secondary-text">Asaf Snir</div>
@@ -134,8 +136,6 @@ const AboutUsPage = () => {
                   />
                 </div>
               </div>
-            </div>
-            <div className="team-members team-members-2">
               <div className="left-spaced-aligned-column team-member">
                 <div className="profile-image aviva" />
                 <div className="secondary-text">Aviva Moldawsky</div>
