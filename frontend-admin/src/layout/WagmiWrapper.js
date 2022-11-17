@@ -2,14 +2,13 @@ import React from "react";
 import {
   getDefaultWallets,
   RainbowKitProvider,
-  darkTheme,
+  midnightTheme,
 } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-import { infuraProvider } from "wagmi/providers/infura";
+// import { infuraProvider } from "wagmi/providers/infura";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-import "@rainbow-me/rainbowkit/dist/index.css";
-import { useSelector } from "react-redux";
-import { systemSelector } from "store/systemReducer";
+import "@rainbow-me/rainbowkit/styles.css";
 
 const localChain = {
   id: 31337,
@@ -26,16 +25,12 @@ const localChain = {
   testnet: true,
 };
 
-const ContractProvider = ({ children }) => {
-  const { ddContractData, ddMineContractData } = useSelector(systemSelector);
-  return ddContractData && ddMineContractData ? children : null;
-};
-
 function WagmiWrapper({ children }) {
   const { chains, provider } = configureChains(
-    [chain.goerli, chain.ropsten, chain.polygonMumbai, localChain],
+    [localChain, chain.goerli, chain.mainnet],
     [
-      infuraProvider({ infuraId: "dbe63b3bdfc84f3abdf38cdc8e22f492" }),
+      alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
+      // infuraProvider({ apiKey: "dbe63b3bdfc84f3abdf38cdc8e22f492" }),
       publicProvider(),
     ]
   );
@@ -53,8 +48,15 @@ function WagmiWrapper({ children }) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} theme={darkTheme()}>
-        <ContractProvider>{children}</ContractProvider>
+      <RainbowKitProvider
+        chains={chains}
+        theme={midnightTheme({
+          accentColor: "transparent",
+          accentColorForeground: "white",
+        })}
+        modalSize="compact"
+      >
+        {children}
       </RainbowKitProvider>
     </WagmiConfig>
   );
