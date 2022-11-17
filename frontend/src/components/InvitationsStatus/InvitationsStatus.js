@@ -22,7 +22,7 @@ const InvitationsStatus = () => {
             className="center-start-aligned-row status-row"
           >
             <CopyToClipboard text={link}>
-              <Button className="sm icon-after gold" disabled={!!usedBy} sfx="transition">
+              <Button className="sm icon-after gold" disabled={!!usedBy} sfx="utility">
                 INVITATION 0{i + 1} <ContentCopyIcon />
               </Button>
             </CopyToClipboard>

@@ -18,7 +18,7 @@ const CTAButton = ({ className }) => {
   if (!isCollectorFetched) return null
 
   const renderButton = (text, onClick = () => navigate("/collector")) => (
-    <Button className={classNames("gold", className)} sfx="rock-light" onClick={onClick}>
+    <Button className={classNames("gold", className)} sfx="action" onClick={onClick}>
       {text}
     </Button>
   )

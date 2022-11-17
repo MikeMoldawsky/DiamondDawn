@@ -6,20 +6,17 @@ import hoverSFX from "assets/audio/button-hover.mp3"
 import transitionSFX from "assets/audio/button2-transition.mp3"
 import deepSFX from "assets/audio/button3-press-deep.mp3"
 import rockLightSFX from "assets/audio/button4-press-rock-light.mp3"
-import sparklesSFX from "assets/audio/end-sparkles.mp3"
 import {useDispatch, useSelector} from "react-redux";
 import {setMuted, uiSelector} from "store/uiReducer";
 
 const getSFX = name => {
   switch (name) {
-    case "transition":
+    case "utility":
       return transitionSFX
-    case "deep":
+    case "explore":
       return deepSFX
-    case "rock-light":
+    case "action":
       return rockLightSFX
-    case "sparkles":
-      return sparklesSFX
     default:
       return null
   }

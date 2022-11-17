@@ -30,7 +30,7 @@ const InvitedModal = ({ close, invite }) => {
             text={invite._id.substring(invite._id.length - 8)}
             onCopy={close}
           >
-            <Button className="icon-after gold" sfx="transition">
+            <Button className="icon-after gold" sfx="utility">
               COPY PASSWORD <ContentCopyIcon />
             </Button>
           </CopyToClipboard>

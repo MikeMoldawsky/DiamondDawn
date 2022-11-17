@@ -105,7 +105,7 @@ const ComingSoonPage = () => {
 
     if (canAccessDD)
       return (
-        <Button className="transparent" onClick={transition} sfx="deep">
+        <Button className="transparent" onClick={transition} sfx="explore">
           EXPLORE
         </Button>
       )
