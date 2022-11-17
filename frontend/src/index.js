@@ -4,7 +4,7 @@ import reportWebVitals from "./reportWebVitals";
 import MainLayout from "containers/MainLayout";
 import { Provider } from "react-redux";
 import { makeStore } from "store/makeStore";
-import { inject } from '@vercel/analytics';
+import { inject } from "@vercel/analytics";
 
 let store = makeStore();
 
