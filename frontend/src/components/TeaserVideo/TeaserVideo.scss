@@ -22,9 +22,26 @@
     z-index: 0;
   }
 
-  .play-button {
+  .buttons-row {
     position: relative;
-    top: calc(100% - 12em);
+    top: calc(100% - 8em);
+    width: 60%;
+    max-width: 60em;
+    margin: 0 auto;
+
+    .element {
+      width: 33%
+    }
+
+   .separator {
+      width: 1px;
+      height: 2em;
+      background-color: white;
+    }
+  }
+
+  .play-button {
+    cursor: pointer;
   }
 
   &.overlap {

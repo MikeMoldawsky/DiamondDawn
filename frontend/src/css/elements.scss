@@ -60,12 +60,6 @@
     border-color: red;
   }
 
-  &[disabled],
-  &.disabled {
-    cursor: not-allowed;
-    opacity: 0.4;
-  }
-
   &.full-width {
     width: 100% !important;
   }

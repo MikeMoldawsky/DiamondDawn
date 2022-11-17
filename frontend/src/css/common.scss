@@ -57,6 +57,11 @@ input[type="checkbox"] {
   height: 1em;
 }
 
+[disabled], .disabled {
+  cursor: not-allowed !important;
+  opacity: 0.4;
+}
+
 .page {
   position: relative;
 
