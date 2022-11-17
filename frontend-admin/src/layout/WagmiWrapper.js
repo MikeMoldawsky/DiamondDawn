@@ -2,13 +2,15 @@ import React from "react";
 import {
   getDefaultWallets,
   RainbowKitProvider,
-  midnightTheme,
+  darkTheme,
 } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 // import { infuraProvider } from "wagmi/providers/infura";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-import "@rainbow-me/rainbowkit/styles.css";
+import "@rainbow-me/rainbowkit/dist/index.css";
+import { useSelector } from "react-redux";
+import { systemSelector } from "store/systemReducer";
 
 const localChain = {
   id: 31337,
@@ -23,6 +25,11 @@ const localChain = {
     default: "http://localhost:8545",
   },
   testnet: true,
+};
+
+const ContractProvider = ({ children }) => {
+  const { ddContractData, ddMineContractData } = useSelector(systemSelector);
+  return ddContractData && ddMineContractData ? children : null;
 };
 
 function WagmiWrapper({ children }) {
@@ -48,15 +55,8 @@ function WagmiWrapper({ children }) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider
-        chains={chains}
-        theme={midnightTheme({
-          accentColor: "transparent",
-          accentColorForeground: "white",
-        })}
-        modalSize="compact"
-      >
-        {children}
+      <RainbowKitProvider chains={chains} theme={darkTheme()}>
+        <ContractProvider>{children}</ContractProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );
