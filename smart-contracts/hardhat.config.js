@@ -30,25 +30,12 @@ module.exports = {
         count: 350,
       },
     },
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    },
-    rinkeby: {
-      url: process.env.RINKEBY_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    },
     goerli: {
-      url: process.env.GOERLI_URL || "",
+      url: process.env.DEV_DEPLOYMENT_GOERLI_URL || "",
       accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    },
-    matic: {
-      url: process.env.MUMBAI_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+        process.env.DEV_DEPLOYMENT_DEPLOYER_PRIVATE_KEY !== undefined
+          ? [process.env.DEV_DEPLOYMENT_DEPLOYER_PRIVATE_KEY]
+          : [],
     },
   },
   gasReporter: {
@@ -57,8 +44,8 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      mainnet: process.env.ETHERSCAN_API_KEY,
-      goerli: process.env.ETHERSCAN_API_KEY,
+      mainnet: process.env.DEV_DEPLOYMENT_ETHERSCAN_API_KEY,
+      goerli: process.env.DEV_DEPLOYMENT_ETHERSCAN_API_KEY,
     },
     customChains: [
       {
