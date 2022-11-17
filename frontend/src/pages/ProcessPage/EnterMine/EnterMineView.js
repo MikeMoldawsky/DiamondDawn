@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./EnterMine.scss";
 import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCDNImageUrl } from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import Button from "components/Button"
 
 const EnterMineView = ({
   minePrice = 3.33,
@@ -101,12 +102,12 @@ const EnterMineView = ({
                   <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
                 </div>
                 <div className="text">You’ve been granted 2 invitations</div>
-                <div
-                  className="button gold"
+                <Button
+                  className="gold"
                   onClick={() => toggleInvites(true)}
                 >
                   INVITE
-                </div>
+                </Button>
               </div>
               <div className="timer-box">
                 <div className="text-comment">

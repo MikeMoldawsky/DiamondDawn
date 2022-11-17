@@ -35,7 +35,7 @@ const Button = ({
   const [playClick] = useSound(getSFX(sfx));
   const dispatch = useDispatch();
 
-  const playSFX = sfx && !(muted && explicitMute)
+  const playSFX = sfx && !disabled && !(muted && explicitMute)
 
   const clickHandler = async (e) => {
     e.preventDefault();

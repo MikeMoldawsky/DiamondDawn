@@ -7,8 +7,12 @@ import classNames from "classnames";
 import FAQs from "components/FAQs";
 import { getCDNImageUrl } from "utils";
 import PageLoader from "components/PageLoader";
+import useMusic from "hooks/useMusic";
 
 const InfoPage = ({ className, teaser, withFAQ, children }) => {
+
+  useMusic("homepage.mp3");
+
   return (
     <PageSizeLimit>
       <PageLoader

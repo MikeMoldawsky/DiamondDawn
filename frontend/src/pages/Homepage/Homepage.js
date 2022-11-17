@@ -21,6 +21,7 @@ import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import PageSizeLimit from "components/PageSizeLimit";
+import Button from "components/Button";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -74,12 +75,14 @@ const Homepage = () => {
                   />
                 </div>
                 <div>
-                  <div
-                    className="button transparent disabled"
+                  <Button
+                    className="transparent"
+                    disabled
+                    sfx="explore"
                     title="Mine open date will be announced soon!"
                   >
                     ENTER MINE
-                  </div>
+                  </Button>
                 </div>
               </div>
             </div>

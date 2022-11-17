@@ -38,7 +38,8 @@ const ComingSoonPage = () => {
   const isPortrait = height > width;
   const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
 
-  useMusic("coming-soon.mp3");
+  useMusic("homepage.mp3");
+  // useMusic("coming-soon.mp3");
 
   useEffect(() => {
     if (inviteId) {
