@@ -32,6 +32,7 @@ import { isNoContractMode } from "utils";
 import PrivacyPage from "pages/Legal/PrivacyPage";
 import TNCPage from "pages/Legal/TNCPage";
 import NoContractAppLoader from "containers/NoContractAppLoader";
+import ScrollToTop from "components/ScrollToTop";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
@@ -47,6 +48,7 @@ const MainLayout = () => {
     <div className={classNames("main-layout", { "drawer-open": drawerOpen })}>
       <WagmiWrapper>
         <Router>
+          <ScrollToTop />
           <Header
             isMenuOpen={drawerOpen}
             toggleMenu={() => setDrawerOpen(!drawerOpen)}
