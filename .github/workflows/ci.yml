@@ -76,12 +76,12 @@ jobs:
       - compile_and_run_tests
     env:
       HARDHAT_NETWORK: goerli
-      GOERLI_URL: ${{ secrets.GOERLI_URL }}
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-      ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
-      ADMINS: ${{ secrets.ADMINS }}
-      SIGNER_PUBLIC_KEY: ${{ secrets.SIGNER_PUBLIC_KEY }}
+      DEV_DEPLOYMENT_GOERLI_URL: ${{ secrets.DEV_DEPLOYMENT_GOERLI_URL }}
+      DEV_DEPLOYMENT_MONGODB_URI: ${{ secrets.DEV_DEPLOYMENT_MONGODB_URI }}
+      DEV_DEPLOYMENT_DEPLOYER_PRIVATE_KEY: ${{ secrets.DEV_DEPLOYMENT_DEPLOYER_PRIVATE_KEY }}
+      DEV_DEPLOYMENT_ETHERSCAN_API_KEY: ${{ secrets.DEV_DEPLOYMENT_ETHERSCAN_API_KEY }}
+      DEV_DEPLOYMENT_ADMINS: ${{ secrets.DEV_DEPLOYMENT_ADMINS }}
+      DEV_DEPLOYMENT_SIGNER_PUBLIC_KEY: ${{ secrets.DEV_DEPLOYMENT_SIGNER_PUBLIC_KEY }}
     defaults:
       run:
         working-directory: ./smart-contracts
