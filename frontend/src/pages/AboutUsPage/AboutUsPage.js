@@ -75,7 +75,10 @@ const AboutUsPage = () => {
               <MikeText />
               <SocialButtons
                 member="mike"
-                links={{ twitter: "", instagram: "", linkedin: "" }}
+                links={{
+                  twitter: "https://twitter.com/tweezers0x",
+                  linkedin: "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
+                }}
               />
             </div>
           </div>
@@ -86,12 +89,10 @@ const AboutUsPage = () => {
             <div className="text">
               <DavidText />
               <SocialButtons
-                member="mike"
+                member="david"
                 links={{
-                  twitter: "",
-                  instagram: "",
-                  linkedin: "",
-                  website: "",
+                  twitter: "https://twitter.com/DavidAriew",
+                  website: "http://arievvisuals.com/",
                 }}
               />
             </div>
@@ -105,8 +106,8 @@ const AboutUsPage = () => {
             <div className="text">
               <AsafText />
               <SocialButtons
-                member="mike"
-                links={{ twitter: "", linkedin: "" }}
+                member="asaf"
+                links={{ twitter: "", linkedin: "https://www.linkedin.com/in/asaf-snir-87b581b6/" }}
               />
             </div>
           </div>
@@ -116,10 +117,7 @@ const AboutUsPage = () => {
             <div className="member-title">Diamond Art Designer</div>
             <div className="text">
               <AvivaText />
-              <SocialButtons
-                member="mike"
-                links={{ twitter: "", instagram: "", linkedin: "" }}
-              />
+              <SocialButtons member="aviva"/>
             </div>
           </div>
           <div className="left-spaced-aligned-column team-member">
@@ -129,8 +127,8 @@ const AboutUsPage = () => {
             <div className="text">
               <TonyText />
               <SocialButtons
-                member="mike"
-                links={{ twitter: "", instagram: "", linkedin: "" }}
+                member="tony"
+                links={{ twitter: "https://twitter.com/tonyherrera" }}
               />
             </div>
           </div>

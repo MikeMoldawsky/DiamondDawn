@@ -81,11 +81,15 @@ export const IRLImpactText = () => (
           ways.
         </b>
       </p>
-      <img
-        className="gia-report"
-        src={getCDNImageUrl("gia-report.jpeg")}
-        alt=""
-      />
+      <div className="gia-report">
+        <img
+          src={getCDNImageUrl("gia-report.jpeg")}
+          alt=""
+        />
+        <div className="image-caption">
+          A GIA Report at the end of 2022
+        </div>
+      </div>
       <p>
         These “simple” breakthroughs will impact every part of every process,
         from supply chain maintenance and deed creation to the very way goods
@@ -154,7 +158,7 @@ export const DavidText = () => (
     >
       artwork
     </a>
-    at Sotheby’s Contemporary Art Evening for $224K, alongside artworks by
+    {" "}at Sotheby’s Contemporary Art Evening for $224K, alongside artworks by
     Banksy and Basquiat. In addition, he created 2 out of the 3{" "}
     <a
       target="_blank"

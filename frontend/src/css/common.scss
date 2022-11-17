@@ -150,7 +150,7 @@ input[type="checkbox"] {
   &.tony {
     background: url($CDN_URL + "/images/team/tony.png") no-repeat center center;
     background-size: auto 100%;
-    filter: unset;
+    filter: grayscale(0.75);
   }
 }
 
