@@ -19,6 +19,7 @@ import instagramIcon from "assets/images/instagram.svg";
 import linkedinIcon from "assets/images/linkedin.svg";
 import websiteIcon from "assets/images/website.svg";
 import InfoPage from "components/InfoPage";
+import Link from "components/Links";
 
 const SOCIAL_ICONS = {
   // twitter: getCDNImageUrl("/social/twitter.svg"),
@@ -35,9 +36,9 @@ const SocialButtons = ({ member, links }) => (
   <div className="social-buttons">
     {map(links, (link, provider) => (
       <div key={`social-${member}-${provider}`}>
-        <a target="_blank" rel="noreferrer" href={link}>
+        <Link href={link}>
           <SVG src={SOCIAL_ICONS[provider]} />
-        </a>
+        </Link>
       </div>
     ))}
   </div>

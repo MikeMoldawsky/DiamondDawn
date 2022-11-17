@@ -5,6 +5,7 @@ import "./InvitedModal.scss";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Button from "components/Button";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import {CollectorLink} from "components/Links";
 
 const InvitedModal = ({ close, invite }) => {
   const { createdBy: inviter } = invite;
@@ -18,7 +19,7 @@ const InvitedModal = ({ close, invite }) => {
         <div className="leading-text">CONGRATULATIONS</div>
         <div className="text">
           You’ve been invited by{" "}
-          <span className="text-gold">{inviter.twitter}</span> to participate in
+          <CollectorLink collector={inviter} /> to participate in
           Diamond Dawn’s private sale.
         </div>
         <div className="text">

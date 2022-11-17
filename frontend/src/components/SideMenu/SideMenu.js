@@ -11,6 +11,7 @@ import useGoToInvites from "hooks/useGoToInvites";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
+import {TwitterLink, TelegramLink, CollectorLink} from "components/Links";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
   const collector = useSelector(collectorSelector);
@@ -62,12 +63,16 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           </div>
         )}
         <div className="center-center-aligned-row social-icons">
-          <div className="icon">
-            <FontAwesomeIcon icon={faTwitter} />
-          </div>
-          <div className="icon">
-            <TelegramIcon />
-          </div>
+          <TwitterLink>
+            <div className="icon">
+              <FontAwesomeIcon icon={faTwitter} />
+            </div>
+          </TwitterLink>
+          <TelegramLink>
+            <div className="icon">
+              <TelegramIcon />
+            </div>
+          </TelegramLink>
         </div>
       </div>
       {invitedBy?.createdBy && (
@@ -77,9 +82,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           </div>
           <div className="">
             INVITED BY{" "}
-            <span className="text-gold">
-              {collectorDisplayName(invitedBy?.createdBy)}
-            </span>
+            <CollectorLink collector={invitedBy?.createdBy} />
           </div>
         </div>
       )}

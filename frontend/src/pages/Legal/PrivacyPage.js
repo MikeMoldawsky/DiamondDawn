@@ -2,6 +2,7 @@ import React from "react";
 import "./Legal.scss";
 import Footer from "components/Footer";
 import PageSizeLimit from "components/PageSizeLimit";
+import { MailToSupportLink } from "components/Links"
 
 const PrivacyPage = () => (
   <PageSizeLimit>
@@ -272,9 +273,7 @@ const PrivacyPage = () => (
                     consent for the purposes for which You provided Your consent
                     by sending a notice free of charge to the following email
                     address:{" "}
-                    <a href="mailto:support@diamonddawn.art">
-                      support@diamonddawn.art
-                    </a>
+                    <MailToSupportLink />
                     .
                   </p>
                   <p>
@@ -298,9 +297,7 @@ const PrivacyPage = () => (
             <p>
               At any time, You may approach Us by sending a notice to the email
               address{" "}
-              <a href="mailto:support@diamonddawn.art">
-                support@diamonddawn.art
-              </a>
+              <MailToSupportLink />
               , in order to receive information concerning the review performed
               by Us. This is so You can conclude that We may process the
               Personal Data about You on account of such processing being
@@ -693,9 +690,7 @@ const PrivacyPage = () => (
               for direct marketing purposes, including profiling to the extent
               that it is related to such direct marketing, by sending a notice
               to the following email address:{" "}
-              <a href="mailto:support@diamonddawn.art">
-                support@diamonddawn.art
-              </a>
+              <MailToSupportLink />
               , in which case We shall cease to process Personal Data about You
               for direct marketing purposes.{" "}
             </p>
@@ -709,9 +704,7 @@ const PrivacyPage = () => (
               marketing materials via email at any time, by sending an email
               free of charge with the title “unsubscribe” to the following email
               address:{" "}
-              <a href="mailto:support@diamonddawn.art">
-                support@diamonddawn.art
-              </a>{" "}
+              <MailToSupportLink />{" "}
               or by clicking the unsubscribe option in any marketing material
               sent to You. You can withdraw Your consent from receiving
               marketing materials via push notifications in Your mobile device’s
@@ -852,9 +845,7 @@ const PrivacyPage = () => (
               Data about You that are transferred to a third country or an
               international organization, by sending an email to the following
               address:{" "}
-              <a href="mailto:support@diamonddawn.art">
-                support@diamonddawn.art
-              </a>
+              <MailToSupportLink />
               .
             </p>
           </div>
@@ -970,9 +961,7 @@ const PrivacyPage = () => (
               You are entitled to the following rights in respect of the
               Personal Data about You. To exercise such rights, You may send a
               request to exercise Your rights to the following email address:{" "}
-              <a href="mailto:support@diamonddawn.art">
-                support@diamonddawn.art
-              </a>
+              <MailToSupportLink />
               .{" "}
             </p>
           </div>
@@ -1099,9 +1088,7 @@ const PrivacyPage = () => (
             <p style={{ marginTop: "1em" }}>
               In order to exercise Your CCPA rights, please contact Us using the
               following details:{" "}
-              <a href="mailto:support@diamonddawn.art">
-                support@diamonddawn.art
-              </a>
+              <MailToSupportLink />
               .{" "}
             </p>
           </div>

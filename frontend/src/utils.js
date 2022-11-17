@@ -187,6 +187,6 @@ export const shortenEthAddress = (address) =>
 export const collectorDisplayName = (collector) =>
   collector
     ? collector.twitter ||
-      collector.email ||
+      // collector.email ||
       shortenEthAddress(collector.address)
     : "";

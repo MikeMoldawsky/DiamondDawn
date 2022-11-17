@@ -7,6 +7,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { collectorDisplayName } from "utils";
 import Button from "components/Button";
+import {CollectorLink} from "components/Links";
 
 const InvitationsStatus = () => {
   const collector = useSelector(collectorSelector);
@@ -27,11 +28,9 @@ const InvitationsStatus = () => {
               </Button>
             </CopyToClipboard>
             <div className="status">
-              {usedBy ? "USED BY" : "AVAILABLE"}
+              {usedBy ? "USED BY " : "AVAILABLE"}
               {usedBy && (
-                <span className="text-gold">
-                  {" " + collectorDisplayName(usedBy)}
-                </span>
+                <CollectorLink collector={usedBy} />
               )}
             </div>
           </div>

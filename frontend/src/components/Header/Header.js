@@ -23,6 +23,7 @@ import { usePageSizeLimit } from "components/PageSizeLimit";
 import { canAccessDDSelector } from "store/selectors";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import CTAButton from "components/CTAButton";
+import { TwitterLink } from "components/Links";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
@@ -71,9 +72,9 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           {isPageSizeLimitOk && canAccessDD && (
             <CTAButton className="sm collector-btn" />
           )}
-          <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
+          <TwitterLink>
             <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
-          </a>
+          </TwitterLink>
           <div className="vertical-sep" />
           <FontAwesomeIcon
             className="menu-icon mute-icon"
