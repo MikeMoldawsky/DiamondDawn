@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import classNames from "classnames";
 import { canAccessDDSelector } from "store/selectors";
-import { collectorSelector } from "store/collectorReducer";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
@@ -49,6 +48,7 @@ const PageLoader = ({
   timeout = DEFAULT_TIMEOUT,
   withLoader = true,
   requireAccess = true,
+  onReady,
   children,
 }) => {
   const { assetReadyPages } = useSelector(uiSelector);
@@ -65,7 +65,7 @@ const PageLoader = ({
   const navigate = useNavigate();
   const account = useAccount();
 
-  const assetsReady = assetReadyPages[pageName];
+  const assetsReady = assetReadyPages[pageName] && isCollectorFetched;
 
   const setAssetsReady = () => {
     setFade(true);
@@ -76,6 +76,7 @@ const PageLoader = ({
         })
       );
       setHidden(true);
+      onReady && onReady();
     }, FADE_DURATION);
   };
 
@@ -127,8 +128,12 @@ const PageLoader = ({
   }, timeout);
 
   useEffect(() => {
+    console.log("useEffect", { isCollectorFetched });
     if (isCollectorFetched) {
       onAssetLoaded();
+    } else {
+      setFade(false);
+      setHidden(false);
     }
   }, [isCollectorFetched]);
 

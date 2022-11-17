@@ -2,18 +2,31 @@
 
 .modal.invited-modal {
   padding: 0.4em;
+  max-height: 80%;
+  max-width: 50em;
+  transform: translate(-50%, -45%);
 
   .modal-inner {
-    padding: 5em 4em;
+    padding: 4em 4em 3.5em;
 
     &:before {
-      transform: translate(-50%, -5em);
+      transform: translate(-50%, -4em);
     }
   }
 
   .leading-text {
     font-size: $font36px;
     margin-bottom: 1.5rem;
+  }
+
+  .image {
+    margin: -2em 0 -1em;
+    max-width: 80%;
+
+    img {
+      min-height: 10em;
+      width: 100%;
+    }
   }
 
   .text {
@@ -24,5 +37,9 @@
 
   .button {
     margin-top: 2rem;
+
+    svg {
+      font-size: $font20px;
+    }
   }
 }

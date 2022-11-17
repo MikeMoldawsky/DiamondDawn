@@ -12,6 +12,9 @@ import { useSelector } from "react-redux";
 import { isActionPendingSelector } from "store/actionStatusReducer";
 import { inviteSelector } from "store/inviteReducer";
 import Checkbox from "components/Checkbox";
+import { showError } from "utils";
+import useSound from "use-sound";
+import sparklesSFX from "assets/audio/end-sparkles.mp3";
 
 const ApplyForm = ({ onSuccess }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
@@ -31,6 +34,7 @@ const ApplyForm = ({ onSuccess }) => {
     isActionPendingSelector("Request Invitation")
   );
   const invite = useSelector(inviteSelector);
+  const [playSparklesSFX] = useSound(sparklesSFX);
 
   useEffect(() => {
     reset();
@@ -68,9 +72,14 @@ const ApplyForm = ({ onSuccess }) => {
       setIsRequiredError(true);
       return;
     }
-    await applyToDDApi(invite._id, account.address, data);
-    onSuccess && (await onSuccess());
-    setIsSubmitSuccess(true);
+    try {
+      await applyToDDApi(invite._id, account.address, data);
+      playSparklesSFX();
+      onSuccess && (await onSuccess());
+      setIsSubmitSuccess(true);
+    } catch (e) {
+      showError(e, "Apply Failed");
+    }
   };
 
   return (
@@ -128,6 +137,7 @@ const ApplyForm = ({ onSuccess }) => {
           className="gold"
           onClick={handleSubmit(applyToDD)}
           disabled={!isDirty || !isEmpty(errors) || isRequiredError}
+          sfx="action"
         >
           SUBMIT
         </ActionButton>

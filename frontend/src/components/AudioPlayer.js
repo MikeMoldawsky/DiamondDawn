@@ -35,6 +35,7 @@ const AudioPlayer = () => {
   }, [musicSrc]);
 
   useEffect(() => {
+    console.log("AudioPlayer", { muted, src });
     if (!audio.current?.audioEl?.current) return;
 
     if (!muted && src) {
@@ -47,7 +48,7 @@ const AudioPlayer = () => {
   return (
     <ReactAudioPlayer
       ref={audio}
-      src={getCDNAudioUrl(src)}
+      src={src ? getCDNAudioUrl(src) : null}
       autoPlay
       muted={muted}
       loop

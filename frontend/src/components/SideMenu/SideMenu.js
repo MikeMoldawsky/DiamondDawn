@@ -11,6 +11,9 @@ import useGoToInvites from "hooks/useGoToInvites";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { TwitterLink, TelegramLink, CollectorLink } from "components/Links";
+import Button from "components/Button";
+import CTAButton from "components/CTAButton";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
   const collector = useSelector(collectorSelector);
@@ -45,13 +48,13 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           <NavLink to={"/technology"} onClick={closeMenu}>
             <div className="menu-item">TIMELESS TECHNOLOGY</div>
           </NavLink>
-          <NavLink to={"/collector"} onClick={closeMenu}>
-            {collector ? (
+          {collector ? (
+            <NavLink to={"/collector"} onClick={closeMenu}>
               <div className="menu-item sm text-gold">COLLECTOR'S ROOM</div>
-            ) : (
-              <div className="button gold sm">APPLY FOR DIAMOND DAWN</div>
-            )}
-          </NavLink>
+            </NavLink>
+          ) : (
+            <CTAButton className="sm">APPLY FOR DIAMOND DAWN</CTAButton>
+          )}
         </div>
         {collector && collector.invitations.length > 0 && (
           <div className="invitations-menu">
@@ -62,12 +65,16 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           </div>
         )}
         <div className="center-center-aligned-row social-icons">
-          <div className="icon">
-            <FontAwesomeIcon icon={faTwitter} />
-          </div>
-          <div className="icon">
-            <TelegramIcon />
-          </div>
+          <TwitterLink>
+            <div className="icon">
+              <FontAwesomeIcon icon={faTwitter} />
+            </div>
+          </TwitterLink>
+          <TelegramLink>
+            <div className="icon">
+              <TelegramIcon />
+            </div>
+          </TelegramLink>
         </div>
       </div>
       {invitedBy?.createdBy && (
@@ -76,10 +83,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
             <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
           </div>
           <div className="">
-            INVITED BY{" "}
-            <span className="text-gold">
-              {collectorDisplayName(invitedBy?.createdBy)}
-            </span>
+            INVITED BY <CollectorLink collector={invitedBy?.createdBy} />
           </div>
         </div>
       )}

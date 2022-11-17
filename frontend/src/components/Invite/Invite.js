@@ -19,6 +19,8 @@ import {
   loadCollectorByAddress,
   openMintWindow,
 } from "store/collectorReducer";
+import Button from "components/Button";
+import { TwitterLink } from "components/Links";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -112,16 +114,16 @@ const Invite = () => {
                   <div className="follow-text">
                     <b>
                       Make sure to follow request{" "}
-                      <span className="text-gold">
+                      <TwitterLink className="text-gold">
                         <b>@DiamondDawnNFT</b>
-                      </span>
+                      </TwitterLink>
                     </b>
                     <br />
                     We’ll send you a Twitter DM if you are accepted.
                   </div>
-                  <div className="button gold icon-after">
+                  <TwitterLink className="button gold icon-after">
                     Follow <FontAwesomeIcon icon={faTwitter} />
-                  </div>
+                  </TwitterLink>
                 </div>
               )}
             </div>

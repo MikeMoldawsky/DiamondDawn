@@ -16,6 +16,7 @@ import { isActionSuccessSelector } from "store/actionStatusReducer";
 import { canAccessDDSelector } from "store/selectors";
 import { collectorSelector } from "store/collectorReducer";
 import { useAccount } from "wagmi";
+import Button from "components/Button";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const ComingSoonPage = () => {
     isActionSuccessSelector("get-collector-by-address")
   );
   const canAccessDD = useSelector(canAccessDDSelector);
+  const [pageReady, setPageReady] = useState(false);
   const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [startTransition, setStartTransition] = useState(false);
   const [videoProgress, setVideoProgress] = useState({});
@@ -36,7 +38,8 @@ const ComingSoonPage = () => {
   const isPortrait = height > width;
   const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
 
-  useMusic("coming-soon.mp3");
+  useMusic("homepage.mp3");
+  // useMusic("coming-soon.mp3");
 
   useEffect(() => {
     if (inviteId) {
@@ -46,6 +49,8 @@ const ComingSoonPage = () => {
 
   useEffect(() => {
     if (
+      pageReady &&
+      !canAccessDD &&
       invite &&
       !invite.usedBy &&
       !invite.revoked &&
@@ -54,7 +59,7 @@ const ComingSoonPage = () => {
     ) {
       setShowInvitedModal(true);
     }
-  }, [invite, isCollectorFetched, collector]);
+  }, [invite, isCollectorFetched, collector, pageReady]);
 
   const renderBgPlayer = useCallback(
     () => (
@@ -101,9 +106,9 @@ const ComingSoonPage = () => {
 
     if (canAccessDD)
       return (
-        <div className="button transparent" onClick={transition}>
+        <Button className="transparent" onClick={transition} sfx="explore">
           EXPLORE
-        </div>
+        </Button>
       );
 
     return (
@@ -122,6 +127,7 @@ const ComingSoonPage = () => {
       requireAccess={false}
       images={[getCDNImageUrl("envelop-wings.png")]}
       videos={[{ progress: videoProgress, threshold: 0.5 }]}
+      onReady={() => setPageReady(true)}
     >
       <div
         className={classNames("page coming-soon", {

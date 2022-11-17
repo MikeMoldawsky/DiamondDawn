@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "components/Links";
 
 export const TimelessTechnology = () => (
   <div className="text">
@@ -124,10 +125,7 @@ export const TimelessFiles = () => (
   <div className="text">
     <p>
       We decided that the best system for Diamond Dawn’s files would be{" "}
-      <a target="_blank" rel="noreferrer" href="https://www.arweave.org/">
-        Arweave
-      </a>
-      .
+      <Link href="https://www.arweave.org/">Arweave</Link>.
     </p>
     <p>
       Arweave is a decentralized file system that offers a pay-once model for

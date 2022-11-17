@@ -1,5 +1,6 @@
 import React from "react";
 import { getCDNImageUrl } from "utils";
+import Link from "components/Links";
 
 export const AboutUsText = () => (
   <div className="text our-team">
@@ -81,11 +82,10 @@ export const IRLImpactText = () => (
           ways.
         </b>
       </p>
-      <img
-        className="gia-report"
-        src={getCDNImageUrl("gia-report.jpeg")}
-        alt=""
-      />
+      <div className="gia-report">
+        <img src={getCDNImageUrl("gia-report.jpeg")} alt="" />
+        <div className="image-caption">A GIA Report at the end of 2022</div>
+      </div>
       <p>
         These “simple” breakthroughs will impact every part of every process,
         from supply chain maintenance and deed creation to the very way goods
@@ -147,22 +147,14 @@ export const DavidText = () => (
     A digital artist and educator for over 10 years, David has worked with some
     of the world's biggest digital artists, such as Beeple and Pak. Recently, he
     sold his first{" "}
-    <a
-      target="_blank"
-      rel="noreferrer"
-      href="https://www.sothebys.com/en/buy/auction/2022/contemporary-art-evening-sale/jia-aili-x-david-ariew-jia-ai-li-x-da-weiai-lu-the"
-    >
+    <Link href="https://www.sothebys.com/en/buy/auction/2022/contemporary-art-evening-sale/jia-aili-x-david-ariew-jia-ai-li-x-da-weiai-lu-the">
       artwork
-    </a>
+    </Link>{" "}
     at Sotheby’s Contemporary Art Evening for $224K, alongside artworks by
     Banksy and Basquiat. In addition, he created 2 out of the 3{" "}
-    <a
-      target="_blank"
-      rel="noreferrer"
-      href="https://twitter.com/beeple/status/1525142908680257536"
-    >
+    <Link href="https://twitter.com/beeple/status/1525142908680257536">
       Beeple X Madonna
-    </a>{" "}
+    </Link>{" "}
     NFTs (one of which sold for $346K) and has collaborated with artists such as
     Katy Perry, and Deadmau5.
     <br /> David holds a Master's degree in Neuroscience from UVA.
@@ -173,11 +165,9 @@ export const TonyText = () => (
   <p>
     Tony is an immigrant activist turned entrepreneur in the cryptocurrency,
     blockchain, and NFT space. Founding member of{" "}
-    <a target="_blank" rel="noreferrer" href="http://galaxis.xyz">
-      http://galaxis.xyz
-    </a>{" "}
-    (formerly Ether Cards). A founding member of several DAOs dedicated to the
-    metaverse including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
+    <Link href="http://galaxis.xyz">http://galaxis.xyz</Link> (formerly Ether
+    Cards). A founding member of several DAOs dedicated to the metaverse
+    including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
   </p>
 );
 

@@ -6,12 +6,22 @@
       width: 33%;
       float: right;
       position: relative;
-      margin: 1.5em 0 1.5em 3em;
+      margin: 0.5em 0 1.5em 3em;
       transition: width 0.25s ease-in;
       transition-delay: 0.25s;
 
       &:hover {
         width: 100%;
+      }
+
+      img {
+        width: 100%;
+      }
+
+      .image-caption {
+        font-size: $font12px;
+        font-weight: 400;
+        font-style: italic;
       }
     }
   }
@@ -51,6 +61,10 @@
 
           p {
             margin: 0;
+          }
+
+          a {
+            text-decoration: underline;
           }
         }
 

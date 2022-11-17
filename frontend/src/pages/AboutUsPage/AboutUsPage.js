@@ -19,6 +19,7 @@ import instagramIcon from "assets/images/instagram.svg";
 import linkedinIcon from "assets/images/linkedin.svg";
 import websiteIcon from "assets/images/website.svg";
 import InfoPage from "components/InfoPage";
+import Link from "components/Links";
 
 const SOCIAL_ICONS = {
   // twitter: getCDNImageUrl("/social/twitter.svg"),
@@ -35,9 +36,9 @@ const SocialButtons = ({ member, links }) => (
   <div className="social-buttons">
     {map(links, (link, provider) => (
       <div key={`social-${member}-${provider}`}>
-        <a target="_blank" rel="noreferrer" href={link}>
+        <Link href={link}>
           <SVG src={SOCIAL_ICONS[provider]} />
-        </a>
+        </Link>
       </div>
     ))}
   </div>
@@ -47,7 +48,7 @@ const AboutUsPage = () => {
   return (
     <InfoPage
       className="about-page"
-      teaser={{ src: "teaser_physical.mp4", overlap: true }}
+      teaser={{ src: "teaser_physical.mp4", overlap: "-25%" }}
     >
       <div className="left-aligned-column general">
         <div className="leading-text">ABOUT US</div>
@@ -75,7 +76,11 @@ const AboutUsPage = () => {
               <MikeText />
               <SocialButtons
                 member="mike"
-                links={{ twitter: "", instagram: "", linkedin: "" }}
+                links={{
+                  twitter: "https://twitter.com/tweezers0x",
+                  linkedin:
+                    "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
+                }}
               />
             </div>
           </div>
@@ -86,12 +91,10 @@ const AboutUsPage = () => {
             <div className="text">
               <DavidText />
               <SocialButtons
-                member="mike"
+                member="david"
                 links={{
-                  twitter: "",
-                  instagram: "",
-                  linkedin: "",
-                  website: "",
+                  twitter: "https://twitter.com/DavidAriew",
+                  website: "http://arievvisuals.com/",
                 }}
               />
             </div>
@@ -105,8 +108,11 @@ const AboutUsPage = () => {
             <div className="text">
               <AsafText />
               <SocialButtons
-                member="mike"
-                links={{ twitter: "", linkedin: "" }}
+                member="asaf"
+                links={{
+                  twitter: "",
+                  linkedin: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
+                }}
               />
             </div>
           </div>
@@ -116,10 +122,7 @@ const AboutUsPage = () => {
             <div className="member-title">Diamond Art Designer</div>
             <div className="text">
               <AvivaText />
-              <SocialButtons
-                member="mike"
-                links={{ twitter: "", instagram: "", linkedin: "" }}
-              />
+              <SocialButtons member="aviva" />
             </div>
           </div>
           <div className="left-spaced-aligned-column team-member">
@@ -129,8 +132,8 @@ const AboutUsPage = () => {
             <div className="text">
               <TonyText />
               <SocialButtons
-                member="mike"
-                links={{ twitter: "", instagram: "", linkedin: "" }}
+                member="tony"
+                links={{ twitter: "https://twitter.com/tonyherrera" }}
               />
             </div>
           </div>

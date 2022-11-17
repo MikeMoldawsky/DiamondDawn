@@ -1,5 +1,6 @@
 import React from "react";
 import PlayButton from "components/PlayButton";
+import CTAButton from "components/CTAButton";
 
 export const EternalTreasuresText = () => (
   <>
@@ -102,10 +103,6 @@ export const TeaserText = () => (
         <br />
         The final choice is yours.
       </p>
-      <div className="center-aligned-row buttons-row">
-        <div className="button gold">APPLY FOR DIAMOND DAWN</div>
-        <PlayButton />
-      </div>
     </div>
   </>
 );

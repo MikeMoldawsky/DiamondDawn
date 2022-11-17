@@ -19,6 +19,7 @@ const NoContractAppLoader = () => {
 
   useOnConnect(
     (address) => {
+      dispatch(clearActionStatus("get-collector-by-address"));
       actionDispatch(
         loadCollectorByAddress(address),
         "get-collector-by-address"

@@ -21,9 +21,9 @@ import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import { usePageSizeLimit } from "components/PageSizeLimit";
 import { canAccessDDSelector } from "store/selectors";
-import { collectorSelector } from "store/collectorReducer";
-import useGoToInvites from "hooks/useGoToInvites";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
+import CTAButton from "components/CTAButton";
+import { TwitterLink } from "components/Links";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
@@ -31,9 +31,6 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const canAccessDD = useSelector(canAccessDDSelector);
   const isPageSizeLimitOk = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
-  const collector = useSelector(collectorSelector);
-  const goToInvites = useGoToInvites();
-  const navigate = useNavigate();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );
@@ -44,15 +41,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
 
   const onVolumeClick = (e) => {
     e.stopPropagation();
-    dispatch(toggleMuted());
-  };
-
-  const onCTAClick = () => {
-    if (collector) {
-      goToInvites();
-    } else {
-      navigate("/collector");
-    }
+    dispatch(toggleMuted(true));
   };
 
   return (
@@ -80,14 +69,12 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           })}
         />
         <div className="center-aligned-row header-side">
-          {isCollectorFetched && canAccessDD && isPageSizeLimitOk && (
-            <div className="button gold sm collector-btn" onClick={onCTAClick}>
-              {collector ? "MY INVITATIONS" : "APPLY FOR DIAMOND DAWN"}
-            </div>
+          {isPageSizeLimitOk && canAccessDD && (
+            <CTAButton className="sm collector-btn" />
           )}
-          <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
+          <TwitterLink>
             <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
-          </a>
+          </TwitterLink>
           <div className="vertical-sep" />
           <FontAwesomeIcon
             className="menu-icon mute-icon"
