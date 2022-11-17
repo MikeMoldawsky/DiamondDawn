@@ -38,12 +38,12 @@ const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
     setPassword(pwd);
   };
 
-  const onPasswordEnter = (e) => {
-    if (e.charCode === 13) {
-      // enter key
-      submitPassword();
-    }
-  };
+  // const onPasswordEnter = (e) => {
+  //   if (e.charCode === 13) {
+  //     // enter key
+  //     submitPassword();
+  //   }
+  // };
 
   return (
     <div
@@ -59,7 +59,7 @@ const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
           autoFocus
           value={password}
           onChange={onPasswordChange}
-          onKeyPress={onPasswordEnter}
+          // onKeyPress={onPasswordEnter}
           maxLength={passwordLength}
         />
         <div className="underscore">

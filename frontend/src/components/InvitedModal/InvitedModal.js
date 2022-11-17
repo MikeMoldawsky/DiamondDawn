@@ -1,10 +1,10 @@
 import React from "react";
 import Modal from "components/Modal";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getCDNImageUrl } from "utils";
-import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 import "./InvitedModal.scss";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import Button from "components/Button";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const InvitedModal = ({ close, invite }) => {
   const { createdBy: inviter } = invite;
@@ -30,9 +30,9 @@ const InvitedModal = ({ close, invite }) => {
             text={invite._id.substring(invite._id.length - 8)}
             onCopy={close}
           >
-            <div className="button gold icon-after">
-              COPY PASSWORD <FontAwesomeIcon icon={faCopy} />
-            </div>
+            <Button className="icon-after gold" sfx="transition">
+              COPY PASSWORD <ContentCopyIcon />
+            </Button>
           </CopyToClipboard>
         </div>
       </div>
