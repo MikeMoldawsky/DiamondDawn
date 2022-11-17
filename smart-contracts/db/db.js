@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 function getDbConnection() {
   console.log("Connecting to MongoDB...");
-  return mongoose.createConnection(process.env.MONGODB_URI);
+  return mongoose.createConnection(process.env.DEV_DEPLOYMENT_MONGODB_URI);
 }
 
 const conn = getDbConnection();
