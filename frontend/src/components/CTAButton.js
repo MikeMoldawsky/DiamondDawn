@@ -17,19 +17,18 @@ const CTAButton = ({ className }) => {
 
   if (!isCollectorFetched) return null
 
-  if (!collector) return (
-    <Button className={classNames("gold", className)} onClick={() => navigate("/collector")}>
-      APPLY FOR DIAMOND DAWN
+  const renderButton = (text, onClick = () => navigate("/collector")) => (
+    <Button className={classNames("gold", className)} sfx="rock-light" onClick={onClick}>
+      {text}
     </Button>
   )
 
-  if (collector.approved) return (
-    <Button className={classNames("gold", className)} onClick={goToInvites}>
-      MY INVITATIONS
-    </Button>
-  )
+  if (!collector) return renderButton("APPLY FOR DIAMOND DAWN")
 
-  return null
+
+  if (collector.approved) return renderButton("MY INVITATIONS", goToInvites)
+
+  return renderButton("COLLECTOR'S ROOM")
 }
 
 export default CTAButton

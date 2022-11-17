@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import classNames from "classnames";
 import { collectorDisplayName } from "utils";
+import Button from "components/Button";
 
 const InvitationsStatus = () => {
   const collector = useSelector(collectorSelector);
@@ -22,13 +22,9 @@ const InvitationsStatus = () => {
             className="center-start-aligned-row status-row"
           >
             <CopyToClipboard text={link}>
-              <div
-                className={classNames("button sm icon-after gold", {
-                  disabled: !!usedBy,
-                })}
-              >
+              <Button className="sm icon-after gold" disabled={!!usedBy} sfx="transition">
                 INVITATION 0{i + 1} <ContentCopyIcon />
-              </div>
+              </Button>
             </CopyToClipboard>
             <div className="status">
               {usedBy ? "USED BY" : "AVAILABLE"}

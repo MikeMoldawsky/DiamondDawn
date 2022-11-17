@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
-import { updateUiState } from "store/uiReducer";
+import {updateUiState} from "store/uiReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import classNames from "classnames";
@@ -16,6 +16,7 @@ import { isActionSuccessSelector } from "store/actionStatusReducer";
 import { canAccessDDSelector } from "store/selectors";
 import { collectorSelector } from "store/collectorReducer";
 import { useAccount } from "wagmi";
+import Button from "components/Button";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -104,10 +105,10 @@ const ComingSoonPage = () => {
 
     if (canAccessDD)
       return (
-        <div className="button transparent" onClick={transition}>
+        <Button className="transparent" onClick={transition} sfx="deep">
           EXPLORE
-        </div>
-      );
+        </Button>
+      )
 
     return (
       <PasswordBox

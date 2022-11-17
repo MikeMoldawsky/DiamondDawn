@@ -21,8 +21,6 @@ import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import { usePageSizeLimit } from "components/PageSizeLimit";
 import { canAccessDDSelector } from "store/selectors";
-import { collectorSelector } from "store/collectorReducer";
-import useGoToInvites from "hooks/useGoToInvites";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import CTAButton from "components/CTAButton";
 
@@ -32,9 +30,6 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const canAccessDD = useSelector(canAccessDDSelector);
   const isPageSizeLimitOk = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
-  const collector = useSelector(collectorSelector);
-  const goToInvites = useGoToInvites();
-  const navigate = useNavigate();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );
@@ -45,15 +40,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
 
   const onVolumeClick = (e) => {
     e.stopPropagation();
-    dispatch(toggleMuted());
-  };
-
-  const onCTAClick = () => {
-    if (collector) {
-      goToInvites();
-    } else {
-      navigate("/collector");
-    }
+    dispatch(toggleMuted(true));
   };
 
   return (

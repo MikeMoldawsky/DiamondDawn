@@ -28,6 +28,8 @@ const EnterMineView = ({
     dispatch(updateUiState({ mintViewShowInvites: show }));
   };
 
+  // useMusic("approved.mp3");
+
   useEffect(() => {
     return () => {
       toggleInvites(false);

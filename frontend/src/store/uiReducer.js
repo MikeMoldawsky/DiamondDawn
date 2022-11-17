@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   selectedTokenId: -1,
   shouldIgnoreTokenTransferWatch: false,
   muted: true,
+  explicitMute: false,
   scroll: 0,
   privateSaleAuth: resolveDemoAuth(),
   showHPLogo: null,
@@ -33,9 +34,10 @@ export const setShouldIgnoreTokenTransferWatch = (
   payload: { shouldIgnoreTokenTransferWatch },
 });
 
-export const toggleMuted = () => (dispatch, getState) => {
+export const toggleMuted = (explicit) => (dispatch, getState) => {
   const { muted } = uiSelector(getState());
-  dispatch(setMuted(!muted));
+  const newMuted = !muted
+  dispatch(setMuted(newMuted, explicit));
 };
 
 export const updateUiState = (payload) => ({
@@ -43,9 +45,9 @@ export const updateUiState = (payload) => ({
   payload,
 });
 
-export const setMuted = (muted) => ({
+export const setMuted = (muted, explicit = false) => ({
   type: "UI.UPDATE_STATE",
-  payload: { muted },
+  payload: { muted, explicitMute: explicit },
 });
 
 export const uiSelector = (state) => state.ui;
