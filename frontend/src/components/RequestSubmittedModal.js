@@ -3,7 +3,7 @@ import Modal from "components/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import {TwitterLink} from "components/Links";
+import { TwitterLink } from "components/Links";
 
 const RequestSubmittedModal = ({ close }) => {
   return (

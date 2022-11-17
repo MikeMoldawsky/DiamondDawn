@@ -12,9 +12,9 @@ import { useSelector } from "react-redux";
 import { isActionPendingSelector } from "store/actionStatusReducer";
 import { inviteSelector } from "store/inviteReducer";
 import Checkbox from "components/Checkbox";
-import {showError} from "utils";
+import { showError } from "utils";
 import useSound from "use-sound";
-import sparklesSFX from "assets/audio/end-sparkles.mp3"
+import sparklesSFX from "assets/audio/end-sparkles.mp3";
 
 const ApplyForm = ({ onSuccess }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
@@ -74,12 +74,11 @@ const ApplyForm = ({ onSuccess }) => {
     }
     try {
       await applyToDDApi(invite._id, account.address, data);
-      playSparklesSFX()
+      playSparklesSFX();
       onSuccess && (await onSuccess());
       setIsSubmitSuccess(true);
-    }
-    catch (e) {
-      showError(e, "Apply Failed")
+    } catch (e) {
+      showError(e, "Apply Failed");
     }
   };
 

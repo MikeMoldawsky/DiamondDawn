@@ -36,7 +36,7 @@ export const setShouldIgnoreTokenTransferWatch = (
 
 export const toggleMuted = (explicit) => (dispatch, getState) => {
   const { muted } = uiSelector(getState());
-  const newMuted = !muted
+  const newMuted = !muted;
   dispatch(setMuted(newMuted, explicit));
 };
 

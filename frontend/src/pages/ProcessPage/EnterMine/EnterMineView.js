@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCDNImageUrl } from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import Button from "components/Button"
+import Button from "components/Button";
 
 const EnterMineView = ({
   minePrice = 3.33,
@@ -102,10 +102,7 @@ const EnterMineView = ({
                   <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
                 </div>
                 <div className="text">You’ve been granted 2 invitations</div>
-                <Button
-                  className="gold"
-                  onClick={() => toggleInvites(true)}
-                >
+                <Button className="gold" onClick={() => toggleInvites(true)}>
                   INVITE
                 </Button>
               </div>

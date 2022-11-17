@@ -78,7 +78,8 @@ const AboutUsPage = () => {
                 member="mike"
                 links={{
                   twitter: "https://twitter.com/tweezers0x",
-                  linkedin: "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
+                  linkedin:
+                    "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
                 }}
               />
             </div>
@@ -108,7 +109,10 @@ const AboutUsPage = () => {
               <AsafText />
               <SocialButtons
                 member="asaf"
-                links={{ twitter: "", linkedin: "https://www.linkedin.com/in/asaf-snir-87b581b6/" }}
+                links={{
+                  twitter: "",
+                  linkedin: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
+                }}
               />
             </div>
           </div>
@@ -118,7 +122,7 @@ const AboutUsPage = () => {
             <div className="member-title">Diamond Art Designer</div>
             <div className="text">
               <AvivaText />
-              <SocialButtons member="aviva"/>
+              <SocialButtons member="aviva" />
             </div>
           </div>
           <div className="left-spaced-aligned-column team-member">

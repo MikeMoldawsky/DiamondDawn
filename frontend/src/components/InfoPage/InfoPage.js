@@ -10,7 +10,6 @@ import PageLoader from "components/PageLoader";
 import useMusic from "hooks/useMusic";
 
 const InfoPage = ({ className, teaser, withFAQ, children }) => {
-
   useMusic("homepage.mp3");
 
   return (

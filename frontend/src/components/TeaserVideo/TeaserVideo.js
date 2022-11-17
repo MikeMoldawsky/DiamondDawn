@@ -30,10 +30,15 @@ const TeaserVideo = ({ src, overlap = 0 }) => {
         <div className="element">
           <CTAButton className="md" />
         </div>
-        <div className="separator"/>
+        <div className="separator" />
         <PlayButton className="element" length="SHORT" />
-        <div className="separator"/>
-        <PlayButton className="element" length="FULL" disabled title="Full teaser will bill released when public sale starts" />
+        <div className="separator" />
+        <PlayButton
+          className="element"
+          length="FULL"
+          disabled
+          title="Full teaser will bill released when public sale starts"
+        />
       </div>
     </div>
   );

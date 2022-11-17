@@ -35,7 +35,7 @@ const AudioPlayer = () => {
   }, [musicSrc]);
 
   useEffect(() => {
-    console.log("AudioPlayer", { muted, src })
+    console.log("AudioPlayer", { muted, src });
     if (!audio.current?.audioEl?.current) return;
 
     if (!muted && src) {

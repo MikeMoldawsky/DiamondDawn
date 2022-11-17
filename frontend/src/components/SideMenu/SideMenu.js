@@ -11,7 +11,7 @@ import useGoToInvites from "hooks/useGoToInvites";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import {TwitterLink, TelegramLink, CollectorLink} from "components/Links";
+import { TwitterLink, TelegramLink, CollectorLink } from "components/Links";
 import Button from "components/Button";
 import CTAButton from "components/CTAButton";
 
@@ -83,8 +83,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
             <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
           </div>
           <div className="">
-            INVITED BY{" "}
-            <CollectorLink collector={invitedBy?.createdBy} />
+            INVITED BY <CollectorLink collector={invitedBy?.createdBy} />
           </div>
         </div>
       )}

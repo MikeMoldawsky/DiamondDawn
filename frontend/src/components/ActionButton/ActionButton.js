@@ -35,12 +35,19 @@ const ActionButton = ({
   };
 
   return (
-    <Button className={classNames(actionKey, className)} onClick={clickHandler} disabled={disabled || isLoading || isPending} {...props}>
+    <Button
+      className={classNames(actionKey, className)}
+      onClick={clickHandler}
+      disabled={disabled || isLoading || isPending}
+      {...props}
+    >
       {isLoading || isPending ? (
         <BeatLoader color={"#fff"} loading={true} size={10} />
-      ) : children}
+      ) : (
+        children
+      )}
     </Button>
-  )
+  );
 };
 
 export default ActionButton;

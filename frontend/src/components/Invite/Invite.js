@@ -20,7 +20,7 @@ import {
   openMintWindow,
 } from "store/collectorReducer";
 import Button from "components/Button";
-import {TwitterLink} from "components/Links";
+import { TwitterLink } from "components/Links";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);

@@ -76,7 +76,7 @@ const PageLoader = ({
         })
       );
       setHidden(true);
-      onReady && onReady()
+      onReady && onReady();
     }, FADE_DURATION);
   };
 
@@ -128,13 +128,12 @@ const PageLoader = ({
   }, timeout);
 
   useEffect(() => {
-    console.log('useEffect', { isCollectorFetched })
+    console.log("useEffect", { isCollectorFetched });
     if (isCollectorFetched) {
       onAssetLoaded();
-    }
-    else {
-      setFade(false)
-      setHidden(false)
+    } else {
+      setFade(false);
+      setHidden(false);
     }
   }, [isCollectorFetched]);
 

@@ -5,7 +5,7 @@ import "./InvitedModal.scss";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Button from "components/Button";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import {CollectorLink} from "components/Links";
+import { CollectorLink } from "components/Links";
 
 const InvitedModal = ({ close, invite }) => {
   const { createdBy: inviter } = invite;
@@ -18,9 +18,8 @@ const InvitedModal = ({ close, invite }) => {
         </div>
         <div className="leading-text">CONGRATULATIONS</div>
         <div className="text">
-          You’ve been invited by{" "}
-          <CollectorLink collector={inviter} /> to participate in
-          Diamond Dawn’s private sale.
+          You’ve been invited by <CollectorLink collector={inviter} /> to
+          participate in Diamond Dawn’s private sale.
         </div>
         <div className="text">
           The following password can ONLY be used for one application - make

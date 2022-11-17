@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
-import {updateUiState} from "store/uiReducer";
+import { updateUiState } from "store/uiReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import classNames from "classnames";
@@ -30,7 +30,7 @@ const ComingSoonPage = () => {
     isActionSuccessSelector("get-collector-by-address")
   );
   const canAccessDD = useSelector(canAccessDDSelector);
-  const [pageReady, setPageReady] = useState(false)
+  const [pageReady, setPageReady] = useState(false);
   const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [startTransition, setStartTransition] = useState(false);
   const [videoProgress, setVideoProgress] = useState({});
@@ -109,7 +109,7 @@ const ComingSoonPage = () => {
         <Button className="transparent" onClick={transition} sfx="explore">
           EXPLORE
         </Button>
-      )
+      );
 
     return (
       <PasswordBox

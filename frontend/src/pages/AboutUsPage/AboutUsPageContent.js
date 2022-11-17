@@ -83,13 +83,8 @@ export const IRLImpactText = () => (
         </b>
       </p>
       <div className="gia-report">
-        <img
-          src={getCDNImageUrl("gia-report.jpeg")}
-          alt=""
-        />
-        <div className="image-caption">
-          A GIA Report at the end of 2022
-        </div>
+        <img src={getCDNImageUrl("gia-report.jpeg")} alt="" />
+        <div className="image-caption">A GIA Report at the end of 2022</div>
       </div>
       <p>
         These “simple” breakthroughs will impact every part of every process,
@@ -154,8 +149,8 @@ export const DavidText = () => (
     sold his first{" "}
     <Link href="https://www.sothebys.com/en/buy/auction/2022/contemporary-art-evening-sale/jia-aili-x-david-ariew-jia-ai-li-x-da-weiai-lu-the">
       artwork
-    </Link>
-    {" "}at Sotheby’s Contemporary Art Evening for $224K, alongside artworks by
+    </Link>{" "}
+    at Sotheby’s Contemporary Art Evening for $224K, alongside artworks by
     Banksy and Basquiat. In addition, he created 2 out of the 3{" "}
     <Link href="https://twitter.com/beeple/status/1525142908680257536">
       Beeple X Madonna
@@ -170,11 +165,9 @@ export const TonyText = () => (
   <p>
     Tony is an immigrant activist turned entrepreneur in the cryptocurrency,
     blockchain, and NFT space. Founding member of{" "}
-    <Link href="http://galaxis.xyz">
-      http://galaxis.xyz
-    </Link>{" "}
-    (formerly Ether Cards). A founding member of several DAOs dedicated to the
-    metaverse including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
+    <Link href="http://galaxis.xyz">http://galaxis.xyz</Link> (formerly Ether
+    Cards). A founding member of several DAOs dedicated to the metaverse
+    including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
   </p>
 );
 
