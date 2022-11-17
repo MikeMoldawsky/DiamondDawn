@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 function getDbConnection() {
-  return mongoose.createConnection(process.env.MONGODB_URI);
+  return mongoose.createConnection(process.env.MONGO);
 }
 
 const conn = getDbConnection();
