@@ -18,7 +18,7 @@ const TheJourneyPage = () => {
   return (
     <InfoPage
       className="the-journey-page"
-      teaser={{ src: "teaser_physical.mp4", overlap: true }}
+      teaser={{ src: "teaser_physical.mp4", overlap: "-25%" }}
       withFAQ
     >
       <div className="general">

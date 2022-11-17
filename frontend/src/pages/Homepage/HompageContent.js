@@ -103,10 +103,6 @@ export const TeaserText = () => (
         <br />
         The final choice is yours.
       </p>
-      <div className="center-aligned-row buttons-row">
-        <CTAButton className="md" />
-        <PlayButton />
-      </div>
     </div>
   </>
 );

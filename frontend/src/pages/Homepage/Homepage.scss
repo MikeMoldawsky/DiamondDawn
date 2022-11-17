@@ -7,6 +7,8 @@
   height: 100vh;
   $animationMultiplier: 1;
 
+  --text-margin-left: 20%;
+
   .bg {
     position: absolute;
     width: 100%;
@@ -27,8 +29,6 @@
       font-size: calc-font-size(1px);
       position: relative;
       opacity: 1;
-      //animation: fadeInGrow $fadeTime ease-out forwards;
-      //animation-delay: 0.75s;
       margin-top: -8em;
 
       .logo-box,
@@ -81,7 +81,6 @@
 
   .homepage-content {
     position: relative;
-    height: 148em;
     z-index: 2;
     min-height: 1200px;
     display: flex;
@@ -91,7 +90,7 @@
 
   .text-section {
     position: relative;
-    margin-left: 20vw;
+    margin-left: var(--text-margin-left);
 
     .leading-text {
       color: $gold;
@@ -145,45 +144,24 @@
       width: 40%;
       min-width: 48em;
     }
-
-    .buttons-row {
-      justify-content: flex-start;
-      margin-top: 2.5em;
-
-      .play-button {
-        border-left: solid 1px white;
-        margin-left: 3em;
-        padding-left: 3em;
-        opacity: 0.5;
-      }
-
-      svg {
-        font-size: $font30px;
-      }
-    }
   }
 
-  .teaser {
+  .teaser-video {
     z-index: 1;
-    position: relative;
-    height: $viewHeightRef;
-    color: white;
+
+    .buttons-row {
+      margin-left: var(--text-margin-left);
+    }
 
     .react-player {
-      opacity: 0.25;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+      opacity: .25;
     }
   }
 }
 
 @media only screen and (max-width: 1540px) {
   .page.homepage {
-    .text-section {
-      margin-left: 15vw;
-    }
+    --text-margin-left: 15%;
 
     .eternal-treasures-background {
       --edge-offset: -5%;
@@ -214,10 +192,7 @@
 @media only screen and (max-width: 1200px) {
   .page.homepage {
     font-size: $font14px;
-
-    .text-section {
-      margin-left: 10vw;
-    }
+    --text-margin-left: 10%;
 
     .homepage-content-background {
       --edge-offset: -12%;
