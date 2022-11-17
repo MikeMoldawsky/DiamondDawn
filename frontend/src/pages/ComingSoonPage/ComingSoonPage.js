@@ -29,6 +29,7 @@ const ComingSoonPage = () => {
     isActionSuccessSelector("get-collector-by-address")
   );
   const canAccessDD = useSelector(canAccessDDSelector);
+  const [pageReady, setPageReady] = useState(false)
   const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [startTransition, setStartTransition] = useState(false);
   const [videoProgress, setVideoProgress] = useState({});
@@ -46,6 +47,8 @@ const ComingSoonPage = () => {
 
   useEffect(() => {
     if (
+      pageReady &&
+      !canAccessDD &&
       invite &&
       !invite.usedBy &&
       !invite.revoked &&
@@ -54,7 +57,7 @@ const ComingSoonPage = () => {
     ) {
       setShowInvitedModal(true);
     }
-  }, [invite, isCollectorFetched, collector]);
+  }, [invite, isCollectorFetched, collector, pageReady]);
 
   const renderBgPlayer = useCallback(
     () => (
@@ -122,6 +125,7 @@ const ComingSoonPage = () => {
       requireAccess={false}
       images={[getCDNImageUrl("envelop-wings.png")]}
       videos={[{ progress: videoProgress, threshold: 0.5 }]}
+      onReady={() => setPageReady(true)}
     >
       <div
         className={classNames("page coming-soon", {

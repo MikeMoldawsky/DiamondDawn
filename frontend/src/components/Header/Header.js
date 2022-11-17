@@ -24,6 +24,7 @@ import { canAccessDDSelector } from "store/selectors";
 import { collectorSelector } from "store/collectorReducer";
 import useGoToInvites from "hooks/useGoToInvites";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
+import CTAButton from "components/CTAButton";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
@@ -80,10 +81,8 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           })}
         />
         <div className="center-aligned-row header-side">
-          {isCollectorFetched && canAccessDD && isPageSizeLimitOk && (
-            <div className="button gold sm collector-btn" onClick={onCTAClick}>
-              {collector ? "MY INVITATIONS" : "APPLY FOR DIAMOND DAWN"}
-            </div>
+          {isPageSizeLimitOk && canAccessDD && (
+            <CTAButton className="sm collector-btn" />
           )}
           <a target="_blank" rel="noreferrer" href={DIAMOND_DAWN_TWITTER_URL}>
             <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
