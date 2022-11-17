@@ -74,6 +74,7 @@ const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
         isLoading={checkingPassword}
         disabled={password.length !== passwordLength}
         onClick={submitPassword}
+        sfx="explore"
       >
         {buttonText}
       </ActionButton>

@@ -49,7 +49,7 @@ const Button = ({
       stopHover()
       playClick()
     }
-    onClick && onClick()
+    onClick && onClick(e)
   };
 
   return (
