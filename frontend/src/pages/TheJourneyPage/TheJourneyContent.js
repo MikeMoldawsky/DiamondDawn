@@ -47,7 +47,6 @@ export const TheJourneyText = () => (
       <b>first digital diamonds</b> that live on the blockchain, and discover
       the secrets behind their famous sparkle.
     </p>
-    Diamond Dawn has 4 steps.
   </div>
 );
 
