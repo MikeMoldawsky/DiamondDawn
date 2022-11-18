@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
+import "closedsea/src/OperatorFilterer.sol"; // For OpenSea operator filtering.
+import "@openzeppelin/contracts/access/Ownable.sol"; // Required for OperatorFilterer.
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -13,6 +15,7 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "./interface/IDiamondDawn.sol";
 import "./interface/IDiamondDawnAdmin.sol";
 import "./interface/IDiamondDawnMine.sol";
+
 
 /**
  *    ________    .__                                           .___
@@ -37,11 +40,12 @@ contract DiamondDawn is
     ERC721Enumerable,
     ERC721Royalty,
     AccessControl,
+    Ownable,
+    OperatorFilterer,
     Pausable,
     IDiamondDawn,
     IDiamondDawnAdmin
 {
-    // TODO: import DefaultOperatorFilterer721.sol to enforce royalties
     using EnumerableSet for EnumerableSet.UintSet;
     using ECDSA for bytes32;
 
@@ -51,6 +55,7 @@ contract DiamondDawn is
 
     bool public isLocked; // immutable
     bool public isActive;
+    bool public operatorFilteringEnabled;
     Stage public stage;
     IDiamondDawnMine public ddMine;
 
@@ -65,6 +70,9 @@ contract DiamondDawn is
         _setDefaultRoyalty(_msgSender(), 1000);
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         ddMine.initialize(MAX_ENTRANCE);
+
+        _registerForOperatorFiltering();
+        operatorFilteringEnabled = true;
     }
 
     /**********************          Modifiers          ************************/
@@ -176,6 +184,10 @@ contract DiamondDawn is
         _setDefaultRoyalty(receiver, feeNumerator);
     }
 
+    function setOperatorFilteringEnabled(bool value) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        operatorFilteringEnabled = value;
+    }
+
     function withdraw() external onlyRole(DEFAULT_ADMIN_ROLE) {
         (bool success, ) = _msgSender().call{value: address(this).balance}("");
         require(success, "Transfer failed.");
@@ -194,6 +206,47 @@ contract DiamondDawn is
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    function setApprovalForAll(address operator, bool approved)
+        public
+        override(ERC721, IERC721)
+        onlyAllowedOperatorApproval(operator, operatorFilteringEnabled)
+    {
+        super.setApprovalForAll(operator, approved);
+    }
+
+    function approve(address operator, uint256 tokenId)
+        public
+        override(ERC721, IERC721)
+        onlyAllowedOperatorApproval(operator, operatorFilteringEnabled)
+    {
+        super.approve(operator, tokenId);
+    }
+
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override(ERC721, IERC721) onlyAllowedOperator(from, operatorFilteringEnabled) {
+        super.transferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override(ERC721, IERC721) onlyAllowedOperator(from, operatorFilteringEnabled) {
+        super.safeTransferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory data
+    ) public override(ERC721, IERC721) onlyAllowedOperator(from, operatorFilteringEnabled) {
+        super.safeTransferFrom(from, to, tokenId, data);
     }
 
     /**********************     Internal Functions     ************************/
