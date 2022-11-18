@@ -104,9 +104,10 @@ const Invite = () => {
                 <div className="leading-text">DIAMOND DAWN APPLICATION</div>
                 <div className="secondary-text">STATUS: PENDING APPROVAL</div>
                 <div className="text-comment">
-                  If you're accepted to Diamond Dawn, you'll have exactly
-                  <b> 3 days, 3 hours, and 3 minutes</b> to activate your key
-                  (mint) for 3.33 $ETH.
+                  If you're accepted to Diamond Dawn, you'll have a limited time
+                  of
+                  <b> 3 days, 3 hours, and 3 minutes</b> to mint your key for
+                  3.33 $ETH.
                 </div>
               </div>
               {!showSubmittedModal && (

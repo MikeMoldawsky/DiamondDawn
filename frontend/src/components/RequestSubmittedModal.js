@@ -12,8 +12,7 @@ const RequestSubmittedModal = ({ close }) => {
         <FontAwesomeIcon icon={faCheck} />
         <div className="heading">You're On The Waitlist!</div>
         <div>
-          If you’re accepted, we’ll send you an email and a Twitter DM. <br />
-          <br />
+          We’ll send you an email and a Twitter DM if you're accepted. <br />
           Make sure to follow request @DiamondDawnNFT.
         </div>
         <div className="text-center">
