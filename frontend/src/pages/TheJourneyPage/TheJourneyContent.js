@@ -55,7 +55,8 @@ export const Step0Text = () => (
   <div className="text">
     <p>
       If your are accepted to Diamond Dawn, you'll have exactly{" "}
-      <b>3 days, 3 hours, and 3 minutes</b> to activate your key for 3.33 $ETH.
+      <b>3 days, 3 hours, and 3 minutes</b> to activate your key (mint) for 3.33
+      $ETH.
     </p>
     <p>
       The key grants you <b>full access</b> to the 4 steps of DD's journey,

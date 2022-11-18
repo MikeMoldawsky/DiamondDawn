@@ -106,7 +106,7 @@ const Invite = () => {
                 <div className="text-comment">
                   If you're accepted to Diamond Dawn, you'll have exactly
                   <b> 3 days, 3 hours, and 3 minutes</b> to activate your key
-                  for 3.33 $ETH.
+                  (mint) for 3.33 $ETH.
                 </div>
               </div>
               {!showSubmittedModal && (
