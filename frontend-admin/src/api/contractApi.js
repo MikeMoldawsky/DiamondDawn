@@ -48,14 +48,29 @@ export const unpauseApi = async (contract) => {
 };
 
 export const getStageManifestApi = async (mineContract, stage) => {
-  const url = await mineContract["manifests"](stage);
-  return _.zipObject([getSystemStageName(stage)], [url]);
+  try {
+    const url = await mineContract["manifests"](stage);
+    return _.zipObject([getSystemStageName(stage)], [url]);
+  } catch (e) {
+    console.log("Failed to get stage manifest", { e, mineContract, stage });
+    throw e;
+  }
 };
 
 export const setStageManifestApi = async (mineContract, stage, url) => {
-  const tx = await mineContract["setManifest"](stage, url);
-  const receipt = await tx.wait();
-  return receipt.transactionHash;
+  try {
+    const tx = await mineContract["setManifest"](stage, url);
+    const receipt = await tx.wait();
+    return receipt.transactionHash;
+  } catch (e) {
+    console.log("Failed to set stage manifest", {
+      e,
+      mineContract,
+      stage,
+      url,
+    });
+    throw e;
+  }
 };
 
 // DIAMONDS API
@@ -74,14 +89,19 @@ const prepareDiamondForPopulate = (diamond) => ({
 });
 
 export const eruptionApi = async (mineContract, diamonds) => {
-  const processedDiamonds = diamonds.map(prepareDiamondForPopulate);
+  try {
+    const processedDiamonds = diamonds.map(prepareDiamondForPopulate);
 
-  console.log("PUSHING DIAMONDS TO MINE CONTRACT", {
-    diamonds,
-    processedDiamonds,
-  });
+    console.log("PUSHING DIAMONDS TO MINE CONTRACT", {
+      diamonds,
+      processedDiamonds,
+    });
 
-  const tx = await mineContract.eruption(processedDiamonds);
-  const receipt = await tx.wait();
-  return receipt.transactionHash;
+    const tx = await mineContract.eruption(processedDiamonds);
+    const receipt = await tx.wait();
+    return receipt.transactionHash;
+  } catch (e) {
+    console.log("Failed to call eruption api", { e, mineContract, diamonds });
+    throw e;
+  }
 };
