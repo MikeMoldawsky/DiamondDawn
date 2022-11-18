@@ -70,7 +70,7 @@ jobs:
       #     sarif_file: ${{ steps.slither.outputs.sarif }}
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/develop' }}
+    if: ${{ github.ref == 'refs/heads/develop' && false}}
     needs:
       - check
       - compile_and_run_tests
