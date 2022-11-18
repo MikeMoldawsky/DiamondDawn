@@ -26,8 +26,14 @@ const localChain = {
 };
 
 function WagmiWrapper({ children }) {
+  const chainByEnv =
+    process.env.REACT_APP_ENVIRONMENT === "production"
+      ? chain.mainnet
+      : process.env.REACT_APP_ENVIRONMENT === "preview"
+      ? chain.goerli
+      : localChain;
   const { chains, provider } = configureChains(
-    [localChain, chain.goerli, chain.mainnet],
+    [chainByEnv],
     [
       alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
       // infuraProvider({ apiKey: "dbe63b3bdfc84f3abdf38cdc8e22f492" }),
