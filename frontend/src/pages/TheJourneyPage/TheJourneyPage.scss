@@ -1,38 +1,7 @@
 @import "css/varsNEW";
 @import "css/functions";
 
-.page.about-page {
-  --base-font-size: 16;
-
-  .about-background {
-    .walls {
-      height: 6 * $viewHeightRef;
-      top: 9%;
-      background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left
-        center;
-      background-size: 100%;
-    }
-
-    .cave {
-      background: url($CDN_URL + "/images/about/cave.png") no-repeat 28% top;
-      background-size: 130%;
-      z-index: -2;
-    }
-  }
-
-  .leading-text {
-    margin: 3em 0 1em;
-    color: $gold;
-  }
-
-  .secondary-text {
-  }
-
-  .text {
-    margin-bottom: 0.2em;
-    letter-spacing: 0.1em;
-  }
-
+.page.info-page.the-journey-page {
   ul {
     display: flex;
 
@@ -41,22 +10,7 @@
     }
   }
 
-  .general {
-    width: 48%;
-    min-width: 54em;
-    margin-left: 10%;
-
-    .leading-text {
-      margin-top: 2em;
-    }
-
-    .secondary-text {
-      margin-top: 1.5em;
-    }
-  }
-
   .journey {
-    position: relative;
     width: 72%;
     margin-left: 13%;
 
@@ -259,145 +213,10 @@
       }
     }
   }
-
-  .team {
-    width: 70%;
-    margin-left: 15%;
-    position: relative;
-    z-index: 1;
-
-    .leading-text {
-      margin-top: 1em;
-    }
-
-    .our-team {
-      width: 65%;
-      margin-bottom: 2em;
-    }
-
-    .team-members {
-      display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
-      flex-wrap: wrap;
-      text-align: left;
-
-      .team-member {
-        width: 45%;
-        margin-top: 4em;
-        margin-right: 5%;
-
-        svg {
-          font-size: $font18px;
-          width: 11.65em;
-          height: 11.65em;
-          color: white;
-        }
-
-        .secondary-text {
-          margin: 1em 0 0;
-        }
-
-        .member-title {
-          color: $text_gray;
-          font-size: $font20px;
-          margin-bottom: 1em;
-        }
-      }
-    }
-  }
-
-  .teaser {
-    height: $viewHeightRef;
-    top: unset;
-    position: relative;
-    z-index: 0;
-    margin-top: -10vw;
-
-    .react-player {
-      opacity: 0.5;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-
-    .play-button {
-      position: relative;
-      top: calc(100% - 8em);
-    }
-  }
-
-  .faq {
-    width: 100%;
-    margin: -2em auto 5em;
-    padding: 10em 15% 0;
-    z-index: 1;
-    position: relative;
-    background-color: black;
-    -webkit-mask-image: -webkit-gradient(
-      linear,
-      left top,
-      left 5%,
-      from(rgba(0, 0, 0, 0)),
-      to(rgba(0, 0, 0, 1))
-    );
-
-    .leading-text {
-      text-align: center;
-      margin-top: 0;
-    }
-
-    .secondary-text {
-      margin-top: 1.8em;
-    }
-  }
-}
-
-@media only screen and (max-width: 1680px) {
-  .page.about-page {
-    font-size: $font15px;
-
-    .general {
-      .leading-text {
-        margin-top: 1em;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 1540px) {
-  .page.about-page {
-    --base-font-size: 22;
-    font-size: $font14px;
-
-    .leading-text {
-      margin-top: 2em;
-    }
-
-    .general {
-      margin-left: 7.5%;
-
-      .leading-text {
-        margin: 0.5em 0 0.5em;
-      }
-    }
-  }
 }
 
 @media only screen and (max-width: 1366px) {
-  .page.about-page {
-    font-size: $font13px;
-
-    .general {
-      width: 57%;
-      margin-left: 5%;
-
-      .leading-text {
-        margin: 0.5em 0 0.5em;
-      }
-    }
-
+  .page.info-page.the-journey-page {
     .journey {
       width: 80%;
       margin-left: 13%;
@@ -439,26 +258,5 @@
         }
       }
     }
-
-    .team {
-      width: 80%;
-      margin-left: 13%;
-
-      .our-team {
-        width: 70%;
-      }
-
-      .team-members {
-        .team-member {
-          margin-top: 2em;
-        }
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 1200px) {
-  .page.about-page {
-    font-size: $font12px;
   }
 }

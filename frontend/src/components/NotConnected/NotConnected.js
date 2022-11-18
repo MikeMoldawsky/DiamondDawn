@@ -11,7 +11,7 @@ export const NotConnected = () => {
       </div>
       <Logo />
       <div className="connect-wallet">
-        <Wallet label="CONNECT TO CONTINUE" className="button" />
+        <Wallet label="CONNECT TO CONTINUE" />
       </div>
     </div>
   );

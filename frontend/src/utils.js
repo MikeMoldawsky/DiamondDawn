@@ -156,8 +156,6 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
   );
 };
 
-// export const isPrivateSale = () => process.env.REACT_APP_DEMO_MODE === "true";
-
 export const isNoContractMode = () =>
   process.env.REACT_APP_NO_CONTRACT === "true";
 
@@ -187,6 +185,6 @@ export const shortenEthAddress = (address) =>
 export const collectorDisplayName = (collector) =>
   collector
     ? collector.twitter ||
-      collector.email ||
+      // collector.email ||
       shortenEthAddress(collector.address)
     : "";

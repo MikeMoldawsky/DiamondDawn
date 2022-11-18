@@ -107,7 +107,7 @@ async function main() {
   );
   // Diamond Dawn
   let dd;
-  const ddArgs = [mine.address, process.env.SIGNER_PUBLIC_KEY];
+  const ddArgs = [mine.address, process.env.DEV_DEPLOYMENT_SIGNER_PUBLIC_KEY];
   if (hre.network.name === "goerli") {
     dd = await deployContract(deployer, "DiamondDawn", ddArgs);
     // await populateDiamonds(mine);
@@ -195,7 +195,7 @@ async function verifyContract(contract, args) {
 }
 
 async function grantAdminsForContracts(diamondDawn, diamondDawnMine) {
-  const admins = process.env.ADMINS?.split(" ") || [];
+  const admins = process.env.DEV_DEPLOYMENT_ADMINS?.split(" ") || [];
   const adminRole = await diamondDawn.DEFAULT_ADMIN_ROLE();
   const adminRoleMine = await diamondDawn.DEFAULT_ADMIN_ROLE();
   for (const admin of admins) {

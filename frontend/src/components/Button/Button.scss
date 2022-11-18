@@ -1,0 +1,97 @@
+@import "css/varsNEW";
+
+.button {
+  --rk-radii-connectButton: 4.5em;
+  height: 2.75em;
+  border-radius: 4.5em;
+  color: black;
+  background-color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3.25em;
+  cursor: pointer;
+  font-weight: 500;
+  width: auto;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  border: none;
+  box-shadow: none !important;
+
+  svg {
+    margin-right: 16px;
+  }
+
+  &.icon-after {
+    svg {
+      margin-right: 0;
+      margin-left: 0.5em;
+      width: 1em;
+      height: 1em;
+    }
+  }
+
+  &.inverted,
+  &.link {
+    color: white;
+    background-color: transparent;
+    border: solid 1px white;
+  }
+
+  &.link {
+    border-color: transparent !important;
+
+    span > span {
+      background-color: white !important;
+    }
+  }
+
+  &.gold {
+    color: white;
+    background-color: $gold;
+
+    &.transparent {
+      color: $gold;
+      border-color: $gold;
+      background-color: transparent;
+    }
+  }
+
+  &.lg {
+    font-size: $font20px;
+    padding: 0 2em;
+  }
+
+  &.md {
+    font-size: $font13px;
+    padding: 0 2em;
+  }
+
+  &.sm {
+    font-size: $font11px;
+    padding: 0 2em;
+  }
+
+  &.disabled,
+  &[disabled] {
+    cursor: not-allowed;
+    background-color: $disabled_gray;
+    color: $disabled_text_gray;
+  }
+
+  &.transparent {
+    color: white;
+    background-color: transparent;
+    border: solid 1px white;
+    font-weight: 400;
+
+    span > span {
+      background-color: white !important;
+    }
+
+    &.disabled,
+    &[disabled] {
+      opacity: 0.5;
+    }
+  }
+}

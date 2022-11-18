@@ -25,13 +25,11 @@ const FAQS = {
   "The Final Choice": [
     {
       title: "What countries do you ship to?",
-      content: () => (
-        <p>We offer worldwide shipping. Restrictions apply please see here.</p>
-      ),
+      content: () => <p>We offer worldwide shipping.</p>,
     },
     {
       title: "Will I have to pay VAT, Duties, and Fees?",
-      content: () => <p></p>,
+      content: () => <p>No.</p>,
     },
   ],
 };

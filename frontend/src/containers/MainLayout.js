@@ -19,7 +19,9 @@ import Homepage from "pages/Homepage";
 import ProcessPage from "pages/ProcessPage";
 import NFTPage from "pages/NFTPage";
 import RebirthPage from "pages/RebirthPage";
-import AboutPage from "pages/AboutPage";
+import AboutUsPage from "pages/AboutUsPage";
+import TheJourneyPage from "pages/TheJourneyPage";
+import TechPage from "pages/TechPage";
 import Header from "components/Header";
 import SideMenu from "components/SideMenu";
 import CollectorPage from "pages/CollectorPage";
@@ -30,6 +32,7 @@ import { isNoContractMode } from "utils";
 import PrivacyPage from "pages/Legal/PrivacyPage";
 import TNCPage from "pages/Legal/TNCPage";
 import NoContractAppLoader from "containers/NoContractAppLoader";
+import ScrollToTop from "components/ScrollToTop";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
@@ -45,6 +48,7 @@ const MainLayout = () => {
     <div className={classNames("main-layout", { "drawer-open": drawerOpen })}>
       <WagmiWrapper>
         <Router>
+          <ScrollToTop />
           <Header
             isMenuOpen={drawerOpen}
             toggleMenu={() => setDrawerOpen(!drawerOpen)}
@@ -91,7 +95,9 @@ const MainLayout = () => {
                 </TokensProvider>
               }
             />
-            <Route path="about" element={<AboutPage />} />
+            <Route path="the-journey" element={<TheJourneyPage />} />
+            <Route path="about-us" element={<AboutUsPage />} />
+            <Route path="technology" element={<TechPage />} />
             <Route path="privacy" element={<PrivacyPage />} />
             <Route path="tnc" element={<TNCPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />

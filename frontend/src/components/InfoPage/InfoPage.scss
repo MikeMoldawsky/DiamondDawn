@@ -1,0 +1,136 @@
+@import "css/varsNEW";
+@import "css/functions";
+
+.page.info-page {
+  --base-font-size: 16;
+
+  .mine-background {
+    .walls {
+      top: 3%;
+      background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left
+        top;
+      background-size: 100%;
+    }
+
+    .cave {
+      background: url($CDN_URL + "/images/about/cave.png") no-repeat 28% top;
+      background-size: 130%;
+      z-index: -2;
+    }
+  }
+
+  .leading-text {
+    margin: 3em 0 1em;
+  }
+
+  .text {
+    margin-bottom: 0.2em;
+    letter-spacing: 0.1em;
+  }
+
+  .general {
+    width: 48%;
+    min-width: 54em;
+    margin-left: 10%;
+
+    .leading-text {
+      margin-top: 2em;
+    }
+
+    .secondary-text {
+      margin-top: 1.5em;
+    }
+  }
+
+  .content-section {
+    position: relative;
+    width: 65%;
+    margin: 0 auto;
+    z-index: 1;
+
+    .leading-text {
+      margin-bottom: 0;
+    }
+
+    .secondary-text {
+      margin: 1em 0 0;
+    }
+  }
+
+  .faq {
+    width: 100%;
+    margin: -2em auto 5em;
+    padding: 10em 15% 0;
+    z-index: 1;
+    position: relative;
+    background-color: black;
+    -webkit-mask-image: -webkit-gradient(
+      linear,
+      left top,
+      left 5%,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
+    );
+
+    .leading-text {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    .secondary-text {
+      margin-top: 1.8em;
+    }
+  }
+}
+
+@media only screen and (max-width: 1680px) {
+  .page.info-page {
+    font-size: $font15px;
+
+    .general {
+      .leading-text {
+        margin-top: 1em;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1540px) {
+  .page.info-page {
+    --base-font-size: 22;
+    font-size: $font14px;
+
+    .leading-text {
+      margin-top: 2em;
+    }
+
+    .general {
+      margin-left: 7.5%;
+
+      .leading-text {
+        margin: 0.5em 0 0.5em;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1366px) {
+  .page.info-page {
+    font-size: $font13px;
+
+    .general {
+      width: 57%;
+      margin-left: 5%;
+
+      .leading-text {
+        margin: 0.5em 0 0.5em;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .page.info-page {
+    font-size: $font12px;
+  }
+}

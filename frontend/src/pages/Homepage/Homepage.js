@@ -21,6 +21,8 @@ import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import PageSizeLimit from "components/PageSizeLimit";
+import Button from "components/Button";
+import TeaserVideo from "components/TeaserVideo";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -56,56 +58,61 @@ const Homepage = () => {
         ]}
       >
         <ScrollingPage className="homepage">
-          <div className="top-content center-aligned-column">
-            <HomeBackground />
-            <div className="common-view" style={topViewStyles}>
-              <div className="logo">
-                <AnimatedLogo withText />
-              </div>
-              <div className="secondary-text">
-                The first ever virtual diamond mining experience
-              </div>
-              <div className="countdown-container">
-                <div className="text">MINE WILL OPEN IN</div>
-                <Countdown
-                  customMode
-                  parts={{ days: 24, hours: 3, minutes: 0, seconds: 0 }}
-                />
-              </div>
-              <div>
-                <div
-                  className="button transparent disabled"
-                  title="Mine open date will be announced soon!"
-                >
-                  ENTER MINE
+          <div className="page homepage">
+            <div className="top-content center-aligned-column">
+              <HomeBackground />
+              <div className="common-view" style={topViewStyles}>
+                <div className="logo">
+                  <AnimatedLogo withText />
+                </div>
+                <div className="secondary-text">
+                  The first ever virtual diamond mining experience
+                </div>
+                <div className="countdown-container">
+                  <div className="text">MINE WILL OPEN IN</div>
+                  <Countdown
+                    customMode
+                    parts={{ days: 24, hours: 3, minutes: 0, seconds: 0 }}
+                  />
+                </div>
+                <div>
+                  <Button
+                    className="transparent"
+                    disabled
+                    sfx="explore"
+                    title="Mine open date will be announced soon!"
+                  >
+                    ENTER MINE
+                  </Button>
                 </div>
               </div>
             </div>
+            <div className="homepage-content">
+              <HomepageContentBackground />
+              <div className="eternal-treasures">
+                <AnimatedText>
+                  <EternalTreasuresText />
+                </AnimatedText>
+              </div>
+              <div className="scarcity">
+                <AnimatedText animationDirection="ltr">
+                  <ScarcityText />
+                </AnimatedText>
+              </div>
+              <div className="value-section">
+                <AnimatedText>
+                  <ValueText />
+                </AnimatedText>
+              </div>
+              <div className="the-experiment">
+                <AnimatedText animationDirection="ltr">
+                  <TeaserText />
+                </AnimatedText>
+              </div>
+            </div>
+            <TeaserVideo src="teaser-short.mp4" overlap="-35%" />
+            <Footer />
           </div>
-          <div className="homepage-content">
-            <HomepageContentBackground />
-            <div className="eternal-treasures">
-              <AnimatedText>
-                <EternalTreasuresText />
-              </AnimatedText>
-            </div>
-            <div className="scarcity">
-              <AnimatedText animationDirection="ltr">
-                <ScarcityText />
-              </AnimatedText>
-            </div>
-            <div className="value-section">
-              <AnimatedText>
-                <ValueText />
-              </AnimatedText>
-            </div>
-            <div className="the-experiment">
-              <AnimatedText animationDirection="ltr">
-                <TeaserText />
-              </AnimatedText>
-            </div>
-          </div>
-          <Footer />
         </ScrollingPage>
       </PageLoader>
     </PageSizeLimit>

@@ -19,6 +19,8 @@ import {
   loadCollectorByAddress,
   openMintWindow,
 } from "store/collectorReducer";
+import Button from "components/Button";
+import { TwitterLink } from "components/Links";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -108,14 +110,20 @@ const Invite = () => {
                 </div>
               </div>
               {!showSubmittedModal && (
-                <div className="left-top-aligned-column">
+                <div className="center-aligned-row follow-box">
                   <div className="follow-text">
-                    * Make sure to follow request <b>@DiamondDawnNFT</b> - we’ll
-                    send you a Twitter DM if you are accepted.
+                    <b>
+                      Make sure to follow request{" "}
+                      <TwitterLink className="text-gold">
+                        <b>@DiamondDawnNFT</b>
+                      </TwitterLink>
+                    </b>
+                    <br />
+                    We’ll send you a Twitter DM if you are accepted.
                   </div>
-                  <div className="button gold icon-after">
+                  <TwitterLink className="button gold icon-after">
                     Follow <FontAwesomeIcon icon={faTwitter} />
-                  </div>
+                  </TwitterLink>
                 </div>
               )}
             </div>

@@ -8,6 +8,7 @@ import {
 } from "store/actionStatusReducer";
 import BeatLoader from "react-spinners/BeatLoader";
 import { showError } from "utils";
+import Button from "components/Button";
 
 const ActionButton = ({
   actionKey,
@@ -34,19 +35,18 @@ const ActionButton = ({
   };
 
   return (
-    <button
-      className={classNames("button", actionKey, className, {
-        disabled: disabled || isPending,
-      })}
+    <Button
+      className={classNames(actionKey, className)}
       onClick={clickHandler}
+      disabled={disabled || isLoading || isPending}
       {...props}
     >
       {isLoading || isPending ? (
         <BeatLoader color={"#fff"} loading={true} size={10} />
       ) : (
-        <div className="button-content">{children}</div>
+        children
       )}
-    </button>
+    </Button>
   );
 };
 

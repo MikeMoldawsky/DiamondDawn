@@ -1,27 +1,10 @@
-import React, { useCallback } from "react";
+import React from "react";
 import "./HomepageContentBackground.scss";
 import ReactPlayer from "react-player";
 import { getCDNVideoUrl } from "utils";
 import classNames from "classnames";
 
 const HomepageContentBackground = () => {
-  const renderTeaserBg = useCallback(
-    () => (
-      <ReactPlayer
-        url={getCDNVideoUrl("teaser-short.mp4")}
-        playing
-        playsinline
-        controls={false}
-        className="react-player"
-        muted
-        loop
-        width=""
-        height=""
-      />
-    ),
-    []
-  );
-
   return (
     <div className="bg homepage-content-background">
       <div className="bg glow" />
@@ -41,7 +24,6 @@ const HomepageContentBackground = () => {
       <div className="bg mine-wall-left" />
       <div className="bg bg-right-hand" />
       <div className="bg bg-left-hand" />
-      <div className="bg bg-teaser">{renderTeaserBg()}</div>
     </div>
   );
 };

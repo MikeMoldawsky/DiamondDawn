@@ -7,14 +7,39 @@ import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import classNames from "classnames";
 import { canAccessDDSelector } from "store/selectors";
-import { collectorSelector } from "store/collectorReducer";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
+import useTimeout from "hooks/useTimeout";
 
-const DEFAULT_TIMEOUT = 10000;
+const DEFAULT_TIMEOUT = 15000;
 const SHOW_TEXT_TIME = 100;
 const FADE_DURATION = 150;
+
+const PageCover = ({ fade, showText }) => {
+  useEffect(() => {
+    document.body.classList.add("no-scroll");
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, []);
+
+  return (
+    <div
+      className={classNames("center-aligned-column page-cover", {
+        hide: fade,
+      })}
+    >
+      <Loading />
+      <div className="secondary-text">
+        {showText && "DIAMOND DAWN"}
+        <br />
+        {showText && "loading..."}
+      </div>
+    </div>
+  );
+};
 
 const PageLoader = ({
   pageName,
@@ -23,6 +48,7 @@ const PageLoader = ({
   timeout = DEFAULT_TIMEOUT,
   withLoader = true,
   requireAccess = true,
+  onReady,
   children,
 }) => {
   const { assetReadyPages } = useSelector(uiSelector);
@@ -33,14 +59,13 @@ const PageLoader = ({
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
   const canAccessDD = useSelector(canAccessDDSelector);
-  const collector = useSelector(collectorSelector);
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );
   const navigate = useNavigate();
   const account = useAccount();
 
-  const assetsReady = assetReadyPages[pageName];
+  const assetsReady = assetReadyPages[pageName] && isCollectorFetched;
 
   const setAssetsReady = () => {
     setFade(true);
@@ -51,11 +76,13 @@ const PageLoader = ({
         })
       );
       setHidden(true);
+      onReady && onReady();
     }, FADE_DURATION);
   };
 
   const onAssetLoaded = () => {
     if (
+      isCollectorFetched &&
       (!requireAccess || canAccessDD) &&
       imagesLoaded.current === images.length &&
       videosLoaded.current === videos.length
@@ -96,16 +123,19 @@ const PageLoader = ({
   }, [videosProgress]);
 
   // timeout
-  // useTimeout(() => {
-  //   timeout > -1 && setAssetsReady();
-  // }, timeout);
+  useTimeout(() => {
+    timeout > -1 && setAssetsReady();
+  }, timeout);
 
-  // canAccessDD
   useEffect(() => {
-    if (!requireAccess || canAccessDD) {
-      setAssetsReady();
+    console.log("useEffect", { isCollectorFetched });
+    if (isCollectorFetched) {
+      onAssetLoaded();
+    } else {
+      setFade(false);
+      setHidden(false);
     }
-  }, [canAccessDD, requireAccess]);
+  }, [isCollectorFetched]);
 
   useEffect(() => {
     if (requireAccess && isCollectorFetched && !canAccessDD) {
@@ -122,18 +152,7 @@ const PageLoader = ({
     <>
       {children}
       {withLoader && !assetsReady && !hidden && (
-        <div
-          className={classNames("center-aligned-column page-cover", {
-            hide: fade,
-          })}
-        >
-          <Loading />
-          <div className="secondary-text">
-            {showText && "DIAMOND DAWN"}
-            <br />
-            {showText && "loading..."}
-          </div>
-        </div>
+        <PageCover fade={fade} showText={showText} />
       )}
     </>
   );

@@ -1,10 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateUiState } from "store/uiReducer";
-import classNames from "classnames";
+import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
-const ScrollingPage = ({ className, children }) => {
+const ScrollingPage = ({ children }) => {
   const dispatch = useDispatch();
+
+  useScrollPosition(({ prevPos, currPos }) => {
+    dispatch(updateUiState({ scroll: Math.abs(currPos.y) }));
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -12,15 +16,7 @@ const ScrollingPage = ({ className, children }) => {
     };
   }, []);
 
-  const handleScroll = (event) => {
-    dispatch(updateUiState({ scroll: event.currentTarget.scrollTop }));
-  };
-
-  return (
-    <div className={classNames("page", className)} onScroll={handleScroll}>
-      {children}
-    </div>
-  );
+  return children;
 };
 
 export default ScrollingPage;

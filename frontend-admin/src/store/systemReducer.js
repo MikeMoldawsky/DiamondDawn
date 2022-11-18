@@ -26,6 +26,7 @@ const INITIAL_STATE = {
 };
 
 export const loadSystemStage = (contract) => async (dispatch) => {
+  console.log("Loading system stage with contract", contract);
   const { systemStage, isActive } = await getSystemStageApi(contract);
   dispatch({
     type: "SYSTEM.SET_STAGE",

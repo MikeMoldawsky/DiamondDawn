@@ -3,6 +3,7 @@ import Modal from "components/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { TwitterLink } from "components/Links";
 
 const RequestSubmittedModal = ({ close }) => {
   return (
@@ -16,9 +17,9 @@ const RequestSubmittedModal = ({ close }) => {
           Make sure to follow request @DiamondDawnNFT.
         </div>
         <div className="text-center">
-          <div className="button gold icon-after">
+          <TwitterLink className="button gold icon-after">
             Follow <FontAwesomeIcon icon={faTwitter} />
-          </div>
+          </TwitterLink>
         </div>
       </div>
     </Modal>
