@@ -40,7 +40,7 @@ const TABS = [
   { title: "Config", component: () => <ConfigTab /> },
   { title: "Invitations", component: () => <InvitationsTab /> },
   {
-    title: "Pending Collectors",
+    title: "Pending Approval",
     component: () => <CollectorsTab approved={false} />,
   },
   { title: "Collectors", component: () => <CollectorsTab approved={true} /> },
