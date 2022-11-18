@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 function getDbConnection() {
+  console.log("Creating mongo connection with", { mongo: process.env.MONGO });
   return mongoose.createConnection(process.env.MONGO);
 }
 
