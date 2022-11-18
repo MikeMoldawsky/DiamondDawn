@@ -21,7 +21,7 @@ export const TheJourneyMainText = () => (
     <div className="secondary-text">Which diamond will you choose?</div>
     <p>The last step is longer.</p>
     <p>
-      You’ll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide on your{" "}
+      You’ll have <b>3 months, 3 weeks, and 3 days</b> to decide on your{" "}
       <b>Final Choice</b>:
     </p>
     <p>
@@ -53,9 +53,9 @@ export const TheJourneyText = () => (
 export const Step0Text = () => (
   <div className="text">
     <p>
-      If your are accepted to Diamond Dawn, you'll have exactly{" "}
-      <b>3 days, 3 hours, and 3 minutes</b> to activate your key (mint) for 3.33
-      $ETH.
+      If your are accepted to Diamond Dawn, you'll have
+      <b>3 days, 3 hours, and 3 minutes</b> to mint your key to the mine for
+      3.33 $ETH.
     </p>
     <p>
       The key grants you <b>full access</b> to the 4 steps of DD's journey,
