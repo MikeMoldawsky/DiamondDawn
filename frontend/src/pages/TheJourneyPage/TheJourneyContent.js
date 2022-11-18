@@ -38,7 +38,7 @@ export const TheJourneyMainText = () => (
 export const TheJourneyText = () => (
   <div className="text">
     <p>
-      Diamond Dawn project is <b>entirely on-chain</b> - we do NOT hold your
+      Diamond Dawn project is <b>100% decentralized</b> - we do NOT hold your
       NFTs on a centralized server.
     </p>
     <p>
