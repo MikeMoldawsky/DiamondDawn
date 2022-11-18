@@ -8,7 +8,7 @@ import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 // import { infuraProvider } from "wagmi/providers/infura";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-import "@rainbow-me/rainbowkit/dist/index.css";
+import "@rainbow-me/rainbowkit/styles.css";
 import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 

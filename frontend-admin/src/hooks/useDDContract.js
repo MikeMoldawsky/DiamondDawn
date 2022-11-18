@@ -9,8 +9,8 @@ function useDDContract(contractType = CONTRACTS.DiamondDawn) {
   const { data: signer } = useSigner();
 
   const contractConfig = {
-    addressOrName: contractData.address,
-    contractInterface: contractData.artifact.abi,
+    address: contractData.address,
+    abi: contractData.artifact.abi,
     signerOrProvider: signer || provider,
   };
   return useContract(contractConfig);
