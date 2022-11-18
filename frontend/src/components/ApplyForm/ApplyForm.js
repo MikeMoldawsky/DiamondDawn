@@ -87,7 +87,7 @@ const ApplyForm = ({ onSuccess }) => {
       <form>
         <div className="center-aligned-row address-row">
           <div className="input-container">
-            <div className="label">Ethereum Address</div>
+            <div className="label">Minting Address</div>
             <input
               type="text"
               className="input full-width"
@@ -100,14 +100,14 @@ const ApplyForm = ({ onSuccess }) => {
         <div className="center-aligned-row inputs-row">
           <div className="input-container">
             <div className="label">Twitter Handle</div>
-            {renderInput("twitter", "@example", {
+            {renderInput("twitter", "@diamond", {
               required: false,
               pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
             })}
           </div>
           <div className="input-container">
-            <div className="label">E-Mail</div>
-            {renderInput("email", "email@example.com", {
+            <div className="label">Email</div>
+            {renderInput("email", "diamond@gmail.com", {
               required: false,
               pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
             })}
