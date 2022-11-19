@@ -134,11 +134,13 @@ export const DigitalValueText = () => (
 export const MikeText = () => (
   <p>
     An entrepreneur and early adopter by nature, Mike foresaw the immense power
-    behind web3’s disruptive tech several years ago. He has since left his
-    position at Palantir R&D to pursue his passion for decentralized technology.
-    His projects aim to push the technology forward to a state where it creates
-    a REAL-LIFE impact for society at large.
-    <br /> Mike holds a BSc in Computer Science from Tel Aviv University.
+    behind web3’s disruptive tech several years ago.
+    <br />
+    He has since left his position at Palantir R&D to pursue his passion for
+    decentralized technology. His projects aim to push the technology forward to
+    a state where it creates a REAL-LIFE impact for society at large.
+    <br />
+    Mike holds a BSc in Computer Science from Tel Aviv University.
   </p>
 );
 
@@ -163,11 +165,10 @@ export const DavidText = () => (
 
 export const TonyText = () => (
   <p>
-    Tony is an immigrant activist turned entrepreneur in the cryptocurrency,
-    blockchain, and NFT space. Founding member of{" "}
-    <Link href="http://galaxis.xyz">http://galaxis.xyz</Link> (formerly Ether
-    Cards). A founding member of several DAOs dedicated to the metaverse
-    including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
+    An immigrant activist turned entrepreneur in the cryptocurrency, blockchain,
+    and NFT space. Tony is a founding member of{" "}
+    <Link href="https://galaxis.xyz">Galaxis</Link> (formerly Ether Cards) and
+    of several web3 DAOs including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
   </p>
 );
 
