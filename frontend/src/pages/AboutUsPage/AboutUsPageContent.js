@@ -9,8 +9,8 @@ export const AboutUsText = () => (
       various fields who share a common set of values.
     </p>
     <p>
-      We all believe that <b>decentralization</b> is key to the Internet’s
-      survival.
+      We all believe that <b>decentralization</b> will allow humanity to survive
+      and flourish in the future.
     </p>
     <p>
       We look forward to the day when the robust technology behind Web3 and NFTs
@@ -84,7 +84,7 @@ export const IRLImpactText = () => (
       </p>
       <div className="gia-report">
         <img src={getCDNImageUrl("gia-report.jpeg")} alt="" />
-        <div className="image-caption">A GIA Report at the end of 2022</div>
+        <div className="image-caption">An example of a GIA Report</div>
       </div>
       <p>
         These “simple” breakthroughs will impact every part of every process,
@@ -166,9 +166,8 @@ export const DavidText = () => (
 export const TonyText = () => (
   <p>
     An immigrant activist turned entrepreneur in the cryptocurrency, blockchain,
-    and NFT space. Tony is a founding member of{" "}
-    <Link href="https://galaxis.xyz">Galaxis</Link> (formerly Ether Cards) and
-    of several web3 DAOs including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
+    and NFT space. Tony is a founding member of Galaxis (formerly Ether Cards)
+    and of several web3 DAOs including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
   </p>
 );
 
@@ -189,8 +188,8 @@ export const AsafText = () => (
     A front-end developer for over 15 years. Asaf discovered the world of
     blockchain technology 3 years ago and has worked exclusively on web3
     projects. Asaf lives and breathes crypto and is an active member of several
-    DAOs (decentralized autonomous organizations). He believes that
-    decentralization is the key to the Internet’s survival and insists that
-    music and art set us apart and make us shine as a species.
+    DAOs. He believes that decentralization is the key to the Internet’s
+    survival and insists that music and art set us apart and make us shine as a
+    species.
   </p>
 );
