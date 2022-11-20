@@ -9,8 +9,8 @@ export const AboutUsText = () => (
       various fields who share a common set of values.
     </p>
     <p>
-      We all believe that <b>decentralization</b> will allow humanity to survive
-      and flourish in the future.
+      We all believe that <b>decentralization</b> is the key to a better future
+      and the survival of our society.
     </p>
     <p>
       We look forward to the day when the robust technology behind Web3 and NFTs
@@ -167,7 +167,7 @@ export const TonyText = () => (
   <p>
     An immigrant activist turned entrepreneur in the cryptocurrency, blockchain,
     and NFT space. Tony is a founding member of Galaxis (formerly Ether Cards)
-    and of several web3 DAOs including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
+    and of several web3 DAOs, including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
   </p>
 );
 
