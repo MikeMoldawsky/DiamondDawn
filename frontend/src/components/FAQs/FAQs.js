@@ -118,7 +118,7 @@ const FAQS = {
       ),
     },
     {
-      title: "What is Diamond Dawn’s physical artwork?",
+      title: "How Diamond Dawn’s physical artwork is designed?",
       content: () => (
         <p>
           If you choose the physical artwork, expect a heavy shipment! The art
@@ -161,8 +161,48 @@ const FAQS = {
   ],
   "The Final Choice": [
     {
+      title: "I accidentally burned my NFT. Can I revert my decision?",
+      content: () => (
+        <p>
+          No. <br /> Your decisions are ONLY between you, the blockchain and
+          Diamond Dawn's smart contracts.
+          <br />
+          We have 0 control over it (for the better and worse).
+        </p>
+      ),
+    },
+    {
       title: "What countries do you ship to?",
-      content: () => <p>We offer worldwide shipping.</p>,
+      content: () => (
+        <p>
+          We offer global shipping to any non-OFAC sanctioned country. <br />{" "}
+          Feel free to contact support@diamonddawn.art or @DiamondDawnNFT with
+          any further questions, and we'll do our best to help.
+        </p>
+      ),
+    },
+    {
+      title: "How much time will I wait for Diamond Dawn's physical artwork?",
+      content: () => (
+        <p>
+          Diamond Dawn's delivery times are under 3 weeks, 3 days, and 3 hours.{" "}
+          <br />
+          Diamond Dawn's shipments are operated by FedEx Express and will be
+          delivered directly to your specified address.
+        </p>
+      ),
+    },
+    {
+      title:
+        "What will happen to my NFT if I choose Diamond Dawn’s physical artwork?",
+      content: () => (
+        <p>
+          Your NFT will be burned (it’ll be sent to the “dead” address).
+          <br />
+          This means that a physical artwork is born ONLY if its digital
+          counterpart is destroyed.
+        </p>
+      ),
     },
   ],
 };
