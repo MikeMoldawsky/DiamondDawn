@@ -8,8 +8,8 @@ function useDDContract() {
   const { data: signer } = useSigner();
 
   const contractConfig = {
-    addressOrName: ddContractInfo.address,
-    contractInterface: ddContractInfo.artifact.abi,
+    address: ddContractInfo.address,
+    abi: ddContractInfo.artifact.abi,
     signerOrProvider: signer || provider,
   };
 
