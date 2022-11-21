@@ -78,8 +78,8 @@ const FAQS = {
       title: "How much time I’ll have to wait between DD’s steps?",
       content: () => (
         <p>
-          When a Diamond Dawn Step ends, we’ll tweet on @DiamondDawnNFT when the
-          next step starts.
+          When a Diamond Dawn Step ends, we’ll notify on @DiamondDawnNFT when
+          the next step starts.
           <br /> The “cool-down” period between steps will be shorter than 3
           weeks.
         </p>
