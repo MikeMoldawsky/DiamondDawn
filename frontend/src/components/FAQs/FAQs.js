@@ -16,7 +16,7 @@ const FAQS = {
       content: () => <p>Ethereum.</p>,
     },
     {
-      title: "What is the NFT standard?",
+      title: "What is DD's NFT standard?",
       content: () => (
         <p>
           ERC-721.
@@ -25,7 +25,7 @@ const FAQS = {
       ),
     },
     {
-      title: "What is the DD’s supply?",
+      title: "What is DD’s supply?",
       content: () => <p>333 Editions.</p>,
     },
     {
