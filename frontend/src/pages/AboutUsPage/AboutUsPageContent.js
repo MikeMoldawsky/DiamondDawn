@@ -84,7 +84,7 @@ export const IRLImpactText = () => (
       </p>
       <div className="gia-report">
         <img src={getCDNImageUrl("gia-report.jpeg")} alt="" />
-        <div className="image-caption">An example of a GIA Report</div>
+        <div className="image-caption">A GIA Report</div>
       </div>
       <p>
         These “simple” breakthroughs will impact every part of every process,
