@@ -86,7 +86,7 @@ const FAQS = {
       ),
     },
     {
-      title: "What do you mean by evolving NFTs?",
+      title: "What do you mean by Evolving NFTs?",
       content: () => (
         <p>
           According to your (blockchain) decisions, your NFT can change its
