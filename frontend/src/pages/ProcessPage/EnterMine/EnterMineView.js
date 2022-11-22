@@ -41,6 +41,12 @@ const EnterMineView = ({
     ? ethersUtils.formatUnits(minePrice)
     : "3.33";
 
+  const countdownProps = canMint ? {
+    date: expiresAt,
+  } : {
+    parts: { days: 3, hours: 3, minutes: 3, seconds: 0 },
+  }
+
   return (
     <div className="action-view enter">
       <div className="layout-box">
@@ -112,12 +118,7 @@ const EnterMineView = ({
                   Diamond Dawn
                 </div>
                 <Countdown
-                  parts={
-                    expiresAt
-                      ? null
-                      : { days: 3, hours: 3, minutes: 3, seconds: 0 }
-                  }
-                  date={expiresAt}
+                  flat
                   onComplete={() =>
                     isFunction(onCountdownEnd) && onCountdownEnd()
                   }
@@ -127,6 +128,7 @@ const EnterMineView = ({
                     minutes: true,
                     seconds: true,
                   }}
+                  {...countdownProps}
                 />
               </div>
               <div className="status-box">

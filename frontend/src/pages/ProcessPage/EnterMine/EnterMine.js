@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
 import "./EnterMine.scss";
@@ -19,7 +19,8 @@ import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { getCDNVideoUrl, isNoContractMode } from "utils";
 import EnterMineView from "pages/ProcessPage/EnterMine/EnterMineView";
 import { SYSTEM_STAGE } from "consts";
-import { collectorSelector } from "store/collectorReducer";
+import {collectorSelector, loadCollectorByAddress} from "store/collectorReducer";
+import useActionDispatch from "hooks/useActionDispatch";
 
 const EnterMine = () => {
   const { systemStage, isActive, minePrice, maxDiamonds, diamondCount } =
@@ -27,6 +28,7 @@ const EnterMine = () => {
   const account = useAccount();
   const contract = useDDContract();
   const dispatch = useDispatch();
+  const actionDispatch = useActionDispatch()
   const tokens = useSelector(tokensSelector);
   const navigateToDefault = useNavigateToDefault();
   const collector = useSelector(collectorSelector);
@@ -43,7 +45,9 @@ const EnterMine = () => {
 
   if (!collector || collector.minted || collector.mintClosed) return null;
 
-  const onMintWindowClose = () => navigateToDefault();
+  const onMintWindowClose = () => {
+    actionDispatch(loadCollectorByAddress(account.address), "get-collector-by-address")
+  };
 
   const executeEnterMine = async () => {
     let signature;

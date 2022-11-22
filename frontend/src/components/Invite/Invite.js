@@ -63,6 +63,16 @@ const Invite = () => {
       </div>
     );
 
+  if (collector.mintClosed) {
+    return (
+      <div className="box-content opaque">
+        <div className="center-center-aligned-row secondary-text">
+          Invitation Expired
+        </div>
+      </div>
+    );
+  }
+
   if (collector?.minted)
     return (
       <div className="box-content opaque">
