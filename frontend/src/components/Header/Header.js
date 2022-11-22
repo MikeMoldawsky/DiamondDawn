@@ -18,22 +18,19 @@ import Logo from "components/Logo";
 import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import { usePageSizeLimit } from "components/PageSizeLimit";
-import { canAccessDDSelector } from "store/selectors";
-import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import CTAButton from "components/CTAButton";
 import { TwitterLink } from "components/Links";
-import {clearVideoState, updateVideoState, videoSelector} from "store/videoReducer";
+import {clearVideoState, videoSelector} from "store/videoReducer";
+import usePermission from "hooks/usePermission";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const canAccessDD = useSelector(canAccessDDSelector);
   const isPageSizeLimitOk = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
   const { isOpen: isVideoOpen } = useSelector(videoSelector)
-  const isCollectorFetched = useSelector(
-    isActionFirstCompleteSelector("get-collector-by-address")
-  );
+  const canAccessDD = usePermission()
+
   const isHomepage =
     location.pathname === "/" || location.pathname === "/explore";
   const animateShowLogo = isHomepage && showHPLogo;
@@ -52,6 +49,8 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
     }
     toggleMenu()
   }
+
+  const showRestrictedContent = canAccessDD && isPageSizeLimitOk
 
   return (
     <header onClick={() => isMenuOpen && toggleMenu()}>
@@ -78,7 +77,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           })}
         />
         <div className="center-aligned-row header-side">
-          {isPageSizeLimitOk && canAccessDD && (
+          {showRestrictedContent && (
             <CTAButton className="sm collector-btn" />
           )}
           <TwitterLink>
@@ -90,7 +89,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             icon={muted ? faVolumeMute : faVolumeUp}
             onClick={onVolumeClick}
           />
-          {isCollectorFetched && canAccessDD && isPageSizeLimitOk && (
+          {showRestrictedContent && (
             <FontAwesomeIcon
               className="menu-icon"
               icon={getMenuIcon()}
