@@ -98,10 +98,13 @@ const ActionView = ({
 
   const renderContent = () => {
     if (showCompleteVideo) {
-      const stageNameUpper = isRebirth
-        ? "REBIRTH"
-        : _.upperCase(getStageName(systemStage));
+      setCompleteVideoEnded(true);
+      setShowCompleteVideo(false);
       return null
+      // const stageNameUpper = isRebirth
+      //   ? "REBIRTH"
+      //   : _.upperCase(getStageName(systemStage));
+      // return null
       // return (
       //   <FullScreenVideo
       //     src={videoUrl}

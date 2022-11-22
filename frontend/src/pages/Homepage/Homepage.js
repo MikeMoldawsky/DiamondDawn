@@ -22,7 +22,7 @@ import useMusic from "hooks/useMusic";
 import PageLoader from "components/PageLoader";
 import PageSizeLimit from "components/PageSizeLimit";
 import Button from "components/Button";
-import TeaserVideo from "components/TeaserVideo";
+import VideoBackground from "components/VideoBackground";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -110,7 +110,7 @@ const Homepage = () => {
                 </AnimatedText>
               </div>
             </div>
-            <TeaserVideo src="teaser-short.mp4" overlap="-35%" />
+            <VideoBackground src="teaser-short.mp4" overlap="-35%" />
             <Footer />
           </div>
         </ScrollingPage>

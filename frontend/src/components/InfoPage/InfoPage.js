@@ -2,7 +2,7 @@ import React from "react";
 import "./InfoPage.scss";
 import Footer from "components/Footer";
 import PageSizeLimit from "components/PageSizeLimit";
-import TeaserVideo from "components/TeaserVideo";
+import VideoBackground from "components/VideoBackground";
 import classNames from "classnames";
 import FAQs from "components/FAQs";
 import { getCDNImageUrl } from "utils";
@@ -28,7 +28,7 @@ const InfoPage = ({ className, teaser, withFAQ, children }) => {
               <div className="bg cave" />
             </div>
             {children}
-            {teaser && <TeaserVideo {...teaser} />}
+            {teaser && <VideoBackground {...teaser} />}
             {withFAQ && (
               <div className="faq">
                 <div id="faq" className="leading-text">

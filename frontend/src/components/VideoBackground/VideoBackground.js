@@ -1,11 +1,11 @@
 import React, {useCallback} from "react";
-import "./TeaserVideo.scss";
+import "./VideoBackground.scss";
 import { getCDNVideoUrl } from "utils";
 import ReactPlayer from "react-player";
 import PlayButton from "components/PlayButton";
 import CTAButton from "components/CTAButton";
 
-const TeaserVideo = ({ src, overlap = 0 }) => {
+const VideoBackground = ({ src, overlap = 0 }) => {
 
   const renderTeaserBg = useCallback(
     () => (
@@ -27,7 +27,7 @@ const TeaserVideo = ({ src, overlap = 0 }) => {
   return (
     <div className="teaser-video" style={{ marginTop: overlap }}>
       {renderTeaserBg()}
-      <div className="center-aligned-row buttons-row">
+      <div className="center-center-aligned-row buttons-row">
         <div className="element">
           <CTAButton className="md" />
         </div>
@@ -45,4 +45,4 @@ const TeaserVideo = ({ src, overlap = 0 }) => {
   );
 };
 
-export default TeaserVideo;
+export default VideoBackground;
