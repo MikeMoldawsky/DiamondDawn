@@ -6,7 +6,8 @@
 
   .bg.collector-bg {
     background: url($CDN_URL + "/images/collector/collector-bg.png") no-repeat 75% -20%;
-    background-size: 120%;
+    background-size: 120% 120%;
+    opacity: .66;
   }
 
   .account {
