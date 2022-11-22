@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
-import VideoPlayer from "components/VideoPlayer";
+// import VideoPlayer from "components/VideoPlayer";
 import { setTokenUri, tokenByIdSelector } from "store/tokensReducer";
 import { useProvider } from "wagmi";
 import { useNavigate } from "react-router-dom";
@@ -101,19 +101,18 @@ const ActionView = ({
       const stageNameUpper = isRebirth
         ? "REBIRTH"
         : _.upperCase(getStageName(systemStage));
-      return (
-        <div className="backdrop">
-          <VideoPlayer
-            onEnded={() => {
-              setCompleteVideoEnded(true);
-              setShowCompleteVideo(false);
-            }}
-            src={videoUrl}
-          >
-            {stageNameUpper} VIDEO
-          </VideoPlayer>
-        </div>
-      );
+      return null
+      // return (
+      //   <FullScreenVideo
+      //     src={videoUrl}
+      //     onEnded={() => {
+      //       setCompleteVideoEnded(true);
+      //       setShowCompleteVideo(false);
+      //     }}
+      //   >
+      //     {stageNameUpper} VIDEO
+      //   </FullScreenVideo>
+      // );
     }
 
     if (completeVideoEnded) {

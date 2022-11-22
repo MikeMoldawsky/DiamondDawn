@@ -11,19 +11,15 @@ import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import useTimeout from "hooks/useTimeout";
+import useNoScrollView from "hooks/useNoScrollView";
 
 const DEFAULT_TIMEOUT = 15000;
 const SHOW_TEXT_TIME = 100;
 const FADE_DURATION = 150;
 
-const PageCover = ({ fade, showText }) => {
-  useEffect(() => {
-    document.body.classList.add("no-scroll");
+const PageCover = ({ fade, showText, withText, isPage }) => {
 
-    return () => {
-      document.body.classList.remove("no-scroll");
-    };
-  }, []);
+  useNoScrollView(!isPage)
 
   return (
     <div
@@ -32,11 +28,13 @@ const PageCover = ({ fade, showText }) => {
       })}
     >
       <Loading />
-      <div className="secondary-text">
-        {showText && "DIAMOND DAWN"}
-        <br />
-        {showText && "loading..."}
-      </div>
+      {withText && (
+        <div className="secondary-text">
+          {showText && "DIAMOND DAWN"}
+          <br />
+          {showText && "loading..."}
+        </div>
+      )}
     </div>
   );
 };
@@ -47,8 +45,10 @@ const PageLoader = ({
   videos = [],
   timeout = DEFAULT_TIMEOUT,
   withLoader = true,
+  withLoaderText = true,
   requireAccess = true,
   onReady,
+  isPage = true,
   children,
 }) => {
   const { assetReadyPages } = useSelector(uiSelector);
@@ -152,7 +152,7 @@ const PageLoader = ({
     <>
       {children}
       {withLoader && !assetsReady && !hidden && (
-        <PageCover fade={fade} showText={showText} />
+        <PageCover fade={fade} showText={showText} withText={withLoaderText} isPage={isPage} />
       )}
     </>
   );
