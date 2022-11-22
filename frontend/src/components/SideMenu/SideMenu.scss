@@ -83,21 +83,21 @@
           width: unset;
         }
       }
+    }
 
-      &:not(:last-child) {
-        padding-right: 1em;
-        margin-right: 0.6em;
-        position: relative;
+    a:not(:last-child) .icon {
+      padding-right: 1em;
+      margin-right: 0.6em;
+      position: relative;
 
-        &:after {
-          content: "";
-          position: absolute;
-          top: 0.3em;
-          bottom: 0.3em;
-          width: 1px;
-          right: 0;
-          background-color: white;
-        }
+      &:after {
+        content: "";
+        position: absolute;
+        top: 0.3em;
+        bottom: 0.3em;
+        width: 1px;
+        right: 0;
+        background-color: white;
       }
     }
   }
