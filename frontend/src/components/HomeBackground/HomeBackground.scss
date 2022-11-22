@@ -7,9 +7,16 @@
   .bg {
     z-index: -25;
 
-    &.stars {
-      height: 300%;
+    &.black-box {
+      height: .4 * $viewHeightRef;
       top: 99%;
+      background-color: black;
+      z-index: -21;
+    }
+
+    &.stars {
+      height: 2 * $viewHeightRef;
+      top: 100vh;
       background: black url($CDN_URL + "/images/homepage/stars.png") repeat-y
         center center;
       background-size: 100% auto;
@@ -45,7 +52,7 @@
     &.mountains-back {
       background: url($CDN_URL + "/images/homepage/homepage-mountains-back.png")
         no-repeat center 93%;
-      z-index: -20;
+      z-index: -22;
       background-size: contain;
     }
     &.mountains-front {
