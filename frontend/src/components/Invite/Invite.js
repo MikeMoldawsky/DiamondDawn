@@ -8,7 +8,7 @@ import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import Loading from "components/Loading";
-import EnterMine from "pages/ProcessPage/EnterMine";
+import MintKey from "components/MintKey";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
@@ -19,7 +19,6 @@ import {
   loadCollectorByAddress,
   openMintWindow,
 } from "store/collectorReducer";
-import Button from "components/Button";
 import { TwitterLink } from "components/Links";
 
 const Invite = () => {
@@ -85,7 +84,7 @@ const Invite = () => {
   if (collector?.approved)
     return (
       <div className="box-content approved">
-        <EnterMine />
+        <MintKey />
       </div>
     );
 

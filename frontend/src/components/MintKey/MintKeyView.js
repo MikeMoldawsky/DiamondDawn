@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./EnterMine.scss";
+import "components/MintKey/MintKey.scss";
 import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,12 +13,12 @@ import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
 
-const EnterMineView = ({
-  minePrice = 3.33,
+const MintKeyView = ({
+  mintPrice = 3.33,
   maxDiamonds = 333,
   diamondCount = 0,
   canMint,
-  enterMine,
+  mint,
   expiresAt,
   onCountdownEnd,
 }) => {
@@ -37,8 +37,8 @@ const EnterMineView = ({
     };
   }, []);
 
-  const mintPriceText = BigNumber.isBigNumber(minePrice)
-    ? ethersUtils.formatUnits(minePrice)
+  const mintPriceText = BigNumber.isBigNumber(mintPrice)
+    ? ethersUtils.formatUnits(mintPrice)
     : "3.33";
 
   const countdownProps = canMint ? {
@@ -94,10 +94,10 @@ const EnterMineView = ({
                 </div>
                 <div>
                   <ActionButton
-                    actionKey="EnterMine"
+                    actionKey="MintKey"
                     className="gold mint-button"
-                    disabled={!canMint || !isFunction(enterMine)}
-                    onClick={() => isFunction(enterMine) && enterMine()}
+                    disabled={!canMint || !isFunction(mint)}
+                    onClick={() => isFunction(mint) && mint()}
                   >
                     {mintPriceText} <FontAwesomeIcon icon={faEthereum} /> MINT
                   </ActionButton>
@@ -142,4 +142,4 @@ const EnterMineView = ({
   );
 };
 
-export default EnterMineView;
+export default MintKeyView;

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
-import "./EnterMine.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loadDiamondCount,
@@ -17,12 +16,12 @@ import { forgeApi } from "api/contractApi";
 import { confirmMintedApi, signMintApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { getCDNVideoUrl, isNoContractMode } from "utils";
-import EnterMineView from "pages/ProcessPage/EnterMine/EnterMineView";
+import MintKeyView from "components/MintKey/MintKeyView";
 import { SYSTEM_STAGE } from "consts";
 import {collectorSelector, loadCollectorByAddress} from "store/collectorReducer";
 import useActionDispatch from "hooks/useActionDispatch";
 
-const EnterMine = () => {
+const MintKey = () => {
   const { systemStage, isActive, minePrice, maxDiamonds, diamondCount } =
     useSelector(systemSelector);
   const account = useAccount();
@@ -35,7 +34,7 @@ const EnterMine = () => {
 
   const maxTokenId = _.max(_.map(tokens, "id"));
 
-  useMountLogger("EnterMine");
+  useMountLogger("MintKey");
 
   useEffect(() => {
     dispatch(loadMinePrice(contract));
@@ -68,13 +67,13 @@ const EnterMine = () => {
     return tx;
   };
 
-  const EnterMineContent = ({ execute }) => (
-    <EnterMineView
-      minePrice={minePrice}
+  const MintKeyContent = ({ execute }) => (
+    <MintKeyView
+      mintPrice={minePrice}
       maxDiamonds={maxDiamonds}
       diamondCount={diamondCount}
       canMint={systemStage === SYSTEM_STAGE.KEY && isActive}
-      enterMine={execute}
+      mint={execute}
       expiresAt={collector.mintWindowClose}
       onCountdownEnd={onMintWindowClose}
     />
@@ -87,9 +86,9 @@ const EnterMine = () => {
       transact={executeEnterMine}
       videoUrl={getCDNVideoUrl("post_enter.mp4")}
     >
-      <EnterMineContent />
+      <MintKeyContent />
     </ActionView>
   );
 };
 
-export default isNoContractMode() ? EnterMineView : EnterMine;
+export default isNoContractMode() ? MintKeyView : MintKey;
