@@ -1,4 +1,5 @@
 import { logApiError } from "utils";
+import { PROCESS_GAS_LIMIT } from "consts"
 
 // STATE/STORAGE
 export const getSystemStageApi = async (contract) => {
@@ -32,8 +33,6 @@ export const getMineDiamondCountApi = async (mineContract) => {
 };
 
 // PROCESS
-const PROCESS_GAS_LIMIT = 220000;
-
 export const forgeApi = async (contract, minePrice, signature) => {
   return contract.forge(signature, {
     value: minePrice,
