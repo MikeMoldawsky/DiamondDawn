@@ -89,7 +89,7 @@ const EnterMineView = ({
                 <div>
                   <ActionButton
                     actionKey="EnterMine"
-                    className="action-button"
+                    className="gold mint-button"
                     disabled={!canMint || !isFunction(enterMine)}
                     onClick={() => isFunction(enterMine) && enterMine()}
                   >

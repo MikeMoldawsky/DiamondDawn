@@ -34,7 +34,7 @@ const Mine = () => {
             MINE
           </ActionButton>
         </div>
-        <Countdown date={endTime} text={["You have", "to mine"]} />
+        <Countdown date={endTime} />
       </>
     ),
     [token?.stage]

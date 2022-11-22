@@ -4,35 +4,31 @@ import "./Countdown.scss";
 import toLower from "lodash/toLower";
 import isNil from "lodash/isNil";
 import get from "lodash/get";
-import classNames from "classnames";
 
 const CountdownComp = ({
   date,
-  renderParts,
-  smallParts = {},
-  onComplete,
   parts,
-  zeroMode = "fill",
-  smallMinAndSec,
-  customMode,
+  renderParts,
+  flat,
+  onComplete,
 }) => {
-  const renderValue = (value) => {
-    if (zeroMode === "no" || value.toString().length !== 1) return value;
-    if (zeroMode === "fill" || (zeroMode === "zeroOnly" && value === 0)) {
-      return "0" + value;
+
+  const formatValue = (value) => {
+    switch (value.toString().length) {
+      case 0:
+        return "00"
+      case 1:
+        return "0" + value
+      default:
+        return value
     }
-    return value;
   };
 
   const renderPart = (caption, value) => {
     const key = toLower(caption);
     return !renderParts || !isNil(get(parts, key)) || get(renderParts, key) ? (
-      <div
-        className={classNames("center-aligned-column countdown-part", {
-          small: smallParts[key],
-        })}
-      >
-        <div className="value">{renderValue(value)}</div>
+      <div className="center-aligned-column countdown-part">
+        <div className="value">{formatValue(value)}</div>
         <div className="caption">{caption}</div>
       </div>
     ) : null;
@@ -42,40 +38,30 @@ const CountdownComp = ({
     const weeks = Math.floor(days / 7);
     days = days % 7;
 
-    if (customMode)
+    if (flat) {
       return (
-        <div className="center-aligned-row countdown custom">
-          <div className="center-spaced-column w-d">
-            {renderPart("WEEKS", weeks)}
-            {renderPart("DAYS", days)}
-          </div>
-          <div className="center-aligned-row h-m-s">
-            {renderPart("HOURS", hours)}
-            <div className="colon">:</div>
-            {renderPart("MINUTES", minutes)}
-            <div className="colon">:</div>
-            {renderPart("SECONDS", seconds)}
-          </div>
+        <div className="center-aligned-row countdown">
+          {renderPart("WEEKS", weeks)}
+          {renderPart("DAYS", days)}
+          {renderPart("HOURS", hours)}
+          {renderPart("MINUTES", minutes)}
+          {renderPart("SECONDS", seconds)}
         </div>
       );
-
-    const renderSmallParts = () => (
-      <>
-        {renderPart("MINUTES", minutes)}
-        {renderPart("SECONDS", seconds)}
-      </>
-    );
-
+    }
     return (
-      <div className="center-aligned-row countdown">
-        {renderPart("WEEKS", weeks)}
-        {renderPart("DAYS", days)}
-        {renderPart("HOURS", hours)}
-        {smallMinAndSec ? (
-          <div className="small-parts">{renderSmallParts()}</div>
-        ) : (
-          renderSmallParts()
-        )}
+      <div className="center-aligned-row countdown custom">
+        <div className="center-spaced-column w-d">
+          {renderPart("WEEKS", weeks)}
+          {renderPart("DAYS", days)}
+        </div>
+        <div className="center-aligned-row h-m-s">
+          {renderPart("HOURS", hours)}
+          <div className="colon">:</div>
+          {renderPart("MINUTES", minutes)}
+          <div className="colon">:</div>
+          {renderPart("SECONDS", seconds)}
+        </div>
       </div>
     );
   };

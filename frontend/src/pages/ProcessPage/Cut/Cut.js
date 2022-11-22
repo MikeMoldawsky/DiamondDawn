@@ -37,7 +37,7 @@ const Cut = () => {
             CUT
           </ActionButton>
         </div>
-        <Countdown date={endTime} text={["You have", "to cut"]} />
+        <Countdown date={endTime} />
       </>
     ),
     [token?.stage]
