@@ -48,9 +48,12 @@ const ComingSoonPage = () => {
     }
   }, [inviteId]);
 
+  const isCollectorReady = !account?.address || isCollectorFetched
+
   useEffect(() => {
     if (
       pageReady &&
+      isCollectorReady &&
       !canAccessDD &&
       invite &&
       !invite.usedBy &&
@@ -58,7 +61,7 @@ const ComingSoonPage = () => {
     ) {
       setShowInvitedModal(true);
     }
-  }, [invite, isCollectorFetched, collector, pageReady]);
+  }, [invite, isCollectorReady, collector, pageReady]);
 
   const renderBgPlayer = useCallback(
     () => (
@@ -101,7 +104,7 @@ const ComingSoonPage = () => {
   };
 
   const renderEntrance = () => {
-    if (!isCollectorFetched && account?.address) return null;
+    if (!isCollectorReady) return null;
 
     if (canAccessDD)
       return (

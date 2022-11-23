@@ -16,7 +16,7 @@ import { showError } from "utils";
 import useSound from "use-sound";
 import sparklesSFX from "assets/audio/end-sparkles.mp3";
 
-const ApplyForm = ({ onSuccess }) => {
+const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const {
     register,
@@ -55,7 +55,7 @@ const ApplyForm = ({ onSuccess }) => {
           onChange: clearErrors,
           ...opts,
         })}
-        disabled={isSubmitting}
+        disabled={disabled}
         placeholder={placeholder}
         className={classNames("input", {
           "validation-error": hasError || isRequiredError,
@@ -73,12 +73,13 @@ const ApplyForm = ({ onSuccess }) => {
       return;
     }
     try {
+      onSubmit && onSubmit()
       await applyToDDApi(invite._id, account.address, data);
-      playSparklesSFX();
       onSuccess && (await onSuccess());
       setIsSubmitSuccess(true);
     } catch (e) {
       showError(e, "Apply Failed");
+      onError && onError()
     }
   };
 
@@ -127,7 +128,7 @@ const ApplyForm = ({ onSuccess }) => {
           <div className="label">Reason</div>
           <textarea
             {...register("note")}
-            disabled={isSubmitting}
+            disabled={disabled}
             className="input"
             placeholder="Why are you a good fit for Diamond Dawn? (optional)"
           />
@@ -136,7 +137,7 @@ const ApplyForm = ({ onSuccess }) => {
           actionKey="Request Invitation"
           className="gold"
           onClick={handleSubmit(applyToDD)}
-          disabled={!isDirty || !isEmpty(errors) || isRequiredError}
+          disabled={disabled || !isDirty || !isEmpty(errors) || isRequiredError}
           sfx="action"
         >
           SUBMIT

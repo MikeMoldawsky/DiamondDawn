@@ -12,7 +12,6 @@ import MintKey from "components/MintKey";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import ReactPlayer from "react-player";
 import { getCDNVideoUrl } from "utils";
 import {
   collectorSelector,
@@ -21,6 +20,8 @@ import {
 } from "store/collectorReducer";
 import { TwitterLink } from "components/Links";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
+import useSound from "use-sound";
+import sparklesSFX from "assets/audio/end-sparkles.mp3";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -32,17 +33,30 @@ const Invite = () => {
     isActionFirstCompleteSelector("get-collector-by-address")
   );
 
+  const [submitting, setSubmitting] = useState(false);
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
+  const [playSparklesSFX] = useSound(sparklesSFX);
 
   const loadInvite = async () => invite && dispatch(loadInviteById(invite._id));
   const loadCollector = async (address) =>
     dispatch(loadCollectorByAddress(address));
 
+  const onSubmit = () => setSubmitting(true)
+
   const onSubmitSuccess = () => {
-    setShowSubmittedModal(true);
     loadCollector(account.address);
     loadInvite();
   };
+
+  const onSubmitError = () => setSubmitting(false)
+
+  useEffect(() => {
+    if (submitting && collector?._id) {
+      setSubmitting(false)
+      setShowSubmittedModal(true);
+      playSparklesSFX();
+    }
+  }, [submitting, collector?._id])
 
   useEffect(() => {
     if (
@@ -102,21 +116,6 @@ const Invite = () => {
       <div className="layout-box">
         <div className="image-box">
           {renderInlineVideo()}
-          {/*<InlineVideo src={getCDNVideoUrl(*/}
-          {/*  collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"*/}
-          {/*)} />*/}
-          {/*<ReactPlayer*/}
-          {/*  url={getCDNVideoUrl(*/}
-          {/*    collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"*/}
-          {/*  )}*/}
-          {/*  playing*/}
-          {/*  playsinline*/}
-          {/*  controls={false}*/}
-          {/*  className="react-player"*/}
-          {/*  loop*/}
-          {/*  width="100%"*/}
-          {/*  height="100%"*/}
-          {/*/>*/}
         </div>
 
         <div className="content-box">
@@ -153,7 +152,7 @@ const Invite = () => {
             <>
               <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
               <div className="text">Please fill the details below</div>
-              <ApplyForm onSuccess={onSubmitSuccess} />
+              <ApplyForm disabled={submitting} onSubmit={onSubmit} onSuccess={onSubmitSuccess} onError={onSubmitError} />
             </>
           )}
           {showSubmittedModal && (
