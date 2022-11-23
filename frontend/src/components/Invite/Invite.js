@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
@@ -20,6 +20,7 @@ import {
   openMintWindow,
 } from "store/collectorReducer";
 import { TwitterLink } from "components/Links";
+import InlineVideo from "components/VideoPlayer/InlineVideo";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -53,6 +54,14 @@ const Invite = () => {
     }
   }, [systemStage, collector?.approved, collector?.mintWindowStart]);
 
+  const videoSrc = getCDNVideoUrl(
+    collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"
+  )
+
+  const renderInlineVideo = useCallback(() => (
+    <InlineVideo src={videoSrc} />
+  ), [videoSrc])
+
   if (systemStage > SYSTEM_STAGE.KEY) return null;
 
   if (!isCollectorFetched)
@@ -62,7 +71,7 @@ const Invite = () => {
       </div>
     );
 
-  if (collector.mintClosed) {
+  if (collector?.mintClosed) {
     return (
       <div className="box-content opaque">
         <div className="center-center-aligned-row secondary-text">
@@ -92,18 +101,22 @@ const Invite = () => {
     <div className="box-content opaque invite-view">
       <div className="layout-box">
         <div className="image-box">
-          <ReactPlayer
-            url={getCDNVideoUrl(
-              collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"
-            )}
-            playing
-            playsinline
-            controls={false}
-            className="react-player"
-            loop
-            width="100%"
-            height="100%"
-          />
+          {renderInlineVideo()}
+          {/*<InlineVideo src={getCDNVideoUrl(*/}
+          {/*  collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"*/}
+          {/*)} />*/}
+          {/*<ReactPlayer*/}
+          {/*  url={getCDNVideoUrl(*/}
+          {/*    collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"*/}
+          {/*  )}*/}
+          {/*  playing*/}
+          {/*  playsinline*/}
+          {/*  controls={false}*/}
+          {/*  className="react-player"*/}
+          {/*  loop*/}
+          {/*  width="100%"*/}
+          {/*  height="100%"*/}
+          {/*/>*/}
         </div>
 
         <div className="content-box">

@@ -55,7 +55,7 @@ const CollectorPage = () => {
               {shortenEthAddress(account?.address)}
             </div>
             <Box className={"main-box"}>
-              <Suspense withLoader actions={suspenseActions}>
+              <Suspense withLoader containerClassName="box-content opaque" actions={suspenseActions}>
                 {renderContent()}
               </Suspense>
             </Box>
