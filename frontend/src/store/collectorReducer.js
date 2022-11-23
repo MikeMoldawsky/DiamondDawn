@@ -18,6 +18,9 @@ export const loadCollectorByAddress = (address) => async (dispatch) => {
   if (!isEmpty(collector)) {
     dispatch(updateCollector(collector));
   }
+  else {
+    dispatch(clearCollector());
+  }
 };
 
 export const openMintWindow = (collectorId, address) => async (dispatch) => {

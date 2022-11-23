@@ -129,6 +129,19 @@
             fill: $gold;
           }
         }
+
+        &.change-address-modal {
+          left: -3em;
+
+          .modal-content {
+            text-align: unset;
+          }
+
+          form .input-container .label {
+            background-color: #414141;
+            top: -.2em;
+          }
+        }
       }
     }
   }

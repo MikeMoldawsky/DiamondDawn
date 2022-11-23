@@ -57,6 +57,63 @@ input[type="checkbox"] {
   height: 1em;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .input-container {
+    width: 100%;
+    position: relative;
+
+    .label {
+      position: absolute;
+      top: 0.2em;
+      left: 2em;
+      padding: 0.3em 0.6em;
+      background-color: #353535;
+      z-index: 1;
+      font-size: 0.7em;
+    }
+  }
+
+  input,
+  textarea {
+    margin: 0.8em 0;
+    font-size: $font18px;
+    width: 100%;
+  }
+
+  .textarea-container {
+    flex-grow: 2;
+
+    textarea {
+      height: 85%;
+    }
+  }
+
+  .button {
+    margin-top: 0.8em;
+    align-self: flex-start;
+  }
+
+  .checkbox {
+    font-size: 1.125em;
+    white-space: nowrap;
+
+    input {
+      margin-right: 0.5em;
+      width: 1em !important;
+    }
+
+    &.with-error {
+      input {
+        outline: solid 1px red;
+      }
+    }
+  }
+}
+
 [disabled],
 .disabled {
   cursor: not-allowed !important;
