@@ -64,7 +64,7 @@ const PageLoader = ({
   const navigate = useNavigate();
   const account = useAccount();
 
-  const isCollectorReady = isCollectorFetched || !account?.address
+  const isCollectorReady = isCollectorFetched || !account?.address;
   const assetsReady = assetReadyPages[pageName] && isCollectorReady;
 
   const setAssetsReady = () => {
@@ -138,11 +138,7 @@ const PageLoader = ({
   }, [isCollectorFetched]);
 
   useEffect(() => {
-    if (
-      requireAccess &&
-      isCollectorReady &&
-      !canAccessDD
-    ) {
+    if (requireAccess && isCollectorReady && !canAccessDD) {
       console.log("PageLoader - navigating to /");
       navigate("/");
     }

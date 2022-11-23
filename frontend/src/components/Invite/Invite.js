@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
@@ -22,7 +22,7 @@ import { TwitterLink } from "components/Links";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useSound from "use-sound";
 import sparklesSFX from "assets/audio/end-sparkles.mp3";
-import MintAddressRow from 'components/MintAddressRow'
+import MintAddressRow from "components/MintAddressRow";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -42,22 +42,22 @@ const Invite = () => {
   const loadCollector = async (address) =>
     dispatch(loadCollectorByAddress(address));
 
-  const onSubmit = () => setSubmitting(true)
+  const onSubmit = () => setSubmitting(true);
 
   const onSubmitSuccess = () => {
     loadCollector(account.address);
     loadInvite();
   };
 
-  const onSubmitError = () => setSubmitting(false)
+  const onSubmitError = () => setSubmitting(false);
 
   useEffect(() => {
     if (submitting && collector?._id) {
-      setSubmitting(false)
+      setSubmitting(false);
       setShowSubmittedModal(true);
       playSparklesSFX();
     }
-  }, [submitting, collector?._id])
+  }, [submitting, collector?._id]);
 
   useEffect(() => {
     if (
@@ -71,11 +71,12 @@ const Invite = () => {
 
   const videoSrc = getCDNVideoUrl(
     collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"
-  )
+  );
 
-  const renderInlineVideo = useCallback(() => (
-    <InlineVideo src={videoSrc} />
-  ), [videoSrc])
+  const renderInlineVideo = useCallback(
+    () => <InlineVideo src={videoSrc} />,
+    [videoSrc]
+  );
 
   if (systemStage > SYSTEM_STAGE.KEY) return null;
 
@@ -115,9 +116,7 @@ const Invite = () => {
   return (
     <div className="box-content opaque invite-view">
       <div className="layout-box">
-        <div className="image-box">
-          {renderInlineVideo()}
-        </div>
+        <div className="image-box">{renderInlineVideo()}</div>
 
         <div className="content-box">
           {collector ? (
@@ -156,7 +155,12 @@ const Invite = () => {
             <>
               <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
               <div className="text">Please fill the details below</div>
-              <ApplyForm disabled={submitting} onSubmit={onSubmit} onSuccess={onSubmitSuccess} onError={onSubmitError} />
+              <ApplyForm
+                disabled={submitting}
+                onSubmit={onSubmit}
+                onSuccess={onSubmitSuccess}
+                onError={onSubmitError}
+              />
             </>
           )}
           {showSubmittedModal && (

@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import "./PasswordBox.scss";
 import { privateSaleAuthApi } from "api/serverApi";
@@ -8,17 +8,23 @@ import useActionDispatch from "hooks/useActionDispatch";
 import useSound from "use-sound";
 import deepSFX from "assets/audio/button3-press-deep.mp3";
 
-const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText, autoFill }) => {
+const PasswordBox = ({
+  inviteId,
+  onCorrect,
+  passwordLength,
+  buttonText,
+  autoFill,
+}) => {
   const [password, setPassword] = useState("");
   const pwdInput = useRef(null);
   const [checkingPassword, setCheckingPassword] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [playSubmit] = useSound(deepSFX);
-  const [isFocused, setIsFocused] = useState(false)
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
-    setPassword(autoFill ? "12345678" : "")
-  }, [autoFill])
+    setPassword(autoFill ? "12345678" : "");
+  }, [autoFill]);
 
   const submitPassword = async () => {
     if (passwordLength !== password.length) return;

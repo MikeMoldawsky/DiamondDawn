@@ -9,8 +9,8 @@ const useMineOpenCountdown = () => {
   const endTime = config.stageTime;
 
   return isPrivateSale() || systemStage !== SYSTEM_STAGE.KEY || !isActive
-      ? { parts: { days: 24, hours: 3, minutes: 0, seconds: 0 } }
-      : { date: endTime };
+    ? { parts: { days: 24, hours: 3, minutes: 0, seconds: 0 } }
+    : { date: endTime };
 };
 
 export default useMineOpenCountdown;

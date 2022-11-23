@@ -17,7 +17,8 @@ const RequestSubmittedModal = ({ close }) => {
           Make sure to follow request{" "}
           <TwitterLink className="text-gold">
             <b>@DiamondDawnNFT</b>
-          </TwitterLink>.
+          </TwitterLink>
+          .
         </div>
         <div className="text-center">
           <TwitterLink className="button gold icon-after">

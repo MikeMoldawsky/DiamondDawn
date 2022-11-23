@@ -76,7 +76,7 @@ export const Step0Text = () => (
 );
 
 export const Step1Text = () => {
-  const countdownProps = useMineOpenCountdown()
+  const countdownProps = useMineOpenCountdown();
 
   return (
     <div className="text">
@@ -84,7 +84,7 @@ export const Step1Text = () => {
       <Countdown align="left" {...countdownProps} />
     </div>
   );
-}
+};
 
 export const Step2Text = () => null;
 

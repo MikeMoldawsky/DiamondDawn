@@ -48,7 +48,7 @@ const ComingSoonPage = () => {
     }
   }, [inviteId]);
 
-  const isCollectorReady = !account?.address || isCollectorFetched
+  const isCollectorReady = !account?.address || isCollectorFetched;
 
   useEffect(() => {
     if (

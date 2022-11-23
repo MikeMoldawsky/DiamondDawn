@@ -33,28 +33,37 @@ export const useActionsReady = (actions) => {
   });
 };
 
-export const Suspense = ({ actions, videos = [], withLoader, containerClassName, children }) => {
+export const Suspense = ({
+  actions,
+  videos = [],
+  withLoader,
+  containerClassName,
+  children,
+}) => {
   const account = useAccount();
 
   const actionsReady = useActionsReady(actions);
-  const videosReady = useVideoLoader(videos)
+  const videosReady = useVideoLoader(videos);
 
   if (!account?.address) return <NotConnected />;
 
-  const contentReady = actionsReady && videosReady
+  const contentReady = actionsReady && videosReady;
 
-  const renderLoading = () => !!containerClassName ? (
-    <div className={containerClassName}>
+  const renderLoading = () =>
+    !!containerClassName ? (
+      <div className={containerClassName}>
+        <Loading />
+      </div>
+    ) : (
       <Loading />
-    </div>
-  ) : <Loading />
+    );
 
   return (
     <>
       {(actionsReady || videos.length > 0) && children}
       {withLoader && !contentReady && renderLoading()}
     </>
-  )
+  );
 };
 
 export default Suspense;

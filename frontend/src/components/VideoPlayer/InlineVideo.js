@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactPlayer from "react-player";
 import Suspense from "components/Suspense";
 
-const InlineVideo = ({ src, showThreshold = .5, ...props }) => {
+const InlineVideo = ({ src, showThreshold = 0.5, ...props }) => {
   const [videoProgress, setVideoProgress] = useState({});
 
   return (

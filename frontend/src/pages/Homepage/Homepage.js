@@ -23,10 +23,10 @@ import PageLoader from "components/PageLoader";
 import PageSizeLimit from "components/PageSizeLimit";
 import Button from "components/Button";
 import VideoBackground from "components/VideoBackground";
-import useMineOpenCountdown from 'hooks/useMineOpenCountdown'
+import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 
 const Homepage = () => {
-  const countdownProps = useMineOpenCountdown()
+  const countdownProps = useMineOpenCountdown();
   const dispatch = useDispatch();
   const { scroll } = useSelector(uiSelector);
   const { height } = useWindowDimensions();

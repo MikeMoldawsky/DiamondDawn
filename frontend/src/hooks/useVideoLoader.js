@@ -21,7 +21,7 @@ const useVideoLoader = (videos = []) => {
     }
   }, [videosProgress]);
 
-  return videosLoaded.current === videos.length
+  return videosLoaded.current === videos.length;
 };
 
 export default useVideoLoader;

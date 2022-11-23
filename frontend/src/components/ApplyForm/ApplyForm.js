@@ -73,13 +73,13 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
       return;
     }
     try {
-      onSubmit && onSubmit()
+      onSubmit && onSubmit();
       await applyToDDApi(invite._id, account.address, data);
       onSuccess && (await onSuccess());
       setIsSubmitSuccess(true);
     } catch (e) {
       showError(e, "Apply Failed");
-      onError && onError()
+      onError && onError();
     }
   };
 

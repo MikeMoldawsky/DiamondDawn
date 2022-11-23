@@ -12,7 +12,7 @@ import { getCDNImageUrl } from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
-import MintAddressRow from 'components/MintAddressRow'
+import MintAddressRow from "components/MintAddressRow";
 
 const MintKeyView = ({
   mintPrice = 3.33,

@@ -1,7 +1,7 @@
 import React from "react";
 import "./MintAddressRow.scss";
 import { useAccount } from "wagmi";
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 const MintAddressRow = () => {
   const account = useAccount();
@@ -14,7 +14,7 @@ const MintAddressRow = () => {
       </div>
       <div className="center-aligned-column">
         <div className="button link icon-after" disabled title="Coming soon...">
-          Change <ExitToAppIcon/>
+          Change <ExitToAppIcon />
         </div>
       </div>
     </div>

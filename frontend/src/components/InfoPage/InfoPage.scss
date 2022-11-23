@@ -7,7 +7,8 @@
   .mine-background {
     .walls {
       top: 3.5%;
-      background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left top;
+      background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left
+        top;
       background-size: 100%;
       //background: url("../../assets/images/2_ABOUT_WALLS_MIDGROUND_001.png") no-repeat center top;
       //background-size: 120%;
