@@ -1,7 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import forEach from "lodash/forEach";
-import sumBy from "lodash/sumBy";
-import get from "lodash/get";
+import React, { useEffect, useState } from "react";
 import Loading from "components/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
@@ -39,7 +36,7 @@ const PageCover = ({ fade, showText, withText, isPage }) => {
   );
 };
 
-const PageLoader = ({
+const Page = ({
   pageName,
   images = [],
   videos = [],
@@ -80,7 +77,6 @@ const PageLoader = ({
   };
 
   const onAssetLoaded = () => {
-    console.log("onAssetLoaded", { contentReady, canAccessDD, isCollectorReady })
     if (
       (!requireAccess || canAccessDD) &&
       contentReady &&
@@ -136,4 +132,4 @@ const PageLoader = ({
   );
 };
 
-export default PageLoader;
+export default Page;

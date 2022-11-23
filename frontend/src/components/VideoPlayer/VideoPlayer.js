@@ -9,7 +9,7 @@ import {
   videoSelector,
 } from "store/videoReducer";
 import useNoScrollView from "hooks/useNoScrollView";
-import PageLoader from "components/PageLoader";
+import Page from "containers/Page";
 
 const Video = ({ isPlaying, setVideoProgress, ...props }) => {
   useNoScrollView();
@@ -63,7 +63,7 @@ const VideoPlayer = (props) => {
 
   return (
     <div className="full-screen-video">
-      <PageLoader
+      <Page
         pageName={src}
         isPage={false}
         videos={[{ progress: videoProgress, threshold: 0.25 }]}
@@ -75,7 +75,7 @@ const VideoPlayer = (props) => {
           setVideoProgress={setVideoProgress}
           {...props}
         />
-      </PageLoader>
+      </Page>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import VideoBackground from "components/VideoBackground";
 import classNames from "classnames";
 import FAQs from "components/FAQs";
 import { getCDNImageUrl } from "utils";
-import PageLoader from "components/PageLoader";
+import Page from "containers/Page";
 import useMusic from "hooks/useMusic";
 
 const InfoPage = ({ className, teaser, withFAQ, children }) => {
@@ -14,7 +14,7 @@ const InfoPage = ({ className, teaser, withFAQ, children }) => {
 
   return (
     <PageSizeLimit>
-      <PageLoader
+      <Page
         pageName="info"
         images={[
           getCDNImageUrl("/about/mine-walls.png"),
@@ -40,7 +40,7 @@ const InfoPage = ({ className, teaser, withFAQ, children }) => {
             <Footer />
           </div>
         </div>
-      </PageLoader>
+      </Page>
     </PageSizeLimit>
   );
 };

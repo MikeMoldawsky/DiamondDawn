@@ -8,12 +8,12 @@ import { systemSelector } from "store/systemReducer";
 import { useAccount } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
 import Box from "components/Box";
-import WaitFor from "components/WaitFor";
+import WaitFor from "containers/WaitFor";
 import Invite from "components/Invite";
 import NFTs from "components/NFTs";
 import { getCDNImageUrl, isNoContractMode, shortenEthAddress } from "utils";
 import useMusic from "hooks/useMusic";
-import PageLoader from "components/PageLoader";
+import Page from "containers/Page";
 import PageSizeLimit from "components/PageSizeLimit";
 import NotConnected from "components/NotConnected";
 
@@ -44,7 +44,7 @@ const CollectorPage = () => {
 
   return (
     <PageSizeLimit>
-      <PageLoader
+      <Page
         pageName="collector"
         images={[getCDNImageUrl("/collector/collector-bg.png")]}
       >
@@ -69,7 +69,7 @@ const CollectorPage = () => {
             </Box>
           </div>
         </div>
-      </PageLoader>
+      </Page>
     </PageSizeLimit>
   );
 };
