@@ -40,6 +40,8 @@
 
   &.link {
     border-color: transparent !important;
+    padding-left: 0;
+    padding-right: 0;
 
     span > span {
       background-color: white !important;
@@ -72,8 +74,8 @@
     padding: 0 2em;
   }
 
-  &.disabled,
-  &[disabled] {
+  &.disabled:not(.link),
+  &[disabled]:not(.link) {
     cursor: not-allowed;
     background-color: $disabled_gray;
     color: $disabled_text_gray;

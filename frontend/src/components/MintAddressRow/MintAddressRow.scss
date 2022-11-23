@@ -1,0 +1,16 @@
+@import "css/varsNEW";
+
+.minting-address-row {
+  width: 100%;
+  margin-top: 2.5em;
+  padding-top: 2em;
+  border-top: solid 1px $border_opaque;
+
+  .button {
+    font-size: $font14px;
+
+    svg {
+      font-size: 1.8em;
+    }
+  }
+}
