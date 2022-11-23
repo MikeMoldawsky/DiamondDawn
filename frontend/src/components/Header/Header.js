@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.scss";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import DiamondList from "components/DiamondList";
 import Wallet from "components/Wallet";
 import ContractProvider from "containers/ContractProvider";
@@ -12,28 +12,25 @@ import {
   faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import AudioPlayer from "components/AudioPlayer";
 import { isNoContractMode } from "utils";
-import { DIAMOND_DAWN_TWITTER_URL } from "consts";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/Logo";
 import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import { usePageSizeLimit } from "components/PageSizeLimit";
-import { canAccessDDSelector } from "store/selectors";
-import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import CTAButton from "components/CTAButton";
 import { TwitterLink } from "components/Links";
+import { clearVideoState, videoSelector } from "store/videoReducer";
+import usePermission from "hooks/usePermission";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const canAccessDD = useSelector(canAccessDDSelector);
   const isPageSizeLimitOk = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
-  const isCollectorFetched = useSelector(
-    isActionFirstCompleteSelector("get-collector-by-address")
-  );
+  const { isOpen: isVideoOpen } = useSelector(videoSelector);
+  const canAccessDD = usePermission();
+
   const isHomepage =
     location.pathname === "/" || location.pathname === "/explore";
   const animateShowLogo = isHomepage && showHPLogo;
@@ -43,6 +40,17 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
     e.stopPropagation();
     dispatch(toggleMuted(true));
   };
+
+  const getMenuIcon = () => (isMenuOpen || isVideoOpen ? faX : faBars);
+
+  const onMenuIconClick = () => {
+    if (isVideoOpen) {
+      return dispatch(clearVideoState());
+    }
+    toggleMenu();
+  };
+
+  const showRestrictedContent = canAccessDD && isPageSizeLimitOk;
 
   return (
     <header onClick={() => isMenuOpen && toggleMenu()}>
@@ -69,9 +77,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           })}
         />
         <div className="center-aligned-row header-side">
-          {isPageSizeLimitOk && canAccessDD && (
-            <CTAButton className="sm collector-btn" />
-          )}
+          {showRestrictedContent && <CTAButton className="sm collector-btn" />}
           <TwitterLink>
             <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
           </TwitterLink>
@@ -81,12 +87,11 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             icon={muted ? faVolumeMute : faVolumeUp}
             onClick={onVolumeClick}
           />
-          <AudioPlayer />
-          {isCollectorFetched && canAccessDD && isPageSizeLimitOk && (
+          {showRestrictedContent && (
             <FontAwesomeIcon
               className="menu-icon"
-              icon={isMenuOpen ? faX : faBars}
-              onClick={toggleMenu}
+              icon={getMenuIcon()}
+              onClick={onMenuIconClick}
             />
           )}
         </div>

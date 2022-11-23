@@ -2,6 +2,8 @@ import React from "react";
 import { DIAMOND_DAWN_TELEGRAM, DIAMOND_DAWN_TWITTER_URL } from "consts";
 import { collectorDisplayName } from "utils";
 import classNames from "classnames";
+import { useSelector } from "react-redux";
+import { collectorSelector } from "store/collectorReducer";
 
 export const Link = ({ href, className, children }) => (
   <a target="_blank" rel="noreferrer" href={href} className={className}>
@@ -30,11 +32,20 @@ export const CollectorLink = ({ className, collector }) => {
   );
 };
 
-export const TelegramLink = ({ className, children }) => (
-  <Link href={DIAMOND_DAWN_TELEGRAM} className={className}>
-    {children}
-  </Link>
-);
+export const TelegramLink = ({ className, children }) => {
+  // const collector = useSelector(collectorSelector)
+  //
+  // return collector?.approved ? (
+  //   <Link href={DIAMOND_DAWN_TELEGRAM} className={className}>
+  //     {children}
+  //   </Link>
+  // ) : null
+  return (
+    <Link href={DIAMOND_DAWN_TELEGRAM} className={className}>
+      {children}
+    </Link>
+  );
+};
 
 export const MailToSupportLink = () => (
   <a href="mailto:support@diamonddawn.art">support@diamonddawn.art</a>

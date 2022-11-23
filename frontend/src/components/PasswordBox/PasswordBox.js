@@ -5,6 +5,8 @@ import { privateSaleAuthApi } from "api/serverApi";
 import map from "lodash/map";
 import ActionButton from "components/ActionButton";
 import useActionDispatch from "hooks/useActionDispatch";
+import useSound from "use-sound";
+import deepSFX from "assets/audio/button3-press-deep.mp3";
 
 const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
   const [password, setPassword] = useState("");
@@ -12,6 +14,7 @@ const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
   const [checkingPassword, setCheckingPassword] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const actionDispatch = useActionDispatch();
+  const [playSubmit] = useSound(deepSFX);
 
   const submitPassword = async () => {
     if (passwordLength !== password.length) return;
@@ -38,12 +41,13 @@ const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
     setPassword(pwd);
   };
 
-  // const onPasswordEnter = (e) => {
-  //   if (e.charCode === 13) {
-  //     // enter key
-  //     submitPassword();
-  //   }
-  // };
+  const onPasswordEnter = (e) => {
+    if (e.charCode === 13) {
+      // enter key
+      playSubmit();
+      submitPassword();
+    }
+  };
 
   return (
     <div
@@ -59,7 +63,7 @@ const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
           autoFocus
           value={password}
           onChange={onPasswordChange}
-          // onKeyPress={onPasswordEnter}
+          onKeyPress={onPasswordEnter}
           maxLength={passwordLength}
         />
         <div className="underscore">

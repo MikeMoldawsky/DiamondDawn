@@ -36,7 +36,7 @@ const Polish = () => {
             POLISH
           </ActionButton>
         </div>
-        <Countdown date={endTime} text={["You have", "to polish"]} />
+        <Countdown date={endTime} />
       </>
     ),
     [token?.stage]

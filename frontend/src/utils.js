@@ -159,6 +159,9 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
 export const isNoContractMode = () =>
   process.env.REACT_APP_NO_CONTRACT === "true";
 
+export const isPrivateSale = () =>
+  process.env.REACT_APP_IS_PRIVATE_SALE === "true";
+
 const prependBackslash = (objectPath) =>
   `${objectPath[0] !== "/" ? "/" : ""}${objectPath}`;
 

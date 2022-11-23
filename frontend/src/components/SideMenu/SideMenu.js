@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import InvitationsStatus from "components/InvitationsStatus";
-import { collectorDisplayName, getCDNImageUrl } from "utils";
+import { getCDNImageUrl } from "utils";
 import "./SideMenu.scss";
 import { inviteSelector } from "store/inviteReducer";
 import useGoToInvites from "hooks/useGoToInvites";
@@ -12,7 +12,6 @@ import TelegramIcon from "@mui/icons-material/Telegram";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { TwitterLink, TelegramLink, CollectorLink } from "components/Links";
-import Button from "components/Button";
 import CTAButton from "components/CTAButton";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
@@ -56,14 +55,12 @@ const SideMenu = ({ isOpen, closeMenu }) => {
             <CTAButton className="sm">APPLY FOR DIAMOND DAWN</CTAButton>
           )}
         </div>
-        {collector && collector.invitations.length > 0 && (
-          <div className="invitations-menu">
-            <div className="menu-item sm" onClick={onInvitesTitleClick}>
-              MY INVITATIONS
-            </div>
-            <InvitationsStatus />
+        <div className="invitations-menu">
+          <div className="menu-item sm" onClick={onInvitesTitleClick}>
+            MY INVITATIONS
           </div>
-        )}
+          <InvitationsStatus />
+        </div>
         <div className="center-center-aligned-row social-icons">
           <TwitterLink>
             <div className="icon">

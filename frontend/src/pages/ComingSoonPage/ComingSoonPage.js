@@ -13,13 +13,15 @@ import useWindowDimensions from "hooks/useWindowDimensions";
 import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import InvitedModal from "components/InvitedModal/InvitedModal";
 import { isActionSuccessSelector } from "store/actionStatusReducer";
-import { canAccessDDSelector } from "store/selectors";
 import { collectorSelector } from "store/collectorReducer";
 import { useAccount } from "wagmi";
 import Button from "components/Button";
+import useActionDispatch from "hooks/useActionDispatch";
+import usePermission from "hooks/usePermission";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
+  const actionDispatch = useActionDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const account = useAccount();
@@ -29,7 +31,7 @@ const ComingSoonPage = () => {
   const isCollectorFetched = useSelector(
     isActionSuccessSelector("get-collector-by-address")
   );
-  const canAccessDD = useSelector(canAccessDDSelector);
+  const canAccessDD = usePermission();
   const [pageReady, setPageReady] = useState(false);
   const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [startTransition, setStartTransition] = useState(false);
@@ -39,11 +41,10 @@ const ComingSoonPage = () => {
   const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
 
   useMusic("homepage.mp3");
-  // useMusic("coming-soon.mp3");
 
   useEffect(() => {
     if (inviteId) {
-      dispatch(loadInviteById(inviteId));
+      actionDispatch(loadInviteById(inviteId), "get-invite-by-id");
     }
   }, [inviteId]);
 
@@ -53,9 +54,7 @@ const ComingSoonPage = () => {
       !canAccessDD &&
       invite &&
       !invite.usedBy &&
-      !invite.revoked &&
-      isCollectorFetched &&
-      !collector
+      !invite.revoked
     ) {
       setShowInvitedModal(true);
     }

@@ -1,12 +1,15 @@
 @import "css/varsNEW";
 
 .modal {
+  display: block;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   border: 1px solid #707070;
   z-index: 1001;
+  //opacity: 0;
+  //animation: fadeIn ease-in .25s forwards;
 
   .modal-inner {
     backdrop-filter: blur(30px);

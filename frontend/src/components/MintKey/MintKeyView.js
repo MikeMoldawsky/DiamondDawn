@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import "./EnterMine.scss";
+import React from "react";
+import "components/MintKey/MintKey.scss";
 import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,12 +13,12 @@ import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
 
-const EnterMineView = ({
-  minePrice = 3.33,
+const MintKeyView = ({
+  mintPrice = 3.33,
   maxDiamonds = 333,
   diamondCount = 0,
   canMint,
-  enterMine,
+  mint,
   expiresAt,
   onCountdownEnd,
 }) => {
@@ -31,15 +31,17 @@ const EnterMineView = ({
 
   // useMusic("approved.mp3");
 
-  useEffect(() => {
-    return () => {
-      toggleInvites(false);
-    };
-  }, []);
-
-  const mintPriceText = BigNumber.isBigNumber(minePrice)
-    ? ethersUtils.formatUnits(minePrice)
+  const mintPriceText = BigNumber.isBigNumber(mintPrice)
+    ? ethersUtils.formatUnits(mintPrice)
     : "3.33";
+
+  const countdownProps = canMint
+    ? {
+        date: expiresAt,
+      }
+    : {
+        parts: { days: 3, hours: 3, minutes: 3, seconds: 0 },
+      };
 
   return (
     <div className="action-view enter">
@@ -82,20 +84,27 @@ const EnterMineView = ({
                   </div>
                 </div>
               </div>
-              <div className="left-centered-aligned-column mint-box">
-                <div className="center-start-aligned-row price-text">
-                  ACTIVATE YOUR KEY
+              <div className="left-center-aligned-row mint-box">
+                <div className="center-aligned-column button-column">
+                  <div className="left-center-aligned-row price-text">
+                    ACTIVATE YOUR KEY
+                  </div>
+                  <div>
+                    <ActionButton
+                      actionKey="MintKey"
+                      className="gold mint-button"
+                      disabled={!canMint || !isFunction(mint)}
+                      onClick={() => isFunction(mint) && mint()}
+                    >
+                      {mintPriceText} <FontAwesomeIcon icon={faEthereum} /> MINT
+                    </ActionButton>
+                  </div>
                 </div>
-                <div>
-                  <ActionButton
-                    actionKey="EnterMine"
-                    className="action-button"
-                    disabled={!canMint || !isFunction(enterMine)}
-                    onClick={() => isFunction(enterMine) && enterMine()}
-                  >
-                    {mintPriceText} <FontAwesomeIcon icon={faEthereum} /> MINT
-                  </ActionButton>
-                </div>
+                {!canMint && (
+                  <div className="left-center-aligned-row open-soon">
+                    Diamond Dawn private sale will open soon!
+                  </div>
+                )}
               </div>
               <div className="center-aligned-row invites-box">
                 <div className="image">
@@ -112,12 +121,7 @@ const EnterMineView = ({
                   Diamond Dawn
                 </div>
                 <Countdown
-                  parts={
-                    expiresAt
-                      ? null
-                      : { days: 3, hours: 3, minutes: 3, seconds: 0 }
-                  }
-                  date={expiresAt}
+                  flat
                   onComplete={() =>
                     isFunction(onCountdownEnd) && onCountdownEnd()
                   }
@@ -127,6 +131,7 @@ const EnterMineView = ({
                     minutes: true,
                     seconds: true,
                   }}
+                  {...countdownProps}
                 />
               </div>
               <div className="status-box">
@@ -140,4 +145,4 @@ const EnterMineView = ({
   );
 };
 
-export default EnterMineView;
+export default MintKeyView;

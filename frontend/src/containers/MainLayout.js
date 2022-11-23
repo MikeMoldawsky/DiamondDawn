@@ -33,6 +33,8 @@ import PrivacyPage from "pages/Legal/PrivacyPage";
 import TNCPage from "pages/Legal/TNCPage";
 import NoContractAppLoader from "containers/NoContractAppLoader";
 import ScrollToTop from "components/ScrollToTop";
+import AudioPlayer from "components/AudioPlayer";
+import VideoPlayer from "components/VideoPlayer";
 
 const MainLayout = () => {
   useMountLogger("MainLayout");
@@ -113,6 +115,8 @@ const MainLayout = () => {
               <AppLoader />
             </ContractProvider>
           )}
+          <AudioPlayer />
+          <VideoPlayer />
         </Router>
       </WagmiWrapper>
       <ToastContainer />

@@ -48,6 +48,7 @@ const CollectorPage = () => {
         images={[getCDNImageUrl("/collector/collector-bg.png")]}
       >
         <div className={classNames("page collector-page")}>
+          <div className="bg collector-bg" />
           <div className="inner-page">
             <h1>The Collector's Room</h1>
             <div className="center-center-aligned-row account">

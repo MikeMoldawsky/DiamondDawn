@@ -20,13 +20,14 @@ async function getCollectorObjectById(collectorId) {
     if (!collector) return null;
 
     if (
-      collector.mintWindowOpen &&
+      collector.mintWindowStart &&
       process.env.REACT_APP_INVITE_TTL_SECONDS > 0
     ) {
-      collector.mintWindowClose = add(collector.mintWindowOpen, {
+      collector.mintWindowClose = add(collector.mintWindowStart, {
         seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
       });
 
+      console.log("getCollectorObjectById", collector);
       if (collector.minted || collector.mintWindowClose < new Date()) {
         collector.mintClosed = true;
       }

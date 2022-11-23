@@ -6,24 +6,19 @@ import Loading from "components/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import classNames from "classnames";
-import { canAccessDDSelector } from "store/selectors";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import useTimeout from "hooks/useTimeout";
+import useNoScrollView from "hooks/useNoScrollView";
+import usePermission from "hooks/usePermission";
 
 const DEFAULT_TIMEOUT = 15000;
 const SHOW_TEXT_TIME = 100;
 const FADE_DURATION = 150;
 
-const PageCover = ({ fade, showText }) => {
-  useEffect(() => {
-    document.body.classList.add("no-scroll");
-
-    return () => {
-      document.body.classList.remove("no-scroll");
-    };
-  }, []);
+const PageCover = ({ fade, showText, withText, isPage }) => {
+  useNoScrollView(!isPage);
 
   return (
     <div
@@ -32,11 +27,13 @@ const PageCover = ({ fade, showText }) => {
       })}
     >
       <Loading />
-      <div className="secondary-text">
-        {showText && "DIAMOND DAWN"}
-        <br />
-        {showText && "loading..."}
-      </div>
+      {withText && (
+        <div className="secondary-text">
+          {showText && "DIAMOND DAWN"}
+          <br />
+          {showText && "loading..."}
+        </div>
+      )}
     </div>
   );
 };
@@ -47,8 +44,10 @@ const PageLoader = ({
   videos = [],
   timeout = DEFAULT_TIMEOUT,
   withLoader = true,
+  withLoaderText = true,
   requireAccess = true,
   onReady,
+  isPage = true,
   children,
 }) => {
   const { assetReadyPages } = useSelector(uiSelector);
@@ -58,14 +57,14 @@ const PageLoader = ({
   const [hidden, setHidden] = useState(false);
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
-  const canAccessDD = useSelector(canAccessDDSelector);
+  const canAccessDD = usePermission();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );
   const navigate = useNavigate();
   const account = useAccount();
 
-  const assetsReady = assetReadyPages[pageName] && isCollectorFetched;
+  const assetsReady = assetReadyPages[pageName];
 
   const setAssetsReady = () => {
     setFade(true);
@@ -82,7 +81,7 @@ const PageLoader = ({
 
   const onAssetLoaded = () => {
     if (
-      isCollectorFetched &&
+      (isCollectorFetched || !account?.address) &&
       (!requireAccess || canAccessDD) &&
       imagesLoaded.current === images.length &&
       videosLoaded.current === videos.length
@@ -138,7 +137,11 @@ const PageLoader = ({
   }, [isCollectorFetched]);
 
   useEffect(() => {
-    if (requireAccess && isCollectorFetched && !canAccessDD) {
+    if (
+      requireAccess &&
+      (isCollectorFetched || !account?.address) &&
+      !canAccessDD
+    ) {
       console.log("PageLoader - navigating to /");
       navigate("/");
     }
@@ -152,7 +155,12 @@ const PageLoader = ({
     <>
       {children}
       {withLoader && !assetsReady && !hidden && (
-        <PageCover fade={fade} showText={showText} />
+        <PageCover
+          fade={fade}
+          showText={showText}
+          withText={withLoaderText}
+          isPage={isPage}
+        />
       )}
     </>
   );

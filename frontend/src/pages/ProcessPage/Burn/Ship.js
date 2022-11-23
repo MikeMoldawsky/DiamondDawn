@@ -83,7 +83,7 @@ const Ship = () => {
               Burn NFT
             </div>
           </div>
-          <Countdown date={endTime} text={["You have", "to burn"]} />
+          <Countdown date={endTime} />
         </>
       );
     },

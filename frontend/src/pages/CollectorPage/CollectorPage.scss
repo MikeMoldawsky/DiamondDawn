@@ -2,10 +2,14 @@
 @import "css/functions";
 
 .page.collector-page {
-  background: url($CDN_URL + "/images/collector/collector-bg.png") no-repeat top
-    center;
-  background-size: cover;
   font-size: calc-font-size(1px);
+
+  .bg.collector-bg {
+    background: url($CDN_URL + "/images/collector/collector-bg.png") no-repeat
+      75% -20%;
+    background-size: auto 120%;
+    opacity: 0.66;
+  }
 
   .account {
     font-size: $font18px;
