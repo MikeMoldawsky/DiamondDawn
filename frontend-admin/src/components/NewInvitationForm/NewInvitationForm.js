@@ -51,8 +51,8 @@ const NewInvitationForm = ({ onSuccess }) => {
     );
   };
 
-  const createInvitation = async ({ note }) => {
-    await createInvitationApi(ddCollector._id, note);
+  const createInvitation = async ({ note, inviter }) => {
+    await createInvitationApi(ddCollector._id, note, inviter);
     setIsSubmitSuccess(true);
     onSuccess && (await onSuccess());
   };
@@ -63,6 +63,10 @@ const NewInvitationForm = ({ onSuccess }) => {
       <form>
         {renderInput("note", "Note", {
           required: false,
+        })}
+        {renderInput("inviter", "Override inviter twitter handle", {
+          required: false,
+          pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
         })}
         <ActionButton
           actionKey="Create Invitation"

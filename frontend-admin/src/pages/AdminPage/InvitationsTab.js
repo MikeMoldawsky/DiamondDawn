@@ -25,6 +25,12 @@ const INVITATION_COLUMNS = [
     width: 200,
   },
   {
+    field: "inviter",
+    headerName: "Inviter Override",
+    width: 200,
+    editable: true,
+  },
+  {
     field: "usedBy",
     headerName: "Used By",
     width: 200,

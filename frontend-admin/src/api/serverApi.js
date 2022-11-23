@@ -103,8 +103,8 @@ export const getInvitationsApi = async () => {
   }
 };
 
-export const createInvitationApi = async (createdBy, note) => {
-  const res = await axios.post(`/api/create_invitation`, { createdBy, note });
+export const createInvitationApi = async (createdBy, note, inviter) => {
+  const res = await axios.post(`/api/create_invitation`, { createdBy, note, inviter });
   return res.data;
 };
 
