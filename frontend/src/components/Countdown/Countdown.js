@@ -4,8 +4,9 @@ import "./Countdown.scss";
 import toLower from "lodash/toLower";
 import isNil from "lodash/isNil";
 import get from "lodash/get";
+import classNames from "classnames";
 
-const CountdownComp = ({ date, parts, renderParts, flat, onComplete }) => {
+const CountdownComp = ({ date, parts, renderParts, flat, align = "", onComplete }) => {
   const formatValue = (value) => {
     switch (value.toString().length) {
       case 0:
@@ -43,7 +44,7 @@ const CountdownComp = ({ date, parts, renderParts, flat, onComplete }) => {
       );
     }
     return (
-      <div className="center-aligned-row countdown custom">
+      <div className={classNames("center-aligned-row countdown custom", {"left-aligned" : align === "left"})}>
         <div className="center-spaced-column w-d">
           {renderPart("WEEKS", weeks)}
           {renderPart("DAYS", days)}

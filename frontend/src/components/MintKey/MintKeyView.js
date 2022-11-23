@@ -73,7 +73,7 @@ const MintKeyView = ({
           ) : (
             <>
               <div className="congrats-box">
-                <div className="center-aligned-column">
+                <div className="left-top-aligned-column">
                   <div className="leading-text">CONGRATULATIONS</div>
                   <div className="congrats-text">
                     You’ve been accepted to participate in Diamond Dawn’s
