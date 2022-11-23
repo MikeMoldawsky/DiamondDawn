@@ -19,7 +19,7 @@ import {
 import AnimatedText from "components/AnimatedText/AnimatedText";
 import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
-import PageLoader from "components/PageLoader";
+import Page from "containers/Page";
 import PageSizeLimit from "components/PageSizeLimit";
 import Button from "components/Button";
 import VideoBackground from "components/VideoBackground";
@@ -51,10 +51,10 @@ const Homepage = () => {
 
   return (
     <PageSizeLimit>
-      <PageLoader
+      <Page
         pageName="homepage"
         images={[
-          getCDNImageUrl("/homepage/sky.png"),
+          getCDNImageUrl("/homepage/sky.jpg"),
           getCDNImageUrl("/homepage/homepage-mountains-back.png"),
           getCDNImageUrl("/homepage/homepage-mountains-front.png"),
         ]}
@@ -113,7 +113,7 @@ const Homepage = () => {
             <Footer />
           </div>
         </ScrollingPage>
-      </PageLoader>
+      </Page>
     </PageSizeLimit>
   );
 };

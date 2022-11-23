@@ -44,7 +44,7 @@
       z-index: -15;
     }
     &.sky {
-      background: url($CDN_URL + "/images/homepage/sky.png") left center;
+      background: url($CDN_URL + "/images/homepage/sky.jpg") left center;
       animation: moveBackground 240s linear infinite;
       z-index: -30;
       background-size: auto 100%;

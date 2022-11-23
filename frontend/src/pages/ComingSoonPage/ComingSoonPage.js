@@ -8,7 +8,7 @@ import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import classNames from "classnames";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useMusic from "hooks/useMusic";
-import PageLoader from "components/PageLoader";
+import Page from "containers/Page";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import InvitedModal from "components/InvitedModal/InvitedModal";
@@ -104,7 +104,7 @@ const ComingSoonPage = () => {
   };
 
   return (
-    <PageLoader
+    <Page
       pageName="coming-soon"
       requireAccess={false}
       images={[getCDNImageUrl("envelop-wings.png")]}
@@ -141,7 +141,7 @@ const ComingSoonPage = () => {
           />
         )}
       </div>
-    </PageLoader>
+    </Page>
   );
 };
 

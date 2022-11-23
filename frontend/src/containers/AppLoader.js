@@ -10,6 +10,8 @@ import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
 import { loadCollectorByAddress } from "store/collectorReducer";
+import { isNoContractMode } from "utils";
+import NoContractAppLoader from "./NoContractAppLoader";
 
 const AppLoader = () => {
   const provider = useProvider();
@@ -57,4 +59,4 @@ const AppLoader = () => {
   return null;
 };
 
-export default AppLoader;
+export default isNoContractMode() ? NoContractAppLoader : AppLoader;

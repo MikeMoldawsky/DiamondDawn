@@ -8,13 +8,14 @@ import { systemSelector } from "store/systemReducer";
 import { useAccount } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
 import Box from "components/Box";
-import Suspense from "components/Suspense";
+import WaitFor from "containers/WaitFor";
 import Invite from "components/Invite";
 import NFTs from "components/NFTs";
 import { getCDNImageUrl, isNoContractMode, shortenEthAddress } from "utils";
 import useMusic from "hooks/useMusic";
-import PageLoader from "components/PageLoader";
+import Page from "containers/Page";
 import PageSizeLimit from "components/PageSizeLimit";
+import NotConnected from "components/NotConnected";
 
 const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
@@ -36,14 +37,14 @@ const CollectorPage = () => {
     );
   };
 
-  const suspenseActions = ["get-contract"];
+  const waitForActions = ["get-contract"];
   if (!isNoContractMode() && account?.address) {
-    suspenseActions.push({ isFirstComplete: true, key: "load-nfts" });
+    waitForActions.push({ isFirstComplete: true, key: "load-nfts" });
   }
 
   return (
     <PageSizeLimit>
-      <PageLoader
+      <Page
         pageName="collector"
         images={[getCDNImageUrl("/collector/collector-bg.png")]}
       >
@@ -55,17 +56,20 @@ const CollectorPage = () => {
               {shortenEthAddress(account?.address)}
             </div>
             <Box className={"main-box"}>
-              <Suspense
-                withLoader
-                containerClassName="box-content opaque"
-                actions={suspenseActions}
-              >
-                {renderContent()}
-              </Suspense>
+              {account?.address ? (
+                <WaitFor
+                  containerClassName="box-content opaque"
+                  actions={waitForActions}
+                >
+                  {renderContent()}
+                </WaitFor>
+              ) : (
+                <NotConnected />
+              )}
             </Box>
           </div>
         </div>
-      </PageLoader>
+      </Page>
     </PageSizeLimit>
   );
 };

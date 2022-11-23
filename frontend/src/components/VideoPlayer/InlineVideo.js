@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
-import Suspense from "components/Suspense";
+import WaitFor from "containers/WaitFor";
 
 const InlineVideo = ({ src, showThreshold = 0.5, ...props }) => {
   const [videoProgress, setVideoProgress] = useState({});
 
   return (
-    <Suspense
-      withLoader
-      videos={[{ progress: videoProgress, threshold: showThreshold }]}
-    >
+    <WaitFor videos={[{ progress: videoProgress, threshold: showThreshold }]}>
       <ReactPlayer
         url={src}
         playing
@@ -23,7 +20,7 @@ const InlineVideo = ({ src, showThreshold = 0.5, ...props }) => {
         height=""
         onProgress={setVideoProgress}
       />
-    </Suspense>
+    </WaitFor>
   );
 };
 

@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { TwitterLink, TelegramLink, CollectorLink } from "components/Links";
 import CTAButton from "components/CTAButton";
+import SocialIcons from "components/SocialIcons";
 
 const SideMenu = ({ isOpen, closeMenu }) => {
   const collector = useSelector(collectorSelector);
@@ -61,18 +62,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           </div>
           <InvitationsStatus />
         </div>
-        <div className="center-center-aligned-row social-icons">
-          <TwitterLink>
-            <div className="icon">
-              <FontAwesomeIcon icon={faTwitter} />
-            </div>
-          </TwitterLink>
-          <TelegramLink>
-            <div className="icon">
-              <TelegramIcon />
-            </div>
-          </TelegramLink>
-        </div>
+        <SocialIcons />
       </div>
       {invitedBy?.createdBy && (
         <div className="invited-by">
