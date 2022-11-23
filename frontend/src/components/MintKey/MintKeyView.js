@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "components/MintKey/MintKey.scss";
 import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
@@ -30,12 +30,6 @@ const MintKeyView = ({
   };
 
   // useMusic("approved.mp3");
-
-  useEffect(() => {
-    return () => {
-      toggleInvites(false);
-    };
-  }, []);
 
   const mintPriceText = BigNumber.isBigNumber(mintPrice)
     ? ethersUtils.formatUnits(mintPrice)
