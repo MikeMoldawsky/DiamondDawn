@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import Logo from "components/Logo";
 import SocialIcons from "components/SocialIcons";
 import SVG from "components/SVG";
-import {getCDNImageUrl} from "utils";
 import star from "assets/images/star.svg"
 
 const Footer = () => (
