@@ -103,26 +103,6 @@ const ComingSoonPage = () => {
     transition();
   };
 
-  const renderEntrance = () => {
-    if (!isCollectorReady) return null;
-
-    if (canAccessDD)
-      return (
-        <Button className="transparent" onClick={transition} sfx="explore">
-          EXPLORE
-        </Button>
-      );
-
-    return (
-      <PasswordBox
-        inviteId={invite?._id}
-        onCorrect={onCorrectPassword}
-        passwordLength={8}
-        buttonText="EXPLORE"
-      />
-    );
-  };
-
   return (
     <PageLoader
       pageName="coming-soon"
@@ -146,7 +126,13 @@ const ComingSoonPage = () => {
               Which diamond will you choose?
             </div>
           </div>
-          {renderEntrance()}
+          <PasswordBox
+            autoFill={canAccessDD}
+            inviteId={invite?._id}
+            onCorrect={onCorrectPassword}
+            passwordLength={8}
+            buttonText="EXPLORE"
+          />
         </div>
         {showInvitedModal && (
           <InvitedModal
