@@ -12,6 +12,7 @@ import { useAccount } from "wagmi";
 import useTimeout from "hooks/useTimeout";
 import useNoScrollView from "hooks/useNoScrollView";
 import usePermission from "hooks/usePermission";
+import useWaitFor from "hooks/useWaitFor";
 
 const DEFAULT_TIMEOUT = 15000;
 const SHOW_TEXT_TIME = 100;
@@ -51,21 +52,19 @@ const PageLoader = ({
   children,
 }) => {
   const { assetReadyPages } = useSelector(uiSelector);
-  const imagesLoaded = useRef(0);
-  const videosLoaded = useRef(0);
   const dispatch = useDispatch();
   const [hidden, setHidden] = useState(false);
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
+  const contentReady = useWaitFor({ images, videos })
   const canAccessDD = usePermission();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );
   const navigate = useNavigate();
   const account = useAccount();
-
   const isCollectorReady = isCollectorFetched || !account?.address;
-  const assetsReady = assetReadyPages[pageName] && isCollectorReady;
+  const pageReady = assetReadyPages[pageName] && isCollectorReady;
 
   const setAssetsReady = () => {
     setFade(true);
@@ -81,69 +80,43 @@ const PageLoader = ({
   };
 
   const onAssetLoaded = () => {
+    console.log("onAssetLoaded", { contentReady, canAccessDD, isCollectorReady })
     if (
-      isCollectorReady &&
       (!requireAccess || canAccessDD) &&
-      imagesLoaded.current === images.length &&
-      videosLoaded.current === videos.length
+      contentReady &&
+      isCollectorReady
     ) {
       setAssetsReady();
     }
   };
 
-  // images
+  // navigate out if doesn't have access
   useEffect(() => {
-    if (assetReadyPages[pageName]) {
-      setFade(true);
-      return;
+    if (requireAccess && isCollectorReady && !canAccessDD) {
+      navigate("/");
     }
-    forEach(images, (src) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        imagesLoaded.current++;
-        onAssetLoaded();
-      };
-    });
-  }, []);
+  }, [isCollectorReady]);
 
-  // videos
-  const videosProgress = sumBy(videos, ({ progress }) =>
-    get(progress, "loaded", 0)
-  );
-
+  // monitor contentReady
   useEffect(() => {
-    forEach(videos, ({ progress, threshold = 1 }) => {
-      const loaded = get(progress, "loaded", 0);
-      if (loaded >= threshold) {
-        videosLoaded.current++;
-        onAssetLoaded();
-      }
-    });
-  }, [videosProgress]);
+    if (contentReady) {
+      onAssetLoaded();
+    }
+  }, [contentReady]);
+
+  // monitor isCollectorFetched
+  useEffect(() => {
+    if (isCollectorFetched) {
+      onAssetLoaded();
+    }
+  }, [isCollectorFetched]);
 
   // timeout
   useTimeout(() => {
     timeout > -1 && setAssetsReady();
   }, timeout);
 
-  useEffect(() => {
-    console.log("useEffect", { isCollectorFetched });
-    if (isCollectorFetched) {
-      onAssetLoaded();
-    } else {
-      setFade(false);
-      setHidden(false);
-    }
-  }, [isCollectorFetched]);
-
-  useEffect(() => {
-    if (requireAccess && isCollectorReady && !canAccessDD) {
-      console.log("PageLoader - navigating to /");
-      navigate("/");
-    }
-  }, [isCollectorReady]);
-
+  // TODO - remove this after setting up app-shell caching
   setTimeout(() => {
     setShowText(true);
   }, SHOW_TEXT_TIME);
@@ -151,7 +124,7 @@ const PageLoader = ({
   return (
     <>
       {children}
-      {withLoader && !assetsReady && !hidden && (
+      {withLoader && !pageReady && !hidden && (
         <PageCover
           fade={fade}
           showText={showText}
