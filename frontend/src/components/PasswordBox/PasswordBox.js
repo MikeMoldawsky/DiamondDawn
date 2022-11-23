@@ -44,7 +44,7 @@ const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
   const onPasswordEnter = (e) => {
     if (e.charCode === 13) {
       // enter key
-      playSubmit()
+      playSubmit();
       submitPassword();
     }
   };

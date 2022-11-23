@@ -18,8 +18,7 @@ const SHOW_TEXT_TIME = 100;
 const FADE_DURATION = 150;
 
 const PageCover = ({ fade, showText, withText, isPage }) => {
-
-  useNoScrollView(!isPage)
+  useNoScrollView(!isPage);
 
   return (
     <div
@@ -58,7 +57,7 @@ const PageLoader = ({
   const [hidden, setHidden] = useState(false);
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
-  const canAccessDD = usePermission()
+  const canAccessDD = usePermission();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );
@@ -138,7 +137,11 @@ const PageLoader = ({
   }, [isCollectorFetched]);
 
   useEffect(() => {
-    if (requireAccess && (isCollectorFetched || !account?.address) && !canAccessDD) {
+    if (
+      requireAccess &&
+      (isCollectorFetched || !account?.address) &&
+      !canAccessDD
+    ) {
       console.log("PageLoader - navigating to /");
       navigate("/");
     }
@@ -152,7 +155,12 @@ const PageLoader = ({
     <>
       {children}
       {withLoader && !assetsReady && !hidden && (
-        <PageCover fade={fade} showText={showText} withText={withLoaderText} isPage={isPage} />
+        <PageCover
+          fade={fade}
+          showText={showText}
+          withText={withLoaderText}
+          isPage={isPage}
+        />
       )}
     </>
   );

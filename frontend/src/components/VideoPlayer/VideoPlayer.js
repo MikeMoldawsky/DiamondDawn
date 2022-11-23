@@ -1,21 +1,24 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import { setMuted, uiSelector } from "store/uiReducer";
-import "./VideoPlayer.scss"
-import {clearVideoState, updateVideoState, videoSelector} from "store/videoReducer";
+import "./VideoPlayer.scss";
+import {
+  clearVideoState,
+  updateVideoState,
+  videoSelector,
+} from "store/videoReducer";
 import useNoScrollView from "hooks/useNoScrollView";
 import PageLoader from "components/PageLoader";
 
 const Video = ({ isPlaying, setVideoProgress, ...props }) => {
-
-  useNoScrollView()
+  useNoScrollView();
 
   const { muted } = useSelector(uiSelector);
-  const [origMuted] = useState(muted)
+  const [origMuted] = useState(muted);
   const dispatch = useDispatch();
 
-  const { src, closeOnEnd } = useSelector(videoSelector)
+  const { src, closeOnEnd } = useSelector(videoSelector);
 
   const onVideoPlay = () => {
     dispatch(setMuted(true));
@@ -26,10 +29,10 @@ const Video = ({ isPlaying, setVideoProgress, ...props }) => {
       dispatch(setMuted(false));
     }
     if (closeOnEnd) {
-      dispatch(clearVideoState())
-      return
+      dispatch(clearVideoState());
+      return;
     }
-    dispatch(updateVideoState({ hasEnded: true }))
+    dispatch(updateVideoState({ hasEnded: true }));
   };
 
   return (
@@ -50,22 +53,28 @@ const Video = ({ isPlaying, setVideoProgress, ...props }) => {
   );
 };
 
-const VideoPlayer = props => {
+const VideoPlayer = (props) => {
   const [videoProgress, setVideoProgress] = useState({});
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  const { src, isOpen } = useSelector(videoSelector)
+  const { src, isOpen } = useSelector(videoSelector);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="full-screen-video">
-      <PageLoader pageName={src}
-                  isPage={false}
-                  videos={[{ progress: videoProgress, threshold: 0.25 }]}
-                  onReady={() => setIsPlaying(true)}
-                  withLoaderText={false}>
-        <Video isPlaying={isPlaying} setVideoProgress={setVideoProgress} {...props} />
+      <PageLoader
+        pageName={src}
+        isPage={false}
+        videos={[{ progress: videoProgress, threshold: 0.25 }]}
+        onReady={() => setIsPlaying(true)}
+        withLoaderText={false}
+      >
+        <Video
+          isPlaying={isPlaying}
+          setVideoProgress={setVideoProgress}
+          {...props}
+        />
       </PageLoader>
     </div>
   );

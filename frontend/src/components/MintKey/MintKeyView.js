@@ -35,11 +35,13 @@ const MintKeyView = ({
     ? ethersUtils.formatUnits(mintPrice)
     : "3.33";
 
-  const countdownProps = canMint ? {
-    date: expiresAt,
-  } : {
-    parts: { days: 3, hours: 3, minutes: 3, seconds: 0 },
-  }
+  const countdownProps = canMint
+    ? {
+        date: expiresAt,
+      }
+    : {
+        parts: { days: 3, hours: 3, minutes: 3, seconds: 0 },
+      };
 
   return (
     <div className="action-view enter">

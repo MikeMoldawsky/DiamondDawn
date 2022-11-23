@@ -27,7 +27,7 @@ async function getCollectorObjectById(collectorId) {
         seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
       });
 
-      console.log("getCollectorObjectById", collector)
+      console.log("getCollectorObjectById", collector);
       if (collector.minted || collector.mintWindowClose < new Date()) {
         collector.mintClosed = true;
       }

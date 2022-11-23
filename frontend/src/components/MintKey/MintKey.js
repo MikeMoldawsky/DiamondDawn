@@ -18,7 +18,10 @@ import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { getCDNVideoUrl, isNoContractMode } from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
 import { SYSTEM_STAGE } from "consts";
-import {collectorSelector, loadCollectorByAddress} from "store/collectorReducer";
+import {
+  collectorSelector,
+  loadCollectorByAddress,
+} from "store/collectorReducer";
 import useActionDispatch from "hooks/useActionDispatch";
 
 const MintKey = () => {
@@ -27,7 +30,7 @@ const MintKey = () => {
   const account = useAccount();
   const contract = useDDContract();
   const dispatch = useDispatch();
-  const actionDispatch = useActionDispatch()
+  const actionDispatch = useActionDispatch();
   const tokens = useSelector(tokensSelector);
   const navigateToDefault = useNavigateToDefault();
   const collector = useSelector(collectorSelector);
@@ -45,7 +48,10 @@ const MintKey = () => {
   if (!collector || collector.minted || collector.mintClosed) return null;
 
   const onMintWindowClose = () => {
-    actionDispatch(loadCollectorByAddress(account.address), "get-collector-by-address")
+    actionDispatch(
+      loadCollectorByAddress(account.address),
+      "get-collector-by-address"
+    );
   };
 
   const executeEnterMine = async () => {

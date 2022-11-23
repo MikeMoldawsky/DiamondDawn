@@ -5,22 +5,15 @@ import toLower from "lodash/toLower";
 import isNil from "lodash/isNil";
 import get from "lodash/get";
 
-const CountdownComp = ({
-  date,
-  parts,
-  renderParts,
-  flat,
-  onComplete,
-}) => {
-
+const CountdownComp = ({ date, parts, renderParts, flat, onComplete }) => {
   const formatValue = (value) => {
     switch (value.toString().length) {
       case 0:
-        return "00"
+        return "00";
       case 1:
-        return "0" + value
+        return "0" + value;
       default:
-        return value
+        return value;
     }
   };
 

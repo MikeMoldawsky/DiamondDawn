@@ -20,7 +20,7 @@ import classNames from "classnames";
 import { usePageSizeLimit } from "components/PageSizeLimit";
 import CTAButton from "components/CTAButton";
 import { TwitterLink } from "components/Links";
-import {clearVideoState, videoSelector} from "store/videoReducer";
+import { clearVideoState, videoSelector } from "store/videoReducer";
 import usePermission from "hooks/usePermission";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
@@ -28,8 +28,8 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const location = useLocation();
   const isPageSizeLimitOk = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
-  const { isOpen: isVideoOpen } = useSelector(videoSelector)
-  const canAccessDD = usePermission()
+  const { isOpen: isVideoOpen } = useSelector(videoSelector);
+  const canAccessDD = usePermission();
 
   const isHomepage =
     location.pathname === "/" || location.pathname === "/explore";
@@ -41,16 +41,16 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
     dispatch(toggleMuted(true));
   };
 
-  const getMenuIcon = () => isMenuOpen || isVideoOpen ? faX : faBars
+  const getMenuIcon = () => (isMenuOpen || isVideoOpen ? faX : faBars);
 
   const onMenuIconClick = () => {
     if (isVideoOpen) {
-      return dispatch(clearVideoState())
+      return dispatch(clearVideoState());
     }
-    toggleMenu()
-  }
+    toggleMenu();
+  };
 
-  const showRestrictedContent = canAccessDD && isPageSizeLimitOk
+  const showRestrictedContent = canAccessDD && isPageSizeLimitOk;
 
   return (
     <header onClick={() => isMenuOpen && toggleMenu()}>
@@ -77,9 +77,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           })}
         />
         <div className="center-aligned-row header-side">
-          {showRestrictedContent && (
-            <CTAButton className="sm collector-btn" />
-          )}
+          {showRestrictedContent && <CTAButton className="sm collector-btn" />}
           <TwitterLink>
             <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
           </TwitterLink>

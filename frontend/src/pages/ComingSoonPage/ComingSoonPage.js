@@ -21,7 +21,7 @@ import usePermission from "hooks/usePermission";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
-  const actionDispatch = useActionDispatch()
+  const actionDispatch = useActionDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const account = useAccount();
@@ -31,7 +31,7 @@ const ComingSoonPage = () => {
   const isCollectorFetched = useSelector(
     isActionSuccessSelector("get-collector-by-address")
   );
-  const canAccessDD = usePermission()
+  const canAccessDD = usePermission();
   const [pageReady, setPageReady] = useState(false);
   const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [startTransition, setStartTransition] = useState(false);

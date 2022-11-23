@@ -10,7 +10,7 @@ const INITIAL_STATE = {
 export const showVideo = (src, opts = {}) => ({
   type: "VIDEO.SHOW",
   payload: { src, ...opts, isOpen: true },
-})
+});
 
 export const updateVideoState = (payload) => ({
   type: "VIDEO.UPDATE",

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import "./Homepage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
-import {getCDNImageUrl, isNoContractMode, isPrivateSale} from "utils";
+import { getCDNImageUrl, isNoContractMode, isPrivateSale } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
 import Footer from "components/Footer";
@@ -23,11 +23,10 @@ import PageLoader from "components/PageLoader";
 import PageSizeLimit from "components/PageSizeLimit";
 import Button from "components/Button";
 import VideoBackground from "components/VideoBackground";
-import {systemSelector} from "store/systemReducer";
-import {SYSTEM_STAGE} from "consts";
+import { systemSelector } from "store/systemReducer";
+import { SYSTEM_STAGE } from "consts";
 
 const Homepage = () => {
-
   const { systemStage, isActive, config } = useSelector(systemSelector);
   const endTime = config.stageTime;
   const dispatch = useDispatch();
@@ -52,9 +51,10 @@ const Homepage = () => {
     };
   }, [topViewEffectScrollLimit]);
 
-  const countdownProps = isPrivateSale() || systemStage !== SYSTEM_STAGE.KEY || !isActive
-    ? { parts: { days: 24, hours: 3, minutes: 0, seconds: 0 }}
-    : { date: endTime }
+  const countdownProps =
+    isPrivateSale() || systemStage !== SYSTEM_STAGE.KEY || !isActive
+      ? { parts: { days: 24, hours: 3, minutes: 0, seconds: 0 } }
+      : { date: endTime };
 
   return (
     <PageSizeLimit>

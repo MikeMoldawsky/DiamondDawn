@@ -100,7 +100,7 @@ const ActionView = ({
     if (showCompleteVideo) {
       setCompleteVideoEnded(true);
       setShowCompleteVideo(false);
-      return null
+      return null;
       // const stageNameUpper = isRebirth
       //   ? "REBIRTH"
       //   : _.upperCase(getStageName(systemStage));

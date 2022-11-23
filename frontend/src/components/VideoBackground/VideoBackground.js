@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import "./VideoBackground.scss";
 import { getCDNVideoUrl } from "utils";
 import ReactPlayer from "react-player";
@@ -6,7 +6,6 @@ import PlayButton from "components/PlayButton";
 import CTAButton from "components/CTAButton";
 
 const VideoBackground = ({ src, overlap = 0 }) => {
-
   const renderTeaserBg = useCallback(
     () => (
       <ReactPlayer
@@ -32,7 +31,11 @@ const VideoBackground = ({ src, overlap = 0 }) => {
           <CTAButton className="md" />
         </div>
         <div className="separator" />
-        <PlayButton className="element" length="SHORT" src={getCDNVideoUrl("short-teaser.mp4")} />
+        <PlayButton
+          className="element"
+          length="SHORT"
+          src={getCDNVideoUrl("short-teaser.mp4")}
+        />
         <div className="separator" />
         <PlayButton
           className="element"
