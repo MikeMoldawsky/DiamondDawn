@@ -88,20 +88,27 @@ const MintKeyView = ({
                   </div>
                 </div>
               </div>
-              <div className="left-centered-aligned-column mint-box">
-                <div className="center-start-aligned-row price-text">
-                  ACTIVATE YOUR KEY
+              <div className="left-center-aligned-row mint-box">
+                <div className="center-aligned-column button-column">
+                  <div className="left-center-aligned-row price-text">
+                    ACTIVATE YOUR KEY
+                  </div>
+                  <div>
+                    <ActionButton
+                      actionKey="MintKey"
+                      className="gold mint-button"
+                      disabled={!canMint || !isFunction(mint)}
+                      onClick={() => isFunction(mint) && mint()}
+                    >
+                      {mintPriceText} <FontAwesomeIcon icon={faEthereum} /> MINT
+                    </ActionButton>
+                  </div>
                 </div>
-                <div>
-                  <ActionButton
-                    actionKey="MintKey"
-                    className="gold mint-button"
-                    disabled={!canMint || !isFunction(mint)}
-                    onClick={() => isFunction(mint) && mint()}
-                  >
-                    {mintPriceText} <FontAwesomeIcon icon={faEthereum} /> MINT
-                  </ActionButton>
-                </div>
+                {!canMint && (
+                  <div className="left-center-aligned-row open-soon">
+                    Diamond Dawn private sale will open soon!
+                  </div>
+                )}
               </div>
               <div className="center-aligned-row invites-box">
                 <div className="image">

@@ -113,7 +113,7 @@ const ApplyForm = ({ onSuccess }) => {
             })}
           </div>
         </div>
-        <div className="center-start-aligned-row checkbox">
+        <div className="left-center-aligned-row checkbox">
           <Checkbox
             register={register}
             watch={watch}

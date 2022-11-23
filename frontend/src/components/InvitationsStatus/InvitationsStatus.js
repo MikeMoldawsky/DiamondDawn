@@ -29,7 +29,7 @@ const InvitationsStatus = () => {
         return (
           <div
             key={`invitations-status-${_id}`}
-            className="center-start-aligned-row status-row"
+            className="left-center-aligned-row status-row"
           >
             <CopyToClipboard text={link}>
               <Button
