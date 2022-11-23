@@ -9,8 +9,7 @@ export const WaitFor = ({
   containerClassName,
   children,
 }) => {
-
-  const contentReady = useWaitFor({ actions, videos })
+  const contentReady = useWaitFor({ actions, videos });
 
   const renderLoading = () =>
     !!containerClassName ? (

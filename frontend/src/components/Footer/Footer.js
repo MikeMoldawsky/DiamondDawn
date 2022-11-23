@@ -1,10 +1,10 @@
 import React from "react";
-import "./Footer.scss"
+import "./Footer.scss";
 import { NavLink } from "react-router-dom";
 import Logo from "components/Logo";
 import SocialIcons from "components/SocialIcons";
 import SVG from "components/SVG";
-import star from "assets/images/star.svg"
+import star from "assets/images/star.svg";
 
 const Footer = () => (
   <footer className="footer">

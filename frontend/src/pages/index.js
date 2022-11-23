@@ -1,5 +1,5 @@
-import React from 'react'
-import {Navigate, Route, Routes} from "react-router-dom";
+import React from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import ComingSoonPage from "pages/ComingSoonPage";
 import Homepage from "pages/Homepage";
 import TokensProvider from "containers/TokensProvider";
@@ -16,13 +16,7 @@ import TNCPage from "pages/Legal/TNCPage";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route
-        path="/"
-        exact
-        element={
-          <ComingSoonPage />
-        }
-      />
+      <Route path="/" exact element={<ComingSoonPage />} />
       <Route path="/explore" element={<Homepage />} />
       <Route
         path="process"
@@ -63,7 +57,7 @@ const AppRoutes = () => {
       <Route path="tnc" element={<TNCPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
-  )
-}
+  );
+};
 
-export default AppRoutes
+export default AppRoutes;

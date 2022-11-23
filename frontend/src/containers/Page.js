@@ -53,7 +53,7 @@ const Page = ({
   const [hidden, setHidden] = useState(false);
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
-  const contentReady = useWaitFor({ images, videos })
+  const contentReady = useWaitFor({ images, videos });
   const canAccessDD = usePermission();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
@@ -77,11 +77,7 @@ const Page = ({
   };
 
   const onAssetLoaded = () => {
-    if (
-      (!requireAccess || canAccessDD) &&
-      contentReady &&
-      isCollectorReady
-    ) {
+    if ((!requireAccess || canAccessDD) && contentReady && isCollectorReady) {
       setAssetsReady();
     }
   };

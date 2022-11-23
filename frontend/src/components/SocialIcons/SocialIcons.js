@@ -1,5 +1,5 @@
 import React from "react";
-import "./SocialIcons.scss"
+import "./SocialIcons.scss";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";

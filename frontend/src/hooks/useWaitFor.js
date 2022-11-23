@@ -1,8 +1,11 @@
-import React, {useEffect, useRef} from "react";
-import {useSelector} from "react-redux";
+import React, { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import reduce from "lodash/reduce";
 import isString from "lodash/isString";
-import {isActionFirstCompleteSelector, isActionSuccessSelector} from "store/actionStatusReducer";
+import {
+  isActionFirstCompleteSelector,
+  isActionSuccessSelector,
+} from "store/actionStatusReducer";
 import sumBy from "lodash/sumBy";
 import get from "lodash/get";
 import forEach from "lodash/forEach";
@@ -43,7 +46,7 @@ export const useWaitForImages = (images = []) => {
   }, []);
 
   return imagesLoaded.current === images.length;
-}
+};
 
 export const useWaitForVideos = (videos = []) => {
   const videosLoaded = useRef(0);
@@ -66,12 +69,12 @@ export const useWaitForVideos = (videos = []) => {
   return videosLoaded.current === videos.length;
 };
 
-export const useWaitFor = ({actions, images, videos}) => {
+export const useWaitFor = ({ actions, images, videos }) => {
   const actionsReady = useWaitForActions(actions);
-  const imagesReady = useWaitForImages(images)
+  const imagesReady = useWaitForImages(images);
   const videosReady = useWaitForVideos(videos);
 
   return actionsReady && imagesReady && videosReady;
-}
+};
 
-export default useWaitFor
+export default useWaitFor;

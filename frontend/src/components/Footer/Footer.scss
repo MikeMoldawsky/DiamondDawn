@@ -6,11 +6,11 @@ footer.footer {
   background-color: black;
   margin-top: -3em;
   -webkit-mask-image: -webkit-gradient(
-                  linear,
-                  left top,
-                  left 10%,
-                  from(rgba(0, 0, 0, 0)),
-                  to(rgba(0, 0, 0, 1))
+    linear,
+    left top,
+    left 10%,
+    from(rgba(0, 0, 0, 0)),
+    to(rgba(0, 0, 0, 1))
   );
 
   .bg.bg-footer {
@@ -26,7 +26,7 @@ footer.footer {
     min-width: 40em;
 
     & > div {
-      padding: 0 0 .25em;
+      padding: 0 0 0.25em;
     }
   }
 
@@ -46,7 +46,7 @@ footer.footer {
 
     .icon {
       margin: 0 1.5em;
-      padding-top: .5em;
+      padding-top: 0.5em;
 
       svg {
         width: 1.5em;
@@ -71,7 +71,7 @@ footer.footer {
       .link {
         font-size: $font15px;
         text-decoration: underline;
-        color: $text_gray
+        color: $text_gray;
       }
     }
   }
