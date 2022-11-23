@@ -12,6 +12,7 @@ import { getCDNImageUrl } from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
+import MintAddressRow from "components/MintAddressRow";
 
 const MintKeyView = ({
   mintPrice = 3.33,
@@ -72,7 +73,7 @@ const MintKeyView = ({
           ) : (
             <>
               <div className="congrats-box">
-                <div className="center-aligned-column">
+                <div className="left-top-aligned-column">
                   <div className="leading-text">CONGRATULATIONS</div>
                   <div className="congrats-text">
                     You’ve been accepted to participate in Diamond Dawn’s
@@ -137,6 +138,7 @@ const MintKeyView = ({
               <div className="status-box">
                 {diamondCount} / {maxDiamonds} MINTED
               </div>
+              <MintAddressRow />
             </>
           )}
         </div>

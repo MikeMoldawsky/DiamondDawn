@@ -9,8 +9,9 @@ import {
 import Loading from "components/Loading";
 import { useAccount } from "wagmi";
 import NotConnected from "components/NotConnected";
+import useVideoLoader from "hooks/useVideoLoader";
 
-export const useIsReady = (actions) => {
+export const useActionsReady = (actions) => {
   return useSelector((state) => {
     return reduce(
       actions,
@@ -32,20 +33,37 @@ export const useIsReady = (actions) => {
   });
 };
 
-export const Suspense = ({ actions, withLoader, children }) => {
+export const Suspense = ({
+  actions,
+  videos = [],
+  withLoader,
+  containerClassName,
+  children,
+}) => {
   const account = useAccount();
 
-  const isReady = useIsReady(actions);
+  const actionsReady = useActionsReady(actions);
+  const videosReady = useVideoLoader(videos);
 
   if (!account?.address) return <NotConnected />;
-  if (isReady) return children;
-  if (withLoader)
-    return (
-      <div className="box-content opaque">
+
+  const contentReady = actionsReady && videosReady;
+
+  const renderLoading = () =>
+    !!containerClassName ? (
+      <div className={containerClassName}>
         <Loading />
       </div>
+    ) : (
+      <Loading />
     );
-  return null;
+
+  return (
+    <>
+      {(actionsReady || videos.length > 0) && children}
+      {withLoader && !contentReady && renderLoading()}
+    </>
+  );
 };
 
 export default Suspense;

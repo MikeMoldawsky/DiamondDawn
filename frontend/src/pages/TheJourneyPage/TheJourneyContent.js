@@ -1,5 +1,8 @@
 import React from "react";
 import { getCDNImageUrl } from "utils";
+import CTAButton from "components/CTAButton";
+import Countdown from "components/Countdown";
+import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 
 export const TheJourneyMainText = () => (
   <div className="text">
@@ -66,14 +69,22 @@ export const Step0Text = () => (
       The application phase will automatically end when 333 participants
       activated their keys.
     </p>
+    <p>
+      <CTAButton className="gold sm" />
+    </p>
   </div>
 );
 
-export const Step1Text = () => (
-  <div className="text">
-    <p>Diamond Dawn's mine will open in 3 weeks, 3 days, and 3 hours.</p>
-  </div>
-);
+export const Step1Text = () => {
+  const countdownProps = useMineOpenCountdown();
+
+  return (
+    <div className="text">
+      <p>Diamond Dawn's mine will open in</p>
+      <Countdown align="left" {...countdownProps} />
+    </div>
+  );
+};
 
 export const Step2Text = () => null;
 

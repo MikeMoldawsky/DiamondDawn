@@ -64,7 +64,8 @@ const PageLoader = ({
   const navigate = useNavigate();
   const account = useAccount();
 
-  const assetsReady = assetReadyPages[pageName];
+  const isCollectorReady = isCollectorFetched || !account?.address;
+  const assetsReady = assetReadyPages[pageName] && isCollectorReady;
 
   const setAssetsReady = () => {
     setFade(true);
@@ -81,7 +82,7 @@ const PageLoader = ({
 
   const onAssetLoaded = () => {
     if (
-      (isCollectorFetched || !account?.address) &&
+      isCollectorReady &&
       (!requireAccess || canAccessDD) &&
       imagesLoaded.current === images.length &&
       videosLoaded.current === videos.length
@@ -137,15 +138,11 @@ const PageLoader = ({
   }, [isCollectorFetched]);
 
   useEffect(() => {
-    if (
-      requireAccess &&
-      (isCollectorFetched || !account?.address) &&
-      !canAccessDD
-    ) {
+    if (requireAccess && isCollectorReady && !canAccessDD) {
       console.log("PageLoader - navigating to /");
       navigate("/");
     }
-  }, [isCollectorFetched, account?.address]);
+  }, [isCollectorReady]);
 
   setTimeout(() => {
     setShowText(true);

@@ -1,3 +1,3 @@
-import MintKey from "components/MintKey/MintKey";
+import MintKey from "./MintKey";
 
 export default MintKey;

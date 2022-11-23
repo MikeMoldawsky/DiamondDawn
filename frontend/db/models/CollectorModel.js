@@ -6,7 +6,7 @@ require("./InvitationModel");
 const CollectorSchema = new mongoose.Schema({
   createdAt: { type: Date, required: true, default: Date.now },
   address: { type: String, unique: true, required: true },
-  twitter: { type: String, unique: true },
+  twitter: { type: String },
   email: { type: String },
   location: { type: String },
   note: { type: String },

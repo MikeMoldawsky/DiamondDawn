@@ -48,9 +48,12 @@ const ComingSoonPage = () => {
     }
   }, [inviteId]);
 
+  const isCollectorReady = !account?.address || isCollectorFetched;
+
   useEffect(() => {
     if (
       pageReady &&
+      isCollectorReady &&
       !canAccessDD &&
       invite &&
       !invite.usedBy &&
@@ -58,7 +61,7 @@ const ComingSoonPage = () => {
     ) {
       setShowInvitedModal(true);
     }
-  }, [invite, isCollectorFetched, collector, pageReady]);
+  }, [invite, isCollectorReady, collector, pageReady]);
 
   const renderBgPlayer = useCallback(
     () => (
@@ -100,26 +103,6 @@ const ComingSoonPage = () => {
     transition();
   };
 
-  const renderEntrance = () => {
-    if (!isCollectorFetched && account?.address) return null;
-
-    if (canAccessDD)
-      return (
-        <Button className="transparent" onClick={transition} sfx="explore">
-          EXPLORE
-        </Button>
-      );
-
-    return (
-      <PasswordBox
-        inviteId={invite?._id}
-        onCorrect={onCorrectPassword}
-        passwordLength={8}
-        buttonText="EXPLORE"
-      />
-    );
-  };
-
   return (
     <PageLoader
       pageName="coming-soon"
@@ -143,7 +126,13 @@ const ComingSoonPage = () => {
               Which diamond will you choose?
             </div>
           </div>
-          {renderEntrance()}
+          <PasswordBox
+            autoFill={canAccessDD}
+            inviteId={invite?._id}
+            onCorrect={onCorrectPassword}
+            passwordLength={8}
+            buttonText="EXPLORE"
+          />
         </div>
         {showInvitedModal && (
           <InvitedModal
