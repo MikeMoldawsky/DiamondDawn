@@ -1,0 +1,78 @@
+@import "css/varsNEW";
+
+footer.footer {
+  position: relative;
+  display: flex;
+  background-color: black;
+  margin-top: -3em;
+  -webkit-mask-image: -webkit-gradient(
+                  linear,
+                  left top,
+                  left 10%,
+                  from(rgba(0, 0, 0, 0)),
+                  to(rgba(0, 0, 0, 1))
+  );
+
+  .bg.bg-footer {
+    background: url($CDN_URL + "/images/footer.png") no-repeat center center;
+    background-size: cover;
+    height: 75%;
+    top: unset;
+  }
+
+  .footer-inner {
+    margin: 0 auto 0;
+    padding: 12rem 0 2.5rem;
+    min-width: 40em;
+
+    & > div {
+      padding: 0 0 .25em;
+    }
+  }
+
+  .separator {
+    height: 100%;
+    width: 1px;
+    background-color: $close_modal;
+    margin: 0 3em;
+  }
+
+  .logo-box {
+    margin-bottom: 1.5em;
+  }
+
+  .footer-menu {
+    flex-grow: 2;
+
+    .icon {
+      margin: 0 1.5em;
+      padding-top: .5em;
+
+      svg {
+        width: 1.5em;
+      }
+    }
+
+    .top-menu {
+      font-size: $font20px;
+
+      * {
+        font-weight: 500;
+      }
+    }
+
+    .bottom-menu {
+      margin-top: 1em;
+
+      a:not(:last-child) {
+        margin-right: 3em;
+      }
+
+      .link {
+        font-size: $font15px;
+        text-decoration: underline;
+        color: $text_gray
+      }
+    }
+  }
+}

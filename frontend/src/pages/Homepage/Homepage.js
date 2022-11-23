@@ -54,7 +54,7 @@ const Homepage = () => {
       <Page
         pageName="homepage"
         images={[
-          getCDNImageUrl("/homepage/sky.png"),
+          getCDNImageUrl("/homepage/sky.jpg"),
           getCDNImageUrl("/homepage/homepage-mountains-back.png"),
           getCDNImageUrl("/homepage/homepage-mountains-front.png"),
         ]}
