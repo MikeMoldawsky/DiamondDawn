@@ -119,6 +119,7 @@ const ComingSoonPage = () => {
       >
         {renderBgPlayer()}
         <div className="center-aligned-column content">
+          <div className="project-title">DIAMOND DAWN</div>
           <div className="center-aligned-column">
             <div className="leading-text">PRIVATE SALE</div>
             <div className="secondary-text">

@@ -12,9 +12,15 @@
   font-size: calc-font-size(11px);
 
   .content {
-    position: relative;
-    top: 45%;
-    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -47%);
+
+    .project-title {
+      font-size: $font80px;
+      margin-bottom: 2em;
+    }
 
     .leading-text {
       color: $gold;
@@ -27,11 +33,10 @@
       font-weight: 400;
       font-size: $font30px;
       line-height: 1.4em;
-      margin-bottom: 2.5em;
     }
 
-    .secondary-2 {
-      font-size: 1.1em;
+    .password-box {
+      margin-top: 5em;
     }
   }
 
@@ -50,300 +55,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-  }
-
-  .splitter {
-    content: "";
-    position: absolute;
-    top: 80%;
-    width: $splitter_width / 2;
-    height: 0;
-    z-index: 0;
-    background-color: $splitter_color;
-  }
-
-  .bg-image {
-    content: "";
-    position: absolute;
-    min-width: 102%;
-    min-height: 100%;
-    left: -1%;
-    opacity: 0;
-    top: 0;
-  }
-
-  .curtain-left,
-  .curtain-right,
-  .curtain-behind {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-  }
-
-  .curtain-left {
-    left: -50%;
-    z-index: -1;
-
-    &:before {
-      @extend .bg-image;
-      background: url($CDN_URL + "/images/coming-soon/coming-soon-image-left.png")
-        no-repeat top right;
-    }
-
-    &:after {
-      @extend .splitter;
-      right: 0;
-      bottom: 0;
-    }
-  }
-
-  .curtain-right {
-    left: 50%;
-    z-index: -2;
-
-    &:before {
-      @extend .bg-image;
-      background: url($CDN_URL + "/images/coming-soon/coming-soon-image-right.png")
-        no-repeat;
-    }
-
-    &:after {
-      @extend .splitter;
-      left: 0;
-    }
-  }
-
-  .curtain-behind {
-    z-index: -3;
-    width: 110%;
-    margin-left: -5%;
-    background-size: cover;
-    transform: scale(0.9);
-    opacity: 0;
-  }
-
-  $animationMultiplier: 2;
-  $fadeTime: 0.5s * $animationMultiplier;
-  $shrinkTime: 0.25s * $animationMultiplier;
-  $splitTime: 0.4s * $animationMultiplier;
-  $pauseTime: 0.2s * $animationMultiplier;
-  $curtainTime: 2s * $animationMultiplier;
-  $zoomTime: 2s * $animationMultiplier;
-
-  &.transition-out {
-    .button,
-    .password-box {
-      animation: shrinkAndDisappear $shrinkTime ease-out forwards;
-    }
-
-    .leading-text,
-    .secondary-text {
-      animation: fadeOut $fadeTime ease-out forwards;
-    }
-
-    .react-player {
-      animation: fadeOut 0ms linear forwards;
-      animation-delay: $shrinkTime + $splitTime + $pauseTime;
-    }
-
-    .curtain-left,
-    .curtain-right {
-      &:before {
-        animation: fadeIn 0ms ease-in forwards;
-        animation-delay: $shrinkTime + $splitTime + $pauseTime;
-      }
-
-      &:after {
-        animation: pageSplitter $splitTime linear forwards;
-        animation-delay: $shrinkTime / 2;
-      }
-    }
-
-    .curtain-left {
-      animation: curtainLeft $curtainTime running forwards;
-      animation-delay: $shrinkTime + $splitTime + $pauseTime;
-    }
-
-    .curtain-right {
-      animation: curtainRight $curtainTime running forwards;
-      animation-delay: $shrinkTime + $splitTime + $pauseTime;
-    }
-
-    .curtain-behind {
-      animation: zoomIn $zoomTime linear forwards;
-      animation-delay: $shrinkTime + $splitTime + $pauseTime;
-      opacity: 1;
-    }
-  }
-
-  &.horizontal {
-    $splitter_width: 6px;
-
-    .splitter {
-      left: 50%;
-      height: $splitter_width / 2;
-      width: 0;
-      z-index: 0;
-      background-color: $splitter_color;
-    }
-
-    .curtain-left {
-      top: -60%;
-      left: 0;
-
-      &:before {
-        background: url($CDN_URL + "/images/coming-soon/cs-curtain-up.png")
-          no-repeat bottom center;
-      }
-
-      &:after {
-        top: 100%;
-      }
-    }
-
-    .curtain-right {
-      top: 40%;
-      left: 0;
-
-      &:before {
-        background: url($CDN_URL + "/images/coming-soon/cs-curtain-down.png")
-          no-repeat top center;
-      }
-
-      &:after {
-        top: 0;
-      }
-    }
-
-    &.transition-out {
-      //.button, .password-box {
-      //  animation: shrinkMoveAndDisappear $shrinkTime ease-out forwards;
-      //}
-
-      .curtain-left,
-      .curtain-right {
-        &:after {
-          animation: horizontalPageSplitter $splitTime linear forwards;
-          animation-delay: $shrinkTime / 2;
-        }
-      }
-
-      .curtain-left {
-        animation: curtainUp $curtainTime running forwards;
-        animation-delay: $shrinkTime + $splitTime + $pauseTime;
-      }
-
-      .curtain-right {
-        animation: curtainDown $curtainTime running forwards;
-        animation-delay: $shrinkTime + $splitTime + $pauseTime;
-      }
-    }
-  }
-
-  @keyframes shrinkAndDisappear {
-    0% {
-      transform: translateX(-50%) scale(1);
-    }
-    100% {
-      transform: translateX(-50%) scale(0);
-    }
-  }
-
-  @keyframes shrinkMoveAndDisappear {
-    0% {
-      transform: translate(-50%, -50%) scale(1);
-      top: 80%;
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(0);
-      top: 40%;
-    }
-  }
-
-  @keyframes pageSplitter {
-    0% {
-      top: 80%;
-      height: 0;
-    }
-    100% {
-      top: var(--header-height);
-      height: 100%;
-    }
-  }
-
-  @keyframes horizontalPageSplitter {
-    0% {
-      left: 50%;
-      width: 0;
-    }
-    100% {
-      left: 0;
-      width: 100%;
-    }
-  }
-
-  @keyframes zoomIn {
-    0% {
-      transform: scale(0.9);
-    }
-
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  @keyframes curtainLeft {
-    0% {
-      left: -50%;
-    }
-    100% {
-      left: -150%;
-    }
-  }
-
-  @keyframes curtainRight {
-    0% {
-      left: 50%;
-    }
-    100% {
-      left: 150%;
-    }
-  }
-
-  @keyframes curtainUp {
-    0% {
-      top: -60%;
-    }
-    3% {
-      top: -61%;
-    }
-    6% {
-      top: -62.5%;
-    }
-    9% {
-      top: -64.5%;
-    }
-    100% {
-      top: -120%;
-    }
-  }
-
-  @keyframes curtainDown {
-    0% {
-      top: 40%;
-    }
-    3% {
-      top: 39%;
-    }
-    6% {
-      top: 37.5%;
-    }
-    9% {
-      top: 35.5%;
-    }
-    100% {
-      top: 140%;
     }
   }
 }
