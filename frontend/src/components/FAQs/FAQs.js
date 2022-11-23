@@ -4,6 +4,8 @@ import { Collapse } from "react-collapse";
 import map from "lodash/map";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Button from "components/Button";
+import classNames from "classnames";
 
 const FAQS = {
   "The Digital": [
@@ -230,7 +232,7 @@ const FAQGroup = ({ faqs, groupName }) => {
   return (
     <>
       <div className="secondary-text">{groupName}</div>
-      <div className="faqs">
+      <div className="faq-items">
         {map(faqs, (faq) => (
           <FAQ key={`faq-${groupName}-${faq.title}`} {...faq} />
         ))}
@@ -239,14 +241,32 @@ const FAQGroup = ({ faqs, groupName }) => {
   );
 };
 
-const FAQs = () => {
-  return map(FAQS, (faqs, groupName) => (
-    <FAQGroup
-      key={`faq-group-${groupName}`}
-      faqs={faqs}
-      groupName={groupName}
-    />
-  ));
+const FAQs = ({ onToggle }) => {
+  const [expanded, setExpanded] = useState(false)
+
+  const toggle = () => {
+    onToggle && onToggle(!expanded)
+    setExpanded(!expanded)
+  }
+
+  return (
+    <div className={classNames("faqs", { expanded, collapsed: !expanded })}>
+      <div className="faq-groups">
+        {map(FAQS, (faqs, groupName) => (
+          <FAQGroup
+            key={`faq-group-${groupName}`}
+            faqs={faqs}
+            groupName={groupName}
+          />
+        ))}
+      </div>
+      <div className="text-center">
+        <Button className="transparent" onClick={toggle} sfx="utility">
+          {expanded ? "SHOW LESS" : "LOAD MORE"}
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default FAQs;

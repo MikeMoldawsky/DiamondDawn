@@ -1,6 +1,15 @@
 @import "css/varsNEW";
 
 .faqs {
+
+  .secondary-text {
+    margin-top: 1em;
+  }
+
+  .faq-groups {
+    overflow: hidden;
+  }
+
   .faq-item {
     padding: 1.5em 0;
     border-bottom: solid 1px white;
@@ -21,5 +30,57 @@
 
   .ReactCollapse--content {
     padding: 0 1em 0 2em;
+  }
+
+  .button {
+    display: inline-block;
+    margin-top: 2em;
+  }
+
+  &.collapsed {
+    .faq-groups {
+      height: 14em;
+      animation: collapse .25s ease-out forwards;
+    }
+
+    .text-center {
+      background-color: black;
+      margin-top: -6em;
+      padding-top: 7em;
+      -webkit-mask-image: -webkit-gradient(linear, left top, left 80%, from(rgba(0, 0, 0, 0)), to(rgb(0, 0, 0)));
+    }
+
+    .button {
+      margin-top: -2em;
+    }
+  }
+
+  &.expanded {
+    .faq-groups {
+      animation: expand .25s ease-out forwards;
+    }
+    .faq-items {
+    }
+  }
+
+  $collapsed: 18em;
+  $expanded: 111em;
+
+  @keyframes expand {
+    0% {
+      height: $collapsed;
+    }
+    100% {
+      height: $expanded;
+    }
+  }
+
+  @keyframes collapse {
+    0% {
+      height: $expanded;
+    }
+    100% {
+      height: $collapsed;
+    }
   }
 }
