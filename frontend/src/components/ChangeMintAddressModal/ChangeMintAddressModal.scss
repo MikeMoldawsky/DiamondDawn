@@ -1,7 +1,7 @@
 @import "css/varsNEW";
 
 .modal.change-address-modal {
-  width: 40em;
+  min-width: 40em;
   transform: translate(-50%, -56%);
 
   .modal-inner {
