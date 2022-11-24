@@ -1,5 +1,8 @@
 import React from "react";
 import { getCDNImageUrl } from "utils";
+import CTAButton from "components/CTAButton";
+import Countdown from "components/Countdown";
+import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 
 export const TheJourneyMainText = () => (
   <div className="text">
@@ -38,7 +41,7 @@ export const TheJourneyMainText = () => (
 export const TheJourneyText = () => (
   <div className="text">
     <p>
-      Diamond Dawn project is <b>entirely on-chain</b> - we do NOT hold your
+      Diamond Dawn project is <b>100% decentralized</b> - we do NOT hold your
       NFTs on a centralized server.
     </p>
     <p>
@@ -55,7 +58,8 @@ export const Step0Text = () => (
   <div className="text">
     <p>
       If your are accepted to Diamond Dawn, you'll have exactly{" "}
-      <b>3 days, 3 hours, and 3 minutes</b> to activate your key for 3.33 $ETH.
+      <b>3 days, 3 hours, and 3 minutes</b> to activate your key (mint) for 3.33
+      $ETH.
     </p>
     <p>
       The key grants you <b>full access</b> to the 4 steps of DD's journey,
@@ -65,14 +69,22 @@ export const Step0Text = () => (
       The application phase will automatically end when 333 participants
       activated their keys.
     </p>
+    <p>
+      <CTAButton className="gold sm" />
+    </p>
   </div>
 );
 
-export const Step1Text = () => (
-  <div className="text">
-    <p>Diamond Dawn's mine will open in 3 weeks, 3 days, and 3 hours.</p>
-  </div>
-);
+export const Step1Text = () => {
+  const countdownProps = useMineOpenCountdown();
+
+  return (
+    <div className="text">
+      <p>Diamond Dawn's mine will open in</p>
+      <Countdown align="left" {...countdownProps} />
+    </div>
+  );
+};
 
 export const Step2Text = () => null;
 

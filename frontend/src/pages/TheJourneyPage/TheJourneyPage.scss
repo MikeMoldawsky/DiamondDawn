@@ -134,6 +134,10 @@
         }
       }
 
+      .countdown {
+        font-size: $font10px;
+      }
+
       &.journey-desc {
         justify-content: flex-start;
 
@@ -159,14 +163,12 @@
         }
       }
 
-      &.step-1,
-      &.step-2,
-      &.step-3 {
+      &.step-1 {
         .image-side {
           .image {
             img,
             .react-player {
-              transform: translateY(-50%);
+              transform: translateY(-50%) rotate(75deg);
             }
           }
         }
@@ -179,6 +181,7 @@
             img,
             .react-player {
               max-width: 30%;
+              transform: translateY(-50%);
             }
           }
         }

@@ -5,7 +5,7 @@ const { getOrCreateDDCollector } = require("./common");
 const MAX_INVITES_FOR_COLLECTOR = 2;
 const DD_TWITTER_HANDLE = "@DiamondDawnNFT";
 
-async function createInvitation(createdBy, note) {
+async function createInvitation(createdBy, note, overrideInviter) {
   let inviter = await Collector.findById(createdBy);
 
   let inviterInvitations = await Invitation.count({ createdBy });
@@ -21,7 +21,11 @@ async function createInvitation(createdBy, note) {
     inviter = await getOrCreateDDCollector();
   }
 
-  const invitation = new Invitation({ createdBy: inviter, note });
+  const invitation = new Invitation({
+    createdBy: inviter,
+    note,
+    inviter: overrideInviter,
+  });
   return invitation.save();
 }
 

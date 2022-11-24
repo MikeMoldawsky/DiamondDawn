@@ -19,12 +19,14 @@ import {
 import AnimatedText from "components/AnimatedText/AnimatedText";
 import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
-import PageLoader from "components/PageLoader";
+import Page from "containers/Page";
 import PageSizeLimit from "components/PageSizeLimit";
 import Button from "components/Button";
-import TeaserVideo from "components/TeaserVideo";
+import VideoBackground from "components/VideoBackground";
+import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 
 const Homepage = () => {
+  const countdownProps = useMineOpenCountdown();
   const dispatch = useDispatch();
   const { scroll } = useSelector(uiSelector);
   const { height } = useWindowDimensions();
@@ -49,10 +51,10 @@ const Homepage = () => {
 
   return (
     <PageSizeLimit>
-      <PageLoader
+      <Page
         pageName="homepage"
         images={[
-          getCDNImageUrl("/homepage/sky.png"),
+          getCDNImageUrl("/homepage/sky.jpg"),
           getCDNImageUrl("/homepage/homepage-mountains-back.png"),
           getCDNImageUrl("/homepage/homepage-mountains-front.png"),
         ]}
@@ -70,10 +72,7 @@ const Homepage = () => {
                 </div>
                 <div className="countdown-container">
                   <div className="text">MINE WILL OPEN IN</div>
-                  <Countdown
-                    customMode
-                    parts={{ days: 24, hours: 3, minutes: 0, seconds: 0 }}
-                  />
+                  <Countdown {...countdownProps} />
                 </div>
                 <div>
                   <Button
@@ -110,11 +109,11 @@ const Homepage = () => {
                 </AnimatedText>
               </div>
             </div>
-            <TeaserVideo src="teaser-short.mp4" overlap="-35%" />
+            <VideoBackground src="teaser-short.mp4" overlap="-35%" />
             <Footer />
           </div>
         </ScrollingPage>
-      </PageLoader>
+      </Page>
     </PageSizeLimit>
   );
 };

@@ -1,17 +1,30 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 import "./PasswordBox.scss";
 import { privateSaleAuthApi } from "api/serverApi";
 import map from "lodash/map";
 import ActionButton from "components/ActionButton";
 import useActionDispatch from "hooks/useActionDispatch";
+import useSound from "use-sound";
+import deepSFX from "assets/audio/button3-press-deep.mp3";
 
-const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
+const PasswordBox = ({
+  inviteId,
+  onCorrect,
+  passwordLength,
+  buttonText,
+  autoFill,
+}) => {
   const [password, setPassword] = useState("");
   const pwdInput = useRef(null);
   const [checkingPassword, setCheckingPassword] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const actionDispatch = useActionDispatch();
+  const [playSubmit] = useSound(deepSFX);
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    setPassword(autoFill ? "12345678" : "");
+  }, [autoFill]);
 
   const submitPassword = async () => {
     if (passwordLength !== password.length) return;
@@ -21,7 +34,7 @@ const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
     const isCorrect = await privateSaleAuthApi(password, inviteId);
     setCheckingPassword(false);
 
-    if (isCorrect) {
+    if (autoFill || isCorrect) {
       onCorrect();
     } else {
       setPasswordError(true);
@@ -38,12 +51,13 @@ const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
     setPassword(pwd);
   };
 
-  // const onPasswordEnter = (e) => {
-  //   if (e.charCode === 13) {
-  //     // enter key
-  //     submitPassword();
-  //   }
-  // };
+  const onPasswordEnter = (e) => {
+    if (e.charCode === 13) {
+      // enter key
+      playSubmit();
+      submitPassword();
+    }
+  };
 
   return (
     <div
@@ -52,15 +66,17 @@ const PasswordBox = ({ inviteId, onCorrect, passwordLength, buttonText }) => {
         "has-error": passwordError,
       })}
     >
-      <div className="input-container">
+      <div className={classNames("input-container", { focused: isFocused })}>
         <input
           ref={pwdInput}
           type="password"
           autoFocus
           value={password}
           onChange={onPasswordChange}
-          // onKeyPress={onPasswordEnter}
+          onKeyPress={onPasswordEnter}
           maxLength={passwordLength}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
         <div className="underscore">
           {map(new Array(passwordLength), (v, i) => (

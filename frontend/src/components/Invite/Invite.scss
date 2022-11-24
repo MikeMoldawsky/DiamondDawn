@@ -14,8 +14,22 @@
       padding: 0.5em;
 
       .react-player {
+        background-color: black;
         width: 100%;
         height: 100%;
+
+        &.loader {
+          padding: 0 15%;
+        }
+      }
+
+      .loader-container {
+        position: absolute;
+        top: 0.5em;
+        right: 0.5em;
+        bottom: 0.5em;
+        left: 0.5em;
+        height: auto;
       }
     }
 
@@ -49,6 +63,10 @@
           padding-right: 2em;
           margin-left: 2em;
         }
+      }
+
+      .bottom-content {
+        width: 100%;
       }
 
       .request-form {
@@ -109,6 +127,19 @@
 
           path {
             fill: $gold;
+          }
+        }
+
+        &.change-address-modal {
+          left: -3em;
+
+          .modal-content {
+            text-align: unset;
+          }
+
+          form .input-container .label {
+            background-color: #414141;
+            top: -0.2em;
           }
         }
       }

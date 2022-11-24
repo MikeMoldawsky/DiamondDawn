@@ -904,8 +904,8 @@ const TNCPage = () => (
             </p>
           </div>
         </div>
-        <Footer />
       </div>
+      <Footer />
     </div>
   </PageSizeLimit>
 );

@@ -1,0 +1,39 @@
+@import "css/varsNEW";
+
+.page.credits-page {
+  color: white;
+
+  .inner-page {
+    width: 22em;
+    min-height: 70%;
+  }
+
+  a {
+    font-weight: 700;
+  }
+
+  h1 {
+    margin: 0.8em 0;
+    line-height: 1.4em;
+    text-align: left;
+  }
+
+  .credits-category {
+    margin-top: 2em;
+
+    .category-name {
+      opacity: 0.8;
+      font-size: $font14px;
+    }
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+
+    .footer-inner {
+      padding-top: 6rem;
+    }
+  }
+}

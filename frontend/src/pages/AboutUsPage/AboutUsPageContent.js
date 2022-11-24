@@ -9,8 +9,8 @@ export const AboutUsText = () => (
       various fields who share a common set of values.
     </p>
     <p>
-      We all believe that <b>decentralization</b> is key to the Internet’s
-      survival.
+      We all believe that <b>decentralization</b> is the key to a better future
+      and the survival of our society.
     </p>
     <p>
       We look forward to the day when the robust technology behind Web3 and NFTs
@@ -84,7 +84,7 @@ export const IRLImpactText = () => (
       </p>
       <div className="gia-report">
         <img src={getCDNImageUrl("gia-report.jpeg")} alt="" />
-        <div className="image-caption">A GIA Report at the end of 2022</div>
+        <div className="image-caption">A GIA Report</div>
       </div>
       <p>
         These “simple” breakthroughs will impact every part of every process,
@@ -134,11 +134,13 @@ export const DigitalValueText = () => (
 export const MikeText = () => (
   <p>
     An entrepreneur and early adopter by nature, Mike foresaw the immense power
-    behind web3’s disruptive tech several years ago. He has since left his
-    position at Palantir R&D to pursue his passion for decentralized technology.
-    His projects aim to push the technology forward to a state where it creates
-    a REAL-LIFE impact for society at large.
-    <br /> Mike holds a BSc in Computer Science from Tel Aviv University.
+    behind web3’s disruptive tech several years ago.
+    <br />
+    He has since left his position at Palantir R&D to pursue his passion for
+    decentralized technology. His projects aim to push the technology forward to
+    a state where it creates a REAL-LIFE impact for society at large.
+    <br />
+    Mike holds a BSc in Computer Science from Tel Aviv University.
   </p>
 );
 
@@ -163,11 +165,9 @@ export const DavidText = () => (
 
 export const TonyText = () => (
   <p>
-    Tony is an immigrant activist turned entrepreneur in the cryptocurrency,
-    blockchain, and NFT space. Founding member of{" "}
-    <Link href="http://galaxis.xyz">http://galaxis.xyz</Link> (formerly Ether
-    Cards). A founding member of several DAOs dedicated to the metaverse
-    including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
+    An immigrant activist turned entrepreneur in the cryptocurrency, blockchain,
+    and NFT space. Tony is a founding member of Galaxis (formerly Ether Cards)
+    and of several web3 DAOs, including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
   </p>
 );
 
@@ -188,8 +188,8 @@ export const AsafText = () => (
     A front-end developer for over 15 years. Asaf discovered the world of
     blockchain technology 3 years ago and has worked exclusively on web3
     projects. Asaf lives and breathes crypto and is an active member of several
-    DAOs (decentralized autonomous organizations). He believes that
-    decentralization is the key to the Internet’s survival and insists that
-    music and art set us apart and make us shine as a species.
+    DAOs. He believes that decentralization is the key to the Internet’s
+    survival and insists that music and art set us apart and make us shine as a
+    species.
   </p>
 );

@@ -19,10 +19,10 @@ const TheJourneyPage = () => {
     <InfoPage
       className="the-journey-page"
       teaser={{ src: "teaser_physical.mp4", overlap: "-25%" }}
-      withFAQ
+      // withFAQ
     >
       <div className="general">
-        <div className="leading-text">About Diamond Dawn</div>
+        <div className="leading-text">THE JOURNEY</div>
         <TheJourneyMainText />
       </div>
       <div
@@ -32,7 +32,7 @@ const TheJourneyPage = () => {
         <div className="center-aligned-row journey-row journey-desc">
           <div className="image-side" />
           <div className="text-side">
-            <div className="leading-text">THE JOURNEY</div>
+            <div className="leading-text">THE STEPS</div>
             <TheJourneyText />
           </div>
         </div>

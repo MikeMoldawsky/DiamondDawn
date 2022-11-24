@@ -20,13 +20,14 @@ async function getCollectorObjectById(collectorId) {
     if (!collector) return null;
 
     if (
-      collector.mintWindowOpen &&
+      collector.mintWindowStart &&
       process.env.REACT_APP_INVITE_TTL_SECONDS > 0
     ) {
-      collector.mintWindowClose = add(collector.mintWindowOpen, {
+      collector.mintWindowClose = add(collector.mintWindowStart, {
         seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
       });
 
+      console.log("getCollectorObjectById", collector);
       if (collector.minted || collector.mintWindowClose < new Date()) {
         collector.mintClosed = true;
       }
@@ -49,7 +50,7 @@ function validateAddress(address) {
   }
 }
 
-function validateCollector(collector, address) {
+function validateCollector(collector, address, requireApproved = true) {
   if (!collector) {
     throw new Error("Collector not found");
   }
@@ -59,7 +60,7 @@ function validateCollector(collector, address) {
   if (collector.minted) {
     throw new Error("collector already minted");
   }
-  if (!collector.approved) {
+  if (requireApproved && !collector.approved) {
     throw new Error("Collector pending approval");
   }
 }
@@ -112,7 +113,7 @@ async function openMintWindow(collectorId, address) {
     }
   );
 
-  return await collector(collectorId);
+  return await getCollectorObjectById(collectorId);
 }
 
 async function signMint(collectorId, address) {
@@ -135,6 +136,25 @@ async function confirmMinted(collectorId, address) {
   return await getCollectorObjectById(collectorId);
 }
 
+async function changeMintAddress(collectorId, address, newAddress) {
+  validateAddress(address);
+  const collector = await getCollectorObjectById(collectorId);
+  validateCollector(collector, address, false);
+  const newAddressCollector = await Collector.findOne({ address: newAddress });
+  if (newAddressCollector) {
+    throw new Error("Address already registered");
+  }
+
+  await Collector.findOneAndUpdate(
+    { _id: collectorId },
+    {
+      address: newAddress,
+    }
+  );
+
+  return await getCollectorObjectById(collectorId);
+}
+
 module.exports = {
   getCollectorById: getCollectorObjectById,
   getCollectorByAddress,
@@ -143,4 +163,5 @@ module.exports = {
   openMintWindow,
   signMint,
   confirmMinted,
+  changeMintAddress,
 };

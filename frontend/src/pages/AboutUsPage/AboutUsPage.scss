@@ -56,7 +56,7 @@
           flex-grow: 2;
           border: solid 1px $border_opaque;
           background-color: $box_bg;
-          padding: 1em 1.5em 6em;
+          padding: 1em 1.5em 5em;
           position: relative;
 
           p {
@@ -74,11 +74,11 @@
           justify-content: flex-end;
           position: absolute;
           bottom: 1em;
-          right: 1em;
+          left: 1em;
 
           svg {
-            width: 3em;
-            height: 2em;
+            width: 2em;
+            height: 1.2em;
           }
         }
       }

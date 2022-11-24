@@ -83,6 +83,19 @@ export const confirmMintedApi = async (collectorId, address) => {
   return res.data;
 };
 
+export const changeMintAddressApi = async (
+  collectorId,
+  address,
+  newAddress
+) => {
+  const res = await axios.post(`/api/change_mint_address`, {
+    collectorId,
+    address,
+    newAddress,
+  });
+  return res.data;
+};
+
 export const generateInvitationsApi = async (collectorId) => {
   const res = await axios.post(`/api/generate_invitations`, { collectorId });
   return res.data;

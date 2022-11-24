@@ -8,7 +8,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { CollectorLink } from "components/Links";
 
 const InvitedModal = ({ close, invite }) => {
-  const { createdBy: inviter } = invite;
+  const { createdBy, inviter } = invite;
 
   return (
     <Modal className="invited-modal" close={close} implicitClose withCloseBtn>
@@ -18,7 +18,8 @@ const InvitedModal = ({ close, invite }) => {
         </div>
         <div className="leading-text">CONGRATULATIONS</div>
         <div className="text">
-          You’ve been invited by <CollectorLink collector={inviter} /> to
+          You’ve been invited by{" "}
+          <CollectorLink collector={createdBy} twitter={inviter} /> to
           participate in Diamond Dawn’s private sale.
         </div>
         <div className="text">

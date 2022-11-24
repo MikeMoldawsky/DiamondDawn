@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
-import MainLayout from "containers/MainLayout";
+import App from "containers/App";
 import { Provider } from "react-redux";
 import { makeStore } from "store/makeStore";
 import { inject } from "@vercel/analytics";
@@ -11,7 +11,7 @@ let store = makeStore();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <MainLayout />
+    <App />
   </Provider>
 );
 

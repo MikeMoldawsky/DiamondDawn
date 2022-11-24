@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./Invite.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
@@ -8,19 +8,21 @@ import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import Loading from "components/Loading";
-import EnterMine from "pages/ProcessPage/EnterMine";
+import MintKey from "components/MintKey";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import ReactPlayer from "react-player";
 import { getCDNVideoUrl } from "utils";
 import {
   collectorSelector,
   loadCollectorByAddress,
   openMintWindow,
 } from "store/collectorReducer";
-import Button from "components/Button";
 import { TwitterLink } from "components/Links";
+import InlineVideo from "components/VideoPlayer/InlineVideo";
+import useSound from "use-sound";
+import sparklesSFX from "assets/audio/end-sparkles.mp3";
+import MintAddressRow from "components/MintAddressRow";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -32,17 +34,30 @@ const Invite = () => {
     isActionFirstCompleteSelector("get-collector-by-address")
   );
 
+  const [submitting, setSubmitting] = useState(false);
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
+  const [playSparklesSFX] = useSound(sparklesSFX);
 
   const loadInvite = async () => invite && dispatch(loadInviteById(invite._id));
   const loadCollector = async (address) =>
     dispatch(loadCollectorByAddress(address));
 
+  const onSubmit = () => setSubmitting(true);
+
   const onSubmitSuccess = () => {
-    setShowSubmittedModal(true);
     loadCollector(account.address);
     loadInvite();
   };
+
+  const onSubmitError = () => setSubmitting(false);
+
+  useEffect(() => {
+    if (submitting && collector?._id) {
+      setSubmitting(false);
+      setShowSubmittedModal(true);
+      playSparklesSFX();
+    }
+  }, [submitting, collector?._id]);
 
   useEffect(() => {
     if (
@@ -54,6 +69,15 @@ const Invite = () => {
     }
   }, [systemStage, collector?.approved, collector?.mintWindowStart]);
 
+  const videoSrc = getCDNVideoUrl(
+    collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"
+  );
+
+  const renderInlineVideo = useCallback(
+    () => <InlineVideo src={videoSrc} />,
+    [videoSrc]
+  );
+
   if (systemStage > SYSTEM_STAGE.KEY) return null;
 
   if (!isCollectorFetched)
@@ -62,6 +86,16 @@ const Invite = () => {
         <Loading />
       </div>
     );
+
+  if (collector?.mintClosed) {
+    return (
+      <div className="box-content opaque">
+        <div className="center-center-aligned-row secondary-text">
+          Invitation Expired
+        </div>
+      </div>
+    );
+  }
 
   if (collector?.minted)
     return (
@@ -75,27 +109,14 @@ const Invite = () => {
   if (collector?.approved)
     return (
       <div className="box-content approved">
-        <EnterMine />
+        <MintKey />
       </div>
     );
 
   return (
     <div className="box-content opaque invite-view">
       <div className="layout-box">
-        <div className="image-box">
-          <ReactPlayer
-            url={getCDNVideoUrl(
-              collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"
-            )}
-            playing
-            playsinline
-            controls={false}
-            className="react-player"
-            loop
-            width="100%"
-            height="100%"
-          />
-        </div>
+        <div className="image-box">{renderInlineVideo()}</div>
 
         <div className="content-box">
           {collector ? (
@@ -106,24 +127,27 @@ const Invite = () => {
                 <div className="text-comment">
                   If you're accepted to Diamond Dawn, you'll have exactly
                   <b> 3 days, 3 hours, and 3 minutes</b> to activate your key
-                  for 3.33 $ETH.
+                  (mint) for 3.33 $ETH.
                 </div>
               </div>
               {!showSubmittedModal && (
-                <div className="center-aligned-row follow-box">
-                  <div className="follow-text">
-                    <b>
-                      Make sure to follow request{" "}
-                      <TwitterLink className="text-gold">
-                        <b>@DiamondDawnNFT</b>
-                      </TwitterLink>
-                    </b>
-                    <br />
-                    We’ll send you a Twitter DM if you are accepted.
+                <div className="center-spaced-column bottom-content">
+                  <div className="center-aligned-row follow-box">
+                    <div className="follow-text">
+                      <b>
+                        Make sure to follow request{" "}
+                        <TwitterLink className="text-gold">
+                          <b>@DiamondDawnNFT</b>
+                        </TwitterLink>
+                      </b>
+                      <br />
+                      We’ll send you a Twitter DM if you are accepted.
+                    </div>
+                    <TwitterLink className="button gold icon-after">
+                      Follow <FontAwesomeIcon icon={faTwitter} />
+                    </TwitterLink>
                   </div>
-                  <TwitterLink className="button gold icon-after">
-                    Follow <FontAwesomeIcon icon={faTwitter} />
-                  </TwitterLink>
+                  <MintAddressRow />
                 </div>
               )}
             </div>
@@ -131,7 +155,12 @@ const Invite = () => {
             <>
               <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
               <div className="text">Please fill the details below</div>
-              <ApplyForm onSuccess={onSubmitSuccess} />
+              <ApplyForm
+                disabled={submitting}
+                onSubmit={onSubmit}
+                onSuccess={onSubmitSuccess}
+                onError={onSubmitError}
+              />
             </>
           )}
           {showSubmittedModal && (

@@ -31,11 +31,12 @@ const HomeBackground = () => {
         }}
       />
       <div
-        className="bg stars"
+        className="bg black-box"
         style={{
           transform: `translate3D(0px, -${scroll * parallaxRef}px, 0px)`,
         }}
       />
+      <div className="bg stars" />
     </div>
   );
 };

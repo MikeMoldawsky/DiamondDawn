@@ -6,15 +6,18 @@
 
   .mine-background {
     .walls {
-      top: 3%;
+      top: 3.5%;
       background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left
         top;
       background-size: 100%;
+      //background: url("../../assets/images/2_ABOUT_WALLS_MIDGROUND_001.png") no-repeat center top;
+      //background-size: 120%;
+      //top: 11%;
     }
 
     .cave {
-      background: url($CDN_URL + "/images/about/cave.png") no-repeat 28% top;
-      background-size: 130%;
+      background: url($CDN_URL + "/images/about/cave.png") no-repeat 155% top;
+      background-size: 72%;
       z-index: -2;
     }
   }
@@ -54,31 +57,6 @@
 
     .secondary-text {
       margin: 1em 0 0;
-    }
-  }
-
-  .faq {
-    width: 100%;
-    margin: -2em auto 5em;
-    padding: 10em 15% 0;
-    z-index: 1;
-    position: relative;
-    background-color: black;
-    -webkit-mask-image: -webkit-gradient(
-      linear,
-      left top,
-      left 5%,
-      from(rgba(0, 0, 0, 0)),
-      to(rgba(0, 0, 0, 1))
-    );
-
-    .leading-text {
-      text-align: center;
-      margin-top: 0;
-    }
-
-    .secondary-text {
-      margin-top: 1.8em;
     }
   }
 }

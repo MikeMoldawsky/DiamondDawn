@@ -16,7 +16,7 @@ import { showError } from "utils";
 import useSound from "use-sound";
 import sparklesSFX from "assets/audio/end-sparkles.mp3";
 
-const ApplyForm = ({ onSuccess }) => {
+const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const {
     register,
@@ -55,7 +55,7 @@ const ApplyForm = ({ onSuccess }) => {
           onChange: clearErrors,
           ...opts,
         })}
-        disabled={isSubmitting}
+        disabled={disabled}
         placeholder={placeholder}
         className={classNames("input", {
           "validation-error": hasError || isRequiredError,
@@ -73,12 +73,13 @@ const ApplyForm = ({ onSuccess }) => {
       return;
     }
     try {
+      onSubmit && onSubmit();
       await applyToDDApi(invite._id, account.address, data);
-      playSparklesSFX();
       onSuccess && (await onSuccess());
       setIsSubmitSuccess(true);
     } catch (e) {
       showError(e, "Apply Failed");
+      onError && onError();
     }
   };
 
@@ -87,7 +88,7 @@ const ApplyForm = ({ onSuccess }) => {
       <form>
         <div className="center-aligned-row address-row">
           <div className="input-container">
-            <div className="label">Ethereum Address</div>
+            <div className="label">Minting Address</div>
             <input
               type="text"
               className="input full-width"
@@ -100,20 +101,20 @@ const ApplyForm = ({ onSuccess }) => {
         <div className="center-aligned-row inputs-row">
           <div className="input-container">
             <div className="label">Twitter Handle</div>
-            {renderInput("twitter", "@example", {
+            {renderInput("twitter", "@diamond", {
               required: false,
               pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
             })}
           </div>
           <div className="input-container">
-            <div className="label">E-Mail</div>
-            {renderInput("email", "email@example.com", {
+            <div className="label">Email</div>
+            {renderInput("email", "diamond@gmail.com", {
               required: false,
               pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
             })}
           </div>
         </div>
-        <div className="center-start-aligned-row checkbox">
+        <div className="left-center-aligned-row checkbox">
           <Checkbox
             register={register}
             watch={watch}
@@ -127,7 +128,7 @@ const ApplyForm = ({ onSuccess }) => {
           <div className="label">Reason</div>
           <textarea
             {...register("note")}
-            disabled={isSubmitting}
+            disabled={disabled}
             className="input"
             placeholder="Why are you a good fit for Diamond Dawn? (optional)"
           />
@@ -136,7 +137,7 @@ const ApplyForm = ({ onSuccess }) => {
           actionKey="Request Invitation"
           className="gold"
           onClick={handleSubmit(applyToDD)}
-          disabled={!isDirty || !isEmpty(errors) || isRequiredError}
+          disabled={disabled || !isDirty || !isEmpty(errors) || isRequiredError}
           sfx="action"
         >
           SUBMIT

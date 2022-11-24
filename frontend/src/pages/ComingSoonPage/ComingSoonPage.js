@@ -8,18 +8,20 @@ import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import classNames from "classnames";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useMusic from "hooks/useMusic";
-import PageLoader from "components/PageLoader";
+import Page from "containers/Page";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import InvitedModal from "components/InvitedModal/InvitedModal";
 import { isActionSuccessSelector } from "store/actionStatusReducer";
-import { canAccessDDSelector } from "store/selectors";
 import { collectorSelector } from "store/collectorReducer";
 import { useAccount } from "wagmi";
-import Button from "components/Button";
+import useActionDispatch from "hooks/useActionDispatch";
+import usePermission from "hooks/usePermission";
+import InlineVideo from "components/VideoPlayer/InlineVideo";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
+  const actionDispatch = useActionDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const account = useAccount();
@@ -29,7 +31,7 @@ const ComingSoonPage = () => {
   const isCollectorFetched = useSelector(
     isActionSuccessSelector("get-collector-by-address")
   );
-  const canAccessDD = useSelector(canAccessDDSelector);
+  const canAccessDD = usePermission();
   const [pageReady, setPageReady] = useState(false);
   const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [startTransition, setStartTransition] = useState(false);
@@ -39,27 +41,27 @@ const ComingSoonPage = () => {
   const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
 
   useMusic("homepage.mp3");
-  // useMusic("coming-soon.mp3");
 
   useEffect(() => {
     if (inviteId) {
-      dispatch(loadInviteById(inviteId));
+      actionDispatch(loadInviteById(inviteId), "get-invite-by-id");
     }
   }, [inviteId]);
+
+  const isCollectorReady = !account?.address || isCollectorFetched;
 
   useEffect(() => {
     if (
       pageReady &&
+      isCollectorReady &&
       !canAccessDD &&
       invite &&
       !invite.usedBy &&
-      !invite.revoked &&
-      isCollectorFetched &&
-      !collector
+      !invite.revoked
     ) {
       setShowInvitedModal(true);
     }
-  }, [invite, isCollectorFetched, collector, pageReady]);
+  }, [invite, isCollectorReady, collector, pageReady]);
 
   const renderBgPlayer = useCallback(
     () => (
@@ -101,28 +103,8 @@ const ComingSoonPage = () => {
     transition();
   };
 
-  const renderEntrance = () => {
-    if (!isCollectorFetched && account?.address) return null;
-
-    if (canAccessDD)
-      return (
-        <Button className="transparent" onClick={transition} sfx="explore">
-          EXPLORE
-        </Button>
-      );
-
-    return (
-      <PasswordBox
-        inviteId={invite?._id}
-        onCorrect={onCorrectPassword}
-        passwordLength={8}
-        buttonText="EXPLORE"
-      />
-    );
-  };
-
   return (
-    <PageLoader
+    <Page
       pageName="coming-soon"
       requireAccess={false}
       images={[getCDNImageUrl("envelop-wings.png")]}
@@ -137,14 +119,26 @@ const ComingSoonPage = () => {
       >
         {renderBgPlayer()}
         <div className="center-aligned-column content">
+          <div className="project-title">
+            <InlineVideo
+              src={getCDNVideoUrl("animated-dd-text.webm")}
+              showThreshold={0}
+            />
+            <div className="private-sale">PRIVATE SALE</div>
+          </div>
           <div className="center-aligned-column">
-            <div className="leading-text">COMING SOON</div>
             <div className="secondary-text">
-              <div className="secondary-2">Physical or Digital</div>
+              <div className="secondary-lg">Physical or Digital</div>
               Which diamond will you choose?
             </div>
           </div>
-          {renderEntrance()}
+          <PasswordBox
+            autoFill={canAccessDD}
+            inviteId={invite?._id}
+            onCorrect={onCorrectPassword}
+            passwordLength={8}
+            buttonText="EXPLORE"
+          />
         </div>
         {showInvitedModal && (
           <InvitedModal
@@ -153,7 +147,7 @@ const ComingSoonPage = () => {
           />
         )}
       </div>
-    </PageLoader>
+    </Page>
   );
 };
 

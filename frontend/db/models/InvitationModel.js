@@ -9,6 +9,7 @@ const InvitationSchema = new mongoose.Schema({
   usedBy: { type: ObjectId, ref: "Collector" },
   revoked: { type: Boolean },
   note: { type: String },
+  inviter: { type: String },
 });
 
 const InvitationModel = db.model("Invitation", InvitationSchema);

@@ -102,3 +102,5 @@ export const DIAMOND_ANIMATION_MAPPING = {
     [SHAPE_NAME.CUSHION]: "diamond_dawn.mp4",
   },
 };
+
+export const PROCESS_GAS_LIMIT = 220000;

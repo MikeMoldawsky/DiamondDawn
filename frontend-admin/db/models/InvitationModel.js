@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const db = require("../db");
+require("./CollectorModel");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const InvitationSchema = new mongoose.Schema({
@@ -8,6 +9,7 @@ const InvitationSchema = new mongoose.Schema({
   usedBy: { type: ObjectId, ref: "Collector" },
   revoked: { type: Boolean },
   note: { type: String },
+  inviter: { type: String },
 });
 
 const InvitationModel = db.model("Invitation", InvitationSchema);

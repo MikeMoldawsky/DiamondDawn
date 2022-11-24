@@ -1,0 +1,36 @@
+@import "css/varsNEW";
+
+.social-icons {
+  .icon {
+    height: $font34px;
+
+    svg {
+      height: 100%;
+
+      &.fa-twitter {
+        height: 90%;
+        margin-top: 5%;
+      }
+
+      &.MuiSvgIcon-root {
+        width: unset;
+      }
+    }
+  }
+
+  a:not(:last-child) .icon {
+    padding-right: 1em;
+    margin-right: 0.6em;
+    position: relative;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0.3em;
+      bottom: 0.3em;
+      width: 1px;
+      right: 0;
+      background-color: white;
+    }
+  }
+}

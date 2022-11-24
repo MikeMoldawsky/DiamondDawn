@@ -1107,8 +1107,8 @@ const PrivacyPage = () => (
             </p>
           </div>
         </div>
-        <Footer />
       </div>
+      <Footer />
     </div>
   </PageSizeLimit>
 );
