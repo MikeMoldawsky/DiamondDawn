@@ -188,7 +188,6 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     }
 
     function isReady(Stage stage_) external view returns (bool) {
-        require(_msgSender() == diamondDawn || hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Only DD or admin");
         if (stage_ == Stage.NO_STAGE) return true;
         if (stage_ == Stage.COMPLETED) return true;
         if (stage_ == Stage.MINE && diamondCount != maxDiamonds) return false;

@@ -70,9 +70,9 @@ const FAQS = {
       title: "How long is a Diamond Dawn Step?",
       content: () => (
         <p>
-          Diamond Every step is exactly 3 weeks, 3 days and 3 hours long. <br />{" "}
-          An exception to that is the last step (The Final Choice), where you
-          need to choose between the physical and the digital worlds.
+          Every Diamond Dawn Step is exactly 3 weeks, 3 days and 3 hours long.{" "}
+          <br /> An exception to that is the last step (The Final Choice), where
+          you need to choose between the physical and the digital worlds.
         </p>
       ),
     },
