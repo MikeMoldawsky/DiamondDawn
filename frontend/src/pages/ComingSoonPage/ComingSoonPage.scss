@@ -11,36 +11,6 @@
   min-height: 500px;
   font-size: calc-font-size(11px);
 
-  .content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -10%);
-    //transform: translate(-50%, -47%);
-
-    .project-title {
-      font-size: $font80px;
-      margin-bottom: 2em;
-    }
-
-    .leading-text {
-      color: $gold;
-      font-size: $font54px;
-      margin-bottom: 0.2em;
-    }
-
-    .secondary-text {
-      color: white;
-      font-weight: 400;
-      font-size: $font30px;
-      line-height: 1.4em;
-    }
-
-    .password-box {
-      margin-top: 5em;
-    }
-  }
-
   .react-player {
     min-width: 102%;
     min-height: 104%;
@@ -56,6 +26,48 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+  }
+
+  .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -47%);
+
+    .project-title {
+      margin-bottom: 11em;
+
+      .react-player {
+        width: 56em;
+        opacity: 1;
+        height: 6em;
+        position: relative;
+        background-color: transparent;
+        margin-bottom: -2.4em;
+      }
+    }
+
+    .leading-text {
+      color: $gold;
+      font-size: $font22px;
+      font-weight: 500;
+    }
+
+    .secondary-text {
+      color: white;
+      font-weight: 400;
+      font-size: $font30px;
+      line-height: 1.4em;
+
+      .secondary-2 {
+        color: $gold;
+        font-size: 1.2em;
+      }
+    }
+
+    .password-box {
+      margin-top: 7em;
     }
   }
 }
