@@ -2,25 +2,20 @@
 
 .action-view.enter {
   height: 100%;
-  background: transparent url($CDN_URL + "/images/mint/mint-hand.png") -2px -2px
-    no-repeat padding-box;
-  background-size: 100%;
   color: white;
 
   .layout-box {
     height: 94%;
     position: relative;
     top: 6%;
-    padding: 0 6%;
+    padding: 0 6% 0 0;
     display: flex;
   }
 
   .image-box {
     width: 50%;
     position: relative;
-    padding: 10px;
-    background: url($CDN_URL + "/images/mint/mint-key.png") no-repeat 35% -10%;
-    background-size: 62%;
+    margin-top: -2.5em;
   }
 
   .content-box {
@@ -30,18 +25,12 @@
     justify-content: space-between;
   }
 
-  .right-box {
-    margin-left: -4%;
-  }
-
   .right-box-with-sep {
-    @extend .right-box;
     position: relative;
     border-bottom: solid 1px #ffffff22;
   }
 
   .congrats-box {
-    @extend .right-box;
     align-items: center;
     justify-content: flex-start;
 
@@ -54,7 +43,6 @@
 
   .mint-box {
     color: white;
-    @extend .right-box;
     position: relative;
     flex-grow: 2;
     padding: 0 1em 0 0;
@@ -101,7 +89,6 @@
   }
 
   .timer-box {
-    @extend .right-box;
     align-items: stretch;
     justify-content: space-evenly;
     padding: 1em 0 1em;
@@ -120,7 +107,6 @@
   }
 
   .invites-box {
-    @extend .right-box;
     border: solid 1px #ffffff22;
     background-color: #ffffff22;
     padding: 1em;
@@ -139,7 +125,6 @@
   .status-box {
     text-align: center;
     color: white;
-    @extend .right-box;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -151,7 +136,6 @@
   }
 
   .minting-address-row {
-    @extend .right-box;
     width: 104%;
     margin-top: 0;
     padding-right: 1em;

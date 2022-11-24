@@ -16,8 +16,12 @@ import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import PageSizeLimit from "components/PageSizeLimit";
 import NotConnected from "components/NotConnected";
+import useNoScrollView from "hooks/useNoScrollView";
 
 const CollectorPage = () => {
+
+  useNoScrollView()
+
   const tokens = useSelector(tokensSelector);
   const { systemStage } = useSelector(systemSelector);
   const account = useAccount();
