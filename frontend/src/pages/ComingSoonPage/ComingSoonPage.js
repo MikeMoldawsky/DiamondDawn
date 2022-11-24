@@ -124,11 +124,11 @@ const ComingSoonPage = () => {
               src={getCDNVideoUrl("animated-dd-text.webm")}
               showThreshold={0}
             />
-            <div className="leading-text">PRIVATE SALE</div>
+            <div className="private-sale">PRIVATE SALE</div>
           </div>
           <div className="center-aligned-column">
             <div className="secondary-text">
-              <div className="secondary-2">Physical or Digital</div>
+              <div className="secondary-lg">Physical or Digital</div>
               Which diamond will you choose?
             </div>
           </div>

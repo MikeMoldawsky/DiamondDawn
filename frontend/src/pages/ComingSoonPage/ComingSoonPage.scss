@@ -44,25 +44,25 @@
         height: 6em;
         position: relative;
         background-color: transparent;
-        margin-bottom: -2.4em;
+        margin-bottom: -2.5em;
       }
     }
 
-    .leading-text {
+    .private-sale {
       color: $gold;
-      font-size: $font22px;
+      font-size: $font16px;
       font-weight: 500;
     }
 
     .secondary-text {
-      color: white;
+      color: $gold;
       font-weight: 400;
       font-size: $font30px;
       line-height: 1.4em;
 
-      .secondary-2 {
-        color: $gold;
-        font-size: 1.2em;
+      .secondary-lg {
+        color: white;
+        font-size: 1.25em;
       }
     }
 
