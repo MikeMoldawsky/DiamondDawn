@@ -1,7 +1,6 @@
 @import "css/varsNEW";
 
 .faqs {
-
   .secondary-text {
     margin-top: 1em;
   }
@@ -40,14 +39,20 @@
   &.collapsed {
     .faq-groups {
       height: 14em;
-      animation: collapse .25s ease-out forwards;
+      animation: collapse 0.25s ease-out forwards;
     }
 
     .text-center {
       background-color: black;
       margin-top: -6em;
       padding-top: 7em;
-      -webkit-mask-image: -webkit-gradient(linear, left top, left 80%, from(rgba(0, 0, 0, 0)), to(rgb(0, 0, 0)));
+      -webkit-mask-image: -webkit-gradient(
+        linear,
+        left top,
+        left 80%,
+        from(rgba(0, 0, 0, 0)),
+        to(rgb(0, 0, 0))
+      );
     }
 
     .button {
@@ -57,7 +62,7 @@
 
   &.expanded {
     .faq-groups {
-      animation: expand .25s ease-out forwards;
+      animation: expand 0.25s ease-out forwards;
     }
     .faq-items {
     }

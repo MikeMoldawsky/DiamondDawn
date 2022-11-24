@@ -19,7 +19,7 @@ export const TwitterLink = ({ className, children }) => (
 
 export const CollectorLink = ({ className, collector, twitter }) => {
   if (!twitter && !collector?.twitter) return collectorDisplayName(collector);
-  const handle = twitter || collector.twitter
+  const handle = twitter || collector.twitter;
   const username = handle.startsWith("@") ? handle.substring(1) : handle;
   return (
     <Link

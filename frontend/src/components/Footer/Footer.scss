@@ -94,21 +94,21 @@ footer.footer {
 
   &.with-faqs {
     -webkit-mask-image: -webkit-gradient(
-                    linear,
-                    left top,
-                    left 4%,
-                    from(rgba(0, 0, 0, 0)),
-                    to(rgba(0, 0, 0, 1))
+      linear,
+      left top,
+      left 4%,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
     );
   }
 
   &.faqs-open {
     -webkit-mask-image: -webkit-gradient(
-                    linear,
-                    left top,
-                    left 2%,
-                    from(rgba(0, 0, 0, 0)),
-                    to(rgba(0, 0, 0, 1))
+      linear,
+      left top,
+      left 2%,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
     );
   }
 }

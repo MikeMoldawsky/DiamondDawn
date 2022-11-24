@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./MintAddressRow.scss";
 import { useAccount } from "wagmi";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -6,7 +6,7 @@ import ChangeMintAddressModal from "components/ChangeMintAddressModal/ChangeMint
 
 const MintAddressRow = () => {
   const account = useAccount();
-  const [modalOpen, setModalOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false);
 
   return account?.address ? (
     <>
@@ -16,7 +16,10 @@ const MintAddressRow = () => {
           <div className="address text-gold disabled">{account.address}</div>
         </div>
         <div className="center-aligned-column">
-          <div className="button link icon-after" onClick={() => setModalOpen(true)}>
+          <div
+            className="button link icon-after"
+            onClick={() => setModalOpen(true)}
+          >
             Change <ExitToAppIcon />
           </div>
         </div>

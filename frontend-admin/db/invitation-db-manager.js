@@ -21,7 +21,11 @@ async function createInvitation(createdBy, note, overrideInviter) {
     inviter = await getOrCreateDDCollector();
   }
 
-  const invitation = new Invitation({ createdBy: inviter, note, inviter: overrideInviter });
+  const invitation = new Invitation({
+    createdBy: inviter,
+    note,
+    inviter: overrideInviter,
+  });
   return invitation.save();
 }
 

@@ -140,9 +140,9 @@ async function changeMintAddress(collectorId, address, newAddress) {
   validateAddress(address);
   const collector = await getCollectorObjectById(collectorId);
   validateCollector(collector, address, false);
-  const newAddressCollector = await Collector.findOne({ address: newAddress })
+  const newAddressCollector = await Collector.findOne({ address: newAddress });
   if (newAddressCollector) {
-    throw new Error("Address already registered")
+    throw new Error("Address already registered");
   }
 
   await Collector.findOneAndUpdate(

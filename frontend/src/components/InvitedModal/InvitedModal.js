@@ -18,7 +18,8 @@ const InvitedModal = ({ close, invite }) => {
         </div>
         <div className="leading-text">CONGRATULATIONS</div>
         <div className="text">
-          You’ve been invited by <CollectorLink collector={createdBy} twitter={inviter} /> to
+          You’ve been invited by{" "}
+          <CollectorLink collector={createdBy} twitter={inviter} /> to
           participate in Diamond Dawn’s private sale.
         </div>
         <div className="text">

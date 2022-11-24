@@ -17,8 +17,7 @@ export const loadCollectorByAddress = (address) => async (dispatch) => {
   const collector = await getCollectorByAddressApi(address);
   if (!isEmpty(collector)) {
     dispatch(updateCollector(collector));
-  }
-  else {
+  } else {
     dispatch(clearCollector());
   }
 };

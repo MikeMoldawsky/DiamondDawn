@@ -120,7 +120,10 @@ const ComingSoonPage = () => {
         {renderBgPlayer()}
         <div className="center-aligned-column content">
           <div className="project-title">
-            <InlineVideo src={getCDNVideoUrl("animated-dd-text.webm")} showThreshold={0} />
+            <InlineVideo
+              src={getCDNVideoUrl("animated-dd-text.webm")}
+              showThreshold={0}
+            />
             <div className="leading-text">PRIVATE SALE</div>
           </div>
           <div className="center-aligned-column">

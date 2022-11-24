@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./Footer.scss";
 import { NavLink } from "react-router-dom";
 import Logo from "components/Logo";
@@ -9,17 +9,20 @@ import FAQs from "components/FAQs";
 import classNames from "classnames";
 
 const Footer = ({ withFAQs }) => {
-  const [isFAQsOpen, setIsFAQsOpen] = useState(false)
+  const [isFAQsOpen, setIsFAQsOpen] = useState(false);
 
   return (
-    <footer className={classNames("footer", { "with-faqs": withFAQs, "faqs-open": isFAQsOpen })}>
+    <footer
+      className={classNames("footer", {
+        "with-faqs": withFAQs,
+        "faqs-open": isFAQsOpen,
+      })}
+    >
       <div className="bg bg-footer" />
       {withFAQs && (
         <div className="faq-section">
-          <div className="leading-text">
-            FAQ
-          </div>
-          <FAQs onToggle={expanded => setIsFAQsOpen(expanded)} />
+          <div className="leading-text">FAQ</div>
+          <FAQs onToggle={(expanded) => setIsFAQsOpen(expanded)} />
         </div>
       )}
       <div className="stretch-center-aligned-row footer-inner">
@@ -60,7 +63,7 @@ const Footer = ({ withFAQs }) => {
         </div>
       </div>
     </footer>
-  )
+  );
 };
 
 export default Footer;

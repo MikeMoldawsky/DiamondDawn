@@ -242,12 +242,12 @@ const FAQGroup = ({ faqs, groupName }) => {
 };
 
 const FAQs = ({ onToggle }) => {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false);
 
   const toggle = () => {
-    onToggle && onToggle(!expanded)
-    setExpanded(!expanded)
-  }
+    onToggle && onToggle(!expanded);
+    setExpanded(!expanded);
+  };
 
   return (
     <div className={classNames("faqs", { expanded, collapsed: !expanded })}>
