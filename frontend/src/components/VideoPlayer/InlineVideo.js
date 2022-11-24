@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
 import WaitFor from "containers/WaitFor";
+import classNames from "classnames";
 
-const InlineVideo = ({ src, showThreshold = 0.5, ...props }) => {
+const InlineVideo = ({ className, src, showThreshold = 0.5, ...props }) => {
   const [videoProgress, setVideoProgress] = useState({});
 
   return (
@@ -14,7 +15,7 @@ const InlineVideo = ({ src, showThreshold = 0.5, ...props }) => {
         controls={false}
         muted
         loop
-        className="react-player"
+        className={classNames("react-player", className)}
         {...props}
         width=""
         height=""
