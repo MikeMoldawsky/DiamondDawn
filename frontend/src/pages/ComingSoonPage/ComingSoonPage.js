@@ -15,9 +15,9 @@ import InvitedModal from "components/InvitedModal/InvitedModal";
 import { isActionSuccessSelector } from "store/actionStatusReducer";
 import { collectorSelector } from "store/collectorReducer";
 import { useAccount } from "wagmi";
-import Button from "components/Button";
 import useActionDispatch from "hooks/useActionDispatch";
 import usePermission from "hooks/usePermission";
+import InlineVideo from "components/VideoPlayer/InlineVideo";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -119,8 +119,14 @@ const ComingSoonPage = () => {
       >
         {renderBgPlayer()}
         <div className="center-aligned-column content">
-          <div className="center-aligned-column">
+          <div className="project-title">
+            <InlineVideo
+              src={getCDNVideoUrl("animated-dd-text.webm")}
+              showThreshold={0}
+            />
             <div className="leading-text">PRIVATE SALE</div>
+          </div>
+          <div className="center-aligned-column">
             <div className="secondary-text">
               <div className="secondary-2">Physical or Digital</div>
               Which diamond will you choose?

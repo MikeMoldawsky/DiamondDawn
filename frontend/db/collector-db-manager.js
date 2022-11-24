@@ -50,7 +50,7 @@ function validateAddress(address) {
   }
 }
 
-function validateCollector(collector, address) {
+function validateCollector(collector, address, requireApproved = true) {
   if (!collector) {
     throw new Error("Collector not found");
   }
@@ -60,7 +60,7 @@ function validateCollector(collector, address) {
   if (collector.minted) {
     throw new Error("collector already minted");
   }
-  if (!collector.approved) {
+  if (requireApproved && !collector.approved) {
     throw new Error("Collector pending approval");
   }
 }
@@ -113,7 +113,7 @@ async function openMintWindow(collectorId, address) {
     }
   );
 
-  return await collector(collectorId);
+  return await getCollectorObjectById(collectorId);
 }
 
 async function signMint(collectorId, address) {
@@ -136,6 +136,25 @@ async function confirmMinted(collectorId, address) {
   return await getCollectorObjectById(collectorId);
 }
 
+async function changeMintAddress(collectorId, address, newAddress) {
+  validateAddress(address);
+  const collector = await getCollectorObjectById(collectorId);
+  validateCollector(collector, address, false);
+  const newAddressCollector = await Collector.findOne({ address: newAddress });
+  if (newAddressCollector) {
+    throw new Error("Address already registered");
+  }
+
+  await Collector.findOneAndUpdate(
+    { _id: collectorId },
+    {
+      address: newAddress,
+    }
+  );
+
+  return await getCollectorObjectById(collectorId);
+}
+
 module.exports = {
   getCollectorById: getCollectorObjectById,
   getCollectorByAddress,
@@ -144,4 +163,5 @@ module.exports = {
   openMintWindow,
   signMint,
   confirmMinted,
+  changeMintAddress,
 };

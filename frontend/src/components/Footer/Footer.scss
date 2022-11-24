@@ -3,6 +3,9 @@
 footer.footer {
   position: relative;
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
   background-color: black;
   margin-top: -3em;
   -webkit-mask-image: -webkit-gradient(
@@ -16,7 +19,7 @@ footer.footer {
   .bg.bg-footer {
     background: url($CDN_URL + "/images/footer.png") no-repeat center center;
     background-size: cover;
-    height: 75%;
+    height: 17.5em;
     top: unset;
   }
 
@@ -74,5 +77,38 @@ footer.footer {
         color: $text_gray;
       }
     }
+  }
+
+  .faq-section {
+    width: 60%;
+    margin: 0 auto;
+    padding-top: 10em;
+    z-index: 1;
+    position: relative;
+
+    .leading-text {
+      text-align: center;
+      margin: 0;
+    }
+  }
+
+  &.with-faqs {
+    -webkit-mask-image: -webkit-gradient(
+      linear,
+      left top,
+      left 4%,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
+    );
+  }
+
+  &.faqs-open {
+    -webkit-mask-image: -webkit-gradient(
+      linear,
+      left top,
+      left 2%,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
+    );
   }
 }

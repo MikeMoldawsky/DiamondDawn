@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect } from "react";
 import useMountLogger from "hooks/useMountLogger";
 import { useProvider } from "wagmi";
@@ -12,6 +13,7 @@ import { clearActionStatus } from "store/actionStatusReducer";
 import { loadCollectorByAddress } from "store/collectorReducer";
 import { isNoContractMode } from "utils";
 import NoContractAppLoader from "./NoContractAppLoader";
+import ContractProvider from "containers/ContractProvider";
 
 const AppLoader = () => {
   const provider = useProvider();
@@ -59,4 +61,10 @@ const AppLoader = () => {
   return null;
 };
 
-export default isNoContractMode() ? NoContractAppLoader : AppLoader;
+export default isNoContractMode()
+  ? NoContractAppLoader
+  : () => (
+      <ContractProvider>
+        <AppLoader />
+      </ContractProvider>
+    );

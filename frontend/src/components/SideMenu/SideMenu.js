@@ -70,7 +70,11 @@ const SideMenu = ({ isOpen, closeMenu }) => {
             <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
           </div>
           <div className="">
-            INVITED BY <CollectorLink collector={invitedBy?.createdBy} />
+            INVITED BY{" "}
+            <CollectorLink
+              collector={invitedBy?.createdBy}
+              twitter={invitedBy?.inviter}
+            />
           </div>
         </div>
       )}

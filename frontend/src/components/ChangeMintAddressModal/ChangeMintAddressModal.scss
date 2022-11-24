@@ -1,0 +1,42 @@
+@import "css/varsNEW";
+
+.modal.change-address-modal {
+  min-width: 40em;
+  transform: translate(-50%, -56%);
+
+  .modal-inner {
+    &:before {
+      background-color: #1f1f1f;
+    }
+  }
+
+  .modal-content {
+    svg {
+      width: 4em;
+      height: 4em;
+      margin-bottom: 1rem;
+
+      path {
+        fill: #7d0f0f;
+      }
+    }
+  }
+
+  form {
+    .input-container {
+      .label {
+        background-color: #1d1d1d;
+      }
+    }
+  }
+
+  .text {
+    margin-bottom: 1rem;
+    line-height: 1.5em;
+    text-align: left;
+  }
+
+  .button {
+    margin-top: 1.5em;
+  }
+}
