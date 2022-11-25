@@ -22,7 +22,7 @@ export const TheJourneyMainText = () => (
       phase.
     </p>
     <div className="secondary-text">Which diamond will you choose?</div>
-    <p>The last phase is longer.</p>
+    <p>The final phase is longer.</p>
     <p>
       You’ll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide on your{" "}
       <b>Final Choice</b>:
