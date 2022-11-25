@@ -32,8 +32,8 @@ export const TheJourneyMainText = () => (
       limited-edition artwork that contains your diamond (GIA-certified).
     </p>
     <p>
-      Once your decision is finalized on the blockchain, your artwork will be{" "}
-      <b>shipped</b> to your specified address.
+      Once your decision is finalized on the blockchain, your physical art piece
+      will be <b>shipped</b> to your specified address.
     </p>
   </div>
 );

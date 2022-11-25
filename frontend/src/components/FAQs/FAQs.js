@@ -71,8 +71,8 @@ const FAQS = {
       content: () => (
         <p>
           Every Diamond Dawn Phase is exactly 3 weeks, 3 days and 3 hours long.{" "}
-          <br /> An exception to that is the last phase (The Final Choice), where
-          you need to choose between the physical and the digital worlds.
+          <br /> An exception to that is the last phase (The Final Choice),
+          where you need to choose between the physical and the digital worlds.
         </p>
       ),
     },

@@ -79,9 +79,9 @@ const MintKeyView = ({
                     You’ve been accepted to participate in Diamond Dawn’s
                     historical journey.
                     <br />
-                    The key grants you <b>full access</b> to the 4 phases of DD's
-                    journey, starting in the virtual mine, where your journey
-                    begins.
+                    The key grants you <b>full access</b> to the 4 phases of
+                    DD's journey, starting in the virtual mine, where your
+                    journey begins.
                   </div>
                 </div>
               </div>
