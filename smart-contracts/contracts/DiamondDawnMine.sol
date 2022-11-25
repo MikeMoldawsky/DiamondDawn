@@ -283,7 +283,6 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
                 )
             );
             attributes[13] = Serializer.toStrAttribute("Shape", Serializer.toShapeStr(certificate.shape));
-            // TODO: validate that OpenSea works with 2 attributes named "Cut" or change the name
             attributes[14] = Serializer.toMaxValueAttribute(
                 "Cut",
                 Strings.toString(metadata.cut.id),
@@ -292,7 +291,6 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
         }
         if (uint(Stage.POLISH) <= uint(state_)) {
-            // TODO: change "Carat Pre Polish" name to professional term
             attributes[15] = Serializer.toAttribute(
                 "Carat Pre Polish",
                 Serializer.toDecimalStr(_getPoints(metadata, Stage.CUT)),
