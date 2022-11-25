@@ -115,7 +115,7 @@ export const DigitalValueText = () => (
       assumptions.
     </p>
     <p>
-      Is it really the case that digital creation has no value - or is that
+      Is it really the case that a digital creation has no value, or is that
       thinking simply because we had no way of truly owning online assets?
     </p>
     <p>
@@ -123,10 +123,10 @@ export const DigitalValueText = () => (
       now be just as scarce and valuable as diamonds are in the physical realm.
     </p>
     <p>
-      Nobody can copy-paste a new NFT into existence, and
-      right-click-image-saving won’t help when it comes to trying to sell it.
-      The only way forward is to demonstrate the full potential of NFT
-      technology…
+      Nobody can copy/paste a new NFT into existence, and
+      right-click-image-saving won’t help when it comes to trying to sell a
+      digital asset. The only way forward is to demonstrate the full potential
+      of NFT technology.
     </p>
   </div>
 );
