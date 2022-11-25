@@ -109,7 +109,7 @@ const Homepage = () => {
                 </AnimatedText>
               </div>
             </div>
-            <VideoBackground src="teaser-short.mp4" overlap="-35%" />
+            <VideoBackground src="earth-and-moon.webm" overlap="-35%" />
             <Footer />
           </div>
         </ScrollingPage>

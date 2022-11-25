@@ -50,7 +50,7 @@ const MintKeyView = ({
     <div className="action-view enter">
       <div className="layout-box">
         <div className="image-box">
-          <InlineVideo src={getCDNVideoUrl("hand-key.webm")} showThreshold={0} withLoader={false} />
+          <InlineVideo src={getCDNVideoUrl("hand-key-particles.webm")} showThreshold={0} withLoader={false} />
         </div>
         <div className="content-box">
           {showInvites ? (

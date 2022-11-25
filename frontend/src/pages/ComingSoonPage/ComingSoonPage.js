@@ -67,7 +67,7 @@ const ComingSoonPage = () => {
     () => (
       <ReactPlayer
         url={getCDNVideoUrl(
-          usePortraitAsset ? "coming_soon_mobile.webm" : "coming_soon.mp4"
+          usePortraitAsset ? "coming_soon_mobile.webm" : "coming-soon.webm"
         )}
         playing
         playsinline

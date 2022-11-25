@@ -15,7 +15,7 @@ import InfoPage from "components/InfoPage";
 
 const TechPage = () => {
   return (
-    <InfoPage className="tech-page" teaser={{ src: "teaser-short.mp4" }}>
+    <InfoPage className="tech-page" teaser={{ src: "earth-and-moon.webm" }}>
       <div className="left-aligned-column general">
         <div className="leading-text">Timeless Technology</div>
         <TimelessTechnology />
