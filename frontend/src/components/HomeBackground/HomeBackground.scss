@@ -39,7 +39,7 @@
     }
     &.leaves-right {
       background: url($CDN_URL + "/images/homepage/homepage-leaves-right.png")
-        no-repeat top right;
+        no-repeat right 10%;
       background-size: auto 50%;
       z-index: -15;
     }
