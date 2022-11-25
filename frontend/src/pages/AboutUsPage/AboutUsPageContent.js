@@ -158,7 +158,7 @@ export const DavidText = () => (
       Beeple X Madonna
     </Link>{" "}
     NFTs (one of which sold for $346K) and has collaborated with artists such as
-    Katy Perry, and Deadmau5.
+    Katy Perry, Zedd and Deadmau5.
     <br /> David holds a Master's degree in Neuroscience from UVA.
   </p>
 );
@@ -166,8 +166,9 @@ export const DavidText = () => (
 export const TonyText = () => (
   <p>
     An immigrant activist turned entrepreneur in the cryptocurrency, blockchain,
-    and NFT space. Tony is a founding member of Galaxis (formerly Ether Cards)
-    and of several web3 DAOs, including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
+    and NFT space. Tony is a founding member of Galaxis (formerly Ether Cards),
+    and of several DAOs dedicated to the metaverse including MeebitsDAO, NeonDAO
+    and ReadyPlayerDAO.
   </p>
 );
 
@@ -175,7 +176,7 @@ export const AvivaText = () => (
   <p>
     Born to a family of diamond merchants, Aviva has known the diamond industry
     intimately for over 35 years. A highly-respected name in the diamond world,
-    the Moldawsky family, has supplied precious stones to the world’s largest
+    the Moldawsky family has supplied precious stones to the world’s largest
     diamond sellers. As a passionate diamond designer, Aviva oversees the entire
     design process - from selecting the right stone, to the most exquisite
     setting and design, right down to the display and packaging in which it is
@@ -185,7 +186,7 @@ export const AvivaText = () => (
 
 export const AsafText = () => (
   <p>
-    A front-end developer for over 15 years. Asaf discovered the world of
+    A front-end developer for over 15 years, Asaf discovered the world of
     blockchain technology 3 years ago and has worked exclusively on web3
     projects. Asaf lives and breathes crypto and is an active member of several
     DAOs. He believes that decentralization is the key to the Internet’s
