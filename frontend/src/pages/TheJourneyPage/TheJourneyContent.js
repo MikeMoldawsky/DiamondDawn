@@ -41,8 +41,8 @@ export const TheJourneyMainText = () => (
 export const TheJourneyText = () => (
   <div className="text">
     <p>
-      Diamond Dawn project is <b>100% decentralized</b> - we do NOT hold your
-      NFTs on a centralized server.
+      The Diamond Dawn project is <b>100% decentralized</b> - we do NOT hold
+      your NFTs on a centralized server.
     </p>
     <p>
       Throughout this historical journey, you’ll learn about the hidden world of
@@ -57,9 +57,8 @@ export const TheJourneyText = () => (
 export const Phase0Text = () => (
   <div className="text">
     <p>
-      If your are accepted to Diamond Dawn, you'll have exactly{" "}
-      <b>3 days, 3 hours, and 3 minutes</b> to activate your key (mint) for 3.33
-      $ETH.
+      If you are accepted to Diamond Dawn, you'll have exactly{" "}
+      <b>3 days, 3 hours, and 3 minutes</b> to mint your key for 3.33 ETH.
     </p>
     <p>
       The key grants you <b>full access</b> to the 4 phases of DD's journey,
