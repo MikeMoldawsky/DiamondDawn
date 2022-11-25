@@ -235,6 +235,10 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         Serializer.Attribute[] memory attributes = new Serializer.Attribute[](_getStateAttrsNum(state_));
         attributes[0] = Serializer.toStrAttribute("Origin", "Metaverse");
         attributes[1] = Serializer.toStrAttribute("Type", Serializer.toTypeStr(state_));
+        if (Stage.KEY == state_) {
+            attributes[2] = Serializer.toStrAttribute("Metal", "Gold");
+            return attributes;
+        }
         if (uint(Stage.MINE) <= uint(state_)) {
             attributes[2] = Serializer.toStrAttribute("Stage", Serializer.toStageStr(state_));
             attributes[3] = Serializer.toStrAttribute("Identification", "Natural");
@@ -251,9 +255,9 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
             // TODO: validate "Rough xxx" name convention.
             bool wasProcessed = uint(state_) > uint(Stage.MINE);
-            attributes[6] = Serializer.toStrAttribute(wasProcessed ? "Rough Color" : "Color", "Cape");
+            attributes[6] = Serializer.toStrAttribute(wasProcessed ? "Color Rough Stone" : "Color", "Cape");
             attributes[7] = Serializer.toStrAttribute(
-                wasProcessed ? "Rough Shape" : "Shape",
+                wasProcessed ? "Shape Rough Stone" : "Shape",
                 Serializer.toRoughShapeStr(metadata.rough.shape)
             );
         }
@@ -321,7 +325,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     }
 
     function _getStateAttrsNum(Stage state_) private pure returns (uint) {
-        if (state_ == Stage.KEY) return 2;
+        if (state_ == Stage.KEY) return 3;
         if (state_ == Stage.MINE) return 8;
         if (state_ == Stage.CUT) return 15;
         if (state_ == Stage.POLISH) return 20;

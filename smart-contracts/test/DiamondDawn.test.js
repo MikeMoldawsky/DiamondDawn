@@ -1081,6 +1081,7 @@ describe("DiamondDawn", () => {
         attributes: [
           { trait_type: "Origin", value: "Metaverse" },
           { trait_type: "Type", value: "Key" },
+          { trait_type: "Metal", value: "Gold" },
         ],
       });
     });
