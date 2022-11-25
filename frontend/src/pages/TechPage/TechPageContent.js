@@ -10,15 +10,15 @@ export const TimelessTechnology = () => (
     <p>But can an NFT truly live forever?</p>
     <p>
       Most web3 projects store their NFTs on centralized servers that are under
-      their control. This means they can change your NFT or, even worse - delete
+      their control. This means they can change your NFT or, even worse, delete
       it.
     </p>
     <p>
       <b>NFTs should be 100% under your control.</b>
     </p>
     <p>
-      For an NFT to truly live forever, it must be immune to time, funding, and
-      people. This is exactly why an NFT must live on decentralized systems.
+      For an NFT to truly live forever, it must be immune to time, maintenance,
+      and people. This is exactly why an NFT must live on decentralized systems.
     </p>
     <p>Systems that are timeless, just like diamonds.</p>
   </div>
@@ -57,7 +57,7 @@ export const TheWeakestLink = () => (
         file will comprise your NFT visuals.
       </li>
     </ul>
-    <p>The NFT is as “strong” as its weakest component.</p>
+    <p>An NFT is only as “strong” as its weakest component.</p>
   </div>
 );
 
@@ -67,7 +67,7 @@ export const Decentralization = () => (
       We created Diamond Dawn’s NFTs for them to live forever.{" "}
       <b>Decentralization</b> is our #1 core value. Decentralized systems, when
       chosen correctly, can surpass the test of time. These systems are secure,
-      public, and cannot be manipulated by human intervention they are
+      public, and cannot be manipulated by human intervention. They are
       trustless.
     </p>
     <p>
@@ -109,7 +109,7 @@ export const DecentralizedFiles = () => (
     <p>Why?</p>
     <p>
       Your NFT and its metadata will <b>keep on living</b> even if your media
-      file seize to exist. However, you won’t be able to “see” your NFT.
+      file cease to exist. However, you won’t be able to “see” your NFT.
     </p>
     <p>
       Ideally, we would also store your files on the Ethereum blockchain, but
@@ -140,7 +140,7 @@ export const TimelessFiles = () => (
     </p>
     <p>
       To keep your files on IPFS, you must continually pay for them to remain
-      intact - this mechanism is known as “pinning” your file.
+      intact. This mechanism is known as “pinning” your file.
     </p>
     <p>Who will pay for Diamond Dawn pinning 333 years from now?</p>
     <p>
@@ -168,10 +168,10 @@ export const Decentralized99 = () => (
       </li>
     </ul>
     <p>
-      Once the project is complete, we’ll implement our lockDiamondDawn function
-      to “set free” our project and remove ourselves from controlling these 3
-      things, thus completing DD’s transition from 99% decentralization - to a
-      100% fully decentralized project.{" "}
+      Once the project is complete, we’ll trigger our lockDiamondDawn function
+      to “set free” Diamond Dawn project. This will remove our admin permissions
+      from controlling these 3 things, thus completing DD’s transition from 99%
+      decentralization - to a 100% fully decentralized project.{" "}
     </p>
     <p>
       The effect will be <b>100% immutability</b> for the rest of the time, and
@@ -199,8 +199,9 @@ export const OnChainScarcity = () => (
     </p>
     <p>Will anyone keep the Mine’s Key NFT, or will it be lost forever? </p>
     <p>
-      From here, it’s up to YOU to define what’s rare and what’s not - your
-      decisions will impact other collectors.
+      From here, it’s up to YOU to define what’s rare and what’s not.
+      <br />
+      Your decisions will impact other collectors.
     </p>
   </div>
 );
