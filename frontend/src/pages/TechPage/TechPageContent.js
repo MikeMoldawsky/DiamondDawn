@@ -169,9 +169,9 @@ export const Decentralized99 = () => (
     </ul>
     <p>
       Once the project is complete, we’ll trigger our lockDiamondDawn function
-      to “set free” Diamond Dawn project. This will remove our admin permissions
-      from controlling these 3 things, thus completing DD’s transition from 99%
-      decentralization - to a 100% fully decentralized project.{" "}
+      to “set free” the Diamond Dawn project. This will remove our admin
+      permissions, thus completing DD’s transition from 99% decentralization -
+      to a 100% fully decentralized project.{" "}
     </p>
     <p>
       The effect will be <b>100% immutability</b> for the rest of the time, and
