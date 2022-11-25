@@ -29,7 +29,7 @@ export const TheJourneyMainText = () => (
     </p>
     <p>
       Keep your diamond NFT digital or burn it in exchange for a physical,
-      limited-edition artwork that contains your diamond (GIA-certified).
+      limited-edition art piece that contains your diamond (GIA-certified).
     </p>
     <p>
       Once your decision is finalized on the blockchain, your physical art piece
@@ -96,7 +96,7 @@ export const Phase4Text = () => (
     </p>
     <p>
       Keep your diamond digital (NFT) or <b>burn</b> it in exchange for your
-      physical diamond artwork (GIA-certified).
+      physical diamond art piece (GIA-certified).
     </p>
     <img
       className="certificate"

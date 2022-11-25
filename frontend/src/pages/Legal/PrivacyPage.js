@@ -245,7 +245,7 @@ const PrivacyPage = () => (
                   This refers to all the information required for Us to provide
                   You with the Services and grant You access thereto, including
                   for the purpose of the shipment of the Art that You will
-                  redeem into a Jewelry artwork through the Website.{" "}
+                  redeem into a Jewelry art piece through the Website.{" "}
                 </li>
                 <li>
                   <b>
@@ -358,8 +358,8 @@ const PrivacyPage = () => (
                       Website), We will process the Personal Data required for
                       Us to perform such request. For instance, in order to ship
                       the Art that You purchase by way of redemption of Your
-                      Diamond-NFT into Jewelry artwork, You will be required to
-                      provide Us with some Personal Data about You.
+                      Diamond-NFT into Jewelry art piece, You will be required
+                      to provide Us with some Personal Data about You.
                     </p>
                   </td>
                   <td>2</td>

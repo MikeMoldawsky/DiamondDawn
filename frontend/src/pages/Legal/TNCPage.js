@@ -189,8 +189,8 @@ const TNCPage = () => (
           <div>
             <p>
               The Diamond-NFT can be redeemed within a specific timeframe (the{" "}
-              <b>"Redemption End Date"</b>) into a Jewelry artwork to be sent to
-              you.
+              <b>"Redemption End Date"</b>) into a Jewelry art piece to be sent
+              to you.
             </p>
           </div>
         </div>

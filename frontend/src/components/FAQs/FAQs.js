@@ -35,8 +35,8 @@ const FAQS = {
       content: () => (
         <p>
           3.33 ETH. <br /> That’s the cost for the entire Diamond Dawn journey -
-          including the physical diamond artwork and shipping (if you choose to
-          take it).{" "}
+          including the physical diamond art piece and shipping (if you choose
+          to take it).{" "}
         </p>
       ),
     },
@@ -120,14 +120,14 @@ const FAQS = {
       ),
     },
     {
-      title: "How Diamond Dawn’s physical artwork is designed?",
+      title: "How Diamond Dawn’s physical art piece is designed?",
       content: () => (
         <p>
-          If you choose the physical artwork, expect a heavy shipment! The art
+          If you choose the physical art piece, expect a heavy shipment! The art
           piece weighs 8 kg (17.6 lb) and measures 25 x 25 x 25 cm (9.8 x 9.8 x
           9.8 in.).
           <br />
-          Diamond Dawn’s artwork is made from high-quality black wood and
+          Diamond Dawn’s art piece is made from high-quality black wood and
           acrylic panes, and in its heart, you’ll find your GIA-certified
           diamond. <br />
           Diamond Dawn’s diamonds are high-quality natural Cape Diamonds (graded
@@ -184,7 +184,7 @@ const FAQS = {
       ),
     },
     {
-      title: "How much time will I wait for Diamond Dawn's physical artwork?",
+      title: "How much time will I wait for Diamond Dawn's physical art piece?",
       content: () => (
         <p>
           Diamond Dawn's delivery times are under 3 weeks, 3 days, and 3 hours.{" "}
@@ -196,12 +196,12 @@ const FAQS = {
     },
     {
       title:
-        "What will happen to my NFT if I choose Diamond Dawn’s physical artwork?",
+        "What will happen to my NFT if I choose Diamond Dawn’s physical art piece?",
       content: () => (
         <p>
           Your NFT will be burned (it’ll be sent to the “dead” address).
           <br />
-          This means that a physical artwork is born ONLY if its digital
+          This means that a physical art piece is born ONLY if its digital
           counterpart is destroyed.
         </p>
       ),
