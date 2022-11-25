@@ -56,10 +56,10 @@ const FAQS = {
       ),
     },
     {
-      title: "What is a Diamond Dawn Step?",
+      title: "What is a Diamond Dawn Phase?",
       content: () => (
         <p>
-          A step is a limited time window where you need to decide if you want
+          A phase is a limited time window where you need to decide if you want
           to change (evolve) your NFT to its next form or not. <br /> If you do
           NOT evolve your NFT in that time frame, it'll stay in its current
           state for eternity.
@@ -67,22 +67,22 @@ const FAQS = {
       ),
     },
     {
-      title: "How long is a Diamond Dawn Step?",
+      title: "How long is a Diamond Dawn Phase?",
       content: () => (
         <p>
-          Every Diamond Dawn Step is exactly 3 weeks, 3 days and 3 hours long.{" "}
-          <br /> An exception to that is the last step (The Final Choice), where
+          Every Diamond Dawn Phase is exactly 3 weeks, 3 days and 3 hours long.{" "}
+          <br /> An exception to that is the last phase (The Final Choice), where
           you need to choose between the physical and the digital worlds.
         </p>
       ),
     },
     {
-      title: "How much time I’ll have to wait between DD’s steps?",
+      title: "How much time I’ll have to wait between DD’s phases?",
       content: () => (
         <p>
-          When a Diamond Dawn Step ends, we’ll notify on @DiamondDawnNFT when
-          the next step starts.
-          <br /> The “cool-down” period between steps will be shorter than 3
+          When a Diamond Dawn Phase ends, we’ll notify on @DiamondDawnNFT when
+          the next phase starts.
+          <br /> The “cool-down” period between phases will be shorter than 3
           weeks.
         </p>
       ),

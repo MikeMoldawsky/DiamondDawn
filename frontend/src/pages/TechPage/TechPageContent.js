@@ -159,7 +159,7 @@ export const Decentralized99 = () => (
     <p>All we have control over is the following:</p>
     <ul>
       <li>
-        Ending each step in our project pathway and launching the next step
+        Ending each phase in our project pathway and launching the next phase
       </li>
       <li>Revealing the art.</li>
       <li>
@@ -191,7 +191,7 @@ export const OnChainScarcity = () => (
     </p>
     <p>
       Your NFT visuals and attributes will transform according to the decisions
-      you make at each step of your Diamond Dawn journey.{" "}
+      you make at each phase of your Diamond Dawn journey.{" "}
     </p>
     <p>
       Each time you evolve your DD NFT, you lose its previous form and reduce

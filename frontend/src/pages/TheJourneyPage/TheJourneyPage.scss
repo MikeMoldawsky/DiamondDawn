@@ -14,7 +14,7 @@
     width: 72%;
     margin-left: 13%;
 
-    .journey-steps {
+    .journey-phases {
       position: relative;
     }
 
@@ -149,7 +149,7 @@
         }
       }
 
-      &.step-0 {
+      &.phase-0 {
         .key-image {
           height: 10em;
           transform: rotate(145deg) rotateY(180deg) rotateZ(180deg)
@@ -157,13 +157,13 @@
         }
       }
 
-      &.step-1 {
+      &.phase-1 {
         .stone-image {
           height: 10em;
         }
       }
 
-      &.step-1 {
+      &.phase-1 {
         .image-side {
           .image {
             img,
@@ -174,8 +174,8 @@
         }
       }
 
-      &.step-2,
-      &.step-3 {
+      &.phase-2,
+      &.phase-3 {
         .image-side {
           .image {
             img,
@@ -187,7 +187,7 @@
         }
       }
 
-      &.step-4 {
+      &.phase-4 {
         .image-side {
           align-self: flex-start;
 
@@ -250,7 +250,7 @@
           }
         }
 
-        &.step-4 {
+        &.phase-4 {
           .text {
             img.certificate {
               right: 3em;
