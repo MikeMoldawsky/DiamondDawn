@@ -6,10 +6,39 @@ import map from "lodash/map";
 import Link from "components/Links";
 
 const CREDITS = {
-  MUSIC: [{ name: "Abel", link: "" }],
-  MARKETING: [{ name: "Daniel Moldawski", link: "" }],
-  "SMART CONTRACTS": [{ name: "Gal Klineman", link: "" }],
-  "SITE DESIGN": [{ name: "Yanay Halevy", link: "" }],
+  "Project Creator": [
+    {
+      name: "Mike Moldawsky",
+      link: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
+    },
+  ],
+  Artist: [{ name: "David Ariew", link: "https://twitter.com/DavidAriew" }],
+  "Frontend Wizard": [
+    {
+      name: "Asaf Snir",
+      link: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
+    },
+  ],
+  Advisor: [
+    { name: "Tony Herrera", link: "https://twitter.com/tonyherrera" },
+    { name: "Daniel Moldawsky", link: "https://twitter.com/DanielMoldawsky" },
+  ],
+  "Sound Wizard": [
+    { name: "Abel Okugawa", link: "https://twitter.com/Abel_Okugawa" },
+  ],
+  Marketing: [{ name: "Gal Shriki", link: "https://twitter.com/Shrikmeister" }],
+  "Physical Art Videos": [{ name: "Zen", link: "https://www.zenvideopro.com" }],
+  "Smart Contracts": [
+    {
+      name: "Gal Kleinman",
+      link: "https://www.linkedin.com/in/gal-kleinman-16898384/",
+    },
+  ],
+  "Smart Contracts Audit": [
+    { name: "Alan Boost", link: "https://twitter.com/ltsCuzzo" },
+  ],
+  Designer: [{ name: "Yanay Halevy", link: "" }],
+  "Project Manager": [{ name: "Mor Lupa", link: "" }],
 };
 
 const CreditsPage = () => (
