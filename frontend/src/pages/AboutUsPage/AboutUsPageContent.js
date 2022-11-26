@@ -18,8 +18,8 @@ export const AboutUsText = () => (
       in “power” from corporations to individuals.
     </p>
     <p>
-      Diamond Dawn was specifically architectured to demonstrate how
-      decentralized technology can create a <b>REAL-LIFE</b> impact.
+      Diamond Dawn was specifically crafted to demonstrate how decentralized
+      technology can create a <b>REAL-LIFE</b> impact.
     </p>
   </div>
 );
@@ -31,7 +31,7 @@ export const DecentralizationText = () => (
       unable to be changed or manipulated in any way.
     </p>
     <p>
-      <b>NFT is a disruptive, decentralized technology.</b>
+      <b>NFTs are a disruptive, decentralized technology.</b>
     </p>
     <p>
       For the first time, you can truly own an asset without trusting in a third
@@ -49,8 +49,8 @@ export const DecentralizationText = () => (
 export const InnovationText = () => (
   <>
     <p>
-      NFT is a brand-new technology, a standard first-introduced in 2018 that
-      has only since 2021 really begun to gain real-world traction.
+      NFT technology is brand new, a standard first introduced in 2018 that has
+      only since 2021 really begun to gain real world traction.
     </p>
     <p>
       <b>
@@ -73,7 +73,7 @@ export const IRLImpactText = () => (
     <p>
       The ongoing breakthrough of NFT tech enables us to perform once-impossible
       feats. With NFTs, you truly own assets, track provenance and verify
-      publicly - with zero third-party reliance.
+      publicly, with zero third-party reliance.
     </p>
     <p>
       <b>
@@ -86,13 +86,13 @@ export const IRLImpactText = () => (
       <div className="image-caption">A GIA Report</div>
     </div>
     <p>
-      These “simple” breakthroughs will impact every part of every process, from
-      supply chain maintenance and deed creation to the very way goods are
+      These “simple” breakthroughs will impact every aspect of all industries,
+      from supply chain maintenance and deed creation to the very way goods are
       traded.
     </p>
     <p>
       Right now, the countless certifications of a $100B diamond industry are
-      kept in paper ledgers held by major players - can their transparency,
+      kept in paper ledgers held by major players. Can their transparency,
       provenance and record really be considered 100% tamper-free?
     </p>
     <p>
@@ -113,7 +113,7 @@ export const DigitalValueText = () => (
       assumptions.
     </p>
     <p>
-      Is it really the case that digital creation has no value - or is that
+      Is it really the case that a digital creation has no value, or is that
       thinking simply because we had no way of truly owning online assets?
     </p>
     <p>
@@ -121,10 +121,10 @@ export const DigitalValueText = () => (
       now be just as scarce and valuable as diamonds are in the physical realm.
     </p>
     <p>
-      Nobody can copy-paste a new NFT into existence, and
-      right-click-image-saving won’t help when it comes to trying to sell it.
-      The only way forward is to demonstrate the full potential of NFT
-      technology…
+      Nobody can copy/paste a new NFT into existence, and
+      right-click-image-saving won’t help when it comes to trying to sell a
+      digital asset. The only way forward is to demonstrate the full potential
+      of NFT technology.
     </p>
   </>
 );
@@ -156,7 +156,7 @@ export const DavidText = () => (
       Beeple X Madonna
     </Link>{" "}
     NFTs (one of which sold for $346K) and has collaborated with artists such as
-    Katy Perry, and Deadmau5.
+    Katy Perry, Zedd and Deadmau5.
     <br /> David holds a Master's degree in Neuroscience from UVA.
   </p>
 );
@@ -164,8 +164,9 @@ export const DavidText = () => (
 export const TonyText = () => (
   <p>
     An immigrant activist turned entrepreneur in the cryptocurrency, blockchain,
-    and NFT space. Tony is a founding member of Galaxis (formerly Ether Cards)
-    and of several web3 DAOs, including MeebitsDAO, NeonDAO and ReadyPlayerDAO.
+    and NFT space. Tony is a founding member of Galaxis (formerly Ether Cards),
+    and of several DAOs dedicated to the metaverse including MeebitsDAO, NeonDAO
+    and ReadyPlayerDAO.
   </p>
 );
 
@@ -173,7 +174,7 @@ export const AvivaText = () => (
   <p>
     Born to a family of diamond merchants, Aviva has known the diamond industry
     intimately for over 35 years. A highly-respected name in the diamond world,
-    the Moldawsky family, has supplied precious stones to the world’s largest
+    the Moldawsky family has supplied precious stones to the world’s largest
     diamond sellers. As a passionate diamond designer, Aviva oversees the entire
     design process - from selecting the right stone, to the most exquisite
     setting and design, right down to the display and packaging in which it is
@@ -183,7 +184,7 @@ export const AvivaText = () => (
 
 export const AsafText = () => (
   <p>
-    A front-end developer for over 15 years. Asaf discovered the world of
+    A front-end developer for over 15 years, Asaf discovered the world of
     blockchain technology 3 years ago and has worked exclusively on web3
     projects. Asaf lives and breathes crypto and is an active member of several
     DAOs. He believes that decentralization is the key to the Internet’s

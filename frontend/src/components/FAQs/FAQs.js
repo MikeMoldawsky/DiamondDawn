@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "components/Button";
 import classNames from "classnames";
+import { NavLink } from "react-router-dom";
 
 const FAQS = {
   "The Digital": [
@@ -22,7 +23,7 @@ const FAQS = {
       content: () => (
         <p>
           ERC-721.
-          <br /> Every NFT has a unique edition number (token id).
+          <br /> Every NFT has a unique edition number (token ID).
         </p>
       ),
     },
@@ -34,15 +35,20 @@ const FAQS = {
       title: "What is DD’s mint price?",
       content: () => (
         <p>
-          3.33 ETH. <br /> That’s the cost for the entire Diamond Dawn journey -
-          including the physical diamond artwork and shipping (if you choose to
-          take it).{" "}
+          4.44 ETH. <br /> That’s the cost for the entire Diamond Dawn journey,
+          including the physical diamond art piece and shipping (if you choose
+          to take it).{" "}
         </p>
       ),
     },
     {
-      title: "How many NFTs per wallet?",
-      content: () => <p>There is a maximum of 1 NFT per wallet.</p>,
+      title: "Can I mint more than 1 NFT?",
+      content: () => (
+        <p>
+          No. <br />
+          There is a maximum of 1 NFT per wallet.
+        </p>
+      ),
     },
     {
       title: "Is DD 100% decentralized?",
@@ -50,16 +56,19 @@ const FAQS = {
         <p>
           Yes. <br />
           Diamond Dawn's NFT attributes live on the Ethereum blockchain, and the
-          videos are stored on the Arweave decentralized network (read Timeless
-          Technology for additional info).{" "}
+          videos are stored on the Arweave decentralized network (read{" "}
+          <NavLink to="/technology">
+            <span className="link">Timeless Technology</span>
+          </NavLink>{" "}
+          for additional info).{" "}
         </p>
       ),
     },
     {
-      title: "What is a Diamond Dawn Step?",
+      title: "What is a Diamond Dawn Phase?",
       content: () => (
         <p>
-          A step is a limited time window where you need to decide if you want
+          A phase is a limited time window where you need to decide if you want
           to change (evolve) your NFT to its next form or not. <br /> If you do
           NOT evolve your NFT in that time frame, it'll stay in its current
           state for eternity.
@@ -67,22 +76,22 @@ const FAQS = {
       ),
     },
     {
-      title: "How long is a Diamond Dawn Step?",
+      title: "How long is a Diamond Dawn Phase?",
       content: () => (
         <p>
-          Diamond Every step is exactly 3 weeks, 3 days and 3 hours long. <br />{" "}
-          An exception to that is the last step (The Final Choice), where you
-          need to choose between the physical and the digital worlds.
+          Every Diamond Dawn Phase is exactly 3 weeks, 3 days and 3 hours long.{" "}
+          <br /> An exception to that is the last phase (The Final Choice),
+          where you need to choose between the physical and the digital worlds.
         </p>
       ),
     },
     {
-      title: "How much time I’ll have to wait between DD’s steps?",
+      title: "How much time will I have to wait between DD’s phases?",
       content: () => (
         <p>
-          When a Diamond Dawn Step ends, we’ll notify on @DiamondDawnNFT when
-          the next step starts.
-          <br /> The “cool-down” period between steps will be shorter than 3
+          When a Diamond Dawn Phase ends, we’ll notify on @DiamondDawnNFT when
+          the next phase starts.
+          <br /> The “cool-down” period between phases will be shorter than 3
           weeks.
         </p>
       ),
@@ -104,7 +113,7 @@ const FAQS = {
           No. <br /> Your decisions are ONLY between you, the blockchain and
           Diamond Dawn's smart contracts.
           <br />
-          We have 0 control over it (for the better and worse).
+          We have zero control over it, for better or worse.
         </p>
       ),
     },
@@ -120,14 +129,14 @@ const FAQS = {
       ),
     },
     {
-      title: "How Diamond Dawn’s physical artwork is designed?",
+      title: "How is Diamond Dawn’s physical art piece designed?",
       content: () => (
         <p>
-          If you choose the physical artwork, expect a heavy shipment! The art
-          piece weighs 8 kg (17.6 lb) and measures 25 x 25 x 25 cm (9.8 x 9.8 x
+          If you choose the physical art piece, expect a heavy shipment! The art
+          piece weighs ~8 kg (17.6 lb) and measures 25 x 25 x 25 cm (9.8 x 9.8 x
           9.8 in.).
           <br />
-          Diamond Dawn’s artwork is made from high-quality black wood and
+          Diamond Dawn’s art piece is made from high-quality black wood and
           acrylic panes, and in its heart, you’ll find your GIA-certified
           diamond. <br />
           Diamond Dawn’s diamonds are high-quality natural Cape Diamonds (graded
@@ -169,7 +178,7 @@ const FAQS = {
           No. <br /> Your decisions are ONLY between you, the blockchain and
           Diamond Dawn's smart contracts.
           <br />
-          We have 0 control over it (for the better and worse).
+          We have zero control over it, for better or worse.
         </p>
       ),
     },
@@ -184,7 +193,7 @@ const FAQS = {
       ),
     },
     {
-      title: "How much time will I wait for Diamond Dawn's physical artwork?",
+      title: "How much time will I wait for Diamond Dawn's physical art piece?",
       content: () => (
         <p>
           Diamond Dawn's delivery times are under 3 weeks, 3 days, and 3 hours.{" "}
@@ -196,12 +205,12 @@ const FAQS = {
     },
     {
       title:
-        "What will happen to my NFT if I choose Diamond Dawn’s physical artwork?",
+        "What will happen to my NFT if I choose Diamond Dawn’s physical art piece?",
       content: () => (
         <p>
           Your NFT will be burned (it’ll be sent to the “dead” address).
           <br />
-          This means that a physical artwork is born ONLY if its digital
+          This means that a physical art piece is born ONLY if its digital
           counterpart is destroyed.
         </p>
       ),

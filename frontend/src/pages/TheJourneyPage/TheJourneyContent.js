@@ -12,28 +12,28 @@ export const TheJourneyMainText = () => (
       designer alongside one of the most respected companies in the diamond
       industry.
     </p>
-    <p>Your Diamond Dawn journey will consist of 4 steps.</p>
+    <p>Your Diamond Dawn journey will consist of 4 .</p>
     <p>
-      At each step, you must choose whether to evolve your Diamond NFT to its
+      At each phase, you must choose whether to evolve your Diamond NFT to its
       next form or keep it in its current state for eternity.
     </p>
     <p>
       You’ll have exactly <b>3 weeks, 3 days, and 3 hours</b> to complete each
-      step.
+      phase.
     </p>
     <div className="secondary-text">Which diamond will you choose?</div>
-    <p>The last step is longer.</p>
+    <p>The final phase is longer.</p>
     <p>
       You’ll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide on your{" "}
       <b>Final Choice</b>:
     </p>
     <p>
       Keep your diamond NFT digital or burn it in exchange for a physical,
-      limited-edition artwork that contains your diamond (GIA-certified).
+      limited-edition art piece that contains your diamond (GIA-certified).
     </p>
     <p>
-      Once your decision is finalized on the blockchain, your artwork will be{" "}
-      <b>shipped</b> to your specified address.
+      Once your decision is finalized on the blockchain, your physical art piece
+      will be <b>shipped</b> to your specified address.
     </p>
   </div>
 );
@@ -41,8 +41,8 @@ export const TheJourneyMainText = () => (
 export const TheJourneyText = () => (
   <div className="text">
     <p>
-      Diamond Dawn project is <b>100% decentralized</b> - we do NOT hold your
-      NFTs on a centralized server.
+      The Diamond Dawn project is <b>100% decentralized</b> - we do NOT hold
+      your NFTs on a centralized server.
     </p>
     <p>
       Throughout this historical journey, you’ll learn about the hidden world of
@@ -50,19 +50,18 @@ export const TheJourneyText = () => (
       <b>first digital diamonds</b> that live on the blockchain, and discover
       the secrets behind their famous sparkle.
     </p>
-    Diamond Dawn has 4 steps.
+    Diamond Dawn has 4 phases.
   </div>
 );
 
-export const Step0Text = () => (
+export const Phase0Text = () => (
   <div className="text">
     <p>
-      If your are accepted to Diamond Dawn, you'll have exactly{" "}
-      <b>3 days, 3 hours, and 3 minutes</b> to activate your key (mint) for 3.33
-      $ETH.
+      If you are accepted to Diamond Dawn, you'll have exactly{" "}
+      <b>3 days, 3 hours, and 3 minutes</b> to mint your key for 4.44 ETH.
     </p>
     <p>
-      The key grants you <b>full access</b> to the 4 steps of DD's journey,
+      The key grants you <b>full access</b> to the 4 phases of DD's journey,
       starting in the virtual mine, where your journey begins.
     </p>
     <p>
@@ -75,7 +74,7 @@ export const Step0Text = () => (
   </div>
 );
 
-export const Step1Text = () => {
+export const Phase1Text = () => {
   const countdownProps = useMineOpenCountdown();
 
   return (
@@ -86,18 +85,18 @@ export const Step1Text = () => {
   );
 };
 
-export const Step2Text = () => null;
+export const Phase2Text = () => null;
 
-export const Step3Text = () => null;
+export const Phase3Text = () => null;
 
-export const Step4Text = () => (
+export const Phase4Text = () => (
   <div className="text">
     <p>
       You'll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide:
     </p>
     <p>
       Keep your diamond digital (NFT) or <b>burn</b> it in exchange for your
-      physical diamond artwork (GIA-certified).
+      physical diamond art piece (GIA-certified).
     </p>
     <img
       className="certificate"

@@ -126,8 +126,8 @@ const Invite = () => {
                 <div className="secondary-text">STATUS: PENDING APPROVAL</div>
                 <div className="text-comment">
                   If you're accepted to Diamond Dawn, you'll have exactly
-                  <b> 3 days, 3 hours, and 3 minutes</b> to activate your key
-                  (mint) for 3.33 $ETH.
+                  <b> 3 days, 3 hours, and 3 minutes</b> to mint your key for
+                  4.44 ETH.
                 </div>
               </div>
               {!showSubmittedModal && (

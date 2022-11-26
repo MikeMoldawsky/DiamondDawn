@@ -16,8 +16,8 @@ const ProgressBar = () => {
         const isStageInProgress = stage === systemStage;
         return (
           <div
-            key={`progress-bar-step-${stage}`}
-            className={classNames("progress-step", {
+            key={`progress-bar-phase-${stage}`}
+            className={classNames("progress-phase", {
               complete: isStageComplete,
               active: isStageInProgress,
             })}
