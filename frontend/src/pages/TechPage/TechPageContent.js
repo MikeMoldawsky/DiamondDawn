@@ -112,9 +112,10 @@ export const TheVisuals = () => (
       will <b>keep on living</b>.
     </p>
     <p>
-      Ideally, we would've stored your files on Ethereum as well. However, the
-      Ethereum blockchain can NOT store big files.
-      <br />
+      Ideally, we would have stored your files on the Ethereum blockchain, but
+      it simply can NOT handle big files.
+    </p>
+    <p>
       <b>
         Even if it was feasible, it would've cost around $1M to store a 100MB
         file on Ethereum.
