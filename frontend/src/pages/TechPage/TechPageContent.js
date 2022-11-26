@@ -100,28 +100,31 @@ export const TimelessNFT = () => (
   </>
 );
 
-export const DecentralizedFiles = () => (
+export const EthereumLimit = () => (
   <>
     <p>
-      The last component is the media file that represents your NFT - it’s a
-      “special” component.
+      The last component is the media file that acts as your NFT visuals - it’s
+      a “special” component.
     </p>
     <p>Why?</p>
     <p>
-      Your NFT and its metadata will <b>keep on living</b> even if your media
-      file cease to exist. However, you won’t be able to “see” your NFT.
+      Because even if your media file cease to exist, your NFT and its metadata
+      will <b>keep on living</b>.
     </p>
     <p>
-      Ideally, we would also store your files on the Ethereum blockchain, but
-      it’s not feasible.{" "}
+      Ideally, we would have stored your files on the Ethereum blockchain, but
+      it simply can NOT handle big files.
     </p>
     <p>
-      <b>It can cost up to $2M to store a 100MB file on Ethereum.</b>
+      <b>
+        Even if it was feasible, it would've cost around $1M to store a 100MB
+        file on Ethereum.
+      </b>
     </p>
   </>
 );
 
-export const TimelessFiles = () => (
+export const DecentralizedFiles = () => (
   <>
     <p>
       We decided that the best system for Diamond Dawn’s files would be{" "}
