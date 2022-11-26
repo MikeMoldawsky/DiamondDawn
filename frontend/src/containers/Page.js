@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
-import {useAccount} from "wagmi";
+import { useAccount } from "wagmi";
 import useTimeout from "hooks/useTimeout";
 import usePermission from "hooks/usePermission";
 import useWaitFor from "hooks/useWaitFor";
-import PageCover from 'components/PageCover'
+import PageCover from "components/PageCover";
 
 const DEFAULT_TIMEOUT = 10000;
 const SHOW_TEXT_TIME = 100;
@@ -89,13 +89,10 @@ const Page = ({
     <>
       {children}
       {withLoader && !pageReady && !hidden && (
-        <PageCover
-          fade={fade}
-          showText={showText}
-        />
+        <PageCover fade={fade} showText={showText} />
       )}
     </>
   );
 };
 
-export default Page
+export default Page;

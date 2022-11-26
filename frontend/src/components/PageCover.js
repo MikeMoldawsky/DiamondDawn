@@ -3,7 +3,12 @@ import useNoScrollView from "hooks/useNoScrollView";
 import classNames from "classnames";
 import Loading from "components/Loading";
 
-const PageCover = ({ fade, showText, title = "DIAMOND DAWN", text = "loading..." }) => {
+const PageCover = ({
+  fade,
+  showText,
+  title = "DIAMOND DAWN",
+  text = "loading...",
+}) => {
   useNoScrollView();
 
   return (
@@ -22,4 +27,4 @@ const PageCover = ({ fade, showText, title = "DIAMOND DAWN", text = "loading..."
   );
 };
 
-export default PageCover
+export default PageCover;
