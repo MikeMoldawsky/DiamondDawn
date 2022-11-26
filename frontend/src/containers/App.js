@@ -16,6 +16,7 @@ import { loadContractInfo } from "store/systemReducer";
 import ScrollToTop from "components/ScrollToTop";
 import AudioPlayer from "components/AudioPlayer";
 import VideoPlayer from "components/VideoPlayer";
+import NetworkGuard from "containers/NetworkGuard";
 
 const App = () => {
   useMountLogger("App");
@@ -30,21 +31,23 @@ const App = () => {
   return (
     <div className={classNames("main-layout", { "drawer-open": drawerOpen })}>
       <WagmiWrapper>
-        <Router>
-          <ScrollToTop />
-          <Header
-            isMenuOpen={drawerOpen}
-            toggleMenu={() => setDrawerOpen(!drawerOpen)}
-          />
-          <AppRoutes />
-          <SideMenu
-            isOpen={drawerOpen}
-            closeMenu={() => setDrawerOpen(false)}
-          />
-          <AppLoader />
-          <AudioPlayer />
-          <VideoPlayer />
-        </Router>
+        <NetworkGuard>
+          <Router>
+            <ScrollToTop />
+            <Header
+              isMenuOpen={drawerOpen}
+              toggleMenu={() => setDrawerOpen(!drawerOpen)}
+            />
+            <AppRoutes />
+            <SideMenu
+              isOpen={drawerOpen}
+              closeMenu={() => setDrawerOpen(false)}
+            />
+            <AppLoader />
+            <AudioPlayer />
+            <VideoPlayer />
+          </Router>
+        </NetworkGuard>
       </WagmiWrapper>
       <ToastContainer />
     </div>
