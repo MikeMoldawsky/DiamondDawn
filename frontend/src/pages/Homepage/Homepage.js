@@ -16,7 +16,7 @@ import {
   TeaserText,
   ValueText,
 } from "pages/Homepage/HompageContent";
-import AnimatedText from "components/AnimatedText/AnimatedText";
+import AnimatedText from "components/AnimatedText";
 import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";

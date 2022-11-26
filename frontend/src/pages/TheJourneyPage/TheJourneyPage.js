@@ -13,7 +13,7 @@ import {
   Step4Text,
 } from "./TheJourneyContent";
 import InfoPage from "components/InfoPage";
-import AnimatedText from "components/AnimatedText/AnimatedText";
+import AnimatedText from "components/AnimatedText";
 
 const TheJourneyPage = () => {
   return (
