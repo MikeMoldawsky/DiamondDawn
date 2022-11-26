@@ -58,8 +58,7 @@ const ChangeMintAddressModal = ({ close }) => {
         <div className="text">
           You are about to change your minting address.
           <br />
-          Once changed, you'll NO longer be able to mint with the current
-          address.
+          Once changed, you won't be able to mint with the current address.
         </div>
         <form>
           <div className="input-container">
