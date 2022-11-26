@@ -71,9 +71,9 @@ export const InnovationText = () => (
 export const IRLImpactText = () => (
   <>
     <p>
-      The ongoing breakthrough of NFT tech enables us to perform
-      once-impossible feats. With NFTs, you truly own assets, track provenance
-      and verify publicly - with zero third-party reliance.
+      The ongoing breakthrough of NFT tech enables us to perform once-impossible
+      feats. With NFTs, you truly own assets, track provenance and verify
+      publicly - with zero third-party reliance.
     </p>
     <p>
       <b>
@@ -86,9 +86,9 @@ export const IRLImpactText = () => (
       <div className="image-caption">A GIA Report</div>
     </div>
     <p>
-      These “simple” breakthroughs will impact every part of every process,
-      from supply chain maintenance and deed creation to the very way goods
-      are traded.
+      These “simple” breakthroughs will impact every part of every process, from
+      supply chain maintenance and deed creation to the very way goods are
+      traded.
     </p>
     <p>
       Right now, the countless certifications of a $100B diamond industry are
@@ -96,8 +96,8 @@ export const IRLImpactText = () => (
       provenance and record really be considered 100% tamper-free?
     </p>
     <p>
-      What do you think the certification of industries like the diamond
-      sector will look like in 10 years?
+      What do you think the certification of industries like the diamond sector
+      will look like in 10 years?
     </p>
   </>
 );

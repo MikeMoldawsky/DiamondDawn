@@ -8,7 +8,7 @@ import isFunction from "lodash/isFunction";
 import { BigNumber, utils as ethersUtils } from "ethers";
 import InvitationsStatus from "components/InvitationsStatus";
 import { useDispatch, useSelector } from "react-redux";
-import {getCDNImageUrl, getCDNVideoUrl} from "utils";
+import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
@@ -50,7 +50,11 @@ const MintKeyView = ({
     <div className="action-view enter">
       <div className="layout-box">
         <div className="image-box">
-          <InlineVideo src={getCDNVideoUrl("hand-key-particles.webm")} showThreshold={0} withLoader={false} />
+          <InlineVideo
+            src={getCDNVideoUrl("hand-key-particles.webm")}
+            showThreshold={0}
+            withLoader={false}
+          />
         </div>
         <div className="content-box">
           {showInvites ? (

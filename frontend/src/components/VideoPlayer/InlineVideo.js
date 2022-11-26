@@ -1,9 +1,15 @@
-import React, {useCallback, useState} from "react";
+import React, { useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import WaitFor from "containers/WaitFor";
 import classNames from "classnames";
 
-const InlineVideo = ({ className, src, showThreshold = 0.5, withLoader = true, ...props }) => {
+const InlineVideo = ({
+  className,
+  src,
+  showThreshold = 0.5,
+  withLoader = true,
+  ...props
+}) => {
   const [videoProgress, setVideoProgress] = useState({});
 
   const renderVideo = useCallback(() => {
@@ -21,11 +27,14 @@ const InlineVideo = ({ className, src, showThreshold = 0.5, withLoader = true, .
         height=""
         onProgress={setVideoProgress}
       />
-    )
-  }, [src])
+    );
+  }, [src]);
 
   return (
-    <WaitFor videos={[{ progress: videoProgress, threshold: showThreshold }]} withLoader={withLoader}>
+    <WaitFor
+      videos={[{ progress: videoProgress, threshold: showThreshold }]}
+      withLoader={withLoader}
+    >
       {renderVideo()}
     </WaitFor>
   );

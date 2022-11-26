@@ -19,8 +19,7 @@ import NotConnected from "components/NotConnected";
 import useNoScrollView from "hooks/useNoScrollView";
 
 const CollectorPage = () => {
-
-  useNoScrollView()
+  useNoScrollView();
 
   const tokens = useSelector(tokensSelector);
   const { systemStage } = useSelector(systemSelector);

@@ -6,7 +6,7 @@
 
   .bg {
     z-index: -25;
-    transition: transform .1s ease-out;
+    transition: transform 0.1s ease-out;
 
     &.black-box {
       height: 0.4 * $viewHeightRef;

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./Homepage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
@@ -31,7 +31,7 @@ const Homepage = () => {
   const { scroll } = useSelector(uiSelector);
   const { width, height } = useWindowDimensions();
   useShowLogoOnScroll(3.5);
-  const [mousePos, setMousePos] = useState([width / 2, height / 2])
+  const [mousePos, setMousePos] = useState([width / 2, height / 2]);
 
   useMusic("homepage.mp3");
 
@@ -62,8 +62,9 @@ const Homepage = () => {
       >
         <ScrollingPage className="homepage">
           <div className="page homepage">
-            <div className="top-content center-aligned-column"
-                 onMouseMove={e => setMousePos([e.pageX, e.pageY])}
+            <div
+              className="top-content center-aligned-column"
+              onMouseMove={(e) => setMousePos([e.pageX, e.pageY])}
             >
               <HomeBackground mousePos={mousePos} />
               <div className="common-view" style={topViewStyles}>
