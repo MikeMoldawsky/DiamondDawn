@@ -20,6 +20,7 @@ import linkedinIcon from "assets/images/linkedin.svg";
 import websiteIcon from "assets/images/website.svg";
 import InfoPage from "components/InfoPage";
 import Link from "components/Links";
+import AnimatedText from "components/AnimatedText";
 
 const SOCIAL_ICONS = {
   // twitter: getCDNImageUrl("/social/twitter.svg"),
@@ -57,13 +58,21 @@ const AboutUsPage = () => {
       <div className="left-top-aligned-column content-section our-values">
         <div className="leading-text">Our Core Values</div>
         <div className="secondary-text">1. Decentralization</div>
-        <DecentralizationText />
+        <AnimatedText className="text">
+          <DecentralizationText />
+        </AnimatedText>
         <div className="secondary-text">2. Innovation</div>
-        <InnovationText />
+        <AnimatedText className="text">
+          <InnovationText />
+        </AnimatedText>
         <div className="secondary-text">3. IRL Impact</div>
-        <IRLImpactText />
+        <AnimatedText className="text">
+          <IRLImpactText />
+        </AnimatedText>
         <div className="secondary-text">4. Digital Value</div>
-        <DigitalValueText />
+        <AnimatedText className="text">
+          <DigitalValueText />
+        </AnimatedText>
       </div>
       <div className="left-top-aligned-column content-section team">
         <div className="leading-text">Our Team</div>
@@ -72,7 +81,7 @@ const AboutUsPage = () => {
             <div className="profile-image mike" />
             <div className="secondary-text">Mike Moldawsky (Tweezers)</div>
             <div className="member-title">Project Creator</div>
-            <div className="text">
+            <AnimatedText className="text">
               <MikeText />
               <SocialButtons
                 member="mike"
@@ -82,13 +91,13 @@ const AboutUsPage = () => {
                     "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
                 }}
               />
-            </div>
+            </AnimatedText>
           </div>
           <div className="left-spaced-aligned-column team-member">
             <div className="profile-image david" />
             <div className="secondary-text">David Ariew</div>
             <div className="member-title">Artist</div>
-            <div className="text">
+            <AnimatedText className="text">
               <DavidText />
               <SocialButtons
                 member="david"
@@ -97,7 +106,7 @@ const AboutUsPage = () => {
                   website: "http://arievvisuals.com/",
                 }}
               />
-            </div>
+            </AnimatedText>
           </div>
         </div>
         <div className="team-members team-members">
@@ -105,7 +114,7 @@ const AboutUsPage = () => {
             <div className="profile-image asaf" />
             <div className="secondary-text">Asaf Snir</div>
             <div className="member-title">Frontend Master</div>
-            <div className="text">
+            <AnimatedText className="text">
               <AsafText />
               <SocialButtons
                 member="asaf"
@@ -114,28 +123,28 @@ const AboutUsPage = () => {
                   linkedin: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
                 }}
               />
-            </div>
+            </AnimatedText>
           </div>
           <div className="left-spaced-aligned-column team-member">
             <div className="profile-image aviva" />
             <div className="secondary-text">Aviva Moldawsky</div>
             <div className="member-title">Diamond Art Designer</div>
-            <div className="text">
+            <AnimatedText className="text">
               <AvivaText />
               <SocialButtons member="aviva" />
-            </div>
+            </AnimatedText>
           </div>
           <div className="left-spaced-aligned-column team-member">
             <div className="profile-image tony" />
             <div className="secondary-text">Tony Hererra</div>
             <div className="member-title">Advisor</div>
-            <div className="text">
+            <AnimatedText className="text">
               <TonyText />
               <SocialButtons
                 member="tony"
                 links={{ twitter: "https://twitter.com/tonyherrera" }}
               />
-            </div>
+            </AnimatedText>
           </div>
         </div>
       </div>

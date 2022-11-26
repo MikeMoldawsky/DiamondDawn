@@ -25,7 +25,7 @@ export const TimelessTechnology = () => (
 );
 
 export const DiamondsAreForever = () => (
-  <div className="text">
+  <>
     <p>333 years is a long time.</p>
     <p>
       It’s far longer than current cloud providers such as Google and Amazon
@@ -33,11 +33,11 @@ export const DiamondsAreForever = () => (
       now, at least).
     </p>
     <p>Can we ensure that an NFT will last and live forever?</p>
-  </div>
+  </>
 );
 
 export const TheWeakestLink = () => (
-  <div className="text">
+  <>
     <p>
       For an NFT to survive the test of time,{" "}
       <b>all of its components must remain intact.</b>
@@ -58,11 +58,11 @@ export const TheWeakestLink = () => (
       </li>
     </ul>
     <p>The NFT is as “strong” as its weakest component.</p>
-  </div>
+  </>
 );
 
 export const Decentralization = () => (
-  <div className="text">
+  <>
     <p>
       We created Diamond Dawn’s NFTs for them to live forever.{" "}
       <b>Decentralization</b> is our #1 core value. Decentralized systems, when
@@ -73,11 +73,11 @@ export const Decentralization = () => (
     <p>
       <b>This is exactly why Diamond Dawn’s NFTs are 100% decentralized.</b>
     </p>
-  </div>
+  </>
 );
 
 export const TimelessNFT = () => (
-  <div className="text">
+  <>
     <p>
       Most projects store the NFT’s metadata on centralized servers or
       decentralized file systems like IPFS. If they go down, your metadata isn’t
@@ -97,11 +97,11 @@ export const TimelessNFT = () => (
       This means that your NFT and its metadata will remain as long as Ethereum
       stands.
     </p>
-  </div>
+  </>
 );
 
 export const DecentralizedFiles = () => (
-  <div className="text">
+  <>
     <p>
       The last component is the media file that represents your NFT - it’s a
       “special” component.
@@ -118,11 +118,11 @@ export const DecentralizedFiles = () => (
     <p>
       <b>It can cost up to $2M to store a 100MB file on Ethereum.</b>
     </p>
-  </div>
+  </>
 );
 
 export const TimelessFiles = () => (
-  <div className="text">
+  <>
     <p>
       We decided that the best system for Diamond Dawn’s files would be{" "}
       <Link href="https://www.arweave.org/">Arweave</Link>.
@@ -147,11 +147,11 @@ export const TimelessFiles = () => (
       As we couldn't answer this question, we chose the Arweave network as the
       storage solution for Diamond Dawn’s files.
     </p>
-  </div>
+  </>
 );
 
 export const Decentralized99 = () => (
-  <div className="text">
+  <>
     <p>
       Diamond Dawn controls the bare minimum needed to make our vision run
       smoothly.
@@ -178,11 +178,11 @@ export const Decentralized99 = () => (
       we, the creators, will now have the exact same role as any other DD
       collector - just as we intended from Day #1.
     </p>
-  </div>
+  </>
 );
 
 export const OnChainScarcity = () => (
-  <div className="text">
+  <>
     <p>
       Diamond Dawn’s journey starts with 333 keys (NFTs) to the virtual mine.{" "}
     </p>
@@ -202,5 +202,5 @@ export const OnChainScarcity = () => (
       From here, it’s up to YOU to define what’s rare and what’s not - your
       decisions will impact other collectors.
     </p>
-  </div>
+  </>
 );
