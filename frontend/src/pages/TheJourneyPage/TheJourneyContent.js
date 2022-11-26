@@ -58,7 +58,7 @@ export const Phase0Text = () => (
   <div className="text">
     <p>
       If you are accepted to Diamond Dawn, you'll have exactly{" "}
-      <b>3 days, 3 hours, and 3 minutes</b> to mint your key for 3.33 ETH.
+      <b>3 days, 3 hours, and 3 minutes</b> to mint your key for 4.44 ETH.
     </p>
     <p>
       The key grants you <b>full access</b> to the 4 phases of DD's journey,

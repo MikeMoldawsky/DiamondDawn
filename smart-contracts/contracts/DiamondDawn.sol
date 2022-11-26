@@ -48,8 +48,8 @@ contract DiamondDawn is
     using EnumerableSet for EnumerableSet.UintSet;
     using ECDSA for bytes32;
 
-    uint public constant PRICE = 0.002 ether; // TODO: production - change to 3.33eth
-    uint public constant PRICE_MARRIAGE = 0.003 ether; // TODO: production - change to 3.88eth
+    uint public constant PRICE = 0.002 ether; // TODO: production - change to 4.44eth
+    uint public constant PRICE_MARRIAGE = 0.003 ether; // TODO: production - change to 4.55eth
     uint16 public constant MAX_ENTRANCE = 333;
 
     bool public isLocked; // immutable

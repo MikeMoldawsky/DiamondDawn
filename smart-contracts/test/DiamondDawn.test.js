@@ -184,7 +184,7 @@ describe("DiamondDawn", () => {
       ).to.be.revertedWith("Not allowed to mint");
     });
 
-    it("Should cost 3.33 and add it to contract's balance", async () => {
+    it("Should cost 4.44 and add it to contract's balance", async () => {
       expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
       await dd.forge(adminSig, { value: PRICE });
       expect(await ethers.provider.getBalance(dd.address)).to.equal(PRICE);

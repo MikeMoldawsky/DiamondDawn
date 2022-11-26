@@ -17,7 +17,7 @@ import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useMusic from "hooks/useMusic";
 
 const MintKeyView = ({
-  mintPrice = 3.33,
+  mintPrice = 4.44,
   maxDiamonds = 333,
   diamondCount = 0,
   canMint,
@@ -36,7 +36,7 @@ const MintKeyView = ({
 
   const mintPriceText = BigNumber.isBigNumber(mintPrice)
     ? ethersUtils.formatUnits(mintPrice)
-    : "3.33";
+    : "4.44";
 
   const countdownProps = canMint
     ? {

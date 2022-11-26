@@ -35,7 +35,7 @@ const FAQS = {
       title: "What is DD’s mint price?",
       content: () => (
         <p>
-          3.33 ETH. <br /> That’s the cost for the entire Diamond Dawn journey,
+          4.44 ETH. <br /> That’s the cost for the entire Diamond Dawn journey,
           including the physical diamond art piece and shipping (if you choose
           to take it).{" "}
         </p>
