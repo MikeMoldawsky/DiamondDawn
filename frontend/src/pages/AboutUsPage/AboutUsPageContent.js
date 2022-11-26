@@ -86,8 +86,8 @@ export const IRLImpactText = () => (
       <div className="image-caption">A GIA Report</div>
     </div>
     <p>
-      These “simple” breakthroughs will impact every aspect of all industries, from
-       supply chain maintenance and deed creation to the very way goods are
+      These “simple” breakthroughs will impact every aspect of all industries,
+      from supply chain maintenance and deed creation to the very way goods are
       traded.
     </p>
     <p>
