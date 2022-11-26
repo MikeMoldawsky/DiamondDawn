@@ -56,10 +56,10 @@ const ChangeMintAddressModal = ({ close }) => {
       <div className="modal-content">
         <WarningAmberIcon />
         <div className="text">
-          You are about to change your mint address.
+          You are about to change your minting address.
           <br />
-          Once changed your currently connected address will no longer have mint
-          access.
+          Once changed, you'll NO longer be able to mint with the current
+          address.
         </div>
         <form>
           <div className="input-container">
