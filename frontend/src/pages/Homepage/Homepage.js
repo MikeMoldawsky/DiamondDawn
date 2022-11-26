@@ -92,22 +92,22 @@ const Homepage = () => {
             <div className="homepage-content">
               <HomepageContentBackground />
               <div className="eternal-treasures">
-                <AnimatedText>
+                <AnimatedText className="text-section">
                   <EternalTreasuresText />
                 </AnimatedText>
               </div>
               <div className="scarcity">
-                <AnimatedText animationDirection="ltr">
+                <AnimatedText className="text-section">
                   <ScarcityText />
                 </AnimatedText>
               </div>
               <div className="value-section">
-                <AnimatedText>
+                <AnimatedText className="text-section">
                   <ValueText />
                 </AnimatedText>
               </div>
               <div className="the-experiment">
-                <AnimatedText animationDirection="ltr">
+                <AnimatedText className="text-section">
                   <TeaserText />
                 </AnimatedText>
               </div>

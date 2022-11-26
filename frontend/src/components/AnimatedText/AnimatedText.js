@@ -1,32 +1,37 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { uiSelector } from "store/uiReducer";
 import classNames from "classnames";
+import useWindowDimensions from "hooks/useWindowDimensions";
+import useScrollTop from "hooks/useScrollTop";
 
-const AnimatedText = ({ children, animationDirection = "rtl" }) => {
-  const [visible, setVisible] = useState(false);
+const AnimatedText = ({ className, children }) => {
+  const [visibilityClass, setVisibilityClass] = useState("");
   const ref = useRef(null);
-  const { scroll } = useSelector(uiSelector);
+  const { height } = useWindowDimensions()
+  const scrollTop = useScrollTop()
 
   useEffect(() => {
-    if (!visible) {
-      const currRef = ref.current;
-      const textTop = currRef.offsetTop + currRef.offsetParent.offsetTop;
-      const showAt = textTop + currRef.offsetHeight / 1.75;
+    const { top, bottom } = ref.current.getBoundingClientRect()
 
-      if (scroll > showAt) {
-        setVisible(true);
-      }
+    let newVisibilityClass = "hidden-up"
+    if (top < height * .8) {
+      newVisibilityClass = "visible";
     }
-  }, [visible, scroll]);
+    if (bottom < height * .3) {
+      newVisibilityClass += " hidden";
+    }
+
+    if (newVisibilityClass && newVisibilityClass !== visibilityClass) {
+      setVisibilityClass(newVisibilityClass)
+    }
+  }, [scrollTop]);
 
   return (
     <div
       ref={ref}
       className={classNames(
-        "text-section animated-text",
-        { visible },
-        animationDirection
+        className,
+        "animated-text",
+        visibilityClass,
       )}
     >
       {children}
