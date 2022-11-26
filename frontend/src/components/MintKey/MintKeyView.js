@@ -8,11 +8,13 @@ import isFunction from "lodash/isFunction";
 import { BigNumber, utils as ethersUtils } from "ethers";
 import InvitationsStatus from "components/InvitationsStatus";
 import { useDispatch, useSelector } from "react-redux";
-import { getCDNImageUrl } from "utils";
+import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
 import MintAddressRow from "components/MintAddressRow";
+import InlineVideo from "components/VideoPlayer/InlineVideo";
+import useMusic from "hooks/useMusic";
 
 const MintKeyView = ({
   mintPrice = 3.33,
@@ -30,7 +32,7 @@ const MintKeyView = ({
     dispatch(updateUiState({ mintViewShowInvites: show }));
   };
 
-  // useMusic("approved.mp3");
+  useMusic("accepted.mp3");
 
   const mintPriceText = BigNumber.isBigNumber(mintPrice)
     ? ethersUtils.formatUnits(mintPrice)
@@ -47,7 +49,13 @@ const MintKeyView = ({
   return (
     <div className="action-view enter">
       <div className="layout-box">
-        <div className="image-box" />
+        <div className="image-box">
+          <InlineVideo
+            src={getCDNVideoUrl("hand-key-particles.webm")}
+            showThreshold={0}
+            withLoader={false}
+          />
+        </div>
         <div className="content-box">
           {showInvites ? (
             <div className="center-aligned-column invites-view">

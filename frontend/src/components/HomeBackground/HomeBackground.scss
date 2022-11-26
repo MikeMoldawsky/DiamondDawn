@@ -6,6 +6,7 @@
 
   .bg {
     z-index: -25;
+    transition: transform 0.1s ease-out;
 
     &.black-box {
       height: 0.4 * $viewHeightRef;
@@ -39,7 +40,7 @@
     }
     &.leaves-right {
       background: url($CDN_URL + "/images/homepage/homepage-leaves-right.png")
-        no-repeat top right;
+        no-repeat right 10%;
       background-size: auto 50%;
       z-index: -15;
     }
