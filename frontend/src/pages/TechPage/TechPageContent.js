@@ -100,7 +100,7 @@ export const TimelessNFT = () => (
   </>
 );
 
-export const TheVisuals = () => (
+export const EthereumLimit = () => (
   <>
     <p>
       The last component is the media file that acts as your NFT visuals - it’s

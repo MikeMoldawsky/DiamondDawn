@@ -6,7 +6,7 @@ import {
   TheWeakestLink,
   Decentralization,
   TimelessNFT,
-  TheVisuals,
+  EthereumLimit,
   DecentralizedFiles,
   Decentralized99,
   OnChainScarcity,
@@ -38,9 +38,9 @@ const TechPage = () => {
         <AnimatedText className="text">
           <TimelessNFT />
         </AnimatedText>
-        <div className="secondary-text">The Visuals</div>
+        <div className="secondary-text">Ethereum's Limit</div>
         <AnimatedText className="text">
-          <TheVisuals />
+          <EthereumLimit />
         </AnimatedText>
         <div className="secondary-text">Decentralized Files</div>
         <AnimatedText className="text">
