@@ -13,6 +13,7 @@ import {
   Phase4Text,
 } from "./TheJourneyContent";
 import InfoPage from "components/InfoPage";
+import AnimatedText from "components/AnimatedText";
 
 const TheJourneyPage = () => {
   return (
@@ -31,10 +32,10 @@ const TheJourneyPage = () => {
       >
         <div className="center-aligned-row journey-row journey-desc">
           <div className="image-side" />
-          <div className="text-side">
+          <AnimatedText className="text-side">
             <div className="leading-text">THE PHASES</div>
             <TheJourneyText />
-          </div>
+          </AnimatedText>
         </div>
         <div className="journey-phases">
           <div className="scale">
@@ -62,8 +63,10 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter active" />
-              <div className="secondary-text">Phase 0 - Activate Your Key</div>
-              <Phase0Text />
+              <div className="secondary-text">Step 0 - Activate Your Key</div>
+              <AnimatedText>
+                <Phase0Text />
+              </AnimatedText>
             </div>
           </div>
           <div className="center-aligned-row journey-row phase-1">
@@ -84,8 +87,10 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Phase 1 - Enter & Mine</div>
-              <Phase1Text />
+              <div className="secondary-text">Step 1 - Enter & Mine</div>
+              <AnimatedText>
+                <Phase1Text />
+              </AnimatedText>
             </div>
           </div>
           <div className="center-aligned-row journey-row phase-2">
@@ -96,8 +101,10 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Phase 2 - ?</div>
-              <Phase2Text />
+              <div className="secondary-text">Step 2 - ?</div>
+              <AnimatedText>
+                <Phase2Text />
+              </AnimatedText>
             </div>
           </div>
           <div className="center-aligned-row journey-row phase-3">
@@ -108,8 +115,10 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Phase 3 - ?</div>
-              <Phase3Text />
+              <div className="secondary-text">Step 3 - ?</div>
+              <AnimatedText>
+                <Phase3Text />
+              </AnimatedText>
             </div>
           </div>
           <div className="center-aligned-row journey-row phase-4">
@@ -123,8 +132,10 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Phase 4 - The Final Choice</div>
-              <Phase4Text />
+              <div className="secondary-text">Step 4 - The Final Choice</div>
+              <AnimatedText>
+                <Phase4Text />
+              </AnimatedText>
             </div>
           </div>
         </div>

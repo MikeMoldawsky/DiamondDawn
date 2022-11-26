@@ -11,7 +11,7 @@
   min-height: 500px;
   font-size: calc-font-size(11px);
 
-  .react-player {
+  .react-player.bg-video {
     min-width: 102%;
     min-height: 104%;
     opacity: 0.65;
@@ -33,31 +33,33 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -47%);
+    transform: translate(-50%, -33%);
 
     .project-title {
-      margin-bottom: 11em;
+      margin-bottom: 6em;
 
       .react-player {
-        width: 56em;
         opacity: 1;
-        height: 6em;
         position: relative;
         background-color: transparent;
-        margin-bottom: -2.5em;
-      }
-    }
 
-    .private-sale {
-      color: $gold;
-      font-size: $font16px;
-      font-weight: 500;
+        &.dd-text {
+          width: 60em;
+          height: 34em;
+          margin: -20.5em 0 -21em;
+        }
+
+        &.ps-text {
+          width: 60em;
+          height: 11em;
+        }
+      }
     }
 
     .secondary-text {
       color: $gold;
       font-weight: 400;
-      font-size: $font30px;
+      font-size: $font28px;
       line-height: 1.4em;
 
       .secondary-lg {
@@ -67,7 +69,7 @@
     }
 
     .password-box {
-      margin-top: 7em;
+      margin-top: 10em;
     }
   }
 }

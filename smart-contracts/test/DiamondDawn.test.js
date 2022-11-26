@@ -311,7 +311,7 @@ describe("DiamondDawn", () => {
       const tokenId = 1;
       await completeAndSetStage(dd, STAGE.MINE);
       await expect(dd.mine(tokenId)).to.be.revertedWith(
-        "ERC721: owner query for nonexistent token"
+        "ERC721: invalid token ID"
       );
     });
 
@@ -412,7 +412,7 @@ describe("DiamondDawn", () => {
       const tokenId = 1;
       await completeAndSetStage(dd, STAGE.CUT);
       await expect(dd.cut(tokenId)).to.be.revertedWith(
-        "ERC721: owner query for nonexistent token"
+        "ERC721: invalid token ID"
       );
     });
 
@@ -524,7 +524,7 @@ describe("DiamondDawn", () => {
       const tokenId = 1;
       await completeAndSetStage(dd, STAGE.POLISH);
       await expect(dd.polish(tokenId)).to.be.revertedWith(
-        "ERC721: owner query for nonexistent token"
+        "ERC721: invalid token ID"
       );
     });
 
@@ -622,7 +622,7 @@ describe("DiamondDawn", () => {
       await completeAndSetStage(dd, STAGE.DAWN);
       await dd.ship(tokenId); // success
       await expect(dd.ship(tokenId)).to.be.revertedWith(
-        "ERC721: owner query for nonexistent token"
+        "ERC721: invalid token ID"
       );
     });
 
@@ -655,7 +655,7 @@ describe("DiamondDawn", () => {
       const tokenId = 1;
       await completeAndSetStage(dd, STAGE.DAWN);
       await expect(dd.ship(tokenId)).to.be.revertedWith(
-        "ERC721: owner query for nonexistent token"
+        "ERC721: invalid token ID"
       );
     });
 
@@ -680,7 +680,7 @@ describe("DiamondDawn", () => {
       await completeAndSetStage(dd, STAGE.DAWN);
       await dd.ship(tokenId);
       await expect(dd.ship(tokenId)).to.be.revertedWith(
-        "ERC721: owner query for nonexistent token"
+        "ERC721: invalid token ID"
       );
       await dd.dawn(tokenId, await signDawnMessage(signer_, admin, tokenId));
       await expect(dd.ship(tokenId)).to.be.revertedWith("Can't process");
@@ -716,7 +716,7 @@ describe("DiamondDawn", () => {
         });
       expect(await dd.balanceOf(userA.address)).to.equal(0);
       await expect(dd.ownerOf(1)).to.be.revertedWith(
-        "ERC721: owner query for nonexistent token"
+        "ERC721: invalid token ID"
       );
       expect(await dd.totalSupply()).to.equal(0);
     });

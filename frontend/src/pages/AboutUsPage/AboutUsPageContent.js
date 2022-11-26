@@ -25,7 +25,7 @@ export const AboutUsText = () => (
 );
 
 export const DecentralizationText = () => (
-  <div className="text">
+  <>
     <p>
       Decentralized systems are designed to be secure, public, and trustless -
       unable to be changed or manipulated in any way.
@@ -43,11 +43,11 @@ export const DecentralizationText = () => (
       Diamond Dawn, we believe in and deliver 100% decentralization (see
       timeless technology).
     </p>
-  </div>
+  </>
 );
 
 export const InnovationText = () => (
-  <div className="text">
+  <>
     <p>
       NFT technology is brand new, a standard first introduced in 2018 that has
       only since 2021 really begun to gain real world traction.
@@ -65,47 +65,45 @@ export const InnovationText = () => (
       it’s so valuable.
     </p>
     <p>That is the path to true mass adoption.</p>
-  </div>
+  </>
 );
 
 export const IRLImpactText = () => (
-  <div>
-    <div className="text" style={{ float: "right" }}>
-      <p>
-        The ongoing breakthrough of NFT tech enables us to perform
-        once-impossible feats. With NFTs, you truly own assets, track provenance
-        and verify publicly, with zero third-party reliance.
-      </p>
-      <p>
-        <b>
-          NFT technology will disrupt all traditional technologies in remarkable
-          ways.
-        </b>
-      </p>
-      <div className="gia-report">
-        <img src={getCDNImageUrl("gia-report.jpeg")} alt="" />
-        <div className="image-caption">A GIA Report</div>
-      </div>
-      <p>
-        These “simple” breakthroughs will impact every aspect of all industries,
-        from supply chain maintenance and deed creation to the very way goods
-        are traded.
-      </p>
-      <p>
-        Right now, the countless certifications of a $100B diamond industry are
-        kept in paper ledgers held by major players. Can their transparency,
-        provenance and record really be considered 100% tamper-free?
-      </p>
-      <p>
-        What do you think the certification of industries like the diamond
-        sector will look like in 10 years?
-      </p>
+  <>
+    <p>
+      The ongoing breakthrough of NFT tech enables us to perform once-impossible
+      feats. With NFTs, you truly own assets, track provenance and verify
+      publicly, with zero third-party reliance.
+    </p>
+    <p>
+      <b>
+        NFT technology will disrupt all traditional technologies in remarkable
+        ways.
+      </b>
+    </p>
+    <div className="gia-report">
+      <img src={getCDNImageUrl("gia-report.jpeg")} alt="" />
+      <div className="image-caption">A GIA Report</div>
     </div>
-  </div>
+    <p>
+      These “simple” breakthroughs will impact every aspect of all industries,
+      from supply chain maintenance and deed creation to the very way goods are
+      traded.
+    </p>
+    <p>
+      Right now, the countless certifications of a $100B diamond industry are
+      kept in paper ledgers held by major players. Can their transparency,
+      provenance and record really be considered 100% tamper-free?
+    </p>
+    <p>
+      What do you think the certification of industries like the diamond sector
+      will look like in 10 years?
+    </p>
+  </>
 );
 
 export const DigitalValueText = () => (
-  <div className="text">
+  <>
     <p>Right now, many people disregard digital value.</p>
     <p>
       <b>However, most of the world’s value cannot be touched.</b>
@@ -128,7 +126,7 @@ export const DigitalValueText = () => (
       digital asset. The only way forward is to demonstrate the full potential
       of NFT technology.
     </p>
-  </div>
+  </>
 );
 
 export const MikeText = () => (
