@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
-import {setAudioMuted, setMuted, uiSelector} from "store/uiReducer";
+import {setAudioMuted, uiSelector} from "store/uiReducer";
 import "./VideoPlayer.scss";
 import {
   clearVideoState,

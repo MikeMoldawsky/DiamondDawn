@@ -4,31 +4,26 @@ import useWindowDimensions from "hooks/useWindowDimensions";
 import useScrollTop from "hooks/useScrollTop";
 
 const AnimatedText = ({ className, children }) => {
-  const [visibilityClass, setVisibilityClass] = useState("");
+  const [visible, setVisible] = useState(false);
   const ref = useRef(null);
   const { height } = useWindowDimensions();
   const scrollTop = useScrollTop();
 
   useEffect(() => {
-    const { top, bottom } = ref.current.getBoundingClientRect();
+    if (visible) return
 
-    let newVisibilityClass = "hidden-up";
-    if (top < height * 0.8) {
-      newVisibilityClass = "visible";
-    }
-    if (bottom < height * 0.3) {
-      newVisibilityClass += " hidden";
+    const { top } = ref.current.getBoundingClientRect();
+
+    if (top < height * 0.9) {
+      setVisible(true)
     }
 
-    if (newVisibilityClass && newVisibilityClass !== visibilityClass) {
-      setVisibilityClass(newVisibilityClass);
-    }
-  }, [scrollTop]);
+  }, [visible, scrollTop]);
 
   return (
     <div
       ref={ref}
-      className={classNames(className, "animated-text", visibilityClass)}
+      className={classNames(className, "animated-text", { visible })}
     >
       {children}
     </div>
