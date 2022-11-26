@@ -103,8 +103,7 @@ export const TimelessNFT = () => (
 export const DecentralizedFiles = () => (
   <>
     <p>
-      The last component is the media file that represents your NFT - it’s a
-      “special” component.
+        The last component is the media file that acts as your NFT visuals - it’s a “special” component.
     </p>
     <p>Why?</p>
     <p>
@@ -112,8 +111,8 @@ export const DecentralizedFiles = () => (
       will <b>keep on living</b>.
     </p>
     <p>
-      Ideally we would've store your files on the Ethereum blockchain as well.
-      However, the Ethereum blockchain can NOT store big files.{" "}
+        Ideally, we would've stored your files on Ethereum as well. However, the Ethereum blockchain can NOT store big files.
+        <br/>
       <b>
         Even if it was feasible, it would've cost around $1M to store a 100MB
         file on Ethereum.
