@@ -100,7 +100,7 @@ export const TimelessNFT = () => (
   </>
 );
 
-export const DecentralizedFiles = () => (
+export const TheVisuals = () => (
   <>
     <p>
       The last component is the media file that acts as your NFT visuals - it’s
@@ -123,7 +123,7 @@ export const DecentralizedFiles = () => (
   </>
 );
 
-export const TimelessFiles = () => (
+export const DecentralizedFiles = () => (
   <>
     <p>
       We decided that the best system for Diamond Dawn’s files would be{" "}
