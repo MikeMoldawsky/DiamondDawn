@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "components/Button";
 import classNames from "classnames";
-import { NavLink } from "react-router-dom";
 
 const FAQS = {
   "The Digital": [
@@ -57,8 +56,10 @@ const FAQS = {
           Yes. <br />
           Diamond Dawn's NFT attributes live on the Ethereum blockchain, and the
           videos are stored on the Arweave decentralized network (read{" "}
-          <NavLink to="/technology">Timeless Technology</NavLink> for additional
-          info).{" "}
+          <NavLink to="/technology">
+            <span className="sitemap-link">Timeless Technology</span>
+          </NavLink>{" "}
+          for additional info).{" "}
         </p>
       ),
     },
