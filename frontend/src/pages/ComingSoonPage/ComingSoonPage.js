@@ -121,11 +121,13 @@ const ComingSoonPage = () => {
         <div className="center-aligned-column content">
           <div className="project-title">
             <InlineVideo
+              withLoader={false}
               className="dd-text"
               src={getCDNVideoUrl("animated-dd-text.webm")}
               showThreshold={0}
             />
             <InlineVideo
+              withLoader={false}
               className="ps-text"
               src={getCDNVideoUrl("animated-ps-text.webm")}
               showThreshold={0}

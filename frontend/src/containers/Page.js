@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
@@ -28,7 +28,7 @@ const Page = ({
   const [hidden, setHidden] = useState(false);
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
-  const contentReady = useWaitFor({ images, videos });
+  const contentReady = useWaitFor({ images, videos }, pageName);
   const canAccessDD = usePermission();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
@@ -60,7 +60,11 @@ const Page = ({
   // navigate out if doesn't have access
   useEffect(() => {
     if (requireAccess && isCollectorReady && !canAccessDD) {
-      navigate("/");
+      return navigate("/");
+    }
+    // monitor isCollectorReady
+    if (isCollectorReady) {
+      onAssetLoaded();
     }
   }, [isCollectorReady]);
 
@@ -70,13 +74,6 @@ const Page = ({
       onAssetLoaded();
     }
   }, [contentReady]);
-
-  // monitor isCollectorFetched
-  useEffect(() => {
-    if (isCollectorFetched) {
-      onAssetLoaded();
-    }
-  }, [isCollectorFetched]);
 
   // timeout
   useTimeout(() => {
@@ -95,12 +92,10 @@ const Page = ({
         <PageCover
           fade={fade}
           showText={showText}
-          // withText={withLoaderText}
-          // isPage={isPage}
         />
       )}
     </>
   );
 };
 
-export default Page;
+export default Page
