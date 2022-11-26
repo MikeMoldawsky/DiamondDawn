@@ -10,15 +10,15 @@ export const TimelessTechnology = () => (
     <p>But can an NFT truly live forever?</p>
     <p>
       Most web3 projects store their NFTs on centralized servers that are under
-      their control. This means they can change your NFT or, even worse - delete
+      their control. This means they can change your NFT or, even worse, delete
       it.
     </p>
     <p>
       <b>NFTs should be 100% under your control.</b>
     </p>
     <p>
-      For an NFT to truly live forever, it must be immune to time, funding, and
-      people. This is exactly why an NFT must live on decentralized systems.
+      For an NFT to truly live forever, it must be immune to time, maintenance,
+      and people. This is exactly why an NFT must live on decentralized systems.
     </p>
     <p>Systems that are timeless, just like diamonds.</p>
   </div>
@@ -57,7 +57,7 @@ export const TheWeakestLink = () => (
         file will comprise your NFT visuals.
       </li>
     </ul>
-    <p>The NFT is as “strong” as its weakest component.</p>
+    <p>An NFT is only as “strong” as its weakest component.</p>
   </>
 );
 
@@ -67,7 +67,7 @@ export const Decentralization = () => (
       We created Diamond Dawn’s NFTs for them to live forever.{" "}
       <b>Decentralization</b> is our #1 core value. Decentralized systems, when
       chosen correctly, can surpass the test of time. These systems are secure,
-      public, and cannot be manipulated by human intervention they are
+      public, and cannot be manipulated by human intervention. They are
       trustless.
     </p>
     <p>
@@ -100,28 +100,31 @@ export const TimelessNFT = () => (
   </>
 );
 
-export const DecentralizedFiles = () => (
+export const EthereumLimit = () => (
   <>
     <p>
-      The last component is the media file that represents your NFT - it’s a
-      “special” component.
+      The last component is the media file that acts as your NFT visuals - it’s
+      a “special” component.
     </p>
     <p>Why?</p>
     <p>
-      Your NFT and its metadata will <b>keep on living</b> even if your media
-      file seize to exist. However, you won’t be able to “see” your NFT.
+      Because even if your media file cease to exist, your NFT and its metadata
+      will <b>keep on living</b>.
     </p>
     <p>
-      Ideally, we would also store your files on the Ethereum blockchain, but
-      it’s not feasible.{" "}
+      Ideally, we would have stored your files on the Ethereum blockchain, but
+      it simply can NOT handle big files.
     </p>
     <p>
-      <b>It can cost up to $2M to store a 100MB file on Ethereum.</b>
+      <b>
+        Even if it was feasible, it would've cost around $1M to store a 100MB
+        file on Ethereum.
+      </b>
     </p>
   </>
 );
 
-export const TimelessFiles = () => (
+export const DecentralizedFiles = () => (
   <>
     <p>
       We decided that the best system for Diamond Dawn’s files would be{" "}
@@ -140,7 +143,7 @@ export const TimelessFiles = () => (
     </p>
     <p>
       To keep your files on IPFS, you must continually pay for them to remain
-      intact - this mechanism is known as “pinning” your file.
+      intact. This mechanism is known as “pinning” your file.
     </p>
     <p>Who will pay for Diamond Dawn pinning 333 years from now?</p>
     <p>
@@ -159,7 +162,7 @@ export const Decentralized99 = () => (
     <p>All we have control over is the following:</p>
     <ul>
       <li>
-        Ending each step in our project pathway and launching the next step
+        Ending each phase in our project pathway and launching the next phase
       </li>
       <li>Revealing the art.</li>
       <li>
@@ -168,10 +171,10 @@ export const Decentralized99 = () => (
       </li>
     </ul>
     <p>
-      Once the project is complete, we’ll implement our lockDiamondDawn function
-      to “set free” our project and remove ourselves from controlling these 3
-      things, thus completing DD’s transition from 99% decentralization - to a
-      100% fully decentralized project.{" "}
+      Once the project is complete, we’ll trigger our lockDiamondDawn function
+      to “set free” the Diamond Dawn project. This will remove our admin
+      permissions, thus completing DD’s transition from 99% decentralization to
+      a 100% fully decentralized project.{" "}
     </p>
     <p>
       The effect will be <b>100% immutability</b> for the rest of the time, and
@@ -191,7 +194,7 @@ export const OnChainScarcity = () => (
     </p>
     <p>
       Your NFT visuals and attributes will transform according to the decisions
-      you make at each step of your Diamond Dawn journey.{" "}
+      you make at each phase of your Diamond Dawn journey.{" "}
     </p>
     <p>
       Each time you evolve your DD NFT, you lose its previous form and reduce
@@ -199,8 +202,9 @@ export const OnChainScarcity = () => (
     </p>
     <p>Will anyone keep the Mine’s Key NFT, or will it be lost forever? </p>
     <p>
-      From here, it’s up to YOU to define what’s rare and what’s not - your
-      decisions will impact other collectors.
+      From here, it’s up to YOU to define what’s rare and what’s not.
+      <br />
+      Your decisions will impact other collectors.
     </p>
   </>
 );

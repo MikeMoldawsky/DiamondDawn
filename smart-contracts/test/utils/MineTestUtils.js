@@ -318,21 +318,21 @@ async function _validateAndRemoveRoughMetadataIfNeeded(
   // Validate Rough Color, Rough Shape, Rough Carat
   const actualRoughColorAttributeList = _.remove(
     actualParsedMetadata.attributes,
-    (currentObject) => currentObject.trait_type === "Rough Shape"
+    (currentObject) => currentObject.trait_type === "Shape Rough Stone"
   );
 
   expect(actualRoughColorAttributeList).to.satisfy((arr) => {
     expect(arr).to.have.lengthOf(1);
     const [actualRoughShapeAttribute] = arr;
     expect(actualRoughShapeAttribute).to.have.all.keys("trait_type", "value");
-    expect(actualRoughShapeAttribute.trait_type).equal("Rough Shape");
+    expect(actualRoughShapeAttribute.trait_type).equal("Shape Rough Stone");
     expect(actualRoughShapeAttribute.value).to.be.oneOf([
       "Makeable 1",
       "Makeable 2",
     ]);
     return true;
   });
-  _.unset(actualParsedMetadata, "Rough Shape");
+  _.unset(actualParsedMetadata, "Shape Rough Stone");
 
   return await _validateAndRemoveCaratMetadata(
     actualParsedMetadata,
@@ -490,6 +490,7 @@ function _getExpectedMetadataEnterMine(tokenId) {
     attributes: [
       { trait_type: "Origin", value: "Metaverse" },
       { trait_type: "Type", value: "Key" },
+      { trait_type: "Metal", value: "Gold" },
     ],
   };
 }
@@ -540,7 +541,7 @@ function _getCutMetadataNoCaratShapeAndURIs(
         trait_type: "Mined",
         value: numMined,
       },
-      { trait_type: "Rough Color", value: "Cape" },
+      { trait_type: "Color Rough Stone", value: "Cape" },
       { trait_type: "Color", value: _expectedColor(diamond) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {
@@ -590,7 +591,7 @@ function _getPolishedMetadataNoCaratShapeAndURIs(
         trait_type: "Mined",
         value: numMined,
       },
-      { trait_type: "Rough Color", value: "Cape" },
+      { trait_type: "Color Rough Stone", value: "Cape" },
       { trait_type: "Color", value: _expectedColor(diamond) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {
@@ -649,7 +650,7 @@ function _getRebirthMetadataNoCaratShapeAndURIs(
         trait_type: "Mined",
         value: numMined,
       },
-      { trait_type: "Rough Color", value: "Cape" },
+      { trait_type: "Color Rough Stone", value: "Cape" },
       { trait_type: "Color", value: _expectedColor(diamond) },
       { trait_type: "Cut", value: enumToGrade(diamond.cut) },
       {

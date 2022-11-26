@@ -6,11 +6,11 @@ import ReactPlayer from "react-player";
 import {
   TheJourneyMainText,
   TheJourneyText,
-  Step0Text,
-  Step1Text,
-  Step2Text,
-  Step3Text,
-  Step4Text,
+  Phase0Text,
+  Phase1Text,
+  Phase2Text,
+  Phase3Text,
+  Phase4Text,
 } from "./TheJourneyContent";
 import InfoPage from "components/InfoPage";
 import AnimatedText from "components/AnimatedText";
@@ -33,11 +33,11 @@ const TheJourneyPage = () => {
         <div className="center-aligned-row journey-row journey-desc">
           <div className="image-side" />
           <AnimatedText className="text-side">
-            <div className="leading-text">THE STEPS</div>
+            <div className="leading-text">THE PHASES</div>
             <TheJourneyText />
           </AnimatedText>
         </div>
-        <div className="journey-steps">
+        <div className="journey-phases">
           <div className="scale">
             <div className="marker marker0">0.0</div>
             <div className="marker marker30">-30</div>
@@ -45,7 +45,7 @@ const TheJourneyPage = () => {
             <div className="marker marker90">-90</div>
             <div className="mask" />
           </div>
-          <div className="center-aligned-row journey-row step-0">
+          <div className="center-aligned-row journey-row phase-0">
             <div className="image-side">
               <div className="image">
                 <ReactPlayer
@@ -63,13 +63,13 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter active" />
-              <div className="secondary-text">Step 0 - Activate Your Key</div>
+              <div className="secondary-text">Phase 0 - Activate Your Key</div>
               <AnimatedText>
-                <Step0Text />
+                <Phase0Text />
               </AnimatedText>
             </div>
           </div>
-          <div className="center-aligned-row journey-row step-1">
+          <div className="center-aligned-row journey-row phase-1">
             <div className="image-side">
               <div className="image">
                 <ReactPlayer
@@ -87,13 +87,13 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Step 1 - Enter & Mine</div>
+              <div className="secondary-text">Phase 1 - Enter & Mine</div>
               <AnimatedText>
-                <Step1Text />
+                <Phase1Text />
               </AnimatedText>
             </div>
           </div>
-          <div className="center-aligned-row journey-row step-2">
+          <div className="center-aligned-row journey-row phase-2">
             <div className="image-side">
               <div className="image">
                 <img src={getCDNImageUrl("question-mark.svg")} alt="?" />
@@ -101,13 +101,13 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Step 2 - ?</div>
+              <div className="secondary-text">Phase 2 - ?</div>
               <AnimatedText>
-                <Step2Text />
+                <Phase2Text />
               </AnimatedText>
             </div>
           </div>
-          <div className="center-aligned-row journey-row step-3">
+          <div className="center-aligned-row journey-row phase-3">
             <div className="image-side">
               <div className="image">
                 <img src={getCDNImageUrl("question-mark.svg")} alt="?" />
@@ -115,13 +115,13 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Step 3 - ?</div>
+              <div className="secondary-text">Phase 3 - ?</div>
               <AnimatedText>
-                <Step3Text />
+                <Phase3Text />
               </AnimatedText>
             </div>
           </div>
-          <div className="center-aligned-row journey-row step-4">
+          <div className="center-aligned-row journey-row phase-4">
             <div className="image-side">
               <div className="image">
                 <img
@@ -132,9 +132,9 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Step 4 - The Final Choice</div>
+              <div className="secondary-text">Phase 4 - The Final Choice</div>
               <AnimatedText>
-                <Step4Text />
+                <Phase4Text />
               </AnimatedText>
             </div>
           </div>

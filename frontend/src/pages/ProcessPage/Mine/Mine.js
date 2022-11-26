@@ -23,7 +23,7 @@ const Mine = () => {
     ({ execute, endTime }) => (
       <>
         <DiamondPicker actionKey="Mine" />
-        <div className="leading-text">A DIAMONDS JOURNEY HAS MANY STEPS</div>
+        <div className="leading-text">A DIAMONDS JOURNEY HAS MANY PHASES</div>
         <div className="secondary-text">The first one is to believe</div>
         <div className="action">
           <ActionButton
