@@ -58,7 +58,7 @@ const FAQS = {
           Diamond Dawn's NFT attributes live on the Ethereum blockchain, and the
           videos are stored on the Arweave decentralized network (read{" "}
           <NavLink to="/technology">
-            <span className="sitemap-link">Timeless Technology</span>
+            <span className="link">Timeless Technology</span>
           </NavLink>{" "}
           for additional info).{" "}
         </p>
