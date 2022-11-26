@@ -24,7 +24,7 @@ const NetworkGuard = ({ children }) => {
         title={<span className="text-red">WRONG NETWORK</span>}
         text={
           <span className="">
-            please switch to {chainNameById(get(chains, 0, "id"))}
+            please switch to {chainNameById(get(chains, [0, "id"]))}
           </span>
         }
       />
