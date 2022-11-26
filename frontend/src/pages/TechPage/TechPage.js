@@ -12,35 +12,52 @@ import {
   OnChainScarcity,
 } from "./TechPageContent";
 import InfoPage from "components/InfoPage";
+import AnimatedText from "components/AnimatedText";
 
 const TechPage = () => {
   return (
-    <InfoPage className="tech-page" teaser={{ src: "teaser-short.mp4" }}>
+    <InfoPage className="tech-page" teaser={{ src: "earth-and-moon.webm" }}>
       <div className="left-aligned-column general">
         <div className="leading-text">Timeless Technology</div>
         <TimelessTechnology />
       </div>
       <div className="left-top-aligned-column content-section">
         <div className="leading-text">Diamonds Are Forever</div>
-        <DiamondsAreForever />
+        <AnimatedText className="text">
+          <DiamondsAreForever />
+        </AnimatedText>
         <div className="secondary-text">The Weakest Link</div>
-        <TheWeakestLink />
+        <AnimatedText className="text">
+          <TheWeakestLink />
+        </AnimatedText>
         <div className="secondary-text">Decentralization</div>
-        <Decentralization />
+        <AnimatedText className="text">
+          <Decentralization />
+        </AnimatedText>
         <div className="secondary-text">Timeless NFT</div>
-        <TimelessNFT />
+        <AnimatedText className="text">
+          <TimelessNFT />
+        </AnimatedText>
         <div className="secondary-text">Decentralized Files</div>
-        <DecentralizedFiles />
+        <AnimatedText className="text">
+          <DecentralizedFiles />
+        </AnimatedText>
         <div className="secondary-text">Timeless Files</div>
-        <TimelessFiles />
+        <AnimatedText className="text">
+          <TimelessFiles />
+        </AnimatedText>
       </div>
       <div className="left-top-aligned-column content-section">
         <div className="leading-text">99% Decentralized</div>
-        <Decentralized99 />
+        <AnimatedText className="text">
+          <Decentralized99 />
+        </AnimatedText>
       </div>
       <div className="left-top-aligned-column content-section">
         <div className="leading-text">On-Chain Scarcity</div>
-        <OnChainScarcity />
+        <AnimatedText className="text">
+          <OnChainScarcity />
+        </AnimatedText>
       </div>
     </InfoPage>
   );

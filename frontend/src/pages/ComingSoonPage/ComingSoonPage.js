@@ -67,12 +67,12 @@ const ComingSoonPage = () => {
     () => (
       <ReactPlayer
         url={getCDNVideoUrl(
-          usePortraitAsset ? "coming_soon_mobile.webm" : "coming_soon.mp4"
+          usePortraitAsset ? "coming_soon_mobile.webm" : "coming-soon.webm"
         )}
         playing
         playsinline
         controls={false}
-        className="react-player"
+        className="react-player bg-video"
         muted
         loop
         width=""
@@ -121,10 +121,15 @@ const ComingSoonPage = () => {
         <div className="center-aligned-column content">
           <div className="project-title">
             <InlineVideo
+              className="dd-text"
               src={getCDNVideoUrl("animated-dd-text.webm")}
               showThreshold={0}
             />
-            <div className="private-sale">PRIVATE SALE</div>
+            <InlineVideo
+              className="ps-text"
+              src={getCDNVideoUrl("animated-ps-text.webm")}
+              showThreshold={0}
+            />
           </div>
           <div className="center-aligned-column">
             <div className="secondary-text">

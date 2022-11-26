@@ -306,24 +306,22 @@ form {
 }
 
 .animated-text {
-  opacity: 0;
   position: relative;
-  left: 5em;
-  transition: all 0.25s ease-in;
+  transition: all 0.25s ease-out;
+
+  &.hidden-up {
+    opacity: 0;
+    top: 5em;
+  }
 
   &.visible {
     opacity: 1;
-    left: 0;
     top: 0;
   }
 
-  &.ltr {
-    left: unset;
-    right: 5em;
-
-    &.visible {
-      right: 0;
-    }
+  &.hidden {
+    opacity: 0;
+    top: -5em;
   }
 }
 

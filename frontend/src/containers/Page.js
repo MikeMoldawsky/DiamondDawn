@@ -11,7 +11,7 @@ import useNoScrollView from "hooks/useNoScrollView";
 import usePermission from "hooks/usePermission";
 import useWaitFor from "hooks/useWaitFor";
 
-const DEFAULT_TIMEOUT = 15000;
+const DEFAULT_TIMEOUT = 10000;
 const SHOW_TEXT_TIME = 100;
 const FADE_DURATION = 150;
 

@@ -12,10 +12,36 @@ import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
 import { loadCollectorByAddress } from "store/collectorReducer";
 import { isNoContractMode } from "utils";
-import NoContractAppLoader from "./NoContractAppLoader";
 import ContractProvider from "containers/ContractProvider";
 
-const AppLoader = () => {
+const ServerAppLoader = () => {
+  const dispatch = useDispatch();
+  const actionDispatch = useActionDispatch();
+
+  useMountLogger("NoContractAppLoader");
+
+  useEffect(() => {
+    dispatch(loadConfig());
+  }, []);
+
+  useOnConnect(
+    (address) => {
+      dispatch(clearActionStatus("get-collector-by-address"));
+      actionDispatch(
+        loadCollectorByAddress(address),
+        "get-collector-by-address"
+      );
+    },
+    () => {
+      dispatch(clearActionStatus("get-collector-by-address"));
+      dispatch({ type: "RESET_STATE" });
+    }
+  );
+
+  return null;
+};
+
+const ChainAppLoader = () => {
   const provider = useProvider();
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
@@ -25,7 +51,6 @@ const AppLoader = () => {
 
   useEffect(() => {
     dispatch(loadSystemStage(contract));
-    dispatch(loadConfig());
 
     provider.once("block", () => {
       contract.on(EVENTS.StageChanged, (_stage) => {
@@ -42,19 +67,13 @@ const AppLoader = () => {
 
   useOnConnect(
     (address) => {
-      actionDispatch(
-        loadCollectorByAddress(address),
-        "get-collector-by-address"
-      );
       dispatch(clearTokens());
       dispatch(
         readAndWatchAccountTokens(actionDispatch, contract, provider, address)
       );
     },
     () => {
-      dispatch(clearActionStatus("get-collector-by-address"));
       dispatch(clearActionStatus("load-nfts"));
-      dispatch({ type: "RESET_STATE" });
     }
   );
 
@@ -62,9 +81,12 @@ const AppLoader = () => {
 };
 
 export default isNoContractMode()
-  ? NoContractAppLoader
+  ? ServerAppLoader
   : () => (
-      <ContractProvider>
-        <AppLoader />
-      </ContractProvider>
+      <>
+        <ServerAppLoader />
+        <ContractProvider>
+          <ChainAppLoader />
+        </ContractProvider>
+      </>
     );

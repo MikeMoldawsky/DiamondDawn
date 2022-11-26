@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./Homepage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
@@ -16,7 +16,7 @@ import {
   TeaserText,
   ValueText,
 } from "pages/Homepage/HompageContent";
-import AnimatedText from "components/AnimatedText/AnimatedText";
+import AnimatedText from "components/AnimatedText";
 import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
@@ -29,8 +29,9 @@ const Homepage = () => {
   const countdownProps = useMineOpenCountdown();
   const dispatch = useDispatch();
   const { scroll } = useSelector(uiSelector);
-  const { height } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   useShowLogoOnScroll(3.5);
+  const [mousePos, setMousePos] = useState([width / 2, height / 2]);
 
   useMusic("homepage.mp3");
 
@@ -61,8 +62,11 @@ const Homepage = () => {
       >
         <ScrollingPage className="homepage">
           <div className="page homepage">
-            <div className="top-content center-aligned-column">
-              <HomeBackground />
+            <div
+              className="top-content center-aligned-column"
+              onMouseMove={(e) => setMousePos([e.pageX, e.pageY])}
+            >
+              <HomeBackground mousePos={mousePos} />
               <div className="common-view" style={topViewStyles}>
                 <div className="logo">
                   <AnimatedLogo withText />
@@ -89,27 +93,27 @@ const Homepage = () => {
             <div className="homepage-content">
               <HomepageContentBackground />
               <div className="eternal-treasures">
-                <AnimatedText>
+                <AnimatedText className="text-section">
                   <EternalTreasuresText />
                 </AnimatedText>
               </div>
               <div className="scarcity">
-                <AnimatedText animationDirection="ltr">
+                <AnimatedText className="text-section">
                   <ScarcityText />
                 </AnimatedText>
               </div>
               <div className="value-section">
-                <AnimatedText>
+                <AnimatedText className="text-section">
                   <ValueText />
                 </AnimatedText>
               </div>
               <div className="the-experiment">
-                <AnimatedText animationDirection="ltr">
+                <AnimatedText className="text-section">
                   <TeaserText />
                 </AnimatedText>
               </div>
             </div>
-            <VideoBackground src="teaser-short.mp4" overlap="-35%" />
+            <VideoBackground src="earth-and-moon.webm" overlap="-35%" />
             <Footer />
           </div>
         </ScrollingPage>
