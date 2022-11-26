@@ -56,7 +56,6 @@ export const useWaitForImages = (images = []) => {
 export const useWaitForVideos = (videos = []) => {
   const [loaded, setLoaded] = useState(videos.length === 0);
 
-  console.log({ videos });
   const videosProgress = sumBy(videos, ({ progress }) =>
     get(progress, "loaded", 0)
   );
@@ -67,7 +66,6 @@ export const useWaitForVideos = (videos = []) => {
 
       forEach(videos, ({ progress, threshold = 1 }) => {
         const loaded = get(progress, "loaded", 0);
-        console.log({ loaded });
         if (loaded >= threshold) {
           videosLoaded++;
           if (videosLoaded === videos.length) {

@@ -2,6 +2,8 @@ import React, { useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import WaitFor from "containers/WaitFor";
 import classNames from "classnames";
+import {useSelector} from "react-redux";
+import {uiSelector} from "store/uiReducer";
 
 const InlineVideo = ({
   className,
@@ -10,6 +12,7 @@ const InlineVideo = ({
   withLoader = true,
   ...props
 }) => {
+  const { muted } = useSelector(uiSelector)
   const [videoProgress, setVideoProgress] = useState({});
 
   const renderVideo = useCallback(() => {
@@ -19,7 +22,7 @@ const InlineVideo = ({
         playing
         playsinline
         controls={false}
-        muted
+        muted={muted}
         loop
         className={classNames("react-player", className)}
         {...props}

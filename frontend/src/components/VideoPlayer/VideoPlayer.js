@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
-import { setMuted, uiSelector } from "store/uiReducer";
+import {setAudioMuted, setMuted, uiSelector} from "store/uiReducer";
 import "./VideoPlayer.scss";
 import {
   clearVideoState,
@@ -21,12 +21,12 @@ const Video = ({ isPlaying, setVideoProgress, ...props }) => {
   const { src, closeOnEnd } = useSelector(videoSelector);
 
   const onVideoPlay = () => {
-    dispatch(setMuted(true));
+    dispatch(setAudioMuted(true));
   };
 
   const onVideoEnd = () => {
     if (!origMuted) {
-      dispatch(setMuted(false));
+      dispatch(setAudioMuted(false));
     }
     if (closeOnEnd) {
       dispatch(clearVideoState());

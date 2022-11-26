@@ -50,6 +50,11 @@ export const setMuted = (muted, explicit = false) => ({
   payload: { muted, explicitMute: explicit },
 });
 
+export const setAudioMuted = (audioMuted) => ({
+  type: "UI.UPDATE_STATE",
+  payload: { audioMuted },
+});
+
 export const uiSelector = (state) => state.ui;
 
 export const uiReducer = makeReducer(
