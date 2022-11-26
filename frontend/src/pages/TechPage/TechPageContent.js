@@ -108,15 +108,16 @@ export const DecentralizedFiles = () => (
     </p>
     <p>Why?</p>
     <p>
-      Your NFT and its metadata will <b>keep on living</b> even if your media
-      file cease to exist. However, you won’t be able to “see” your NFT.
+      Because even if your media file cease to exist, your NFT and its metadata
+      will <b>keep on living</b>.
     </p>
     <p>
-      Ideally, we would also store your files on the Ethereum blockchain, but
-      it’s not feasible.{" "}
-    </p>
-    <p>
-      <b>It can cost up to $2M to store a 100MB file on Ethereum.</b>
+      Ideally we would've store your files on the Ethereum blockchain as well.
+      However, the Ethereum blockchain can NOT store big files.{" "}
+      <b>
+        Even if it was feasible, it would've cost around $1M to store a 100MB
+        file on Ethereum.
+      </b>
     </p>
   </>
 );
