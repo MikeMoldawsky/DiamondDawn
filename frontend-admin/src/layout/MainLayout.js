@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useActionDispatch from "hooks/useActionDispatch";
 import { loadContractInfo } from "store/systemReducer";
+import AppLoader from "layout/AppLoader";
 
 const MainLayout = () => {
   const actionDispatch = useActionDispatch();
@@ -24,6 +25,7 @@ const MainLayout = () => {
             exact
             element={
               <WagmiWrapper>
+                <AppLoader />
                 <AdminPage />
               </WagmiWrapper>
             }

@@ -15,22 +15,41 @@ import {
 import classNames from "classnames";
 import { pauseApi, unpauseApi } from "api/contractApi";
 import useDDContract from "hooks/useDDContract";
+import {isNoContractMode} from "utils";
+
+const ContractConfig = () => {
+  const dispatch = useDispatch();
+  const contract = useDDContract();
+  const { paused } = useSelector(systemSelector);
+
+  const togglePause = async () => {
+    await (paused ? unpauseApi(contract) : pauseApi(contract));
+    dispatch(loadSystemPaused(contract));
+  };
+
+  return (
+    <>
+      <div className="separator" />
+      <div className="title">IS PAUSED</div>
+      <div className="center-aligned-row input-row">
+        <div className="stage">{paused.toString()}</div>
+        <ActionButton actionKey="togglePause" onClick={togglePause}>
+          {paused ? "UNPAUSE" : "PAUSE"}
+        </ActionButton>
+      </div>
+    </>
+  );
+};
 
 const ConfigTab = () => {
   const dispatch = useDispatch();
-  const contract = useDDContract();
-  const { config, paused } = useSelector(systemSelector);
+  const { config } = useSelector(systemSelector);
   const { stageTime } = config;
   const [displayStageTime, setDisplayStageTime] = useState(null);
 
   useEffect(() => {
     dispatch(loadConfig());
   }, []);
-
-  const togglePause = async () => {
-    await (paused ? unpauseApi(contract) : pauseApi(contract));
-    dispatch(loadSystemPaused(contract));
-  };
 
   const time = displayStageTime || stageTime;
 
@@ -67,14 +86,7 @@ const ConfigTab = () => {
           </ActionButton>
         </div>
       </div>
-      <div className="separator" />
-      <div className="title">IS PAUSED</div>
-      <div className="center-aligned-row input-row">
-        <div className="stage">{paused.toString()}</div>
-        <ActionButton actionKey="togglePause" onClick={togglePause}>
-          {paused ? "UNPAUSE" : "PAUSE"}
-        </ActionButton>
-      </div>
+      {!isNoContractMode() && (<ContractConfig />)}
     </div>
   );
 };
