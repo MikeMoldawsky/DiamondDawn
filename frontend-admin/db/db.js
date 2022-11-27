@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+require("./models/InvitationModel")
+require("./models/CollectorModel")
 
 const uri = process.env.MONGO;
 const options = {
