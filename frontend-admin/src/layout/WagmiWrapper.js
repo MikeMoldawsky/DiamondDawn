@@ -9,8 +9,6 @@ import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/styles.css";
-import { useSelector } from "react-redux";
-import { systemSelector } from "store/systemReducer";
 
 const localChain = {
   id: 31337,
@@ -25,11 +23,6 @@ const localChain = {
     default: "http://localhost:8545",
   },
   testnet: true,
-};
-
-const ContractProvider = ({ children }) => {
-  const { ddContractData, ddMineContractData } = useSelector(systemSelector);
-  return ddContractData && ddMineContractData ? children : null;
 };
 
 function WagmiWrapper({ children }) {
@@ -62,7 +55,7 @@ function WagmiWrapper({ children }) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains} theme={darkTheme()}>
-        <ContractProvider>{children}</ContractProvider>
+        {children}
       </RainbowKitProvider>
     </WagmiConfig>
   );

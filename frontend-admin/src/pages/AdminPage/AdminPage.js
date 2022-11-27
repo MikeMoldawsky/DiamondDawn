@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import classNames from "classnames";
 import "../App/App.scss";
 import "./AdminPage.scss";
@@ -10,33 +10,36 @@ import Wallet from "components/Wallet";
 import DiamondsTab from "./DiamondsTab";
 import StageTab from "./StageTab";
 import ConfigTab from "pages/AdminPage/ConfigTab";
-import { CONTRACTS, SYSTEM_STAGE } from "consts";
-import {
-  loadDiamondCount,
-  loadMaxDiamonds,
-  loadConfig,
-  loadSystemPaused,
-  loadSystemStage,
-} from "store/systemReducer";
-import useDDContract from "hooks/useDDContract";
-import { useDispatch } from "react-redux";
+import { SYSTEM_STAGE } from "consts";
 import _ from "lodash";
+import { isNoContractMode } from "utils";
 
 const TABS = [
   {
     title: "Key",
+    requireContract: true,
     component: () => <StageTab stage={SYSTEM_STAGE.KEY} />,
   },
   {
     title: "Mine",
+    requireContract: true,
     component: () => <StageTab stage={SYSTEM_STAGE.MINE} />,
   },
-  { title: "Cut", component: () => <StageTab stage={SYSTEM_STAGE.CUT} /> },
+  {
+    title: "Cut",
+    requireContract: true,
+    component: () => <StageTab stage={SYSTEM_STAGE.CUT} />,
+  },
   {
     title: "Polish",
+    requireContract: true,
     component: () => <StageTab stage={SYSTEM_STAGE.POLISH} />,
   },
-  { title: "Dawn", component: () => <StageTab stage={SYSTEM_STAGE.DAWN} /> },
+  {
+    title: "Dawn",
+    requireContract: true,
+    component: () => <StageTab stage={SYSTEM_STAGE.DAWN} />,
+  },
   { title: "Config", component: () => <ConfigTab /> },
   { title: "Invitations", component: () => <InvitationsTab /> },
   {
@@ -48,25 +51,9 @@ const TABS = [
 ];
 
 const AdminPage = () => {
-  const contract = useDDContract();
-  const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
-
-  const dispatch = useDispatch();
-
-  const contractReady = !_.isNil(contract) && !_.isNil(mineContract);
-
-  useEffect(() => {
-    if (contractReady) {
-      dispatch(loadSystemStage(contract));
-      dispatch(loadSystemPaused(contract));
-      dispatch(loadMaxDiamonds(mineContract));
-      dispatch(loadDiamondCount(mineContract));
-    }
-  }, [contractReady]);
-
-  useEffect(() => {
-    dispatch(loadConfig());
-  }, []);
+  const tabs = isNoContractMode()
+    ? _.filter(TABS, (t) => !t.requireContract)
+    : TABS;
 
   return (
     <div className={classNames("page admin-page")}>
@@ -74,7 +61,7 @@ const AdminPage = () => {
         <Wallet />
       </Header>
       <main>
-        <Tabs tabs={TABS} activeTab={0} />
+        <Tabs tabs={tabs} activeTab={0} />
       </main>
     </div>
   );
