@@ -1,40 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Loading from "components/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
-import classNames from "classnames";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import useTimeout from "hooks/useTimeout";
-import useNoScrollView from "hooks/useNoScrollView";
 import usePermission from "hooks/usePermission";
 import useWaitFor from "hooks/useWaitFor";
+import PageCover from "components/PageCover";
 
 const DEFAULT_TIMEOUT = 10000;
 const SHOW_TEXT_TIME = 100;
 const FADE_DURATION = 150;
-
-const PageCover = ({ fade, showText, withText, isPage }) => {
-  useNoScrollView(!isPage);
-
-  return (
-    <div
-      className={classNames("center-aligned-column page-cover", {
-        hide: fade,
-      })}
-    >
-      <Loading />
-      {withText && (
-        <div className="secondary-text">
-          {showText && "DIAMOND DAWN"}
-          <br />
-          {showText && "loading..."}
-        </div>
-      )}
-    </div>
-  );
-};
 
 const Page = ({
   pageName,
@@ -42,10 +19,8 @@ const Page = ({
   videos = [],
   timeout = DEFAULT_TIMEOUT,
   withLoader = true,
-  withLoaderText = true,
   requireAccess = true,
   onReady,
-  isPage = true,
   children,
 }) => {
   const { assetReadyPages } = useSelector(uiSelector);
@@ -53,7 +28,7 @@ const Page = ({
   const [hidden, setHidden] = useState(false);
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
-  const contentReady = useWaitFor({ images, videos });
+  const contentReady = useWaitFor({ images, videos }, pageName);
   const canAccessDD = usePermission();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
@@ -85,7 +60,11 @@ const Page = ({
   // navigate out if doesn't have access
   useEffect(() => {
     if (requireAccess && isCollectorReady && !canAccessDD) {
-      navigate("/");
+      return navigate("/");
+    }
+    // monitor isCollectorReady
+    if (isCollectorReady) {
+      onAssetLoaded();
     }
   }, [isCollectorReady]);
 
@@ -95,13 +74,6 @@ const Page = ({
       onAssetLoaded();
     }
   }, [contentReady]);
-
-  // monitor isCollectorFetched
-  useEffect(() => {
-    if (isCollectorFetched) {
-      onAssetLoaded();
-    }
-  }, [isCollectorFetched]);
 
   // timeout
   useTimeout(() => {
@@ -117,12 +89,7 @@ const Page = ({
     <>
       {children}
       {withLoader && !pageReady && !hidden && (
-        <PageCover
-          fade={fade}
-          showText={showText}
-          withText={withLoaderText}
-          isPage={isPage}
-        />
+        <PageCover fade={fade} showText={showText} />
       )}
     </>
   );

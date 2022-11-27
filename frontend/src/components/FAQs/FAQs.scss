@@ -69,14 +69,17 @@
   }
 
   $collapsed: 18em;
-  $expanded: 111em;
+  $expanded: 110em;
 
   @keyframes expand {
     0% {
       height: $collapsed;
     }
-    100% {
+    99% {
       height: $expanded;
+    }
+    100% {
+      height: unset;
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import reduce from "lodash/reduce";
 import isString from "lodash/isString";
@@ -33,43 +33,53 @@ export const useWaitForActions = (actions) => {
 };
 
 export const useWaitForImages = (images = []) => {
-  const imagesLoaded = useRef(0);
+  const [loaded, setLoaded] = useState(images.length === 0);
 
   useEffect(() => {
+    let imagesLoaded = 0;
+
     forEach(images, (src) => {
       const img = new Image();
       img.src = src;
       img.onload = () => {
-        imagesLoaded.current++;
+        imagesLoaded++;
+        if (imagesLoaded === images.length) {
+          setLoaded(true);
+        }
       };
     });
   }, []);
 
-  return imagesLoaded.current === images.length;
+  return loaded;
 };
 
 export const useWaitForVideos = (videos = []) => {
-  const videosLoaded = useRef(0);
+  const [loaded, setLoaded] = useState(videos.length === 0);
 
   const videosProgress = sumBy(videos, ({ progress }) =>
     get(progress, "loaded", 0)
   );
 
   useEffect(() => {
-    if (videosLoaded.current !== videos.length) {
+    if (!loaded) {
+      let videosLoaded = 0;
+
       forEach(videos, ({ progress, threshold = 1 }) => {
         const loaded = get(progress, "loaded", 0);
         if (loaded >= threshold) {
-          videosLoaded.current++;
+          videosLoaded++;
+          if (videosLoaded === videos.length) {
+            setLoaded(true);
+          }
         }
       });
     }
   }, [videosProgress]);
 
-  return videosLoaded.current === videos.length;
+  return loaded;
 };
 
-export const useWaitFor = ({ actions, images, videos }) => {
+export const useWaitFor = ({ actions, images, videos }, name) => {
   const actionsReady = useWaitForActions(actions);
   const imagesReady = useWaitForImages(images);
   const videosReady = useWaitForVideos(videos);

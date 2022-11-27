@@ -191,3 +191,14 @@ export const collectorDisplayName = (collector) =>
       // collector.email ||
       shortenEthAddress(collector.address)
     : "";
+
+export const chainNameById = (chainId) => {
+  switch (chainId) {
+    case 1:
+      return "Ethereum Mainnet";
+    case 5:
+      return "Goerli Testnet";
+    default:
+      return "Local";
+  }
+};

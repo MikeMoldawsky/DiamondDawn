@@ -5,7 +5,7 @@ import { getCDNAudioUrl } from "utils";
 import ReactAudioPlayer from "react-audio-player";
 
 const AudioPlayer = () => {
-  const { muted, musicSrc } = useSelector(uiSelector);
+  const { muted, audioMuted, musicSrc } = useSelector(uiSelector);
   const [src, setSrc] = useState("");
   const audio = useRef(null);
 
@@ -38,19 +38,19 @@ const AudioPlayer = () => {
     console.log("AudioPlayer", { muted, src });
     if (!audio.current?.audioEl?.current) return;
 
-    if (!muted && src) {
+    if (!muted && !audioMuted && src) {
       audio.current.audioEl.current.play();
     } else {
       audio.current.audioEl.current.pause();
     }
-  }, [muted, src]);
+  }, [muted, audioMuted, src]);
 
   return (
     <ReactAudioPlayer
       ref={audio}
       src={src ? getCDNAudioUrl(src) : null}
       autoPlay
-      muted={muted}
+      muted={muted || audioMuted}
       loop
       volume={0.5}
     />
