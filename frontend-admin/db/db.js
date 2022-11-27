@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 
 const uri = process.env.MONGO;
-const options = {};
-let connection = null;
-// const options = {
-//   useUnifiedTopology: true,
-//   useNewUrlParser: true,
-// };
+const options = {
+  autoIndex: false,
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
+};
 
 if (!uri) {
   throw new Error("Please add your Mongo URI as and env var");
