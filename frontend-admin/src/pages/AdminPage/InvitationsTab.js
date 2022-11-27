@@ -26,7 +26,7 @@ const INVITATION_COLUMNS = [
   },
   {
     field: "inviter",
-    headerName: "Inviter Override",
+    headerName: "Inviter Twitter Override",
     width: 200,
     editable: true,
   },
