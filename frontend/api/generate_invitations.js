@@ -6,6 +6,7 @@ const { createInvitation } = require("../db/invite-db-manager");
 
 module.exports = async function (req, res) {
   try {
+    const start = Date.now();
     const { collectorId } = req.body;
     let collector = await getCollectorById(collectorId);
     if (!collector) {
@@ -25,6 +26,7 @@ module.exports = async function (req, res) {
       invitations: [i1, i2],
     });
     res.send(collector);
+    console.log(`Execution time: ${Date.now() - start} ms`);
   } catch (e) {
     res.status(500).send(e.message);
   }
