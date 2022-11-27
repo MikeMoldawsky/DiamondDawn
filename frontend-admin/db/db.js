@@ -6,6 +6,7 @@ const options = {
   // useNewUrlParser: true,
   // useUnifiedTopology: true,
 };
+let connection;
 
 if (!uri) {
   throw new Error("Please add your Mongo URI as and env var");
