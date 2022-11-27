@@ -18,7 +18,7 @@ import {
 import useDDContract from "hooks/useDDContract";
 import { eruptionApi } from "api/contractApi";
 import { logEruptionTxApi, clearEruptionTxsApi } from "api/serverApi";
-import { getEnumKeyByValue, showError, unixTimestampToDateString } from "utils";
+import {getEnumKeyByValue, isNoContractMode, showError, unixTimestampToDateString} from "utils";
 import DIAMONDS_INFO from "assets/data/diamonds";
 import { useProvider } from "wagmi";
 import { useDispatch, useSelector } from "react-redux";
@@ -200,6 +200,27 @@ const DIAMOND_COLUMNS = [
   },
 ];
 
+const DiamondsTable = ({ deployedGIAs = [], renderDeployButton }) => {
+  const isRowDeployed = (row) => _.includes(deployedGIAs, row.number);
+
+  return (
+    <CRUDTable
+      columns={DIAMOND_COLUMNS}
+      rows={DIAMONDS_INFO}
+      itemName="Diamond"
+      getNewItem={getEmptyDiamond}
+      renderButtons={renderDeployButton}
+      checkboxSelection
+      getRowId={(row) => row.number}
+      readonly
+      getRowClassName={(params) =>
+        isRowDeployed(params.row) ? "deployed" : ""
+      }
+      isRowSelectable={(params) => !isRowDeployed(params.row)}
+    />
+  );
+};
+
 const DiamondsTab = () => {
   const ddMineContract = useDDContract(CONTRACTS.DiamondDawnMine);
   const { ddMineContractData, config, diamondCount } =
@@ -268,8 +289,6 @@ const DiamondsTab = () => {
     </div>
   );
 
-  const isRowDeployed = (row) => _.includes(deployedGIAs, row.number);
-
   return (
     <div className={classNames("tab-content diamonds")}>
       <h1>Diamonds</h1>
@@ -285,22 +304,14 @@ const DiamondsTab = () => {
           </ActionButton>
         </div>
       )}
-      <CRUDTable
-        columns={DIAMOND_COLUMNS}
-        rows={DIAMONDS_INFO}
-        itemName="Diamond"
-        getNewItem={getEmptyDiamond}
-        renderButtons={renderDeployButton}
-        checkboxSelection
-        getRowId={(row) => row.number}
-        readonly
-        getRowClassName={(params) =>
-          isRowDeployed(params.row) ? "deployed" : ""
-        }
-        isRowSelectable={(params) => !isRowDeployed(params.row)}
-      />
+      <DiamondsTable deployedGIAs={deployedGIAs} renderDeployButton={renderDeployButton} />
     </div>
   );
 };
 
-export default DiamondsTab;
+export default isNoContractMode() ? () => (
+  <div className={classNames("tab-content diamonds")}>
+    <h1>Diamonds</h1>
+    <DiamondsTable />
+  </div>
+) : DiamondsTab;
