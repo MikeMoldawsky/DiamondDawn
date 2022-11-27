@@ -21,18 +21,6 @@ const INVITATION_COLUMNS = [
     showIfRequest: true,
   },
   {
-    field: "address",
-    headerName: "Address",
-    width: 400,
-    showIfRequest: true,
-    preProcessEditCellProps: (params) => {
-      const isValid =
-        _.isEmpty(params.props.value) ||
-        ethersUtils.isAddress(params.props.value);
-      return { ...params.props, error: !isValid };
-    },
-  },
-  {
     field: "twitter",
     headerName: "Twitter",
     width: 200,
@@ -45,6 +33,32 @@ const INVITATION_COLUMNS = [
     width: 200,
     editable: true,
     showIfRequest: true,
+  },
+  {
+    field: "invitedBy",
+    headerName: "Invited By",
+    width: 200,
+    showIfRequest: true,
+  },
+  {
+    field: "note",
+    headerName: "Notes",
+    width: 300,
+    flex: 1,
+    editable: true,
+    showIfRequest: true,
+  },
+  {
+    field: "address",
+    headerName: "Address",
+    width: 400,
+    showIfRequest: true,
+    preProcessEditCellProps: (params) => {
+      const isValid =
+        _.isEmpty(params.props.value) ||
+        ethersUtils.isAddress(params.props.value);
+      return { ...params.props, error: !isValid };
+    },
   },
   {
     field: "location",
@@ -60,25 +74,12 @@ const INVITATION_COLUMNS = [
     showIfRequest: true,
   },
   {
-    field: "note",
-    headerName: "Notes",
-    width: 300,
-    flex: 1,
-    editable: true,
-    showIfRequest: true,
-  },
-  {
-    field: "invitedBy",
-    headerName: "Invited By",
-    width: 200,
-    showIfRequest: true,
-  },
-  {
     field: "approved",
     headerName: "Approved",
     type: "boolean",
     width: 100,
     showIfRequest: true,
+    editable: true,
   },
   {
     field: "mintWindowStart",
@@ -110,8 +111,10 @@ const INVITATION_COLUMNS = [
 
 const ApproveButton = ({ collectorId, onApprove }) => {
   const approve = async () => {
-    await approveCollectorApi(collectorId);
-    onApprove();
+    if (window.confirm("Are you sure you want to approve this collector?")) {
+      await approveCollectorApi(collectorId);
+      onApprove();
+    }
   };
 
   return (
@@ -126,8 +129,6 @@ const ApproveButton = ({ collectorId, onApprove }) => {
 
 const InvitationsTab = ({ approved }) => {
   const [collectors, setCollectors] = useState([]);
-
-  console.log({ collectors });
 
   const fetchCollectors = async () => {
     setCollectors(await getCollectorsApi(approved));
@@ -167,7 +168,7 @@ const InvitationsTab = ({ approved }) => {
         columns={columns}
         rows={collectors}
         setRows={setCollectors}
-        itemName="Invitation"
+        itemName="Collector"
         newCreatedOnServer
         renderActions={renderActions}
       />

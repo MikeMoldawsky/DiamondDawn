@@ -62,7 +62,8 @@ const CRUDTable = ({
             onClick={handleEditClick(id)}
             color="inherit"
           />,
-          ...(!getIsRowDeletable || getIsRowDeletable(params.row)
+          ...(_.isFunction(CRUD.delete) &&
+          (!getIsRowDeletable || getIsRowDeletable(params.row))
             ? [
                 <GridActionsCellItem
                   icon={<DeleteIcon />}
@@ -101,13 +102,15 @@ const CRUDTable = ({
   };
 
   const handleSaveClick = (id) => async () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    if (window.confirm(`Are you sure you want to update ${itemName}?`)) {
+      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    }
   };
 
   const handleDeleteClick = (id) => async () => {
     if (
       _.isFunction(CRUD.delete) &&
-      window.confirm("Are you sure you want to delete invite?")
+      window.confirm(`Are you sure you want to delete ${itemName}?`)
     ) {
       await CRUD.delete(id);
       setRows(rows.filter((row) => row._id !== id));

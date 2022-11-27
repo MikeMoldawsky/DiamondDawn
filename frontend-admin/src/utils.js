@@ -76,3 +76,6 @@ export const dateStringToUnix = (dateString) => {
 export const unixTimestampToDateString = (timestamp) => {
   return format(fromUnixTime(timestamp), "MMMM d, yyyy");
 };
+
+export const isNoContractMode = () =>
+  process.env.REACT_APP_NO_CONTRACT === "true";
