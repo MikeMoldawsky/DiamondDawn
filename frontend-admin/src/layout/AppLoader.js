@@ -38,13 +38,21 @@ const ChainAppLoader = () => {
   return null;
 };
 
-export default isNoContractMode()
-  ? ServerAppLoader
-  : () => (
+const AppLoader = ({ children  }) => {
+  return isNoContractMode() ? (
+    <>
+      <ServerAppLoader />
+      {children}
+    </>
+  ) : (
     <>
       <ServerAppLoader />
       <ContractProvider>
         <ChainAppLoader />
+        {children}
       </ContractProvider>
     </>
-  );
+  )
+}
+
+export default AppLoader

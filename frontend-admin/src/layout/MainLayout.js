@@ -25,8 +25,9 @@ const MainLayout = () => {
             exact
             element={
               <WagmiWrapper>
-                <AppLoader />
-                <AdminPage />
+                <AppLoader>
+                  <AdminPage />
+                </AppLoader>
               </WagmiWrapper>
             }
           />
