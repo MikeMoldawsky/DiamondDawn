@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const db = require("../db");
 
 const ContractSchema = new mongoose.Schema({
   name: { type: String, unique: true, required: true },
@@ -7,6 +6,6 @@ const ContractSchema = new mongoose.Schema({
   artifact: { type: Object, required: true },
 });
 
-const ContractModel = db.model("Contract", ContractSchema);
+const ContractModel = mongoose.model("Contract", ContractSchema);
 
 module.exports = ContractModel;

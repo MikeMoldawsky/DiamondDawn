@@ -1,3 +1,4 @@
+require("./db");
 const Invitation = require("./models/InvitationModel");
 const Collector = require("./models/CollectorModel");
 const { getOrCreateDDCollector } = require("./common");

@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const db = require("../db");
-require("./CollectorModel");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const InvitationSchema = new mongoose.Schema({
@@ -12,6 +10,6 @@ const InvitationSchema = new mongoose.Schema({
   inviter: { type: String },
 });
 
-const InvitationModel = db.model("Invitation", InvitationSchema);
+const InvitationModel = mongoose.model("Invitation", InvitationSchema);
 
 module.exports = InvitationModel;

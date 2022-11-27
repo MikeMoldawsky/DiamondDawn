@@ -1,3 +1,4 @@
+require("./db");
 const Collector = require("./models/CollectorModel");
 const _ = require("lodash");
 const { createInvitation } = require("./invitation-db-manager");

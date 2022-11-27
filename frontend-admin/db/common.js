@@ -1,5 +1,5 @@
+require("./db");
 const Collector = require("./models/CollectorModel");
-const _ = require("lodash");
 const add = require("date-fns/add");
 
 async function getCollectorObjectById(collectorId) {
