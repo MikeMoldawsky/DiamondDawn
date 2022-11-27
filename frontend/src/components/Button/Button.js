@@ -4,11 +4,16 @@ import "./Button.scss";
 import useButtonSFX from "hooks/useButtonSFX";
 
 const Button = ({ className, onClick, disabled, children, sfx, ...props }) => {
-  const { hoverWithSFX, clickWithSFX } = useButtonSFX(onClick, sfx, { disabled })
+  const { hoverWithSFX, clickWithSFX } = useButtonSFX(onClick, sfx, {
+    disabled,
+  });
 
   return (
     <button
-      className={classNames("button", className, { disabled, unmuteDelay: 2500 })}
+      className={classNames("button", className, {
+        disabled,
+        unmuteDelay: 2500,
+      })}
       onClick={clickWithSFX}
       onMouseEnter={hoverWithSFX}
       {...props}

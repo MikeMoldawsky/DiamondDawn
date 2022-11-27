@@ -43,9 +43,9 @@ const useButtonSFX = (onClick, sfx, { disabled, unmuteDelay = 0 } = {}) => {
     onClick && onClick(e);
   };
 
-  const hoverWithSFX = () => playSFX && playHoverSFX()
+  const hoverWithSFX = () => playSFX && playHoverSFX();
 
-  return { hoverWithSFX, clickWithSFX }
+  return { hoverWithSFX, clickWithSFX };
 };
 
 export default useButtonSFX;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
-import {setAudioMuted, uiSelector} from "store/uiReducer";
+import { setAudioMuted, uiSelector } from "store/uiReducer";
 import "./VideoPlayer.scss";
 import {
   clearVideoState,
@@ -11,7 +11,7 @@ import {
 import useNoScrollView from "hooks/useNoScrollView";
 import WaitFor from "containers/WaitFor";
 import PageCover from "components/PageCover";
-import { useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom";
 
 const Video = ({ isPlaying, setVideoProgress, ...props }) => {
   useNoScrollView();
@@ -58,14 +58,14 @@ const Video = ({ isPlaying, setVideoProgress, ...props }) => {
 const VideoPlayer = (props) => {
   const [videoProgress, setVideoProgress] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
-  const location = useLocation()
-  const dispatch = useDispatch()
+  const location = useLocation();
+  const dispatch = useDispatch();
 
   const { isOpen } = useSelector(videoSelector);
 
   useEffect(() => {
-    dispatch(clearVideoState())
-  }, [location?.pathname])
+    dispatch(clearVideoState());
+  }, [location?.pathname]);
 
   if (!isOpen) return null;
 

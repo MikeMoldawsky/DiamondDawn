@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Loading from "components/Loading";
 import useWaitFor from "hooks/useWaitFor";
 
@@ -15,9 +15,9 @@ export const WaitFor = ({
 
   useEffect(() => {
     if (contentReady) {
-      onReady && onReady()
+      onReady && onReady();
     }
-  }, [contentReady])
+  }, [contentReady]);
 
   const renderLoading = () =>
     !!containerClassName ? (

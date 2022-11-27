@@ -10,14 +10,13 @@ const AnimatedText = ({ className, children }) => {
   const scrollTop = useScrollTop();
 
   useEffect(() => {
-    if (visible) return
+    if (visible) return;
 
     const { top } = ref.current.getBoundingClientRect();
 
     if (top < height * 0.9) {
-      setVisible(true)
+      setVisible(true);
     }
-
   }, [visible, scrollTop]);
 
   return (

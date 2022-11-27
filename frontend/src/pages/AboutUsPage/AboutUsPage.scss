@@ -84,13 +84,13 @@
 
         &:nth-child(2) {
           .animated-text {
-            transition-delay: .15s;
+            transition-delay: 0.15s;
           }
         }
 
         &:nth-child(3) {
           .animated-text {
-            transition-delay: .3s;
+            transition-delay: 0.3s;
           }
         }
       }
