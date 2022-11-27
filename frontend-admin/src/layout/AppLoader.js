@@ -2,8 +2,14 @@ import React from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import useDDContract from "hooks/useDDContract";
-import {loadConfig, loadDiamondCount, loadMaxDiamonds, loadSystemPaused, loadSystemStage} from "store/systemReducer";
-import {CONTRACTS} from "consts";
+import {
+  loadConfig,
+  loadDiamondCount,
+  loadMaxDiamonds,
+  loadSystemPaused,
+  loadSystemStage,
+} from "store/systemReducer";
+import { CONTRACTS } from "consts";
 import { isNoContractMode } from "utils";
 import ContractProvider from "./ContractProvider";
 import _ from "lodash";
@@ -38,7 +44,7 @@ const ChainAppLoader = () => {
   return null;
 };
 
-const AppLoader = ({ children  }) => {
+const AppLoader = ({ children }) => {
   return isNoContractMode() ? (
     <>
       <ServerAppLoader />
@@ -52,7 +58,7 @@ const AppLoader = ({ children  }) => {
         {children}
       </ContractProvider>
     </>
-  )
-}
+  );
+};
 
-export default AppLoader
+export default AppLoader;

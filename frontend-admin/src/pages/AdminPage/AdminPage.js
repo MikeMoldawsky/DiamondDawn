@@ -12,7 +12,7 @@ import StageTab from "./StageTab";
 import ConfigTab from "pages/AdminPage/ConfigTab";
 import { SYSTEM_STAGE } from "consts";
 import _ from "lodash";
-import {isNoContractMode} from "utils";
+import { isNoContractMode } from "utils";
 
 const TABS = [
   {
@@ -51,7 +51,9 @@ const TABS = [
 ];
 
 const AdminPage = () => {
-  const tabs = isNoContractMode() ? _.filter(TABS, t => !t.requireContract) : TABS
+  const tabs = isNoContractMode()
+    ? _.filter(TABS, (t) => !t.requireContract)
+    : TABS;
 
   return (
     <div className={classNames("page admin-page")}>

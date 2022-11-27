@@ -18,7 +18,12 @@ import {
 import useDDContract from "hooks/useDDContract";
 import { eruptionApi } from "api/contractApi";
 import { logEruptionTxApi, clearEruptionTxsApi } from "api/serverApi";
-import {getEnumKeyByValue, isNoContractMode, showError, unixTimestampToDateString} from "utils";
+import {
+  getEnumKeyByValue,
+  isNoContractMode,
+  showError,
+  unixTimestampToDateString,
+} from "utils";
 import DIAMONDS_INFO from "assets/data/diamonds";
 import { useProvider } from "wagmi";
 import { useDispatch, useSelector } from "react-redux";
@@ -304,14 +309,19 @@ const DiamondsTab = () => {
           </ActionButton>
         </div>
       )}
-      <DiamondsTable deployedGIAs={deployedGIAs} renderDeployButton={renderDeployButton} />
+      <DiamondsTable
+        deployedGIAs={deployedGIAs}
+        renderDeployButton={renderDeployButton}
+      />
     </div>
   );
 };
 
-export default isNoContractMode() ? () => (
-  <div className={classNames("tab-content diamonds")}>
-    <h1>Diamonds</h1>
-    <DiamondsTable />
-  </div>
-) : DiamondsTab;
+export default isNoContractMode()
+  ? () => (
+      <div className={classNames("tab-content diamonds")}>
+        <h1>Diamonds</h1>
+        <DiamondsTable />
+      </div>
+    )
+  : DiamondsTab;

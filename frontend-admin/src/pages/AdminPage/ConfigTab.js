@@ -15,7 +15,7 @@ import {
 import classNames from "classnames";
 import { pauseApi, unpauseApi } from "api/contractApi";
 import useDDContract from "hooks/useDDContract";
-import {isNoContractMode} from "utils";
+import { isNoContractMode } from "utils";
 
 const ContractConfig = () => {
   const dispatch = useDispatch();
@@ -86,7 +86,7 @@ const ConfigTab = () => {
           </ActionButton>
         </div>
       </div>
-      {!isNoContractMode() && (<ContractConfig />)}
+      {!isNoContractMode() && <ContractConfig />}
     </div>
   );
 };
