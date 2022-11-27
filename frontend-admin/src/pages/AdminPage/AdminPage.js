@@ -53,7 +53,6 @@ const TABS = [
 const AdminPage = () => {
   const tabs = isNoContractMode() ? _.filter(TABS, t => !t.requireContract) : TABS
 
-  console.log({ tabs })
   return (
     <div className={classNames("page admin-page")}>
       <Header>

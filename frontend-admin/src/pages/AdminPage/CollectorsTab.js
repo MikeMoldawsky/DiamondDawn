@@ -130,8 +130,6 @@ const ApproveButton = ({ collectorId, onApprove }) => {
 const InvitationsTab = ({ approved }) => {
   const [collectors, setCollectors] = useState([]);
 
-  console.log({ collectors });
-
   const fetchCollectors = async () => {
     setCollectors(await getCollectorsApi(approved));
   };
