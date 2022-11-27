@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import size from "lodash/size";
 import "./CollectorPage.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
 import { useAccount } from "wagmi";
@@ -17,6 +17,10 @@ import Page from "containers/Page";
 import PageSizeLimit from "components/PageSizeLimit";
 import NotConnected from "components/NotConnected";
 import useNoScrollView from "hooks/useNoScrollView";
+import { loadCollectorByAddress } from "store/collectorReducer";
+import useOnConnect from "hooks/useOnConnect";
+import useActionDispatch from "hooks/useActionDispatch";
+import { clearActionStatus } from "store/actionStatusReducer";
 
 const CollectorPage = () => {
   useNoScrollView();
@@ -24,8 +28,15 @@ const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
   const { systemStage } = useSelector(systemSelector);
   const account = useAccount();
+  const dispatch = useDispatch();
+  const actionDispatch = useActionDispatch();
 
   useMusic("collector.mp3");
+
+  useOnConnect((address) => {
+    dispatch(clearActionStatus("get-collector-by-address"));
+    actionDispatch(loadCollectorByAddress(address), "get-collector-by-address");
+  });
 
   const renderContent = () => {
     if (size(tokens) > 0) return <NFTs />;

@@ -15,7 +15,7 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { isNoContractMode } from "utils";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/Logo";
-import { toggleMuted, uiSelector } from "store/uiReducer";
+import { setAudioMuted, toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import { usePageSizeLimit } from "components/PageSizeLimit";
 import CTAButton from "components/CTAButton";
@@ -45,7 +45,9 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
 
   const onMenuIconClick = () => {
     if (isVideoOpen) {
-      return dispatch(clearVideoState());
+      dispatch(clearVideoState());
+      dispatch(setAudioMuted(false));
+      return;
     }
     toggleMenu();
   };

@@ -7,7 +7,7 @@ const PageCover = ({
   fade,
   showText,
   title = "DIAMOND DAWN",
-  text = "loading...",
+  text = "Loading...",
 }) => {
   useNoScrollView();
 
