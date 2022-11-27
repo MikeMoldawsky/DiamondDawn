@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const db = require("../db");
 
 const InviteSchema = new mongoose.Schema({
   twitter: { type: String },
@@ -13,6 +12,6 @@ const InviteSchema = new mongoose.Schema({
   note: { type: String },
 });
 
-const InviteModel = db.model("Invite", InviteSchema);
+const InviteModel = mongoose.model("Invite", InviteSchema);
 
 module.exports = InviteModel;

@@ -1,3 +1,4 @@
+require("./db");
 const Invitation = require("./models/InvitationModel");
 
 const MAX_INVITES_FOR_COLLECTOR = 2;
