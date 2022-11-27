@@ -1,13 +1,35 @@
 const mongoose = require("mongoose");
 
-function getDbConnection() {
-  console.log("Creating mongo connection with", { mongo: process.env.MONGO });
-  return mongoose.createConnection(process.env.MONGO);
+const uri = process.env.MONGO;
+const options = {};
+let connection = null;
+// const options = {
+//   useUnifiedTopology: true,
+//   useNewUrlParser: true,
+// };
+
+if (!uri) {
+  throw new Error("Please add your Mongo URI as and env var");
 }
 
-const conn = getDbConnection();
+async function connectToDatabase() {
+  try {
+    if (connection) {
+      console.log("Using cached MongoDB client...");
+      return connection;
+    }
+    console.log("Connecting to MongoDB...");
+    connection = await mongoose.connect(uri, options);
+    return connection;
+  } catch (e) {
+    console.log("MongoDB connection error:", e);
+  }
+}
 
-// Bind connection to error event (to get notification of connection errors)
-conn.on("error", console.error.bind(console, "MongoDB connection error:"));
+connectToDatabase()
+  .then((_) => console.log("Successfully connected to MongoDB"))
+  .catch((error) => console.log("Connection error:", error));
 
-module.exports = conn;
+module.exports = {
+  connectToDatabase,
+};

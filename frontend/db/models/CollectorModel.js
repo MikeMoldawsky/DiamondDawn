@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-const db = require("../db");
 const ObjectId = mongoose.Schema.Types.ObjectId;
-require("./InvitationModel");
 
 const CollectorSchema = new mongoose.Schema({
   createdAt: { type: Date, required: true, default: Date.now },
@@ -18,6 +16,6 @@ const CollectorSchema = new mongoose.Schema({
   invitations: { type: [{ type: ObjectId, ref: "Invitation" }], default: [] },
 });
 
-const CollectorModel = db.model("Collector", CollectorSchema);
+const CollectorModel = mongoose.model("Collector", CollectorSchema);
 
 module.exports = CollectorModel;

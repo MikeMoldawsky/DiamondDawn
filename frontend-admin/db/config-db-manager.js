@@ -1,3 +1,4 @@
+require("./db");
 const ConfigModel = require("./models/ConfigModel");
 
 async function updateStageTime(timestamp) {
