@@ -1,4 +1,5 @@
 @import "css/varsNEW";
+@import "css/animations";
 
 .invite-view {
   .layout-box {
@@ -114,7 +115,8 @@
 
         .heading {
           font-size: $font25px;
-          margin: 0.4em 0 1em;
+          margin: 0.4em 0;
+          align-self: flex-start;
         }
 
         .button {
@@ -124,6 +126,7 @@
         svg.fa-check {
           width: 5em;
           height: unset;
+          animation: fadeIn 0.5s ease-in;
 
           path {
             fill: $gold;
@@ -143,12 +146,6 @@
           }
         }
       }
-    }
-  }
-
-  .modal.request-submitted {
-    .heading {
-      align-self: flex-start;
     }
   }
 }

@@ -14,13 +14,13 @@ import {
 } from "./TheJourneyContent";
 import InfoPage from "components/InfoPage";
 import AnimatedText from "components/AnimatedText";
+import InlineVideo from "components/VideoPlayer/InlineVideo";
 
 const TheJourneyPage = () => {
   return (
     <InfoPage
       className="the-journey-page"
-      teaser={{ src: "teaser_physical.mp4", overlap: "-25%" }}
-      // withFAQ
+      teaser={{ src: "physical-loop.webm", overlap: "-25%" }}
     >
       <div className="general">
         <div className="leading-text">THE JOURNEY</div>
@@ -96,7 +96,11 @@ const TheJourneyPage = () => {
           <div className="center-aligned-row journey-row phase-2">
             <div className="image-side">
               <div className="image">
-                <img src={getCDNImageUrl("question-mark.svg")} alt="?" />
+                <InlineVideo
+                  src={getCDNVideoUrl("question-mark.webm")}
+                  withLoader={false}
+                  showThreshold={0}
+                />
               </div>
             </div>
             <div className="text-side">
@@ -110,7 +114,11 @@ const TheJourneyPage = () => {
           <div className="center-aligned-row journey-row phase-3">
             <div className="image-side">
               <div className="image">
-                <img src={getCDNImageUrl("question-mark.svg")} alt="?" />
+                <InlineVideo
+                  src={getCDNVideoUrl("question-mark.webm")}
+                  withLoader={false}
+                  showThreshold={0}
+                />
               </div>
             </div>
             <div className="text-side">
@@ -124,9 +132,10 @@ const TheJourneyPage = () => {
           <div className="center-aligned-row journey-row phase-4">
             <div className="image-side">
               <div className="image">
-                <img
-                  src={getCDNImageUrl("/about/physical-digital.png")}
-                  alt="?"
+                <InlineVideo
+                  src={getCDNVideoUrl("physical-digital-diamond.webm")}
+                  withLoader={false}
+                  showThreshold={0}
                 />
               </div>
             </div>

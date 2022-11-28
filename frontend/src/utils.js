@@ -51,6 +51,8 @@ export const showError = (e, prefix = "Error") => {
   console.error(errorMessage);
 };
 
+export const showSuccess = toast.success;
+
 export const logApiError = (e, funcName) =>
   console.error(`Api Error - ${funcName} Failed`, e);
 

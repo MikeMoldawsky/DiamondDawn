@@ -2,10 +2,12 @@
 
 .page.credits-page {
   color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   .inner-page {
-    width: 22em;
-    min-height: 70%;
+    width: 80%;
   }
 
   a {
@@ -15,22 +17,36 @@
   h1 {
     margin: 0.8em 0;
     line-height: 1.4em;
-    text-align: left;
+  }
+
+  .credits {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .credits-category {
-    margin-top: 2em;
+    margin: 1em 1.2em;
+    width: 18em;
+    border: solid 1px $border_opaque;
+    background-color: $box_bg;
+    padding: 0.8em 1em;
+    line-height: 1em;
 
     .category-name {
       opacity: 0.8;
-      font-size: $font14px;
+      font-size: $font12px;
+    }
+
+    .credit-to {
+      &:not(:first-child) {
+        margin-top: 0.6em;
+      }
     }
   }
 
   footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    margin-top: 2em;
 
     .footer-inner {
       padding-top: 6rem;
