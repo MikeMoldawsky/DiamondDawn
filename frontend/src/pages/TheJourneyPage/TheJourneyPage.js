@@ -101,7 +101,7 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Phase 2 - ?</div>
+              <div className="secondary-text">Phase 2</div>
               <AnimatedText>
                 <Phase2Text />
               </AnimatedText>
@@ -115,7 +115,7 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Phase 3 - ?</div>
+              <div className="secondary-text">Phase 3</div>
               <AnimatedText>
                 <Phase3Text />
               </AnimatedText>

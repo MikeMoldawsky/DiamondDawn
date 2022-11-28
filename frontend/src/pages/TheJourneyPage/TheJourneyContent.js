@@ -79,15 +79,23 @@ export const Phase1Text = () => {
 
   return (
     <div className="text">
-      <p>Diamond Dawn's mine will open in</p>
+      <p>Diamond Dawn's mine will open in:</p>
       <Countdown align="left" {...countdownProps} />
     </div>
   );
 };
 
-export const Phase2Text = () => null;
+export const Phase2Text = () => (
+  <div className="text">
+    <p>To be revealed.</p>
+  </div>
+);
 
-export const Phase3Text = () => null;
+export const Phase3Text = () => (
+  <div className="text">
+    <p>To be revealed.</p>
+  </div>
+);
 
 export const Phase4Text = () => (
   <div className="text">

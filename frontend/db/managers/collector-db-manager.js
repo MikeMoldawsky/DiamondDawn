@@ -1,8 +1,7 @@
-require("./db");
-const Collector = require("./models/CollectorModel");
+const Collector = require("../models/CollectorModel");
 const add = require("date-fns/add");
 const ethers = require("ethers");
-const signer = require("../helpers/signer");
+const signer = require("../../helpers/signer");
 
 async function getCollectorObjectById(collectorId) {
   try {
