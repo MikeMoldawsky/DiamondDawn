@@ -189,6 +189,31 @@ form {
   }
 }
 
+.local-notification {
+  position: absolute;
+  z-index: 1210;
+  color: $green;
+  font-size: $font13px;
+  font-weight: 600;
+  letter-spacing: .075em;
+  opacity: 0;
+
+  &.visible {
+    animation: moveUpAndDisappear 1s ease-out forwards;
+  }
+}
+
+@keyframes moveUpAndDisappear {
+  0% {
+    transform: translateY(0em);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-3em);
+    opacity: 0;
+  }
+}
+
 .profile-image {
   width: 11.65em;
   height: 11.65em;

@@ -6,6 +6,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import Button from "components/Button";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { CollectorLink } from "components/Links";
+import CopyButton from "components/CopyButton";
 
 const InvitedModal = ({ close, invite }) => {
   const { createdBy, inviter } = invite;
@@ -27,14 +28,9 @@ const InvitedModal = ({ close, invite }) => {
           sure to keep it safe.
         </div>
         <div className="text-center">
-          <CopyToClipboard
-            text={invite._id.substring(invite._id.length - 8)}
-            onCopy={close}
-          >
-            <Button className="icon-after gold" sfx="utility">
-              COPY PASSWORD <ContentCopyIcon />
-            </Button>
-          </CopyToClipboard>
+          <CopyButton content={invite._id.substring(invite._id.length - 8)} onCopy={close}>
+            COPY PASSWORD
+          </CopyButton>
         </div>
       </div>
     </Modal>
