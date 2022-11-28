@@ -79,7 +79,7 @@ export const Phase1Text = () => {
 
   return (
     <div className="text">
-      <p>Diamond Dawn's mine will open in</p>
+      <p>Diamond Dawn's mine will open in:</p>
       <Countdown align="left" {...countdownProps} />
     </div>
   );
