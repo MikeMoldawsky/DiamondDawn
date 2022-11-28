@@ -78,10 +78,49 @@
   .page.coming-soon {
     font-size: $font14px;
 
+    .react-player.bg-video {
+      min-width: 100%;
+      min-height: 100%;
+    }
+
     .content {
+      position: relative;
       justify-content: space-between;
-      height: 75%;
-      top: 15%;
+      left:unset;
+      transform:none;
+      text-align: center;
+      height: 80%;
+      top: 5%;
+
+      .secondary-text {
+        font-size: $font22px;
+      }
+
+      .project-title {
+        margin-bottom: unset;
+
+        .react-player.dd-text, .react-player.ps-text {
+          width: unset;
+          height: unset;
+          margin: unset;
+
+          &.dd-text {
+            margin: 0 -10% -45%;
+          }
+
+          &.ps-text {
+            margin: 0 25%;
+          }
+        }
+      }
+
+      .password-box {
+        margin-top: unset;
+
+        .input-container input {
+          width: 100%;
+        }
+      }
     }
   }
 }

@@ -26,7 +26,8 @@ import usePermission from "hooks/usePermission";
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const isPageSizeLimitOk = usePageSizeLimit();
+  const isPageSizeLimitOk = true;
+  // const isPageSizeLimitOk = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
   const { isOpen: isVideoOpen } = useSelector(videoSelector);
   const canAccessDD = usePermission();
