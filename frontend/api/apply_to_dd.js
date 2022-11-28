@@ -6,6 +6,7 @@ const { useInvite, validateInviteById } = require("../db/invite-db-manager");
 
 module.exports = async function (req, res) {
   try {
+    const start = Date.now();
     const { inviteId, address, twitter, email, note, country, state, isDao } =
       req.body;
     await validateInviteById(inviteId);
@@ -24,6 +25,7 @@ module.exports = async function (req, res) {
       invitedBy: invite,
     });
     res.send({ collector, invite });
+    console.log(`Execution time: ${Date.now() - start} ms`);
   } catch (e) {
     res.status(500).send(e.message);
   }
