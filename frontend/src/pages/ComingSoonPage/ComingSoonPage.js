@@ -129,7 +129,11 @@ const ComingSoonPage = () => {
             <InlineVideo
               withLoader={false}
               className="ps-text"
-              src={getCDNVideoUrl("animated-ps-text.webm")}
+              // src={getCDNVideoUrl("animated-ps-text.webm")}
+              src={[
+                {src: getCDNVideoUrl("MINE_KEY_STATIC_H.265.mp4"), type: "video/mp4"},
+                {src: getCDNVideoUrl("key-static.webm"), type: "video/webm"},
+              ]}
               showThreshold={0}
             />
           </div>
