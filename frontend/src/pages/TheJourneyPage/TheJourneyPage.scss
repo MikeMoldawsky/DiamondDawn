@@ -181,8 +181,9 @@
             img,
             .react-player {
               max-width: 70%;
-              transform: translateY(-50%);
+              transform: translateY(-40%);
               margin: 0 auto;
+              opacity: .9;
             }
           }
         }
