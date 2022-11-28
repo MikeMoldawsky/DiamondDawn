@@ -1,7 +1,6 @@
-require("./db");
-const Invitation = require("./models/InvitationModel");
-const Collector = require("./models/CollectorModel");
-const { getOrCreateDDCollector } = require("./common");
+const { getOrCreateDDCollector } = require("./common-operation-manager");
+const Invitation = require("../models/InvitationModel");
+const Collector = require("../models/CollectorModel");
 
 const MAX_INVITES_FOR_COLLECTOR = 2;
 const DD_TWITTER_HANDLE = "@DiamondDawnNFT";

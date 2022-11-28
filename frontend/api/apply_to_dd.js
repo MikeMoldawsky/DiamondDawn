@@ -1,11 +1,17 @@
+const clientDBPromise = require("../db/client/connection");
 const {
   createCollector,
   updateCollector,
-} = require("../db/collector-db-manager");
-const { useInvite, validateInviteById } = require("../db/invite-db-manager");
+} = require("../db/managers/collector-db-manager");
+const {
+  useInvite,
+  validateInviteById,
+} = require("../db/managers/invite-db-manager");
 
 module.exports = async function (req, res) {
   try {
+    const start = Date.now();
+    await clientDBPromise;
     const { inviteId, address, twitter, email, note, country, state, isDao } =
       req.body;
     await validateInviteById(inviteId);
@@ -24,6 +30,7 @@ module.exports = async function (req, res) {
       invitedBy: invite,
     });
     res.send({ collector, invite });
+    console.log(`Execution time: ${Date.now() - start} ms`);
   } catch (e) {
     res.status(500).send(e.message);
   }
