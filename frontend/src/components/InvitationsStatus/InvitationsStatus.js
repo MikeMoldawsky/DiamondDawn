@@ -38,10 +38,12 @@ const InvitationsStatus = () => {
             key={`invitations-status-${_id}`}
             className="left-center-aligned-row status-row"
           >
-            <CopyButton content={link}
-                        className="sm icon-after gold"
-                        disabled={disabled || !!usedBy}
-                        sfx="utility">
+            <CopyButton
+              content={link}
+              className="sm icon-after gold"
+              disabled={disabled || !!usedBy}
+              sfx="utility"
+            >
               INVITATION 0{i + 1}
             </CopyButton>
             <div className="status">{renderStatus(invite)}</div>

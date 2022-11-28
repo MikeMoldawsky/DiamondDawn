@@ -39,7 +39,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
     dispatch(toggleMuted(true));
   };
 
-  const getMenuIcon = () => isMenuOpen ? faX : faBars;
+  const getMenuIcon = () => (isMenuOpen ? faX : faBars);
 
   const onMenuIconClick = () => {
     toggleMenu();

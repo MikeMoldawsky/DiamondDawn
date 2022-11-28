@@ -28,7 +28,7 @@ const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
   const { systemStage } = useSelector(systemSelector);
   const account = useAccount();
-  const ensName = useEnsName({ address: account?.address })
+  const ensName = useEnsName({ address: account?.address });
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
 

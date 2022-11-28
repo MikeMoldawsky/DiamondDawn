@@ -67,10 +67,10 @@ const VideoPlayer = (props) => {
     if (!wasMutedWhenMounted) {
       dispatch(setAudioMuted(false));
     }
-  }
+  };
 
   useEffect(() => {
-    closePlayer()
+    closePlayer();
   }, [location?.pathname]);
 
   if (!isOpen) return null;

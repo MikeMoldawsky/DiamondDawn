@@ -115,7 +115,7 @@
 
         .heading {
           font-size: $font25px;
-          margin: .4em 0;
+          margin: 0.4em 0;
           align-self: flex-start;
         }
 
@@ -126,7 +126,7 @@
         svg.fa-check {
           width: 5em;
           height: unset;
-          animation: fadeIn .5s ease-in;
+          animation: fadeIn 0.5s ease-in;
 
           path {
             fill: $gold;

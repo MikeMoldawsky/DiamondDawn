@@ -6,9 +6,9 @@ import { useDispatch } from "react-redux";
 import { showVideo } from "store/videoReducer";
 import useButtonSFX from "hooks/useButtonSFX";
 
-const VideoLink = ({src, length, name }) => {
+const VideoLink = ({ src, length, name }) => {
   const dispatch = useDispatch();
-  const disabled = !src
+  const disabled = !src;
 
   const onClick = () => {
     !disabled && dispatch(showVideo(src));
@@ -17,24 +17,26 @@ const VideoLink = ({src, length, name }) => {
   const { clickWithSFX } = useButtonSFX(onClick, "explore");
 
   return (
-    <div className={classNames("video-link", { disabled })}
-         title={disabled ? "Full trailer will be released when public sale starts" : ""}
-         onClick={clickWithSFX}>
+    <div
+      className={classNames("video-link", { disabled })}
+      title={
+        disabled ? "Full trailer will be released when public sale starts" : ""
+      }
+      onClick={clickWithSFX}
+    >
       {length} {name} TRAILER
     </div>
-  )
-}
+  );
+};
 
 const PlayButton = ({ className, sources = {}, name }) => {
   const { hoverWithSFX } = useButtonSFX(null, "explore");
 
   return (
-    <div className={classNames(
-        "center-aligned-row",
-        className,
-        "play-button"
-      )}
-      onMouseEnter={hoverWithSFX}>
+    <div
+      className={classNames("center-aligned-row", className, "play-button")}
+      onMouseEnter={hoverWithSFX}
+    >
       <PlayCircleOutlineIcon />
       <div className="left-centered-aligned-column">
         <VideoLink src={sources["SHORT"]} length="SHORT" name={name} />

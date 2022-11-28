@@ -28,7 +28,10 @@ const InvitedModal = ({ close, invite }) => {
           sure to keep it safe.
         </div>
         <div className="text-center">
-          <CopyButton content={invite._id.substring(invite._id.length - 8)} onCopy={close}>
+          <CopyButton
+            content={invite._id.substring(invite._id.length - 8)}
+            onCopy={close}
+          >
             COPY PASSWORD
           </CopyButton>
         </div>

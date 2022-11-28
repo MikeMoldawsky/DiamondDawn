@@ -30,7 +30,7 @@
     width: 18em;
     border: solid 1px $border_opaque;
     background-color: $box_bg;
-    padding: .8em 1em;
+    padding: 0.8em 1em;
     line-height: 1em;
 
     .category-name {
@@ -40,7 +40,7 @@
 
     .credit-to {
       &:not(:first-child) {
-        margin-top: .6em;
+        margin-top: 0.6em;
       }
     }
   }

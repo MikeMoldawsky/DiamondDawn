@@ -35,7 +35,7 @@ const VideoBackground = ({ src, overlap = 0 }) => {
           className="element"
           name="DIGITAL"
           sources={{
-            "SHORT": getCDNVideoUrl("short-teaser.webm"),
+            SHORT: getCDNVideoUrl("short-teaser.webm"),
           }}
         />
         <div className="separator" />
@@ -43,7 +43,7 @@ const VideoBackground = ({ src, overlap = 0 }) => {
           className="element"
           name="PHYSICAL"
           sources={{
-            "SHORT": getCDNVideoUrl("physical-teaser.webm"),
+            SHORT: getCDNVideoUrl("physical-teaser.webm"),
           }}
         />
       </div>

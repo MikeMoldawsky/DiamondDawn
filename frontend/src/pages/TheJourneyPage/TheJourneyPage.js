@@ -96,7 +96,11 @@ const TheJourneyPage = () => {
           <div className="center-aligned-row journey-row phase-2">
             <div className="image-side">
               <div className="image">
-                <InlineVideo src={getCDNVideoUrl("question-mark.webm")} withLoader={false} showThreshold={0} />
+                <InlineVideo
+                  src={getCDNVideoUrl("question-mark.webm")}
+                  withLoader={false}
+                  showThreshold={0}
+                />
               </div>
             </div>
             <div className="text-side">
@@ -110,7 +114,11 @@ const TheJourneyPage = () => {
           <div className="center-aligned-row journey-row phase-3">
             <div className="image-side">
               <div className="image">
-                <InlineVideo src={getCDNVideoUrl("question-mark.webm")} withLoader={false} showThreshold={0} />
+                <InlineVideo
+                  src={getCDNVideoUrl("question-mark.webm")}
+                  withLoader={false}
+                  showThreshold={0}
+                />
               </div>
             </div>
             <div className="text-side">
@@ -124,7 +132,11 @@ const TheJourneyPage = () => {
           <div className="center-aligned-row journey-row phase-4">
             <div className="image-side">
               <div className="image">
-                <InlineVideo src={getCDNVideoUrl("physical-digital-diamond.webm")} withLoader={false} showThreshold={0} />
+                <InlineVideo
+                  src={getCDNVideoUrl("physical-digital-diamond.webm")}
+                  withLoader={false}
+                  showThreshold={0}
+                />
               </div>
             </div>
             <div className="text-side">
