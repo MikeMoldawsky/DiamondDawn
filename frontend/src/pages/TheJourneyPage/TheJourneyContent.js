@@ -85,9 +85,17 @@ export const Phase1Text = () => {
   );
 };
 
-export const Phase2Text = () => null;
+export const Phase2Text = () => (
+  <div className="text">
+    <p>To be revealed.</p>
+  </div>
+);
 
-export const Phase3Text = () => null;
+export const Phase3Text = () => (
+  <div className="text">
+    <p>To be revealed.</p>
+  </div>
+);
 
 export const Phase4Text = () => (
   <div className="text">
