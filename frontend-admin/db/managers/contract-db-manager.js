@@ -1,5 +1,4 @@
-require("./db");
-const ContractModel = require("./models/ContractModel");
+const ContractModel = require("../models/ContractModel");
 
 const DIAMOND_DAWN_CONTRACT_NAME = "DiamondDawn";
 const DIAMOND_DAWN_MINE_CONTRACT_NAME = "DiamondDawnMine";

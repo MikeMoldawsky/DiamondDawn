@@ -1,5 +1,4 @@
-require("./db");
-const ContractModel = require("./models/ContractModel");
+const ContractModel = require("../models/ContractModel");
 const DIAMOND_DAWN_CONTRACT_NAME = "DiamondDawn";
 
 async function getDiamondDawnContract() {

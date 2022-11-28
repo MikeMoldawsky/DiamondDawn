@@ -1,5 +1,4 @@
-require("./db");
-const ConfigModel = require("./models/ConfigModel");
+const ConfigModel = require("../models/ConfigModel");
 
 async function getConfig() {
   try {

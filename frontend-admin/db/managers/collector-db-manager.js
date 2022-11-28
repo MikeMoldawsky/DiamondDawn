@@ -1,8 +1,7 @@
-require("./db");
-const Collector = require("./models/CollectorModel");
 const _ = require("lodash");
 const { createInvitation } = require("./invitation-db-manager");
-const { getCollectorObjectById } = require("./common");
+const { getCollectorObjectById } = require("./common-operation-manager");
+const Collector = require("../models/CollectorModel");
 
 async function getCollectors(approved) {
   try {
