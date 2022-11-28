@@ -25,3 +25,4 @@ const clientDBPromise = mongoose
   .catch((error) => console.log("MongoDB connection error", error));
 
 export default clientDBPromise;
+
