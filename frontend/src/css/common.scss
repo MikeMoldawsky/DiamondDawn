@@ -180,6 +180,15 @@ form {
   line-height: 1em;
 }
 
+.close {
+  color: $close_modal;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+  }
+}
+
 .profile-image {
   width: 11.65em;
   height: 11.65em;

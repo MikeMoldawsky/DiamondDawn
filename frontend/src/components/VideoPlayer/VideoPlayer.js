@@ -12,12 +12,12 @@ import useNoScrollView from "hooks/useNoScrollView";
 import WaitFor from "containers/WaitFor";
 import PageCover from "components/PageCover";
 import { useLocation } from "react-router-dom";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 const Video = ({ isPlaying, setVideoProgress, ...props }) => {
   useNoScrollView();
 
   const { muted } = useSelector(uiSelector);
-  const [origMuted] = useState(muted);
   const dispatch = useDispatch();
 
   const { src, closeOnEnd } = useSelector(videoSelector);
@@ -27,9 +27,6 @@ const Video = ({ isPlaying, setVideoProgress, ...props }) => {
   };
 
   const onVideoEnd = () => {
-    if (!origMuted) {
-      dispatch(setAudioMuted(false));
-    }
     if (closeOnEnd) {
       dispatch(clearVideoState());
       return;
@@ -58,13 +55,22 @@ const Video = ({ isPlaying, setVideoProgress, ...props }) => {
 const VideoPlayer = (props) => {
   const [videoProgress, setVideoProgress] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
+  const { muted } = useSelector(uiSelector);
+  const [wasMutedWhenMounted] = useState(muted);
   const location = useLocation();
   const dispatch = useDispatch();
 
   const { isOpen } = useSelector(videoSelector);
 
-  useEffect(() => {
+  const closePlayer = () => {
     dispatch(clearVideoState());
+    if (!wasMutedWhenMounted) {
+      dispatch(setAudioMuted(false));
+    }
+  }
+
+  useEffect(() => {
+    closePlayer()
   }, [location?.pathname]);
 
   if (!isOpen) return null;
@@ -76,11 +82,14 @@ const VideoPlayer = (props) => {
         onReady={() => setIsPlaying(true)}
         Loader={() => <PageCover showText text="Video Loading..." />}
       >
-        <Video
-          isPlaying={isPlaying}
-          setVideoProgress={setVideoProgress}
-          {...props}
-        />
+        <div className="video-container">
+          <Video
+            isPlaying={isPlaying}
+            setVideoProgress={setVideoProgress}
+            {...props}
+          />
+          <HighlightOffIcon className="close" onClick={closePlayer} />
+        </div>
       </WaitFor>
     </div>
   );
