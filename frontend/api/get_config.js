@@ -1,4 +1,4 @@
-const clientDBPromise = require("../db/client/connection")
+const clientDBPromise = require("../db/client/connection");
 const { getConfig } = require("../db/managers/config-db-manager");
 
 module.exports = async function (req, res) {

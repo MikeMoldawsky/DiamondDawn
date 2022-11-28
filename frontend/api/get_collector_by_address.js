@@ -1,5 +1,7 @@
-const clientDBPromise = require("../db/client/connection")
-const { getCollectorByAddress } = require("../db/managers/collector-db-manager");
+const clientDBPromise = require("../db/client/connection");
+const {
+  getCollectorByAddress,
+} = require("../db/managers/collector-db-manager");
 
 module.exports = async function (req, res) {
   try {

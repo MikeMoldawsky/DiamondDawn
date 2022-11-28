@@ -13,8 +13,15 @@ if (!uri) {
 
 const start = Date.now();
 console.log("Connecting to MongoDB...", start);
-const clientDBPromise = mongoose.connect(uri, options)
-  .then((_) => console.log(`Successfully connected to MongoDB. Execution time: ${Date.now() - start} ms`))
+const clientDBPromise = mongoose
+  .connect(uri, options)
+  .then((_) =>
+    console.log(
+      `Successfully connected to MongoDB. Execution time: ${
+        Date.now() - start
+      } ms`
+    )
+  )
   .catch((error) => console.log("MongoDB connection error", error));
 
 export default clientDBPromise;

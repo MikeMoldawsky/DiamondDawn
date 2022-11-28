@@ -1,9 +1,12 @@
-const clientDBPromise = require("../db/client/connection")
+const clientDBPromise = require("../db/client/connection");
 const {
   createCollector,
   updateCollector,
 } = require("../db/managers/collector-db-manager");
-const { useInvite, validateInviteById } = require("../db/managers/invite-db-manager");
+const {
+  useInvite,
+  validateInviteById,
+} = require("../db/managers/invite-db-manager");
 
 module.exports = async function (req, res) {
   try {

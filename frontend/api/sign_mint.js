@@ -1,4 +1,4 @@
-const clientDBPromise = require("../db/client/connection")
+const clientDBPromise = require("../db/client/connection");
 const { signMint } = require("../db/managers/collector-db-manager");
 
 module.exports = async function (req, res) {

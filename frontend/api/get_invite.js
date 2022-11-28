@@ -1,4 +1,4 @@
-const clientDBPromise = require("../db/client/connection")
+const clientDBPromise = require("../db/client/connection");
 const { getInviteById } = require("../db/managers/invite-db-manager");
 
 module.exports = async function (req, res) {

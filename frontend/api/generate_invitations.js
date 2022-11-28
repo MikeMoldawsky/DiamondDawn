@@ -1,4 +1,4 @@
-const clientDBPromise = require("../db/client/connection")
+const clientDBPromise = require("../db/client/connection");
 const {
   getCollectorById,
   updateCollector,

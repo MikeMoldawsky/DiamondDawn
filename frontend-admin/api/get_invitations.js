@@ -1,5 +1,5 @@
 const clientDBPromise = require("../db/client/connection");
-const { getInvitations} = require("../db/managers/invitation-db-manager");
+const { getInvitations } = require("../db/managers/invitation-db-manager");
 
 module.exports = async function (req, res) {
   try {

@@ -1,5 +1,7 @@
 const clientDBPromise = require("../db/client/connection");
-const { getOrCreateDDCollector } = require("../db/managers/common-operation-manager");
+const {
+  getOrCreateDDCollector,
+} = require("../db/managers/common-operation-manager");
 
 module.exports = async function (req, res) {
   try {
