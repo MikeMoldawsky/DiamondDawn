@@ -49,7 +49,7 @@ const AboutUsPage = () => {
   return (
     <InfoPage
       className="about-page"
-      teaser={{ src: "teaser_physical.mp4", overlap: "-25%" }}
+      teaser={{ src: "physical-loop.webm", overlap: "-25%" }}
     >
       <div className="left-aligned-column general">
         <div className="leading-text">ABOUT US</div>

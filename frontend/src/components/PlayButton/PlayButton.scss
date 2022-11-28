@@ -1,5 +1,16 @@
 .play-button {
+  cursor: default;
+
   * {
     font-weight: 500;
+  }
+
+  svg {
+    font-size: 2.5em;
+    margin-right: 0.25em;
+  }
+
+  .video-link {
+    cursor: pointer;
   }
 }
