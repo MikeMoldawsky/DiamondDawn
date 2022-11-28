@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const { getDiamondDawnContract } = require("../db/contract-db-manager");
+require("./models/InvitationModel");
+require("./models/CollectorModel");
 
 const uri = process.env.MONGO;
 const options = {
