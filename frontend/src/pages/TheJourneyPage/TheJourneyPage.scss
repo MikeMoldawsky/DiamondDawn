@@ -180,8 +180,9 @@
           .image {
             img,
             .react-player {
-              max-width: 30%;
+              max-width: 70%;
               transform: translateY(-50%);
+              margin: 0 auto;
             }
           }
         }
@@ -190,11 +191,6 @@
       &.phase-4 {
         .image-side {
           align-self: flex-start;
-
-          img {
-            transform: translateY(1em);
-            max-width: 75%;
-          }
         }
 
         .text {

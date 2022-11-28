@@ -14,6 +14,7 @@ import {
 } from "./TheJourneyContent";
 import InfoPage from "components/InfoPage";
 import AnimatedText from "components/AnimatedText";
+import InlineVideo from "components/VideoPlayer/InlineVideo";
 
 const TheJourneyPage = () => {
   return (
@@ -95,7 +96,7 @@ const TheJourneyPage = () => {
           <div className="center-aligned-row journey-row phase-2">
             <div className="image-side">
               <div className="image">
-                <img src={getCDNImageUrl("question-mark.svg")} alt="?" />
+                <InlineVideo src={getCDNVideoUrl("question-mark.webm")} withLoader={false} showThreshold={0} />
               </div>
             </div>
             <div className="text-side">
@@ -109,7 +110,7 @@ const TheJourneyPage = () => {
           <div className="center-aligned-row journey-row phase-3">
             <div className="image-side">
               <div className="image">
-                <img src={getCDNImageUrl("question-mark.svg")} alt="?" />
+                <InlineVideo src={getCDNVideoUrl("question-mark.webm")} withLoader={false} showThreshold={0} />
               </div>
             </div>
             <div className="text-side">
@@ -123,10 +124,7 @@ const TheJourneyPage = () => {
           <div className="center-aligned-row journey-row phase-4">
             <div className="image-side">
               <div className="image">
-                <img
-                  src={getCDNImageUrl("/about/physical-digital.png")}
-                  alt="?"
-                />
+                <InlineVideo src={getCDNVideoUrl("physical-digital-diamond.webm")} withLoader={false} showThreshold={0} />
               </div>
             </div>
             <div className="text-side">
