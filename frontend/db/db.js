@@ -21,7 +21,10 @@ async function connectToDatabase() {
       return connection;
     }
     console.log("Connecting to MongoDB...");
+    const start = Date.now();
     connection = await mongoose.connect(uri, options);
+    const end = Date.now();
+    console.log(`ConnectToDatabase Execution time: ${end - start} ms`);
     return connection;
   } catch (e) {
     console.log("MongoDB connection error:", e);
