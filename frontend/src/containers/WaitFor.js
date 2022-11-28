@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, {useCallback, useEffect} from "react";
 import Loading from "components/Loading";
 import useWaitFor from "hooks/useWaitFor";
+import AnimatedLogo from "components/AnimatedLogo";
 
 export const WaitFor = ({
   actions,
@@ -19,14 +20,14 @@ export const WaitFor = ({
     }
   }, [contentReady]);
 
+  const renderLoader = useCallback(() => <Loader />, [])
+
   const renderLoading = () =>
     !!containerClassName ? (
       <div className={containerClassName}>
-        <Loader />
+        {renderLoader()}
       </div>
-    ) : (
-      <Loader />
-    );
+    ) : renderLoader();
 
   return (
     <>

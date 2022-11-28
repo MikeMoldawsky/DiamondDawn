@@ -5,7 +5,7 @@ import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
-import { useAccount } from "wagmi";
+import { useAccount, useEnsName } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
 import Box from "components/Box";
 import WaitFor from "containers/WaitFor";
@@ -28,6 +28,7 @@ const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
   const { systemStage } = useSelector(systemSelector);
   const account = useAccount();
+  const ensName = useEnsName({ address: account?.address })
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
 
@@ -67,7 +68,7 @@ const CollectorPage = () => {
           <div className="inner-page">
             <h1>The Collector's Room</h1>
             <div className="center-center-aligned-row account">
-              {shortenEthAddress(account?.address)}
+              {ensName?.data || shortenEthAddress(account?.address)}
             </div>
             <Box className={"main-box"}>
               {account?.address ? (
