@@ -9,7 +9,7 @@ const CREDITS = {
   "Project Creator": [
     {
       name: "Mike Moldawsky",
-      link: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
+      link: "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
     },
   ],
   Artist: [{ name: "David Ariew", link: "https://twitter.com/DavidAriew" }],
@@ -47,21 +47,23 @@ const CreditsPage = () => (
     <div className="page credits-page">
       <div className="inner-page">
         <h1>CREDITS</h1>
-        {map(CREDITS, (creditsTo, category) => (
-          <div
-            key={`credits-category-${category}`}
-            className="center-aligned-row credits-category"
-          >
-            <div className="category-name">{category}</div>
-            <div className="center-spaced-column">
-              {map(creditsTo, ({ name, link }) => (
-                <div className={`credit-to-${name}`}>
-                  <Link href={link}>{name}</Link>
-                </div>
-              ))}
+        <div className="credits">
+          {map(CREDITS, (creditsTo, category) => (
+            <div
+              key={`credits-category-${category}`}
+              className="top-spaced-row credits-category"
+            >
+              <div className="category-name">{category}</div>
+              <div className="right-spaced-column">
+                {map(creditsTo, ({ name, link }) => (
+                  <div key={`credit-to-${name}`} className="credit-to">
+                    <Link href={link}>{name}</Link>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <Footer />
     </div>
