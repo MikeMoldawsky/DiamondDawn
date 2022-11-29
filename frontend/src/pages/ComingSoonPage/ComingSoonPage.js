@@ -13,12 +13,12 @@ import useWindowDimensions from "hooks/useWindowDimensions";
 import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import InvitedModal from "components/InvitedModal/InvitedModal";
 import { isActionSuccessSelector } from "store/actionStatusReducer";
-import { collectorSelector } from "store/collectorReducer";
 import { useAccount } from "wagmi";
 import useActionDispatch from "hooks/useActionDispatch";
 import usePermission from "hooks/usePermission";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import PageSizeLimit from "components/PageSizeLimit";
+import useButtonSFX from "hooks/useButtonSFX";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,6 @@ const ComingSoonPage = () => {
   const account = useAccount();
   const inviteId = searchParams.get("invite");
   const invite = useSelector(inviteSelector);
-  const collector = useSelector(collectorSelector);
   const isCollectorFetched = useSelector(
     isActionSuccessSelector("get-collector-by-address")
   );
@@ -43,26 +42,29 @@ const ComingSoonPage = () => {
 
   useMusic("homepage.mp3");
 
-  useEffect(() => {
-    if (inviteId) {
-      actionDispatch(loadInviteById(inviteId), "get-invite-by-id");
+  const loadInvite = () => {
+    if (!inviteId) return;
+    actionDispatch(loadInviteById(inviteId), "get-invite-by-id");
+  };
+
+  const onInviteClick = () => {
+    if (!invite) {
+      loadInvite();
     }
-  }, [inviteId]);
+    setShowInvitedModal(true);
+  };
+
+  const { clickWithSFX } = useButtonSFX(onInviteClick, "explore");
+
+  useEffect(loadInvite, [inviteId]);
 
   const isCollectorReady = !account?.address || isCollectorFetched;
 
   useEffect(() => {
-    if (
-      pageReady &&
-      isCollectorReady &&
-      !canAccessDD &&
-      invite &&
-      !invite.usedBy &&
-      !invite.revoked
-    ) {
+    if (pageReady && isCollectorReady && !canAccessDD && invite) {
       setShowInvitedModal(true);
     }
-  }, [invite, isCollectorReady, collector, pageReady]);
+  }, [pageReady, isCollectorReady, canAccessDD, invite?._id]);
 
   const renderBgPlayer = useCallback(
     () => (
@@ -154,6 +156,11 @@ const ComingSoonPage = () => {
               invite={invite}
               close={() => setShowInvitedModal(false)}
             />
+          )}
+          {inviteId && (
+            <div className="invite-image" onClick={clickWithSFX}>
+              <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+            </div>
           )}
         </div>
       </Page>

@@ -28,12 +28,8 @@ export const getConfigApi = async () => {
 
 // COLLECTOR & INVITATION
 export const getInviteApi = async (inviteId) => {
-  try {
-    const res = await axios.post(`/api/get_invite`, { inviteId });
-    return res.data;
-  } catch (e) {
-    return null;
-  }
+  const res = await axios.post(`/api/get_invite`, { inviteId });
+  return res.data;
 };
 
 export const getCollectorByAddressApi = async (address) => {

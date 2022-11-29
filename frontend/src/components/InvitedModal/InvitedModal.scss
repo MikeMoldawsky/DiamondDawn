@@ -3,7 +3,7 @@
 .modal.invited-modal {
   padding: 0.4em;
   max-height: 80%;
-  max-width: 50em;
+  width: 49em;
   transform: translate(-50%, -45%);
 
   .modal-inner {
@@ -33,6 +33,7 @@
     margin-bottom: 1.5rem;
     line-height: 1.5em;
     text-align: left;
+    width: 100%;
   }
 
   .button {

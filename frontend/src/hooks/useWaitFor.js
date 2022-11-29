@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import reduce from "lodash/reduce";
 import isString from "lodash/isString";
 import {
+  isActionCompleteSelector,
   isActionFirstCompleteSelector,
   isActionSuccessSelector,
 } from "store/actionStatusReducer";
@@ -17,7 +18,7 @@ export const useWaitForActions = (actions) => {
       (isReady, action) => {
         let isActionReady;
         if (isString(action)) {
-          isActionReady = isActionSuccessSelector(action)(state);
+          isActionReady = isActionCompleteSelector(action)(state);
         } else {
           const { key, isFirstComplete } = action;
           isActionReady = isFirstComplete

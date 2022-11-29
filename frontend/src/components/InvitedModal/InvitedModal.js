@@ -2,39 +2,91 @@ import React from "react";
 import Modal from "components/Modal";
 import { getCDNImageUrl } from "utils";
 import "./InvitedModal.scss";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import Button from "components/Button";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { CollectorLink } from "components/Links";
+import { CollectorLink, TwitterLink } from "components/Links";
 import CopyButton from "components/CopyButton";
+import WaitFor from "containers/WaitFor";
+import Button from "components/Button";
+
+const InvitedModalContent = ({ close, invite }) => {
+  if (!invite)
+    return (
+      <>
+        <div className="leading-text">INVITATION NOT FOUND</div>
+        <div className="text">
+          Something went wrong and we couldn't find your invitation. Please make
+          sure you copied the invitation link correctly and try to refresh the
+          page
+        </div>
+        <div className="text">
+          If you keep seeing this message after refresh please contact{" "}
+          <TwitterLink className="text-gold">
+            <b>@DiamondDawnNFT</b>
+          </TwitterLink>
+        </div>
+        <div className="text-center">
+          <Button className="gold" onClick={close} sfx="explore">
+            CLOSE
+          </Button>
+        </div>
+      </>
+    );
+
+  const { createdBy, inviter, usedBy, revoked } = invite;
+
+  if (usedBy || revoked)
+    return (
+      <>
+        <div className="leading-text">INVITATION USED</div>
+        <div className="text">This invitation has already been used.</div>
+        <div className="text">
+          You can contact{" "}
+          <TwitterLink className="text-gold">
+            <b>@DiamondDawnNFT</b>
+          </TwitterLink>{" "}
+          for a new invitation
+        </div>
+        <div className="text-center">
+          <Button onClick={close} sfx="explore">
+            CLOSE
+          </Button>
+        </div>
+      </>
+    );
+
+  return (
+    <>
+      <div className="leading-text">CONGRATULATIONS</div>
+      <div className="text">
+        You’ve been invited by{" "}
+        <CollectorLink collector={createdBy} twitter={inviter} /> to participate
+        in Diamond Dawn’s private sale.
+      </div>
+      <div className="text">
+        The following password can ONLY be used for one application - make sure
+        to keep it safe.
+      </div>
+      <div className="text-center">
+        <CopyButton
+          content={invite._id.substring(invite._id.length - 8)}
+          onCopy={close}
+        >
+          COPY PASSWORD
+        </CopyButton>
+      </div>
+    </>
+  );
+};
 
 const InvitedModal = ({ close, invite }) => {
-  const { createdBy, inviter } = invite;
-
   return (
     <Modal className="invited-modal" close={close} implicitClose withCloseBtn>
       <div className="center-aligned-column modal-content">
-        <div className="image">
-          <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
-        </div>
-        <div className="leading-text">CONGRATULATIONS</div>
-        <div className="text">
-          You’ve been invited by{" "}
-          <CollectorLink collector={createdBy} twitter={inviter} /> to
-          participate in Diamond Dawn’s private sale.
-        </div>
-        <div className="text">
-          The following password can ONLY be used for one application - make
-          sure to keep it safe.
-        </div>
-        <div className="text-center">
-          <CopyButton
-            content={invite._id.substring(invite._id.length - 8)}
-            onCopy={close}
-          >
-            COPY PASSWORD
-          </CopyButton>
-        </div>
+        <WaitFor actions={["get-invite-by-id"]}>
+          <div className="image">
+            <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+          </div>
+          <InvitedModalContent close={close} invite={invite} />
+        </WaitFor>
       </div>
     </Modal>
   );
