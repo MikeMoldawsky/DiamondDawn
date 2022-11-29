@@ -24,6 +24,7 @@ import PageSizeLimit from "components/PageSizeLimit";
 import Button from "components/Button";
 import VideoBackground from "components/VideoBackground";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
+import CTAButton from "../../components/CTAButton";
 
 const Homepage = () => {
   const countdownProps = useMineOpenCountdown();
@@ -79,14 +80,7 @@ const Homepage = () => {
                   <Countdown {...countdownProps} />
                 </div>
                 <div>
-                  <Button
-                    className="transparent"
-                    disabled
-                    sfx="explore"
-                    title="Mine open date will be announced soon!"
-                  >
-                    ENTER MINE
-                  </Button>
+                  <CTAButton className="md" />
                 </div>
               </div>
             </div>
