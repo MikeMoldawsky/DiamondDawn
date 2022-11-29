@@ -43,7 +43,6 @@ const TheJourneyPage = () => {
             <div className="marker marker30">-30</div>
             <div className="marker marker60">-60</div>
             <div className="marker marker90">-90</div>
-            <div className="mask" />
           </div>
           <div className="center-aligned-row journey-row phase-0">
             <div className="image-side">

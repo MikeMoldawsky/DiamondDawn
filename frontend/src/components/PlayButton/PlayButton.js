@@ -38,7 +38,7 @@ const PlayButton = ({ className, sources = {}, name }) => {
       onMouseEnter={hoverWithSFX}
     >
       <PlayCircleOutlineIcon />
-      <div className="left-centered-aligned-column">
+      <div className="left-centered-aligned-column links-column">
         <VideoLink src={sources["SHORT"]} length="SHORT" name={name} />
         <VideoLink src={sources["FULL"]} length="FULL" name={name} />
       </div>
