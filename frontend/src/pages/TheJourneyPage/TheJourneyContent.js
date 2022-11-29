@@ -106,10 +106,5 @@ export const Phase4Text = () => (
       Keep your diamond digital (NFT) or <b>burn</b> it in exchange for your
       physical diamond art piece (GIA-certified).
     </p>
-    <img
-      className="certificate"
-      src={getCDNImageUrl("certificate.svg")}
-      alt=""
-    />
   </div>
 );

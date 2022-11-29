@@ -144,6 +144,11 @@ const TheJourneyPage = () => {
               <AnimatedText>
                 <Phase4Text />
               </AnimatedText>
+              <img
+                className="certificate"
+                src={getCDNImageUrl("certificate.svg")}
+                alt=""
+              />
             </div>
           </div>
         </div>
