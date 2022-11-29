@@ -119,7 +119,7 @@ const AboutUsPage = () => {
               <SocialButtons
                 member="asaf"
                 links={{
-                  twitter: "",
+                  twitter: "https://twitter.com/sniirr0x",
                   linkedin: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
                 }}
               />

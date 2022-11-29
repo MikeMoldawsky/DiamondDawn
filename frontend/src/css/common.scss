@@ -192,20 +192,23 @@ form {
 .local-notification {
   position: absolute;
   z-index: 1210;
-  color: $green;
+  color: $gold;
   font-size: $font13px;
-  font-weight: 600;
-  letter-spacing: 0.075em;
+  font-weight: 500;
+  letter-spacing: 0.05em;
   opacity: 0;
 
   &.visible {
-    animation: moveUpAndDisappear 1s ease-out forwards;
+    animation: moveUpAndDisappear 1.2s ease-out forwards;
   }
 }
 
 @keyframes moveUpAndDisappear {
   0% {
     transform: translateY(0em);
+    opacity: 1;
+  }
+  50% {
     opacity: 1;
   }
   100% {

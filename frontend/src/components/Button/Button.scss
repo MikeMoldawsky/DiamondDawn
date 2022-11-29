@@ -17,6 +17,7 @@
   text-transform: uppercase;
   border: none;
   box-shadow: none !important;
+  transition: all 0.1s ease-out;
 
   svg {
     margin-right: 16px;
@@ -51,12 +52,7 @@
   &.gold {
     color: white;
     background-color: $gold;
-
-    &.transparent {
-      color: $gold;
-      border-color: $gold;
-      background-color: transparent;
-    }
+    border: solid 1px transparent;
   }
 
   &.lg {
@@ -94,6 +90,19 @@
     &.disabled,
     &[disabled] {
       opacity: 0.5;
+    }
+  }
+
+  &:hover:not(.disabled) {
+    &.gold {
+      color: $gold;
+      border-color: $gold;
+      background-color: white;
+    }
+
+    &.transparent {
+      color: black;
+      background-color: white;
     }
   }
 }

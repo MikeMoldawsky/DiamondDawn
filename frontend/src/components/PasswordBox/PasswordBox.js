@@ -66,6 +66,7 @@ const PasswordBox = ({
         "has-error": passwordError,
       })}
     >
+      <div className="password-title">ENTER PASSWORD</div>
       <div className={classNames("input-container", { focused: isFocused })}>
         <input
           ref={pwdInput}

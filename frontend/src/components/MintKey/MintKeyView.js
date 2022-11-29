@@ -121,7 +121,7 @@ const MintKeyView = ({
                 </div>
                 <div className="text">You’ve been granted 2 invitations</div>
                 <Button className="gold" onClick={() => toggleInvites(true)}>
-                  INVITE
+                  INVITE A FRIEND
                 </Button>
               </div>
               <div className="timer-box">
