@@ -183,14 +183,14 @@ form {
 
 .link-hover {
   &:hover:not(.disabled):not(.active) {
-    animation: linkHover .3s linear forwards;
+    animation: linkHover 0.3s linear forwards;
 
     &.inverted {
-      animation: linkHoverInverted .3s linear forwards;
+      animation: linkHoverInverted 0.3s linear forwards;
     }
 
     &.text-gold {
-      animation: linkHoverGold .3s linear forwards;
+      animation: linkHoverGold 0.3s linear forwards;
     }
   }
 }
