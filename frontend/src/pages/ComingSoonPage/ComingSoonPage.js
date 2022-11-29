@@ -160,6 +160,7 @@ const ComingSoonPage = () => {
           {inviteId && (
             <div className="invite-image" onClick={clickWithSFX}>
               <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+              <div className="text-center text-comment">YOUR INVITE</div>
             </div>
           )}
         </div>

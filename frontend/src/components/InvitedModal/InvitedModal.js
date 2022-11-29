@@ -13,12 +13,13 @@ const InvitedModalContent = ({ close, invite }) => {
       <>
         <div className="leading-text">INVITATION NOT FOUND</div>
         <div className="text">
-          Something went wrong and we couldn't find your invitation. Please make
-          sure you copied the invitation link correctly and try to refresh the
-          page
-        </div>
-        <div className="text">
-          If you keep seeing this message after refresh please contact{" "}
+          We couldn't find your invitation.
+          <br />
+          Please make sure you copied the invitation link correctly and try to
+          refresh the page.
+          <br />
+          <br />
+          If it doesn't work, please contact{" "}
           <TwitterLink className="text-gold">
             <b>@DiamondDawnNFT</b>
           </TwitterLink>
@@ -37,8 +38,9 @@ const InvitedModalContent = ({ close, invite }) => {
     return (
       <>
         <div className="leading-text">INVITATION USED</div>
-        <div className="text">This invitation has already been used.</div>
         <div className="text">
+          This invitation has already been used.
+          <br />
           You can contact{" "}
           <TwitterLink className="text-gold">
             <b>@DiamondDawnNFT</b>
@@ -46,7 +48,7 @@ const InvitedModalContent = ({ close, invite }) => {
           for a new invitation
         </div>
         <div className="text-center">
-          <Button onClick={close} sfx="explore">
+          <Button className="gold" onClick={close} sfx="explore">
             CLOSE
           </Button>
         </div>

@@ -78,11 +78,17 @@
     position: absolute;
     width: 16em;
     left: 1em;
-    bottom: 2em;
+    bottom: 5em;
     animation: growShrinkLoop 2.5s ease-out infinite;
 
     img {
       width: 100%;
+    }
+
+    .text-comment {
+      color: white;
+      font-weight: 700;
+      margin-top: -2.2em;
     }
   }
 
