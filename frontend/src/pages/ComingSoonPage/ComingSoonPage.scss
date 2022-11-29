@@ -10,7 +10,6 @@
   $splitter_width: 4px;
   min-height: 500px;
   font-size: calc-font-size(11px);
-  background-color: red;
 
   .react-player.bg-video {
     min-width: 102%;
@@ -18,7 +17,7 @@
     opacity: 0.65;
     z-index: -2;
     position: absolute;
-    background-color: red;
+    background-color: black;
 
     video {
       position: absolute;
