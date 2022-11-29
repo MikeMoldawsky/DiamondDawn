@@ -20,6 +20,7 @@ const INITIAL_STATE = {
   musicSrc: "",
   assetReadyPages: {},
   mintViewShowInvites: false,
+  copyNotification: null,
 };
 
 export const setSelectedTokenId = (selectedTokenId) => ({
