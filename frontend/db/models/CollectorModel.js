@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId;
+require("./InvitationModel"); // required because of ref
 
 const CollectorSchema = new mongoose.Schema({
   createdAt: { type: Date, required: true, default: Date.now },
