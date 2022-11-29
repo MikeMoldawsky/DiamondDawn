@@ -58,7 +58,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
         </div>
         <div className="invitations-menu">
           <div className="menu-item sm" onClick={onInvitesTitleClick}>
-            MY INVITATIONS
+            INVITE A FRIEND
           </div>
           <InvitationsStatus />
         </div>

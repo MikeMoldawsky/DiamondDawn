@@ -146,7 +146,7 @@ const ComingSoonPage = () => {
               inviteId={invite?._id}
               onCorrect={onCorrectPassword}
               passwordLength={8}
-              buttonText="EXPLORE"
+              buttonText="ENTER"
             />
           </div>
           {showInvitedModal && (
