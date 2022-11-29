@@ -1,6 +1,12 @@
-const { getConfig } = require("../db/config-db-manager");
+const clientDBPromise = require("../db/client/connection");
+const { getConfig } = require("../db/managers/config-db-manager");
 
 module.exports = async function (req, res) {
-  const config = await getConfig();
-  res.send(JSON.stringify(config));
+  try {
+    await clientDBPromise;
+    const config = await getConfig();
+    res.send(JSON.stringify(config));
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
 };

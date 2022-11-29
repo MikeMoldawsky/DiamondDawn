@@ -37,7 +37,7 @@ export const ScarcityText = () => (
       <p>
         Unfortunately, the recent rise of lab-grown diamonds makes it impossible
         to distinguish a ‘real’ diamond from a man-made one. Even experts use
-        special equipment to set them apart.
+        special equipment to tell them apart.
       </p>
       <p>
         In addition, it’s known that big diamond companies are keeping vast

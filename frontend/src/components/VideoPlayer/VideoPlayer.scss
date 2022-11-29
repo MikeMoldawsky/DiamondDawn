@@ -13,11 +13,22 @@
   background-color: black;
   animation: fadeIn 0.25s ease-in;
 
-  .react-player.video-player {
-    box-shadow: 0 0 8px 4px #70707044;
+  .video-container {
+    position: relative;
     max-width: 80%;
     max-height: calc(80% - var(--header-height));
     margin: var(--header-height) auto 0;
     aspect-ratio: 16 / 9;
+
+    .react-player.video-player {
+      box-shadow: 0 0 8px 4px #70707044;
+    }
+
+    .close {
+      position: absolute;
+      top: -0.5em;
+      right: -1.5em;
+      font-size: 2em;
+    }
   }
 }
