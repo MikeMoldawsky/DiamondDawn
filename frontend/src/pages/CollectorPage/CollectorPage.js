@@ -21,6 +21,8 @@ import { loadCollectorByAddress } from "store/collectorReducer";
 import useOnConnect from "hooks/useOnConnect";
 import useActionDispatch from "hooks/useActionDispatch";
 import { clearActionStatus } from "store/actionStatusReducer";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { useNavigate } from "react-router-dom";
 
 const CollectorPage = () => {
   useNoScrollView();
@@ -31,6 +33,7 @@ const CollectorPage = () => {
   const ensName = useEnsName({ address: account?.address });
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
+  const navigate = useNavigate();
 
   useMusic("collector.mp3");
 
@@ -81,6 +84,10 @@ const CollectorPage = () => {
               ) : (
                 <NotConnected />
               )}
+              <HighlightOffIcon
+                className="close"
+                onClick={() => navigate("/explore")}
+              />
             </Box>
           </div>
         </div>

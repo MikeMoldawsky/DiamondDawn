@@ -29,6 +29,12 @@
     max-height: 80%;
     aspect-ratio: 2;
     margin: 0 auto;
+
+    .close {
+      position: absolute;
+      right: 0.5em;
+      top: 0.5em;
+    }
   }
 
   .secondary-text {
