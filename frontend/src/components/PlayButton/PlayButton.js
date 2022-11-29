@@ -18,7 +18,7 @@ const VideoLink = ({ src, length, name }) => {
 
   return (
     <div
-      className={classNames("video-link", { disabled })}
+      className={classNames("video-link link-hover", { disabled })}
       title={
         disabled ? "Full trailer will be released when public sale starts" : ""
       }

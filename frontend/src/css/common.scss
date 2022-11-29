@@ -1,6 +1,7 @@
 @import "vars";
 @import "varsNEW";
 @import "functions";
+@import "animations";
 @import "../assets/fonts/fonts.css";
 
 html,
@@ -38,7 +39,6 @@ body {
 
 * {
   font-family: "Saira", monospace;
-  font-weight: 300;
   box-sizing: border-box;
   font-size: inherit;
 }
@@ -129,6 +129,7 @@ form {
     position: relative;
 
     h1 {
+      font-weight: 300;
       text-align: center;
       color: $gold;
       text-transform: uppercase;
@@ -178,6 +179,24 @@ form {
 
 .link {
   line-height: 1em;
+}
+
+.link-hover {
+  &:hover:not(.disabled):not(.active) {
+    animation: linkHover .3s linear forwards;
+
+    &.inverted {
+      animation: linkHoverInverted .3s linear forwards;
+    }
+
+    &.text-gold {
+      animation: linkHoverGold .3s linear forwards;
+    }
+  }
+}
+
+a {
+  @extend .link-hover;
 }
 
 .close {
@@ -408,12 +427,14 @@ form {
   font-size: $font50px;
   text-transform: uppercase;
   line-height: 1.33em;
+  font-weight: 300;
 }
 
 .secondary-text {
   color: $gold;
   font-size: $font30px;
   line-height: 1.33em;
+  font-weight: 300;
 }
 
 .text {
