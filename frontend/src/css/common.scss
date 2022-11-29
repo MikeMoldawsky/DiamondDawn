@@ -199,13 +199,16 @@ form {
   opacity: 0;
 
   &.visible {
-    animation: moveUpAndDisappear 1s ease-out forwards;
+    animation: moveUpAndDisappear 1.2s ease-out forwards;
   }
 }
 
 @keyframes moveUpAndDisappear {
   0% {
     transform: translateY(0em);
+    opacity: 1;
+  }
+  50% {
     opacity: 1;
   }
   100% {
