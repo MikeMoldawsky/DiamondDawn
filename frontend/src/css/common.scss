@@ -195,7 +195,7 @@ form {
   }
 }
 
-a {
+a:not(.no-hover) {
   @extend .link-hover;
 }
 
