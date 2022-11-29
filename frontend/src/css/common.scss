@@ -192,10 +192,10 @@ form {
 .local-notification {
   position: absolute;
   z-index: 1210;
-  color: $green;
+  color: $gold;
   font-size: $font13px;
-  font-weight: 600;
-  letter-spacing: 0.075em;
+  font-weight: 500;
+  letter-spacing: 0.05em;
   opacity: 0;
 
   &.visible {
