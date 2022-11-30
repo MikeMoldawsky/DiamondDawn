@@ -49,7 +49,7 @@ const AboutUsPage = () => {
   return (
     <InfoPage
       className="about-page"
-      teaser={{ src: "teaser_physical.mp4", overlap: "-25%" }}
+      teaser={{ src: "physical-loop.webm", overlap: "-25%" }}
     >
       <div className="left-aligned-column general">
         <div className="leading-text">ABOUT US</div>
@@ -119,7 +119,7 @@ const AboutUsPage = () => {
               <SocialButtons
                 member="asaf"
                 links={{
-                  twitter: "",
+                  twitter: "https://twitter.com/sniirr0x",
                   linkedin: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
                 }}
               />

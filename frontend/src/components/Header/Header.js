@@ -15,12 +15,11 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { isNoContractMode } from "utils";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/Logo";
-import { setAudioMuted, toggleMuted, uiSelector } from "store/uiReducer";
+import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import { usePageSizeLimit } from "components/PageSizeLimit";
 import CTAButton from "components/CTAButton";
 import { TwitterLink } from "components/Links";
-import { clearVideoState, videoSelector } from "store/videoReducer";
 import usePermission from "hooks/usePermission";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
@@ -29,7 +28,6 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const isPageSizeLimitOk = true;
   // const isPageSizeLimitOk = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
-  const { isOpen: isVideoOpen } = useSelector(videoSelector);
   const canAccessDD = usePermission();
 
   const isHomepage =
@@ -42,14 +40,9 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
     dispatch(toggleMuted(true));
   };
 
-  const getMenuIcon = () => (isMenuOpen || isVideoOpen ? faX : faBars);
+  const getMenuIcon = () => (isMenuOpen ? faX : faBars);
 
   const onMenuIconClick = () => {
-    if (isVideoOpen) {
-      dispatch(clearVideoState());
-      dispatch(setAudioMuted(false));
-      return;
-    }
     toggleMenu();
   };
 
@@ -81,7 +74,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
         />
         <div className="center-aligned-row header-side">
           {showRestrictedContent && <CTAButton className="sm collector-btn" />}
-          <TwitterLink>
+          <TwitterLink className="no-hover">
             <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
           </TwitterLink>
           <div className="vertical-sep" />

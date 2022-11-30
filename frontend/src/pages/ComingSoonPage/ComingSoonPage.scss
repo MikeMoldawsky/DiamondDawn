@@ -72,6 +72,40 @@
       margin-top: 10em;
     }
   }
+
+  .invite-image {
+    cursor: pointer;
+    position: absolute;
+    width: 16em;
+    left: 1em;
+    bottom: 5em;
+    animation: growShrinkLoop 2.5s ease-out infinite;
+
+    img {
+      width: 100%;
+    }
+
+    .text-comment {
+      color: white;
+      font-weight: 700;
+      margin-top: -2.2em;
+    }
+  }
+
+  @keyframes growShrinkLoop {
+    0% {
+      transform: scale(1);
+    }
+    20% {
+      transform: scale(1.125);
+    }
+    40% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 }
 
 @media only screen and (max-width: 1024px) {

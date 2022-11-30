@@ -5,7 +5,7 @@ import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
-import { useAccount } from "wagmi";
+import { useAccount, useEnsName } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
 import Box from "components/Box";
 import WaitFor from "containers/WaitFor";
@@ -21,6 +21,8 @@ import { loadCollectorByAddress } from "store/collectorReducer";
 import useOnConnect from "hooks/useOnConnect";
 import useActionDispatch from "hooks/useActionDispatch";
 import { clearActionStatus } from "store/actionStatusReducer";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { useNavigate } from "react-router-dom";
 
 const CollectorPage = () => {
   useNoScrollView();
@@ -28,8 +30,10 @@ const CollectorPage = () => {
   const tokens = useSelector(tokensSelector);
   const { systemStage } = useSelector(systemSelector);
   const account = useAccount();
+  const ensName = useEnsName({ address: account?.address });
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
+  const navigate = useNavigate();
 
   useMusic("collector.mp3");
 
@@ -67,7 +71,7 @@ const CollectorPage = () => {
           <div className="inner-page">
             <h1>The Collector's Room</h1>
             <div className="center-center-aligned-row account">
-              {shortenEthAddress(account?.address)}
+              {ensName?.data || shortenEthAddress(account?.address)}
             </div>
             <Box className={"main-box"}>
               {account?.address ? (
@@ -80,6 +84,10 @@ const CollectorPage = () => {
               ) : (
                 <NotConnected />
               )}
+              <HighlightOffIcon
+                className="close"
+                onClick={() => navigate("/explore")}
+              />
             </Box>
           </div>
         </div>

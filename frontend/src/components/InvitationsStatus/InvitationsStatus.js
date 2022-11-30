@@ -4,10 +4,8 @@ import size from "lodash/size";
 import "./InvitationsStatus.scss";
 import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import Button from "components/Button";
 import { CollectorLink } from "components/Links";
+import CopyButton from "components/CopyButton";
 
 const InvitationsStatus = () => {
   const collector = useSelector(collectorSelector);
@@ -40,15 +38,14 @@ const InvitationsStatus = () => {
             key={`invitations-status-${_id}`}
             className="left-center-aligned-row status-row"
           >
-            <CopyToClipboard text={link}>
-              <Button
-                className="sm icon-after gold"
-                disabled={disabled || !!usedBy}
-                sfx="utility"
-              >
-                INVITATION 0{i + 1} <ContentCopyIcon />
-              </Button>
-            </CopyToClipboard>
+            <CopyButton
+              content={link}
+              className="sm icon-after gold"
+              disabled={disabled || !!usedBy}
+              sfx="utility"
+            >
+              INVITATION 0{i + 1}
+            </CopyButton>
             <div className="status">{renderStatus(invite)}</div>
           </div>
         );

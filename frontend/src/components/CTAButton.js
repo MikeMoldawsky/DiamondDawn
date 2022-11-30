@@ -28,7 +28,7 @@ const CTAButton = ({ className }) => {
   if (!collector) return renderButton({ text: "APPLY FOR DIAMOND DAWN" });
 
   if (collector.approved)
-    return renderButton({ text: "MY INVITATIONS", onClick: goToInvites });
+    return renderButton({ text: "INVITE A FRIEND", onClick: goToInvites });
 
   return renderButton({ text: "APPLICATION STATUS", sfx: "explore" });
 };

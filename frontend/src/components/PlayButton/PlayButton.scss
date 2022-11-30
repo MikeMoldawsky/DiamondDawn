@@ -1,5 +1,24 @@
 .play-button {
+  cursor: default;
+  font-size: 0.9em;
+  align-items: stretch;
+
   * {
     font-weight: 500;
+  }
+
+  svg {
+    font-size: 3em;
+    margin-right: 0.25em;
+  }
+
+  .links-column {
+    padding: 0.15em 0;
+    justify-content: space-between;
+    line-height: 1em;
+  }
+
+  .video-link {
+    cursor: pointer;
   }
 }

@@ -1,3 +1,5 @@
+@import "varsNEW";
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -13,5 +15,41 @@
   }
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes linkHover {
+  0% {
+    color: white;
+  }
+  50% {
+    color: $text_gray;
+  }
+  100% {
+    color: white;
+  }
+}
+
+@keyframes linkHoverInverted {
+  0% {
+    color: $text_gray;
+  }
+  50% {
+    color: white;
+  }
+  100% {
+    color: $text_gray;
+  }
+}
+
+@keyframes linkHoverGold {
+  0% {
+    color: $gold;
+  }
+  50% {
+    color: lighten(#caa875, 20);
+  }
+  100% {
+    color: $gold;
   }
 }

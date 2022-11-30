@@ -50,13 +50,13 @@ const Footer = ({ withFAQs }) => {
             </NavLink>
           </div>
           <div className="left-center-aligned-row bottom-menu">
-            <NavLink to="/privacy">
+            <NavLink to="/privacy" className="inverted">
               <span className="link">Privacy Policy</span>
             </NavLink>
-            <NavLink to="/tnc">
+            <NavLink to="/tnc" className="inverted">
               <span className="link">Terms & Conditions</span>
             </NavLink>
-            <NavLink to="/credits">
+            <NavLink to="/credits" className="inverted">
               <span className="link">Credits</span>
             </NavLink>
           </div>

@@ -28,6 +28,14 @@ export const isActionPendingSelector = (actionKey) =>
 export const isActionSuccessSelector = (actionKey) =>
   isActionStatusSelector(actionKey, "success");
 
+export const isActionErrorSelector = (actionKey) =>
+  isActionStatusSelector(actionKey, "error");
+
+export const isActionCompleteSelector = (actionKey) => (state) => {
+  const status = actionStatusSelector(actionKey)(state).status;
+  return status === "success" || status === "error";
+};
+
 export const isActionFirstCompleteSelector = (actionKey) => (state) =>
   actionStatusSelector(actionKey)(state).firstComplete;
 
@@ -48,6 +56,10 @@ export const actionStatusReducer = makeReducer(
     "ACTION_STATUS.PENDING": reduceStatus({ status: "pending" }),
     "ACTION_STATUS.SUCCESS": reduceStatus({
       status: "success",
+      firstComplete: true,
+    }),
+    "ACTION_STATUS.ERROR": reduceStatus({
+      status: "error",
       firstComplete: true,
     }),
     "ACTION_STATUS.CLEAR": (state, action) => {

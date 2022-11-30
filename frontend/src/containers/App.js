@@ -17,6 +17,7 @@ import ScrollToTop from "components/ScrollToTop";
 import AudioPlayer from "components/AudioPlayer";
 import VideoPlayer from "components/VideoPlayer";
 import NetworkGuard from "containers/NetworkGuard";
+import CopyNotification from "components/CopyNotification";
 
 const App = () => {
   useMountLogger("App");
@@ -50,6 +51,7 @@ const App = () => {
         </NetworkGuard>
       </WagmiWrapper>
       <ToastContainer />
+      <CopyNotification />
     </div>
   );
 };

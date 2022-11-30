@@ -8,10 +8,7 @@ import { getCDNImageUrl } from "utils";
 import "./SideMenu.scss";
 import { inviteSelector } from "store/inviteReducer";
 import useGoToInvites from "hooks/useGoToInvites";
-import TelegramIcon from "@mui/icons-material/Telegram";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { TwitterLink, TelegramLink, CollectorLink } from "components/Links";
+import { CollectorLink } from "components/Links";
 import CTAButton from "components/CTAButton";
 import SocialIcons from "components/SocialIcons";
 
@@ -50,15 +47,18 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           </NavLink>
           {collector ? (
             <NavLink to={"/collector"} onClick={closeMenu}>
-              <div className="menu-item sm text-gold">COLLECTOR'S ROOM</div>
+              <div className="menu-item">COLLECTOR'S ROOM</div>
             </NavLink>
           ) : (
             <CTAButton className="sm">APPLY FOR DIAMOND DAWN</CTAButton>
           )}
         </div>
         <div className="invitations-menu">
-          <div className="menu-item sm" onClick={onInvitesTitleClick}>
-            MY INVITATIONS
+          <div
+            className="menu-item sm link-hover"
+            onClick={onInvitesTitleClick}
+          >
+            INVITE A FRIEND
           </div>
           <InvitationsStatus />
         </div>
