@@ -10,10 +10,6 @@
     width: 80%;
   }
 
-  a {
-    font-weight: 700;
-  }
-
   h1 {
     margin: 0.8em 0;
     line-height: 1.4em;
@@ -23,6 +19,10 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+
+    a {
+      font-weight: 700;
+    }
   }
 
   .credits-category {

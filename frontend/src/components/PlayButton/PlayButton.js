@@ -18,7 +18,7 @@ const VideoLink = ({ src, length, name }) => {
 
   return (
     <div
-      className={classNames("video-link", { disabled })}
+      className={classNames("video-link link-hover", { disabled })}
       title={
         disabled ? "Full trailer will be released when public sale starts" : ""
       }
@@ -38,7 +38,7 @@ const PlayButton = ({ className, sources = {}, name }) => {
       onMouseEnter={hoverWithSFX}
     >
       <PlayCircleOutlineIcon />
-      <div className="left-centered-aligned-column">
+      <div className="left-centered-aligned-column links-column">
         <VideoLink src={sources["SHORT"]} length="SHORT" name={name} />
         <VideoLink src={sources["FULL"]} length="FULL" name={name} />
       </div>

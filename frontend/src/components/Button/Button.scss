@@ -32,15 +32,10 @@
     }
   }
 
-  &.inverted,
   &.link {
     color: white;
     background-color: transparent;
-    border: solid 1px white;
-  }
-
-  &.link {
-    border-color: transparent !important;
+    border: solid 1px transparent;
     padding-left: 0;
     padding-right: 0;
 

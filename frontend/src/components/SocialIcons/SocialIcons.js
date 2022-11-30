@@ -8,12 +8,12 @@ import { TwitterLink, TelegramLink } from "components/Links";
 const SocialIcons = () => {
   return (
     <div className="center-center-aligned-row social-icons">
-      <TwitterLink>
+      <TwitterLink className="no-hover">
         <div className="icon">
           <FontAwesomeIcon icon={faTwitter} />
         </div>
       </TwitterLink>
-      <TelegramLink>
+      <TelegramLink className="no-hover">
         <div className="icon">
           <TelegramIcon />
         </div>

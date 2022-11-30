@@ -47,21 +47,6 @@
           top: 75%;
         }
       }
-
-      .mask {
-        background-color: black;
-        position: absolute;
-        bottom: 0;
-        height: 15%;
-        width: 100%;
-        -webkit-mask-image: -webkit-gradient(
-          linear,
-          left top,
-          left bottom,
-          from(rgba(0, 0, 0, 0)),
-          to(rgba(0, 0, 0, 1))
-        );
-      }
     }
 
     .secondary-text {
@@ -146,6 +131,7 @@
           padding-bottom: 6em;
           padding-left: 0;
           flex-grow: unset;
+          position: relative;
         }
       }
 
@@ -180,7 +166,7 @@
           .image {
             img,
             .react-player {
-              max-width: 70%;
+              max-width: 60%;
               transform: translateY(-40%);
               margin: 0 auto;
               opacity: 0.9;
@@ -190,25 +176,34 @@
       }
 
       &.phase-4 {
+        position: relative;
+
         .image-side {
           align-self: flex-start;
+
+          .image {
+            img,
+            .react-player {
+              max-width: 80%;
+              margin: 0 auto;
+            }
+          }
         }
 
         .text {
           width: 80%;
           position: relative;
-
-          img.certificate {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            transform: translateX(160%);
-            width: 6em;
-          }
         }
 
         .meter {
           bottom: unset;
+        }
+
+        img.certificate {
+          position: absolute;
+          width: 6.1em;
+          top: 0.8em;
+          right: 0;
         }
       }
     }
