@@ -20,8 +20,8 @@ import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useButtonSFX from "hooks/useButtonSFX";
 
 const getVideoPair = (fileName) => [
-  {src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm"},
   {src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4"},
+  {src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm"},
 ];
 
 const getDDTextVideo = (width) => {
