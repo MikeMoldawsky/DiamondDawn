@@ -17,8 +17,28 @@ import { useAccount } from "wagmi";
 import useActionDispatch from "hooks/useActionDispatch";
 import usePermission from "hooks/usePermission";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
-// import PageSizeLimit from "components/PageSizeLimit";
 import useButtonSFX from "hooks/useButtonSFX";
+
+const getVideoPair = (fileName) => [
+  getCDNVideoUrl(`${fileName}.webm`),
+  getCDNVideoUrl(`${fileName}.mp4`),
+];
+
+const getDDTextVideo = (width) => {
+  let fileName = "dd-text";
+  if (width <= 480) fileName += "-480";
+  else if (width <= 1024) fileName += "-720";
+
+  return getVideoPair(fileName);
+};
+
+const getPSTextVideo = (width) => {
+  let fileName = "ps-text";
+  if (width <= 480) fileName += "-240";
+  else if (width <= 1024) fileName += "-480";
+
+  return getVideoPair(fileName);
+};
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -66,12 +86,13 @@ const ComingSoonPage = () => {
     }
   }, [pageReady, isCollectorReady, canAccessDD, invite?._id]);
 
-  const renderBgPlayer = useCallback(
-    () => (
+  const renderBgPlayer = useCallback(() => {
+    const url = usePortraitAsset
+      ? getVideoPair("coming_soon_mobile")
+      : getCDNVideoUrl("coming-soon.webm");
+    return (
       <ReactPlayer
-        url={getCDNVideoUrl(
-          usePortraitAsset ? "coming_soon_mobile.webm" : "coming-soon.webm"
-        )}
+        url={url}
         playing
         playsinline
         controls={false}
@@ -82,9 +103,8 @@ const ComingSoonPage = () => {
         height=""
         onProgress={setVideoProgress}
       />
-    ),
-    [usePortraitAsset]
-  );
+    );
+  }, [usePortraitAsset]);
 
   const transition = () => {
     if (process.env.REACT_APP_ENABLE_TRANSITIONS !== "true") {
@@ -120,34 +140,29 @@ const ComingSoonPage = () => {
           "transition-out": startTransition,
         })}
       >
-        <div
-          className={classNames("page coming-soon", {
-            horizontal: true,
-            "transition-out": startTransition,
-          })}
-        >
-          {renderBgPlayer()}
-          <div className="center-aligned-column content">
-            <div className="project-title">
-              <InlineVideo
-                withLoader={false}
-                className="dd-text"
-                src={getCDNVideoUrl("animated-dd-text.webm")}
-                showThreshold={0}
-              />
-              <InlineVideo
-                withLoader={false}
-                className="ps-text"
-                src={getCDNVideoUrl("animated-ps-text.webm")}
-                showThreshold={0}
-              />
+        {renderBgPlayer()}
+        <div className="center-aligned-column content">
+          <div className="project-title">
+            <InlineVideo
+              withLoader={false}
+              className="dd-text"
+              src={getDDTextVideo(width)}
+              showThreshold={0}
+            />
+            <InlineVideo
+              withLoader={false}
+              className="ps-text"
+              src={getPSTextVideo(width)}
+              showThreshold={0}
+            />
+          </div>
+          <div className="center-aligned-column text-column">
+            <div className="secondary-text">
+              <div className="secondary-lg">Physical or Digital</div>
+              Which diamond will you choose?
             </div>
-            <div className="center-aligned-column">
-              <div className="secondary-text">
-                <div className="secondary-lg">Physical or Digital</div>
-                Which diamond will you choose?
-              </div>
-            </div>
+          </div>
+          <div className="center-aligned-column enter-area">
             <PasswordBox
               autoFill={canAccessDD}
               inviteId={invite?._id}
@@ -155,27 +170,23 @@ const ComingSoonPage = () => {
               passwordLength={8}
               buttonText="ENTER"
             />
-          </div>
-          {showInvitedModal && (
-            <InvitedModal
-              invite={invite}
-              close={() => setShowInvitedModal(false)}
-            />
-          )}
-          {inviteId && (
             <div className="invite-image" onClick={clickWithSFX}>
-              <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
-              <div className="text-center text-comment">YOUR INVITE</div>
+              {inviteId && (
+                <>
+                  <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+                  <div className="text-center text-comment">YOUR INVITE</div>
+                </>
+              )}
             </div>
-          )}
+          </div>
         </div>
-        {showInvitedModal && (
-          <InvitedModal
-            invite={invite}
-            close={() => setShowInvitedModal(false)}
-          />
-        )}
       </div>
+      {showInvitedModal && (
+        <InvitedModal
+          invite={invite}
+          close={() => setShowInvitedModal(false)}
+        />
+      )}
     </Page>
   );
 };
