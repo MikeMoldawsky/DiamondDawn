@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, {useCallback, useState} from "react";
 import Loading from "components/Loading";
 import classNames from "classnames";
 import useWindowDimensions from "hooks/useWindowDimensions";
+import {createVideoSources, getCDNVideoUrl} from "utils";
+import InlineVideo from "components/VideoPlayer/InlineVideo";
 
 const DEFAULT_MIN_WIDTH = 1025;
 const SHOW_TEXT_TIME = 100;
@@ -20,17 +22,23 @@ const PageSizeLimit = ({ minWidth = DEFAULT_MIN_WIDTH, children }) => {
     setShowText(true);
   }, SHOW_TEXT_TIME);
 
-  return showContent ? (
-    children
-  ) : (
-    <div className={classNames("center-aligned-column page-cover")}>
+  const renderInlineVideo = useCallback(
+    () => <InlineVideo src={createVideoSources("diamond-evolution")} />,
+    []
+  );
+
+  if (showContent) return children
+
+  return (
+    <div className={classNames("center-aligned-column page-cover size-limit")}>
       <Loading />
-      <div className="leading-text">{showText && "DIAMOND DAWN"}</div>
+      <div className="leading-text">DIAMOND DAWN</div>
       <div className="secondary-text">
-        {showText && "Mobile compatibility"}
+        Mobile version coming soon!
         <br />
-        {showText && " is under construction"}
+        For the full experience please visit Diamond Dawn on a computer
       </div>
+      <div className="video-box">{renderInlineVideo()}</div>
     </div>
   );
 };
