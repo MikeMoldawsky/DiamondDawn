@@ -6,9 +6,6 @@
   position: relative;
   text-align: center;
   overflow: hidden;
-  $splitter_color: silver;
-  $splitter_width: 4px;
-  min-height: 500px;
   font-size: calc-font-size(11px);
 
   .react-player.bg-video {
@@ -29,8 +26,13 @@
     }
   }
 
+  .cs-section {
+    position: absolute;
+    width: 100%;
+  }
+
   .project-title {
-    //margin-bottom: 6em;
+    top: 15%;
 
     .react-player {
       opacity: 1;
@@ -38,19 +40,23 @@
       background-color: transparent;
 
       &.dd-text {
-        width: 60em;
-        height: 34em;
-        margin: -20.5em 0 -21em;
+        margin: 0 auto;
+        width: 50%;
+        max-width: 1440px;
       }
 
       &.ps-text {
-        width: 60em;
-        height: 11em;
+        margin: 0 auto;
+        width: 10%;
+        max-width: 480px;
+        transform: translateY(-60%);
       }
     }
   }
 
   .text-column {
+    top: 47%;
+
     .secondary-text {
       color: $gold;
       font-weight: 400;
@@ -65,15 +71,23 @@
   }
 
   .password-box {
-    //margin-top: 10em;
+    bottom: 10%;
+
+    .input-container {
+      margin: 0 auto 1.5em;
+
+      input {
+        width: 100%;
+      }
+    }
   }
 
   .invite-image {
     cursor: pointer;
     position: absolute;
     width: 16em;
-    left: 0;
-    bottom: 5em;
+    left: 2%;
+    bottom: 9.5%;
     animation: growShrinkLoop 2.5s ease-out infinite;
 
     img {
@@ -86,62 +100,29 @@
       margin-top: -2.2em;
     }
   }
-
-  @keyframes growShrinkLoop {
-    0% {
-      transform: scale(1);
-    }
-    20% {
-      transform: scale(1.125);
-    }
-    40% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
 }
 
 @media only screen and (max-width: 1024px) {
   .page.coming-soon {
     --base-font-size: 45;
 
-    .react-player.bg-video {
-      min-width: 100%;
-      min-height: 100%;
-    }
-
-    .cs-section {
-      position: absolute;
-      width: 100%;
-    }
-
     .project-title {
-      bottom: 75%;
+      top: 17%;
 
       .react-player.dd-text,
       .react-player.ps-text {
-        width: unset;
-        height: unset;
-        margin: unset;
-
         &.dd-text {
-          margin: 0 auto;
           width: 85%;
         }
 
         &.ps-text {
-          margin: 0 auto;
           width: 30%;
-          transform: translateY(-25%);
         }
       }
     }
 
     .text-column {
-      top: 50%;
-      transform: translateY(-70%);
+      top: 46%;
 
       .secondary-text {
         font-size: $font22px;
@@ -149,28 +130,32 @@
     }
 
     .password-box {
-      top: 66%;
+      bottom: 15%;
 
       &.with-invite {
-        top: 63%;
-      }
-
-      .input-container {
-        margin: 0 auto 1.5em;
-
-        input {
-          width: 100%;
-        }
+        bottom: 17%;
       }
     }
 
     .invite-image {
       bottom: 2%;
+      width: 100%;
       left: unset;
 
       img {
         width: 40%;
       }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .page.coming-soon {
+    --base-font-size: 45;
+
+    .react-player.bg-video {
+      min-width: 100%;
+      min-height: 100%;
     }
   }
 }

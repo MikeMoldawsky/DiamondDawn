@@ -72,7 +72,8 @@ const ComingSoonPage = () => {
   const [videoProgress, setVideoProgress] = useState({});
   const { width, height } = useWindowDimensions();
   const isPortrait = height > width;
-  const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
+  const usePortraitAsset = isPortrait && width <= 768;
+  // const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
 
   useMusic("homepage.mp3");
 
