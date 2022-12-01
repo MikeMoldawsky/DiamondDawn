@@ -20,8 +20,8 @@ import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useButtonSFX from "hooks/useButtonSFX";
 
 const getVideoPair = (fileName) => [
-  {src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4"},
   {src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm"},
+  {src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4"},
 ];
 
 const getDDTextVideo = (width) => {
@@ -39,6 +39,15 @@ const getPSTextVideo = (width) => {
 
   return getVideoPair(fileName);
 };
+
+const getMobileBGVideo = width => {
+  let fileName = "coming_soon_mobile";
+  if (width <= 400) fileName += "-300";
+  else if (width <= 600) fileName += "-400";
+  else if (width <= 768) fileName += "-588";
+
+  return [{src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4"}]
+}
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -86,13 +95,14 @@ const ComingSoonPage = () => {
     }
   }, [pageReady, isCollectorReady, canAccessDD, invite?._id]);
 
+  const bgVideoUrl = usePortraitAsset
+    ? getMobileBGVideo(width)
+    : getCDNVideoUrl("coming-soon.webm");
+
   const renderBgPlayer = useCallback(() => {
-    const url = usePortraitAsset
-      ? getVideoPair("coming_soon_mobile")
-      : getCDNVideoUrl("coming-soon.webm");
     return (
       <ReactPlayer
-        url={url}
+        url={bgVideoUrl}
         playing
         playsinline
         controls={false}
@@ -104,7 +114,7 @@ const ComingSoonPage = () => {
         onProgress={setVideoProgress}
       />
     );
-  }, [usePortraitAsset]);
+  }, [JSON.stringify(bgVideoUrl)]);
 
   const transition = () => {
     if (process.env.REACT_APP_ENABLE_TRANSITIONS !== "true") {
