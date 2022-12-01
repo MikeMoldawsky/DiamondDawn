@@ -109,7 +109,7 @@ const ComingSoonPage = () => {
 
   const bgVideoUrl = usePortraitAsset
     ? getMobileBGVideo(width)
-    : getCDNVideoUrl("coming-soon.webm");
+    : getCDNVideoUrl("coming-soon-2-loops.mp4");
 
   const renderBgPlayer = useCallback(() => {
     return (
