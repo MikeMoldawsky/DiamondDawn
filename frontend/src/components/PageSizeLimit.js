@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import Loading from "components/Loading";
 import classNames from "classnames";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import { createVideoSources, getCDNVideoUrl } from "utils";
@@ -23,7 +22,9 @@ const PageSizeLimit = ({ minWidth = DEFAULT_MIN_WIDTH, children }) => {
   }, SHOW_TEXT_TIME);
 
   const renderInlineVideo = useCallback(
-    () => <InlineVideo src={createVideoSources("diamond-evolution")} />,
+    () => (
+      <InlineVideo src={createVideoSources("diamond-evolution")} muted={true} />
+    ),
     []
   );
 
@@ -31,7 +32,6 @@ const PageSizeLimit = ({ minWidth = DEFAULT_MIN_WIDTH, children }) => {
 
   return (
     <div className={classNames("center-aligned-column page-cover size-limit")}>
-      <Loading />
       <div className="leading-text">DIAMOND DAWN</div>
       <div className="secondary-text">
         Mobile version coming soon!
