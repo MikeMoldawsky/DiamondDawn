@@ -81,8 +81,8 @@
     }
 
     .text-comment {
-      color: white;
-      font-weight: 700;
+      color: $gold;
+      font-weight: 500;
       margin-top: -2.2em;
     }
   }
@@ -149,7 +149,11 @@
     }
 
     .password-box {
-      top: 63%;
+      top: 66%;
+
+      &.with-invite {
+        top: 63%;
+      }
 
       .input-container {
         margin: 0 auto 1.5em;

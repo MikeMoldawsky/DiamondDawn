@@ -25,19 +25,19 @@ const getVideoPair = (fileName) => [
 ];
 
 const getDDTextVideo = (width) => {
-  let fileName = "dd-text";
+  let fileName = "dd-text-1440";
   // if (width <= 480) fileName += "-480";
   // else
-  if (width <= 1024) fileName += "-1440";
+  // if (width <= 1024) fileName += "-1440";
 
   return getVideoPair(fileName);
 };
 
 const getPSTextVideo = (width) => {
-  let fileName = "ps-text";
+  let fileName = "ps-text-480";
   // if (width <= 480) fileName += "-240";
   // else
-  if (width <= 1024) fileName += "-480";
+  // if (width <= 1024) fileName += "-480";
 
   return getVideoPair(fileName);
 };
@@ -177,7 +177,7 @@ const ComingSoonPage = () => {
           </div>
         </div>
         <PasswordBox
-          className="cs-section"
+          className={classNames("cs-section", { "with-invite": !!inviteId })}
           autoFill={canAccessDD}
           inviteId={invite?._id}
           onCorrect={onCorrectPassword}
@@ -185,7 +185,7 @@ const ComingSoonPage = () => {
           buttonText="ENTER"
         />
         <div className="cs-section invite-image" onClick={clickWithSFX}>
-          {inviteId && (
+          {!!inviteId && (
             <>
               <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
               <div className="text-center text-comment">YOUR INVITE</div>
