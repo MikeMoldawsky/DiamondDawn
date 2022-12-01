@@ -26,16 +26,18 @@ const getVideoPair = (fileName) => [
 
 const getDDTextVideo = (width) => {
   let fileName = "dd-text";
-  if (width <= 480) fileName += "-480";
-  else if (width <= 1024) fileName += "-720";
+  // if (width <= 480) fileName += "-480";
+  // else
+  if (width <= 1024) fileName += "-720";
 
   return getVideoPair(fileName);
 };
 
 const getPSTextVideo = (width) => {
   let fileName = "ps-text";
-  if (width <= 480) fileName += "-240";
-  else if (width <= 1024) fileName += "-480";
+  // if (width <= 480) fileName += "-240";
+  // else
+  if (width <= 1024) fileName += "-480";
 
   return getVideoPair(fileName);
 };
