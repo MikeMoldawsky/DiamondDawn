@@ -6,7 +6,7 @@ import classNames from "classnames";
 const AnimatedLogo = ({ withText }) => {
   return (
     <ReactPlayer
-      url={createVideoSources("infinity")}
+      url={createVideoSources("infinity-720")}
       playing
       playsinline
       controls={false}
