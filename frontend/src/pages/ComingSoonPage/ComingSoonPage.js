@@ -28,7 +28,7 @@ const getDDTextVideo = (width) => {
   let fileName = "dd-text";
   // if (width <= 480) fileName += "-480";
   // else
-  // if (width <= 1024) fileName += "-720";
+  if (width <= 1024) fileName += "-1440";
 
   return getVideoPair(fileName);
 };
