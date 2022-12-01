@@ -1,12 +1,12 @@
 import React from "react";
 import ReactPlayer from "react-player";
-import { getCDNVideoUrl } from "utils";
+import {createVideoSources} from "utils";
 import classNames from "classnames";
 
 const AnimatedLogo = ({ withText }) => {
   return (
     <ReactPlayer
-      url={getCDNVideoUrl("logo.webm")}
+      url={createVideoSources("logo")}
       playing
       playsinline
       controls={false}

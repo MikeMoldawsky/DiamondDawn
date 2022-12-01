@@ -204,3 +204,8 @@ export const chainNameById = (chainId) => {
       return "Local";
   }
 };
+
+export const createVideoSources = (fileName) => [
+  {src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm"},
+  {src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4"},
+];

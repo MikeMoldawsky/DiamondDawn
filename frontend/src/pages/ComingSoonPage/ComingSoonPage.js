@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { getCDNImageUrl, getCDNVideoUrl } from "utils";
+import { getCDNImageUrl, getCDNVideoUrl, createVideoSources } from "utils";
 import classNames from "classnames";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useMusic from "hooks/useMusic";
@@ -19,18 +19,13 @@ import usePermission from "hooks/usePermission";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useButtonSFX from "hooks/useButtonSFX";
 
-const getVideoPair = (fileName) => [
-  {src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm"},
-  {src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4"},
-];
-
 const getDDTextVideo = (width) => {
   let fileName = "dd-text-1440";
   // if (width <= 480) fileName += "-480";
   // else
   // if (width <= 1024) fileName += "-1440";
 
-  return getVideoPair(fileName);
+  return createVideoSources(fileName);
 };
 
 const getPSTextVideo = (width) => {
@@ -39,7 +34,7 @@ const getPSTextVideo = (width) => {
   // else
   // if (width <= 1024) fileName += "-480";
 
-  return getVideoPair(fileName);
+  return createVideoSources(fileName);
 };
 
 const getMobileBGVideo = width => {
