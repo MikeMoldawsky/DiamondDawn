@@ -10,6 +10,7 @@ const InlineVideo = ({
   src,
   showThreshold = 0.5,
   withLoader = true,
+  forceMuted,
   ...props
 }) => {
   const { muted } = useSelector(uiSelector);
@@ -22,7 +23,7 @@ const InlineVideo = ({
         playing
         playsinline
         controls={false}
-        muted={muted}
+        muted={muted || forceMuted}
         loop
         className={classNames("react-player", className)}
         {...props}
@@ -31,7 +32,7 @@ const InlineVideo = ({
         onProgress={setVideoProgress}
       />
     );
-  }, [src]);
+  }, [JSON.stringify(src)]);
 
   return (
     <WaitFor
