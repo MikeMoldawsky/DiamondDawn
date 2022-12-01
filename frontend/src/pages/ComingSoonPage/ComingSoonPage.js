@@ -153,7 +153,7 @@ const ComingSoonPage = () => {
       pageName="coming-soon"
       requireAccess={false}
       images={[getCDNImageUrl("envelop-wings.png")]}
-      videos={[{ progress: videoProgress, threshold: 0.5 }]}
+      videos={[{ progress: videoProgress, threshold: 0.1 }]}
       onReady={() => setPageReady(true)}
     >
       <div
