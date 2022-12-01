@@ -28,7 +28,7 @@ const getDDTextVideo = (width) => {
   let fileName = "dd-text";
   // if (width <= 480) fileName += "-480";
   // else
-  if (width <= 1024) fileName += "-720";
+  // if (width <= 1024) fileName += "-720";
 
   return getVideoPair(fileName);
 };
@@ -44,8 +44,11 @@ const getPSTextVideo = (width) => {
 
 const getMobileBGVideo = width => {
   let fileName = "coming_soon_mobile";
-  if (width <= 400) fileName += "-300";
-  else if (width <= 600) fileName += "-400";
+  // if (width <= 400) fileName += "-300";
+  // else if (width <= 600) fileName += "-400";
+  // else if (width <= 768) fileName += "-588";
+  if (width <= 360) fileName += "-300";
+  else if (width <= 480) fileName += "-400";
   else if (width <= 768) fileName += "-588";
 
   return [{src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4"}]
