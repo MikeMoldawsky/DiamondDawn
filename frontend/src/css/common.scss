@@ -174,12 +174,13 @@ form {
 
   &.size-limit {
     justify-content: flex-start;
-    padding-top: 15%;
+    padding-top: 20%;
 
     .leading-text {
       margin-bottom: 1.2em;
     }
 
+    .leading-text,
     .secondary-text {
       width: 80%;
       text-align: left;
@@ -192,6 +193,10 @@ form {
 
       .react-player {
         height: unset;
+
+        &.loader {
+          padding: 0;
+        }
       }
     }
   }
