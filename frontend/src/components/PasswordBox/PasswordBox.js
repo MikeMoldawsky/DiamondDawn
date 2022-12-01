@@ -9,6 +9,7 @@ import useSound from "use-sound";
 import deepSFX from "assets/audio/button3-press-deep.mp3";
 
 const PasswordBox = ({
+  className,
   inviteId,
   onCorrect,
   passwordLength,
@@ -61,7 +62,7 @@ const PasswordBox = ({
 
   return (
     <div
-      className={classNames("password-box", {
+      className={classNames("password-box", className, {
         loading: checkingPassword,
         "has-error": passwordError,
       })}

@@ -29,33 +29,28 @@
     }
   }
 
-  .content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -33%);
+  .project-title {
+    //margin-bottom: 6em;
 
-    .project-title {
-      margin-bottom: 6em;
+    .react-player {
+      opacity: 1;
+      position: relative;
+      background-color: transparent;
 
-      .react-player {
-        opacity: 1;
-        position: relative;
-        background-color: transparent;
+      &.dd-text {
+        width: 60em;
+        height: 34em;
+        margin: -20.5em 0 -21em;
+      }
 
-        &.dd-text {
-          width: 60em;
-          height: 34em;
-          margin: -20.5em 0 -21em;
-        }
-
-        &.ps-text {
-          width: 60em;
-          height: 11em;
-        }
+      &.ps-text {
+        width: 60em;
+        height: 11em;
       }
     }
+  }
 
+  .text-column {
     .secondary-text {
       color: $gold;
       font-weight: 400;
@@ -67,10 +62,10 @@
         font-size: 1.25em;
       }
     }
+  }
 
-    .password-box {
-      margin-top: 10em;
-    }
+  .password-box {
+    //margin-top: 10em;
   }
 
   .invite-image {
@@ -111,72 +106,67 @@
 @media only screen and (max-width: 1024px) {
   .page.coming-soon {
     --base-font-size: 45;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
 
     .react-player.bg-video {
       min-width: 100%;
       min-height: 100%;
     }
 
-    .content {
-      position: relative;
-      justify-content: space-between;
-      left: unset;
-      transform: none;
-      text-align: center;
-      height: 100%;
-      padding: 15vh 0 2vh;
-      top: unset;
+    .cs-section {
+      position: absolute;
+      width: 100%;
+    }
+
+    .project-title {
+      bottom: 75%;
+
+      .react-player.dd-text,
+      .react-player.ps-text {
+        width: unset;
+        height: unset;
+        margin: unset;
+
+        &.dd-text {
+          margin: 0 auto;
+          width: 85%;
+        }
+
+        &.ps-text {
+          margin: 0 auto;
+          width: 30%;
+          transform: translateY(-25%);
+        }
+      }
+    }
+
+    .text-column {
+      top: 50%;
+      transform: translateY(-70%);
 
       .secondary-text {
         font-size: $font22px;
       }
+    }
 
-      .project-title {
-        margin-bottom: unset;
+    .password-box {
+      top: 63%;
 
-        .react-player.dd-text,
-        .react-player.ps-text {
-          width: unset;
-          height: unset;
-          margin: unset;
+      .input-container {
+        margin: 0 auto 1.5em;
 
-          &.dd-text {
-            margin: 0 auto;
-            width: 85%;
-          }
-
-          &.ps-text {
-            margin: 0 auto;
-            width: 35%;
-            transform: translateY(-25%);
-          }
-        }
-      }
-
-      .text-column {
-        margin: 15vh 0 7vh;
-      }
-
-      .password-box {
-        margin-top: unset;
-
-        .input-container input {
+        input {
           width: 100%;
         }
       }
     }
 
     .invite-image {
-      position: relative;
-      width: 40%;
-      margin: 4vh auto 0;
-      bottom: unset;
+      bottom: 2%;
       left: unset;
-      aspect-ratio: 2.166;
+
+      img {
+        width: 40%;
+      }
     }
   }
 }

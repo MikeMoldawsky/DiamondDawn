@@ -156,44 +156,41 @@ const ComingSoonPage = () => {
         })}
       >
         {renderBgPlayer()}
-        <div className="center-aligned-column content">
-          <div className="project-title">
-            <InlineVideo
-              withLoader={false}
-              className="dd-text"
-              src={getDDTextVideo(width)}
-              showThreshold={0}
-            />
-            <InlineVideo
-              withLoader={false}
-              className="ps-text"
-              src={getPSTextVideo(width)}
-              showThreshold={0}
-            />
+        <div className="cs-section project-title">
+          <InlineVideo
+            withLoader={false}
+            className="dd-text"
+            src={getDDTextVideo(width)}
+            showThreshold={0}
+          />
+          <InlineVideo
+            withLoader={false}
+            className="ps-text"
+            src={getPSTextVideo(width)}
+            showThreshold={0}
+          />
+        </div>
+        <div className="center-aligned-column cs-section text-column">
+          <div className="secondary-text">
+            <div className="secondary-lg">Physical or Digital</div>
+            Which diamond will you choose?
           </div>
-          <div className="center-aligned-column text-column">
-            <div className="secondary-text">
-              <div className="secondary-lg">Physical or Digital</div>
-              Which diamond will you choose?
-            </div>
-          </div>
-          <div className="center-aligned-column enter-area">
-            <PasswordBox
-              autoFill={canAccessDD}
-              inviteId={invite?._id}
-              onCorrect={onCorrectPassword}
-              passwordLength={8}
-              buttonText="ENTER"
-            />
-            <div className="invite-image" onClick={clickWithSFX}>
-              {inviteId && (
-                <>
-                  <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
-                  <div className="text-center text-comment">YOUR INVITE</div>
-                </>
-              )}
-            </div>
-          </div>
+        </div>
+        <PasswordBox
+          className="cs-section"
+          autoFill={canAccessDD}
+          inviteId={invite?._id}
+          onCorrect={onCorrectPassword}
+          passwordLength={8}
+          buttonText="ENTER"
+        />
+        <div className="cs-section invite-image" onClick={clickWithSFX}>
+          {inviteId && (
+            <>
+              <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+              <div className="text-center text-comment">YOUR INVITE</div>
+            </>
+          )}
         </div>
       </div>
       {showInvitedModal && (
