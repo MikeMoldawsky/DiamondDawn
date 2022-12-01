@@ -13,7 +13,8 @@
     min-height: 104%;
     opacity: 0.65;
     z-index: -2;
-    position: absolute;
+    position: fixed;
+    //position: absolute;
     background-color: black;
 
     video {
