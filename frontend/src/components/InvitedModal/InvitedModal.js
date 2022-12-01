@@ -7,7 +7,7 @@ import CopyButton from "components/CopyButton";
 import WaitFor from "containers/WaitFor";
 import Button from "components/Button";
 
-const InvitedModalContent = ({ close, invite }) => {
+const InvitedModalContent = ({ close, onCopy, invite }) => {
   if (!invite)
     return (
       <>
@@ -55,6 +55,13 @@ const InvitedModalContent = ({ close, invite }) => {
       </>
     );
 
+  const copyContent = invite._id.substring(invite._id.length - 8)
+
+  const onCopyClick = () => {
+    onCopy && onCopy(copyContent)
+    close()
+  }
+
   return (
     <>
       <div className="leading-text">CONGRATULATIONS</div>
@@ -69,8 +76,8 @@ const InvitedModalContent = ({ close, invite }) => {
       </div>
       <div className="text-center">
         <CopyButton
-          content={invite._id.substring(invite._id.length - 8)}
-          onCopy={close}
+          content={copyContent}
+          onCopy={onCopyClick}
         >
           COPY PASSWORD
         </CopyButton>
@@ -79,7 +86,7 @@ const InvitedModalContent = ({ close, invite }) => {
   );
 };
 
-const InvitedModal = ({ close, invite }) => {
+const InvitedModal = ({ close, onCopy, invite }) => {
   return (
     <Modal className="invited-modal" close={close} implicitClose withCloseBtn>
       <div className="center-aligned-column modal-content">
@@ -87,7 +94,7 @@ const InvitedModal = ({ close, invite }) => {
           <div className="image">
             <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
           </div>
-          <InvitedModalContent close={close} invite={invite} />
+          <InvitedModalContent close={close} onCopy={onCopy} invite={invite} />
         </WaitFor>
       </div>
     </Modal>

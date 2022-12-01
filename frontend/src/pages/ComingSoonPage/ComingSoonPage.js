@@ -61,6 +61,7 @@ const ComingSoonPage = () => {
     isActionSuccessSelector("get-collector-by-address")
   );
   const canAccessDD = usePermission();
+  const [autoFillPassword, setAutoFillPassword] = useState("")
   const [pageReady, setPageReady] = useState(false);
   const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [startTransition, setStartTransition] = useState(false);
@@ -84,6 +85,10 @@ const ComingSoonPage = () => {
     setShowInvitedModal(true);
   };
 
+  const onPasswordCopy = (pwd) => {
+    setAutoFillPassword(pwd)
+  }
+
   const { clickWithSFX } = useButtonSFX(onInviteClick, "explore");
 
   useEffect(loadInvite, [inviteId]);
@@ -95,6 +100,12 @@ const ComingSoonPage = () => {
       setShowInvitedModal(true);
     }
   }, [pageReady, isCollectorReady, canAccessDD, invite?._id]);
+
+  useEffect(() => {
+    if (canAccessDD && !autoFillPassword) {
+      setAutoFillPassword("12345678");
+    }
+  }, [canAccessDD, autoFillPassword]);
 
   const bgVideoUrl = usePortraitAsset
     ? getMobileBGVideo(width)
@@ -174,7 +185,7 @@ const ComingSoonPage = () => {
         </div>
         <PasswordBox
           className={classNames("cs-section", { "with-invite": !!inviteId })}
-          autoFill={canAccessDD}
+          autoFill={autoFillPassword}
           inviteId={invite?._id}
           onCorrect={onCorrectPassword}
           passwordLength={8}
@@ -192,6 +203,7 @@ const ComingSoonPage = () => {
       {showInvitedModal && (
         <InvitedModal
           invite={invite}
+          onCopy={onPasswordCopy}
           close={() => setShowInvitedModal(false)}
         />
       )}

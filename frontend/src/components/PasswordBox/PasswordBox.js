@@ -7,6 +7,7 @@ import ActionButton from "components/ActionButton";
 import useActionDispatch from "hooks/useActionDispatch";
 import useSound from "use-sound";
 import deepSFX from "assets/audio/button3-press-deep.mp3";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 const PasswordBox = ({
   className,
@@ -22,9 +23,11 @@ const PasswordBox = ({
   const [passwordError, setPasswordError] = useState(false);
   const [playSubmit] = useSound(deepSFX);
   const [isFocused, setIsFocused] = useState(false);
+  const { width } = useWindowDimensions();
+  const passwordDisabled = width <= 768;
 
   useEffect(() => {
-    setPassword(autoFill ? "12345678" : "");
+    setPassword(autoFill);
   }, [autoFill]);
 
   const submitPassword = async () => {
@@ -79,6 +82,7 @@ const PasswordBox = ({
           maxLength={passwordLength}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          disabled={passwordDisabled}
         />
         <div className="underscore">
           {map(new Array(passwordLength), (v, i) => (
