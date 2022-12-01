@@ -10,6 +10,7 @@ const AnimatedLogo = ({ withText }) => {
       playing
       playsinline
       controls={false}
+      playIcon={null}
       muted
       loop
       className={classNames("react-player loader", { "with-text": withText })}

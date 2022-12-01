@@ -23,6 +23,7 @@ const InlineVideo = ({
         playing
         playsinline
         controls={false}
+        playIcon={null}
         muted={muted || forceMuted}
         loop
         className={classNames("react-player", className)}
