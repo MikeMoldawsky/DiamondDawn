@@ -4,7 +4,8 @@
   padding: 0.4em;
   max-height: 80%;
   width: 49em;
-  transform: translate(-50%, -45%);
+  transform: translateX(-50%);
+  top: 25%;
 
   .modal-inner {
     padding: 4em 4em 3.5em;
@@ -41,6 +42,39 @@
 
     svg {
       font-size: $font20px;
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .modal.invited-modal {
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    .image img {
+      min-height: unset;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .modal.invited-modal {
+    .modal-inner {
+      padding: 13% 5%;
+
+      &:before {
+        transform: translate(-50%, -13.5%);
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .modal.invited-modal {
+    .modal-inner {
+      &:before {
+        transform: translate(-50%, -4em);
+      }
     }
   }
 }

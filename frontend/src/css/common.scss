@@ -172,6 +172,30 @@ form {
     font-size: $font25px;
   }
 
+  &.size-limit {
+    justify-content: flex-start;
+    padding-top: 15%;
+
+    .leading-text {
+      margin-bottom: 1.2em;
+    }
+
+    .secondary-text {
+      width: 80%;
+      text-align: left;
+    }
+
+    .video-box {
+      margin-top: 5%;
+      width: 90%;
+      border: none;
+
+      .react-player {
+        height: unset;
+      }
+    }
+  }
+
   &.hide {
     animation: fadeOut 0.15s ease-in;
   }
@@ -463,6 +487,32 @@ a:not(.no-hover) {
   }
 }
 
+.video-box {
+  aspect-ratio: 1;
+  position: relative;
+  border: solid 1px white;
+  padding: 0.5em;
+
+  .react-player {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+
+    &.loader {
+      padding: 0 15%;
+    }
+  }
+
+  .loader-container {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    bottom: 0.5em;
+    left: 0.5em;
+    height: auto;
+  }
+}
+
 .video-placeholder {
   height: 100% !important;
   width: 100% !important;
@@ -548,5 +598,21 @@ a:not(.no-hover) {
 @media only screen and (max-width: 1024px) {
   :root {
     --header-height: 4rem;
+  }
+
+  html {
+    font-size: $font14px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  html {
+    font-size: $font12px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  html {
+    font-size: $font11px;
   }
 }

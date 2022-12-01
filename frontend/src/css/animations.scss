@@ -53,3 +53,18 @@
     color: $gold;
   }
 }
+
+@keyframes growShrinkLoop {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.125);
+  }
+  40% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

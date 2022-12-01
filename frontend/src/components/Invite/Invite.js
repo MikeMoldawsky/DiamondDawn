@@ -116,7 +116,7 @@ const Invite = () => {
   return (
     <div className="box-content opaque invite-view">
       <div className="layout-box">
-        <div className="image-box">{renderInlineVideo()}</div>
+        <div className="video-box">{renderInlineVideo()}</div>
 
         <div className="content-box">
           {collector ? (

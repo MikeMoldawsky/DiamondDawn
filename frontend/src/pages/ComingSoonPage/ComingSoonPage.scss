@@ -6,9 +6,6 @@
   position: relative;
   text-align: center;
   overflow: hidden;
-  $splitter_color: silver;
-  $splitter_width: 4px;
-  min-height: 500px;
   font-size: calc-font-size(11px);
 
   .react-player.bg-video {
@@ -29,32 +26,36 @@
     }
   }
 
-  .content {
+  .cs-section {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -33%);
+    width: 100%;
+  }
 
-    .project-title {
-      margin-bottom: 6em;
+  .project-title {
+    top: 15%;
 
-      .react-player {
-        opacity: 1;
-        position: relative;
-        background-color: transparent;
+    .react-player {
+      opacity: 1;
+      position: relative;
+      background-color: transparent;
 
-        &.dd-text {
-          width: 60em;
-          height: 34em;
-          margin: -20.5em 0 -21em;
-        }
+      &.dd-text {
+        margin: 0 auto;
+        width: 50%;
+        max-width: 1440px;
+      }
 
-        &.ps-text {
-          width: 60em;
-          height: 11em;
-        }
+      &.ps-text {
+        margin: 0 auto;
+        width: 10%;
+        max-width: 480px;
+        transform: translateY(-60%);
       }
     }
+  }
+
+  .text-column {
+    top: 47%;
 
     .secondary-text {
       color: $gold;
@@ -67,9 +68,17 @@
         font-size: 1.25em;
       }
     }
+  }
 
-    .password-box {
-      margin-top: 10em;
+  .password-box {
+    bottom: 10%;
+
+    .input-container {
+      margin: 0 auto 1.5em;
+
+      input {
+        width: 100%;
+      }
     }
   }
 
@@ -77,8 +86,8 @@
     cursor: pointer;
     position: absolute;
     width: 16em;
-    left: 1em;
-    bottom: 5em;
+    left: 2%;
+    bottom: 9.5%;
     animation: growShrinkLoop 2.5s ease-out infinite;
 
     img {
@@ -86,48 +95,67 @@
     }
 
     .text-comment {
-      color: white;
-      font-weight: 700;
+      color: $gold;
+      font-weight: 500;
       margin-top: -2.2em;
-    }
-  }
-
-  @keyframes growShrinkLoop {
-    0% {
-      transform: scale(1);
-    }
-    20% {
-      transform: scale(1.125);
-    }
-    40% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(1);
     }
   }
 }
 
 @media only screen and (max-width: 1024px) {
   .page.coming-soon {
-    font-size: $font14px;
+    --base-font-size: 45;
 
-    .content {
-      justify-content: space-between;
-      height: 75%;
-      top: 15%;
+    .project-title {
+      top: 17%;
+
+      .react-player.dd-text,
+      .react-player.ps-text {
+        &.dd-text {
+          width: 85%;
+        }
+
+        &.ps-text {
+          width: 30%;
+        }
+      }
+    }
+
+    .text-column {
+      top: 46%;
+
+      .secondary-text {
+        font-size: $font22px;
+      }
+    }
+
+    .password-box {
+      bottom: 15%;
+
+      &.with-invite {
+        bottom: 17%;
+      }
+    }
+
+    .invite-image {
+      bottom: 2%;
+      width: 100%;
+      left: unset;
+
+      img {
+        width: 40%;
+      }
     }
   }
 }
 
 @media only screen and (max-width: 768px) {
   .page.coming-soon {
-    font-size: $font12px;
-  }
-}
+    --base-font-size: 45;
 
-@media only screen and (max-width: 375px) {
-  .page.coming-soon {
-    font-size: $font11px;
+    .react-player.bg-video {
+      min-width: 100%;
+      min-height: 100%;
+    }
   }
 }

@@ -15,6 +15,7 @@ const FADE_DURATION = 150;
 
 const Page = ({
   pageName,
+  className,
   images = [],
   videos = [],
   timeout = DEFAULT_TIMEOUT,

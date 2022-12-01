@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { getCDNImageUrl, getCDNVideoUrl } from "utils";
+import { getCDNImageUrl, getCDNVideoUrl, createVideoSources } from "utils";
 import classNames from "classnames";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useMusic from "hooks/useMusic";
@@ -17,8 +17,37 @@ import { useAccount } from "wagmi";
 import useActionDispatch from "hooks/useActionDispatch";
 import usePermission from "hooks/usePermission";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
-import PageSizeLimit from "components/PageSizeLimit";
 import useButtonSFX from "hooks/useButtonSFX";
+
+const getDDTextVideo = (width) => {
+  let fileName = "dd-text-1440";
+  // if (width <= 480) fileName += "-480";
+  // else
+  // if (width <= 1024) fileName += "-1440";
+
+  return createVideoSources(fileName);
+};
+
+const getPSTextVideo = (width) => {
+  let fileName = "ps-text-480";
+  // if (width <= 480) fileName += "-240";
+  // else
+  // if (width <= 1024) fileName += "-480";
+
+  return createVideoSources(fileName);
+};
+
+const getMobileBGVideo = (width) => {
+  let fileName = "coming_soon_mobile";
+  // if (width <= 400) fileName += "-300";
+  // else if (width <= 600) fileName += "-400";
+  // else if (width <= 768) fileName += "-588";
+  if (width <= 360) fileName += "-300";
+  else if (width <= 480) fileName += "-400";
+  else if (width <= 768) fileName += "-588";
+
+  return [{ src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" }];
+};
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -32,13 +61,15 @@ const ComingSoonPage = () => {
     isActionSuccessSelector("get-collector-by-address")
   );
   const canAccessDD = usePermission();
+  const [autoFillPassword, setAutoFillPassword] = useState("");
   const [pageReady, setPageReady] = useState(false);
   const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [startTransition, setStartTransition] = useState(false);
   const [videoProgress, setVideoProgress] = useState({});
   const { width, height } = useWindowDimensions();
   const isPortrait = height > width;
-  const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
+  const usePortraitAsset = isPortrait && width <= 768;
+  // const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
 
   useMusic("homepage.mp3");
 
@@ -54,6 +85,10 @@ const ComingSoonPage = () => {
     setShowInvitedModal(true);
   };
 
+  const onPasswordCopy = (pwd) => {
+    setAutoFillPassword(pwd);
+  };
+
   const { clickWithSFX } = useButtonSFX(onInviteClick, "explore");
 
   useEffect(loadInvite, [inviteId]);
@@ -66,12 +101,20 @@ const ComingSoonPage = () => {
     }
   }, [pageReady, isCollectorReady, canAccessDD, invite?._id]);
 
-  const renderBgPlayer = useCallback(
-    () => (
+  useEffect(() => {
+    if (canAccessDD && !autoFillPassword) {
+      setAutoFillPassword("12345678");
+    }
+  }, [canAccessDD, autoFillPassword]);
+
+  const bgVideoUrl = usePortraitAsset
+    ? getMobileBGVideo(width)
+    : getCDNVideoUrl("coming-soon.webm");
+
+  const renderBgPlayer = useCallback(() => {
+    return (
       <ReactPlayer
-        url={getCDNVideoUrl(
-          usePortraitAsset ? "coming_soon_mobile.webm" : "coming-soon.webm"
-        )}
+        url={bgVideoUrl}
         playing
         playsinline
         controls={false}
@@ -82,9 +125,8 @@ const ComingSoonPage = () => {
         height=""
         onProgress={setVideoProgress}
       />
-    ),
-    [usePortraitAsset]
-  );
+    );
+  }, [JSON.stringify(bgVideoUrl)]);
 
   const transition = () => {
     if (process.env.REACT_APP_ENABLE_TRANSITIONS !== "true") {
@@ -107,65 +149,65 @@ const ComingSoonPage = () => {
   };
 
   return (
-    <PageSizeLimit>
-      <Page
-        pageName="coming-soon"
-        requireAccess={false}
-        images={[getCDNImageUrl("envelop-wings.png")]}
-        videos={[{ progress: videoProgress, threshold: 0.5 }]}
-        onReady={() => setPageReady(true)}
+    <Page
+      pageName="coming-soon"
+      requireAccess={false}
+      images={[getCDNImageUrl("envelop-wings.png")]}
+      videos={[{ progress: videoProgress, threshold: 0.5 }]}
+      onReady={() => setPageReady(true)}
+    >
+      <div
+        className={classNames("page coming-soon", {
+          horizontal: true,
+          "transition-out": startTransition,
+        })}
       >
-        <div
-          className={classNames("page coming-soon", {
-            horizontal: true,
-            "transition-out": startTransition,
-          })}
-        >
-          {renderBgPlayer()}
-          <div className="center-aligned-column content">
-            <div className="project-title">
-              <InlineVideo
-                withLoader={false}
-                className="dd-text"
-                src={getCDNVideoUrl("animated-dd-text.webm")}
-                showThreshold={0}
-              />
-              <InlineVideo
-                withLoader={false}
-                className="ps-text"
-                src={getCDNVideoUrl("animated-ps-text.webm")}
-                showThreshold={0}
-              />
-            </div>
-            <div className="center-aligned-column">
-              <div className="secondary-text">
-                <div className="secondary-lg">Physical or Digital</div>
-                Which diamond will you choose?
-              </div>
-            </div>
-            <PasswordBox
-              autoFill={canAccessDD}
-              inviteId={invite?._id}
-              onCorrect={onCorrectPassword}
-              passwordLength={8}
-              buttonText="ENTER"
-            />
+        {renderBgPlayer()}
+        <div className="cs-section project-title">
+          <InlineVideo
+            withLoader={false}
+            className="dd-text"
+            src={getDDTextVideo(width)}
+            showThreshold={0}
+          />
+          <InlineVideo
+            withLoader={false}
+            className="ps-text"
+            src={getPSTextVideo(width)}
+            showThreshold={0}
+          />
+        </div>
+        <div className="center-aligned-column cs-section text-column">
+          <div className="secondary-text">
+            <div className="secondary-lg">Physical or Digital</div>
+            Which diamond will you choose?
           </div>
-          {showInvitedModal && (
-            <InvitedModal
-              invite={invite}
-              close={() => setShowInvitedModal(false)}
-            />
-          )}
-          {inviteId && (
-            <div className="invite-image" onClick={clickWithSFX}>
+        </div>
+        <PasswordBox
+          className={classNames("cs-section", { "with-invite": !!inviteId })}
+          autoFill={autoFillPassword}
+          inviteId={invite?._id}
+          onCorrect={onCorrectPassword}
+          passwordLength={8}
+          buttonText="ENTER"
+        />
+        <div className="cs-section invite-image" onClick={clickWithSFX}>
+          {!!inviteId && (
+            <>
               <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
               <div className="text-center text-comment">YOUR INVITE</div>
-            </div>
+            </>
           )}
         </div>
-      </Page>
-    </PageSizeLimit>
+      </div>
+      {showInvitedModal && (
+        <InvitedModal
+          invite={invite}
+          onCopy={onPasswordCopy}
+          close={() => setShowInvitedModal(false)}
+        />
+      )}
+    </Page>
   );
 };
 
