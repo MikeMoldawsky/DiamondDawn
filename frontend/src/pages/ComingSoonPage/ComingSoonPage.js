@@ -37,7 +37,7 @@ const getPSTextVideo = (width) => {
   return createVideoSources(fileName);
 };
 
-const getMobileBGVideo = width => {
+const getMobileBGVideo = (width) => {
   let fileName = "coming_soon_mobile";
   // if (width <= 400) fileName += "-300";
   // else if (width <= 600) fileName += "-400";
@@ -46,8 +46,8 @@ const getMobileBGVideo = width => {
   else if (width <= 480) fileName += "-400";
   else if (width <= 768) fileName += "-588";
 
-  return [{src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4"}]
-}
+  return [{ src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" }];
+};
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ const ComingSoonPage = () => {
     isActionSuccessSelector("get-collector-by-address")
   );
   const canAccessDD = usePermission();
-  const [autoFillPassword, setAutoFillPassword] = useState("")
+  const [autoFillPassword, setAutoFillPassword] = useState("");
   const [pageReady, setPageReady] = useState(false);
   const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [startTransition, setStartTransition] = useState(false);
@@ -86,8 +86,8 @@ const ComingSoonPage = () => {
   };
 
   const onPasswordCopy = (pwd) => {
-    setAutoFillPassword(pwd)
-  }
+    setAutoFillPassword(pwd);
+  };
 
   const { clickWithSFX } = useButtonSFX(onInviteClick, "explore");
 

@@ -1,8 +1,8 @@
-import React, {useCallback, useState} from "react";
+import React, { useCallback, useState } from "react";
 import Loading from "components/Loading";
 import classNames from "classnames";
 import useWindowDimensions from "hooks/useWindowDimensions";
-import {createVideoSources, getCDNVideoUrl} from "utils";
+import { createVideoSources, getCDNVideoUrl } from "utils";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 
 const DEFAULT_MIN_WIDTH = 1025;
@@ -27,7 +27,7 @@ const PageSizeLimit = ({ minWidth = DEFAULT_MIN_WIDTH, children }) => {
     []
   );
 
-  if (showContent) return children
+  if (showContent) return children;
 
   return (
     <div className={classNames("center-aligned-column page-cover size-limit")}>

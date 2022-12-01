@@ -1,6 +1,6 @@
 import React from "react";
 import ReactPlayer from "react-player";
-import {createVideoSources} from "utils";
+import { createVideoSources } from "utils";
 import classNames from "classnames";
 
 const AnimatedLogo = ({ withText }) => {

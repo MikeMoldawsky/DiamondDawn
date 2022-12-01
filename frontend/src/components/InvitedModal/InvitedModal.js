@@ -55,12 +55,12 @@ const InvitedModalContent = ({ close, onCopy, invite }) => {
       </>
     );
 
-  const copyContent = invite._id.substring(invite._id.length - 8)
+  const copyContent = invite._id.substring(invite._id.length - 8);
 
   const onCopyClick = () => {
-    onCopy && onCopy(copyContent)
-    close()
-  }
+    onCopy && onCopy(copyContent);
+    close();
+  };
 
   return (
     <>
@@ -75,10 +75,7 @@ const InvitedModalContent = ({ close, onCopy, invite }) => {
         to keep it safe.
       </div>
       <div className="text-center">
-        <CopyButton
-          content={copyContent}
-          onCopy={onCopyClick}
-        >
+        <CopyButton content={copyContent} onCopy={onCopyClick}>
           COPY PASSWORD
         </CopyButton>
       </div>
