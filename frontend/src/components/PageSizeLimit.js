@@ -34,9 +34,9 @@ const PageSizeLimit = ({ minWidth = DEFAULT_MIN_WIDTH, children }) => {
     <div className={classNames("center-aligned-column page-cover size-limit")}>
       <div className="leading-text">DIAMOND DAWN</div>
       <div className="secondary-text">
-        Mobile version coming soon!
+        The mobile version is coming soon!
         <br />
-        For the full experience please visit Diamond Dawn on a computer
+        For the full experience, please visit Diamond Dawn on a computer.
       </div>
       <div className="video-box">{renderInlineVideo()}</div>
     </div>
