@@ -15,11 +15,11 @@ const FAQS = {
       content: () => <p>Diamond Dawn.</p>,
     },
     {
-      title: "When DD's private mint starts?",
+      title: "When DD's private sale starts?",
       content: () => (
         <p>
-          Diamond Dawn private mint will start soon (December).
-          <br /> We'll notify the exact date on our Telegram channel.
+          Diamond Dawn's private sale will start soon (December).
+          <br /> We'll let you know the exact mint date on our Telegram channel.
         </p>
       ),
     },
