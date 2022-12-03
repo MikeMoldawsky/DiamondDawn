@@ -6,6 +6,7 @@ const SHAPE = {
 };
 
 const GRADE = {
+  NO_CUT_GRADE: 0,
   GOOD: 1,
   VERY_GOOD: 2,
   EXCELLENT: 3,
