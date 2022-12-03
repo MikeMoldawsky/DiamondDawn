@@ -15,6 +15,15 @@ const FAQS = {
       content: () => <p>Diamond Dawn.</p>,
     },
     {
+      title: "When DD's private mint starts?",
+      content: () => (
+        <p>
+          Diamond Dawn private mint will start soon (December).
+          <br /> We'll notify the exact date on our Telegram channel.
+        </p>
+      ),
+    },
+    {
       title: "What is DD’s blockchain?",
       content: () => <p>Ethereum.</p>,
     },

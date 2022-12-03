@@ -108,7 +108,7 @@ const Homepage = () => {
               </div>
             </div>
             <VideoBackground src="earth-and-moon.webm" overlap="-35%" />
-            <Footer />
+            <Footer withFAQs />
           </div>
         </ScrollingPage>
       </Page>
