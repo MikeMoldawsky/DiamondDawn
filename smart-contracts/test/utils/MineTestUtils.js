@@ -521,14 +521,15 @@ function _getCutMetadataNoCaratShapeAndURIs(
   numCut,
   totalCut
 ) {
-  const separator = enumToShape(diamond.shape) === "Round" ? " - " : " x ";
+  const isRound = enumToShape(diamond.shape) === "Round";
+  const separator = isRound ? " - " : " x ";
   const measurements =
     _.padEnd((diamond.length / 100).toString(), 4, "0") +
     separator +
     _.padEnd((diamond.width / 100).toString(), 4, "0") +
     " x " +
     _.padEnd((diamond.depth / 100).toString(), 4, "0");
-  return {
+  const res = {
     name: `Formation #${numCut}`,
     attributes: [
       { trait_type: "Origin", value: "Metaverse" },
@@ -560,6 +561,8 @@ function _getCutMetadataNoCaratShapeAndURIs(
       },
     ],
   };
+  if (!isRound) _.pullAt(res.attributes, [7]);
+  return res;
 }
 
 function _getPolishedMetadataNoCaratShapeAndURIs(
@@ -571,14 +574,15 @@ function _getPolishedMetadataNoCaratShapeAndURIs(
   numPolished,
   totalPolished
 ) {
-  const separator = enumToShape(diamond.shape) === "Round" ? " - " : " x ";
+  const isRound = enumToShape(diamond.shape) === "Round";
+  const separator = isRound ? " - " : " x ";
   const measurements =
     _.padEnd((diamond.length / 100).toString(), 4, "0") +
     separator +
     _.padEnd((diamond.width / 100).toString(), 4, "0") +
     " x " +
     _.padEnd((diamond.depth / 100).toString(), 4, "0");
-  return {
+  const res = {
     name: `Diamond #${numPolished}`,
     attributes: [
       { trait_type: "Origin", value: "Metaverse" },
@@ -616,6 +620,8 @@ function _getPolishedMetadataNoCaratShapeAndURIs(
       },
     ],
   };
+  if (!isRound) _.pullAt(res.attributes, [7]);
+  return res;
 }
 
 function _getRebirthMetadataNoCaratShapeAndURIs(
@@ -629,15 +635,15 @@ function _getRebirthMetadataNoCaratShapeAndURIs(
   numPhysical,
   totalPhysical
 ) {
-  const separator = enumToShape(diamond.shape) === "Round" ? " - " : " x ";
+  const isRound = enumToShape(diamond.shape) === "Round";
+  const separator = isRound ? " - " : " x ";
   const measurements =
     _.padEnd((diamond.length / 100).toString(), 4, "0") +
     separator +
     _.padEnd((diamond.width / 100).toString(), 4, "0") +
     " x " +
     _.padEnd((diamond.depth / 100).toString(), 4, "0");
-
-  return {
+  const res = {
     name: `Dawn #${numPhysical}`,
     attributes: [
       { trait_type: "Origin", value: "Metaverse" },
@@ -684,6 +690,8 @@ function _getRebirthMetadataNoCaratShapeAndURIs(
       },
     ],
   };
+  if (!isRound) _.pullAt(res.attributes, [7]);
+  return res;
 }
 
 function _expectedColor(diamond) {

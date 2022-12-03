@@ -231,23 +231,25 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
     }
 
     function _getJsonAttributes(Metadata memory metadata) private view returns (Serializer.Attribute[] memory) {
+        uint8 i = 0;
+        bool isRound = metadata.certificate.shape == Shape.ROUND;
         Stage state_ = metadata.state_;
-        Serializer.Attribute[] memory attributes = new Serializer.Attribute[](_getStateAttrsNum(state_));
-        attributes[0] = Serializer.toStrAttribute("Origin", "Metaverse");
-        attributes[1] = Serializer.toStrAttribute("Type", Serializer.toTypeStr(state_));
+        Serializer.Attribute[] memory attributes = new Serializer.Attribute[](_getStateAttrsNum(state_, isRound));
+        attributes[i] = Serializer.toStrAttribute("Origin", "Metaverse");
+        attributes[++i] = Serializer.toStrAttribute("Type", Serializer.toTypeStr(state_));
         if (Stage.KEY == state_) {
-            attributes[2] = Serializer.toStrAttribute("Metal", "Gold");
+            attributes[++i] = Serializer.toStrAttribute("Metal", "Gold");
             return attributes;
         }
         if (uint(Stage.MINE) <= uint(state_)) {
-            attributes[2] = Serializer.toStrAttribute("Stage", Serializer.toStageStr(state_));
-            attributes[3] = Serializer.toStrAttribute("Identification", "Natural");
-            attributes[4] = Serializer.toAttribute(
+            attributes[++i] = Serializer.toStrAttribute("Stage", Serializer.toStageStr(state_));
+            attributes[++i] = Serializer.toStrAttribute("Identification", "Natural");
+            attributes[++i] = Serializer.toAttribute(
                 "Carat",
                 Serializer.toDecimalStr(_getPoints(metadata, metadata.state_)),
                 ""
             );
-            attributes[5] = Serializer.toMaxValueAttribute(
+            attributes[++i] = Serializer.toMaxValueAttribute(
                 "Mined",
                 Strings.toString(metadata.rough.id),
                 Strings.toString(_mineCounter),
@@ -255,39 +257,36 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
             // TODO: validate "Rough xxx" name convention.
             bool wasProcessed = uint(state_) > uint(Stage.MINE);
-            attributes[6] = Serializer.toStrAttribute(wasProcessed ? "Color Rough Stone" : "Color", "Cape");
-            attributes[7] = Serializer.toStrAttribute(
+            attributes[++i] = Serializer.toStrAttribute(wasProcessed ? "Color Rough Stone" : "Color", "Cape");
+            attributes[++i] = Serializer.toStrAttribute(
                 wasProcessed ? "Shape Rough Stone" : "Shape",
                 Serializer.toRoughShapeStr(metadata.rough.shape)
             );
         }
         Certificate memory certificate = metadata.certificate;
         if (uint(Stage.CUT) <= uint(state_)) {
-            attributes[8] = Serializer.toAttribute(
+            attributes[++i] = Serializer.toAttribute(
                 "Carat Rough Stone",
                 Serializer.toDecimalStr(_getPoints(metadata, Stage.MINE)),
                 ""
             );
-            attributes[9] = Serializer.toStrAttribute(
+            attributes[++i] = Serializer.toStrAttribute(
                 "Color",
                 Serializer.toColorStr(certificate.color, certificate.toColor)
             );
-            attributes[10] = Serializer.toStrAttribute("Cut", Serializer.toGradeStr(certificate.cut));
-            attributes[11] = Serializer.toStrAttribute(
+            if (isRound) {
+                attributes[++i] = Serializer.toStrAttribute("Cut", Serializer.toGradeStr(certificate.cut));
+            }
+            attributes[++i] = Serializer.toStrAttribute(
                 "Fluorescence",
                 Serializer.toFluorescenceStr(certificate.fluorescence)
             );
-            attributes[12] = Serializer.toStrAttribute(
+            attributes[++i] = Serializer.toStrAttribute(
                 "Measurements",
-                Serializer.toMeasurementsStr(
-                    certificate.shape,
-                    certificate.length,
-                    certificate.width,
-                    certificate.depth
-                )
+                Serializer.toMeasurementsStr(isRound, certificate.length, certificate.width, certificate.depth)
             );
-            attributes[13] = Serializer.toStrAttribute("Shape", Serializer.toShapeStr(certificate.shape));
-            attributes[14] = Serializer.toMaxValueAttribute(
+            attributes[++i] = Serializer.toStrAttribute("Shape", Serializer.toShapeStr(certificate.shape));
+            attributes[++i] = Serializer.toMaxValueAttribute(
                 "Cut",
                 Strings.toString(metadata.cut.id),
                 Strings.toString(_cutCounter),
@@ -295,15 +294,15 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
         }
         if (uint(Stage.POLISH) <= uint(state_)) {
-            attributes[15] = Serializer.toAttribute(
+            attributes[++i] = Serializer.toAttribute(
                 "Carat Pre Polish",
                 Serializer.toDecimalStr(_getPoints(metadata, Stage.CUT)),
                 ""
             );
-            attributes[16] = Serializer.toStrAttribute("Clarity", Serializer.toClarityStr(certificate.clarity));
-            attributes[17] = Serializer.toStrAttribute("Polish", Serializer.toGradeStr(certificate.polish));
-            attributes[18] = Serializer.toStrAttribute("Symmetry", Serializer.toGradeStr(certificate.symmetry));
-            attributes[19] = Serializer.toMaxValueAttribute(
+            attributes[++i] = Serializer.toStrAttribute("Clarity", Serializer.toClarityStr(certificate.clarity));
+            attributes[++i] = Serializer.toStrAttribute("Polish", Serializer.toGradeStr(certificate.polish));
+            attributes[++i] = Serializer.toStrAttribute("Symmetry", Serializer.toGradeStr(certificate.symmetry));
+            attributes[++i] = Serializer.toMaxValueAttribute(
                 "Polished",
                 Strings.toString(metadata.polished.id),
                 Strings.toString(_polishedCounter),
@@ -311,10 +310,10 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
         }
         if (uint(Stage.DAWN) <= uint(state_)) {
-            attributes[20] = Serializer.toStrAttribute("Laboratory", "GIA");
-            attributes[21] = Serializer.toAttribute("Report Date", Strings.toString(certificate.date), "date");
-            attributes[22] = Serializer.toAttribute("Report Number", Strings.toString(certificate.number), "");
-            attributes[23] = Serializer.toMaxValueAttribute(
+            attributes[++i] = Serializer.toStrAttribute("Laboratory", "GIA");
+            attributes[++i] = Serializer.toAttribute("Report Date", Strings.toString(certificate.date), "date");
+            attributes[++i] = Serializer.toAttribute("Report Number", Strings.toString(certificate.number), "");
+            attributes[++i] = Serializer.toMaxValueAttribute(
                 "Physical",
                 Strings.toString(metadata.reborn.id),
                 Strings.toString(_rebornCounter),
@@ -324,12 +323,12 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         return attributes;
     }
 
-    function _getStateAttrsNum(Stage state_) private pure returns (uint) {
+    function _getStateAttrsNum(Stage state_, bool isRound) private pure returns (uint) {
         if (state_ == Stage.KEY) return 3;
         if (state_ == Stage.MINE) return 8;
-        if (state_ == Stage.CUT) return 15;
-        if (state_ == Stage.POLISH) return 20;
-        if (state_ == Stage.DAWN) return 24;
+        if (state_ == Stage.CUT) return isRound ? 15 : 14;
+        if (state_ == Stage.POLISH) return isRound ? 20 : 19;
+        if (state_ == Stage.DAWN) return isRound ? 24 : 23;
         revert("Attributes number");
     }
 
