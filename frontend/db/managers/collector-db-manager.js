@@ -83,7 +83,9 @@ async function createCollector(
     twitter,
     email,
     note,
-    location: `${state}, ${country}`,
+    location: `${state ? state : "No state"}, ${
+      country ? country : "No country"
+    }`,
     isDao,
   });
   return collector.save();

@@ -2875,9 +2875,19 @@ function getState() {
   return timezone.split("/")[1].replace("_", " ");
 }
 
-const getLocation = () => ({
-  country: getCountry(),
-  state: getState(),
-});
+const getLocation = () => {
+  let country, state;
+  try {
+    country = getCountry();
+  } catch (e) {
+    console.log("Failed to fetch country", e);
+  }
+  try {
+    state = getState();
+  } catch (e) {
+    console.log("Failed to fetch state", e);
+  }
+  return { country, state };
+};
 
 export default getLocation;
