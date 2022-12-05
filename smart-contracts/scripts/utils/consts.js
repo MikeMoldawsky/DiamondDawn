@@ -6,9 +6,10 @@ const SHAPE = {
 };
 
 const GRADE = {
+  EMPTY: 0,
   GOOD: 1,
-  VERY_GOOD: 2,
-  EXCELLENT: 3,
+  VG: 2,
+  EX: 3,
 };
 
 const CLARITY = {
@@ -26,27 +27,28 @@ const FLUORESCENCE = {
 };
 
 const COLOR = {
-  NO_COLOR: 0,
-  M: 1,
-  N: 2,
-  O: 3,
-  P: 4,
-  Q: 5,
-  R: 6,
-  S: 7,
-  T: 8,
-  U: 9,
-  V: 10,
-  W: 11,
-  X: 12,
-  Y: 13,
-  Z: 14,
+  EMPTY: 0,
+  L: 1,
+  M: 2,
+  N: 3,
+  O: 4,
+  P: 5,
+  Q: 6,
+  R: 7,
+  S: 8,
+  T: 9,
+  U: 10,
+  V: 11,
+  W: 12,
+  X: 13,
+  Y: 14,
+  Z: 15,
 };
 
 module.exports = {
   SHAPE,
-  COLOR,
-  CLARITY,
   GRADE,
+  CLARITY,
   FLUORESCENCE,
+  COLOR,
 };

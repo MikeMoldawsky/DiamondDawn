@@ -149,12 +149,12 @@ library Serializer {
     }
 
     function toMeasurementsStr(
-        Shape shape,
+        bool isRound,
         uint16 length,
         uint16 width,
         uint16 depth
     ) public pure returns (string memory) {
-        string memory separator = shape == Shape.ROUND ? " - " : " x ";
+        string memory separator = isRound ? " - " : " x ";
         return string.concat(toDecimalStr(length), separator, toDecimalStr(width), " x ", toDecimalStr(depth));
     }
 
