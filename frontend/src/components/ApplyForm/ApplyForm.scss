@@ -1,9 +1,11 @@
 @import "css/varsNEW";
+@import "components/Button/Button.scss";
 
 .request-form {
   width: 100%;
   text-align: left;
   flex-grow: 2;
+  --rk-colors-accentColor: #caa875;
 
   form {
     height: 100%;
@@ -15,6 +17,15 @@
     .modal {
       width: 110%;
       transform: translate(-50%, -70%);
+    }
+  }
+
+  button {
+    @extend .button;
+
+    &:not(.button) {
+      padding: 0 2em !important;
+      height: 2.75em !important;
     }
   }
 

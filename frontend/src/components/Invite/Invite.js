@@ -80,7 +80,7 @@ const Invite = () => {
 
   if (systemStage > SYSTEM_STAGE.KEY) return null;
 
-  if (!isCollectorFetched)
+  if (account?.address && !isCollectorFetched)
     return (
       <div className="box-content opaque box-loading">
         <Loading />

@@ -74,16 +74,12 @@ const CollectorPage = () => {
               {ensName?.data || shortenEthAddress(account?.address)}
             </div>
             <Box className={"main-box"}>
-              {account?.address ? (
-                <WaitFor
-                  containerClassName="box-content opaque"
-                  actions={waitForActions}
-                >
-                  {renderContent()}
-                </WaitFor>
-              ) : (
-                <NotConnected />
-              )}
+              <WaitFor
+                containerClassName="box-content opaque"
+                actions={waitForActions}
+              >
+                {renderContent()}
+              </WaitFor>
               <HighlightOffIcon
                 className="close"
                 onClick={() => navigate("/explore")}

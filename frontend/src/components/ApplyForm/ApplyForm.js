@@ -9,12 +9,10 @@ import "./ApplyForm.scss";
 import { applyToDDApi } from "api/serverApi";
 import { useAccount } from "wagmi";
 import { useSelector } from "react-redux";
-import { isActionPendingSelector } from "store/actionStatusReducer";
 import { inviteSelector } from "store/inviteReducer";
 import Checkbox from "components/Checkbox";
 import { showError } from "utils";
-import useSound from "use-sound";
-import sparklesSFX from "assets/audio/end-sparkles.mp3";
+import Wallet from "components/Wallet";
 
 const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
@@ -30,11 +28,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   });
   const [isRequiredError, setIsRequiredError] = useState(false);
   const account = useAccount();
-  const isSubmitting = useSelector(
-    isActionPendingSelector("Request Invitation")
-  );
   const invite = useSelector(inviteSelector);
-  const [playSparklesSFX] = useSound(sparklesSFX);
 
   useEffect(() => {
     reset();
@@ -86,18 +80,6 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   return (
     <div className="request-form">
       <form>
-        <div className="center-aligned-row address-row">
-          <div className="input-container">
-            <div className="label">Minting Address</div>
-            <input
-              type="text"
-              className="input full-width"
-              disabled
-              value={account.address}
-              title="If approved, this address will be the one eligible for mint"
-            />
-          </div>
-        </div>
         <div className="center-aligned-row inputs-row">
           <div className="input-container">
             <div className="label">Twitter Handle</div>
@@ -133,15 +115,32 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
             placeholder="Why are you a good fit for Diamond Dawn? (optional)"
           />
         </div>
-        <ActionButton
-          actionKey="Request Invitation"
-          className="gold"
-          onClick={handleSubmit(applyToDD)}
-          disabled={disabled || !isDirty || !isEmpty(errors) || isRequiredError}
-          sfx="action"
-        >
-          SUBMIT
-        </ActionButton>
+        <div className="center-aligned-row address-row">
+          <div className="input-container">
+            <div className="label">Minting Address</div>
+            <input
+              type="text"
+              className="input full-width"
+              disabled
+              value={account.address}
+              title="If approved, this address will be the one eligible for mint"
+            />
+          </div>
+        </div>
+        <div className="stretch-center-aligned-row buttons">
+          {!account?.address && (
+            <Wallet />
+          )}
+          <ActionButton
+            actionKey="Request Invitation"
+            className="gold"
+            onClick={handleSubmit(applyToDD)}
+            disabled={disabled || !account?.address || !isDirty || !isEmpty(errors) || isRequiredError}
+            sfx="action"
+          >
+            SUBMIT
+          </ActionButton>
+        </div>
       </form>
     </div>
   );
