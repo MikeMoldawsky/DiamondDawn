@@ -70,7 +70,7 @@ const Homepage = () => {
               onMouseMove={(e) => setMousePos([e.pageX, e.pageY])}
             >
               <HomeBackground mousePos={mousePos} />
-              <div className="common-view" style={topViewStyles}>
+              <div className="opening" style={topViewStyles}>
                 <div className="logo">
                   <AnimatedLogo withText />
                 </div>

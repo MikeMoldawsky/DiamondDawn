@@ -25,7 +25,10 @@
 
     $fadeTime: 0.75s * $animationMultiplier;
 
-    .common-view {
+    .opening {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       font-size: calc-font-size(1px);
       position: relative;
       opacity: 1;
