@@ -16,7 +16,7 @@ const AudioPlayer = () => {
       let interval = setInterval(() => {
         if (audio.current.audioEl.current.volume > 0) {
           try {
-            audio.current.audioEl.current.volume -= 0.01;
+            audio.current.audioEl.current.volume -= 0.05;
           } catch (e) {
             clearInterval(interval);
             setSrc(musicSrc);
@@ -27,7 +27,7 @@ const AudioPlayer = () => {
           setSrc(musicSrc);
           audio.current.audioEl.current.volume = 0;
         }
-      }, 20);
+      }, 50);
     } else {
       audio.current.audioEl.current.volume = 0;
       setSrc(musicSrc);
@@ -52,7 +52,7 @@ const AudioPlayer = () => {
       autoPlay
       muted={muted || audioMuted}
       loop
-      volume={0.5}
+      volume={1}
     />
   );
 };
