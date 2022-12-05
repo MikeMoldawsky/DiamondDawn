@@ -6,10 +6,10 @@ const SHAPE = {
 };
 
 const GRADE = {
-  NO_CUT_GRADE: 0,
+  EMPTY: 0,
   GOOD: 1,
-  VERY_GOOD: 2,
-  EXCELLENT: 3,
+  VG: 2,
+  EX: 3,
 };
 
 const CLARITY = {
@@ -27,7 +27,7 @@ const FLUORESCENCE = {
 };
 
 const COLOR = {
-  NO_COLOR: 0,
+  EMPTY: 0,
   L: 1,
   M: 2,
   N: 3,
