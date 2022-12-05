@@ -70,7 +70,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           })}
         />
         <div className="center-aligned-row header-side">
-          {showRestrictedContent && <CTAButton className="sm collector-btn" />}
+          {showRestrictedContent && <CTAButton className="md collector-btn" />}
           <TwitterLink className="no-hover">
             <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
           </TwitterLink>

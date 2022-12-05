@@ -50,7 +50,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
               <div className="menu-item">COLLECTOR'S ROOM</div>
             </NavLink>
           ) : (
-            <CTAButton className="sm">APPLY FOR DIAMOND DAWN</CTAButton>
+            <CTAButton className="md" onClick={closeMenu}>APPLY FOR DIAMOND DAWN</CTAButton>
           )}
         </div>
         <div className="invitations-menu">

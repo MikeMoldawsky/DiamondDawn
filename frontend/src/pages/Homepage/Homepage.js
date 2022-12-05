@@ -21,14 +21,16 @@ import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import PageSizeLimit from "components/PageSizeLimit";
-import Button from "components/Button";
 import VideoBackground from "components/VideoBackground";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import CTAButton from "../../components/CTAButton";
+import classNames from "classnames";
+import {collectorSelector} from "store/collectorReducer";
 
 const Homepage = () => {
   const countdownProps = useMineOpenCountdown();
   const dispatch = useDispatch();
+  const collector = useSelector(collectorSelector)
   const { scroll } = useSelector(uiSelector);
   const { width, height } = useWindowDimensions();
   useShowLogoOnScroll(3.5);
@@ -80,7 +82,7 @@ const Homepage = () => {
                   <Countdown {...countdownProps} />
                 </div>
                 <div>
-                  <CTAButton className="md" />
+                  <CTAButton className={classNames({ lg: !collector })} />
                 </div>
               </div>
             </div>
