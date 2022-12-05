@@ -122,7 +122,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
               type="text"
               className="input full-width"
               disabled
-              value={account.address}
+              value={account?.address || ""}
               title="If approved, this address will be the one eligible for mint"
             />
           </div>

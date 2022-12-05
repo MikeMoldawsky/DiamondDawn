@@ -1,14 +1,20 @@
 import React from "react";
 import {
-  getDefaultWallets,
   RainbowKitProvider,
   midnightTheme,
+  connectorsForWallets,
 } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 // import { infuraProvider } from "wagmi/providers/infura";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import "@rainbow-me/rainbowkit/styles.css";
+import {
+  rainbowWallet,
+  metaMaskWallet,
+  coinbaseWallet,
+  walletConnectWallet,
+} from '@rainbow-me/rainbowkit/wallets';
 
 const localChain = {
   id: 31337,
@@ -41,10 +47,17 @@ function WagmiWrapper({ children }) {
     ]
   );
 
-  const { connectors } = getDefaultWallets({
-    appName: "Diamond Dawn",
-    chains,
-  });
+  const connectors = connectorsForWallets([
+    {
+      groupName: 'Suggested',
+      wallets: [
+        metaMaskWallet({ chains, shimDisconnect: true }),
+        rainbowWallet({ chains }),
+        coinbaseWallet({ chains, appName: 'Diamond Dawn' }),
+        walletConnectWallet({ chains }),
+      ],
+    },
+  ]);
 
   const wagmiClient = createClient({
     autoConnect: true,

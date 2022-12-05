@@ -8,6 +8,7 @@ import useTimeout from "hooks/useTimeout";
 import usePermission from "hooks/usePermission";
 import useWaitFor from "hooks/useWaitFor";
 import PageCover from "components/PageCover";
+import useOnConnect from "hooks/useOnConnect";
 
 const DEFAULT_TIMEOUT = 10000;
 const SHOW_TEXT_TIME = 100;
@@ -21,6 +22,7 @@ const Page = ({
   timeout = DEFAULT_TIMEOUT,
   withLoader = true,
   requireAccess = true,
+  collectorLoader = true,
   onReady,
   children,
 }) => {
@@ -57,6 +59,13 @@ const Page = ({
       setAssetsReady();
     }
   };
+
+  useOnConnect(address => {
+    if (collectorLoader && !!address) {
+      setFade(false)
+      setHidden(false)
+    }
+  })
 
   // navigate out if doesn't have access
   useEffect(() => {
