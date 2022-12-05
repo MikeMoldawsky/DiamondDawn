@@ -3,7 +3,9 @@ import "./SocialIcons.scss";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { TwitterLink, TelegramLink } from "components/Links";
+import { TwitterLink, TelegramLink, OpenseaLink } from "components/Links";
+import openSeaIcon from "assets/images/opensea.svg"
+import SVG from "components/SVG";
 
 const SocialIcons = () => {
   return (
@@ -18,6 +20,11 @@ const SocialIcons = () => {
           <TelegramIcon />
         </div>
       </TelegramLink>
+      <OpenseaLink className="no-hover">
+        <div className="icon">
+          <SVG src={openSeaIcon} className="opensea" />
+        </div>
+      </OpenseaLink>
     </div>
   );
 };

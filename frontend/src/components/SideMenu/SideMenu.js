@@ -62,22 +62,24 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           </div>
           <InvitationsStatus />
         </div>
-        <SocialIcons />
+        {invitedBy?.createdBy && (
+          <div className="invited-by">
+            <div className="image">
+              <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+            </div>
+            <div className="center-center-aligned-row invited-by-text">
+              <div>
+                INVITED BY{" "}
+                <CollectorLink
+                  collector={invitedBy?.createdBy}
+                  twitter={invitedBy?.inviter}
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-      {invitedBy?.createdBy && (
-        <div className="invited-by">
-          <div className="image">
-            <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
-          </div>
-          <div className="">
-            INVITED BY{" "}
-            <CollectorLink
-              collector={invitedBy?.createdBy}
-              twitter={invitedBy?.inviter}
-            />
-          </div>
-        </div>
-      )}
+      <SocialIcons />
     </Drawer>
   );
 };

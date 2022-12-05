@@ -2,7 +2,7 @@
 
 .MuiDrawer-root .MuiPaper-root {
   padding: 8em 2em 3em;
-  width: 19em;
+  width: 20em;
   background: #4a4a4a;
   box-shadow: 0 0.4em 1.2em #00000029;
   color: white;
@@ -63,20 +63,37 @@
   .social-icons {
     padding-top: 1.5em;
     margin-top: 1.5em;
-    border-top: solid 1px #707070;
+
+    .opensea {
+      svg {
+        path:not(:first-child) {
+          fill: $gray_blur;
+        }
+      }
+    }
   }
 
   .invited-by {
     font-size: $font12px;
     text-align: center;
+    margin: 1em 0 1.5em;
+    padding-bottom: 1.5em;
+    border-bottom: solid 1px #707070;
 
-    * {
+    .invited-by-text {
       font-weight: 500;
+      border-bottom: solid 1px #707070;
+
+      & > div {
+        transform: translateY(50%);
+        background-color: $gray_blur;
+        padding: 0 1em;
+      }
     }
 
     img {
       width: 100%;
-      margin-bottom: -1.5em;
+      margin: -0.5em 0 -2.5em;
     }
   }
 }

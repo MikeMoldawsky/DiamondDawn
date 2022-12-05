@@ -1,9 +1,10 @@
 import React from "react";
-import { DIAMOND_DAWN_TELEGRAM, DIAMOND_DAWN_TWITTER_URL } from "consts";
+import {DIAMOND_DAWN_TELEGRAM, DIAMOND_DAWN_TWITTER_URL, DIAMOND_DAWN_OPENSEA, SYSTEM_STAGE} from "consts";
 import { collectorDisplayName } from "utils";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
+import {systemSelector} from "store/systemReducer";
 
 export const Link = ({ href, className, children }) => (
   <a target="_blank" rel="noreferrer" href={href} className={className}>
@@ -44,6 +45,15 @@ export const TelegramLink = ({ className, children }) => {
       {children}
     </Link>
   );
+};
+
+export const OpenseaLink = ({ className, children }) => {
+  const { systemStage } = useSelector(systemSelector)
+  return systemStage >= SYSTEM_STAGE.KEY ? (
+    <Link href={DIAMOND_DAWN_OPENSEA} className={className}>
+      {children}
+    </Link>
+  ) : null
 };
 
 export const MailToSupportLink = () => (

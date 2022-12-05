@@ -16,6 +16,12 @@
         width: unset;
       }
     }
+
+    &.opensea {
+      svg {
+        width: auto;
+      }
+    }
   }
 
   a:not(:last-child) .icon {
