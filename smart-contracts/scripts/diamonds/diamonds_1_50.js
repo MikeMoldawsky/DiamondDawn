@@ -1,4 +1,10 @@
-const {COLOR, SHAPE, GRADE, CLARITY, FLUORESCENCE} = require("../utils/consts");
+const {
+  COLOR,
+  SHAPE,
+  GRADE,
+  CLARITY,
+  FLUORESCENCE,
+} = require("../utils/consts");
 
 const DIAMONDS_1_50 = [
   {
