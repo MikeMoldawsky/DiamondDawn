@@ -1,24 +1,36 @@
-import React, { useCallback, useEffect } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Loading from "components/Loading";
 import useWaitFor from "hooks/useWaitFor";
 import AnimatedLogo from "components/AnimatedLogo";
+import useTimeout from "hooks/useTimeout";
 
 export const WaitFor = ({
   actions,
+  images = [],
   videos = [],
+  minWait = 0,
   onReady,
   withLoader = true,
   Loader = () => <Loading />,
   containerClassName,
   children,
 }) => {
-  const contentReady = useWaitFor({ actions, videos });
+  const contentReady = useWaitFor({ actions, images, videos });
+  const [minWaitOver, setMinWaitOver] = useState(minWait === 0)
+
+  const isReady = contentReady && minWaitOver
 
   useEffect(() => {
-    if (contentReady) {
+    if (isReady) {
       onReady && onReady();
     }
-  }, [contentReady]);
+  }, [isReady]);
+
+  useTimeout(() => {
+    if (minWait > 0 && !minWaitOver) {
+      setMinWaitOver(true)
+    }
+  }, minWait)
 
   const renderLoader = useCallback(() => <Loader />, []);
 
@@ -31,8 +43,8 @@ export const WaitFor = ({
 
   return (
     <>
-      {(contentReady || videos.length > 0) && children}
-      {withLoader && !contentReady && renderLoading()}
+      {(isReady || videos.length > 0) && children}
+      {withLoader && !isReady && renderLoading()}
     </>
   );
 };

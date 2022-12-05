@@ -11,7 +11,7 @@ const VideoLink = ({ src, length, name }) => {
   const disabled = !src;
 
   const onClick = () => {
-    !disabled && dispatch(showVideo(src));
+    !disabled && dispatch(showVideo(src, { delayStart: 1500 }));
   };
 
   const { clickWithSFX } = useButtonSFX(onClick, "explore");
