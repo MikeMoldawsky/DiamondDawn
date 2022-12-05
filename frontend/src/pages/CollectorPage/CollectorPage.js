@@ -18,6 +18,7 @@ import PageSizeLimit from "components/PageSizeLimit";
 import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useNavigate } from "react-router-dom";
+import {collectorSelector} from "store/collectorReducer";
 
 const CollectorPage = () => {
   useNoScrollView();
@@ -27,6 +28,7 @@ const CollectorPage = () => {
   const account = useAccount();
   const ensName = useEnsName({ address: account?.address });
   const navigate = useNavigate();
+  const collector = useSelector(collectorSelector)
 
   useMusic("collector.mp3");
 
@@ -53,7 +55,7 @@ const CollectorPage = () => {
       <Page
         pageName="collector"
         images={[getCDNImageUrl("/collector/collector-bg.png")]}
-        collectorLoader={false}
+        collectorLoader={!!collector}
       >
         <div className={classNames("page collector-page")}>
           <div className="bg collector-bg" />
