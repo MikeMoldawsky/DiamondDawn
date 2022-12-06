@@ -1,6 +1,6 @@
 import axios from "axios";
 import { logApiError } from "utils";
-import getLocation from "utils/getLocation";
+import { getGeoLocationApi } from "api/externalApi";
 
 // CONTRACT INFO
 export const getContractInfoApi = async () => {
@@ -46,14 +46,21 @@ export const getCollectorByAddressApi = async (address) => {
   }
 };
 
-export const applyToDDApi = async (inviteId, address, requestData) => {
-  const { country, state } = getLocation();
+export const applyToDDApi = async (
+  inviteId,
+  address,
+  requestData,
+  geoLocation
+) => {
+  geoLocation = geoLocation || (await getGeoLocationApi());
+  const location = geoLocation
+    ? `${geoLocation.city},${geoLocation.region}/${geoLocation.country}`
+    : "Unknown";
   const { data: invite } = await axios.post(`/api/apply_to_dd`, {
     inviteId,
     address,
     ...requestData,
-    country,
-    state,
+    location,
   });
   return invite;
 };

@@ -54,13 +54,15 @@ const Video = ({ isPlaying, setVideoProgress, ...props }) => {
 
 const VideoPlayer = (props) => {
   const [videoProgress, setVideoProgress] = useState({});
+  const [isStartDelayPlay, setIsStartDelayPlay] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const { muted } = useSelector(uiSelector);
   const [wasMutedWhenMounted] = useState(muted);
   const location = useLocation();
   const dispatch = useDispatch();
+  const [isMounted, setIsMounted] = useState(false);
 
-  const { isOpen } = useSelector(videoSelector);
+  const { isOpen, delayPlay } = useSelector(videoSelector);
 
   const closePlayer = () => {
     dispatch(clearVideoState());
@@ -70,29 +72,61 @@ const VideoPlayer = (props) => {
   };
 
   useEffect(() => {
-    closePlayer();
+    if (isMounted) {
+      closePlayer();
+    }
+    setIsMounted(true);
   }, [location?.pathname]);
+
+  useEffect(() => {
+    let timer;
+    if (isStartDelayPlay) {
+      timer = setTimeout(() => {
+        setIsPlaying(true);
+      }, delayPlay);
+    }
+
+    return () => {
+      if (timer) {
+        timer = clearTimeout(timer);
+      }
+    };
+  }, [delayPlay, isStartDelayPlay]);
 
   if (!isOpen) return null;
 
+  const onVideoReady = () => {
+    if (!delayPlay) {
+      return setIsPlaying(true);
+    }
+    setIsStartDelayPlay(true);
+  };
+
   return (
     <div className="full-screen-video">
-      <WaitFor
-        videos={[{ progress: videoProgress, threshold: 0.25 }]}
-        onReady={() => setIsPlaying(true)}
-        Loader={() => <PageCover showText text="Video Loading..." />}
-      >
-        <div className="video-container">
+      <div className="video-container">
+        <WaitFor
+          minWait={delayPlay}
+          videos={[{ progress: videoProgress, threshold: 0.25 }]}
+          onReady={onVideoReady}
+          Loader={() => <PageCover showText text="Video Loading..." />}
+        >
           <Video
             isPlaying={isPlaying}
             setVideoProgress={setVideoProgress}
             {...props}
           />
           <HighlightOffIcon className="close" onClick={closePlayer} />
-        </div>
-      </WaitFor>
+        </WaitFor>
+      </div>
     </div>
   );
 };
 
-export default VideoPlayer;
+const VideoPlayerContainer = (props) => {
+  const { src } = useSelector(videoSelector);
+
+  return src ? <VideoPlayer {...props} /> : null;
+};
+
+export default VideoPlayerContainer;

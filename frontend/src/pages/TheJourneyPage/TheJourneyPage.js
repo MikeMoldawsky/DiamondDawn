@@ -33,7 +33,7 @@ const TheJourneyPage = () => {
         <div className="center-aligned-row journey-row journey-desc">
           <div className="image-side" />
           <AnimatedText className="text-side">
-            <div className="leading-text">THE PHASES</div>
+            <div className="subtitle-text">THE PHASES</div>
             <TheJourneyText />
           </AnimatedText>
         </div>

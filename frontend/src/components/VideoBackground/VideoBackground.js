@@ -28,7 +28,7 @@ const VideoBackground = ({ src, overlap = 0 }) => {
       {renderTeaserBg()}
       <div className="center-center-aligned-row buttons-row">
         <div className="element">
-          <CTAButton className="md" />
+          <CTAButton />
         </div>
         <div className="separator" />
         <PlayButton

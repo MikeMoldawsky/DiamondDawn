@@ -4,10 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import ApplyForm from "components/ApplyForm";
 import { useAccount } from "wagmi";
-import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
-import Loading from "components/Loading";
 import MintKey from "components/MintKey";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,10 +28,6 @@ const Invite = () => {
   const account = useAccount();
   const invite = useSelector(inviteSelector);
   const collector = useSelector(collectorSelector);
-  const isCollectorFetched = useSelector(
-    isActionFirstCompleteSelector("get-collector-by-address")
-  );
-
   const [submitting, setSubmitting] = useState(false);
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
   const [playSparklesSFX] = useSound(sparklesSFX);
@@ -79,13 +73,6 @@ const Invite = () => {
   );
 
   if (systemStage > SYSTEM_STAGE.KEY) return null;
-
-  if (!isCollectorFetched)
-    return (
-      <div className="box-content opaque box-loading">
-        <Loading />
-      </div>
-    );
 
   if (collector?.mintClosed) {
     return (

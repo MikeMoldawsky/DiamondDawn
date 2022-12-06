@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import size from "lodash/size";
 import "./CollectorPage.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
 import { useAccount, useEnsName } from "wagmi";
@@ -15,14 +15,10 @@ import { getCDNImageUrl, isNoContractMode, shortenEthAddress } from "utils";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import PageSizeLimit from "components/PageSizeLimit";
-import NotConnected from "components/NotConnected";
 import useNoScrollView from "hooks/useNoScrollView";
-import { loadCollectorByAddress } from "store/collectorReducer";
-import useOnConnect from "hooks/useOnConnect";
-import useActionDispatch from "hooks/useActionDispatch";
-import { clearActionStatus } from "store/actionStatusReducer";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useNavigate } from "react-router-dom";
+import { collectorSelector } from "store/collectorReducer";
 
 const CollectorPage = () => {
   useNoScrollView();
@@ -31,16 +27,10 @@ const CollectorPage = () => {
   const { systemStage } = useSelector(systemSelector);
   const account = useAccount();
   const ensName = useEnsName({ address: account?.address });
-  const dispatch = useDispatch();
-  const actionDispatch = useActionDispatch();
   const navigate = useNavigate();
+  const collector = useSelector(collectorSelector);
 
   useMusic("collector.mp3");
-
-  useOnConnect((address) => {
-    dispatch(clearActionStatus("get-collector-by-address"));
-    actionDispatch(loadCollectorByAddress(address), "get-collector-by-address");
-  });
 
   const renderContent = () => {
     if (size(tokens) > 0) return <NFTs />;
@@ -65,6 +55,7 @@ const CollectorPage = () => {
       <Page
         pageName="collector"
         images={[getCDNImageUrl("/collector/collector-bg.png")]}
+        collectorLoader={!!collector}
       >
         <div className={classNames("page collector-page")}>
           <div className="bg collector-bg" />
@@ -74,16 +65,12 @@ const CollectorPage = () => {
               {ensName?.data || shortenEthAddress(account?.address)}
             </div>
             <Box className={"main-box"}>
-              {account?.address ? (
-                <WaitFor
-                  containerClassName="box-content opaque"
-                  actions={waitForActions}
-                >
-                  {renderContent()}
-                </WaitFor>
-              ) : (
-                <NotConnected />
-              )}
+              <WaitFor
+                containerClassName="box-content opaque"
+                actions={waitForActions}
+              >
+                {renderContent()}
+              </WaitFor>
               <HighlightOffIcon
                 className="close"
                 onClick={() => navigate("/explore")}

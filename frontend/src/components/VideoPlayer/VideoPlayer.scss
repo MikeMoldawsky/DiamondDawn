@@ -19,9 +19,12 @@
     max-height: calc(80% - var(--header-height));
     margin: var(--header-height) auto 0;
     aspect-ratio: 16 / 9;
+    box-shadow: 0 0 8px 4px #bbbbbb44;
 
-    .react-player.video-player {
-      box-shadow: 0 0 8px 4px #70707044;
+    .page-cover {
+      width: 100%;
+      height: 100%;
+      position: absolute;
     }
 
     .close {

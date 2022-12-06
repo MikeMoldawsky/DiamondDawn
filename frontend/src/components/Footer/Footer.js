@@ -21,7 +21,7 @@ const Footer = ({ withFAQs }) => {
       <div className="bg bg-footer" />
       {withFAQs && (
         <div className="faq-section">
-          <div className="leading-text">FAQs</div>
+          <div className="subtitle-text">FAQs</div>
           <FAQs onToggle={(expanded) => setIsFAQsOpen(expanded)} />
         </div>
       )}

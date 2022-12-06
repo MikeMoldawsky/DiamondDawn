@@ -69,7 +69,7 @@ export const Phase0Text = () => (
       activated their keys.
     </p>
     <p>
-      <CTAButton className="gold sm" />
+      <CTAButton />
     </p>
   </div>
 );

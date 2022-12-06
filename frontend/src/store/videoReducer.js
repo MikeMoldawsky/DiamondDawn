@@ -5,11 +5,12 @@ const INITIAL_STATE = {
   isOpen: false,
   hasEnded: false,
   closeOnEnd: false,
+  delayPlay: 0,
 };
 
 export const showVideo = (src, opts = {}) => ({
   type: "VIDEO.SHOW",
-  payload: { src, ...opts, isOpen: true },
+  payload: { src, delayPlay: 0, ...opts, isOpen: true },
 });
 
 export const updateVideoState = (payload) => ({

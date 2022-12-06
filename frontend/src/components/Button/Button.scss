@@ -3,13 +3,14 @@
 .button {
   --rk-radii-connectButton: 4.5em;
   height: 2.75em;
+  font-size: $font16px;
   border-radius: 4.5em;
   color: black;
   background-color: white;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 3.25em;
+  padding: 0 2em;
   cursor: pointer;
   font-weight: 500;
   width: auto;
@@ -89,6 +90,8 @@
   }
 
   &:hover:not(.disabled) {
+    transform: unset !important;
+
     &.gold {
       color: $gold;
       border-color: $gold;

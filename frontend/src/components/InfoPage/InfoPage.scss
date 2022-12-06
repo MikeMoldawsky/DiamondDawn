@@ -26,6 +26,10 @@
     margin: 3em 0 1em;
   }
 
+  .subtitle-text {
+    margin: 3.6em 0 1em;
+  }
+
   .text {
     margin-bottom: 0.2em;
     letter-spacing: 0.1em;
@@ -51,7 +55,8 @@
     margin: 0 auto;
     z-index: 1;
 
-    .leading-text {
+    .leading-text,
+    .subtitle-text {
       margin-bottom: 0;
     }
 
@@ -80,6 +85,10 @@
 
     .leading-text {
       margin-top: 2em;
+    }
+
+    .subtitle-text {
+      margin-top: 3em;
     }
 
     .general {

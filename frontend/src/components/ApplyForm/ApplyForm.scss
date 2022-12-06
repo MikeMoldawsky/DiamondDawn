@@ -1,4 +1,5 @@
 @import "css/varsNEW";
+@import "components/Button/Button.scss";
 
 .request-form {
   width: 100%;
@@ -9,12 +10,33 @@
     height: 100%;
 
     .text-comment {
-      margin-top: 0.4rem;
+      margin-top: -0.25rem;
     }
 
     .modal {
       width: 110%;
       transform: translate(-50%, -70%);
+    }
+
+    .buttons {
+      align-items: flex-end;
+
+      .button {
+        margin-top: 1.4em;
+      }
+    }
+  }
+
+  button {
+    @extend .button;
+
+    &:not(.button) {
+      font-size: $font14px;
+      margin-left: 2em;
+      white-space: nowrap;
+      padding: 0 !important;
+      text-transform: unset;
+      text-decoration: underline;
     }
   }
 

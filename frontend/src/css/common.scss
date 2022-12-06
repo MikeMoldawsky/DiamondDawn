@@ -88,7 +88,7 @@ form {
     flex-grow: 2;
 
     textarea {
-      height: 85%;
+      height: 80%;
     }
   }
 
@@ -308,6 +308,12 @@ a:not(.no-hover) {
   justify-content: space-between;
 }
 
+.right-center-aligned-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .stretch-center-aligned-row {
   display: flex;
   align-items: stretch;
@@ -441,12 +447,6 @@ a:not(.no-hover) {
   color: $red;
 }
 
-.common-view {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .action-view {
   height: 100%;
 }
@@ -454,6 +454,14 @@ a:not(.no-hover) {
 .leading-text {
   color: $gold;
   font-size: $font50px;
+  text-transform: uppercase;
+  line-height: 1.33em;
+  font-weight: 300;
+}
+
+.subtitle-text {
+  color: $gold;
+  font-size: $font40px;
   text-transform: uppercase;
   line-height: 1.33em;
   font-weight: 300;

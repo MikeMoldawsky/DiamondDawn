@@ -13,6 +13,9 @@ import { clearActionStatus } from "store/actionStatusReducer";
 import { loadCollectorByAddress } from "store/collectorReducer";
 import { isNoContractMode } from "utils";
 import ContractProvider from "containers/ContractProvider";
+import { getGeoLocationApi } from "api/externalApi";
+import { updateUiState } from "store/uiReducer";
+import pick from "lodash/pick";
 
 const ServerAppLoader = () => {
   const dispatch = useDispatch();
@@ -20,7 +23,17 @@ const ServerAppLoader = () => {
 
   useMountLogger("NoContractAppLoader");
 
+  const getGeoLocation = async () => {
+    const geoLocation = await getGeoLocationApi();
+    dispatch(
+      updateUiState({
+        geoLocation: pick(geoLocation, ["country", "region", "city"]),
+      })
+    );
+  };
+
   useEffect(() => {
+    getGeoLocation();
     dispatch(loadConfig());
   }, []);
 

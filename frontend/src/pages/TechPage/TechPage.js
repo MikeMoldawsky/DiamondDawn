@@ -22,7 +22,7 @@ const TechPage = () => {
         <TimelessTechnology />
       </div>
       <div className="left-top-aligned-column content-section">
-        <div className="leading-text">Diamonds Are Forever</div>
+        <div className="subtitle-text">Diamonds Are Forever</div>
         <AnimatedText className="text">
           <DiamondsAreForever />
         </AnimatedText>
@@ -48,13 +48,13 @@ const TechPage = () => {
         </AnimatedText>
       </div>
       <div className="left-top-aligned-column content-section">
-        <div className="leading-text">99% Decentralized</div>
+        <div className="subtitle-text">99% Decentralized</div>
         <AnimatedText className="text">
           <Decentralized99 />
         </AnimatedText>
       </div>
       <div className="left-top-aligned-column content-section">
-        <div className="leading-text">On-Chain Scarcity</div>
+        <div className="subtitle-text">On-Chain Scarcity</div>
         <AnimatedText className="text">
           <OnChainScarcity />
         </AnimatedText>

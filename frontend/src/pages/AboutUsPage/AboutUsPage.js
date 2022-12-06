@@ -56,7 +56,7 @@ const AboutUsPage = () => {
         <AboutUsText />
       </div>
       <div className="left-top-aligned-column content-section our-values">
-        <div className="leading-text">Our Core Values</div>
+        <div className="subtitle-text">Our Core Values</div>
         <div className="secondary-text">1. Decentralization</div>
         <AnimatedText className="text">
           <DecentralizationText />
@@ -75,7 +75,7 @@ const AboutUsPage = () => {
         </AnimatedText>
       </div>
       <div className="left-top-aligned-column content-section team">
-        <div className="leading-text">Our Team</div>
+        <div className="subtitle-text">Our Team</div>
         <div className="team-members team-members-2">
           <div className="left-spaced-aligned-column team-member">
             <div className="profile-image mike" />

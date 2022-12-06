@@ -141,6 +141,10 @@
           transform: rotate(145deg) rotateY(180deg) rotateZ(180deg)
             translate(-20%, -20%);
         }
+
+        .button {
+          margin-top: 1em;
+        }
       }
 
       &.phase-1 {

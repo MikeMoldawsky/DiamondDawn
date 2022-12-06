@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
   try {
     const start = Date.now();
     await clientDBPromise;
-    const { inviteId, address, twitter, email, note, country, state, isDao } =
+    const { inviteId, address, twitter, email, note, location, isDao } =
       req.body;
     await validateInviteById(inviteId);
     let collector = await createCollector(
@@ -20,8 +20,7 @@ module.exports = async function (req, res) {
       twitter,
       email,
       note,
-      country,
-      state,
+      location,
       isDao
     );
     const invite = await useInvite(inviteId, collector.id);

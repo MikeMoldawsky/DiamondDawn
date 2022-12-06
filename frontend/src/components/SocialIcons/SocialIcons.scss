@@ -16,6 +16,19 @@
         width: unset;
       }
     }
+
+    &.opensea {
+      svg {
+        height: 90%;
+        margin-top: 5%;
+        margin-left: 0.3em;
+        width: auto;
+      }
+    }
+  }
+
+  a.disabled {
+    opacity: 1;
   }
 
   a:not(:last-child) .icon {

@@ -3,14 +3,20 @@ import "./HomeBackground.scss";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import useWindowDimensions from "hooks/useWindowDimensions";
+import ScrollMarker from "components/ScrollMarker";
 
 const HomeBackground = ({ mousePos }) => {
   const { scroll } = useSelector(uiSelector);
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   const parallaxRef = 0.05;
 
   const scrollWithMouse = scroll * 12 + mousePos[1] / 2;
+
+  const winHeightLimit = height / 1.5;
+  const scrollMarkerStyles = {
+    opacity: 1 - (scroll * 1.5) / winHeightLimit,
+  };
 
   return (
     <div className="bg home-background">
@@ -47,6 +53,7 @@ const HomeBackground = ({ mousePos }) => {
           }px, 0px)`,
         }}
       />
+      <ScrollMarker style={scrollMarkerStyles} />
       <div
         className="bg black-box"
         style={{

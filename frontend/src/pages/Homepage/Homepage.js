@@ -21,7 +21,6 @@ import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import PageSizeLimit from "components/PageSizeLimit";
-import Button from "components/Button";
 import VideoBackground from "components/VideoBackground";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import CTAButton from "../../components/CTAButton";
@@ -68,7 +67,7 @@ const Homepage = () => {
               onMouseMove={(e) => setMousePos([e.pageX, e.pageY])}
             >
               <HomeBackground mousePos={mousePos} />
-              <div className="common-view" style={topViewStyles}>
+              <div className="opening" style={topViewStyles}>
                 <div className="logo">
                   <AnimatedLogo withText />
                 </div>
@@ -80,7 +79,7 @@ const Homepage = () => {
                   <Countdown {...countdownProps} />
                 </div>
                 <div>
-                  <CTAButton className="md" />
+                  <CTAButton />
                 </div>
               </div>
             </div>

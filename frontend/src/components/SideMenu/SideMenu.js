@@ -50,34 +50,38 @@ const SideMenu = ({ isOpen, closeMenu }) => {
               <div className="menu-item">COLLECTOR'S ROOM</div>
             </NavLink>
           ) : (
-            <CTAButton className="sm">APPLY FOR DIAMOND DAWN</CTAButton>
+            <CTAButton className="md" onClick={closeMenu}>
+              APPLY FOR DIAMOND DAWN
+            </CTAButton>
           )}
         </div>
         <div className="invitations-menu">
           <div
-            className="menu-item sm link-hover"
+            className="menu-item sm link-hover text-gold"
             onClick={onInvitesTitleClick}
           >
             INVITE A FRIEND
           </div>
           <InvitationsStatus />
         </div>
+        {invitedBy?.createdBy && (
+          <div className="invited-by">
+            <div className="image">
+              <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+            </div>
+            <div className="center-center-aligned-row invited-by-text">
+              <div>
+                INVITED BY{" "}
+                <CollectorLink
+                  collector={invitedBy?.createdBy}
+                  twitter={invitedBy?.inviter}
+                />
+              </div>
+            </div>
+          </div>
+        )}
         <SocialIcons />
       </div>
-      {invitedBy?.createdBy && (
-        <div className="invited-by">
-          <div className="image">
-            <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
-          </div>
-          <div className="">
-            INVITED BY{" "}
-            <CollectorLink
-              collector={invitedBy?.createdBy}
-              twitter={invitedBy?.inviter}
-            />
-          </div>
-        </div>
-      )}
     </Drawer>
   );
 };
