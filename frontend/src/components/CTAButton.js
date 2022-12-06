@@ -20,8 +20,8 @@ const CTAButton = ({ className, onClick }) => {
       className={classNames("gold", className)}
       sfx={sfx}
       onClick={() => {
-        customCTAClick()
-        onClick && onClick()
+        customCTAClick();
+        onClick && onClick();
       }}
     >
       {text}
@@ -31,7 +31,10 @@ const CTAButton = ({ className, onClick }) => {
   if (!collector) return renderButton({ text: "APPLY FOR DIAMOND DAWN" });
 
   if (collector.approved)
-    return renderButton({ text: "INVITE A FRIEND", customCTAClick: goToInvites });
+    return renderButton({
+      text: "INVITE A FRIEND",
+      customCTAClick: goToInvites,
+    });
 
   return renderButton({ text: "APPLICATION STATUS", sfx: "explore" });
 };

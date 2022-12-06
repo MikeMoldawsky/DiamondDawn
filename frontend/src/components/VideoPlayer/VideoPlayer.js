@@ -60,7 +60,7 @@ const VideoPlayer = (props) => {
   const [wasMutedWhenMounted] = useState(muted);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [isMounted, setIsMounted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false);
 
   const { isOpen, delayPlay } = useSelector(videoSelector);
 
@@ -75,39 +75,39 @@ const VideoPlayer = (props) => {
     if (isMounted) {
       closePlayer();
     }
-    setIsMounted(true)
+    setIsMounted(true);
   }, [location?.pathname]);
 
   useEffect(() => {
-    let timer
+    let timer;
     if (isStartDelayPlay) {
       timer = setTimeout(() => {
-        setIsPlaying(true)
-      }, delayPlay)
+        setIsPlaying(true);
+      }, delayPlay);
     }
 
     return () => {
       if (timer) {
-        timer = clearTimeout(timer)
+        timer = clearTimeout(timer);
       }
-    }
-  }, [delayPlay, isStartDelayPlay])
+    };
+  }, [delayPlay, isStartDelayPlay]);
 
   if (!isOpen) return null;
 
   const onVideoReady = () => {
     if (!delayPlay) {
-      return setIsPlaying(true)
+      return setIsPlaying(true);
     }
-    setIsStartDelayPlay(true)
-  }
+    setIsStartDelayPlay(true);
+  };
 
   return (
     <div className="full-screen-video">
       <div className="video-container">
         <WaitFor
           minWait={delayPlay}
-          videos={[{ progress: videoProgress, threshold: .25 }]}
+          videos={[{ progress: videoProgress, threshold: 0.25 }]}
           onReady={onVideoReady}
           Loader={() => <PageCover showText text="Video Loading..." />}
         >
@@ -126,7 +126,7 @@ const VideoPlayer = (props) => {
 const VideoPlayerContainer = (props) => {
   const { src } = useSelector(videoSelector);
 
-  return src ? <VideoPlayer {...props} /> : null
-}
+  return src ? <VideoPlayer {...props} /> : null;
+};
 
 export default VideoPlayerContainer;

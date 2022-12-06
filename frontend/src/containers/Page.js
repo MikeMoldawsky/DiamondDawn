@@ -60,12 +60,12 @@ const Page = ({
     }
   };
 
-  useOnConnect(address => {
+  useOnConnect((address) => {
     if (collectorLoader && !!address) {
-      setFade(false)
-      setHidden(false)
+      setFade(false);
+      setHidden(false);
     }
-  })
+  });
 
   // navigate out if doesn't have access
   useEffect(() => {

@@ -14,7 +14,7 @@ import {
   metaMaskWallet,
   coinbaseWallet,
   walletConnectWallet,
-} from '@rainbow-me/rainbowkit/wallets';
+} from "@rainbow-me/rainbowkit/wallets";
 
 const localChain = {
   id: 31337,
@@ -49,11 +49,11 @@ function WagmiWrapper({ children }) {
 
   const connectors = connectorsForWallets([
     {
-      groupName: 'Suggested',
+      groupName: "Suggested",
       wallets: [
         metaMaskWallet({ chains, shimDisconnect: true }),
         rainbowWallet({ chains }),
-        coinbaseWallet({ chains, appName: 'Diamond Dawn' }),
+        coinbaseWallet({ chains, appName: "Diamond Dawn" }),
         walletConnectWallet({ chains }),
       ],
     },

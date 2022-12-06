@@ -15,8 +15,8 @@ const HomeBackground = ({ mousePos }) => {
 
   const winHeightLimit = height / 1.5;
   const scrollMarkerStyles = {
-    opacity: 1 - (scroll * 1.5) / winHeightLimit
-  }
+    opacity: 1 - (scroll * 1.5) / winHeightLimit,
+  };
 
   return (
     <div className="bg home-background">

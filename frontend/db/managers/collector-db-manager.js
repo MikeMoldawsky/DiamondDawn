@@ -64,14 +64,7 @@ function validateCollector(collector, address, requireApproved = true) {
   }
 }
 
-async function createCollector(
-  address,
-  twitter,
-  email,
-  note,
-  location,
-  isDao
-) {
+async function createCollector(address, twitter, email, note, location, isDao) {
   validateAddress(address);
   let collector = await Collector.findOne({ address });
   if (collector) {
