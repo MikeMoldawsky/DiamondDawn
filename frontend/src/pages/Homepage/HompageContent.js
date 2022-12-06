@@ -4,7 +4,7 @@ import CTAButton from "components/CTAButton";
 
 export const EternalTreasuresText = () => (
   <>
-    <div className="leading-text">ETERNAL TREASURES</div>
+    <div className="subtitle-text">ETERNAL TREASURES</div>
     <div className="text">
       <p>
         For thousands of years, they have been the ultimate symbol of wealth and
@@ -30,7 +30,7 @@ export const EternalTreasuresText = () => (
 
 export const ScarcityText = () => (
   <>
-    <div className="leading-text">SCARCITY</div>
+    <div className="subtitle-text">SCARCITY</div>
     <div className="text">
       <p>
         Unfortunately, the recent rise of lab-grown diamonds makes it impossible
@@ -54,7 +54,7 @@ export const ScarcityText = () => (
 
 export const ValueText = () => (
   <>
-    <div className="leading-text">VALUE</div>
+    <div className="subtitle-text">VALUE</div>
     <div className="text">
       <p>What makes a thing valuable?</p>
       <p>
@@ -78,7 +78,7 @@ export const ValueText = () => (
 
 export const TeaserText = () => (
   <>
-    <div className="leading-text">THE EXPERIMENT</div>
+    <div className="subtitle-text">THE EXPERIMENT</div>
     <div className="text">
       <p>
         Diamond Dawn is a <b>blockchain social experiment</b> that pushes this

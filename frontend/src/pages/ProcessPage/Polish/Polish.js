@@ -24,7 +24,7 @@ const Polish = () => {
           <br />
           NOR MAN PERFECTED WITHOUT TRIALS
         </div>
-        <div className="secondary-text">
+        <div className="tagline-text">
           Discover the beauty, a billion years in the making
         </div>
         <div className="action">

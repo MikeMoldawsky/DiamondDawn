@@ -129,6 +129,63 @@ form {
   opacity: 0.4;
 }
 
+.text-comment {
+  font-size: $font15px;
+  letter-spacing: 1.2px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-upper {
+  text-transform: uppercase;
+}
+
+.text-sm {
+  font-size: $font14px;
+}
+
+.text-gold {
+  color: $gold;
+}
+
+.text-red {
+  color: $red;
+}
+
+.action-view {
+  height: 100%;
+}
+
+.heading-text {
+  color: $gold;
+  line-height: 1.33em;
+  font-weight: 500;
+}
+
+.leading-text {
+  @extend .heading-text;
+  font-size: $font50px;
+  text-transform: uppercase;
+}
+
+.subtitle-text {
+  @extend .heading-text;
+  font-size: $font40px;
+  text-transform: uppercase;
+}
+
+.tagline-text {
+  @extend .heading-text;
+  font-size: $font28px;
+  font-weight: 400;
+}
+
+.text {
+  font-size: $font18px;
+}
+
 .page {
   position: relative;
 
@@ -176,38 +233,9 @@ form {
     margin: -0.5em 0 0.8em;
   }
 
-  .secondary-text {
+  .tagline-text {
     color: white;
     font-size: $font25px;
-  }
-
-  &.size-limit {
-    justify-content: flex-start;
-    padding-top: 20%;
-
-    .leading-text {
-      margin-bottom: 1.2em;
-    }
-
-    .leading-text,
-    .secondary-text {
-      width: 80%;
-      text-align: left;
-    }
-
-    .video-box {
-      margin-top: 5%;
-      width: 90%;
-      border: none;
-
-      .react-player {
-        height: unset;
-
-        &.loader {
-          padding: 0;
-        }
-      }
-    }
   }
 
   &.hide {
@@ -430,70 +458,6 @@ a:not(.no-hover) {
   }
 }
 
-.text-comment {
-  font-size: $font15px;
-  letter-spacing: 1.2px;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-upper {
-  text-transform: uppercase;
-}
-
-.text-sm {
-  font-size: $font14px;
-}
-
-.text-gold {
-  color: $gold;
-}
-
-.text-red {
-  color: $red;
-}
-
-.action-view {
-  height: 100%;
-}
-
-.leading-text {
-  color: $gold;
-  font-size: $font50px;
-  text-transform: uppercase;
-  line-height: 1.33em;
-  font-weight: 500;
-}
-
-.subtitle-text {
-  color: $gold;
-  font-size: $font34px;
-  text-transform: uppercase;
-  line-height: 1.33em;
-  font-weight: 500;
-}
-
-.subtitle-text {
-  color: $gold;
-  font-size: $font40px;
-  text-transform: uppercase;
-  line-height: 1.33em;
-  font-weight: 300;
-}
-
-.secondary-text {
-  color: $gold;
-  font-size: $font28px;
-  line-height: 1.33em;
-  font-weight: 500;
-}
-
-.text {
-  font-size: $font18px;
-}
-
 .logo-box,
 .react-player {
   position: relative;
@@ -514,6 +478,12 @@ a:not(.no-hover) {
     font-weight: 400;
     white-space: nowrap;
   }
+}
+
+.react-player.dd-text {
+  margin: 0 auto;
+  width: 50%;
+  max-width: 1440px;
 }
 
 .video-box {
@@ -631,6 +601,10 @@ a:not(.no-hover) {
 
   html {
     font-size: $font14px;
+  }
+
+  .react-player.dd-text {
+    width: 85%;
   }
 }
 

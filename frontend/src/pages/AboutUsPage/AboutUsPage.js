@@ -57,19 +57,19 @@ const AboutUsPage = () => {
       </div>
       <div className="left-top-aligned-column content-section our-values">
         <div className="subtitle-text">Our Core Values</div>
-        <div className="secondary-text">1. Decentralization</div>
+        <div className="tagline-text">1. Decentralization</div>
         <AnimatedText className="text">
           <DecentralizationText />
         </AnimatedText>
-        <div className="secondary-text">2. Innovation</div>
+        <div className="tagline-text">2. Innovation</div>
         <AnimatedText className="text">
           <InnovationText />
         </AnimatedText>
-        <div className="secondary-text">3. IRL Impact</div>
+        <div className="tagline-text">3. IRL Impact</div>
         <AnimatedText className="text">
           <IRLImpactText />
         </AnimatedText>
-        <div className="secondary-text">4. Digital Value</div>
+        <div className="tagline-text">4. Digital Value</div>
         <AnimatedText className="text">
           <DigitalValueText />
         </AnimatedText>
@@ -79,7 +79,7 @@ const AboutUsPage = () => {
         <div className="team-members team-members-2">
           <div className="left-spaced-aligned-column team-member">
             <div className="profile-image mike" />
-            <div className="secondary-text">Mike Moldawsky (Tweezers)</div>
+            <div className="tagline-text">Mike Moldawsky (Tweezers)</div>
             <div className="member-title">Project Creator</div>
             <AnimatedText className="text">
               <MikeText />
@@ -95,7 +95,7 @@ const AboutUsPage = () => {
           </div>
           <div className="left-spaced-aligned-column team-member">
             <div className="profile-image david" />
-            <div className="secondary-text">David Ariew</div>
+            <div className="tagline-text">David Ariew</div>
             <div className="member-title">Artist</div>
             <AnimatedText className="text">
               <DavidText />
@@ -112,7 +112,7 @@ const AboutUsPage = () => {
         <div className="team-members team-members">
           <div className="left-spaced-aligned-column team-member">
             <div className="profile-image asaf" />
-            <div className="secondary-text">Asaf Snir</div>
+            <div className="tagline-text">Asaf Snir</div>
             <div className="member-title">Frontend Master</div>
             <AnimatedText className="text">
               <AsafText />
@@ -127,7 +127,7 @@ const AboutUsPage = () => {
           </div>
           <div className="left-spaced-aligned-column team-member">
             <div className="profile-image aviva" />
-            <div className="secondary-text">Aviva Moldawsky</div>
+            <div className="tagline-text">Aviva Moldawsky</div>
             <div className="member-title">Diamond Art Designer</div>
             <AnimatedText className="text">
               <AvivaText />
@@ -136,7 +136,7 @@ const AboutUsPage = () => {
           </div>
           <div className="left-spaced-aligned-column team-member">
             <div className="profile-image tony" />
-            <div className="secondary-text">Tony Hererra</div>
+            <div className="tagline-text">Tony Hererra</div>
             <div className="member-title">Advisor</div>
             <AnimatedText className="text">
               <TonyText />

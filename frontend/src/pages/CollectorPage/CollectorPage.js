@@ -39,7 +39,7 @@ const CollectorPage = () => {
 
     return (
       <div className="box-content opaque opensea">
-        <div className="secondary-text">Your Collection is Empty</div>
+        <div className="tagline-text">Your Collection is Empty</div>
         <div className="button link-opensea">GO TO OPENSEA</div>
       </div>
     );

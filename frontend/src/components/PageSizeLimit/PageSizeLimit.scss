@@ -1,0 +1,45 @@
+@import "css/varsNEW";
+
+.page-size-limit {
+  position: fixed;
+  z-index: 100;
+  background-color: black;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  justify-content: flex-start;
+  padding-top: 20%;
+
+  .react-player.dd-text {
+    margin-bottom: 2em;
+  }
+
+  .tagline-text {
+    color: $gold;
+    width: 80%;
+    text-align: left;
+    margin-bottom: .4em;
+    font-size: $font25px;
+  }
+
+  .text {
+    font-size: $font18px;
+    width: 80%;
+    text-align: left;
+  }
+
+  .video-box {
+    margin-top: 5%;
+    width: 90%;
+    border: none;
+
+    .react-player {
+      height: unset;
+
+      &.loader {
+        padding: 0;
+      }
+    }
+  }
+}

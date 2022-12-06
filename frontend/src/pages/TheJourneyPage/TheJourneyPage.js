@@ -62,7 +62,7 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter active" />
-              <div className="secondary-text">Phase 0 - Activate Your Key</div>
+              <div className="tagline-text">Phase 0 - Activate Your Key</div>
               <AnimatedText>
                 <Phase0Text />
               </AnimatedText>
@@ -86,7 +86,7 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Phase 1 - Enter & Mine</div>
+              <div className="tagline-text">Phase 1 - Enter & Mine</div>
               <AnimatedText>
                 <Phase1Text />
               </AnimatedText>
@@ -104,7 +104,7 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Phase 2</div>
+              <div className="tagline-text">Phase 2</div>
               <AnimatedText>
                 <Phase2Text />
               </AnimatedText>
@@ -122,7 +122,7 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Phase 3</div>
+              <div className="tagline-text">Phase 3</div>
               <AnimatedText>
                 <Phase3Text />
               </AnimatedText>
@@ -140,7 +140,7 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter" />
-              <div className="secondary-text">Phase 4 - The Final Choice</div>
+              <div className="tagline-text">Phase 4 - The Final Choice</div>
               <AnimatedText>
                 <Phase4Text />
               </AnimatedText>

@@ -26,23 +26,23 @@ const TechPage = () => {
         <AnimatedText className="text">
           <DiamondsAreForever />
         </AnimatedText>
-        <div className="secondary-text">The Weakest Link</div>
+        <div className="tagline-text">The Weakest Link</div>
         <AnimatedText className="text">
           <TheWeakestLink />
         </AnimatedText>
-        <div className="secondary-text">Decentralization</div>
+        <div className="tagline-text">Decentralization</div>
         <AnimatedText className="text">
           <Decentralization />
         </AnimatedText>
-        <div className="secondary-text">Timeless NFT</div>
+        <div className="tagline-text">Timeless NFT</div>
         <AnimatedText className="text">
           <TimelessNFT />
         </AnimatedText>
-        <div className="secondary-text">Ethereum's Limit</div>
+        <div className="tagline-text">Ethereum's Limit</div>
         <AnimatedText className="text">
           <EthereumLimit />
         </AnimatedText>
-        <div className="secondary-text">Decentralized Files</div>
+        <div className="tagline-text">Decentralized Files</div>
         <AnimatedText className="text">
           <DecentralizedFiles />
         </AnimatedText>

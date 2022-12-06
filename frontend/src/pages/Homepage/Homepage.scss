@@ -72,7 +72,7 @@
 
     .text {
       color: $text_gray;
-      letter-spacing: 0.2rem;
+      letter-spacing: 0.1em;
     }
 
     .countdown-container {
@@ -110,11 +110,8 @@
     position: relative;
     margin-left: var(--text-margin-left);
 
-    .leading-text {
-      font-size: $font40px;
-      font-weight: 500;
-      color: $gold;
-      margin: 4rem 0 0;
+    .subtitle-text {
+      margin-top: 2em;
     }
 
     .text {
@@ -137,7 +134,7 @@
       width: 40%;
       min-width: 42em;
 
-      .leading-text {
+      .subtitle-text {
         margin-top: 0;
       }
     }

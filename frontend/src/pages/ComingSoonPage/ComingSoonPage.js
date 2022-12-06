@@ -178,7 +178,7 @@ const ComingSoonPage = () => {
           />
         </div>
         <div className="center-aligned-column cs-section text-column">
-          <div className="secondary-text">
+          <div className="tagline-text">
             <div className="secondary-lg">Physical or Digital</div>
             Which diamond will you choose?
           </div>

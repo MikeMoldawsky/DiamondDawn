@@ -77,7 +77,7 @@ const Invite = () => {
   if (collector?.mintClosed) {
     return (
       <div className="box-content opaque">
-        <div className="center-center-aligned-row secondary-text">
+        <div className="center-center-aligned-row tagline-text">
           Invitation Expired
         </div>
       </div>
@@ -87,7 +87,7 @@ const Invite = () => {
   if (collector?.minted)
     return (
       <div className="box-content opaque">
-        <div className="center-center-aligned-row secondary-text">
+        <div className="center-center-aligned-row tagline-text">
           Address already minted
         </div>
       </div>
@@ -110,7 +110,7 @@ const Invite = () => {
             <div className="left-spaced-aligned-column request-status">
               <div className="left-top-aligned-column">
                 <div className="leading-text">DIAMOND DAWN APPLICATION</div>
-                <div className="secondary-text">STATUS: PENDING APPROVAL</div>
+                <div className="tagline-text">STATUS: PENDING APPROVAL</div>
                 <div className="text-comment">
                   If you're accepted to Diamond Dawn, you'll have exactly
                   <b> 3 days, 3 hours, and 3 minutes</b> to mint your key for

@@ -20,7 +20,7 @@ import AnimatedText from "components/AnimatedText";
 import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
-import PageSizeLimit from "components/PageSizeLimit";
+import PageSizeLimit from "components/PageSizeLimit/PageSizeLimit";
 import VideoBackground from "components/VideoBackground";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import CTAButton from "../../components/CTAButton";
@@ -72,7 +72,7 @@ const Homepage = () => {
                 <div className="logo">
                   <AnimatedLogo withText />
                 </div>
-                <div className="secondary-text">
+                <div className="tagline-text">
                   The first ever virtual diamond mining experience
                 </div>
                 <div>

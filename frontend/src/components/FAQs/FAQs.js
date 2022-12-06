@@ -249,7 +249,7 @@ const FAQ = ({ title, content }) => {
 const FAQGroup = ({ faqs, groupName }) => {
   return (
     <>
-      <div className="secondary-text">{groupName}</div>
+      <div className="tagline-text">{groupName}</div>
       <div className="faq-items">
         {map(faqs, (faq) => (
           <FAQ key={`faq-${groupName}-${faq.title}`} {...faq} />
