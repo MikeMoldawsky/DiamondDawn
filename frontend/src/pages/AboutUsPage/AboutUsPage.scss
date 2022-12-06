@@ -2,6 +2,8 @@
 
 .page.info-page.about-page {
   .our-values {
+    width: 50%;
+
     .gia-report {
       width: 33%;
       float: right;
@@ -58,6 +60,7 @@
           background-color: $box_bg;
           padding: 1em 1.5em 5em;
           position: relative;
+          max-width: unset;
 
           p {
             margin: 0;

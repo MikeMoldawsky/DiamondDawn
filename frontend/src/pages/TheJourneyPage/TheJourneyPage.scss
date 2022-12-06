@@ -11,9 +11,6 @@
   }
 
   .journey {
-    width: 72%;
-    margin-left: 13%;
-
     .journey-phases {
       position: relative;
     }
@@ -54,8 +51,6 @@
     }
 
     .journey-row {
-      width: 100%;
-
       .image-side {
         width: 20em;
         min-width: 20em;
@@ -124,14 +119,9 @@
       }
 
       &.journey-desc {
-        justify-content: flex-start;
-
         .text-side {
-          width: 50%;
           padding-bottom: 6em;
           padding-left: 0;
-          flex-grow: unset;
-          position: relative;
         }
       }
 
@@ -217,9 +207,6 @@
 @media only screen and (max-width: 1366px) {
   .page.info-page.the-journey-page {
     .journey {
-      width: 80%;
-      margin-left: 13%;
-
       .scale {
         left: 11em;
       }
@@ -237,12 +224,6 @@
           .image {
             width: 8em;
             height: 8em;
-          }
-        }
-
-        &.journey-desc {
-          .text-side {
-            width: 65%;
           }
         }
 

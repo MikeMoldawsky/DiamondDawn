@@ -175,8 +175,6 @@
     --text-margin-left: 15%;
 
     .eternal-treasures-background {
-      --edge-offset: -5%;
-
       .bg {
         &.bg-right-hand {
           background-position-y: 52%;
@@ -195,7 +193,7 @@
     font-size: $font15px;
 
     .homepage-content-background {
-      --edge-offset: -7%;
+      --edge-offset: -2%;
     }
   }
 }
@@ -206,7 +204,7 @@
     --text-margin-left: 10%;
 
     .homepage-content-background {
-      --edge-offset: -12%;
+      --edge-offset: -7%;
     }
   }
 }

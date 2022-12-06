@@ -8,12 +8,12 @@
     .walls {
       top: 3.5%;
       background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left
-        top;
+        15vh;
       background-size: 100%;
     }
 
     .cave {
-      background: url($CDN_URL + "/images/about/cave.png") no-repeat 155% top;
+      background: url($CDN_URL + "/images/about/cave.png") no-repeat 155% 8vh;
       background-size: 72%;
       z-index: -2;
     }
@@ -36,14 +36,11 @@
   }
 
   .general {
-    width: 48%;
-    min-width: 54em;
     margin-left: 10%;
   }
 
   .content-section {
     position: relative;
-    width: 65%;
     margin: 0 auto;
     z-index: 1;
   }
@@ -69,16 +66,15 @@
 @media only screen and (max-width: 1366px) {
   .page.info-page {
     font-size: $font13px;
-
-    .general {
-      width: 57%;
-      margin-left: 5%;
-    }
   }
 }
 
 @media only screen and (max-width: 1200px) {
   .page.info-page {
     font-size: $font12px;
+
+    .general {
+      margin-left: 5%;
+    }
   }
 }

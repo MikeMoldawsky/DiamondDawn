@@ -31,7 +31,6 @@ const TheJourneyPage = () => {
         className="center-aligned-column content-section journey"
       >
         <div className="center-aligned-row journey-row journey-desc">
-          <div className="image-side" />
           <AnimatedText className="text-side">
             <div className="subtitle-text">THE PHASES</div>
             <TheJourneyText />

@@ -1,11 +1,13 @@
 @import "css/varsNEW";
+@import "css/functions";
 
 .modal.invited-modal {
   padding: 0.4em;
   max-height: 80%;
   width: 49em;
-  transform: translateX(-50%);
-  top: 25%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: calc-font-size(11px);
 
   .modal-inner {
     padding: 4em 4em 3.5em;
@@ -21,11 +23,11 @@
   }
 
   .image {
-    margin: -2em 0 -1em;
-    max-width: 80%;
+    margin: -1em 0 0em;
+    height: 8em;
+    aspect-ratio: 2.15;
 
     img {
-      min-height: 10em;
       width: 100%;
     }
   }
@@ -48,9 +50,6 @@
 
 @media only screen and (max-width: 1024px) {
   .modal.invited-modal {
-    top: 50%;
-    transform: translate(-50%, -50%);
-
     .image img {
       min-height: unset;
     }
