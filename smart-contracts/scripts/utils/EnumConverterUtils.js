@@ -44,34 +44,36 @@ const enumToShape = (i) => {
 const enumToColor = (i) => {
   switch (i) {
     case 1:
-      return "L";
+      return "K";
     case 2:
-      return "M";
+      return "L";
     case 3:
-      return "N";
+      return "M";
     case 4:
-      return "O";
+      return "N";
     case 5:
-      return "P";
+      return "O";
     case 6:
-      return "Q";
+      return "P";
     case 7:
-      return "R";
+      return "Q";
     case 8:
-      return "S";
+      return "R";
     case 9:
-      return "T";
+      return "S";
     case 10:
-      return "U";
+      return "T";
     case 11:
-      return "V";
+      return "U";
     case 12:
-      return "W";
+      return "V";
     case 13:
-      return "X";
+      return "W";
     case 14:
-      return "Y";
+      return "X";
     case 15:
+      return "Y";
+    case 16:
       return "Z";
     default:
       throw new Error("No color");
