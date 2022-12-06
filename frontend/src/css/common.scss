@@ -475,6 +475,14 @@ a:not(.no-hover) {
   font-weight: 500;
 }
 
+.subtitle-text {
+  color: $gold;
+  font-size: $font40px;
+  text-transform: uppercase;
+  line-height: 1.33em;
+  font-weight: 300;
+}
+
 .secondary-text {
   color: $gold;
   font-size: $font28px;
