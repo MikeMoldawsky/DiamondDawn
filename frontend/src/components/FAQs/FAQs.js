@@ -269,6 +269,13 @@ const FAQs = ({ onToggle }) => {
 
   return (
     <div className={classNames("faqs", { expanded, collapsed: !expanded })}>
+      {expanded && (
+        <div className="text-center top-collapse-btn">
+          <Button className="transparent" onClick={toggle} sfx="utility">
+            SHOW LESS
+          </Button>
+        </div>
+      )}
       <div className="faq-groups">
         {map(FAQS, (faqs, groupName) => (
           <FAQGroup
@@ -280,7 +287,7 @@ const FAQs = ({ onToggle }) => {
       </div>
       <div className="text-center">
         <Button className="transparent" onClick={toggle} sfx="utility">
-          {expanded ? "SHOW LESS" : "LOAD MORE"}
+          {expanded ? "SHOW LESS" : "SHOW MORE"}
         </Button>
       </div>
     </div>
