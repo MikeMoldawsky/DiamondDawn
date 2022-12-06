@@ -49,7 +49,16 @@ a {
 }
 
 b {
-  font-weight: 700;
+  font-weight: 500;
+  //font-weight: 700;
+}
+
+p {
+  margin: 10px 0;
+
+  &:first-child {
+    margin-top: 0 !important;
+  }
 }
 
 input[type="checkbox"] {
@@ -423,7 +432,6 @@ a:not(.no-hover) {
 
 .text-comment {
   font-size: $font15px;
-  color: $text_gray;
   letter-spacing: 1.2px;
 }
 
@@ -456,22 +464,22 @@ a:not(.no-hover) {
   font-size: $font50px;
   text-transform: uppercase;
   line-height: 1.33em;
-  font-weight: 300;
+  font-weight: 500;
 }
 
 .subtitle-text {
   color: $gold;
-  font-size: $font40px;
+  font-size: $font34px;
   text-transform: uppercase;
   line-height: 1.33em;
-  font-weight: 300;
+  font-weight: 500;
 }
 
 .secondary-text {
   color: $gold;
-  font-size: $font30px;
+  font-size: $font28px;
   line-height: 1.33em;
-  font-weight: 300;
+  font-weight: 500;
 }
 
 .text {

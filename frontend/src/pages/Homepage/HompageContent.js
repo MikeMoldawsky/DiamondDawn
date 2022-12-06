@@ -14,9 +14,7 @@ export const EternalTreasuresText = () => (
       <p>
         Under immense pressure and scorching heat over billions of years, deep
         below the earth’s surface, a marvel of nature is formed. The strongest,
-        most enduring material on Earth.
-        <br />
-        <b>A diamond.</b>
+        most enduring material on Earth - a diamond.
       </p>
       <p>
         We crown royalty with diamonds, hand them down as family heirlooms, and

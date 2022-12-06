@@ -22,10 +22,7 @@ export const TheJourneyMainText = () => (
       of the first 3 phases.
     </p>
     <div className="secondary-text">Which diamond will you choose?</div>
-    <p>The fourth and final phase is longer.</p>
-    <p>
-      You’ll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide on your{" "}
-      <b>Final Choice</b>:
+    <p>The fourth and final phase is longer. You’ll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide on your Final Choice:
     </p>
     <p>
       Keep your diamond NFT digital or burn it in exchange for a physical,

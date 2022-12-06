@@ -34,17 +34,13 @@ const VideoBackground = ({ src, overlap = 0 }) => {
         <PlayButton
           className="element"
           name="DIGITAL"
-          sources={{
-            SHORT: getCDNVideoUrl("short-teaser.webm"),
-          }}
+          src={getCDNVideoUrl("short-teaser.webm")}
         />
         <div className="separator" />
         <PlayButton
           className="element"
           name="PHYSICAL"
-          sources={{
-            SHORT: getCDNVideoUrl("physical-teaser.webm"),
-          }}
+          src={getCDNVideoUrl("physical-teaser.webm")}
         />
       </div>
     </div>

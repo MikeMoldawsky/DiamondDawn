@@ -195,7 +195,7 @@ const ComingSoonPage = () => {
           {!!inviteId && (
             <>
               <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
-              <div className="text-center text-comment">YOUR INVITE</div>
+              <div className="text-center your-invite-text">YOUR INVITE</div>
             </>
           )}
         </div>

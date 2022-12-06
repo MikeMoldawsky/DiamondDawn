@@ -23,11 +23,13 @@
   }
 
   .leading-text {
-    margin: 3em 0 1em;
+    //margin: 3em 0 0;
+    margin: 1.5em 0 1em;
   }
 
   .subtitle-text {
-    margin: 3.6em 0 1em;
+    margin: 3.6em 0 0;
+    //margin: 3.6em 0 1em;
   }
 
   .text {
@@ -41,7 +43,7 @@
     margin-left: 10%;
 
     .leading-text {
-      margin-top: 2em;
+      //margin-top: 2em;
     }
 
     .secondary-text {
@@ -95,7 +97,7 @@
       margin-left: 7.5%;
 
       .leading-text {
-        margin: 0.5em 0 0.5em;
+        margin: 0.5em 0 1em;
       }
     }
   }
@@ -108,10 +110,6 @@
     .general {
       width: 57%;
       margin-left: 5%;
-
-      .leading-text {
-        margin: 0.5em 0 0.5em;
-      }
     }
   }
 }
