@@ -30,7 +30,7 @@ const InfoPage = ({ className, teaser, children }) => {
               </div>
               {children}
               {teaser && <VideoBackground {...teaser} />}
-              <Footer withFAQs />
+              <Footer />
             </div>
           </div>
         </ScrollingPage>

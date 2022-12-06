@@ -45,6 +45,9 @@ const SideMenu = ({ isOpen, closeMenu }) => {
           <NavLink to={"/technology"} onClick={closeMenu}>
             <div className="menu-item">TIMELESS TECHNOLOGY</div>
           </NavLink>
+          <NavLink to={"/faq"} onClick={closeMenu}>
+            <div className="menu-item">FAQs</div>
+          </NavLink>
           {collector ? (
             <NavLink to={"/collector"} onClick={closeMenu}>
               <div className="menu-item">COLLECTOR'S ROOM</div>

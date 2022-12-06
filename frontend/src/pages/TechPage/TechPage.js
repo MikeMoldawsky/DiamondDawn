@@ -16,7 +16,7 @@ import AnimatedText from "components/AnimatedText";
 
 const TechPage = () => {
   return (
-    <InfoPage className="tech-page" teaser={{ src: "earth-and-moon.webm" }}>
+    <InfoPage className="tech-page" teaser={{ src: "earth-and-moon.webm", overlap: "-35%" }}>
       <div className="left-aligned-column general">
         <div className="leading-text">Timeless Technology</div>
         <TimelessTechnology />

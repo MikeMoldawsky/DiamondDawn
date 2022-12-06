@@ -9,20 +9,17 @@ import FAQs from "components/FAQs";
 import classNames from "classnames";
 
 const Footer = ({ withFAQs }) => {
-  const [isFAQsOpen, setIsFAQsOpen] = useState(false);
-
   return (
     <footer
       className={classNames("footer", {
         "with-faqs": withFAQs,
-        "faqs-open": isFAQsOpen,
       })}
     >
       <div className="bg bg-footer" />
       {withFAQs && (
         <div className="faq-section">
           <div className="subtitle-text">FAQs</div>
-          <FAQs onToggle={(expanded) => setIsFAQsOpen(expanded)} />
+          <FAQs collapsed />
         </div>
       )}
       <div className="stretch-center-aligned-row footer-inner">
@@ -47,6 +44,10 @@ const Footer = ({ withFAQs }) => {
             <SVG src={star} />
             <NavLink to="/technology">
               <span className="sitemap-link">Timeless Technology</span>
+            </NavLink>
+            <SVG src={star} />
+            <NavLink to="/faq">
+              <span className="sitemap-link">FAQs</span>
             </NavLink>
           </div>
           <div className="left-center-aligned-row bottom-menu">

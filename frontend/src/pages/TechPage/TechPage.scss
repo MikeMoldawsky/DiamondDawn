@@ -4,4 +4,10 @@
   ul {
     list-style-type: decimal;
   }
+
+  .teaser-video {
+    .react-player {
+      opacity: 0.25;
+    }
+  }
 }
