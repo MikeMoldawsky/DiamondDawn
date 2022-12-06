@@ -88,7 +88,7 @@ const VideoPlayer = (props) => {
 
     return () => {
       if (timer) {
-        timer = timer.clearTimeout(timer)
+        timer = clearTimeout(timer)
       }
     }
   }, [delayPlay, isStartDelayPlay])
@@ -104,21 +104,21 @@ const VideoPlayer = (props) => {
 
   return (
     <div className="full-screen-video">
-      <WaitFor
-        minWait={delayPlay}
-        videos={[{ progress: videoProgress, threshold: .25 }]}
-        onReady={onVideoReady}
-        Loader={() => <PageCover showText text="Video Loading..." />}
-      >
-        <div className="video-container">
+      <div className="video-container">
+        <WaitFor
+          minWait={delayPlay}
+          videos={[{ progress: videoProgress, threshold: .25 }]}
+          onReady={onVideoReady}
+          Loader={() => <PageCover showText text="Video Loading..." />}
+        >
           <Video
             isPlaying={isPlaying}
             setVideoProgress={setVideoProgress}
             {...props}
           />
           <HighlightOffIcon className="close" onClick={closePlayer} />
-        </div>
-      </WaitFor>
+        </WaitFor>
+      </div>
     </div>
   );
 };

@@ -12,7 +12,7 @@ const VideoLink = ({ src, length, name }) => {
 
   const onClick = () => {
     !disabled && setTimeout(() => {
-      dispatch(showVideo(src, { delayStart: 1500 }));
+      dispatch(showVideo(src, { delayPlay: 1500 }));
     }, 0)
   };
 
