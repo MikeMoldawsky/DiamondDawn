@@ -204,6 +204,8 @@ library Serializer {
     }
 
     function _toColorStr(Color color) public pure returns (string memory) {
+        if (color == Color.K) return "K";
+        if (color == Color.L) return "L";
         if (color == Color.M) return "M";
         if (color == Color.N) return "N";
         if (color == Color.O) return "O";

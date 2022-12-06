@@ -149,7 +149,7 @@ const FAQS = {
           acrylic panes, and in its heart, you’ll find your GIA-certified
           diamond. <br />
           Diamond Dawn’s diamonds are high-quality natural Cape Diamonds (graded
-          L-Z color), and their weight varies between 0.4-0.8 carat (according
+          K-Z color), and their weight varies between 0.4-0.8 carat (according
           to your randomly-chosen NFT attributes).
           <br />
           Diamond Dawn is a work of art that you can proudly display as a
