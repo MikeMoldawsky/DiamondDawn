@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import {systemSelector} from "store/systemReducer";
 
-export const Link = ({ href, className, children }) => (
-  <a target="_blank" rel="noreferrer" href={href} className={className}>
+export const Link = ({ href, className, disabled, title = "", children }) => (
+  <a target="_blank" rel="noreferrer" href={href} title={title} className={classNames(className, { disabled })}>
     {children}
   </a>
 );
@@ -33,27 +33,25 @@ export const CollectorLink = ({ className, collector, twitter }) => {
 };
 
 export const TelegramLink = ({ className, children }) => {
-  // const collector = useSelector(collectorSelector)
-  //
-  // return collector?.approved ? (
-  //   <Link href={DIAMOND_DAWN_TELEGRAM} className={className}>
-  //     {children}
-  //   </Link>
-  // ) : null
-  return (
+  const collector = useSelector(collectorSelector)
+
+  return collector?.approved ? (
     <Link href={DIAMOND_DAWN_TELEGRAM} className={className}>
       {children}
     </Link>
-  );
+  ) : null
 };
 
 export const OpenseaLink = ({ className, children }) => {
   const { systemStage } = useSelector(systemSelector)
-  return systemStage >= SYSTEM_STAGE.KEY ? (
-    <Link href={DIAMOND_DAWN_OPENSEA} className={className}>
+
+  const disabled = !DIAMOND_DAWN_OPENSEA || systemStage < SYSTEM_STAGE.KEY
+  const title = disabled ? "Opensea link will be available once mint starts" : ""
+  return (
+    <Link href={DIAMOND_DAWN_OPENSEA} className={className} disabled={disabled} title={title}>
       {children}
     </Link>
-  ) : null
+  )
 };
 
 export const MailToSupportLink = () => (
