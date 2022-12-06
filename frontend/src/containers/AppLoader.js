@@ -24,12 +24,17 @@ const ServerAppLoader = () => {
   useMountLogger("NoContractAppLoader");
 
   const getGeoLocation = async () => {
-    const geoLocation = await getGeoLocationApi();
-    dispatch(
-      updateUiState({
-        geoLocation: pick(geoLocation, ["country", "region", "city"]),
-      })
-    );
+    try {
+      const geoLocation = await getGeoLocationApi();
+      dispatch(
+        updateUiState({
+          geoLocation: pick(geoLocation, ["country", "region", "city"]),
+        })
+      );
+    }
+    catch (e) {
+      // do nothing
+    }
   };
 
   useEffect(() => {
