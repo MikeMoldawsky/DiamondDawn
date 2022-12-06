@@ -55,7 +55,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
         </div>
         <div className="invitations-menu">
           <div
-            className="menu-item sm link-hover"
+            className="menu-item sm link-hover text-gold"
             onClick={onInvitesTitleClick}
           >
             INVITE A FRIEND
@@ -78,8 +78,8 @@ const SideMenu = ({ isOpen, closeMenu }) => {
             </div>
           </div>
         )}
+        <SocialIcons />
       </div>
-      <SocialIcons />
     </Drawer>
   );
 };

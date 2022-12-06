@@ -86,13 +86,14 @@ footer.footer {
     width: 50%;
     font-size: $font14px;
     margin: 0 auto;
-    padding-top: 10em;
+    padding-top: 6em;
     z-index: 1;
     position: relative;
 
     .leading-text {
       text-align: center;
       margin: 0;
+      text-transform: unset;
     }
   }
 
