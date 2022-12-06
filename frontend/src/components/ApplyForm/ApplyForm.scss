@@ -5,13 +5,12 @@
   width: 100%;
   text-align: left;
   flex-grow: 2;
-  --rk-colors-accentColor: #caa875;
 
   form {
     height: 100%;
 
     .text-comment {
-      margin-top: 0.4rem;
+      margin-top: -.25rem;
     }
 
     .modal {
@@ -21,6 +20,10 @@
 
     .buttons {
       align-items: flex-end;
+
+      .button {
+        margin-top: 1.4em;
+      }
     }
   }
 
@@ -28,8 +31,12 @@
     @extend .button;
 
     &:not(.button) {
-      padding: 0 2em !important;
-      height: 2.75em !important;
+      font-size: $font14px;
+      margin-left: 2em;
+      white-space: nowrap;
+      padding: 0 !important;
+      text-transform: unset;
+      text-decoration: underline;
     }
   }
 

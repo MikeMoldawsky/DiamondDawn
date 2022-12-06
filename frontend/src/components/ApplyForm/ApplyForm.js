@@ -128,11 +128,12 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
               title="If approved, this address will be the one eligible for mint"
             />
           </div>
-        </div>
-        <div className="stretch-center-aligned-row buttons">
           {!account?.address && (
             <Wallet />
           )}
+        </div>
+        <div className="text-comment">* Don't worry, you can change your minting address at any point</div>
+        <div className="stretch-center-aligned-row buttons">
           <ActionButton
             actionKey="Request Invitation"
             className="gold"
