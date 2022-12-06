@@ -5,37 +5,40 @@ import Countdown from "components/Countdown";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 
 export const TheJourneyMainText = () => (
-  <div className="text">
-    <p>
-      Diamond Dawn is a social experiment developed by a passionate team that’s
-      made up of software engineers, visual artists, and a world-renowned 3D
-      designer alongside one of the most respected companies in the diamond
-      industry.
-    </p>
-    <p>Your Diamond Dawn journey will consist of 4 phases.</p>
-    <p>
-      At each phase, you must choose whether to evolve your Diamond NFT to its
-      next form or keep it in its current state for eternity.
-    </p>
-    <p>
-      You’ll have exactly <b>3 weeks, 3 days, and 3 hours</b> to complete each
-      of the first 3 phases.
-    </p>
-    <div className="secondary-text">Which diamond will you choose?</div>
-    <p>The fourth and final phase is longer.</p>
-    <p>
-      You’ll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide on your{" "}
-      <b>Final Choice</b>:
-    </p>
-    <p>
-      Keep your diamond NFT digital or burn it in exchange for a physical,
-      limited-edition art piece that contains your diamond (GIA-certified).
-    </p>
-    <p>
-      Once your decision is finalized on the blockchain, your physical art piece
-      will be <b>shipped</b> to your specified address.
-    </p>
-  </div>
+  <>
+    <div className="text">
+      <p>
+        Diamond Dawn is a social experiment developed by a passionate team
+        that’s made up of software engineers, visual artists, and a
+        world-renowned 3D designer alongside one of the most respected companies
+        in the diamond industry.
+      </p>
+      <p>Your Diamond Dawn journey will consist of 4 phases.</p>
+      <p>
+        At each phase, you must choose whether to evolve your Diamond NFT to its
+        next form or keep it in its current state for eternity.
+      </p>
+      <p>
+        You’ll have exactly <b>3 weeks, 3 days, and 3 hours</b> to complete each
+        of the first 3 phases.
+      </p>
+      <div className="tagline-text">Which diamond will you choose?</div>
+    </div>
+    <div className="text">
+      <p>
+        The fourth and final phase is longer. You’ll have exactly{" "}
+        <b>3 months, 3 weeks, and 3 days</b> to decide on your Final Choice:
+      </p>
+      <p>
+        Keep your diamond NFT digital or burn it in exchange for a physical,
+        limited-edition art piece that contains your diamond (GIA-certified).
+      </p>
+      <p>
+        Once your decision is finalized on the blockchain, your physical art
+        piece will be <b>shipped</b> to your specified address.
+      </p>
+    </div>
+  </>
 );
 
 export const TheJourneyText = () => (

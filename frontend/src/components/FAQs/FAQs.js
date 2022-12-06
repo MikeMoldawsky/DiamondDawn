@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import "./FAQs.scss";
 import { Collapse } from "react-collapse";
 import map from "lodash/map";
+import take from "lodash/take";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "components/Button";
 import classNames from "classnames";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const FAQS = {
   "The Digital": [
@@ -249,7 +250,7 @@ const FAQ = ({ title, content }) => {
 const FAQGroup = ({ faqs, groupName }) => {
   return (
     <>
-      <div className="secondary-text">{groupName}</div>
+      {groupName && <div className="tagline-text">{groupName}</div>}
       <div className="faq-items">
         {map(faqs, (faq) => (
           <FAQ key={`faq-${groupName}-${faq.title}`} {...faq} />
@@ -259,25 +260,19 @@ const FAQGroup = ({ faqs, groupName }) => {
   );
 };
 
-const FAQs = ({ onToggle }) => {
-  const [expanded, setExpanded] = useState(false);
+const FAQs = ({ collapsed }) => {
+  const navigate = useNavigate();
 
-  const toggle = () => {
-    onToggle && onToggle(!expanded);
-    setExpanded(!expanded);
-  };
+  const groups = !collapsed
+    ? FAQS
+    : {
+        "": take(FAQS["The Digital"], 2),
+      };
 
   return (
-    <div className={classNames("faqs", { expanded, collapsed: !expanded })}>
-      {expanded && (
-        <div className="text-center top-collapse-btn">
-          <Button className="transparent" onClick={toggle} sfx="utility">
-            SHOW LESS
-          </Button>
-        </div>
-      )}
+    <div className={classNames("faqs", { collapsed })}>
       <div className="faq-groups">
-        {map(FAQS, (faqs, groupName) => (
+        {map(groups, (faqs, groupName) => (
           <FAQGroup
             key={`faq-group-${groupName}`}
             faqs={faqs}
@@ -285,11 +280,17 @@ const FAQs = ({ onToggle }) => {
           />
         ))}
       </div>
-      <div className="text-center">
-        <Button className="transparent" onClick={toggle} sfx="utility">
-          {expanded ? "SHOW LESS" : "SHOW MORE"}
-        </Button>
-      </div>
+      {collapsed && (
+        <div className="text-center">
+          <Button
+            className="transparent"
+            onClick={() => navigate("/faq")}
+            sfx="utility"
+          >
+            VIEW ALL
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

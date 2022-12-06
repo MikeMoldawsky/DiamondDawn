@@ -1,7 +1,7 @@
 import React from "react";
 import "./Legal.scss";
 import Footer from "components/Footer";
-import PageSizeLimit from "components/PageSizeLimit";
+import PageSizeLimit from "components/PageSizeLimit/PageSizeLimit";
 
 const TNCPage = () => (
   <PageSizeLimit>

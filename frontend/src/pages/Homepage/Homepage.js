@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./Homepage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
-import { getCDNImageUrl } from "utils";
+import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
 import Footer from "components/Footer";
@@ -20,10 +20,11 @@ import AnimatedText from "components/AnimatedText";
 import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
-import PageSizeLimit from "components/PageSizeLimit";
+import PageSizeLimit from "components/PageSizeLimit/PageSizeLimit";
 import VideoBackground from "components/VideoBackground";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import CTAButton from "../../components/CTAButton";
+import PlayButton from "components/PlayButton";
 
 const Homepage = () => {
   const countdownProps = useMineOpenCountdown();
@@ -71,15 +72,28 @@ const Homepage = () => {
                 <div className="logo">
                   <AnimatedLogo withText />
                 </div>
-                <div className="secondary-text">
+                <div className="tagline-text">
                   The first ever virtual diamond mining experience
+                </div>
+                <div>
+                  <CTAButton className="lg" />
+                </div>
+                <div className="center-center-aligned-row buttons-row">
+                  <PlayButton
+                    className="element"
+                    name="DIGITAL"
+                    src={getCDNVideoUrl("short-teaser.webm")}
+                  />
+                  {/*<div className="separator" />*/}
+                  <PlayButton
+                    className="element"
+                    name="PHYSICAL"
+                    src={getCDNVideoUrl("physical-teaser.webm")}
+                  />
                 </div>
                 <div className="countdown-container">
                   <div className="text">MINE WILL OPEN IN</div>
                   <Countdown {...countdownProps} />
-                </div>
-                <div>
-                  <CTAButton />
                 </div>
               </div>
             </div>

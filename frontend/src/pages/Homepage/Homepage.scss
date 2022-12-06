@@ -54,16 +54,31 @@
           font-size: $font30px;
         }
       }
+
+      .button {
+        margin-top: 3em;
+      }
+
+      .buttons-row {
+        margin-top: 3rem;
+        justify-content: space-between;
+        font-size: $font20px;
+
+        .play-button:not(:last-child) {
+          margin-right: 5em;
+        }
+      }
     }
 
     .text {
       color: $text_gray;
-      letter-spacing: 0.2rem;
+      letter-spacing: 0.1em;
     }
 
     .countdown-container {
+      font-size: $font11px;
       position: relative;
-      margin: 4em 0 3.5em;
+      margin: 2.5rem 0 0;
 
       .text {
         color: white;
@@ -95,14 +110,11 @@
     position: relative;
     margin-left: var(--text-margin-left);
 
-    .leading-text {
-      color: $gold;
-      margin: 4rem 0 2rem;
+    .subtitle-text {
+      margin-top: 2em;
     }
 
     .text {
-      line-height: 2em;
-
       &:not(:last-child) {
         margin-bottom: 1rem;
       }
@@ -122,7 +134,7 @@
       width: 40%;
       min-width: 42em;
 
-      .leading-text {
+      .subtitle-text {
         margin-top: 0;
       }
     }
@@ -163,8 +175,6 @@
     --text-margin-left: 15%;
 
     .eternal-treasures-background {
-      --edge-offset: -5%;
-
       .bg {
         &.bg-right-hand {
           background-position-y: 52%;
@@ -183,7 +193,7 @@
     font-size: $font15px;
 
     .homepage-content-background {
-      --edge-offset: -7%;
+      --edge-offset: -2%;
     }
   }
 }
@@ -194,7 +204,7 @@
     --text-margin-left: 10%;
 
     .homepage-content-background {
-      --edge-offset: -12%;
+      --edge-offset: -7%;
     }
   }
 }

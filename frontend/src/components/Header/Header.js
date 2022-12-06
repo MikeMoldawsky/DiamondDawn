@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/Logo";
 import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
-import { usePageSizeLimit } from "components/PageSizeLimit";
+import { usePageSizeLimit } from "components/PageSizeLimit/PageSizeLimit";
 import CTAButton from "components/CTAButton";
 import { TwitterLink } from "components/Links";
 import usePermission from "hooks/usePermission";

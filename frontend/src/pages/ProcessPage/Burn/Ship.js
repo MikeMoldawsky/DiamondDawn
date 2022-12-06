@@ -47,9 +47,7 @@ const Ship = () => {
           <>
             <DiamondPicker disabled />
             <div className="leading-text">ENTER A SHIPPING ADDRESS</div>
-            <div className="secondary-text">
-              We are committed to your privacy
-            </div>
+            <div className="tagline-text">We are committed to your privacy</div>
             <form>
               <div className="sbs-row">
                 {renderInput("fullName", "Full Name")}
@@ -71,7 +69,7 @@ const Ship = () => {
         <>
           <DiamondPicker />
           <div className="leading-text">BUT... IS THERE MORE?</div>
-          <div className="secondary-text">
+          <div className="tagline-text">
             Letting the perfect stone go can be a risk... but a diamond's
             journey is never over
           </div>

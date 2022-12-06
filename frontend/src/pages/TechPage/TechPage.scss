@@ -1,7 +1,17 @@
 @import "css/varsNEW";
 
 .page.info-page.tech-page {
+  .content-section {
+    width: 50%;
+  }
+
   ul {
     list-style-type: decimal;
+  }
+
+  .teaser-video {
+    .react-player {
+      opacity: 0.25;
+    }
   }
 }

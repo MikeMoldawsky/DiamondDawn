@@ -27,7 +27,7 @@ const Cut = () => {
           <br />
           BUT VERY FEW ARE WILLING TO CUT
         </div>
-        <div className="secondary-text">Will you take the risk?</div>
+        <div className="tagline-text">Will you take the risk?</div>
         <div className="action">
           <ActionButton
             actionKey="Cut"

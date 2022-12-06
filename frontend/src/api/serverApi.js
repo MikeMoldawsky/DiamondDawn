@@ -52,7 +52,13 @@ export const applyToDDApi = async (
   requestData,
   geoLocation
 ) => {
-  geoLocation = geoLocation || (await getGeoLocationApi());
+  if (!geoLocation) {
+    try {
+      geoLocation = await getGeoLocationApi();
+    } catch (e) {
+      geoLocation = null;
+    }
+  }
   const location = geoLocation
     ? `${geoLocation.city},${geoLocation.region}/${geoLocation.country}`
     : "Unknown";

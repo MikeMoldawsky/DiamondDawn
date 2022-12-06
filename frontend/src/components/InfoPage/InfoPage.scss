@@ -8,73 +8,47 @@
     .walls {
       top: 3.5%;
       background: url($CDN_URL + "/images/about/mine-walls.png") no-repeat left
-        top;
+        15vh;
       background-size: 100%;
-      //background: url("../../assets/images/2_ABOUT_WALLS_MIDGROUND_001.png") no-repeat center top;
-      //background-size: 120%;
-      //top: 11%;
     }
 
     .cave {
-      background: url($CDN_URL + "/images/about/cave.png") no-repeat 155% top;
+      background: url($CDN_URL + "/images/about/cave.png") no-repeat 155% 8vh;
       background-size: 72%;
       z-index: -2;
     }
   }
 
   .leading-text {
-    margin: 3em 0 1em;
+    margin: 1em 0;
   }
 
   .subtitle-text {
-    margin: 3.6em 0 1em;
+    margin-top: 3.6em;
+  }
+
+  .tagline-text {
+    margin-top: 1em;
   }
 
   .text {
-    margin-bottom: 0.2em;
     letter-spacing: 0.1em;
   }
 
   .general {
-    width: 48%;
-    min-width: 54em;
     margin-left: 10%;
-
-    .leading-text {
-      margin-top: 2em;
-    }
-
-    .secondary-text {
-      margin-top: 1.5em;
-    }
   }
 
   .content-section {
     position: relative;
-    width: 65%;
     margin: 0 auto;
     z-index: 1;
-
-    .leading-text,
-    .subtitle-text {
-      margin-bottom: 0;
-    }
-
-    .secondary-text {
-      margin: 1em 0 0;
-    }
   }
 }
 
 @media only screen and (max-width: 1680px) {
   .page.info-page {
     font-size: $font15px;
-
-    .general {
-      .leading-text {
-        margin-top: 1em;
-      }
-    }
   }
 }
 
@@ -83,20 +57,8 @@
     --base-font-size: 22;
     font-size: $font14px;
 
-    .leading-text {
-      margin-top: 2em;
-    }
-
-    .subtitle-text {
-      margin-top: 3em;
-    }
-
     .general {
       margin-left: 7.5%;
-
-      .leading-text {
-        margin: 0.5em 0 0.5em;
-      }
     }
   }
 }
@@ -104,20 +66,15 @@
 @media only screen and (max-width: 1366px) {
   .page.info-page {
     font-size: $font13px;
-
-    .general {
-      width: 57%;
-      margin-left: 5%;
-
-      .leading-text {
-        margin: 0.5em 0 0.5em;
-      }
-    }
   }
 }
 
 @media only screen and (max-width: 1200px) {
   .page.info-page {
     font-size: $font12px;
+
+    .general {
+      margin-left: 5%;
+    }
   }
 }

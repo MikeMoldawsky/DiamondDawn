@@ -13,6 +13,7 @@ import TechPage from "pages/TechPage";
 import PrivacyPage from "pages/Legal/PrivacyPage";
 import TNCPage from "pages/Legal/TNCPage";
 import CreditsPage from "pages/CreditsPage";
+import FAQsPage from "pages/FAQsPage";
 
 const AppRoutes = () => {
   return (
@@ -57,6 +58,7 @@ const AppRoutes = () => {
       <Route path="privacy" element={<PrivacyPage />} />
       <Route path="tnc" element={<TNCPage />} />
       <Route path="credits" element={<CreditsPage />} />
+      <Route path="faq" element={<FAQsPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

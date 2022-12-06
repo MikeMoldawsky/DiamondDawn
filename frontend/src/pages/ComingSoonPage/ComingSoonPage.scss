@@ -14,7 +14,6 @@
     opacity: 0.65;
     z-index: -2;
     position: fixed;
-    //position: absolute;
     background-color: black;
 
     video {
@@ -40,12 +39,6 @@
       position: relative;
       background-color: transparent;
 
-      &.dd-text {
-        margin: 0 auto;
-        width: 50%;
-        max-width: 1440px;
-      }
-
       &.ps-text {
         margin: 0 auto;
         width: 10%;
@@ -58,7 +51,7 @@
   .text-column {
     top: 47%;
 
-    .secondary-text {
+    .tagline-text {
       color: $gold;
       font-weight: 400;
       font-size: $font28px;
@@ -95,10 +88,11 @@
       width: 100%;
     }
 
-    .text-comment {
+    .your-invite-text {
       color: $gold;
       font-weight: 500;
       margin-top: -2.2em;
+      letter-spacing: 0.1em;
     }
   }
 }
@@ -110,22 +104,15 @@
     .project-title {
       top: 17%;
 
-      .react-player.dd-text,
       .react-player.ps-text {
-        &.dd-text {
-          width: 85%;
-        }
-
-        &.ps-text {
-          width: 30%;
-        }
+        width: 30%;
       }
     }
 
     .text-column {
       top: 46%;
 
-      .secondary-text {
+      .tagline-text {
         font-size: $font22px;
       }
     }

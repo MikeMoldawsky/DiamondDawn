@@ -1,3 +1,5 @@
+@import "css/varsNEW";
+
 .play-button {
   cursor: default;
   font-size: 0.9em;
@@ -13,8 +15,8 @@
   }
 
   .links-column {
+    font-size: $font20px;
     padding: 0.15em 0;
-    justify-content: space-between;
     line-height: 1em;
   }
 

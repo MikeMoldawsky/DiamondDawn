@@ -18,7 +18,7 @@ const PageCover = ({
       })}
     >
       <Loading />
-      <div className="secondary-text">
+      <div className="tagline-text">
         {showText && title}
         <br />
         {showText && text}
