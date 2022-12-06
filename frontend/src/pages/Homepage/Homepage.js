@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./Homepage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
-import {getCDNImageUrl, getCDNVideoUrl} from "utils";
+import { getCDNImageUrl, getCDNVideoUrl } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
 import Footer from "components/Footer";

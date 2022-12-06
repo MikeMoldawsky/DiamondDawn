@@ -47,9 +47,7 @@ const Ship = () => {
           <>
             <DiamondPicker disabled />
             <div className="leading-text">ENTER A SHIPPING ADDRESS</div>
-            <div className="tagline-text">
-              We are committed to your privacy
-            </div>
+            <div className="tagline-text">We are committed to your privacy</div>
             <form>
               <div className="sbs-row">
                 {renderInput("fullName", "Full Name")}

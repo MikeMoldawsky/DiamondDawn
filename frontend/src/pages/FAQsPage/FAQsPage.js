@@ -2,7 +2,7 @@ import React from "react";
 import PageSizeLimit from "components/PageSizeLimit";
 import FAQs from "components/FAQs";
 import Footer from "components/Footer";
-import "./FAQsPage.scss"
+import "./FAQsPage.scss";
 
 const FAQsPage = () => (
   <PageSizeLimit>

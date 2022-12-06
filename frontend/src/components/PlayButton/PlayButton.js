@@ -12,9 +12,9 @@ const PlayButton = ({ className, src, name }) => {
 
   const onClick = () => {
     !disabled &&
-    setTimeout(() => {
-      dispatch(showVideo(src, { delayPlay: 1500 }));
-    }, 0);
+      setTimeout(() => {
+        dispatch(showVideo(src, { delayPlay: 1500 }));
+      }, 0);
   };
 
   const { clickWithSFX, hoverWithSFX } = useButtonSFX(onClick, "explore");

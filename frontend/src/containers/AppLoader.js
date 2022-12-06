@@ -31,8 +31,7 @@ const ServerAppLoader = () => {
           geoLocation: pick(geoLocation, ["country", "region", "city"]),
         })
       );
-    }
-    catch (e) {
+    } catch (e) {
       // do nothing
     }
   };

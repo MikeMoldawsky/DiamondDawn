@@ -55,9 +55,8 @@ export const applyToDDApi = async (
   if (!geoLocation) {
     try {
       geoLocation = await getGeoLocationApi();
-    }
-    catch (e) {
-      geoLocation = null
+    } catch (e) {
+      geoLocation = null;
     }
   }
   const location = geoLocation

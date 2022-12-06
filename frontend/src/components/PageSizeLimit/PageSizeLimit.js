@@ -3,7 +3,7 @@ import classNames from "classnames";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import { createVideoSources } from "utils";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
-import "./PageSizeLimit.scss"
+import "./PageSizeLimit.scss";
 
 const DEFAULT_MIN_WIDTH = 1025;
 
@@ -33,9 +33,7 @@ const PageSizeLimit = ({ minWidth = DEFAULT_MIN_WIDTH, children }) => {
         src={createVideoSources("dd-text-1440")}
         showThreshold={0}
       />
-      <div className="tagline-text">
-        The mobile version is coming soon!
-      </div>
+      <div className="tagline-text">The mobile version is coming soon!</div>
       <div className="text">
         For the full experience, please visit Diamond Dawn on a computer.
       </div>

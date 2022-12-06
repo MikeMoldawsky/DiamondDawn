@@ -250,7 +250,7 @@ const FAQ = ({ title, content }) => {
 const FAQGroup = ({ faqs, groupName }) => {
   return (
     <>
-      {groupName && (<div className="tagline-text">{groupName}</div>)}
+      {groupName && <div className="tagline-text">{groupName}</div>}
       <div className="faq-items">
         {map(faqs, (faq) => (
           <FAQ key={`faq-${groupName}-${faq.title}`} {...faq} />
@@ -261,11 +261,13 @@ const FAQGroup = ({ faqs, groupName }) => {
 };
 
 const FAQs = ({ collapsed }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const groups = !collapsed ? FAQS : {
-    "": take(FAQS["The Digital"], 2)
-  }
+  const groups = !collapsed
+    ? FAQS
+    : {
+        "": take(FAQS["The Digital"], 2),
+      };
 
   return (
     <div className={classNames("faqs", { collapsed })}>
@@ -280,7 +282,11 @@ const FAQs = ({ collapsed }) => {
       </div>
       {collapsed && (
         <div className="text-center">
-          <Button className="transparent" onClick={() => navigate("/faq")} sfx="utility">
+          <Button
+            className="transparent"
+            onClick={() => navigate("/faq")}
+            sfx="utility"
+          >
             VIEW ALL
           </Button>
         </div>
