@@ -1,6 +1,12 @@
-const {COLOR, SHAPE, GRADE, CLARITY, FLUORESCENCE} = require("../utils/consts");
+const {
+  COLOR,
+  SHAPE,
+  GRADE,
+  CLARITY,
+  FLUORESCENCE,
+} = require("../utils/consts");
 
-const DIAMONDS_1 = [
+const DIAMONDS_1_50 = [
   {
     number: 2446423766,
     date: 1660867200,
@@ -803,4 +809,4 @@ const DIAMONDS_1 = [
   },
 ];
 
-module.exports = { DIAMONDS_1 };
+module.exports = { DIAMONDS_1_50 };

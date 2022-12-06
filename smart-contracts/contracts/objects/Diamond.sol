@@ -34,6 +34,7 @@ enum Fluorescence {
 
 enum Color {
     NO_COLOR,
+    K,
     L,
     M,
     N,
