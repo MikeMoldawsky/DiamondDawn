@@ -21,6 +21,7 @@ const INITIAL_STATE = {
   assetReadyPages: {},
   mintViewShowInvites: false,
   copyNotification: null,
+  geoLocation: null,
 };
 
 export const setSelectedTokenId = (selectedTokenId) => ({

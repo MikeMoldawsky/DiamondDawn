@@ -31,7 +31,7 @@ const Page = ({
   const [hidden, setHidden] = useState(false);
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
-  const contentReady = useWaitFor({ images, videos }, pageName);
+  const contentReady = useWaitFor({ images, videos });
   const canAccessDD = usePermission();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")

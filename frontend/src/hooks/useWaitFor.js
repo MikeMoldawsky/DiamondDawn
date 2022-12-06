@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import reduce from "lodash/reduce";
 import isString from "lodash/isString";
@@ -80,7 +80,7 @@ export const useWaitForVideos = (videos = []) => {
   return loaded;
 };
 
-export const useWaitFor = ({ actions, images, videos }, name) => {
+export const useWaitFor = ({ actions, images, videos }) => {
   const actionsReady = useWaitForActions(actions);
   const imagesReady = useWaitForImages(images);
   const videosReady = useWaitForVideos(videos);

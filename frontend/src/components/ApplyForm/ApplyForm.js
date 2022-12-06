@@ -13,6 +13,7 @@ import { inviteSelector } from "store/inviteReducer";
 import Checkbox from "components/Checkbox";
 import { showError } from "utils";
 import Wallet from "components/Wallet";
+import {uiSelector} from "store/uiReducer";
 
 const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
@@ -29,6 +30,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   const [isRequiredError, setIsRequiredError] = useState(false);
   const account = useAccount();
   const invite = useSelector(inviteSelector);
+  const { geoLocation } = useSelector(uiSelector)
 
   useEffect(() => {
     reset();
@@ -68,7 +70,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
     }
     try {
       onSubmit && onSubmit();
-      await applyToDDApi(invite._id, account.address, data);
+      await applyToDDApi(invite._id, account.address, data, geoLocation);
       onSuccess && (await onSuccess());
       setIsSubmitSuccess(true);
     } catch (e) {

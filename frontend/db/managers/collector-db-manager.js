@@ -69,8 +69,7 @@ async function createCollector(
   twitter,
   email,
   note,
-  country,
-  state,
+  location,
   isDao
 ) {
   validateAddress(address);
@@ -83,9 +82,7 @@ async function createCollector(
     twitter,
     email,
     note,
-    location: `${state ? state : "No state"}, ${
-      country ? country : "No country"
-    }`,
+    location: location || "Unknown",
     isDao,
   });
   return collector.save();
