@@ -621,6 +621,10 @@ a:not(.no-hover) {
   html {
     font-size: $font12px;
   }
+
+  .subtitle-text {
+    font-size: $font36px;
+  }
 }
 
 @media only screen and (max-width: 375px) {

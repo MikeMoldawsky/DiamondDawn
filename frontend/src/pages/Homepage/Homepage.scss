@@ -213,10 +213,6 @@
   .page.homepage {
     font-size: $font16px;
 
-    .homepage-content-background {
-      display: none;
-    }
-
     .top-content {
       width: 100%;
       margin-left: 0;
@@ -251,16 +247,21 @@
 
     .homepage-content {
       top: unset;
-      margin-top: 9vh;
     }
 
     .text-section {
-      margin: 0 auto;
+      margin: 15vw auto 0;
       min-width: unset !important;
       width: 80% !important;
 
       .text {
         width: 100%;
+      }
+    }
+
+    .eternal-treasures {
+      .text-section {
+        margin-top: 75vw;
       }
     }
   }

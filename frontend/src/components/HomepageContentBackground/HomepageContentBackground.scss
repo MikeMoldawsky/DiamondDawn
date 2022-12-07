@@ -85,3 +85,29 @@
     }
   }
 }
+
+@media only screen and (max-width: 768px) {
+  .homepage-content-background {
+    .bg {
+      &.statue {
+        width: 100%;
+        height: unset;
+        left: 0;
+      }
+
+      &.mine-wall-left {
+        display: none;
+      }
+
+      &.bg-right-hand {
+        background-position-y: 37%;
+        background-size: 60% auto;
+      }
+
+      &.bg-left-hand {
+        background-position: 10% 53%;
+        background-size: 35% auto;
+      }
+    }
+  }
+}
