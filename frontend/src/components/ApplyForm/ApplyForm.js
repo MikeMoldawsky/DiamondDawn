@@ -20,7 +20,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors },
     watch,
     reset,
     setValue,
@@ -78,6 +78,9 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
       onError && onError();
     }
   };
+
+  const twitter = watch("twitter");
+  const email = watch("email");
 
   return (
     <div className="request-form">
@@ -141,9 +144,8 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
             disabled={
               disabled ||
               !account?.address ||
-              !isDirty ||
               !isEmpty(errors) ||
-              isRequiredError
+              (!twitter && !email)
             }
             sfx="action"
           >
