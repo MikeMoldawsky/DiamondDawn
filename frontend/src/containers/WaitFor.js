@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Loading from "components/Loading";
 import useWaitFor from "hooks/useWaitFor";
-import AnimatedLogo from "components/AnimatedLogo";
 import useTimeout from "hooks/useTimeout";
 
 export const WaitFor = ({

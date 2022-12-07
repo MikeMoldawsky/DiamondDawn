@@ -5,30 +5,39 @@ import classNames from "classnames";
 import { useDispatch } from "react-redux";
 import { showVideo } from "store/videoReducer";
 import useButtonSFX from "hooks/useButtonSFX";
+import { getCDNVideoUrl } from "utils";
 
-const PlayButton = ({ className, src, name }) => {
+export const TRAILERS = [
+  { src: getCDNVideoUrl("physical-teaser.webm"), name: "THE PHYSICAL" },
+  { src: getCDNVideoUrl("digital-trailer.mp4"), name: "THE DIGITAL" },
+];
+
+const PlayButton = ({ className, videos, index, onClick }) => {
   const dispatch = useDispatch();
+
+  const { src, name } = videos[index];
   const disabled = !src;
 
-  const onClick = () => {
-    !disabled &&
-      setTimeout(() => {
-        dispatch(showVideo(src, { delayPlay: 1500 }));
-      }, 0);
+  const onPlayClick = () => {
+    if (disabled) return;
+
+    onClick && onClick();
+    setTimeout(() => {
+      dispatch(showVideo(videos, index, { delayPlay: 1500 }));
+    }, 0);
   };
 
-  const { clickWithSFX, hoverWithSFX } = useButtonSFX(onClick, "explore");
+  const { clickWithSFX, hoverWithSFX } = useButtonSFX(onPlayClick, "explore");
 
   return (
     <div
       className={classNames("center-aligned-row", className, "play-button")}
       onMouseEnter={hoverWithSFX}
+      onClick={clickWithSFX}
     >
       <PlayCircleOutlineIcon />
       <div className="left-centered-aligned-column links-column">
-        <div className={"video-link link-hover"} onClick={clickWithSFX}>
-          THE {name}
-        </div>
+        <div className={"video-link"}>{name}</div>
       </div>
     </div>
   );

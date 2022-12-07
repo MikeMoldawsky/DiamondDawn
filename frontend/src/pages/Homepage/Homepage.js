@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./Homepage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
-import { getCDNImageUrl, getCDNVideoUrl } from "utils";
+import { getCDNImageUrl } from "utils";
 import HomeBackground from "components/HomeBackground";
 import Countdown from "components/Countdown";
 import Footer from "components/Footer";
@@ -24,7 +24,7 @@ import PageSizeLimit from "components/PageSizeLimit/PageSizeLimit";
 import VideoBackground from "components/VideoBackground";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import CTAButton from "../../components/CTAButton";
-import PlayButton from "components/PlayButton";
+import PlayButton, { TRAILERS } from "components/PlayButton/PlayButton";
 
 const Homepage = () => {
   const countdownProps = useMineOpenCountdown();
@@ -79,16 +79,8 @@ const Homepage = () => {
                   <CTAButton className="lg" />
                 </div>
                 <div className="center-center-aligned-row buttons-row">
-                  <PlayButton
-                    className="element"
-                    name="PHYSICAL"
-                    src={getCDNVideoUrl("physical-teaser.webm")}
-                  />
-                  <PlayButton
-                    className="element"
-                    name="DIGITAL"
-                    src={getCDNVideoUrl("digital-trailer.mp4")}
-                  />
+                  <PlayButton className="element" videos={TRAILERS} index={0} />
+                  <PlayButton className="element" videos={TRAILERS} index={1} />
                 </div>
                 <div className="countdown-container">
                   <div className="text">MINE WILL OPEN IN</div>

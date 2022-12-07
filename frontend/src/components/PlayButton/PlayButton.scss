@@ -1,7 +1,7 @@
 @import "css/varsNEW";
 
 .play-button {
-  cursor: default;
+  cursor: pointer;
   font-size: 0.9em;
   align-items: stretch;
 
@@ -12,6 +12,7 @@
   svg {
     font-size: 2.5em;
     margin-right: 0.25em;
+    transform: rotate(0deg);
   }
 
   .links-column {
@@ -20,7 +21,35 @@
     line-height: 1em;
   }
 
-  .video-link {
-    cursor: pointer;
+  &:hover {
+    .video-link {
+      animation: playHoverColor 0.25s linear forwards;
+    }
+
+    svg {
+      animation: playHoverRotate 0.25s linear forwards;
+
+      path {
+        animation: playHoverColor 0.25s linear forwards;
+      }
+    }
+  }
+
+  @keyframes playHoverColor {
+    0% {
+      color: white;
+    }
+    100% {
+      color: $gold;
+    }
+  }
+
+  @keyframes playHoverRotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 }

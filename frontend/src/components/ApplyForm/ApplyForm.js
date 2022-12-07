@@ -15,12 +15,26 @@ import { showError } from "utils";
 import Wallet from "components/Wallet";
 import { uiSelector } from "store/uiReducer";
 
+const getValidationError = (name, value) => {
+  switch (name) {
+    case "email":
+      return "Must be an email address";
+    case "twitter":
+      if (!value.startsWith("@")) {
+        return "Must start with '@'";
+      }
+      return "Must be at least 4 characters";
+    default:
+      return "Invalid value";
+  }
+};
+
 const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors },
     watch,
     reset,
     setValue,
@@ -42,22 +56,27 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   };
 
   const renderInput = (name, placeholder, opts = {}) => {
-    const emptyValue = isEmpty(watch(name));
     const hasError = !isNil(get(errors, name));
     return (
-      <input
-        {...register(name, {
-          required: true,
-          onChange: clearErrors,
-          ...opts,
-        })}
-        disabled={disabled}
-        placeholder={placeholder}
-        className={classNames("input", {
-          "validation-error": hasError || isRequiredError,
-          "validation-success": !emptyValue && !hasError,
-        })}
-      />
+      <>
+        <input
+          {...register(name, {
+            required: true,
+            onChange: clearErrors,
+            ...opts,
+          })}
+          disabled={disabled}
+          placeholder={placeholder}
+          className={classNames("input", {
+            "validation-error": hasError,
+          })}
+        />
+        {hasError && (
+          <div className="form-error">
+            {getValidationError(name, watch(name))}
+          </div>
+        )}
+      </>
     );
   };
 
@@ -78,6 +97,9 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
       onError && onError();
     }
   };
+
+  const twitter = watch("twitter");
+  const email = watch("email");
 
   return (
     <div className="request-form">
@@ -141,9 +163,8 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
             disabled={
               disabled ||
               !account?.address ||
-              !isDirty ||
               !isEmpty(errors) ||
-              isRequiredError
+              (!twitter && !email)
             }
             sfx="action"
           >
