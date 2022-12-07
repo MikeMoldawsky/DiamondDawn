@@ -81,14 +81,13 @@ const Homepage = () => {
                 <div className="center-center-aligned-row buttons-row">
                   <PlayButton
                     className="element"
-                    name="DIGITAL"
-                    src={getCDNVideoUrl("short-teaser.webm")}
-                  />
-                  {/*<div className="separator" />*/}
-                  <PlayButton
-                    className="element"
                     name="PHYSICAL"
                     src={getCDNVideoUrl("physical-teaser.webm")}
+                  />
+                  <PlayButton
+                    className="element"
+                    name="DIGITAL"
+                    src={getCDNVideoUrl("digital-trailer.mp4")}
                   />
                 </div>
                 <div className="countdown-container">
