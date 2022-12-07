@@ -5,6 +5,7 @@ import { setAudioMuted, uiSelector } from "store/uiReducer";
 import "./VideoPlayer.scss";
 import {
   clearVideoState,
+  nextVideoSelector,
   updateVideoState,
   videoSelector,
 } from "store/videoReducer";
@@ -13,14 +14,16 @@ import WaitFor from "containers/WaitFor";
 import PageCover from "components/PageCover";
 import { useLocation } from "react-router-dom";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import PlayButton from "components/PlayButton";
+import isEmpty from "lodash/isEmpty";
 
-const Video = ({ isPlaying, setVideoProgress, ...props }) => {
+const Video = ({ src, isPlaying, onEnded, setVideoProgress, ...props }) => {
   useNoScrollView();
 
   const { muted } = useSelector(uiSelector);
   const dispatch = useDispatch();
 
-  const { src, closeOnEnd } = useSelector(videoSelector);
+  const { closeOnEnd } = useSelector(videoSelector);
 
   const onVideoPlay = () => {
     dispatch(setAudioMuted(true));
@@ -31,6 +34,7 @@ const Video = ({ isPlaying, setVideoProgress, ...props }) => {
       dispatch(clearVideoState());
       return;
     }
+    onEnded && onEnded();
     dispatch(updateVideoState({ hasEnded: true }));
   };
 
@@ -61,8 +65,13 @@ const VideoPlayer = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [isMounted, setIsMounted] = useState(false);
-
-  const { isOpen, delayPlay } = useSelector(videoSelector);
+  const [showNextVideo, setShowNextVideo] = useState(false);
+  const [isPlayNext, setIsPlayNext] = useState(false);
+  const { videos, currentIndex, isOpen, delayPlay, hasEnded } =
+    useSelector(videoSelector);
+  const { src } = videos[currentIndex];
+  const { nextVideo, nextIndex } = useSelector(nextVideoSelector);
+  const hasNextVideo = !isEmpty(nextVideo);
 
   const closePlayer = () => {
     dispatch(clearVideoState());
@@ -71,6 +80,7 @@ const VideoPlayer = (props) => {
     }
   };
 
+  // close player on browse (menu is available when video is open)
   useEffect(() => {
     if (isMounted) {
       closePlayer();
@@ -78,6 +88,7 @@ const VideoPlayer = (props) => {
     setIsMounted(true);
   }, [location?.pathname]);
 
+  // handle delayed play
   useEffect(() => {
     let timer;
     if (isStartDelayPlay) {
@@ -87,13 +98,27 @@ const VideoPlayer = (props) => {
     }
 
     return () => {
-      if (timer) {
-        timer = clearTimeout(timer);
-      }
+      timer && clearTimeout(timer);
     };
   }, [delayPlay, isStartDelayPlay]);
 
+  // show next video when a video ends
+  useEffect(() => {
+    setShowNextVideo(hasEnded && hasNextVideo);
+  }, [hasEnded, hasNextVideo]);
+
   if (!isOpen) return null;
+
+  const playNext = () => {
+    setIsPlayNext(true);
+    setIsStartDelayPlay(false);
+    setIsPlaying(false);
+    setVideoProgress({});
+
+    setTimeout(() => {
+      setIsPlayNext(false);
+    }, 0);
+  };
 
   const onVideoReady = () => {
     if (!delayPlay) {
@@ -105,28 +130,44 @@ const VideoPlayer = (props) => {
   return (
     <div className="full-screen-video">
       <div className="video-container">
-        <WaitFor
-          minWait={delayPlay}
-          videos={[{ progress: videoProgress, threshold: 0.1 }]}
-          onReady={onVideoReady}
-          Loader={() => <PageCover showText text="Video Loading..." />}
-        >
-          <Video
-            isPlaying={isPlaying}
-            setVideoProgress={setVideoProgress}
-            {...props}
-          />
-          <HighlightOffIcon className="close" onClick={closePlayer} />
-        </WaitFor>
+        {!isPlayNext && (
+          <WaitFor
+            log
+            minWait={delayPlay}
+            videos={[{ progress: videoProgress, threshold: 0.05, src }]}
+            onReady={onVideoReady}
+            Loader={() => <PageCover showText text="Video Loading..." />}
+          >
+            <Video
+              src={src}
+              isPlaying={isPlaying}
+              setVideoProgress={setVideoProgress}
+              {...props}
+            />
+            {showNextVideo && (
+              <div className="ended-cover">
+                <div className="play-next">
+                  <div className="play-next-text">PLAY NEXT:</div>
+                  <PlayButton
+                    videos={videos}
+                    index={nextIndex}
+                    onClick={playNext}
+                  />
+                </div>
+              </div>
+            )}
+            <HighlightOffIcon className="close" onClick={closePlayer} />
+          </WaitFor>
+        )}
       </div>
     </div>
   );
 };
 
 const VideoPlayerContainer = (props) => {
-  const { src } = useSelector(videoSelector);
+  const { videos } = useSelector(videoSelector);
 
-  return src ? <VideoPlayer {...props} /> : null;
+  return videos.length > 0 ? <VideoPlayer {...props} /> : null;
 };
 
 export default VideoPlayerContainer;

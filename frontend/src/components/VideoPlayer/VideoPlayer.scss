@@ -35,5 +35,31 @@
       right: -1.5em;
       font-size: 2em;
     }
+
+    .ended-cover {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background-color: #000000aa;
+      animation: fadeIn 0.5s linear;
+
+      .play-next {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        .play-next-text {
+          margin: 0 0 0.25em 0.25em;
+          font-weight: 500;
+        }
+
+        .play-button {
+          font-size: $font25px;
+        }
+      }
+    }
   }
 }

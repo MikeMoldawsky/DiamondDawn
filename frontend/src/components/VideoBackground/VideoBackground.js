@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import "./VideoBackground.scss";
 import { getCDNVideoUrl } from "utils";
 import ReactPlayer from "react-player";
-import PlayButton from "components/PlayButton";
+import PlayButton, { TRAILERS } from "components/PlayButton/PlayButton";
 import CTAButton from "components/CTAButton";
 
 const VideoBackground = ({ src, overlap = 0 }) => {
@@ -31,17 +31,9 @@ const VideoBackground = ({ src, overlap = 0 }) => {
           <CTAButton />
         </div>
         <div className="separator" />
-        <PlayButton
-          className="element"
-          name="PHYSICAL"
-          src={getCDNVideoUrl("physical-teaser.webm")}
-        />
+        <PlayButton className="element" videos={TRAILERS} index={0} />
         <div className="separator" />
-        <PlayButton
-          className="element"
-          name="DIGITAL"
-          src={getCDNVideoUrl("digital-trailer.mp4")}
-        />
+        <PlayButton className="element" videos={TRAILERS} index={1} />
       </div>
     </div>
   );

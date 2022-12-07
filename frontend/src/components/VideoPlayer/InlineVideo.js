@@ -36,7 +36,7 @@ const InlineVideo = ({
 
   return (
     <WaitFor
-      videos={[{ progress: videoProgress, threshold: showThreshold }]}
+      videos={[{ progress: videoProgress, threshold: showThreshold, src }]}
       withLoader={withLoader}
     >
       {renderVideo()}
