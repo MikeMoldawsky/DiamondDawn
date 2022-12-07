@@ -121,6 +121,14 @@ form {
       }
     }
   }
+
+  .form-error {
+    color: red;
+    position: absolute;
+    top: 90%;
+    left: 1.5em;
+    font-size: $font13px;
+  }
 }
 
 [disabled],
