@@ -49,6 +49,7 @@ const Footer = ({ withFAQs }) => {
             <NavLink to="/faq">
               <span className="sitemap-link">FAQs</span>
             </NavLink>
+            <SVG className="last-star" src={star} />
           </div>
           <div className="left-center-aligned-row bottom-menu">
             <NavLink to="/privacy" className="inverted">

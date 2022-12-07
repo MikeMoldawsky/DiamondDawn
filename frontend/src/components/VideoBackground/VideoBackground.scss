@@ -35,3 +35,26 @@
     }
   }
 }
+
+@media only screen and (max-width: 768px) {
+  .teaser-video {
+    margin-top: 0 !important;
+
+    .buttons-row {
+      flex-direction: column;
+      font-size: 1.125em;
+
+      .play-buttons {
+        margin-top: 3rem;
+      }
+
+      .play-button:not(:last-child) {
+        margin-right: 3em;
+      }
+
+      .separator {
+        display: none;
+      }
+    }
+  }
+}

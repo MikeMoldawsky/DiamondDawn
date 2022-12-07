@@ -208,3 +208,60 @@
     }
   }
 }
+
+@media only screen and (max-width: 768px) {
+  .page.homepage {
+    font-size: $font16px;
+
+    .homepage-content-background {
+      display: none;
+    }
+
+    .top-content {
+      width: 100%;
+      margin-left: 0;
+      justify-content: flex-start;
+
+      .opening {
+        --base-font-size: 50;
+        max-width: 75%;
+        margin-top: 0;
+
+        .logo {
+          width: 100%;
+
+          .react-player {
+            width: 100% !important;
+          }
+        }
+
+        .tagline-text {
+          width: 15em;
+        }
+
+        .buttons-row .play-button:not(:last-child) {
+          margin-right: 4em;
+        }
+
+        .countdown-container {
+          font-size: $font9px;
+        }
+      }
+    }
+
+    .homepage-content {
+      top: unset;
+      margin-top: 9vh;
+    }
+
+    .text-section {
+      margin: 0 auto;
+      min-width: unset !important;
+      width: 80% !important;
+
+      .text {
+        width: 100%;
+      }
+    }
+  }
+}

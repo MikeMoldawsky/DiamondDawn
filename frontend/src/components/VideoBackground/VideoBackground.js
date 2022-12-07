@@ -30,10 +30,12 @@ const VideoBackground = ({ src, overlap = 0 }) => {
         <div className="element">
           <CTAButton />
         </div>
-        <div className="separator" />
-        <PlayButton className="element" videos={TRAILERS} index={0} />
-        <div className="separator" />
-        <PlayButton className="element" videos={TRAILERS} index={1} />
+        <div className="center-aligned-row play-buttons">
+          <div className="separator" />
+          <PlayButton className="element" videos={TRAILERS} index={0} />
+          <div className="separator" />
+          <PlayButton className="element" videos={TRAILERS} index={1} />
+        </div>
       </div>
     </div>
   );
