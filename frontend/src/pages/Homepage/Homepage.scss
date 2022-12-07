@@ -60,12 +60,12 @@
       }
 
       .buttons-row {
-        margin-top: 3rem;
+        margin-top: 3.5rem;
         justify-content: space-between;
-        font-size: $font20px;
+        font-size: $font18px;
 
         .play-button:not(:last-child) {
-          margin-right: 5em;
+          margin-right: 6em;
         }
       }
     }
@@ -76,9 +76,9 @@
     }
 
     .countdown-container {
-      font-size: $font11px;
+      font-size: $font10px;
       position: relative;
-      margin: 2.5rem 0 0;
+      margin: 3rem 0 0;
 
       .text {
         color: white;

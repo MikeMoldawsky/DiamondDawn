@@ -15,11 +15,13 @@
 
   .video-container {
     position: relative;
+    min-width: 60vw;
     max-width: 80%;
     max-height: calc(80% - var(--header-height));
     margin: var(--header-height) auto 0;
     aspect-ratio: 16 / 9;
     box-shadow: 0 0 8px 4px #bbbbbb44;
+    transition: all 0.1s linear;
 
     .page-cover {
       width: 100%;
