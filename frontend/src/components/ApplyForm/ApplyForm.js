@@ -18,14 +18,14 @@ import { uiSelector } from "store/uiReducer";
 const getValidationError = (name, value) => {
   switch (name) {
     case "email":
-      return "Must be an email address";
+      return "Invalid email address";
     case "twitter":
       if (!value.startsWith("@")) {
         return "Must start with '@'";
       }
-      return "Must be at least 4 characters";
+      return "Invalid twitter handle";
     default:
-      return "Invalid value";
+      return `Invalid ${name}`;
   }
 };
 
