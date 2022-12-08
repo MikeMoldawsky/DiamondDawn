@@ -25,6 +25,7 @@ import VideoBackground from "components/VideoBackground";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import CTAButton from "../../components/CTAButton";
 import PlayButton, { TRAILERS } from "components/PlayButton/PlayButton";
+import {getEarthAndMoonVideo} from "assets/videos";
 
 const Homepage = () => {
   const countdownProps = useMineOpenCountdown();
@@ -110,7 +111,7 @@ const Homepage = () => {
               </AnimatedText>
             </div>
           </div>
-          <VideoBackground src="earth-and-moon.webm" overlap="-35%" />
+          <VideoBackground src={getEarthAndMoonVideo(width)} overlap="-35%" />
           <Footer withFAQs />
         </div>
       </ScrollingPage>

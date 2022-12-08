@@ -264,5 +264,11 @@
         margin-top: 75vw;
       }
     }
+
+    .teaser-video {
+      .react-player {
+        opacity: 0.5;
+      }
+    }
   }
 }

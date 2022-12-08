@@ -21,6 +21,7 @@ import websiteIcon from "assets/images/website.svg";
 import InfoPage from "components/InfoPage";
 import Link from "components/Links";
 import AnimatedText from "components/AnimatedText";
+import {getCDNVideoUrl} from "utils";
 
 const SOCIAL_ICONS = {
   // twitter: getCDNImageUrl("/social/twitter.svg"),
@@ -49,7 +50,7 @@ const AboutUsPage = () => {
   return (
     <InfoPage
       className="about-page"
-      teaser={{ src: "physical-loop.webm", overlap: "-25%" }}
+      teaser={{ src: getCDNVideoUrl("physical-loop.webm"), overlap: "-25%" }}
     >
       <div className="left-aligned-column general">
         <div className="leading-text">ABOUT US</div>

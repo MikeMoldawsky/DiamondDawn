@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import "./VideoBackground.scss";
-import { getCDNVideoUrl } from "utils";
 import ReactPlayer from "react-player";
 import PlayButton, { TRAILERS } from "components/PlayButton/PlayButton";
 import CTAButton from "components/CTAButton";
@@ -9,7 +8,7 @@ const VideoBackground = ({ src, overlap = 0 }) => {
   const renderTeaserBg = useCallback(
     () => (
       <ReactPlayer
-        url={getCDNVideoUrl(src)}
+        url={src}
         playing
         playsinline
         controls={false}
