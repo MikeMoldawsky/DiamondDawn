@@ -87,8 +87,8 @@
 }
 
 @mixin homepage-cb-portrait {
-  --stone-top: -27%;
-  --stone-bottom: -21%;
+  --stone-top: -23%;
+  --stone-bottom: -18%;
 
   .bg {
     &.glow {
@@ -149,7 +149,7 @@
         left: 0;
 
         .rough-diamond {
-          width: 17.5%;
+          width: 15%;
         }
       }
 
