@@ -71,7 +71,6 @@ const PasswordBox = ({
         <input
           ref={pwdInput}
           type="password"
-          autoFocus
           value={password}
           onChange={onPasswordChange}
           onKeyPress={onPasswordEnter}
