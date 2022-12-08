@@ -2,9 +2,11 @@
 
 .homepage-content-background {
   position: relative;
-  --stone-spin-top: translate(-55%, -130%);
-  --stone-spin-bottom: translate(-55%, -110%);
+  //--stone-spin-top: translate(-55%, -130%);
+  //--stone-spin-bottom: translate(-55%, -110%);
   --edge-offset: 0;
+  --stone-top: -21%;
+  --stone-bottom: -16%;
 
   .bg {
     &.statue {
@@ -20,9 +22,10 @@
 
       .rough-diamond {
         position: absolute;
-        top: 0;
+        top: var(--stone-bottom);
         left: 50%;
-        transform: var(--stone-spin-bottom);
+        transform: translateX(-55%);
+        //transform: var(--stone-spin-bottom);
         width: 12.5%;
         opacity: 0;
 
@@ -80,21 +83,26 @@
 
   @keyframes moveStone {
     0% {
-      transform: var(--stone-spin-bottom);
+      top: var(--stone-bottom);
+      //transform: var(--stone-spin-bottom);
     }
     50% {
-      transform: var(--stone-spin-top);
+      top: var(--stone-top);
+      //transform: var(--stone-spin-top);
     }
     100% {
-      transform: var(--stone-spin-bottom);
+      top: var(--stone-bottom);
+      //transform: var(--stone-spin-bottom);
     }
   }
 }
 
 @media only screen and (max-width: 768px) {
   .homepage-content-background {
-    --stone-spin-top: translate(-55%, -150%);
-    --stone-spin-bottom: translate(-55%, -110%);
+    --stone-top: -27%;
+    --stone-bottom: -21%;
+    //--stone-spin-top: translate(-55%, -150%);
+    //--stone-spin-bottom: translate(-55%, -110%);
 
     .bg {
       &.glow {
