@@ -625,6 +625,18 @@ a:not(.no-hover) {
   .subtitle-text {
     font-size: $font36px;
   }
+
+  .logo-box {
+    img {
+      width: 4.5em;
+    }
+
+    &.with-text {
+      &:after {
+        font-size: .5em;
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 375px) {

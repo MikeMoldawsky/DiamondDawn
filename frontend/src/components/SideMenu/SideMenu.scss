@@ -124,3 +124,9 @@
     font-size: $font12px;
   }
 }
+
+@media only screen and (max-width: 768px) {
+  .MuiDrawer-root .MuiPaper-root {
+    font-size: $font16px;
+  }
+}

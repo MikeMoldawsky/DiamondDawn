@@ -39,7 +39,7 @@ const VideoBackground = ({ src, overlap = 0 }) => {
           <div className="separator" />
           <PlayButton className="element" videos={trailerSources} index={0} />
           <div className="separator" />
-          <PlayButton className="element" videos={trailerSources} index={1} />
+          <PlayButton className="element second" videos={trailerSources} index={1} />
         </div>
       </div>
     </div>

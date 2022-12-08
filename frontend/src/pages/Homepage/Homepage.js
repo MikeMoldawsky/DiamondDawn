@@ -80,7 +80,7 @@ const Homepage = () => {
             </div>
             <div className="center-center-aligned-row buttons-row">
               <PlayButton className="element" videos={trailerSources} index={0} />
-              <PlayButton className="element" videos={trailerSources} index={1} />
+              <PlayButton className="element second" videos={trailerSources} index={1} />
             </div>
             <div className="countdown-container">
               <div className="text">MINE WILL OPEN IN</div>
