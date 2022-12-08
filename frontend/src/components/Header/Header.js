@@ -25,7 +25,7 @@ import usePermission from "hooks/usePermission";
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const isMobile = usePageSizeLimit();
+  const isDesktop = usePageSizeLimit();
   const { muted, showHPLogo } = useSelector(uiSelector);
   const canAccessDD = usePermission();
 
@@ -45,16 +45,18 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
     toggleMenu();
   };
 
-  const showRestrictedContent = canAccessDD && isMobile;
+  const showRestrictedContent = canAccessDD && isDesktop;
 
   return (
     <header onClick={() => isMenuOpen && toggleMenu()}>
       <div className="header-internal">
         <div className="center-aligned-row header-side">
-          <div className="wallet">
-            <Wallet />
-          </div>
-          {!isNoContractMode() && isMobile && (
+          {isDesktop && (
+            <div className="wallet">
+              <Wallet />
+            </div>
+          )}
+          {!isNoContractMode() && isDesktop && (
             <ContractProvider>
               <DiamondList />
             </ContractProvider>
@@ -64,9 +66,9 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           withLink
           withText
           className={classNames({
-            hidden: isHomepage || !isMobile,
-            "animate-show": animateShowLogo,
-            "animate-hide": animateHideLogo,
+            hidden: isHomepage && isDesktop,
+            "animate-show": isDesktop && animateShowLogo,
+            "animate-hide": isDesktop && animateHideLogo,
           })}
         />
         <div className="center-aligned-row header-side">

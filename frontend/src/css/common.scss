@@ -619,6 +619,10 @@ a:not(.no-hover) {
 }
 
 @media only screen and (max-width: 768px) {
+  :root {
+    --header-height: 5rem;
+  }
+
   html {
     font-size: $font12px;
   }
