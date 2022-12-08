@@ -138,34 +138,36 @@ const ComingSoonPage = () => {
         })}
       >
         {renderBgPlayer()}
-        <div className="cs-section project-title">
-          <InlineVideo
-            withLoader={false}
-            className="dd-text"
-            src={getDDTextVideo(width)}
-            showThreshold={0}
-          />
-          <InlineVideo
-            withLoader={false}
-            className="ps-text"
-            src={getPSTextVideo(width)}
-            showThreshold={0}
-          />
-        </div>
-        <div className="center-aligned-column cs-section text-column">
-          <div className="tagline-text">
-            <div className="secondary-lg">Physical or Digital</div>
-            Which diamond will you choose?
+        <div className="center-aligned-column content-column">
+          <div className="cs-section project-title">
+            <InlineVideo
+              withLoader={false}
+              className="dd-text"
+              src={getDDTextVideo(width)}
+              showThreshold={0}
+            />
+            <InlineVideo
+              withLoader={false}
+              className="ps-text"
+              src={getPSTextVideo(width)}
+              showThreshold={0}
+            />
           </div>
+          <div className="center-aligned-column cs-section text-column">
+            <div className="tagline-text">
+              <div className="secondary-lg">Physical or Digital</div>
+              Which diamond will you choose?
+            </div>
+          </div>
+          <PasswordBox
+            className={classNames("cs-section", { "with-invite": !!inviteId })}
+            autoFill={autoFillPassword}
+            inviteId={invite?._id}
+            onCorrect={onCorrectPassword}
+            passwordLength={8}
+            buttonText="ENTER"
+          />
         </div>
-        <PasswordBox
-          className={classNames("cs-section", { "with-invite": !!inviteId })}
-          autoFill={autoFillPassword}
-          inviteId={invite?._id}
-          onCorrect={onCorrectPassword}
-          passwordLength={8}
-          buttonText="ENTER"
-        />
         <div className="cs-section invite-image" onClick={clickWithSFX}>
           {!!inviteId && (
             <>
