@@ -29,8 +29,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const { muted, showHPLogo } = useSelector(uiSelector);
   const canAccessDD = usePermission();
 
-  const isHomepage =
-    location.pathname === "/" || location.pathname === "/explore";
+  const isHomepage = location.pathname === "/explore";
   const animateShowLogo = isHomepage && showHPLogo;
   const animateHideLogo = isHomepage && showHPLogo === false;
 
@@ -66,9 +65,9 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           withLink
           withText
           className={classNames({
-            hidden: isHomepage && isDesktop,
-            "animate-show": isDesktop && animateShowLogo,
-            "animate-hide": isDesktop && animateHideLogo,
+            hidden: isHomepage,
+            "animate-show": animateShowLogo,
+            "animate-hide": animateHideLogo,
           })}
         />
         <div className="center-aligned-row header-side">

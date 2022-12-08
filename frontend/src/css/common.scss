@@ -612,19 +612,19 @@ a:not(.no-hover) {
   html {
     font-size: $font14px;
   }
-
-  .react-player.dd-text {
-    width: 85%;
-  }
 }
 
-@media only screen and (max-width: 768px) {
+@mixin common-portrait {
   :root {
-    --header-height: 5rem;
+    --header-height: 4em;
   }
 
   html {
     font-size: $font12px;
+  }
+
+  .react-player.dd-text {
+    width: 85%;
   }
 
   .subtitle-text {
@@ -642,6 +642,14 @@ a:not(.no-hover) {
       }
     }
   }
+}
+
+@media only screen and (max-width: 1024px) and (max-aspect-ratio: 3/4) {
+  @include common-portrait;
+}
+
+@media only screen and (max-width: 768px) {
+  @include common-portrait;
 }
 
 @media only screen and (max-width: 375px) {

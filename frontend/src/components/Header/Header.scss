@@ -13,6 +13,7 @@ header {
     to(rgba(0, 0, 0, 1))
   );
   backdrop-filter: blur(2.5em);
+  --logo-translate-x: -50%;
 
   .header-internal {
     padding: 0 2.5rem;
@@ -45,7 +46,7 @@ header {
     position: absolute;
     top: 1em;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(var(--logo-translate-x));
 
     &.hidden {
       opacity: 0;
@@ -53,7 +54,7 @@ header {
 
     &.animate-show {
       opacity: 0;
-      transform: translateX(-50%) scale(0.9);
+      transform: translateX(var(--logo-translate-x)) scale(0.9);
       animation: fadeInGrowLogo 0.5s ease-out forwards;
     }
 
@@ -80,22 +81,22 @@ header {
   @keyframes fadeInGrowLogo {
     0% {
       opacity: 0;
-      transform: translateX(-50%) scale(0.9);
+      transform: translateX(var(--logo-translate-x)) scale(0.9);
     }
     100% {
       opacity: 1;
-      transform: translateX(-50%) scale(1);
+      transform: translateX(var(--logo-translate-x)) scale(1);
     }
   }
 
   @keyframes fadeOutShrinkLogo {
     0% {
       opacity: 1;
-      transform: translateX(-50%) scale(1);
+      transform: translateX(var(--logo-translate-x)) scale(1);
     }
     100% {
       opacity: 0;
-      transform: translateX(-50%) scale(0.9);
+      transform: translateX(var(--logo-translate-x)) scale(0.9);
     }
   }
 }
@@ -114,17 +115,16 @@ header {
   }
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1024px) and (max-aspect-ratio: 3/4) {
   header {
-    .header-internal {
-      padding: 0 1rem;
-    }
+    font-size: $font25px;
   }
 }
 
 @media only screen and (max-width: 768px) {
   header {
-    font-size: $font20px;
+    font-size: $font24px;
+    --logo-translate-x: 0;
 
     .header-internal {
       padding: 0 1em 0 0;
@@ -133,7 +133,6 @@ header {
     .logo-box {
       opacity: 1;
       left: 1em;
-      transform: unset;
     }
   }
 }

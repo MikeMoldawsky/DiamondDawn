@@ -86,11 +86,55 @@
   }
 }
 
+@mixin homepage-cb-portrait {
+  --stone-top: -27%;
+  --stone-bottom: -21%;
+
+  .bg {
+    &.glow {
+      height: 75vw;
+      background-position: 50% 55%;
+      background-size: 150% 100%;
+    }
+
+    &.statue {
+      width: 60%;
+      left: 20%;
+    }
+
+    &.mine-wall-left {
+      display: none;
+    }
+
+    &.bg-right-hand {
+      background-position-y: 42%;
+      background-size: 40% auto;
+    }
+
+    &.bg-left-hand {
+      background-position: 10% 55%;
+      background-size: 25% auto;
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) and (max-aspect-ratio: 3/4) {
+  .homepage-content-background {
+    @include homepage-cb-portrait;
+
+    .bg {
+    }
+  }
+}
+
 @media only screen and (max-width: 768px) {
   .homepage-content-background {
-    --stone-top: -27%;
-    --stone-bottom: -21%;
+    @include homepage-cb-portrait;
+  }
+}
 
+@media only screen and (max-width: 480px) {
+  .homepage-content-background {
     .bg {
       &.glow {
         height: 100vw;
@@ -99,6 +143,7 @@
       }
 
       &.statue {
+        background-image: url($CDN_URL + "/images/homepage/statue-480.png");
         width: 100%;
         height: unset;
         left: 0;
@@ -106,10 +151,6 @@
         .rough-diamond {
           width: 17.5%;
         }
-      }
-
-      &.mine-wall-left {
-        display: none;
       }
 
       &.bg-right-hand {
@@ -120,16 +161,6 @@
       &.bg-left-hand {
         background-position: 10% 53%;
         background-size: 35% auto;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 480px) {
-  .homepage-content-background {
-    .bg {
-      &.statue {
-        background-image: url($CDN_URL + "/images/homepage/statue-480.png");
       }
     }
   }
