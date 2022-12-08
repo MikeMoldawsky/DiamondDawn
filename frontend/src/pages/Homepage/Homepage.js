@@ -64,11 +64,7 @@ const HomeTopContent = () => {
           <CTAButton className="lg" />
         </div>
         <div className="center-center-aligned-row buttons-row">
-          <PlayButton
-            className="element"
-            videos={trailerSources}
-            index={0}
-          />
+          <PlayButton className="element" videos={trailerSources} index={0} />
           <PlayButton
             className="element second"
             videos={trailerSources}
@@ -81,8 +77,8 @@ const HomeTopContent = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Homepage = () => {
   const dispatch = useDispatch();

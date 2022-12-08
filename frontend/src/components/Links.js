@@ -12,9 +12,9 @@ import { collectorSelector } from "store/collectorReducer";
 import { systemSelector } from "store/systemReducer";
 
 export const Link = ({ href, className, disabled, title = "", children }) => {
-  const aProps = {}
+  const aProps = {};
   if (!!href) {
-    aProps.href = href
+    aProps.href = href;
   }
 
   return (
@@ -27,7 +27,7 @@ export const Link = ({ href, className, disabled, title = "", children }) => {
     >
       {children}
     </a>
-  )
+  );
 };
 
 export const TwitterLink = ({ className, children }) => (

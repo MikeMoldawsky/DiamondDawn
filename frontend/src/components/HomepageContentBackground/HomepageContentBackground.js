@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./HomepageContentBackground.scss";
 import ReactPlayer from "react-player";
 import classNames from "classnames";
@@ -8,7 +8,7 @@ import useWindowDimensions from "hooks/useWindowDimensions";
 const HomepageContentBackground = () => {
   const { width } = useWindowDimensions();
   // fix for IOS - stone animation not working
-  const [isStoneMoving, setIsStoneMoving] = useState(false)
+  const [isStoneMoving, setIsStoneMoving] = useState(false);
 
   return (
     <div className="bg homepage-content-background">
@@ -21,7 +21,9 @@ const HomepageContentBackground = () => {
           controls={false}
           muted
           loop
-          className={classNames("react-player rough-diamond", { moving: isStoneMoving })}
+          className={classNames("react-player rough-diamond", {
+            moving: isStoneMoving,
+          })}
           width=""
           height=""
           onStart={() => setIsStoneMoving(true)}

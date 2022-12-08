@@ -9,7 +9,7 @@ const CopyButton = ({ content, children, onCopy, ...props }) => {
   const dispatch = useDispatch();
 
   const onClick = (e) => {
-    if (props?.disabled) return
+    if (props?.disabled) return;
 
     dispatch(
       updateUiState({ copyNotification: { left: e.pageX, top: e.pageY - 10 } })
