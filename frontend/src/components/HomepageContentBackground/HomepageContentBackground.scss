@@ -90,8 +90,9 @@
   .homepage-content-background {
     .bg {
       &.glow {
-        background-position: center center;
-        transform: translateY(-45%);
+        height: 100vw;
+        background-position: 50% 55%;
+        background-size: 150% 150%;
       }
 
       &.statue {
