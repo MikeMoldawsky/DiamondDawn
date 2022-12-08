@@ -75,7 +75,7 @@ header {
   }
 
   .fa-twitter {
-    margin-top: 0.2em;
+    margin-top: 0.4em;
   }
 
   @keyframes fadeInGrowLogo {
@@ -115,7 +115,7 @@ header {
   }
 }
 
-@media only screen and (max-width: 1024px) and (max-aspect-ratio: 3/4) {
+@media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
   header {
     font-size: $font25px;
   }
@@ -123,16 +123,47 @@ header {
 
 @media only screen and (max-width: 768px) {
   header {
-    font-size: $font24px;
-    --logo-translate-x: 0;
+    font-size: $font22px;
 
     .header-internal {
       padding: 0 1em 0 0;
     }
 
     .logo-box {
+      img {
+        width: 5em;
+      }
+
+      &.with-text {
+        &:after {
+          font-size: 0.55em;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  header {
+    .header-internal {
+      .vertical-sep {
+        width: 0px;
+        margin: 0 0.5em;
+      }
+    }
+
+    .logo-box {
       opacity: 1;
-      left: 1em;
+
+      img {
+        width: 4em;
+      }
+
+      &.with-text {
+        &:after {
+          font-size: 0.45em;
+        }
+      }
     }
   }
 }

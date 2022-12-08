@@ -36,8 +36,6 @@
 }
 
 @mixin video-bg-portrait {
-  margin-top: 0 !important;
-
   .react-player {
     opacity: 0.5;
   }
@@ -60,7 +58,7 @@
   }
 }
 
-@media only screen and (max-width: 1024px) and (max-aspect-ratio: 3/4) {
+@media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
   .teaser-video {
     @include video-bg-portrait;
   }
@@ -69,5 +67,6 @@
 @media only screen and (max-width: 768px) {
   .teaser-video {
     @include video-bg-portrait;
+    margin-top: 0 !important;
   }
 }

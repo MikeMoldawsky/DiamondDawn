@@ -110,7 +110,7 @@
   }
 }
 
-@media only screen and (max-width: 1024px) and (max-aspect-ratio: 3/4) {
+@media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
   .home-background {
     @include home-bg-portrait;
 
