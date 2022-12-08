@@ -13,19 +13,6 @@
     font-size: 2.5em;
     margin-right: 0.25em;
     transform: rotate(0deg);
-
-    &:not(:hover) {
-      animation: playHoverRotateInfinite 2.5s linear forwards infinite;
-    }
-  }
-
-  &.second {
-    svg {
-      &:not(:hover) {
-        animation: playHoverRotateInfinite 2.5s linear forwards infinite;
-        animation-delay: 0.5s;
-      }
-    }
   }
 
   .links-column {
@@ -35,6 +22,25 @@
 
     .video-link {
       white-space: nowrap;
+      text-decoration: underline;
+    }
+  }
+
+  &:not(:hover) {
+    animation: growShrinkInfinite 3s linear forwards infinite;
+
+    svg {
+      animation: playRotateInfinite 3s linear forwards infinite;
+    }
+  }
+
+  &.second {
+    &:not(:hover) {
+      animation-delay: 1s;
+
+      svg {
+        animation-delay: 1s;
+      }
     }
   }
 
@@ -70,15 +76,33 @@
     }
   }
 
-  @keyframes playHoverRotateInfinite {
+  @keyframes playRotateInfinite {
     0% {
       transform: rotate(0deg);
     }
     10% {
       transform: rotate(360deg);
     }
+    20% {
+      transform: rotate(360deg);
+    }
     100% {
       transform: rotate(360deg);
+    }
+  }
+
+  @keyframes growShrinkInfinite {
+    0% {
+      transform: scale(1);
+    }
+    10% {
+      transform: scale(1.02);
+    }
+    20% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1);
     }
   }
 }
