@@ -26,19 +26,13 @@ import PlayButton from "components/PlayButton";
 import { getEarthAndMoonVideo, getTrailerVideos } from "assets/videos";
 import useScrollTop from "hooks/useScrollTop";
 
-const Homepage = () => {
+const HomeTopContent = () => {
   const countdownProps = useMineOpenCountdown();
-  const dispatch = useDispatch();
   const scroll = useScrollTop();
   const { width, height } = useWindowDimensions();
-  useShowLogoOnScroll(3.5);
   const [mousePos, setMousePos] = useState([width / 2, height / 2]);
 
-  useMusic("homepage.mp3");
-
-  useEffect(() => {
-    dispatch(setSelectedTokenId(-1));
-  }, []);
+  useShowLogoOnScroll(3.5);
 
   const winHeightLimit = height / 2;
   const topViewEffectScrollLimit =
@@ -54,6 +48,53 @@ const Homepage = () => {
   const trailerSources = getTrailerVideos(width);
 
   return (
+    <div
+      className="top-content center-aligned-column"
+      onMouseMove={(e) => setMousePos([e.pageX, e.pageY])}
+    >
+      <HomeBackground mousePos={mousePos} />
+      <div className="opening" style={topViewStyles}>
+        <div className="logo">
+          <AnimatedLogo withText />
+        </div>
+        <div className="tagline-text">
+          The first ever virtual diamond mining experience
+        </div>
+        <div>
+          <CTAButton className="lg" />
+        </div>
+        <div className="center-center-aligned-row buttons-row">
+          <PlayButton
+            className="element"
+            videos={trailerSources}
+            index={0}
+          />
+          <PlayButton
+            className="element second"
+            videos={trailerSources}
+            index={1}
+          />
+        </div>
+        <div className="countdown-container">
+          <div className="text">MINE WILL OPEN IN</div>
+          <Countdown {...countdownProps} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const Homepage = () => {
+  const dispatch = useDispatch();
+  const { width } = useWindowDimensions();
+
+  useMusic("homepage.mp3");
+
+  useEffect(() => {
+    dispatch(setSelectedTokenId(-1));
+  }, []);
+
+  return (
     <Page
       pageName="homepage"
       images={[
@@ -63,39 +104,7 @@ const Homepage = () => {
       ]}
     >
       <div className="page homepage">
-        <div
-          className="top-content center-aligned-column"
-          onMouseMove={(e) => setMousePos([e.pageX, e.pageY])}
-        >
-          <HomeBackground mousePos={mousePos} />
-          <div className="opening" style={topViewStyles}>
-            <div className="logo">
-              <AnimatedLogo withText />
-            </div>
-            <div className="tagline-text">
-              The first ever virtual diamond mining experience
-            </div>
-            <div>
-              <CTAButton className="lg" />
-            </div>
-            <div className="center-center-aligned-row buttons-row">
-              <PlayButton
-                className="element"
-                videos={trailerSources}
-                index={0}
-              />
-              <PlayButton
-                className="element second"
-                videos={trailerSources}
-                index={1}
-              />
-            </div>
-            <div className="countdown-container">
-              <div className="text">MINE WILL OPEN IN</div>
-              <Countdown {...countdownProps} />
-            </div>
-          </div>
-        </div>
+        <HomeTopContent />
         <div className="homepage-content">
           <HomepageContentBackground />
           <div className="eternal-treasures">

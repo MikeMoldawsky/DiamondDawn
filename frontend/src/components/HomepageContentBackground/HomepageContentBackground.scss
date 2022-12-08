@@ -2,8 +2,8 @@
 
 .homepage-content-background {
   position: relative;
-  $stoneHigh: translate(-55%, -130%);
-  $stoneLow: translate(-55%, -110%);
+  --stone-spin-top: translate(-55%, -130%);
+  --stone-spin-bottom: translate(-55%, -110%);
   --edge-offset: 0;
 
   .bg {
@@ -22,9 +22,14 @@
         position: absolute;
         top: 0;
         left: 50%;
-        transform: $stoneLow;
+        transform: var(--stone-spin-bottom);
         width: 12.5%;
-        animation: moveStone 6s ease-in-out infinite;
+        opacity: 0;
+
+        &.moving {
+          opacity: 1;
+          animation: moveStone 6s ease-in-out infinite;
+        }
       }
     }
     &.glow {
@@ -75,19 +80,22 @@
 
   @keyframes moveStone {
     0% {
-      transform: $stoneLow;
+      transform: var(--stone-spin-bottom);
     }
     50% {
-      transform: $stoneHigh;
+      transform: var(--stone-spin-top);
     }
     100% {
-      transform: $stoneLow;
+      transform: var(--stone-spin-bottom);
     }
   }
 }
 
 @media only screen and (max-width: 768px) {
   .homepage-content-background {
+    --stone-spin-top: translate(-55%, -150%);
+    --stone-spin-bottom: translate(-55%, -110%);
+
     .bg {
       &.glow {
         height: 100vw;
@@ -99,6 +107,10 @@
         width: 100%;
         height: unset;
         left: 0;
+
+        .rough-diamond {
+          width: 17.5%;
+        }
       }
 
       &.mine-wall-left {
