@@ -2,11 +2,11 @@ import React from "react";
 import "./HomepageContentBackground.scss";
 import ReactPlayer from "react-player";
 import classNames from "classnames";
-import {getRoughStoneSpinVideo} from "assets/videos";
+import { getRoughStoneSpinVideo } from "assets/videos";
 import useWindowDimensions from "hooks/useWindowDimensions";
 
 const HomepageContentBackground = () => {
-  const { width } = useWindowDimensions()
+  const { width } = useWindowDimensions();
 
   return (
     <div className="bg homepage-content-background">

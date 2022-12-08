@@ -49,4 +49,4 @@ export const getTrailerVideos = (width) => {
     { src: getCDNVideoUrl("digital-trailer.mp4"), name: "THE DIGITAL" },
     { src: createVideoSources("physical-trailer"), name: "THE PHYSICAL" },
   ];
-}
+};

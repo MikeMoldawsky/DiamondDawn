@@ -23,13 +23,13 @@ import VideoBackground from "components/VideoBackground";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import CTAButton from "../../components/CTAButton";
 import PlayButton from "components/PlayButton";
-import {getEarthAndMoonVideo, getTrailerVideos} from "assets/videos";
+import { getEarthAndMoonVideo, getTrailerVideos } from "assets/videos";
 import useScrollTop from "hooks/useScrollTop";
 
 const Homepage = () => {
   const countdownProps = useMineOpenCountdown();
   const dispatch = useDispatch();
-  const scroll = useScrollTop()
+  const scroll = useScrollTop();
   const { width, height } = useWindowDimensions();
   useShowLogoOnScroll(3.5);
   const [mousePos, setMousePos] = useState([width / 2, height / 2]);
@@ -51,7 +51,7 @@ const Homepage = () => {
     };
   }, [topViewEffectScrollLimit]);
 
-  const trailerSources = getTrailerVideos(width)
+  const trailerSources = getTrailerVideos(width);
 
   return (
     <Page
@@ -79,8 +79,16 @@ const Homepage = () => {
               <CTAButton className="lg" />
             </div>
             <div className="center-center-aligned-row buttons-row">
-              <PlayButton className="element" videos={trailerSources} index={0} />
-              <PlayButton className="element second" videos={trailerSources} index={1} />
+              <PlayButton
+                className="element"
+                videos={trailerSources}
+                index={0}
+              />
+              <PlayButton
+                className="element second"
+                videos={trailerSources}
+                index={1}
+              />
             </div>
             <div className="countdown-container">
               <div className="text">MINE WILL OPEN IN</div>

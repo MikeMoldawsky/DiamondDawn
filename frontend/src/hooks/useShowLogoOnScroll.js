@@ -7,7 +7,7 @@ import useScrollTop from "hooks/useScrollTop";
 const useShowLogoOnScroll = (screenThreshold) => {
   const dispatch = useDispatch();
   const { showHPLogo } = useSelector(uiSelector);
-  const scroll = useScrollTop()
+  const scroll = useScrollTop();
   const { height } = useWindowDimensions();
 
   const winHeightLimitForLogo = height / screenThreshold;

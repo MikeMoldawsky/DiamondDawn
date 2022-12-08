@@ -10,7 +10,7 @@ import MintKey from "components/MintKey";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import {createVideoSources, getCDNVideoUrl} from "utils";
+import { createVideoSources, getCDNVideoUrl } from "utils";
 import {
   collectorSelector,
   loadCollectorByAddress,

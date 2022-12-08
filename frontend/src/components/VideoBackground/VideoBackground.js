@@ -3,7 +3,7 @@ import "./VideoBackground.scss";
 import ReactPlayer from "react-player";
 import PlayButton from "components/PlayButton";
 import CTAButton from "components/CTAButton";
-import {getTrailerVideos} from "assets/videos";
+import { getTrailerVideos } from "assets/videos";
 import useWindowDimensions from "hooks/useWindowDimensions";
 
 const VideoBackground = ({ src, overlap = 0 }) => {
@@ -26,7 +26,7 @@ const VideoBackground = ({ src, overlap = 0 }) => {
     []
   );
 
-  const trailerSources = getTrailerVideos(width)
+  const trailerSources = getTrailerVideos(width);
 
   return (
     <div className="teaser-video" style={{ marginTop: overlap }}>
@@ -39,7 +39,11 @@ const VideoBackground = ({ src, overlap = 0 }) => {
           <div className="separator" />
           <PlayButton className="element" videos={trailerSources} index={0} />
           <div className="separator" />
-          <PlayButton className="element second" videos={trailerSources} index={1} />
+          <PlayButton
+            className="element second"
+            videos={trailerSources}
+            index={1}
+          />
         </div>
       </div>
     </div>

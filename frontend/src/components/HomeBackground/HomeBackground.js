@@ -5,7 +5,7 @@ import ScrollMarker from "components/ScrollMarker";
 import useScrollTop from "hooks/useScrollTop";
 
 const HomeBackground = ({ mousePos }) => {
-  const scroll = useScrollTop()
+  const scroll = useScrollTop();
   const { width, height } = useWindowDimensions();
 
   const parallaxRef = 0.05;
