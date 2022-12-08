@@ -1,7 +1,6 @@
 import React from "react";
 import "./HomepageContentBackground.scss";
 import ReactPlayer from "react-player";
-import classNames from "classnames";
 import { getRoughStoneSpinVideo } from "assets/videos";
 import useWindowDimensions from "hooks/useWindowDimensions";
 
@@ -19,7 +18,7 @@ const HomepageContentBackground = () => {
           controls={false}
           muted
           loop
-          className={classNames("react-player rough-diamond")}
+          className={"react-player rough-diamond"}
           width=""
           height=""
         />

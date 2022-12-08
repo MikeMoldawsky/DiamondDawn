@@ -479,7 +479,8 @@ a:not(.no-hover) {
     content: "DIAMOND DAWN";
     position: absolute;
     bottom: -1.2em;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
     text-align: center;
     font-size: $font10px;
@@ -618,6 +619,10 @@ a:not(.no-hover) {
 }
 
 @media only screen and (max-width: 768px) {
+  :root {
+    --header-height: 5rem;
+  }
+
   html {
     font-size: $font12px;
   }

@@ -2,9 +2,9 @@
 
 .homepage-content-background {
   position: relative;
-  $stoneHigh: translate(-55%, -130%);
-  $stoneLow: translate(-55%, -110%);
   --edge-offset: 0;
+  --stone-top: -21%;
+  --stone-bottom: -16%;
 
   .bg {
     &.statue {
@@ -20,9 +20,9 @@
 
       .rough-diamond {
         position: absolute;
-        top: 0;
+        top: var(--stone-bottom);
         left: 50%;
-        transform: $stoneLow;
+        transform: translateX(-55%);
         width: 12.5%;
         animation: moveStone 6s ease-in-out infinite;
       }
@@ -75,29 +75,37 @@
 
   @keyframes moveStone {
     0% {
-      transform: $stoneLow;
+      top: var(--stone-bottom);
     }
     50% {
-      transform: $stoneHigh;
+      top: var(--stone-top);
     }
     100% {
-      transform: $stoneLow;
+      top: var(--stone-bottom);
     }
   }
 }
 
 @media only screen and (max-width: 768px) {
   .homepage-content-background {
+    --stone-top: -27%;
+    --stone-bottom: -21%;
+
     .bg {
       &.glow {
-        background-position: center center;
-        transform: translateY(-45%);
+        height: 100vw;
+        background-position: 50% 55%;
+        background-size: 150% 150%;
       }
 
       &.statue {
         width: 100%;
         height: unset;
         left: 0;
+
+        .rough-diamond {
+          width: 17.5%;
+        }
       }
 
       &.mine-wall-left {

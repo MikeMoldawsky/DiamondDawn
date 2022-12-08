@@ -124,10 +124,16 @@ header {
 
 @media only screen and (max-width: 768px) {
   header {
-    font-size: $font16px;
+    font-size: $font20px;
 
     .header-internal {
-      padding: 0 1rem 0 0;
+      padding: 0 1em 0 0;
+    }
+
+    .logo-box {
+      opacity: 1;
+      left: 1em;
+      transform: unset;
     }
   }
 }

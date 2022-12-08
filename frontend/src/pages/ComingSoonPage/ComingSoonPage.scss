@@ -7,6 +7,7 @@
   text-align: center;
   overflow: hidden;
   font-size: calc-font-size(11px);
+  min-height: 40em;
 
   .react-player.bg-video {
     min-width: 102%;
@@ -27,8 +28,12 @@
   }
 
   .cs-section {
-    position: absolute;
-    width: 100%;
+    position: relative;
+  }
+
+  .content-column {
+    height: 100%;
+    justify-content: space-between;
   }
 
   .project-title {
@@ -49,7 +54,7 @@
   }
 
   .text-column {
-    top: 47%;
+    top: 3.5%;
 
     .tagline-text {
       color: $gold;
@@ -110,7 +115,7 @@
     }
 
     .text-column {
-      top: 46%;
+      top: 5vh;
 
       .tagline-text {
         font-size: $font22px;
@@ -119,6 +124,7 @@
 
     .password-box {
       bottom: 15%;
+      margin-top: 5vh;
 
       &.with-invite {
         bottom: 17%;
