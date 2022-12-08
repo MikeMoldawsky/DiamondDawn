@@ -2,8 +2,6 @@
 
 .homepage-content-background {
   position: relative;
-  //--stone-spin-top: translate(-55%, -130%);
-  //--stone-spin-bottom: translate(-55%, -110%);
   --edge-offset: 0;
   --stone-top: -21%;
   --stone-bottom: -16%;
@@ -25,14 +23,8 @@
         top: var(--stone-bottom);
         left: 50%;
         transform: translateX(-55%);
-        //transform: var(--stone-spin-bottom);
         width: 12.5%;
-        opacity: 0;
-
-        &.moving {
-          opacity: 1;
-          animation: moveStone 6s ease-in-out infinite;
-        }
+        animation: moveStone 6s ease-in-out infinite;
       }
     }
     &.glow {
@@ -84,15 +76,12 @@
   @keyframes moveStone {
     0% {
       top: var(--stone-bottom);
-      //transform: var(--stone-spin-bottom);
     }
     50% {
       top: var(--stone-top);
-      //transform: var(--stone-spin-top);
     }
     100% {
       top: var(--stone-bottom);
-      //transform: var(--stone-spin-bottom);
     }
   }
 }
@@ -101,8 +90,6 @@
   .homepage-content-background {
     --stone-top: -27%;
     --stone-bottom: -21%;
-    //--stone-spin-top: translate(-55%, -150%);
-    //--stone-spin-bottom: translate(-55%, -110%);
 
     .bg {
       &.glow {
