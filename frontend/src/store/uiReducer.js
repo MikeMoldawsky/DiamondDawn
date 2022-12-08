@@ -14,7 +14,6 @@ const INITIAL_STATE = {
   shouldIgnoreTokenTransferWatch: false,
   muted: true,
   explicitMute: false,
-  scroll: 0,
   privateSaleAuth: resolveDemoAuth(),
   showHPLogo: null,
   musicSrc: "",

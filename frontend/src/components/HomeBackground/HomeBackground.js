@@ -1,12 +1,11 @@
 import React from "react";
 import "./HomeBackground.scss";
-import { useSelector } from "react-redux";
-import { uiSelector } from "store/uiReducer";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import ScrollMarker from "components/ScrollMarker";
+import useScrollTop from "hooks/useScrollTop";
 
 const HomeBackground = ({ mousePos }) => {
-  const { scroll } = useSelector(uiSelector);
+  const scroll = useScrollTop()
   const { width, height } = useWindowDimensions();
 
   const parallaxRef = 0.05;

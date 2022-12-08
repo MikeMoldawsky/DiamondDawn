@@ -5,11 +5,11 @@ import classNames from "classnames";
 import { useDispatch } from "react-redux";
 import { showVideo } from "store/videoReducer";
 import useButtonSFX from "hooks/useButtonSFX";
-import { getCDNVideoUrl } from "utils";
+import {createVideoSources, getCDNVideoUrl} from "utils";
 
 export const TRAILERS = [
   { src: getCDNVideoUrl("digital-trailer.mp4"), name: "THE DIGITAL" },
-  { src: getCDNVideoUrl("physical-teaser.webm"), name: "THE PHYSICAL" },
+  { src: createVideoSources("physical-trailer"), name: "THE PHYSICAL" },
 ];
 
 const PlayButton = ({ className, videos, index, onClick }) => {
