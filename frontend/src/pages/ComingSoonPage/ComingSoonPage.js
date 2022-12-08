@@ -18,36 +18,11 @@ import useActionDispatch from "hooks/useActionDispatch";
 import usePermission from "hooks/usePermission";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useButtonSFX from "hooks/useButtonSFX";
-
-const getDDTextVideo = (width) => {
-  let fileName = "dd-text-1440";
-  // if (width <= 480) fileName += "-480";
-  // else
-  // if (width <= 1024) fileName += "-1440";
-
-  return createVideoSources(fileName);
-};
-
-const getPSTextVideo = (width) => {
-  let fileName = "ps-text-480";
-  // if (width <= 480) fileName += "-240";
-  // else
-  // if (width <= 1024) fileName += "-480";
-
-  return createVideoSources(fileName);
-};
-
-const getMobileBGVideo = (width) => {
-  let fileName = "coming_soon_mobile";
-  // if (width <= 400) fileName += "-300";
-  // else if (width <= 600) fileName += "-400";
-  // else if (width <= 768) fileName += "-588";
-  if (width <= 360) fileName += "-300";
-  else if (width <= 480) fileName += "-400";
-  else if (width <= 768) fileName += "-588";
-
-  return [{ src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" }];
-};
+import {
+  getDDTextVideo,
+  getPSTextVideo,
+  getMobileBGVideo,
+} from "assets/videos";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();

@@ -14,8 +14,8 @@
       left: 61%;
       right: unset;
       z-index: -1;
-      background: url($CDN_URL + "/images/homepage/statue.png") no-repeat right
-        0;
+      background: url($CDN_URL + "/images/homepage/statue-960.png") no-repeat
+        right 0;
       background-size: 100%;
 
       .rough-diamond {
@@ -82,6 +82,47 @@
     }
     100% {
       transform: $stoneLow;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .homepage-content-background {
+    .bg {
+      &.glow {
+        background-position: center center;
+        transform: translateY(-45%);
+      }
+
+      &.statue {
+        width: 100%;
+        height: unset;
+        left: 0;
+      }
+
+      &.mine-wall-left {
+        display: none;
+      }
+
+      &.bg-right-hand {
+        background-position-y: 37%;
+        background-size: 60% auto;
+      }
+
+      &.bg-left-hand {
+        background-position: 10% 53%;
+        background-size: 35% auto;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .homepage-content-background {
+    .bg {
+      &.statue {
+        background-image: url($CDN_URL + "/images/homepage/statue-480.png");
+      }
     }
   }
 }

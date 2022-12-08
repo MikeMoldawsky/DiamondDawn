@@ -20,7 +20,7 @@ const TheJourneyPage = () => {
   return (
     <InfoPage
       className="the-journey-page"
-      teaser={{ src: "physical-loop.webm", overlap: "-25%" }}
+      teaser={{ src: getCDNVideoUrl("physical-loop.webm"), overlap: "-25%" }}
     >
       <div className="general">
         <div className="leading-text">THE JOURNEY</div>

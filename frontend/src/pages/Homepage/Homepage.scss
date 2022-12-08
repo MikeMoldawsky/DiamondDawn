@@ -208,3 +208,77 @@
     }
   }
 }
+
+@media only screen and (max-width: 1024px) {
+  .page.homepage {
+    .top-content {
+      .opening {
+        --base-font-size: 40;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .page.homepage {
+    font-size: $font16px;
+
+    .top-content {
+      width: 100%;
+      margin-left: 0;
+      justify-content: flex-start;
+
+      .opening {
+        --base-font-size: 50;
+        max-width: 75%;
+        margin-top: 0;
+
+        .logo {
+          width: 100%;
+
+          .react-player {
+            width: 100% !important;
+          }
+        }
+
+        .tagline-text {
+          width: 15em;
+        }
+
+        .buttons-row .play-button:not(:last-child) {
+          margin-right: 4em;
+        }
+
+        .countdown-container {
+          font-size: $font9px;
+        }
+      }
+    }
+
+    .homepage-content {
+      top: unset;
+    }
+
+    .text-section {
+      margin: 15vw auto 0;
+      min-width: unset !important;
+      width: 80% !important;
+
+      .text {
+        width: 100%;
+      }
+    }
+
+    .eternal-treasures {
+      .text-section {
+        margin-top: 75vw;
+      }
+    }
+
+    .teaser-video {
+      .react-player {
+        opacity: 0.5;
+      }
+    }
+  }
+}

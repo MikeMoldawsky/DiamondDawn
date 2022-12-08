@@ -13,12 +13,16 @@ import {
 } from "./TechPageContent";
 import InfoPage from "components/InfoPage";
 import AnimatedText from "components/AnimatedText";
+import { getEarthAndMoonVideo } from "assets/videos";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 const TechPage = () => {
+  const { width } = useWindowDimensions();
+
   return (
     <InfoPage
       className="tech-page"
-      teaser={{ src: "earth-and-moon.webm", overlap: "-35%" }}
+      teaser={{ src: getEarthAndMoonVideo(width), overlap: "-35%" }}
     >
       <div className="left-aligned-column general">
         <div className="leading-text">Timeless Technology</div>

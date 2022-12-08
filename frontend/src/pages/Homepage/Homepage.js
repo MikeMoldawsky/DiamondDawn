@@ -25,6 +25,7 @@ import VideoBackground from "components/VideoBackground";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import CTAButton from "../../components/CTAButton";
 import PlayButton, { TRAILERS } from "components/PlayButton/PlayButton";
+import { getEarthAndMoonVideo } from "assets/videos";
 
 const Homepage = () => {
   const countdownProps = useMineOpenCountdown();
@@ -52,71 +53,69 @@ const Homepage = () => {
   }, [topViewEffectScrollLimit]);
 
   return (
-    <PageSizeLimit>
-      <Page
-        pageName="homepage"
-        images={[
-          getCDNImageUrl("/homepage/sky.jpg"),
-          getCDNImageUrl("/homepage/homepage-mountains-back.png"),
-          getCDNImageUrl("/homepage/homepage-mountains-front.png"),
-        ]}
-      >
-        <ScrollingPage className="homepage">
-          <div className="page homepage">
-            <div
-              className="top-content center-aligned-column"
-              onMouseMove={(e) => setMousePos([e.pageX, e.pageY])}
-            >
-              <HomeBackground mousePos={mousePos} />
-              <div className="opening" style={topViewStyles}>
-                <div className="logo">
-                  <AnimatedLogo withText />
-                </div>
-                <div className="tagline-text">
-                  The first ever virtual diamond mining experience
-                </div>
-                <div>
-                  <CTAButton className="lg" />
-                </div>
-                <div className="center-center-aligned-row buttons-row">
-                  <PlayButton className="element" videos={TRAILERS} index={0} />
-                  <PlayButton className="element" videos={TRAILERS} index={1} />
-                </div>
-                <div className="countdown-container">
-                  <div className="text">MINE WILL OPEN IN</div>
-                  <Countdown {...countdownProps} />
-                </div>
+    <Page
+      pageName="homepage"
+      images={[
+        getCDNImageUrl("/homepage/sky.jpg"),
+        getCDNImageUrl("/homepage/homepage-mountains-back.png"),
+        getCDNImageUrl("/homepage/homepage-mountains-front.png"),
+      ]}
+    >
+      <ScrollingPage className="homepage">
+        <div className="page homepage">
+          <div
+            className="top-content center-aligned-column"
+            onMouseMove={(e) => setMousePos([e.pageX, e.pageY])}
+          >
+            <HomeBackground mousePos={mousePos} />
+            <div className="opening" style={topViewStyles}>
+              <div className="logo">
+                <AnimatedLogo withText />
+              </div>
+              <div className="tagline-text">
+                The first ever virtual diamond mining experience
+              </div>
+              <div>
+                <CTAButton className="lg" />
+              </div>
+              <div className="center-center-aligned-row buttons-row">
+                <PlayButton className="element" videos={TRAILERS} index={0} />
+                <PlayButton className="element" videos={TRAILERS} index={1} />
+              </div>
+              <div className="countdown-container">
+                <div className="text">MINE WILL OPEN IN</div>
+                <Countdown {...countdownProps} />
               </div>
             </div>
-            <div className="homepage-content">
-              <HomepageContentBackground />
-              <div className="eternal-treasures">
-                <AnimatedText className="text-section">
-                  <EternalTreasuresText />
-                </AnimatedText>
-              </div>
-              <div className="scarcity">
-                <AnimatedText className="text-section">
-                  <ScarcityText />
-                </AnimatedText>
-              </div>
-              <div className="value-section">
-                <AnimatedText className="text-section">
-                  <ValueText />
-                </AnimatedText>
-              </div>
-              <div className="the-experiment">
-                <AnimatedText className="text-section">
-                  <TeaserText />
-                </AnimatedText>
-              </div>
-            </div>
-            <VideoBackground src="earth-and-moon.webm" overlap="-35%" />
-            <Footer withFAQs />
           </div>
-        </ScrollingPage>
-      </Page>
-    </PageSizeLimit>
+          <div className="homepage-content">
+            <HomepageContentBackground />
+            <div className="eternal-treasures">
+              <AnimatedText className="text-section">
+                <EternalTreasuresText />
+              </AnimatedText>
+            </div>
+            <div className="scarcity">
+              <AnimatedText className="text-section">
+                <ScarcityText />
+              </AnimatedText>
+            </div>
+            <div className="value-section">
+              <AnimatedText className="text-section">
+                <ValueText />
+              </AnimatedText>
+            </div>
+            <div className="the-experiment">
+              <AnimatedText className="text-section">
+                <TeaserText />
+              </AnimatedText>
+            </div>
+          </div>
+          <VideoBackground src={getEarthAndMoonVideo(width)} overlap="-35%" />
+          <Footer withFAQs />
+        </div>
+      </ScrollingPage>
+    </Page>
   );
 };
 

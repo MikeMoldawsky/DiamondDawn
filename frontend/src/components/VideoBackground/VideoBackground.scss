@@ -15,7 +15,6 @@
   );
 
   .react-player {
-    opacity: 0.5;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -32,6 +31,33 @@
       height: 2em;
       background-color: white;
       margin: 0 4em;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .teaser-video {
+    margin-top: 0 !important;
+
+    .react-player {
+      opacity: 0.5;
+    }
+
+    .buttons-row {
+      flex-direction: column;
+      font-size: 1.125em;
+
+      .play-buttons {
+        margin-top: 3rem;
+      }
+
+      .play-button:not(:last-child) {
+        margin-right: 3em;
+      }
+
+      .separator {
+        display: none;
+      }
     }
   }
 }
