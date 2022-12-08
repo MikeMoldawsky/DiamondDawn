@@ -182,6 +182,11 @@ export const getCDNVideoUrl = (objectPath) =>
 export const getCDNAudioUrl = (objectPath) =>
   getCDNObjectUrl(`/audio${prependBackslash(objectPath)}`);
 
+export const createVideoSources = (fileName) => [
+  { src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm" },
+  { src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" },
+];
+
 export const shortenEthAddress = (address) =>
   address
     ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
@@ -204,8 +209,3 @@ export const chainNameById = (chainId) => {
       return "Local";
   }
 };
-
-export const createVideoSources = (fileName) => [
-  { src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm" },
-  { src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" },
-];

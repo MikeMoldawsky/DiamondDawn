@@ -80,7 +80,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             icon={muted ? faVolumeMute : faVolumeUp}
             onClick={onVolumeClick}
           />
-          {showRestrictedContent && (
+          {canAccessDD && (
             <FontAwesomeIcon
               className="menu-icon"
               icon={getMenuIcon()}

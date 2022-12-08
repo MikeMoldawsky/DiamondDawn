@@ -38,3 +38,15 @@ export const getEarthAndMoonVideo = (width) => {
 
   return createVideoSources(fileName);
 };
+
+export const getRoughStoneSpinVideo = (width) => {
+  return createVideoSources("rough-stone-spin-480");
+};
+
+// TRAILERS
+export const getTrailerVideos = (width) => {
+  return [
+    { src: getCDNVideoUrl("digital-trailer.mp4"), name: "THE DIGITAL" },
+    { src: createVideoSources("physical-trailer"), name: "THE PHYSICAL" },
+  ];
+};

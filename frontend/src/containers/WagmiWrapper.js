@@ -15,6 +15,7 @@ import {
   coinbaseWallet,
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 const localChain = {
   id: 31337,
@@ -32,6 +33,8 @@ const localChain = {
 };
 
 function WagmiWrapper({ children }) {
+  const { width } = useWindowDimensions();
+
   const chainByEnv =
     process.env.REACT_APP_ENVIRONMENT === "production"
       ? chain.mainnet
@@ -47,15 +50,22 @@ function WagmiWrapper({ children }) {
     ]
   );
 
+  const wallets =
+    width >= 768
+      ? [
+          metaMaskWallet({ chains, shimDisconnect: true }),
+          coinbaseWallet({ chains, appName: "Diamond Dawn" }),
+          walletConnectWallet({ chains }),
+        ]
+      : [
+          walletConnectWallet({ chains }),
+          coinbaseWallet({ chains, appName: "Diamond Dawn" }),
+        ];
+
   const connectors = connectorsForWallets([
     {
       groupName: "Suggested",
-      wallets: [
-        metaMaskWallet({ chains, shimDisconnect: true }),
-        rainbowWallet({ chains }),
-        coinbaseWallet({ chains, appName: "Diamond Dawn" }),
-        walletConnectWallet({ chains }),
-      ],
+      wallets,
     },
   ]);
 

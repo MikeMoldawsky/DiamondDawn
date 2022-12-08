@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import useWindowDimensions from "hooks/useWindowDimensions";
+import useScrollTop from "hooks/useScrollTop";
 
 const useShowLogoOnScroll = (screenThreshold) => {
   const dispatch = useDispatch();
-  const { scroll, showHPLogo } = useSelector(uiSelector);
+  const { showHPLogo } = useSelector(uiSelector);
+  const scroll = useScrollTop();
   const { height } = useWindowDimensions();
 
   const winHeightLimitForLogo = height / screenThreshold;

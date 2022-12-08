@@ -10,7 +10,7 @@ import MintKey from "components/MintKey";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { getCDNVideoUrl } from "utils";
+import { createVideoSources, getCDNVideoUrl } from "utils";
 import {
   collectorSelector,
   loadCollectorByAddress,
@@ -63,8 +63,8 @@ const Invite = () => {
     }
   }, [systemStage, collector?.approved, collector?.mintWindowStart]);
 
-  const videoSrc = getCDNVideoUrl(
-    collector ? "embedded-diamonds.webm" : "diamond-evolution.webm"
+  const videoSrc = createVideoSources(
+    collector ? "embedded-diamonds" : "diamond-evolution"
   );
 
   const renderInlineVideo = useCallback(

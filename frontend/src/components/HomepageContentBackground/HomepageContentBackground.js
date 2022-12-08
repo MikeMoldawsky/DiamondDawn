@@ -1,16 +1,19 @@
 import React from "react";
 import "./HomepageContentBackground.scss";
 import ReactPlayer from "react-player";
-import { getCDNVideoUrl } from "utils";
 import classNames from "classnames";
+import { getRoughStoneSpinVideo } from "assets/videos";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 const HomepageContentBackground = () => {
+  const { width } = useWindowDimensions();
+
   return (
     <div className="bg homepage-content-background">
       <div className="bg glow" />
       <div className="bg statue">
         <ReactPlayer
-          url={getCDNVideoUrl("rough-stone.webm")}
+          url={getRoughStoneSpinVideo(width)}
           playing
           playsinline
           controls={false}

@@ -13,6 +13,19 @@
     font-size: 2.5em;
     margin-right: 0.25em;
     transform: rotate(0deg);
+
+    &:not(:hover) {
+      animation: playHoverRotateInfinite 2.5s linear forwards infinite;
+    }
+  }
+
+  &.second {
+    svg {
+      &:not(:hover) {
+        animation: playHoverRotateInfinite 2.5s linear forwards infinite;
+        animation-delay: 0.5s;
+      }
+    }
   }
 
   .links-column {
@@ -51,6 +64,18 @@
   @keyframes playHoverRotate {
     0% {
       transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes playHoverRotateInfinite {
+    0% {
+      transform: rotate(0deg);
+    }
+    10% {
+      transform: rotate(360deg);
     }
     100% {
       transform: rotate(360deg);
