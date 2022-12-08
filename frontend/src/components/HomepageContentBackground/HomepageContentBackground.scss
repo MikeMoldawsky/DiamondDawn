@@ -2,8 +2,8 @@
 
 .homepage-content-background {
   position: relative;
-  $stoneHigh: translate(-55%, -115%);
-  $stoneLow: translate(-55%, -105%);
+  $stoneHigh: translate(-55%, -130%);
+  $stoneLow: translate(-55%, -110%);
   --edge-offset: 0;
 
   .bg {
@@ -23,7 +23,7 @@
         top: 0;
         left: 50%;
         transform: $stoneLow;
-        width: 20%;
+        width: 12.5%;
         animation: moveStone 6s ease-in-out infinite;
       }
     }

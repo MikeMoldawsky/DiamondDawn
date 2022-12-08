@@ -5,12 +5,6 @@ import classNames from "classnames";
 import { useDispatch } from "react-redux";
 import { showVideo } from "store/videoReducer";
 import useButtonSFX from "hooks/useButtonSFX";
-import {createVideoSources, getCDNVideoUrl} from "utils";
-
-export const TRAILERS = [
-  { src: getCDNVideoUrl("digital-trailer.mp4"), name: "THE DIGITAL" },
-  { src: createVideoSources("physical-trailer"), name: "THE PHYSICAL" },
-];
 
 const PlayButton = ({ className, videos, index, onClick }) => {
   const dispatch = useDispatch();
