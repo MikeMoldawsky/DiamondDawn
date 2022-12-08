@@ -11,6 +11,7 @@ const InlineVideo = ({
   showThreshold = 0.5,
   withLoader = true,
   forceMuted,
+  forceLoader,
   ...props
 }) => {
   const { muted } = useSelector(uiSelector);
@@ -38,6 +39,7 @@ const InlineVideo = ({
     <WaitFor
       videos={[{ progress: videoProgress, threshold: showThreshold, src }]}
       withLoader={withLoader}
+      forceLoader={forceLoader}
     >
       {renderVideo()}
     </WaitFor>

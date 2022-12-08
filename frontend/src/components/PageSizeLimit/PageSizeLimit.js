@@ -18,7 +18,7 @@ const PageSizeLimit = ({ minWidth = DEFAULT_MIN_WIDTH, children }) => {
 
   const renderInlineVideo = useCallback(
     () => (
-      <InlineVideo src={createVideoSources("diamond-evolution")} forceMuted />
+      <InlineVideo src={createVideoSources("diamond-evolution")} forceMuted forceLoader />
     ),
     []
   );
