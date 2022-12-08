@@ -11,17 +11,24 @@ import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import { systemSelector } from "store/systemReducer";
 
-export const Link = ({ href, className, disabled, title = "", children }) => (
-  <a
-    target="_blank"
-    rel="noreferrer"
-    href={href}
-    title={title}
-    className={classNames(className, { disabled })}
-  >
-    {children}
-  </a>
-);
+export const Link = ({ href, className, disabled, title = "", children }) => {
+  const aProps = {}
+  if (!!href) {
+    aProps.href = href
+  }
+
+  return (
+    <a
+      target="_blank"
+      rel="noreferrer"
+      title={title}
+      className={classNames(className, { disabled })}
+      {...aProps}
+    >
+      {children}
+    </a>
+  )
+};
 
 export const TwitterLink = ({ className, children }) => (
   <Link href={DIAMOND_DAWN_TWITTER_URL} className={className}>
