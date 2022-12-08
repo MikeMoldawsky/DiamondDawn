@@ -25,7 +25,7 @@ import VideoBackground from "components/VideoBackground";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import CTAButton from "../../components/CTAButton";
 import PlayButton, { TRAILERS } from "components/PlayButton/PlayButton";
-import {getEarthAndMoonVideo} from "assets/videos";
+import { getEarthAndMoonVideo } from "assets/videos";
 
 const Homepage = () => {
   const countdownProps = useMineOpenCountdown();

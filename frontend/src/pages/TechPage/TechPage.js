@@ -13,11 +13,11 @@ import {
 } from "./TechPageContent";
 import InfoPage from "components/InfoPage";
 import AnimatedText from "components/AnimatedText";
-import {getEarthAndMoonVideo} from "assets/videos";
+import { getEarthAndMoonVideo } from "assets/videos";
 import useWindowDimensions from "hooks/useWindowDimensions";
 
 const TechPage = () => {
-  const { width }= useWindowDimensions()
+  const { width } = useWindowDimensions();
 
   return (
     <InfoPage

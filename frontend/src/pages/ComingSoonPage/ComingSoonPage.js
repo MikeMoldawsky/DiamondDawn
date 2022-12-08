@@ -18,7 +18,11 @@ import useActionDispatch from "hooks/useActionDispatch";
 import usePermission from "hooks/usePermission";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useButtonSFX from "hooks/useButtonSFX";
-import {getDDTextVideo, getPSTextVideo, getMobileBGVideo} from "assets/videos"
+import {
+  getDDTextVideo,
+  getPSTextVideo,
+  getMobileBGVideo,
+} from "assets/videos";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();

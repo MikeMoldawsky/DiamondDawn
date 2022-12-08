@@ -21,7 +21,7 @@ import websiteIcon from "assets/images/website.svg";
 import InfoPage from "components/InfoPage";
 import Link from "components/Links";
 import AnimatedText from "components/AnimatedText";
-import {getCDNVideoUrl} from "utils";
+import { getCDNVideoUrl } from "utils";
 
 const SOCIAL_ICONS = {
   // twitter: getCDNImageUrl("/social/twitter.svg"),

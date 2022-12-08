@@ -1,4 +1,4 @@
-import {getCDNImageUrl} from "utils";
+import { getCDNImageUrl } from "utils";
 
 // EXPLORE
 export const getStatueImage = (width) => {

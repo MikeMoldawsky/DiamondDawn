@@ -77,7 +77,8 @@
 @media only screen and (max-width: 768px) {
   .home-background {
     .bg {
-      &.leaves-left, &.leaves-right {
+      &.leaves-left,
+      &.leaves-right {
         background-size: auto 30%;
       }
 

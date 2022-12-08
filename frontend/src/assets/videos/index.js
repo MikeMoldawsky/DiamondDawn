@@ -1,4 +1,4 @@
-import {createVideoSources, getCDNVideoUrl} from "utils";
+import { createVideoSources, getCDNVideoUrl } from "utils";
 
 // FRONT PAGE
 export const getDDTextVideo = (width) => {
@@ -34,7 +34,7 @@ export const getEarthAndMoonVideo = (width) => {
   if (width <= 720) fileName += "-720";
   else if (width <= 960) fileName += "-960";
   else if (width <= 1366) fileName += "-1280";
-  else return getCDNVideoUrl("earth-and-moon.webm")
+  else return getCDNVideoUrl("earth-and-moon.webm");
 
   return createVideoSources(fileName);
 };

@@ -209,6 +209,16 @@
   }
 }
 
+@media only screen and (max-width: 1024px) {
+  .page.homepage {
+    .top-content {
+      .opening {
+        --base-font-size: 40;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 768px) {
   .page.homepage {
     font-size: $font16px;
