@@ -1,5 +1,23 @@
 @import "css/varsNEW";
 
+@mixin aspect($width: 16, $height: 9) {
+  aspect-ratio: $width / $height;
+
+  @supports not (aspect-ratio: $width / $height) {
+    &::before {
+      content: '';
+      float: left;
+      padding-top: calc((#{$height} / #{$width}) * 100%);
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
+}
+
 .homepage-content-background {
   position: relative;
   --edge-offset: 0;
@@ -10,7 +28,8 @@
     &.statue {
       width: auto;
       height: 27%;
-      aspect-ratio: 1;
+      @include aspect(1, 1);
+      //aspect-ratio: 1;
       left: 61%;
       right: unset;
       z-index: -1;
