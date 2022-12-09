@@ -68,7 +68,7 @@ const Invite = () => {
   );
 
   const renderInlineVideo = useCallback(
-    () => <InlineVideo src={videoSrc} />,
+    () => <InlineVideo src={videoSrc} showThreshold={0} />,
     [videoSrc]
   );
 
