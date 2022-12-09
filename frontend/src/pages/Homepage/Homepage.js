@@ -124,7 +124,10 @@ const Homepage = () => {
             </AnimatedText>
           </div>
         </div>
-        <VideoBackground src={getEarthAndMoonVideo(width, height)} overlap="-25%" />
+        <VideoBackground
+          src={getEarthAndMoonVideo(width, height)}
+          overlap="-25%"
+        />
         <Footer withFAQs />
       </div>
     </Page>

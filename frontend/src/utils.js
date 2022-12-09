@@ -189,7 +189,7 @@ export const createVideoSources = (fileName) => [
 ];
 
 export const isPortraitMode = (width, height) => {
-  return width <= 768 || (width <= 1024 && height > width)
+  return width <= 768 || (width <= 1024 && height > width);
 };
 export const shortenEthAddress = (address) =>
   address
