@@ -12,7 +12,6 @@ export const WaitFor = ({
   withLoader = true,
   Loader = () => <Loading />,
   containerClassName,
-                          forceLoader,
   children,
 }) => {
   const contentReady = useWaitFor({ actions, images, videos });
@@ -44,7 +43,7 @@ export const WaitFor = ({
   return (
     <>
       {(isReady || videos.length > 0) && children}
-      {(forceLoader || (withLoader && !isReady)) && renderLoading()}
+      {withLoader && !isReady && renderLoading()}
     </>
   );
 };

@@ -18,7 +18,7 @@ const PageSizeLimit = ({ minWidth = DEFAULT_MIN_WIDTH, children }) => {
 
   const renderInlineVideo = useCallback(
     () => (
-      <InlineVideo src={createVideoSources("diamond-evolution")} forceMuted forceLoader />
+      <InlineVideo src={createVideoSources("diamond-evolution")} forceMuted />
     ),
     []
   );
@@ -31,13 +31,15 @@ const PageSizeLimit = ({ minWidth = DEFAULT_MIN_WIDTH, children }) => {
         withLoader={false}
         className="dd-text"
         src={createVideoSources("dd-text-1440")}
-        showThreshold={0}
+        showThreshold={0.025}
       />
       <div className="tagline-text">The mobile version is coming soon!</div>
       <div className="text">
         For the full experience, please visit Diamond Dawn on a computer.
       </div>
-      <div className="video-box">{renderInlineVideo()}</div>
+      <div className="video-box">
+        {renderInlineVideo()}
+      </div>
     </div>
   );
 };
