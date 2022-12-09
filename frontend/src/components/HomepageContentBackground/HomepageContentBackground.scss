@@ -8,10 +8,10 @@
 
   .bg {
     &.statue {
-      width: auto;
-      height: 27%;
-      aspect-ratio: 1;
-      left: 61%;
+      width: 25vw;
+      height: 25vw;
+      //aspect-ratio: 1;
+      left: 65%;
       right: unset;
       z-index: -1;
       background: url($CDN_URL + "/images/homepage/statue-960.png") no-repeat
@@ -98,7 +98,8 @@
     }
 
     &.statue {
-      width: 60%;
+      width: 60vw;
+      height: 60vw;
       left: 20%;
     }
 
@@ -121,9 +122,6 @@
 @media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
   .homepage-content-background {
     @include homepage-cb-portrait;
-
-    .bg {
-    }
   }
 }
 
@@ -144,8 +142,8 @@
 
       &.statue {
         background-image: url($CDN_URL + "/images/homepage/statue-480.png");
-        width: 100%;
-        height: unset;
+        width: 100vw;
+        height: 100vw;
         left: 0;
 
         .rough-diamond {
