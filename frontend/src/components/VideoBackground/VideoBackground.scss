@@ -35,29 +35,38 @@
   }
 }
 
+@mixin video-bg-portrait {
+  .react-player {
+    opacity: 0.5;
+  }
+
+  .buttons-row {
+    flex-direction: column;
+    font-size: 1.125em;
+
+    .play-buttons {
+      margin-top: 3rem;
+    }
+
+    .play-button:not(:last-child) {
+      margin-right: 3em;
+    }
+
+    .separator {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
+  .teaser-video {
+    @include video-bg-portrait;
+  }
+}
+
 @media only screen and (max-width: 768px) {
   .teaser-video {
+    @include video-bg-portrait;
     margin-top: 0 !important;
-
-    .react-player {
-      opacity: 0.5;
-    }
-
-    .buttons-row {
-      flex-direction: column;
-      font-size: 1.125em;
-
-      .play-buttons {
-        margin-top: 3rem;
-      }
-
-      .play-button:not(:last-child) {
-        margin-right: 3em;
-      }
-
-      .separator {
-        display: none;
-      }
-    }
   }
 }

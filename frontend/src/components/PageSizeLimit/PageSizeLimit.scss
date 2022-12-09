@@ -9,7 +9,7 @@
   top: 0;
   left: 0;
   justify-content: flex-start;
-  padding-top: 20%;
+  padding-top: 25%;
 
   .react-player.dd-text {
     margin-bottom: 2em;
@@ -33,10 +33,9 @@
     margin-top: 5%;
     width: 90%;
     border: none;
+    box-shadow: 0 0 8px 4px #bbbbbb44;
 
     .react-player {
-      height: unset;
-
       &.loader {
         padding: 0;
       }

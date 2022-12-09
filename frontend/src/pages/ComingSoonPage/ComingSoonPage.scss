@@ -74,10 +74,6 @@
 
     .input-container {
       margin: 0 auto 1.5em;
-
-      input {
-        width: 100%;
-      }
     }
   }
 
@@ -102,54 +98,58 @@
   }
 }
 
-@media only screen and (max-width: 1024px) {
+@mixin coming-soon-portrait {
+  --base-font-size: 45;
+
+  .react-player.bg-video {
+    min-width: 100%;
+    min-height: 100%;
+  }
+
+  .project-title {
+    top: 17%;
+
+    .react-player.ps-text {
+      width: 30%;
+    }
+  }
+
+  .text-column {
+    top: 5vh;
+
+    .tagline-text {
+      font-size: $font22px;
+    }
+  }
+
+  .password-box {
+    bottom: 15%;
+    margin-top: 5vh;
+
+    &.with-invite {
+      bottom: 17%;
+    }
+  }
+
+  .invite-image {
+    bottom: 2%;
+    width: 100%;
+    left: unset;
+
+    img {
+      width: 40%;
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
   .page.coming-soon {
-    --base-font-size: 45;
-
-    .project-title {
-      top: 17%;
-
-      .react-player.ps-text {
-        width: 30%;
-      }
-    }
-
-    .text-column {
-      top: 5vh;
-
-      .tagline-text {
-        font-size: $font22px;
-      }
-    }
-
-    .password-box {
-      bottom: 15%;
-      margin-top: 5vh;
-
-      &.with-invite {
-        bottom: 17%;
-      }
-    }
-
-    .invite-image {
-      bottom: 2%;
-      width: 100%;
-      left: unset;
-
-      img {
-        width: 40%;
-      }
-    }
+    @include coming-soon-portrait;
   }
 }
 
 @media only screen and (max-width: 768px) {
   .page.coming-soon {
-    --base-font-size: 45;
-
-    .react-player.bg-video {
-      min-width: 100%;
-      min-height: 100%;
-    }
+    @include coming-soon-portrait;
   }
 }
