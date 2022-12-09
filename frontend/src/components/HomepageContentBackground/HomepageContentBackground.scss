@@ -122,8 +122,11 @@
   .homepage-content-background {
     @include homepage-cb-portrait;
 
-    .bg {
-    }
+    //.bg {
+    //  &.status {
+    //    width: 34%;
+    //  }
+    //}
   }
 }
 
