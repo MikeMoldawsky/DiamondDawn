@@ -6,7 +6,7 @@ const {
   FLUORESCENCE,
 } = require("../utils/consts");
 
-const DIAMONDS_51_100 = [
+const DIAMONDS_151_200 = [
   {
     number: 7391148858,
     date: 1624233600,
@@ -809,4 +809,4 @@ const DIAMONDS_51_100 = [
   },
 ];
 
-module.exports = { DIAMONDS_51_100 };
+module.exports = { DIAMONDS_151_200 };
