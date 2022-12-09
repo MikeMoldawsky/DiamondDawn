@@ -7,7 +7,7 @@ import { getTrailerVideos } from "assets/videos";
 import useWindowDimensions from "hooks/useWindowDimensions";
 
 const VideoBackground = ({ src, overlap = 0 }) => {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   const renderTeaserBg = useCallback(
     () => (
@@ -26,7 +26,7 @@ const VideoBackground = ({ src, overlap = 0 }) => {
     []
   );
 
-  const trailerSources = getTrailerVideos(width);
+  const trailerSources = getTrailerVideos(width, height);
 
   return (
     <div className="teaser-video" style={{ marginTop: overlap }}>

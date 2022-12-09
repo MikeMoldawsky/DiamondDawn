@@ -45,7 +45,7 @@ const HomeTopContent = () => {
     };
   }, [topViewEffectScrollLimit]);
 
-  const trailerSources = getTrailerVideos(width);
+  const trailerSources = getTrailerVideos(width, height);
 
   return (
     <div
@@ -82,7 +82,7 @@ const HomeTopContent = () => {
 
 const Homepage = () => {
   const dispatch = useDispatch();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   useMusic("homepage.mp3");
 
@@ -124,7 +124,7 @@ const Homepage = () => {
             </AnimatedText>
           </div>
         </div>
-        <VideoBackground src={getEarthAndMoonVideo(width)} overlap="-25%" />
+        <VideoBackground src={getEarthAndMoonVideo(width, height)} overlap="-25%" />
         <Footer withFAQs />
       </div>
     </Page>

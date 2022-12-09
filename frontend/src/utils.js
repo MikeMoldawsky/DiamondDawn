@@ -2,6 +2,7 @@ import _ from "lodash";
 import { toast } from "react-toastify";
 import { ROUGH_SHAPE, SHAPE, SYSTEM_STAGE, TRAIT } from "consts";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 export const parseError = (e) => {
   if (e.response?.data) return e.response.data;
@@ -187,6 +188,9 @@ export const createVideoSources = (fileName) => [
   { src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" },
 ];
 
+export const isPortraitMode = (width, height) => {
+  return width <= 768 || (width <= 1024 && height > width)
+};
 export const shortenEthAddress = (address) =>
   address
     ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
