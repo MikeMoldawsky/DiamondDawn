@@ -19,9 +19,16 @@ const FAQS = {
       title: "When DD's private sale starts?",
       content: () => (
         <p>
-          Diamond Dawn's private sale will start soon (December).
-          <br /> We'll let you know the exact mint date on our Telegram channel.
+          Diamond Dawn's private sale will start on January 11.
+          <br />
+          The sale will be open for only ONE week.
         </p>
+      ),
+    },
+    {
+      title: "When DD's public sale starts?",
+      content: () => (
+        <p>Diamond Dawn's public sale will start on January 18.</p>
       ),
     },
     {
