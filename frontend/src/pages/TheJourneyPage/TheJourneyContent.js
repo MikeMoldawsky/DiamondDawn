@@ -72,7 +72,7 @@ export const Phase0Text = () => (
 export const Phase1Text = () => {
   return (
     <div className="text">
-      <p>Diamond Dawn's mine will open soon</p>
+      <p>Diamond Dawn's mine will open soon.</p>
     </div>
   );
 };
