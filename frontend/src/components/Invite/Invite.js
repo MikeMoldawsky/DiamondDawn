@@ -10,7 +10,7 @@ import MintKey from "components/MintKey";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { createVideoSources, getCDNVideoUrl } from "utils";
+import { createVideoSources } from "utils";
 import {
   collectorSelector,
   loadCollectorByAddress,
@@ -38,20 +38,15 @@ const Invite = () => {
 
   const onSubmit = () => setSubmitting(true);
 
-  const onSubmitSuccess = () => {
-    loadCollector(account.address);
+  const onSubmitSuccess = (address) => {
+    setSubmitting(false);
+    setShowSubmittedModal(true);
+    playSparklesSFX();
+    loadCollector(address);
     loadInvite();
   };
 
   const onSubmitError = () => setSubmitting(false);
-
-  useEffect(() => {
-    if (submitting && collector?._id) {
-      setSubmitting(false);
-      setShowSubmittedModal(true);
-      playSparklesSFX();
-    }
-  }, [submitting, collector?._id]);
 
   useEffect(() => {
     if (
