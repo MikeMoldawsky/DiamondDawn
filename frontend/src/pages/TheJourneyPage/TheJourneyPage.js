@@ -61,7 +61,7 @@ const TheJourneyPage = () => {
             </div>
             <div className="text-side">
               <div className="meter active" />
-              <div className="tagline-text">Phase 0 - Activate Your Key</div>
+              <div className="tagline-text">Phase 0 - Mint Your Key</div>
               <AnimatedText>
                 <Phase0Text />
               </AnimatedText>
