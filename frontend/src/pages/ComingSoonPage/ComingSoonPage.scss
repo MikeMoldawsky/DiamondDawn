@@ -95,6 +95,16 @@
       margin-top: -2.2em;
       letter-spacing: 0.1em;
     }
+
+    &.no-invite {
+      animation: unset;
+      width: unset;
+      font-size: $font15px;
+      left: 50%;
+      bottom: 4.5%;
+      transform: translateX(-50%);
+      text-decoration: underline;
+    }
   }
 }
 

@@ -42,10 +42,8 @@ export const DIAMOND_DAWN_TELEGRAM = "https://t.me/+h-IWpeZM_dNkODk0";
 
 export const DIAMOND_DAWN_OPENSEA = "";
 
-export const PRIVATE_TWITTER_URL =
-  "https://twitter.com/messages/compose?recipient_id=1537474700514836485&text=I%20would%20like%20to%20join%20the%20Vanguards%20";
-  // I would like to participate in Diamond Dawn's journey
-  // Ask for a password
+export const PRIVATE_TWITTER_MESSAGE_URL =
+  "https://twitter.com/messages/compose?recipient_id=1537474700514836485&text=I%20would%20like%20to%20participate%20in%20Diamond%20Dawn's%20journey";
 
 export const TRAIT = {
   carat: "Carat",
