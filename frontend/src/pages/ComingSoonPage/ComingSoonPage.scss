@@ -99,7 +99,7 @@
     &.no-invite {
       animation: unset;
       width: unset;
-      font-size: $font15px;
+      font-size: $font16px;
       left: 50%;
       bottom: 4.5%;
       transform: translateX(-50%);
@@ -148,6 +148,11 @@
 
     img {
       width: 40%;
+    }
+
+    &.no-invite {
+      font-size: $font18px;
+      bottom: 7%;
     }
   }
 }
