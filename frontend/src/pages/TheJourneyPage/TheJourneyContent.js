@@ -44,10 +44,6 @@ export const TheJourneyMainText = () => (
 export const TheJourneyText = () => (
   <div className="text">
     <p>
-      The Diamond Dawn project is <b>100% decentralized</b> - we do NOT hold
-      your NFTs on a centralized server.
-    </p>
-    <p>
       Throughout this historical journey, you’ll learn about the hidden world of
       the diamond industry, take part in the creation of the{" "}
       <b>first digital diamonds</b> that live on the blockchain, and discover
@@ -60,16 +56,12 @@ export const TheJourneyText = () => (
 export const Phase0Text = () => (
   <div className="text">
     <p>
-      If you are accepted to Diamond Dawn, you'll have exactly{" "}
-      <b>3 days, 3 hours, and 3 minutes</b> to mint your key for 4.44 ETH.
-    </p>
-    <p>
       The key grants you <b>full access</b> to the 4 phases of DD's journey,
       starting in the virtual mine, where your journey begins.
     </p>
     <p>
-      The application phase will automatically end when 333 participants
-      activated their keys.
+      The application phase will automatically end when 333 participants minted
+      their keys.
     </p>
     <p>
       <CTAButton />
@@ -78,12 +70,9 @@ export const Phase0Text = () => (
 );
 
 export const Phase1Text = () => {
-  const countdownProps = useMineOpenCountdown();
-
   return (
     <div className="text">
-      <p>Diamond Dawn's mine will open in:</p>
-      <Countdown align="left" {...countdownProps} />
+      <p>Diamond Dawn's mine will open soon.</p>
     </div>
   );
 };
