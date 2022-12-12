@@ -72,7 +72,7 @@ const HomeTopContent = () => {
           />
         </div>
         <div className="countdown-container">
-          <div className="text">MINE WILL OPEN IN</div>
+          <div className="text">THE PRIVATE SALE STARTS IN</div>
           <Countdown {...countdownProps} />
         </div>
       </div>
