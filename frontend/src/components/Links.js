@@ -2,6 +2,7 @@ import React from "react";
 import {
   DIAMOND_DAWN_TELEGRAM,
   DIAMOND_DAWN_TWITTER_URL,
+  PRIVATE_TWITTER_MESSAGE_URL,
   DIAMOND_DAWN_OPENSEA,
   SYSTEM_STAGE,
 } from "consts";
@@ -33,6 +34,12 @@ export const Link = ({ href, className, disabled, title = "", children }) => {
 export const TwitterLink = ({ className, children }) => (
   <Link href={DIAMOND_DAWN_TWITTER_URL} className={className}>
     {children}
+  </Link>
+);
+
+export const GetPasswordLink = ({ className }) => (
+  <Link href={PRIVATE_TWITTER_MESSAGE_URL} className={className}>
+    Ask for a password
   </Link>
 );
 

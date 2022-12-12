@@ -23,6 +23,7 @@ import {
   getPSTextVideo,
   getMobileBGVideo,
 } from "assets/videos";
+import { GetPasswordLink } from "components/Links";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -168,12 +169,19 @@ const ComingSoonPage = () => {
             buttonText="ENTER"
           />
         </div>
-        <div className="cs-section invite-image" onClick={clickWithSFX}>
-          {!!inviteId && (
+        <div
+          className={classNames("cs-section invite-image", {
+            "no-invite": !inviteId,
+          })}
+          onClick={(e) => !!inviteId && clickWithSFX(e)}
+        >
+          {!!inviteId ? (
             <>
               <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
               <div className="text-center your-invite-text">YOUR INVITE</div>
             </>
+          ) : (
+            <GetPasswordLink />
           )}
         </div>
       </div>

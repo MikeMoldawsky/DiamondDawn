@@ -27,19 +27,28 @@ const PageSizeLimit = ({ minWidth = DEFAULT_MIN_WIDTH, children }) => {
     []
   );
 
-  if (showContent) return children;
-
-  return (
-    <div className={classNames("center-aligned-column page-size-limit")}>
+  const renderDDText = useCallback(
+    () => (
       <InlineVideo
         withLoader={false}
         className="dd-text"
         src={createVideoSources("dd-text-1440")}
         showThreshold={0}
       />
-      <div className="tagline-text">The mobile version is coming soon!</div>
-      <div className="text">
-        For the full experience, please visit Diamond Dawn on a computer.
+    ),
+    []
+  );
+
+  if (showContent) return children;
+
+  return (
+    <div className={classNames("center-aligned-column page-size-limit")}>
+      <div className="left-top-aligned-column text-content">
+        {renderDDText()}
+        <div className="tagline-text">The mobile version is coming soon!</div>
+        <div className="text">
+          For the full experience, please visit Diamond Dawn on a computer.
+        </div>
       </div>
       <div className="video-box">{renderInlineVideo()}</div>
     </div>
