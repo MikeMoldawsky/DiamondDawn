@@ -89,7 +89,9 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
     }
     try {
       if (!invite?._id) {
-        throw new Error("You did not enter Diamond Dawn with a valid invite link")
+        throw new Error(
+          "You did not enter Diamond Dawn with a valid invite link"
+        );
       }
       onSubmit && onSubmit();
       await applyToDDApi(invite._id, account.address, data, geoLocation);
