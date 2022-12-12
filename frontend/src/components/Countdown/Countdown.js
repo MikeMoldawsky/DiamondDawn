@@ -21,7 +21,7 @@ const CountdownComp = ({
       case 1:
         return "0" + value;
       default:
-        return value;
+        return value + "";
     }
   };
 

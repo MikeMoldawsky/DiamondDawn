@@ -27,7 +27,7 @@ import { getEarthAndMoonVideo, getTrailerVideos } from "assets/videos";
 import useScrollTop from "hooks/useScrollTop";
 
 const HomeTopContent = () => {
-  const countdownProps = useMineOpenCountdown();
+  const { countdownText, ...countdownProps } = useMineOpenCountdown();
   const scroll = useScrollTop();
   const { width, height } = useWindowDimensions();
   const [mousePos, setMousePos] = useState([width / 2, height / 2]);
@@ -72,7 +72,7 @@ const HomeTopContent = () => {
           />
         </div>
         <div className="countdown-container">
-          <div className="text">THE PRIVATE SALE STARTS IN</div>
+          <div className="text">{countdownText}</div>
           <Countdown {...countdownProps} />
         </div>
       </div>
