@@ -8,6 +8,15 @@
     padding: 4em 4em 3em 4em;
     justify-content: flex-start;
 
+    .leading-text {
+      font-size: $font36px;
+      margin-bottom: 0.2em;
+    }
+
+    .tagline-text {
+      color: white;
+    }
+
     .content-box {
       flex-grow: 2;
       margin-left: 6em;
@@ -15,15 +24,6 @@
       flex-direction: column;
       position: relative;
       justify-self: center;
-
-      .leading-text {
-        font-size: $font36px;
-        margin-bottom: 0.2em;
-      }
-
-      .tagline-text {
-        color: white;
-      }
 
       .follow-box {
         border: solid 1px #ffffff22;
@@ -118,6 +118,101 @@
             top: -0.2em;
           }
         }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  .invite-view {
+    .layout-box {
+      flex-direction: column;
+      padding: 2em 1em 0;
+
+      .leading-text {
+        font-size: 5.75vw;
+      }
+
+      .tagline-text {
+        font-size: 4.5vw;
+      }
+
+      .video-box {
+        height: 40vh;
+        margin-top: 1em;
+      }
+
+      .content-box {
+        margin: 0;
+
+        .modal {
+          width: 100% !important;
+          top: unset;
+          bottom: 2.5vh;
+          font-size: $font14px;
+
+          .modal-inner {
+            padding: 1em 1.5em 2.5em;
+
+            &:before {
+              transform: translate(-50%, -1em);
+            }
+
+            .close {
+              display: unset;
+              left: unset;
+            }
+
+            .heading {
+              margin: 1em 0;
+            }
+
+            .button {
+              margin-top: 2em;
+            }
+          }
+        }
+
+        .follow-box {
+          flex-direction: column;
+          font-size: 3.3vw;
+
+          .button {
+            margin: 1em 0 0.5em;
+            align-self: flex-end;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .invite-view {
+    .layout-box {
+      .content-box {
+        .inputs-row {
+          flex-direction: column;
+          align-items: stretch;
+
+          .input-container {
+            width: 100% !important;
+          }
+        }
+
+        .modal {
+          bottom: 8vh;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .invite-view {
+    .layout-box {
+      .video-box {
+        height: unset;
       }
     }
   }

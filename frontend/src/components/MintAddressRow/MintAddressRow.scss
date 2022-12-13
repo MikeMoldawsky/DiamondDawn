@@ -18,3 +18,16 @@
     opacity: 0.6 !important;
   }
 }
+
+@media only screen and (max-width: 1199px) {
+  .minting-address-row {
+    font-size: 3.3vw;
+    flex-direction: column;
+    margin-top: 1.5em;
+    padding-top: 1em;
+
+    .center-aligned-column {
+      align-self: flex-end;
+    }
+  }
+}

@@ -34,6 +34,7 @@
 
     .close {
       position: absolute;
+      font-size: 1.5em;
       right: 0.5em;
       top: 0.5em;
     }
@@ -43,6 +44,51 @@
     font-size: $font25px;
   }
 }
+
+@media only screen and (max-width: 1199px) {
+  .page.collector-page {
+    font-size: 3vw;
+
+    .inner-page {
+      padding-bottom: 1em;
+    }
+
+    .main-box {
+      width: 95%;
+      max-width: unset;
+      max-height: unset;
+      aspect-ratio: unset;
+      padding: 0.5em;
+
+      .close {
+        display: none;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .page.collector-page {
+    font-size: 3.5vw;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .page.collector-page {
+    font-size: 4vw;
+
+    .main-box {
+      width: 98%;
+    }
+  }
+}
+
+//@media only screen and (max-width: 768px) {
+//  .page.homepage {
+//    @include homepage-portrait;
+//    font-size: $font16px;
+//  }
+//}
 
 //@media only screen and (max-width: 1540px) {
 //  .page.collector-page {

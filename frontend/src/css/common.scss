@@ -107,7 +107,6 @@ form {
   }
 
   .checkbox {
-    font-size: 1.125em;
     white-space: nowrap;
 
     input {
@@ -603,19 +602,9 @@ a:not(.no-hover) {
   }
 }
 
-@media only screen and (max-width: 1024px) {
-  :root {
-    --header-height: 4rem;
-  }
-
-  html {
-    font-size: $font14px;
-  }
-}
-
 @mixin common-portrait {
   :root {
-    --header-height: 4em;
+    --header-height: 5.5rem;
   }
 
   html {
@@ -643,12 +632,26 @@ a:not(.no-hover) {
   }
 }
 
-@media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
+@media only screen and (max-width: 1199px) {
   @include common-portrait;
+
+  :root {
+    --header-height: 6rem;
+  }
+
+  .page {
+    .inner-page {
+      h1 {
+        font-size: 1.25em;
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 768px) {
-  @include common-portrait;
+  .text-comment {
+    font-size: 2.75vw;
+  }
 }
 
 @media only screen and (max-width: 375px) {

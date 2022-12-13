@@ -7,14 +7,14 @@ import classNames from "classnames";
 const Modal = ({
   className,
   close,
-  implicitClose,
+  backdropClose = true,
   withCloseBtn,
   withBorder,
   children,
 }) => {
   const ref = useRef(null);
 
-  useOnClickOutside(ref, close, implicitClose);
+  useOnClickOutside(ref, close, !backdropClose);
 
   return (
     <>

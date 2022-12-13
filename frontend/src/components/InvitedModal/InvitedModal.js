@@ -85,7 +85,12 @@ const InvitedModalContent = ({ close, onCopy, invite }) => {
 
 const InvitedModal = ({ close, onCopy, invite }) => {
   return (
-    <Modal className="invited-modal" close={close} implicitClose withCloseBtn>
+    <Modal
+      className="invited-modal"
+      close={close}
+      backdropClose={false}
+      withCloseBtn
+    >
       <div className="center-aligned-column modal-content">
         <WaitFor actions={["get-invite-by-id"]}>
           <div className="image">

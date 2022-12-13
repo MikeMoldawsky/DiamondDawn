@@ -135,11 +135,8 @@
   }
 
   .minting-address-row {
-    width: 104%;
     margin-top: 0;
-    padding-right: 1em;
     margin-bottom: 1em;
-    font-size: $font14px;
     padding-top: 1em;
   }
 
@@ -184,6 +181,84 @@
     .invitations-status {
       margin-top: 2em;
       font-size: 1.5em;
+    }
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  .action-view.enter {
+    .layout-box {
+      height: unset;
+      top: unset;
+      flex-direction: column;
+      padding: 2em 1em 1em;
+
+      .leading-text {
+        font-size: 8.75vw;
+      }
+
+      .image-box {
+        width: 100%;
+        margin-top: 0;
+      }
+
+      .content-box {
+        width: 100%;
+
+        .mint-box {
+          flex-direction: column;
+          padding: 0;
+
+          .button-column {
+            font-size: 1.25em;
+          }
+
+          .open-soon {
+            font-size: 1em;
+            padding: 0;
+            margin: 1em 0 2em;
+
+            &:before {
+              display: none;
+            }
+          }
+        }
+
+        .invites-box {
+          flex-direction: column;
+
+          .text {
+            margin: 0.5em 0;
+            font-size: 1em;
+          }
+        }
+
+        .timer-box {
+          margin-top: 2em;
+
+          .countdown {
+            width: 85%;
+          }
+        }
+      }
+    }
+
+    .minting-address-row {
+      margin-bottom: 0;
+    }
+
+    .invites-view {
+      height: unset;
+      padding: 1em 1.75em;
+
+      .back-button {
+        width: 1.75em;
+        height: 1.75em;
+
+        svg {
+          font-size: 1em;
+        }
+      }
     }
   }
 }

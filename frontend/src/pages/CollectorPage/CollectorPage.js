@@ -14,14 +14,15 @@ import NFTs from "components/NFTs";
 import { getCDNImageUrl, isNoContractMode, shortenEthAddress } from "utils";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
-import PageSizeLimit from "components/PageSizeLimit";
 import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useNavigate } from "react-router-dom";
 import { collectorSelector } from "store/collectorReducer";
+import { useMobileOrTablet } from "hooks/useMediaQueries";
 
 const CollectorPage = () => {
-  useNoScrollView();
+  const isMobile = useMobileOrTablet();
+  useNoScrollView(isMobile);
 
   const tokens = useSelector(tokensSelector);
   const { systemStage } = useSelector(systemSelector);
@@ -45,41 +46,46 @@ const CollectorPage = () => {
     );
   };
 
-  const waitForActions = ["get-contract"];
-  if (!isNoContractMode() && account?.address) {
-    waitForActions.push({ isFirstComplete: true, key: "load-nfts" });
+  let waitForActions = [];
+  if (
+    !isNoContractMode() &&
+    systemStage >= SYSTEM_STAGE.KEY &&
+    account?.address
+  ) {
+    waitForActions = [
+      "get-contract",
+      { isFirstComplete: true, key: "load-nfts" },
+    ];
   }
 
   return (
-    <PageSizeLimit>
-      <Page
-        pageName="collector"
-        images={[getCDNImageUrl("/collector/collector-bg.png")]}
-        collectorLoader={!!collector}
-      >
-        <div className={classNames("page collector-page")}>
-          <div className="bg collector-bg" />
-          <div className="inner-page">
-            <h1>The Collector's Room</h1>
-            <div className="center-center-aligned-row account">
-              {ensName?.data || shortenEthAddress(account?.address)}
-            </div>
-            <Box className={"main-box"}>
-              <WaitFor
-                containerClassName="box-content opaque"
-                actions={waitForActions}
-              >
-                {renderContent()}
-              </WaitFor>
-              <HighlightOffIcon
-                className="close"
-                onClick={() => navigate("/explore")}
-              />
-            </Box>
+    <Page
+      pageName="collector"
+      images={[getCDNImageUrl("/collector/collector-bg.png")]}
+      collectorLoader={!!collector}
+    >
+      <div className={classNames("page collector-page")}>
+        <div className="bg collector-bg" />
+        <div className="inner-page">
+          <h1>The Collector's Room</h1>
+          <div className="center-center-aligned-row account">
+            {ensName?.data || shortenEthAddress(account?.address)}
           </div>
+          <Box className={"main-box"}>
+            <WaitFor
+              containerClassName="box-content opaque"
+              actions={waitForActions}
+            >
+              {renderContent()}
+            </WaitFor>
+            <HighlightOffIcon
+              className="close"
+              onClick={() => navigate("/explore")}
+            />
+          </Box>
         </div>
-      </Page>
-    </PageSizeLimit>
+      </div>
+    </Page>
   );
 };
 
