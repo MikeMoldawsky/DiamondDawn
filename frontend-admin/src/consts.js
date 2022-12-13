@@ -25,7 +25,7 @@ export const SHAPE = {
 };
 
 export const COLOR_GRADES = {
-  NO_COLOR: 0,
+  EMPTY: 0,
   K: 1,
   L: 2,
   M: 3,

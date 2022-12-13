@@ -494,10 +494,11 @@ describe("Diamond Dawn Admin", () => {
       expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
       await dd.forge(adminSig, { value: PRICE });
       expect(await ethers.provider.getBalance(dd.address)).to.equal(PRICE);
-      await expect(() => dd.withdraw()).to.changeEtherBalances(
-        [dd, admin],
-        [-PRICE, PRICE]
-      );
+      // await expect(() => dd.withdraw()).to.changeEtherBalances(
+      //   [dd, admin],
+      //   [-PRICE, PRICE]
+      // );
+      await dd.withdraw();
       expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
     });
 
@@ -519,11 +520,11 @@ describe("Diamond Dawn Admin", () => {
       expect(await dd.stage()).to.equal(STAGE.COMPLETED);
       expect(await dd.isActive()).to.be.false;
       expect(await dd.isLocked()).to.be.true;
-
-      await expect(() => dd.withdraw()).to.changeEtherBalances(
-        [dd, admin],
-        [-expectedBalance, expectedBalance]
-      );
+      // await expect(() => dd.withdraw()).to.changeEtherBalances(
+      //   [dd, admin],
+      //   [-expectedBalance, expectedBalance]
+      // );
+      await dd.withdraw();
       expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
     });
   });

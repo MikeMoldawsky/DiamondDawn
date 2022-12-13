@@ -48,8 +48,8 @@ contract DiamondDawn is
     using EnumerableSet for EnumerableSet.UintSet;
     using ECDSA for bytes32;
 
-    uint public constant PRICE = 0.002 ether; // TODO: production - change to 4.44eth
-    uint public constant PRICE_MARRIAGE = 0.003 ether; // TODO: production - change to 4.55eth
+    uint public constant PRICE = 4.44 ether;
+    uint public constant PRICE_MARRIAGE = 4.99 ether;
     uint16 public constant MAX_ENTRANCE = 333;
 
     bool public isLocked; // immutable
@@ -60,7 +60,7 @@ contract DiamondDawn is
     uint16 private _numTokens;
     mapping(address => EnumerableSet.UintSet) private _shipped;
     mapping(address => bool) private _minted;
-    address private _signer; // TODO: production - set correct signer for
+    address private _signer;
 
     constructor(address mine_, address signer) ERC721("DiamondDawn", "DD") {
         ddMine = IDiamondDawnMine(mine_);
@@ -259,8 +259,7 @@ contract DiamondDawn is
 
     function _forge(bytes calldata signature) private isActiveStage(Stage.KEY) isNotFull {
         require(_isValid(signature, bytes32(uint256(uint160(_msgSender())))), "Not allowed to mint");
-        // TODO: production - uncomment before
-        // require(!_minted[_msgSender()], "Already minted");
+        require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
         uint256 tokenId = ++_numTokens;
         ddMine.forge(tokenId);

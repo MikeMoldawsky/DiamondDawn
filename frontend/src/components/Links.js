@@ -39,7 +39,7 @@ export const TwitterLink = ({ className, children }) => (
 
 export const GetPasswordLink = ({ className }) => (
   <Link href={PRIVATE_TWITTER_MESSAGE_URL} className={className}>
-    Ask for a password
+    Request a password
   </Link>
 );
 

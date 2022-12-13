@@ -125,8 +125,7 @@ describe("DiamondDawn", () => {
       ).to.be.revertedWith("Stage not ready");
     });
 
-    // TODO: should enable before production
-    xit("Should REVERT when trying to mine more than once", async () => {
+    it("Should REVERT when trying to mine more than once", async () => {
       await dd.forge(adminSig, { value: PRICE });
       await expect(dd.forge(adminSig, { value: PRICE })).to.be.revertedWith(
         "Already minted"
