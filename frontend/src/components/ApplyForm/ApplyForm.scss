@@ -61,6 +61,16 @@
   }
 }
 
+@media only screen and (max-width: 1199px) {
+  .request-form {
+    form {
+      .buttons {
+        margin-bottom: 1em;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 768px) {
   .request-form {
     form {

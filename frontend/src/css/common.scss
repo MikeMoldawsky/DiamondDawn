@@ -107,7 +107,6 @@ form {
   }
 
   .checkbox {
-    font-size: 1.125em;
     white-space: nowrap;
 
     input {
@@ -650,14 +649,8 @@ a:not(.no-hover) {
 }
 
 @media only screen and (max-width: 768px) {
-  @include common-portrait;
-
   .text-comment {
     font-size: 2.75vw;
-  }
-
-  form .checkbox {
-    font-size: 1em;
   }
 }
 

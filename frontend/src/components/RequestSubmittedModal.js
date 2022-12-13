@@ -7,7 +7,7 @@ import { TwitterLink } from "components/Links";
 
 const RequestSubmittedModal = ({ close }) => {
   return (
-    <Modal className="request-submitted" close={close} withCloseBtn>
+    <Modal className="request-submitted" close={close} withCloseBtn backdropClose={false}>
       <div className="center-aligned-column modal-content">
         <FontAwesomeIcon icon={faCheck} />
         <div className="heading">You're On The Waitlist!</div>

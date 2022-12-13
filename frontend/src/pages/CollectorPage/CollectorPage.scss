@@ -54,7 +54,7 @@
     }
 
     .main-box {
-      width: 98%;
+      width: 95%;
       max-width: unset;
       max-height: unset;
       aspect-ratio: unset;
@@ -76,6 +76,10 @@
 @media only screen and (max-width: 480px) {
   .page.collector-page {
     font-size: 4vw;
+
+    .main-box {
+      width: 98%;
+    }
   }
 }
 

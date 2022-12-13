@@ -14,7 +14,6 @@ import NFTs from "components/NFTs";
 import { getCDNImageUrl, isNoContractMode, shortenEthAddress } from "utils";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
-import PageSizeLimit from "components/PageSizeLimit";
 import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useNavigate } from "react-router-dom";
@@ -47,9 +46,9 @@ const CollectorPage = () => {
     );
   };
 
-  const waitForActions = ["get-contract"];
-  if (!isNoContractMode() && account?.address) {
-    waitForActions.push({ isFirstComplete: true, key: "load-nfts" });
+  let waitForActions = [];
+  if (!isNoContractMode() && systemStage >= SYSTEM_STAGE.KEY && account?.address) {
+    waitForActions = ["get-contract", { isFirstComplete: true, key: "load-nfts" }];
   }
 
   return (

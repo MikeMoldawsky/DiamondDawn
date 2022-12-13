@@ -146,10 +146,9 @@
         margin: 0;
 
         .modal {
-          position: fixed;
-          left: 2%;
-          top: 1%;
-          bottom: unset;
+          width: 100% !important;
+          top: unset;
+          bottom: 2.5vh;
           font-size: $font14px;
 
           .modal-inner {
@@ -199,6 +198,10 @@
           .input-container {
             width: 100% !important;
           }
+        }
+
+        .modal {
+          bottom: 8vh;
         }
       }
     }
