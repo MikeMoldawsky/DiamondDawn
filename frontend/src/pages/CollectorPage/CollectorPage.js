@@ -19,9 +19,11 @@ import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useNavigate } from "react-router-dom";
 import { collectorSelector } from "store/collectorReducer";
+import {useMobileOrTablet} from "hooks/useMediaQueries";
 
 const CollectorPage = () => {
-  useNoScrollView();
+  const isMobile = useMobileOrTablet()
+  useNoScrollView(isMobile);
 
   const tokens = useSelector(tokensSelector);
   const { systemStage } = useSelector(systemSelector);
@@ -51,35 +53,33 @@ const CollectorPage = () => {
   }
 
   return (
-    <PageSizeLimit>
-      <Page
-        pageName="collector"
-        images={[getCDNImageUrl("/collector/collector-bg.png")]}
-        collectorLoader={!!collector}
-      >
-        <div className={classNames("page collector-page")}>
-          <div className="bg collector-bg" />
-          <div className="inner-page">
-            <h1>The Collector's Room</h1>
-            <div className="center-center-aligned-row account">
-              {ensName?.data || shortenEthAddress(account?.address)}
-            </div>
-            <Box className={"main-box"}>
-              <WaitFor
-                containerClassName="box-content opaque"
-                actions={waitForActions}
-              >
-                {renderContent()}
-              </WaitFor>
-              <HighlightOffIcon
-                className="close"
-                onClick={() => navigate("/explore")}
-              />
-            </Box>
+    <Page
+      pageName="collector"
+      images={[getCDNImageUrl("/collector/collector-bg.png")]}
+      collectorLoader={!!collector}
+    >
+      <div className={classNames("page collector-page")}>
+        <div className="bg collector-bg" />
+        <div className="inner-page">
+          <h1>The Collector's Room</h1>
+          <div className="center-center-aligned-row account">
+            {ensName?.data || shortenEthAddress(account?.address)}
           </div>
+          <Box className={"main-box"}>
+            <WaitFor
+              containerClassName="box-content opaque"
+              actions={waitForActions}
+            >
+              {renderContent()}
+            </WaitFor>
+            <HighlightOffIcon
+              className="close"
+              onClick={() => navigate("/explore")}
+            />
+          </Box>
         </div>
-      </Page>
-    </PageSizeLimit>
+      </div>
+    </Page>
   );
 };
 

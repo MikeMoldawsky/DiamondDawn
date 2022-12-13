@@ -155,7 +155,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
               title="If approved, this address will be the one eligible for mint"
             />
           </div>
-          {!account?.address && <Wallet />}
+          {!account?.address && <div className="wallet"><Wallet /></div> }
         </div>
         <div className="text-comment">
           * Don't worry, you can change your minting address at any point
