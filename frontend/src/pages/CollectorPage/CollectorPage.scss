@@ -45,9 +45,20 @@
   }
 }
 
+@media only screen and (orientation: portrait) {
+  .page.collector-page {
+    .bg.collector-bg {
+      background: url($CDN_URL + "/images/collector/collector-bg-portrait.jpg") no-repeat
+      center bottom;
+      background-size: auto 100%;
+    }
+  }
+}
+
 @media only screen and (max-width: 1199px) {
   .page.collector-page {
     font-size: 3vw;
+    height: unset;
 
     .inner-page {
       padding-bottom: 1em;
@@ -59,6 +70,13 @@
       max-height: unset;
       aspect-ratio: unset;
       padding: 0.5em;
+
+      .box-content {
+        &:before {
+          background-color: #3e3e3e;
+          opacity: .75;
+        }
+      }
 
       .close {
         display: none;
