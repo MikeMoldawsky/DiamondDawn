@@ -127,7 +127,7 @@
   .invite-view {
     .layout-box {
       flex-direction: column;
-      padding: 2em 1em 1em;
+      padding: 2em 1em 0;
 
       .leading-text {
         font-size: 5.75vw;
@@ -183,17 +183,6 @@
             align-self: flex-end;
           }
         }
-      }
-    }
-
-    .minting-address-row {
-      font-size: 3.3vw;
-      flex-direction: column;
-      margin-top: 1.5em;
-      padding-top: 1em;
-
-      .center-aligned-column {
-        align-self: flex-end;
       }
     }
   }
