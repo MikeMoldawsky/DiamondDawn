@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, { useCallback, useEffect } from "react";
 import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,20 +45,22 @@ const MintKey = () => {
     dispatch(loadDiamondCount(contract));
   }, []);
 
-  const canMint = systemStage === SYSTEM_STAGE.KEY && isActive
+  const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
 
-  const MintKeyContent = useCallback(({ execute }) => (
-    <MintKeyView
-      mintPrice={minePrice}
-      maxDiamonds={maxDiamonds}
-      diamondCount={diamondCount}
-      canMint={canMint}
-      mint={execute}
-      expiresAt={collector.mintWindowClose}
-      onCountdownEnd={onMintWindowClose}
-    />
-  ), [minePrice, maxDiamonds, diamondCount, canMint]);
-
+  const MintKeyContent = useCallback(
+    ({ execute }) => (
+      <MintKeyView
+        mintPrice={minePrice}
+        maxDiamonds={maxDiamonds}
+        diamondCount={diamondCount}
+        canMint={canMint}
+        mint={execute}
+        expiresAt={collector.mintWindowClose}
+        onCountdownEnd={onMintWindowClose}
+      />
+    ),
+    [minePrice, maxDiamonds, diamondCount, canMint]
+  );
 
   if (!collector || collector.minted || collector.mintClosed) return null;
 

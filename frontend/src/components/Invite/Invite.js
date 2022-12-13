@@ -21,7 +21,7 @@ import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useSound from "use-sound";
 import sparklesSFX from "assets/audio/end-sparkles.mp3";
 import MintAddressRow from "components/MintAddressRow";
-import {Desktop, MobileOrTablet} from "hooks/useMediaQueries";
+import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -96,17 +96,18 @@ const Invite = () => {
       </div>
     );
 
-  const renderTitle = () => collector ? (
-    <>
-      <div className="leading-text">DIAMOND DAWN APPLICATION</div>
-      <div className="tagline-text">STATUS: PENDING APPROVAL</div>
-    </>
-  ) : (
-    <>
-      <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
-      <div className="text">Please fill the details below</div>
-    </>
-  )
+  const renderTitle = () =>
+    collector ? (
+      <>
+        <div className="leading-text">DIAMOND DAWN APPLICATION</div>
+        <div className="tagline-text">STATUS: PENDING APPROVAL</div>
+      </>
+    ) : (
+      <>
+        <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
+        <div className="text">Please fill the details below</div>
+      </>
+    );
 
   return (
     <div className="box-content opaque invite-view">

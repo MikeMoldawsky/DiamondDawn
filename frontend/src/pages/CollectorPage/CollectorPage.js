@@ -18,10 +18,10 @@ import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useNavigate } from "react-router-dom";
 import { collectorSelector } from "store/collectorReducer";
-import {useMobileOrTablet} from "hooks/useMediaQueries";
+import { useMobileOrTablet } from "hooks/useMediaQueries";
 
 const CollectorPage = () => {
-  const isMobile = useMobileOrTablet()
+  const isMobile = useMobileOrTablet();
   useNoScrollView(isMobile);
 
   const tokens = useSelector(tokensSelector);
@@ -47,8 +47,15 @@ const CollectorPage = () => {
   };
 
   let waitForActions = [];
-  if (!isNoContractMode() && systemStage >= SYSTEM_STAGE.KEY && account?.address) {
-    waitForActions = ["get-contract", { isFirstComplete: true, key: "load-nfts" }];
+  if (
+    !isNoContractMode() &&
+    systemStage >= SYSTEM_STAGE.KEY &&
+    account?.address
+  ) {
+    waitForActions = [
+      "get-contract",
+      { isFirstComplete: true, key: "load-nfts" },
+    ];
   }
 
   return (

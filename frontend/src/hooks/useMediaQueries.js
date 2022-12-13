@@ -1,19 +1,19 @@
-import { useMediaQuery } from "react-responsive"
+import { useMediaQuery } from "react-responsive";
 
 export const useDesktopMediaQuery = () =>
-  useMediaQuery({ query: "(min-width: 1200px)" })
+  useMediaQuery({ query: "(min-width: 1200px)" });
 
 export const useMobileOrTablet = () =>
-  useMediaQuery({ query: "(max-width: 1199px)" })
+  useMediaQuery({ query: "(max-width: 1199px)" });
 
 export const Desktop = ({ children }) => {
-  const isDesktop = useDesktopMediaQuery()
+  const isDesktop = useDesktopMediaQuery();
 
-  return isDesktop ? children : null
-}
+  return isDesktop ? children : null;
+};
 
 export const MobileOrTablet = ({ children }) => {
-  const mobileOrTablet = useMobileOrTablet()
+  const mobileOrTablet = useMobileOrTablet();
 
-  return mobileOrTablet ? children : null
-}
+  return mobileOrTablet ? children : null;
+};

@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import "components/MintKey/MintKey.scss";
 import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
@@ -15,7 +15,7 @@ import Button from "components/Button";
 import MintAddressRow from "components/MintAddressRow";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useMusic from "hooks/useMusic";
-import {Desktop, MobileOrTablet} from "hooks/useMediaQueries";
+import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 
 const MintKeyView = ({
   mintPrice = 4.44,
@@ -52,35 +52,32 @@ const MintKeyView = ({
       <div className="left-top-aligned-column">
         <div className="leading-text">CONGRATULATIONS</div>
         <div className="congrats-text">
-          You’ve been accepted to participate in Diamond Dawn’s
-          historical journey.
+          You’ve been accepted to participate in Diamond Dawn’s historical
+          journey.
           <br />
-          The key grants you <b>full access</b> to the 4 phases of
-          DD's journey, starting in the virtual mine, where your
-          journey begins.
+          The key grants you <b>full access</b> to the 4 phases of DD's journey,
+          starting in the virtual mine, where your journey begins.
         </div>
       </div>
     </div>
-  )
+  );
 
   const renderInlineVideo = useCallback(() => {
-    console.log("RENDERING hand-key video")
+    console.log("RENDERING hand-key video");
     return (
       <InlineVideo
         src={getCDNVideoUrl("hand-key-particles.webm")}
         showThreshold={0}
         withLoader={false}
       />
-    )
-  }, [])
+    );
+  }, []);
 
   return (
     <div className="action-view enter">
       <div className="layout-box">
         <MobileOrTablet>{renderTitle()}</MobileOrTablet>
-        <div className="image-box">
-          {renderInlineVideo()}
-        </div>
+        <div className="image-box">{renderInlineVideo()}</div>
         <div className="content-box">
           {showInvites ? (
             <div className="center-aligned-column invites-view">
