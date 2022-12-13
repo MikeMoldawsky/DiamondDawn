@@ -59,6 +59,10 @@
       max-height: unset;
       aspect-ratio: unset;
       padding: .5em;
+
+      .close {
+        display: none;
+      }
     }
   }
 }

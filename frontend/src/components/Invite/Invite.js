@@ -96,7 +96,12 @@ const Invite = () => {
       </div>
     );
 
-  const renderTitle = () => (
+  const renderTitle = () => collector ? (
+    <>
+      <div className="leading-text">DIAMOND DAWN APPLICATION</div>
+      <div className="tagline-text">STATUS: PENDING APPROVAL</div>
+    </>
+  ) : (
     <>
       <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
       <div className="text">Please fill the details below</div>
@@ -106,17 +111,13 @@ const Invite = () => {
   return (
     <div className="box-content opaque invite-view">
       <div className="layout-box">
-        {!collector && (
-          <MobileOrTablet>{renderTitle()}</MobileOrTablet>
-        )}
+        <MobileOrTablet>{renderTitle()}</MobileOrTablet>
         <div className="video-box">{renderInlineVideo()}</div>
-
         <div className="content-box">
           {collector ? (
             <div className="left-spaced-aligned-column request-status">
               <div className="left-top-aligned-column">
-                <div className="leading-text">DIAMOND DAWN APPLICATION</div>
-                <div className="tagline-text">STATUS: PENDING APPROVAL</div>
+                <Desktop>{renderTitle()}</Desktop>
                 <div className="text-comment">
                   If you're accepted to Diamond Dawn, you'll have exactly
                   <b> 3 days, 3 hours, and 3 minutes</b> to mint your key for

@@ -13,6 +13,10 @@
       margin-bottom: 0.2em;
     }
 
+    .tagline-text {
+      color: white;
+    }
+
     .content-box {
       flex-grow: 2;
       margin-left: 6em;
@@ -20,10 +24,6 @@
       flex-direction: column;
       position: relative;
       justify-self: center;
-
-      .tagline-text {
-        color: white;
-      }
 
       .follow-box {
         border: solid 1px #ffffff22;
@@ -130,7 +130,11 @@
       padding: 2em 1em 1em;
 
       .leading-text {
-        font-size: 6.2vw;
+        font-size: 5.75vw;
+      }
+
+      .tagline-text {
+        font-size: 4.5vw;
       }
 
       .video-box {
@@ -140,6 +144,56 @@
 
       .content-box {
         margin: 0;
+
+        .modal {
+          position: fixed;
+          left: 2%;
+          top: 1%;
+          bottom: unset;
+          font-size: $font14px;
+
+          .modal-inner {
+            padding: 1em 1.5em 2.5em;
+
+            &:before {
+              transform: translate(-50%, -1em);
+            }
+
+            .close {
+              display: unset;
+              left: unset;
+            }
+
+            .heading {
+              margin: 1em 0;
+            }
+
+            .button {
+              margin-top: 2em;
+            }
+          }
+        }
+
+        .follow-box {
+          flex-direction: column;
+          font-size: 3.3vw;
+
+          .button {
+            margin: 1em 0 0.5em;
+            align-self: flex-end;
+          }
+        }
+      }
+    }
+
+    .minting-address-row {
+      font-size: 3.3vw;
+      flex-direction: column;
+      margin-top: 1.5em;
+      padding-top: 1em;
+
+      .center-aligned-column {
+        align-self: flex-end;
       }
     }
   }
