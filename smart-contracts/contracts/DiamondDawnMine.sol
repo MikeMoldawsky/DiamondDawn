@@ -255,7 +255,6 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
                 Strings.toString(_mineCounter),
                 "number"
             );
-            // TODO: validate "Rough xxx" name convention.
             bool wasProcessed = uint(state_) > uint(Stage.MINE);
             attributes[++i] = Serializer.toStrAttribute(wasProcessed ? "Color Rough Stone" : "Color", "Cape");
             attributes[++i] = Serializer.toStrAttribute(
@@ -312,7 +311,7 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         if (uint(Stage.DAWN) <= uint(state_)) {
             attributes[++i] = Serializer.toStrAttribute("Laboratory", "GIA");
             attributes[++i] = Serializer.toAttribute("Report Date", Strings.toString(certificate.date), "date");
-            attributes[++i] = Serializer.toAttribute("Report Number", Strings.toString(certificate.number), "");
+            attributes[++i] = Serializer.toStrAttribute("Report Number", Strings.toString(certificate.number));
             attributes[++i] = Serializer.toMaxValueAttribute(
                 "Physical",
                 Strings.toString(metadata.reborn.id),
