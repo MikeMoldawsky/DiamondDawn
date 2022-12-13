@@ -4,7 +4,7 @@ const {
   GRADE,
   CLARITY,
   FLUORESCENCE,
-} = require("../utils/consts");
+} = require("./utils/consts");
 
 const DIAMONDS_1_200 = [
   {
