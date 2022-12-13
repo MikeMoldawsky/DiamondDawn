@@ -34,6 +34,7 @@
 
     .close {
       position: absolute;
+      font-size: 1.5em;
       right: 0.5em;
       top: 0.5em;
     }
@@ -46,7 +47,7 @@
 
 @media only screen and (max-width: 1199px) {
   .page.collector-page {
-    font-size: $font18px;
+    font-size: 3vw;
 
     .inner-page {
       padding-bottom: 1em;
@@ -64,7 +65,13 @@
 
 @media only screen and (max-width: 768px) {
   .page.collector-page {
-    font-size: $font22px;
+    font-size: 3.5vw;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .page.collector-page {
+    font-size: 4vw;
   }
 }
 

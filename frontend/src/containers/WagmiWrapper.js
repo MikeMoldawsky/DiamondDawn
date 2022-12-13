@@ -58,6 +58,7 @@ function WagmiWrapper({ children }) {
           walletConnectWallet({ chains }),
         ]
       : [
+          metaMaskWallet({ chains, shimDisconnect: true }),
           walletConnectWallet({ chains }),
           coinbaseWallet({ chains, appName: "Diamond Dawn" }),
         ];

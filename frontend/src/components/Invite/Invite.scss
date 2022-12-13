@@ -127,19 +127,28 @@
   .invite-view {
     .layout-box {
       flex-direction: column;
-      padding: 1.5em 1em 1em;
+      padding: 2em 1em 1em;
 
       .leading-text {
         font-size: 6.2vw;
       }
 
       .video-box {
+        height: 40vh;
         margin-top: 1em;
       }
 
       .content-box {
         margin: 0;
+      }
+    }
+  }
+}
 
+@media only screen and (max-width: 768px) {
+  .invite-view {
+    .layout-box {
+      .content-box {
         .inputs-row {
           flex-direction: column;
           align-items: stretch;
@@ -148,6 +157,16 @@
             width: 100% !important;
           }
         }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .invite-view {
+    .layout-box {
+      .video-box {
+        height: unset;
       }
     }
   }

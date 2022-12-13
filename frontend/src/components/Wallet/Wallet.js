@@ -5,6 +5,7 @@ import "./Wallet.scss";
 const Wallet = (props) => {
   return (
     <ConnectButton
+      label="Connect"
       accountStatus="address"
       chainStatus="none"
       showBalance={false}
