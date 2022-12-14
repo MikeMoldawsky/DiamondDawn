@@ -27,7 +27,7 @@ const localChain = {
   testnet: true,
 };
 
-console.log(process.env)
+console.log(process.env);
 
 function WagmiWrapper({ children }) {
   const chainByEnv =
@@ -41,20 +41,17 @@ function WagmiWrapper({ children }) {
     alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
     // infuraProvider({ apiKey: "dbe63b3bdfc84f3abdf38cdc8e22f492" }),
     publicProvider(),
-  ]
+  ];
 
   if (process.env.REACT_APP_ENVIRONMENT !== "local") {
     providers.unshift(
       walletConnectProvider({
         projectId: process.env.REACT_APP_WALLET_CONNECT_KEY,
-      }),
-    )
+      })
+    );
   }
 
-  const { chains, provider } = configureChains(
-    [chainByEnv],
-    providers
-  );
+  const { chains, provider } = configureChains([chainByEnv], providers);
   const wagmiClient = createClient({
     autoConnect: true,
     connectors: modalConnectors({ appName: "Diamond Dawn", chains }),

@@ -3,7 +3,7 @@
 .wallet {
   font-size: $font14px;
   font-weight: 400;
-  letter-spacing: .05em;
+  letter-spacing: 0.05em;
   cursor: pointer;
 
   &:not(.connected) {
