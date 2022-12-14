@@ -90,3 +90,11 @@
     font-size: 3.5vw;
   }
 }
+
+@media only screen and (max-width: 480px) {
+  .page.collector-page {
+    .main-box {
+      width: 98%;
+    }
+  }
+}
