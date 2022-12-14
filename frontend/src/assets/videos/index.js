@@ -1,4 +1,4 @@
-import { createVideoSources, getCDNVideoUrl, isPortraitMode } from "utils";
+import { createVideoSources, getCDNVideoUrl, getVideoBitrate } from "utils";
 
 // FRONT PAGE
 export const getDDTextVideo = (width) => {
@@ -47,9 +47,8 @@ export const getRoughStoneSpinVideo = (width) => {
 };
 
 // TRAILERS
-export const getTrailerVideos = (width, height) => {
-  const isPortrait = isPortraitMode(width, height);
-  const bitrate = isPortrait ? "2.5m" : "5m";
+export const getTrailerVideos = (width) => {
+  const bitrate = getVideoBitrate(width);
   return [
     {
       src: getCDNVideoUrl(`digital-trailer-${bitrate}.mp4`),
@@ -59,7 +58,10 @@ export const getTrailerVideos = (width, height) => {
       src: getCDNVideoUrl(`physical-trailer-${bitrate}.mp4`),
       name: "THE PHYSICAL",
     },
-    // { src: getCDNVideoUrl("digital-trailer.mp4"), name: "THE DIGITAL" },
-    // { src: createVideoSources("physical-trailer"), name: "THE PHYSICAL" },
   ];
+};
+
+export const getPhysicalLoopVideo = (width) => {
+  const bitrate = getVideoBitrate(width);
+  return getCDNVideoUrl(`physical-loop-${bitrate}.mp4`);
 };

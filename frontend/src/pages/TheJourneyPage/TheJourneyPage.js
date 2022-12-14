@@ -16,14 +16,17 @@ import InfoPage from "components/InfoPage";
 import AnimatedText from "components/AnimatedText";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
+import {getPhysicalLoopVideo} from "assets/videos";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 const TheJourneyPage = () => {
   const isMobile = useMobileOrTablet();
+  const { width } = useWindowDimensions()
 
   return (
     <InfoPage
       className="the-journey-page"
-      teaser={{ src: getCDNVideoUrl("physical-loop.webm"), overlap: "-25%" }}
+      teaser={{ src: getPhysicalLoopVideo(width), overlap: "-25%" }}
     >
       <div className="text-section general">
         <div className="leading-text">THE JOURNEY</div>

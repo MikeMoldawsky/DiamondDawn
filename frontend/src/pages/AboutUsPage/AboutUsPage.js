@@ -23,6 +23,8 @@ import Link from "components/Links";
 import AnimatedText from "components/AnimatedText";
 import { getCDNVideoUrl } from "utils";
 import PageSizeLimit from "components/PageSizeLimit";
+import useWindowDimensions from "hooks/useWindowDimensions";
+import {getPhysicalLoopVideo} from "assets/videos";
 
 const SOCIAL_ICONS = {
   // twitter: getCDNImageUrl("/social/twitter.svg"),
@@ -48,11 +50,13 @@ const SocialButtons = ({ member, links }) => (
 );
 
 const AboutUsPage = () => {
+  const { width } = useWindowDimensions()
+
   return (
     <PageSizeLimit>
       <InfoPage
         className="about-page"
-        teaser={{ src: getCDNVideoUrl("physical-loop.webm"), overlap: "-25%" }}
+        teaser={{ src: getPhysicalLoopVideo(width), overlap: "-25%" }}
       >
         <div className="left-aligned-column general">
           <div className="leading-text">ABOUT US</div>
