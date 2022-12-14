@@ -17,18 +17,18 @@ const NetworkGuard = ({ children }) => {
     setShowText(true);
   }, SHOW_TEXT_TIME);
 
-  if (chain?.id && !includes(map(chains, "id"), chain.id))
-    return (
-      <PageCover
-        showText={showText}
-        title={<span className="text-red">WRONG NETWORK</span>}
-        text={
-          <span className="">
-            please switch to {chainNameById(get(chains, [0, "id"]))}
-          </span>
-        }
-      />
-    );
+  // if (chain?.id && !includes(map(chains, "id"), chain.id))
+  //   return (
+  //     <PageCover
+  //       showText={showText}
+  //       title={<span className="text-red">WRONG NETWORK</span>}
+  //       text={
+  //         <span className="">
+  //           please switch to {chainNameById(get(chains, [0, "id"]))}
+  //         </span>
+  //       }
+  //     />
+  //   );
 
   return children;
 };

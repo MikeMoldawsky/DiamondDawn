@@ -1,27 +1,14 @@
 import React from "react";
-import {
-  RainbowKitProvider,
-  midnightTheme,
-  // connectorsForWallets,
-} from "@rainbow-me/rainbowkit";
-import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-// import { infuraProvider } from "wagmi/providers/infura";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { mainnet, goerli, localhost } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-import "@rainbow-me/rainbowkit/styles.css";
-// import {
-//   rainbowWallet,
-//   metaMaskWallet,
-//   coinbaseWallet,
-//   walletConnectWallet,
-// } from "@rainbow-me/rainbowkit/wallets";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import {
   EthereumClient,
   modalConnectors,
   walletConnectProvider,
 } from "@web3modal/ethereum";
-
 import { Web3Modal } from "@web3modal/react";
 
 const localChain = {
@@ -44,10 +31,11 @@ function WagmiWrapper({ children }) {
 
   const chainByEnv =
     process.env.REACT_APP_ENVIRONMENT === "production"
-      ? chain.mainnet
+      ? mainnet
       : process.env.REACT_APP_ENVIRONMENT === "preview"
-      ? chain.goerli
-      : localChain;
+      ? goerli
+      : localhost;
+  console.log("CHAIBNSSS", chainByEnv);
   const { chains, provider } = configureChains(
     [chainByEnv],
     [
@@ -57,27 +45,7 @@ function WagmiWrapper({ children }) {
       publicProvider(),
     ]
   );
-
-  // const wallets =
-  //   width >= 768
-  //     ? [
-  //         metaMaskWallet({ chains, shimDisconnect: true }),
-  //         coinbaseWallet({ chains, appName: "Diamond Dawn" }),
-  //         walletConnectWallet({ chains }),
-  //       ]
-  //     : [
-  //         metaMaskWallet({ chains, shimDisconnect: true }),
-  //         walletConnectWallet({ chains }),
-  //         coinbaseWallet({ chains, appName: "Diamond Dawn" }),
-  //       ];
-
-  // const connectors = connectorsForWallets([
-  //   {
-  //     groupName: "Suggested",
-  //     wallets,
-  //   },
-  // ]);
-
+  console.log("CHAIBNSSS", { chainByEnv, chains });
   const wagmiClient = createClient({
     autoConnect: true,
     connectors: modalConnectors({ appName: "Diamond Dawn", chains }),
@@ -88,33 +56,17 @@ function WagmiWrapper({ children }) {
   const ethereumClient = new EthereumClient(wagmiClient, chains);
 
   return (
-    <WagmiConfig client={wagmiClient}>
-      {/*<RainbowKitProvider*/}
-      {/*  chains={chains}*/}
-      {/*  theme={midnightTheme({*/}
-      {/*    accentColor: "transparent",*/}
-      {/*    accentColorForeground: "white",*/}
-      {/*  })}*/}
-      {/*  modalSize="compact"*/}
-      {/*>*/}
-      {/*  */}
-      {/*</RainbowKitProvider>*/}
-      {children}
+    <>
+      <WagmiConfig client={wagmiClient}>{children}</WagmiConfig>
       <Web3Modal
-        projectId={process.env.REACT_APP_WALLET_CONNECT_KEY}
+        // projectId={process.env.REACT_APP_WALLET_CONNECT_KEY}
         ethereumClient={ethereumClient}
-        // mobileWallets={[
-        //   {
-        //     id: "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
-        //     name: "MetaMask",
-        //     links: {
-        //       native: "http://localhost:3000",
-        //       universal: "http://localhost:3000",
-        //     },
-        //   },
-        // ]}
+        themeMode={"dark"}
+        themeColor={"default"}
+        themeBackground={"gradient"}
+        // desktopWallets={[{id: "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96"}]}
       />
-    </WagmiConfig>
+    </>
   );
 }
 
