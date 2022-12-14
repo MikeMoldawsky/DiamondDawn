@@ -1,6 +1,6 @@
 import React from "react";
 import "./TheJourneyPage.scss";
-import {createVideoSources, getCDNImageUrl, getCDNVideoUrl} from "utils";
+import { createVideoSources, getCDNImageUrl, getCDNVideoUrl } from "utils";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
 import {
