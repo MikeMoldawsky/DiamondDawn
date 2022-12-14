@@ -65,7 +65,7 @@
     }
 
     .main-box {
-      width: 95%;
+      width: 90%;
       max-width: unset;
       max-height: unset;
       aspect-ratio: unset;
@@ -90,46 +90,3 @@
     font-size: 3.5vw;
   }
 }
-
-@media only screen and (max-width: 480px) {
-  .page.collector-page {
-    font-size: 4vw;
-
-    .main-box {
-      width: 98%;
-    }
-  }
-}
-
-//@media only screen and (max-width: 768px) {
-//  .page.homepage {
-//    @include homepage-portrait;
-//    font-size: $font16px;
-//  }
-//}
-
-//@media only screen and (max-width: 1540px) {
-//  .page.collector-page {
-//    .main-box {
-//      max-width: 92%;
-//      max-height: 83%;
-//    }
-//
-//    .action-view.enter {
-//      --base-font-size: 19;
-//    }
-//  }
-//}
-//
-//@media only screen and (max-width: 1366px) {
-//  .page.collector-page {
-//    .main-box {
-//      max-width: 95%;
-//      max-height: 85%;
-//    }
-//
-//    .action-view.enter {
-//      --base-font-size: 20;
-//    }
-//  }
-//}

@@ -50,9 +50,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
     <header onClick={() => isMenuOpen && toggleMenu()}>
       <div className="header-internal">
         <div className="center-aligned-row header-side">
-          <div className="wallet">
-            <Wallet />
-          </div>
+          <Wallet />
           {!isNoContractMode() && isDesktop && (
             <ContractProvider>
               <DiamondList />

@@ -1,18 +1,12 @@
-//[data-rk] {
-//  --rk-colors-connectButtonBackground: transparent !important;
-//}
-//
-//.wallet button:nth-child(2) > div:nth-child(2) {
-//  border: none;
-//}
+@import "css/varsNEW";
 
 .wallet {
-  --color-fg-accent: transparent;
-  --color-fg-invers: red;
+  font-size: $font14px;
+  font-weight: 400;
+  letter-spacing: .05em;
+  cursor: pointer;
 
-  button {
-    //background-color: transparent;
-    //color: white;
-    text-decoration: underline !important;
+  &:not(.connected) {
+    text-decoration: underline;
   }
 }

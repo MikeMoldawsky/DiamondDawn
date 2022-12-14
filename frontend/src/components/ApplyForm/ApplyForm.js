@@ -156,9 +156,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
             />
           </div>
           {!account?.address && (
-            <div className="wallet">
-              <Wallet />
-            </div>
+            <Wallet />
           )}
         </div>
         <div className="text-comment">

@@ -27,17 +27,9 @@
     }
   }
 
-  button {
-    @extend .button;
-
-    &:not(.button) {
-      font-size: $font14px;
-      margin-left: 2em;
-      white-space: nowrap;
-      padding: 0 !important;
-      text-transform: unset;
-      text-decoration: underline;
-    }
+  .wallet {
+    margin-left: .5em;
+    white-space: nowrap;
   }
 
   .address-row {

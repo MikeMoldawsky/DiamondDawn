@@ -3,7 +3,6 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { mainnet, goerli, localhost } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-import useWindowDimensions from "hooks/useWindowDimensions";
 import {
   EthereumClient,
   modalConnectors,
@@ -11,25 +10,50 @@ import {
 } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
 
-function WagmiWrapper({ children }) {
-  const { width } = useWindowDimensions();
+const localChain = {
+  id: 31337,
+  name: "Local",
+  network: "local",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Ethereum",
+    symbol: "ETH",
+  },
+  rpcUrls: {
+    default: {
+      http: ["http://localhost:8545"],
+    },
+  },
+  testnet: true,
+};
 
+console.log(process.env)
+
+function WagmiWrapper({ children }) {
   const chainByEnv =
     process.env.REACT_APP_ENVIRONMENT === "production"
       ? mainnet
       : process.env.REACT_APP_ENVIRONMENT === "preview"
       ? goerli
-      : localhost;
-  const { chains, provider } = configureChains(
-    [chainByEnv],
-    [
+      : localChain;
+
+  const providers = [
+    alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
+    // infuraProvider({ apiKey: "dbe63b3bdfc84f3abdf38cdc8e22f492" }),
+    publicProvider(),
+  ]
+
+  if (process.env.REACT_APP_ENVIRONMENT !== "local") {
+    providers.unshift(
       walletConnectProvider({
         projectId: process.env.REACT_APP_WALLET_CONNECT_KEY,
       }),
-      alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
-      // infuraProvider({ apiKey: "dbe63b3bdfc84f3abdf38cdc8e22f492" }),
-      publicProvider(),
-    ]
+    )
+  }
+
+  const { chains, provider } = configureChains(
+    [chainByEnv],
+    providers
   );
   const wagmiClient = createClient({
     autoConnect: true,
