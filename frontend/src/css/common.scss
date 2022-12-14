@@ -646,6 +646,14 @@ a:not(.no-hover) {
       }
     }
   }
+
+  form {
+    .form-error {
+      top: 85%;
+      left: unset;
+      right: 1.5em;
+    }
+  }
 }
 
 @media only screen and (max-width: 768px) {
