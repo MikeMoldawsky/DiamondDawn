@@ -1,6 +1,6 @@
 import React from "react";
 import "./TheJourneyPage.scss";
-import { getCDNImageUrl, getCDNVideoUrl } from "utils";
+import {createVideoSources, getCDNImageUrl, getCDNVideoUrl} from "utils";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
 import {
@@ -54,7 +54,7 @@ const TheJourneyPage = () => {
             <div className="image-side">
               <div className="image">
                 <ReactPlayer
-                  url={getCDNVideoUrl("key-static.webm")}
+                  url={createVideoSources("key-static")}
                   playing
                   playsinline
                   controls={false}
@@ -78,7 +78,7 @@ const TheJourneyPage = () => {
             <div className="image-side">
               <div className="image">
                 <ReactPlayer
-                  url={getCDNVideoUrl("rough-stone-static.webm")}
+                  url={createVideoSources("rough-stone-static")}
                   playing
                   playsinline
                   controls={false}
@@ -102,7 +102,7 @@ const TheJourneyPage = () => {
             <div className="image-side">
               <div className="image">
                 <InlineVideo
-                  src={getCDNVideoUrl("question-mark.webm")}
+                  src={createVideoSources("question-mark")}
                   withLoader={false}
                   showThreshold={0}
                 />
@@ -120,7 +120,7 @@ const TheJourneyPage = () => {
             <div className="image-side">
               <div className="image">
                 <InlineVideo
-                  src={getCDNVideoUrl("question-mark.webm")}
+                  src={createVideoSources("question-mark")}
                   withLoader={false}
                   showThreshold={0}
                 />
@@ -138,7 +138,7 @@ const TheJourneyPage = () => {
             <div className="image-side">
               <div className="image">
                 <InlineVideo
-                  src={getCDNVideoUrl("physical-digital-diamond.webm")}
+                  src={createVideoSources("physical-digital-diamond")}
                   withLoader={false}
                   showThreshold={0}
                 />
