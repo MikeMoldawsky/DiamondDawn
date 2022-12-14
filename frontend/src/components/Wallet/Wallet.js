@@ -3,9 +3,7 @@ import "./Wallet.scss";
 import { Web3Button } from "@web3modal/react";
 
 const Wallet = () => {
-  return (
-    <Web3Button icon="hide" label="CONNECT" />
-  )
+  return <Web3Button icon="hide" label="CONNECT" />;
   // return (
   //   <ConnectButton
   //     label="Connect"

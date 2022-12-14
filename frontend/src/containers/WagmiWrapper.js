@@ -24,7 +24,6 @@ import {
 
 import { Web3Modal } from "@web3modal/react";
 
-
 const localChain = {
   id: 31337,
   name: "Local",
@@ -52,7 +51,7 @@ function WagmiWrapper({ children }) {
   const { chains, provider } = configureChains(
     [chainByEnv],
     [
-      walletConnectProvider({ projectId: process.env.REACT_APP_WALLET_CONNECT_KEY }),
+      // walletConnectProvider({ projectId: process.env.REACT_APP_WALLET_CONNECT_KEY }),
       alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_KEY }),
       // infuraProvider({ apiKey: "dbe63b3bdfc84f3abdf38cdc8e22f492" }),
       publicProvider(),

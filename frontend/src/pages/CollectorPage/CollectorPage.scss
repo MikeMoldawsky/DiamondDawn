@@ -48,8 +48,8 @@
 @media only screen and (orientation: portrait) {
   .page.collector-page {
     .bg.collector-bg {
-      background: url($CDN_URL + "/images/collector/collector-bg-portrait.jpg") no-repeat
-      center bottom;
+      background: url($CDN_URL + "/images/collector/collector-bg-portrait.jpg")
+        no-repeat center bottom;
       background-size: auto 100%;
     }
   }
@@ -74,7 +74,7 @@
       .box-content {
         &:before {
           background-color: #3e3e3e;
-          opacity: .75;
+          opacity: 0.75;
         }
       }
 
