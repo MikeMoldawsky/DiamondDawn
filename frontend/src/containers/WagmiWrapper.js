@@ -11,20 +11,6 @@ import {
 } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
 
-const localChain = {
-  id: 31337,
-  name: "Local",
-  network: "local",
-  nativeCurrency: {
-    decimals: 18,
-    name: "Ethereum",
-    symbol: "ETH",
-  },
-  rpcUrls: {
-    default: "http://localhost:8545",
-  },
-  testnet: true,
-};
 
 function WagmiWrapper({ children }) {
   const { width } = useWindowDimensions();
