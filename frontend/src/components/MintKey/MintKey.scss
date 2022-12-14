@@ -200,6 +200,11 @@
       .image-box {
         width: 100%;
         margin-top: 0;
+
+        .react-player {
+          height: 30vh;
+          margin: 0vh 0 2vh;
+        }
       }
 
       .content-box {
@@ -257,6 +262,18 @@
 
         svg {
           font-size: 1em;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .action-view.enter {
+    .layout-box {
+      .image-box {
+        .react-player {
+          height: 22.5vh;
         }
       }
     }
