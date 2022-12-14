@@ -63,7 +63,7 @@ export const Phase0Text = () => (
       The application phase will automatically end when 333 participants minted
       their keys.
     </p>
-    <p>
+    <p className="cta-row">
       <CTAButton />
     </p>
   </div>

@@ -15,14 +15,17 @@ import {
 import InfoPage from "components/InfoPage";
 import AnimatedText from "components/AnimatedText";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
+import { useMobileOrTablet } from "hooks/useMediaQueries";
 
 const TheJourneyPage = () => {
+  const isMobile = useMobileOrTablet();
+
   return (
     <InfoPage
       className="the-journey-page"
       teaser={{ src: getCDNVideoUrl("physical-loop.webm"), overlap: "-25%" }}
     >
-      <div className="general">
+      <div className="text-section general">
         <div className="leading-text">THE JOURNEY</div>
         <TheJourneyMainText />
       </div>
@@ -30,8 +33,12 @@ const TheJourneyPage = () => {
         id="journey"
         className="center-aligned-column content-section journey"
       >
-        <div className="center-aligned-row journey-row journey-desc">
-          <AnimatedText className="text-side">
+        <div
+          className={classNames("center-aligned-row journey-row journey-desc", {
+            "text-section": isMobile,
+          })}
+        >
+          <AnimatedText className={classNames("text-side")}>
             <div className="subtitle-text">THE PHASES</div>
             <TheJourneyText />
           </AnimatedText>

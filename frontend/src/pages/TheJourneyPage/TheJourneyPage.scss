@@ -240,3 +240,129 @@
     }
   }
 }
+
+@media only screen and (max-width: 1199px) {
+  .page.info-page.the-journey-page {
+    .journey {
+      .scale {
+        display: none;
+      }
+
+      .journey-row {
+        flex-direction: column;
+
+        .cta-row {
+          text-align: center;
+        }
+
+        .meter {
+          left: 50%;
+          top: -12.5em;
+          bottom: 6.5em;
+          z-index: -1;
+
+          &.active {
+            top: -10em;
+            bottom: 6.5em;
+          }
+        }
+
+        .image-side {
+          background-color: black;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .image {
+            width: 10em;
+          }
+        }
+
+        .text-side {
+          padding: 0 0 10em 0;
+          width: 80%;
+          margin: 0 auto;
+
+          & > div:not(.meter) {
+            background-color: black;
+            z-index: 1;
+          }
+
+          .animated-text {
+            padding-bottom: 1em;
+          }
+        }
+
+        &.journey-desc {
+          .text-side {
+            width: 100%;
+            padding-bottom: 8em;
+          }
+        }
+
+        &.phase-0 {
+          .key-image {
+            transform: rotate(145deg) rotateY(180deg) rotateZ(180deg)
+              translate(-7.5%, -7.5%);
+          }
+        }
+
+        &.phase-1 {
+          .image-side {
+            .image {
+              .react-player {
+                transform: translate(2.5%, -25%) rotate(75deg);
+              }
+            }
+          }
+        }
+
+        &.phase-2,
+        &.phase-3 {
+          .image-side {
+            .image {
+              .react-player {
+                transform: translateY(15%);
+              }
+            }
+          }
+
+          .text-side {
+            text-align: center;
+          }
+        }
+
+        &.phase-4 {
+          .meter {
+            bottom: 35em;
+          }
+
+          .image-side {
+            align-self: unset;
+
+            .image {
+              .react-player {
+                transform: translateY(-7.5%);
+              }
+            }
+          }
+
+          .text-side {
+            .text {
+              width: 100%;
+            }
+          }
+
+          img.certificate {
+            z-index: 1;
+            left: 50%;
+            transform: translateX(-50%);
+            top: unset;
+            width: 7em;
+          }
+        }
+      }
+    }
+  }
+}

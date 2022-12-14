@@ -40,7 +40,6 @@ body {
 * {
   font-family: "Saira", monospace;
   box-sizing: border-box;
-  font-size: inherit;
 }
 
 a {
@@ -50,7 +49,6 @@ a {
 
 b {
   font-weight: 500;
-  //font-weight: 700;
 }
 
 p {
@@ -196,6 +194,7 @@ form {
 
 .page {
   position: relative;
+  --text-margin-left: 0;
 
   .inner-page {
     padding-top: calc(var(--header-height) + 1rem);
@@ -209,6 +208,21 @@ form {
       text-transform: uppercase;
       margin: 0 0 0 0;
       font-size: $font30px;
+    }
+  }
+
+  .text-section {
+    position: relative;
+    margin-left: var(--text-margin-left);
+
+    .subtitle-text {
+      margin-top: 2em;
+    }
+
+    .text {
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
     }
   }
 }
@@ -602,13 +616,40 @@ a:not(.no-hover) {
   }
 }
 
-@mixin common-portrait {
+@media only screen and (max-width: 1366px) {
+  .page {
+    font-size: $font15px;
+  }
+}
+
+@media only screen and (max-width: 1199px) {
   :root {
-    --header-height: 5.5rem;
+    --header-height: 6rem;
   }
 
   html {
     font-size: $font12px;
+  }
+
+  .page {
+    font-size: $font18px;
+
+    .inner-page {
+      h1 {
+        font-size: 1.25em;
+      }
+    }
+
+    .text-section {
+      min-width: unset !important;
+      width: 80% !important;
+      margin-left: auto;
+      margin-right: auto;
+
+      .text {
+        width: 100%;
+      }
+    }
   }
 
   .react-player.dd-text {
@@ -630,22 +671,6 @@ a:not(.no-hover) {
       }
     }
   }
-}
-
-@media only screen and (max-width: 1199px) {
-  @include common-portrait;
-
-  :root {
-    --header-height: 6rem;
-  }
-
-  .page {
-    .inner-page {
-      h1 {
-        font-size: 1.25em;
-      }
-    }
-  }
 
   form {
     .form-error {
@@ -657,13 +682,14 @@ a:not(.no-hover) {
 }
 
 @media only screen and (max-width: 768px) {
+  .page {
+    font-size: $font16px;
+  }
+
   .text-comment {
     font-size: 2.75vw;
   }
 }
 
-@media only screen and (max-width: 375px) {
-  html {
-    font-size: $font11px;
-  }
+@media only screen and (max-width: 480px) {
 }

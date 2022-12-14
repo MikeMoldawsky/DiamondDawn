@@ -105,21 +105,6 @@
     top: 9vh;
   }
 
-  .text-section {
-    position: relative;
-    margin-left: var(--text-margin-left);
-
-    .subtitle-text {
-      margin-top: 2em;
-    }
-
-    .text {
-      &:not(:last-child) {
-        margin-bottom: 1rem;
-      }
-    }
-  }
-
   .eternal-treasures,
   .scarcity,
   .value-section,
@@ -165,121 +150,79 @@
 
 @media only screen and (max-width: 1366px) {
   .page.homepage {
-    font-size: $font15px;
-
     .homepage-content-background {
       --edge-offset: -2%;
     }
   }
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1199px) {
   .page.homepage {
-    font-size: $font14px;
     --text-margin-left: 10%;
+
+    .top-content {
+      width: 100%;
+      margin-left: 0;
+      justify-content: flex-start;
+
+      .opening {
+        --base-font-size: 40;
+        max-width: 75%;
+        margin-top: 0;
+
+        .logo {
+          width: 100%;
+
+          .react-player {
+            width: 100% !important;
+          }
+        }
+
+        .tagline-text {
+          width: 15em;
+        }
+
+        .buttons-row .play-button:not(:last-child) {
+          margin-right: 4em;
+        }
+
+        .countdown-container {
+          font-size: $font9px;
+        }
+      }
+    }
 
     .homepage-content-background {
       --edge-offset: -7%;
     }
-  }
-}
 
-@media only screen and (max-width: 1024px) {
-  .page.homepage {
-    .top-content {
-      .opening {
-        --base-font-size: 25;
+    .homepage-content {
+      top: unset;
+    }
+
+    .eternal-treasures {
+      .text-section {
+        margin-top: 50vw;
       }
     }
-  }
-}
 
-@mixin homepage-portrait {
-  .top-content {
-    width: 100%;
-    margin-left: 0;
-    justify-content: flex-start;
-
-    .opening {
-      --base-font-size: 40;
-      max-width: 75%;
-      margin-top: 0;
-
-      .logo {
-        width: 100%;
-
-        .react-player {
-          width: 100% !important;
-        }
-      }
-
-      .tagline-text {
-        width: 15em;
-      }
-
-      .buttons-row .play-button:not(:last-child) {
-        margin-right: 4em;
-      }
-
-      .countdown-container {
-        font-size: $font9px;
+    .teaser-video {
+      .react-player {
+        opacity: 0.5;
       }
     }
-  }
-
-  .homepage-content {
-    top: unset;
-  }
-
-  .text-section {
-    margin: 10vw auto 0;
-    min-width: unset !important;
-    width: 80% !important;
-
-    .text {
-      width: 100%;
-    }
-  }
-
-  .eternal-treasures {
-    .text-section {
-      margin-top: 50vw;
-    }
-  }
-
-  .teaser-video {
-    .react-player {
-      opacity: 0.5;
-    }
-  }
-}
-
-@media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
-  .page.homepage {
-    @include homepage-portrait;
-    font-size: $font18px;
   }
 }
 
 @media only screen and (max-width: 768px) {
-  .page.homepage {
-    @include homepage-portrait;
-    font-size: $font16px;
-  }
 }
 
 @media only screen and (max-width: 480px) {
   .page.homepage {
-    @include homepage-portrait;
-
     .top-content {
       .opening {
         --base-font-size: 50;
       }
-    }
-
-    .text-section {
-      margin: 15vw auto 0;
     }
 
     .eternal-treasures {
