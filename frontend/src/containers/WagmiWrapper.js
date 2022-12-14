@@ -35,7 +35,6 @@ function WagmiWrapper({ children }) {
       : process.env.REACT_APP_ENVIRONMENT === "preview"
       ? goerli
       : localhost;
-  console.log("CHAIBNSSS", chainByEnv);
   const { chains, provider } = configureChains(
     [chainByEnv],
     [
@@ -45,7 +44,6 @@ function WagmiWrapper({ children }) {
       publicProvider(),
     ]
   );
-  console.log("CHAIBNSSS", { chainByEnv, chains });
   const wagmiClient = createClient({
     autoConnect: true,
     connectors: modalConnectors({ appName: "Diamond Dawn", chains }),
