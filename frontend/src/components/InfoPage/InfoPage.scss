@@ -38,13 +38,14 @@
 
   .content-section {
     position: relative;
+    align-items: center;
     margin: 0 auto;
     z-index: 1;
   }
 }
 
 @media only screen and (max-width: 1540px) {
-  .page.info-page {
+  .page.info-page.tech-page {
     .general {
       margin-left: 7.5%;
     }
@@ -52,9 +53,20 @@
 }
 
 @media only screen and (max-width: 1199px) {
-  .page.info-page {
+  .page.info-page.tech-page {
+
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .page.info-page.tech-page {
     .general {
-      margin-left: 5%;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    .content-section {
+      width: 80%;
     }
   }
 }
