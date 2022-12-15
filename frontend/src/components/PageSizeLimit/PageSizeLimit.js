@@ -5,7 +5,14 @@ import { createVideoSources } from "utils";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import "./PageSizeLimit.scss";
 
-const DEFAULT_MIN_WIDTH = 1025;
+const getMinWidth = () => {
+  try {
+    return parseInt(process.env.REACT_APP_PAGE_SIZE_LIMIT);
+  } catch (e) {
+    return 1025;
+  }
+};
+const DEFAULT_MIN_WIDTH = getMinWidth();
 
 export const usePageSizeLimit = (minWidth = DEFAULT_MIN_WIDTH) => {
   const { width } = useWindowDimensions();
