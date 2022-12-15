@@ -109,6 +109,12 @@ const Invite = () => {
       </>
     );
 
+  const renderTwitterButton = () => (
+    <TwitterLink className="button gold icon-after">
+      Follow <FontAwesomeIcon icon={faTwitter} />
+    </TwitterLink>
+  )
+
   return (
     <div className="box-content opaque invite-view">
       <div className="layout-box">
@@ -134,11 +140,10 @@ const Invite = () => {
                         <b>@DiamondDawnNFT</b>
                       </TwitterLink>
                     </b>{" "}
-                    <TwitterLink className="button gold icon-after">
-                      Follow <FontAwesomeIcon icon={faTwitter} />
-                    </TwitterLink>
+                    <MobileOrTablet>{renderTwitterButton()}</MobileOrTablet>
                     <span>We’ll send you a Twitter DM if you are accepted.</span>
                   </div>
+                  <Desktop>{renderTwitterButton()}</Desktop>
                 </div>
                 <MintAddressRow />
               </div>

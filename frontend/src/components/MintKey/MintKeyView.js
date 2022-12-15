@@ -55,15 +55,35 @@ const MintKeyView = ({
     </div>
   );
 
-  const renderInlineVideo = useCallback(() => {
+  const renderHandAndKeyVideo = useCallback(() => {
     return (
-      <InlineVideo
-        src={createVideoSources("hand-key-particles")}
-        showThreshold={0}
-        withLoader={false}
-      />
+      <div className="image-box">
+        <InlineVideo
+          src={createVideoSources("hand-key-particles")}
+          showThreshold={0}
+          withLoader={false}
+        />
+      </div>
     );
   }, []);
+
+  const renderMintButton = () => (
+    <div className="center-aligned-column button-column">
+      <div className="left-center-aligned-row price-text">
+        ACTIVATE YOUR KEY
+      </div>
+      <div>
+        <ActionButton
+          actionKey="MintKey"
+          className="gold lg mint-button"
+          disabled={!canMint || !isFunction(mint)}
+          onClick={() => isFunction(mint) && mint()}
+        >
+          {mintPriceText} <FontAwesomeIcon icon={faEthereum} /> MINT
+        </ActionButton>
+      </div>
+    </div>
+  )
 
   const { countdownText, date: countdownEnd } = useMineOpenCountdown()
 
@@ -73,8 +93,10 @@ const MintKeyView = ({
   return (
     <div className="action-view enter">
       <div className="layout-box">
-        <MobileOrTablet>{renderTitle()}</MobileOrTablet>
-        <div className="image-box">{renderInlineVideo()}</div>
+        {!showInvites && (
+          <MobileOrTablet>{renderTitle()}</MobileOrTablet>
+        )}
+        <Desktop>{renderHandAndKeyVideo()}</Desktop>
         <div className="content-box">
           {showInvites ? (
             <div className="center-aligned-column invites-view">
@@ -101,21 +123,13 @@ const MintKeyView = ({
             <>
               <Desktop>{renderTitle()}</Desktop>
               <div className="left-center-aligned-row mint-box">
-                <div className="center-aligned-column button-column">
-                  <div className="left-center-aligned-row price-text">
-                    ACTIVATE YOUR KEY
+                <MobileOrTablet>
+                  <div className="center-aligned-row">
+                    {renderHandAndKeyVideo()}
+                    {renderMintButton()}
                   </div>
-                  <div>
-                    <ActionButton
-                      actionKey="MintKey"
-                      className="gold lg mint-button"
-                      disabled={!canMint || !isFunction(mint)}
-                      onClick={() => isFunction(mint) && mint()}
-                    >
-                      {mintPriceText} <FontAwesomeIcon icon={faEthereum} /> MINT
-                    </ActionButton>
-                  </div>
-                </div>
+                </MobileOrTablet>
+                <Desktop>{renderMintButton()}</Desktop>
                 <div className="center-aligned-column open-soon">
                   <div className="timer-box">
                     <div className="text-comment">{countdownTextLine}</div>
@@ -144,9 +158,11 @@ const MintKeyView = ({
           )}
         </div>
       </div>
-      <div className="status-box">
-        {diamondCount} / {maxDiamonds} MINTED
-      </div>
+      {!showInvites && (
+        <div className="status-box">
+          {diamondCount} / {maxDiamonds} MINTED
+        </div>
+      )}
     </div>
   );
 };

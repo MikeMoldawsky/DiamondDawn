@@ -201,7 +201,7 @@
       height: unset;
       top: unset;
       flex-direction: column;
-      padding: 2em 1em 1em;
+      padding: 2em 1em 1.5em;
 
       .leading-text {
         font-size: 2.4em;
@@ -210,6 +210,7 @@
       .image-box {
         width: 100%;
         margin-top: 0;
+        margin-left: -1em;
 
         .react-player {
           height: 30vh;
@@ -225,13 +226,13 @@
           padding: 0;
 
           .button-column {
-            font-size: 1.25em;
+            padding-right: .5em;
           }
 
           .open-soon {
             font-size: 1em;
             padding: 0;
-            margin: 1em 0 2em;
+            margin: 0 0 3.5em;
 
             &:before {
               display: none;
@@ -257,7 +258,7 @@
         }
 
         .timer-box {
-          margin-top: 2em;
+          padding: 0;
 
           .countdown {
             width: 85%;
@@ -268,11 +269,14 @@
 
     .minting-address-row {
       margin-bottom: 0;
+      align-items: flex-start;
     }
 
     .invites-view {
       height: unset;
-      padding: 1em 1.75em;
+      padding: 1em 2em;
+      margin: -9vw -4vw 0 -7vw;
+      border: none;
 
       .back-button {
         width: 1.75em;
@@ -283,6 +287,10 @@
         }
       }
     }
+
+    .status-box {
+      transform: translateY(-50%);
+    }
   }
 }
 
@@ -291,7 +299,7 @@
     .layout-box {
       .image-box {
         .react-player {
-          height: 22.5vh;
+          height: 20vh;
         }
       }
     }
