@@ -1,7 +1,6 @@
 import React from "react";
 import "./CreditsPage.scss";
 import Footer from "components/Footer";
-import PageSizeLimit from "components/PageSizeLimit";
 import map from "lodash/map";
 import Link from "components/Links";
 
