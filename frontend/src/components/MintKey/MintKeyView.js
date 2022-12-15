@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, {useCallback, useEffect} from "react";
 import "components/MintKey/MintKey.scss";
 import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
@@ -17,6 +17,7 @@ import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useMusic from "hooks/useMusic";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
+import {useSearchParams} from "react-router-dom";
 
 const MintKeyView = ({
   mintPrice = 4.44,
@@ -27,6 +28,8 @@ const MintKeyView = ({
   expiresAt,
   onCountdownEnd,
 }) => {
+  const [searchParams] = useSearchParams();
+  const showInvitesParam = searchParams.get("invites") === "true";
   const dispatch = useDispatch();
   const { mintViewShowInvites: showInvites } = useSelector(uiSelector);
 
@@ -36,6 +39,12 @@ const MintKeyView = ({
 
   useMusic("accepted.mp3");
 
+  useEffect(() => {
+    if (showInvitesParam) {
+      toggleInvites(true)
+    }
+  }, [showInvitesParam])
+  
   const mintPriceText = BigNumber.isBigNumber(mintPrice)
     ? ethersUtils.formatUnits(mintPrice)
     : "4.44";
