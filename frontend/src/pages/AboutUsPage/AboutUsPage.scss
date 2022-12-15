@@ -200,4 +200,12 @@
   }
 }
 
+@media only screen and (max-width: 480px) {
+  .page.info-page.about-page {
+    .team {
+      width: 90%;
+    }
+  }
+}
+
 

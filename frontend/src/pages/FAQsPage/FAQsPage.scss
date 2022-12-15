@@ -15,3 +15,19 @@
     margin-top: 2em;
   }
 }
+
+@media only screen and (max-width: 1200px) {
+  .page.faqs-page {
+    .inner-page {
+      width: 70%;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .page.faqs-page {
+    .inner-page {
+      width: 80%;
+    }
+  }
+}
