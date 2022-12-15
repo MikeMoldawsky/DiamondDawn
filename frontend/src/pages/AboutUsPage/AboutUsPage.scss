@@ -95,7 +95,6 @@
         }
         &:nth-child(3) {
           .animated-text {
-
           }
         }
         &:nth-child(4) {
@@ -127,7 +126,6 @@
 
       .team-members {
         .team-member {
-
         }
       }
     }
@@ -146,7 +144,8 @@
       margin-right: 1.5em;
     }
 
-    .tagline-text,.member-title {
+    .tagline-text,
+    .member-title {
       margin: 0;
     }
   }
@@ -166,14 +165,16 @@
           &:nth-child(1) {
             @include full-width-team-member;
           }
-          &:nth-child(2), &:nth-child(4) {
+          &:nth-child(2),
+          &:nth-child(4) {
             width: 47.5%;
 
             .animated-text {
               transition-delay: 0s;
             }
           }
-          &:nth-child(3), &:nth-child(5) {
+          &:nth-child(3),
+          &:nth-child(5) {
             width: 47.5%;
 
             .animated-text {
@@ -207,5 +208,3 @@
     }
   }
 }
-
-

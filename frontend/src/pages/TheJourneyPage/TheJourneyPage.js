@@ -16,12 +16,12 @@ import InfoPage from "components/InfoPage";
 import AnimatedText from "components/AnimatedText";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
-import {getPhysicalLoopVideo} from "assets/videos";
+import { getPhysicalLoopVideo } from "assets/videos";
 import useWindowDimensions from "hooks/useWindowDimensions";
 
 const TheJourneyPage = () => {
   const isMobile = useMobileOrTablet();
-  const { width } = useWindowDimensions()
+  const { width } = useWindowDimensions();
 
   return (
     <InfoPage

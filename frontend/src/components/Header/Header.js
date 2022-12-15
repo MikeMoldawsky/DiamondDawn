@@ -20,7 +20,7 @@ import classNames from "classnames";
 import CTAButton from "components/CTAButton";
 import { TwitterLink } from "components/Links";
 import usePermission from "hooks/usePermission";
-import {useDesktopMediaQuery} from "hooks/useMediaQueries";
+import { useDesktopMediaQuery } from "hooks/useMediaQueries";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();

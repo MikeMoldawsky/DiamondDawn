@@ -22,7 +22,7 @@ import InfoPage from "components/InfoPage";
 import Link from "components/Links";
 import AnimatedText from "components/AnimatedText";
 import useWindowDimensions from "hooks/useWindowDimensions";
-import {getPhysicalLoopVideo} from "assets/videos";
+import { getPhysicalLoopVideo } from "assets/videos";
 import classNames from "classnames";
 
 const SOCIAL_ICONS = {
@@ -44,9 +44,8 @@ const TEAM = [
     Text: MikeText,
     links: {
       twitter: "https://twitter.com/tweezers0x",
-      linkedin:
-        "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
-    }
+      linkedin: "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
+    },
   },
   {
     id: "david",
@@ -56,7 +55,7 @@ const TEAM = [
     links: {
       twitter: "https://twitter.com/DavidAriew",
       website: "http://arievvisuals.com/",
-    }
+    },
   },
   {
     id: "asaf",
@@ -66,14 +65,14 @@ const TEAM = [
     links: {
       twitter: "https://twitter.com/sniirr0x",
       linkedin: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
-    }
+    },
   },
   {
     id: "aviva",
     name: "Aviva Moldawsky",
     title: "Diamond Art Designer",
     Text: AvivaText,
-    links: {}
+    links: {},
   },
   {
     id: "tony",
@@ -81,10 +80,10 @@ const TEAM = [
     title: "Advisor",
     Text: TonyText,
     links: {
-      twitter: "https://twitter.com/tonyherrera"
-    }
+      twitter: "https://twitter.com/tonyherrera",
+    },
   },
-]
+];
 
 const SocialButtons = ({ member, links }) => (
   <div className="social-buttons">
@@ -113,11 +112,11 @@ const TeamMember = ({ name, id, title, Text, links }) => {
         <SocialButtons member={id} links={links} />
       </AnimatedText>
     </div>
-  )
-}
+  );
+};
 
 const AboutUsPage = () => {
-  const { width } = useWindowDimensions()
+  const { width } = useWindowDimensions();
 
   return (
     <InfoPage
