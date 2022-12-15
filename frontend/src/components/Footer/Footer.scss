@@ -15,6 +15,7 @@ footer.footer {
     from(rgba(0, 0, 0, 0)),
     to(rgba(0, 0, 0, 1))
   );
+  overflow: hidden;
 
   .bg.bg-footer {
     background: url($CDN_URL + "/images/footer.png") no-repeat center center;
@@ -173,6 +174,15 @@ footer.footer {
     .faq-section {
       width: 85%;
       padding-top: 10em;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  footer.footer {
+    .footer-inner {
+      width: 90%;
+      padding-left: 5%;
     }
   }
 }
