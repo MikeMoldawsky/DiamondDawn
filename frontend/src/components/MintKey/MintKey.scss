@@ -19,7 +19,7 @@
 
   .content-box {
     width: 45%;
-    height: 90%;
+    height: 96%;
     margin-left: 2%;
     display: flex;
     flex-direction: column;
@@ -136,8 +136,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding-bottom: 1em;
     z-index: 1;
+    bottom: 0;
 
     span {
       margin: 0 1em;
@@ -146,7 +146,7 @@
 
   .minting-address-row {
     margin-top: 2em;
-    margin-bottom: 1.5em;
+    margin-bottom: 3.5em;
     padding-top: 0;
   }
 
