@@ -47,9 +47,29 @@
 
   footer {
     margin-top: 2em;
+  }
+}
 
-    .footer-inner {
-      padding-top: 6rem;
+@media only screen and (max-width: 767px) {
+  .page.credits-page {
+    .inner-page {
+      font-size: $font20px;
+    }
+
+    .credits-category {
+      margin: 1em 0;
+    }
+
+    footer.footer {
+      margin-top: 8em;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .page {
+    .inner-page {
+      font-size: $font22px;
     }
   }
 }

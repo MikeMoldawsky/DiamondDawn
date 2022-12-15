@@ -43,31 +43,29 @@ const CREDITS = {
 };
 
 const CreditsPage = () => (
-  <PageSizeLimit>
-    <div className="page credits-page">
-      <div className="inner-page">
-        <h1>CREDITS</h1>
-        <div className="credits">
-          {map(CREDITS, (creditsTo, category) => (
-            <div
-              key={`credits-category-${category}`}
-              className="top-spaced-row credits-category"
-            >
-              <div className="category-name">{category}</div>
-              <div className="right-spaced-column">
-                {map(creditsTo, ({ name, link }) => (
-                  <div key={`credit-to-${name}`} className="credit-to">
-                    <Link href={link}>{name}</Link>
-                  </div>
-                ))}
-              </div>
+  <div className="page credits-page">
+    <div className="inner-page">
+      <h1>CREDITS</h1>
+      <div className="credits">
+        {map(CREDITS, (creditsTo, category) => (
+          <div
+            key={`credits-category-${category}`}
+            className="top-spaced-row credits-category"
+          >
+            <div className="category-name">{category}</div>
+            <div className="right-spaced-column">
+              {map(creditsTo, ({ name, link }) => (
+                <div key={`credit-to-${name}`} className="credit-to">
+                  <Link href={link}>{name}</Link>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-      <Footer />
     </div>
-  </PageSizeLimit>
+    <Footer />
+  </div>
 );
 
 export default CreditsPage;
