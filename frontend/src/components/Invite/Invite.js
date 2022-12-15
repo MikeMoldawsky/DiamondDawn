@@ -125,26 +125,23 @@ const Invite = () => {
                   4.44 ETH.
                 </div>
               </div>
-              {!showSubmittedModal && (
-                <div className="center-spaced-column bottom-content">
-                  <div className="center-aligned-row follow-box">
-                    <div className="follow-text">
-                      <b>
-                        Make sure to follow request{" "}
-                        <TwitterLink className="text-gold">
-                          <b>@DiamondDawnNFT</b>
-                        </TwitterLink>
-                      </b>
-                      <br />
-                      We’ll send you a Twitter DM if you are accepted.
-                    </div>
+              <div className="center-spaced-column bottom-content">
+                <div className="center-aligned-row follow-box">
+                  <div className="follow-text">
+                    <b>
+                      Make sure to follow request{" "}
+                      <TwitterLink className="text-gold">
+                        <b>@DiamondDawnNFT</b>
+                      </TwitterLink>
+                    </b>{" "}
                     <TwitterLink className="button gold icon-after">
                       Follow <FontAwesomeIcon icon={faTwitter} />
                     </TwitterLink>
+                    <span>We’ll send you a Twitter DM if you are accepted.</span>
                   </div>
-                  <MintAddressRow />
                 </div>
-              )}
+                <MintAddressRow />
+              </div>
             </div>
           ) : (
             <>

@@ -202,7 +202,7 @@ form {
     position: relative;
 
     h1 {
-      font-weight: 300;
+      font-weight: 500;
       text-align: center;
       color: $gold;
       text-transform: uppercase;
@@ -511,13 +511,14 @@ a:not(.no-hover) {
 .video-box {
   aspect-ratio: 1;
   position: relative;
-  border: solid 1px white;
-  padding: 0.5em;
+  box-shadow: 0 0 4px 2px #bbbbbb44;
+  border-radius: 2px;
 
   .react-player {
     background-color: black;
     width: 100%;
     height: 100%;
+    border-radius: 2px;
 
     &.loader {
       padding: 0 15%;

@@ -14,7 +14,6 @@
   .account {
     font-size: $font18px;
     margin: 0 0 1em;
-    color: $gold;
     text-align: center;
     line-height: 1.5em;
     height: 1.5em;
@@ -50,7 +49,7 @@
     .bg.collector-bg {
       background: url($CDN_URL + "/images/collector/collector-bg-portrait.jpg")
         no-repeat center bottom;
-      background-size: auto 100%;
+      background-size: auto 120%;
     }
   }
 }
@@ -61,11 +60,11 @@
     height: unset;
 
     .inner-page {
-      padding-bottom: 1em;
+      padding-bottom: 5vw;
     }
 
     .main-box {
-      width: 95%;
+      width: 90%;
       max-width: unset;
       max-height: unset;
       aspect-ratio: unset;
@@ -93,8 +92,6 @@
 
 @media only screen and (max-width: 480px) {
   .page.collector-page {
-    .main-box {
-      width: 98%;
-    }
+
   }
 }

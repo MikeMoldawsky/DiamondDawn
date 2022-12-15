@@ -16,6 +16,7 @@ import MintAddressRow from "components/MintAddressRow";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useMusic from "hooks/useMusic";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
+import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 
 const MintKeyView = ({
   mintPrice = 4.44,
@@ -38,14 +39,6 @@ const MintKeyView = ({
   const mintPriceText = BigNumber.isBigNumber(mintPrice)
     ? ethersUtils.formatUnits(mintPrice)
     : "4.44";
-
-  const countdownProps = canMint
-    ? {
-        date: expiresAt,
-      }
-    : {
-        parts: { days: 3, hours: 3, minutes: 3, seconds: 0 },
-      };
 
   const renderTitle = () => (
     <div className="congrats-box">
@@ -71,6 +64,11 @@ const MintKeyView = ({
       />
     );
   }, []);
+
+  const { countdownText, date: countdownEnd } = useMineOpenCountdown()
+
+  const countdownEndDate = canMint ? expiresAt : countdownEnd
+  const countdownTextLine = canMint ? "When the time runs out, you'll no longer be able to join Diamond Dawn" : countdownText
 
   return (
     <div className="action-view enter">
@@ -110,7 +108,7 @@ const MintKeyView = ({
                   <div>
                     <ActionButton
                       actionKey="MintKey"
-                      className="gold mint-button"
+                      className="gold lg mint-button"
                       disabled={!canMint || !isFunction(mint)}
                       onClick={() => isFunction(mint) && mint()}
                     >
@@ -118,47 +116,36 @@ const MintKeyView = ({
                     </ActionButton>
                   </div>
                 </div>
-                {!canMint && (
-                  <div className="left-center-aligned-row open-soon">
-                    Diamond Dawn private sale will open soon!
+                <div className="center-aligned-column open-soon">
+                  <div className="timer-box">
+                    <div className="text-comment">{countdownTextLine}</div>
+                    <Countdown
+                      date={countdownEndDate}
+                      onComplete={() =>
+                        isFunction(onCountdownEnd) && onCountdownEnd()
+                      }
+                    />
                   </div>
-                )}
+                </div>
               </div>
               <div className="center-aligned-row invites-box">
                 <div className="image">
                   <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
                 </div>
-                <div className="text">You’ve been granted 2 invitations</div>
-                <Button className="gold" onClick={() => toggleInvites(true)}>
-                  INVITE A FRIEND
-                </Button>
-              </div>
-              <div className="timer-box">
-                <div className="text-comment">
-                  When the time runs out, you'll no longer be able to join
-                  Diamond Dawn
+                <div className="center-aligned-row invites-box-text">
+                  <div className="text">You’ve been granted 2 invitations</div>
+                  <Button className="gold" onClick={() => toggleInvites(true)}>
+                    INVITE A FRIEND
+                  </Button>
                 </div>
-                <Countdown
-                  flat
-                  onComplete={() =>
-                    isFunction(onCountdownEnd) && onCountdownEnd()
-                  }
-                  renderParts={{
-                    days: true,
-                    hours: true,
-                    minutes: true,
-                    seconds: true,
-                  }}
-                  {...countdownProps}
-                />
-              </div>
-              <div className="status-box">
-                {diamondCount} / {maxDiamonds} MINTED
               </div>
               <MintAddressRow />
             </>
           )}
         </div>
+      </div>
+      <div className="status-box">
+        {diamondCount} / {maxDiamonds} MINTED
       </div>
     </div>
   );

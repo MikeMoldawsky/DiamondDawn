@@ -6,14 +6,14 @@
   position: relative;
 
   .value {
-    font-size: $font50px;
+    font-size: $font80px;
     line-height: 1em;
-    margin-bottom: 5px;
+    margin-bottom: .05em;
     font-weight: 100;
   }
 
   .caption {
-    font-size: $font15px;
+    font-size: max($font15px, 8px);
   }
 
   .small-parts {
@@ -34,7 +34,7 @@
     }
 
     .caption {
-      font-size: $font12px !important;
+      font-size: max($font12px, 8px) !important;
       margin-bottom: 0.2rem;
     }
   }
@@ -46,7 +46,7 @@
       height: 100%;
       border-right: solid 1px white;
       margin-right: 2em;
-      padding-right: 2em;
+      padding-right: 4em;
 
       .countdown-part {
         flex-direction: row;
@@ -56,10 +56,11 @@
         .value {
           font-size: $font44px !important;
           margin-right: 0.4em;
+          margin-bottom: .25em;
         }
 
         .caption {
-          font-size: $font11px !important;
+          font-size: max($font11px, 8px) !important;
         }
       }
     }
@@ -73,6 +74,8 @@
     }
 
     .h-m-s {
+      transform: translateY(-5%);
+
       .countdown-part {
         width: 6.5em;
       }
