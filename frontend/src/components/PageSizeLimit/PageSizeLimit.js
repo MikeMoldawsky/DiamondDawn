@@ -9,7 +9,7 @@ const getMinWidth = () => {
   try {
     return parseInt(process.env.REACT_APP_PAGE_SIZE_LIMIT);
   } catch (e) {
-    return 1025;
+    return 0;
   }
 };
 const DEFAULT_MIN_WIDTH = getMinWidth();
