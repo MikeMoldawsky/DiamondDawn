@@ -8,18 +8,19 @@
     height: 94%;
     position: relative;
     top: 6%;
-    padding: 0 6% 0 0;
     display: flex;
   }
 
   .image-box {
-    width: 50%;
+    width: 48%;
     position: relative;
     margin-top: -2.5em;
   }
 
   .content-box {
-    width: 50%;
+    width: 45%;
+    height: 96%;
+    margin-left: 2%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -45,8 +46,8 @@
     color: white;
     position: relative;
     flex-grow: 2;
-    padding: 0 1em 0 0;
-    margin-top: -0.8em;
+    padding: 0 1em;
+    justify-content: space-between;
 
     .center-aligned-row {
       width: 100%;
@@ -54,6 +55,7 @@
     }
 
     .price-text {
+      font-size: 1.25em;
       color: $gold;
       font-weight: 500;
       margin-bottom: 0.4em;
@@ -71,19 +73,9 @@
     }
 
     .open-soon {
-      font-size: $font20px;
       position: relative;
       padding-left: 2em;
       margin-left: 2em;
-
-      &:before {
-        content: "";
-        position: absolute;
-        height: 100%;
-        width: 1px;
-        background-color: white;
-        left: 0;
-      }
     }
   }
 
@@ -93,11 +85,22 @@
     padding: 1em 0 1em;
     text-align: center;
 
+    .text-comment {
+      font-size: $font15px;
+    }
+
     .countdown {
-      width: 72%;
-      margin: 1em auto 0.5em;
-      font-size: $font12px;
+      font-size: 0.45em;
+      margin: 1em auto 0;
       color: $text_gray;
+
+      .value {
+        font-weight: 200 !important;
+      }
+
+      &.countdown.custom .w-d {
+        border-right-color: $text_gray;
+      }
     }
   }
 
@@ -111,6 +114,11 @@
       margin: -1em -2em -2em -1.5em;
     }
 
+    .invites-box-text {
+      flex-grow: 2;
+      padding-left: 1.25em;
+    }
+
     .text {
       margin: 0 1em;
       font-size: $font14px;
@@ -122,12 +130,14 @@
   }
 
   .status-box {
+    position: relative;
     text-align: center;
     color: white;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding-bottom: 1em;
+    z-index: 1;
+    bottom: 0;
 
     span {
       margin: 0 1em;
@@ -135,9 +145,9 @@
   }
 
   .minting-address-row {
-    margin-top: 0;
-    margin-bottom: 1em;
-    padding-top: 1em;
+    margin-top: 2em;
+    margin-bottom: 3.5em;
+    padding-top: 0;
   }
 
   .invites-view {
@@ -191,15 +201,16 @@
       height: unset;
       top: unset;
       flex-direction: column;
-      padding: 2em 1em 1em;
+      padding: 2em 1em 1.5em;
 
       .leading-text {
-        font-size: 8.75vw;
+        font-size: 2.4em;
       }
 
       .image-box {
         width: 100%;
         margin-top: 0;
+        margin-left: -1em;
 
         .react-player {
           height: 30vh;
@@ -215,13 +226,13 @@
           padding: 0;
 
           .button-column {
-            font-size: 1.25em;
+            padding-right: 0.5em;
           }
 
           .open-soon {
             font-size: 1em;
             padding: 0;
-            margin: 1em 0 2em;
+            margin: 0 0 3.5em;
 
             &:before {
               display: none;
@@ -230,16 +241,24 @@
         }
 
         .invites-box {
-          flex-direction: column;
+          font-size: 0.9125em;
+
+          .image img {
+            height: 5em;
+            margin: -1em -3em -2em -1.5em;
+          }
+
+          .invites-box-text {
+            flex-direction: column;
+          }
 
           .text {
-            margin: 0.5em 0;
-            font-size: 1em;
+            margin: 0 0 0.75em;
           }
         }
 
         .timer-box {
-          margin-top: 2em;
+          padding: 0;
 
           .countdown {
             width: 85%;
@@ -250,11 +269,14 @@
 
     .minting-address-row {
       margin-bottom: 0;
+      align-items: flex-start;
     }
 
     .invites-view {
       height: unset;
-      padding: 1em 1.75em;
+      padding: 1em 2em;
+      margin: -9vw -4vw 0 -7vw;
+      border: none;
 
       .back-button {
         width: 1.75em;
@@ -265,6 +287,10 @@
         }
       }
     }
+
+    .status-box {
+      transform: translateY(-50%);
+    }
   }
 }
 
@@ -273,7 +299,7 @@
     .layout-box {
       .image-box {
         .react-player {
-          height: 22.5vh;
+          height: 20vh;
         }
       }
     }

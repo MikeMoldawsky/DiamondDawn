@@ -80,3 +80,12 @@
     margin-top: 1em;
   }
 }
+
+@media only screen and (max-width: 768px) {
+  .page.tnc-page,
+  .page.privacy-page {
+    .inner-page {
+      width: 90%;
+    }
+  }
+}

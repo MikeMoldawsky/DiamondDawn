@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import "components/MintKey/MintKey.scss";
 import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
@@ -8,7 +8,7 @@ import isFunction from "lodash/isFunction";
 import { BigNumber, utils as ethersUtils } from "ethers";
 import InvitationsStatus from "components/InvitationsStatus";
 import { useDispatch, useSelector } from "react-redux";
-import { getCDNImageUrl, getCDNVideoUrl } from "utils";
+import { createVideoSources, getCDNImageUrl, getCDNVideoUrl } from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
@@ -16,6 +16,8 @@ import MintAddressRow from "components/MintAddressRow";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useMusic from "hooks/useMusic";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
+import useMineOpenCountdown from "hooks/useMineOpenCountdown";
+import { useSearchParams } from "react-router-dom";
 
 const MintKeyView = ({
   mintPrice = 4.44,
@@ -26,6 +28,8 @@ const MintKeyView = ({
   expiresAt,
   onCountdownEnd,
 }) => {
+  const [searchParams] = useSearchParams();
+  const showInvitesParam = searchParams.get("invites") === "true";
   const dispatch = useDispatch();
   const { mintViewShowInvites: showInvites } = useSelector(uiSelector);
 
@@ -35,17 +39,15 @@ const MintKeyView = ({
 
   useMusic("accepted.mp3");
 
+  useEffect(() => {
+    if (showInvitesParam) {
+      toggleInvites(true);
+    }
+  }, [showInvitesParam]);
+
   const mintPriceText = BigNumber.isBigNumber(mintPrice)
     ? ethersUtils.formatUnits(mintPrice)
     : "4.44";
-
-  const countdownProps = canMint
-    ? {
-        date: expiresAt,
-      }
-    : {
-        parts: { days: 3, hours: 3, minutes: 3, seconds: 0 },
-      };
 
   const renderTitle = () => (
     <div className="congrats-box">
@@ -62,22 +64,48 @@ const MintKeyView = ({
     </div>
   );
 
-  const renderInlineVideo = useCallback(() => {
-    console.log("RENDERING hand-key video");
+  const renderHandAndKeyVideo = useCallback(() => {
     return (
-      <InlineVideo
-        src={getCDNVideoUrl("hand-key-particles.webm")}
-        showThreshold={0}
-        withLoader={false}
-      />
+      <div className="image-box">
+        <InlineVideo
+          src={createVideoSources("hand-key-particles")}
+          showThreshold={0}
+          withLoader={false}
+        />
+      </div>
     );
   }, []);
+
+  const renderMintButton = () => (
+    <div className="center-aligned-column button-column">
+      <div className="left-center-aligned-row price-text">
+        ACTIVATE YOUR KEY
+      </div>
+      <div>
+        <ActionButton
+          actionKey="MintKey"
+          className="gold lg mint-button"
+          disabled={!canMint || !isFunction(mint)}
+          onClick={() => isFunction(mint) && mint()}
+        >
+          {mintPriceText} <FontAwesomeIcon icon={faEthereum} /> MINT
+        </ActionButton>
+      </div>
+    </div>
+  );
+
+  const { countdownText, date: countdownEnd } = useMineOpenCountdown();
+
+  const countdownEndDate = canMint ? expiresAt : countdownEnd;
+  const countdownTextLine = canMint
+    ? "When the time runs out, you'll no longer be able to join Diamond Dawn"
+    : countdownText;
 
   return (
     <div className="action-view enter">
       <div className="layout-box">
-        <MobileOrTablet>{renderTitle()}</MobileOrTablet>
-        <div className="image-box">{renderInlineVideo()}</div>
+        {!showInvites && <MobileOrTablet>{renderTitle()}</MobileOrTablet>}
+        <Desktop>{renderHandAndKeyVideo()}</Desktop>
         <div className="content-box">
           {showInvites ? (
             <div className="center-aligned-column invites-view">
@@ -104,63 +132,46 @@ const MintKeyView = ({
             <>
               <Desktop>{renderTitle()}</Desktop>
               <div className="left-center-aligned-row mint-box">
-                <div className="center-aligned-column button-column">
-                  <div className="left-center-aligned-row price-text">
-                    ACTIVATE YOUR KEY
+                <MobileOrTablet>
+                  <div className="center-aligned-row">
+                    {renderHandAndKeyVideo()}
+                    {renderMintButton()}
                   </div>
-                  <div>
-                    <ActionButton
-                      actionKey="MintKey"
-                      className="gold mint-button"
-                      disabled={!canMint || !isFunction(mint)}
-                      onClick={() => isFunction(mint) && mint()}
-                    >
-                      {mintPriceText} <FontAwesomeIcon icon={faEthereum} /> MINT
-                    </ActionButton>
+                </MobileOrTablet>
+                <Desktop>{renderMintButton()}</Desktop>
+                <div className="center-aligned-column open-soon">
+                  <div className="timer-box">
+                    <div className="text-comment">{countdownTextLine}</div>
+                    <Countdown
+                      date={countdownEndDate}
+                      onComplete={() =>
+                        isFunction(onCountdownEnd) && onCountdownEnd()
+                      }
+                    />
                   </div>
                 </div>
-                {!canMint && (
-                  <div className="left-center-aligned-row open-soon">
-                    Diamond Dawn private sale will open soon!
-                  </div>
-                )}
               </div>
               <div className="center-aligned-row invites-box">
                 <div className="image">
                   <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
                 </div>
-                <div className="text">You’ve been granted 2 invitations</div>
-                <Button className="gold" onClick={() => toggleInvites(true)}>
-                  INVITE A FRIEND
-                </Button>
-              </div>
-              <div className="timer-box">
-                <div className="text-comment">
-                  When the time runs out, you'll no longer be able to join
-                  Diamond Dawn
+                <div className="center-aligned-row invites-box-text">
+                  <div className="text">You’ve been granted 2 invitations</div>
+                  <Button className="gold" onClick={() => toggleInvites(true)}>
+                    INVITE A FRIEND
+                  </Button>
                 </div>
-                <Countdown
-                  flat
-                  onComplete={() =>
-                    isFunction(onCountdownEnd) && onCountdownEnd()
-                  }
-                  renderParts={{
-                    days: true,
-                    hours: true,
-                    minutes: true,
-                    seconds: true,
-                  }}
-                  {...countdownProps}
-                />
-              </div>
-              <div className="status-box">
-                {diamondCount} / {maxDiamonds} MINTED
               </div>
               <MintAddressRow />
             </>
           )}
         </div>
       </div>
+      {!showInvites && (
+        <div className="status-box">
+          {diamondCount} / {maxDiamonds} MINTED
+        </div>
+      )}
     </div>
   );
 };

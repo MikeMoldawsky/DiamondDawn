@@ -21,7 +21,9 @@ import websiteIcon from "assets/images/website.svg";
 import InfoPage from "components/InfoPage";
 import Link from "components/Links";
 import AnimatedText from "components/AnimatedText";
-import { getCDNVideoUrl } from "utils";
+import useWindowDimensions from "hooks/useWindowDimensions";
+import { getPhysicalLoopVideo } from "assets/videos";
+import classNames from "classnames";
 
 const SOCIAL_ICONS = {
   // twitter: getCDNImageUrl("/social/twitter.svg"),
@@ -33,6 +35,55 @@ const SOCIAL_ICONS = {
   linkedin: linkedinIcon,
   website: websiteIcon,
 };
+
+const TEAM = [
+  {
+    id: "mike",
+    name: "Mike Moldawsky (Tweezers)",
+    title: "Project Creator",
+    Text: MikeText,
+    links: {
+      twitter: "https://twitter.com/tweezers0x",
+      linkedin: "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
+    },
+  },
+  {
+    id: "david",
+    name: "David Ariew",
+    title: "Artist",
+    Text: DavidText,
+    links: {
+      twitter: "https://twitter.com/DavidAriew",
+      website: "http://arievvisuals.com/",
+    },
+  },
+  {
+    id: "asaf",
+    name: "Asaf Snir",
+    title: "Frontend Master",
+    Text: AsafText,
+    links: {
+      twitter: "https://twitter.com/sniirr0x",
+      linkedin: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
+    },
+  },
+  {
+    id: "aviva",
+    name: "Aviva Moldawsky",
+    title: "Diamond Art Designer",
+    Text: AvivaText,
+    links: {},
+  },
+  {
+    id: "tony",
+    name: "Tony Hererra",
+    title: "Advisor",
+    Text: TonyText,
+    links: {
+      twitter: "https://twitter.com/tonyherrera",
+    },
+  },
+];
 
 const SocialButtons = ({ member, links }) => (
   <div className="social-buttons">
@@ -46,107 +97,63 @@ const SocialButtons = ({ member, links }) => (
   </div>
 );
 
+const TeamMember = ({ name, id, title, Text, links }) => {
+  return (
+    <div className="left-spaced-aligned-column team-member">
+      <div className="left-top-aligned-column team-member-header">
+        <div className={classNames("profile-image", id)} />
+        <div>
+          <div className="tagline-text">{name}</div>
+          <div className="member-title">{title}</div>
+        </div>
+      </div>
+      <AnimatedText className="text">
+        <Text />
+        <SocialButtons member={id} links={links} />
+      </AnimatedText>
+    </div>
+  );
+};
+
 const AboutUsPage = () => {
+  const { width } = useWindowDimensions();
+
   return (
     <InfoPage
       className="about-page"
-      teaser={{ src: getCDNVideoUrl("physical-loop.webm"), overlap: "-25%" }}
+      teaser={{ src: getPhysicalLoopVideo(width), overlap: "-25%" }}
     >
-      <div className="left-aligned-column general">
+      <div className="left-aligned-column general text-section">
         <div className="leading-text">ABOUT US</div>
         <AboutUsText />
       </div>
-      <div className="left-top-aligned-column content-section our-values">
-        <div className="subtitle-text">Our Core Values</div>
-        <div className="tagline-text">1. Decentralization</div>
-        <AnimatedText className="text">
-          <DecentralizationText />
-        </AnimatedText>
-        <div className="tagline-text">2. Innovation</div>
-        <AnimatedText className="text">
-          <InnovationText />
-        </AnimatedText>
-        <div className="tagline-text">3. IRL Impact</div>
-        <AnimatedText className="text">
-          <IRLImpactText />
-        </AnimatedText>
-        <div className="tagline-text">4. Digital Value</div>
-        <AnimatedText className="text">
-          <DigitalValueText />
-        </AnimatedText>
+      <div className="left-top-aligned-column content-section text-section our-values">
+        <div className="left-top-aligned-column">
+          <div className="subtitle-text">Our Core Values</div>
+          <div className="tagline-text">1. Decentralization</div>
+          <AnimatedText className="text">
+            <DecentralizationText />
+          </AnimatedText>
+          <div className="tagline-text">2. Innovation</div>
+          <AnimatedText className="text">
+            <InnovationText />
+          </AnimatedText>
+          <div className="tagline-text">3. IRL Impact</div>
+          <AnimatedText className="text">
+            <IRLImpactText />
+          </AnimatedText>
+          <div className="tagline-text">4. Digital Value</div>
+          <AnimatedText className="text">
+            <DigitalValueText />
+          </AnimatedText>
+        </div>
       </div>
       <div className="left-top-aligned-column content-section team">
         <div className="subtitle-text">Our Team</div>
-        <div className="team-members team-members-2">
-          <div className="left-spaced-aligned-column team-member">
-            <div className="profile-image mike" />
-            <div className="tagline-text">Mike Moldawsky (Tweezers)</div>
-            <div className="member-title">Project Creator</div>
-            <AnimatedText className="text">
-              <MikeText />
-              <SocialButtons
-                member="mike"
-                links={{
-                  twitter: "https://twitter.com/tweezers0x",
-                  linkedin:
-                    "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
-                }}
-              />
-            </AnimatedText>
-          </div>
-          <div className="left-spaced-aligned-column team-member">
-            <div className="profile-image david" />
-            <div className="tagline-text">David Ariew</div>
-            <div className="member-title">Artist</div>
-            <AnimatedText className="text">
-              <DavidText />
-              <SocialButtons
-                member="david"
-                links={{
-                  twitter: "https://twitter.com/DavidAriew",
-                  website: "http://arievvisuals.com/",
-                }}
-              />
-            </AnimatedText>
-          </div>
-        </div>
-        <div className="team-members team-members">
-          <div className="left-spaced-aligned-column team-member">
-            <div className="profile-image asaf" />
-            <div className="tagline-text">Asaf Snir</div>
-            <div className="member-title">Frontend Master</div>
-            <AnimatedText className="text">
-              <AsafText />
-              <SocialButtons
-                member="asaf"
-                links={{
-                  twitter: "https://twitter.com/sniirr0x",
-                  linkedin: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
-                }}
-              />
-            </AnimatedText>
-          </div>
-          <div className="left-spaced-aligned-column team-member">
-            <div className="profile-image aviva" />
-            <div className="tagline-text">Aviva Moldawsky</div>
-            <div className="member-title">Diamond Art Designer</div>
-            <AnimatedText className="text">
-              <AvivaText />
-              <SocialButtons member="aviva" />
-            </AnimatedText>
-          </div>
-          <div className="left-spaced-aligned-column team-member">
-            <div className="profile-image tony" />
-            <div className="tagline-text">Tony Hererra</div>
-            <div className="member-title">Advisor</div>
-            <AnimatedText className="text">
-              <TonyText />
-              <SocialButtons
-                member="tony"
-                links={{ twitter: "https://twitter.com/tonyherrera" }}
-              />
-            </AnimatedText>
-          </div>
+        <div className="team-members">
+          {map(TEAM, (teamMember) => (
+            <TeamMember key={`team-member-${teamMember.id}`} {...teamMember} />
+          ))}
         </div>
       </div>
     </InfoPage>

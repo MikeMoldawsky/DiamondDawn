@@ -86,48 +86,38 @@
   }
 }
 
-@mixin homepage-cb-portrait {
-  --stone-top: -23%;
-  --stone-bottom: -18%;
-
-  .bg {
-    &.glow {
-      height: 75vw;
-      background-position: 50% 55%;
-      background-size: 150% 100%;
-    }
-
-    &.statue {
-      width: 60vw;
-      height: 60vw;
-      left: 20%;
-    }
-
-    &.mine-wall-left {
-      display: none;
-    }
-
-    &.bg-right-hand {
-      background-position-y: 42%;
-      background-size: 40% auto;
-    }
-
-    &.bg-left-hand {
-      background-position: 10% 55%;
-      background-size: 25% auto;
-    }
-  }
-}
-
-@media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
+@media only screen and (max-width: 1199px) {
   .homepage-content-background {
-    @include homepage-cb-portrait;
-  }
-}
+    --stone-top: -23%;
+    --stone-bottom: -18%;
 
-@media only screen and (max-width: 768px) {
-  .homepage-content-background {
-    @include homepage-cb-portrait;
+    .bg {
+      &.glow {
+        height: 75vw;
+        background-position: 50% 55%;
+        background-size: 150% 100%;
+      }
+
+      &.statue {
+        width: 60vw;
+        height: 60vw;
+        left: 20%;
+      }
+
+      &.mine-wall-left {
+        display: none;
+      }
+
+      &.bg-right-hand {
+        background-position-y: 42%;
+        background-size: 40% auto;
+      }
+
+      &.bg-left-hand {
+        background-position: 10% 55%;
+        background-size: 25% auto;
+      }
+    }
   }
 }
 

@@ -74,58 +74,40 @@
   }
 }
 
-@mixin home-bg-portrait {
-  .bg {
-    &.leaves-left,
-    &.leaves-right {
-      background-size: auto 30%;
-    }
-
-    &.mountains-back {
-      background-position-y: 80%;
-      background-size: 100% auto;
-    }
-
-    &.mountains-front {
-      background-position-y: 83%;
-      background-size: 100% auto;
-    }
-
-    &.black-box {
-      height: 40vh;
-      top: 84%;
-    }
-
-    &.stars {
-      top: 90vh;
-      height: 240vh;
-      background-size: auto 100%;
-    }
-  }
-
-  .scroll-marker {
-    font-size: $font13px;
-    left: 4%;
-    bottom: 10%;
-  }
-}
-
-@media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
+@media only screen and (max-width: 1199px) {
   .home-background {
-    @include home-bg-portrait;
-
     .bg {
+      &.leaves-left,
+      &.leaves-right {
+        background-size: auto 30%;
+      }
+
+      &.mountains-back {
+        background-position-y: 80%;
+        background-size: 100% auto;
+      }
+
+      &.mountains-front {
+        background-position-y: 83%;
+        background-size: 100% auto;
+      }
+
+      &.black-box {
+        height: 40vh;
+        top: 84%;
+      }
+
       &.stars {
         top: 90vh;
         height: 180vh;
         background-size: auto 100%;
       }
     }
-  }
-}
 
-@media only screen and (max-width: 768px) {
-  .home-background {
-    @include home-bg-portrait;
+    .scroll-marker {
+      font-size: $font13px;
+      left: 4%;
+      bottom: 10%;
+    }
   }
 }

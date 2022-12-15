@@ -1,6 +1,6 @@
 import React from "react";
 import "./TheJourneyPage.scss";
-import { getCDNImageUrl, getCDNVideoUrl } from "utils";
+import { createVideoSources, getCDNImageUrl, getCDNVideoUrl } from "utils";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
 import {
@@ -15,14 +15,20 @@ import {
 import InfoPage from "components/InfoPage";
 import AnimatedText from "components/AnimatedText";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
+import { useMobileOrTablet } from "hooks/useMediaQueries";
+import { getPhysicalLoopVideo } from "assets/videos";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 const TheJourneyPage = () => {
+  const isMobile = useMobileOrTablet();
+  const { width } = useWindowDimensions();
+
   return (
     <InfoPage
       className="the-journey-page"
-      teaser={{ src: getCDNVideoUrl("physical-loop.webm"), overlap: "-25%" }}
+      teaser={{ src: getPhysicalLoopVideo(width), overlap: "-25%" }}
     >
-      <div className="general">
+      <div className="text-section general">
         <div className="leading-text">THE JOURNEY</div>
         <TheJourneyMainText />
       </div>
@@ -30,8 +36,12 @@ const TheJourneyPage = () => {
         id="journey"
         className="center-aligned-column content-section journey"
       >
-        <div className="center-aligned-row journey-row journey-desc">
-          <AnimatedText className="text-side">
+        <div
+          className={classNames("center-aligned-row journey-row journey-desc", {
+            "text-section": isMobile,
+          })}
+        >
+          <AnimatedText className={classNames("text-side")}>
             <div className="subtitle-text">THE PHASES</div>
             <TheJourneyText />
           </AnimatedText>
@@ -47,7 +57,7 @@ const TheJourneyPage = () => {
             <div className="image-side">
               <div className="image">
                 <ReactPlayer
-                  url={getCDNVideoUrl("key-static.webm")}
+                  url={createVideoSources("key-static")}
                   playing
                   playsinline
                   controls={false}
@@ -71,7 +81,7 @@ const TheJourneyPage = () => {
             <div className="image-side">
               <div className="image">
                 <ReactPlayer
-                  url={getCDNVideoUrl("rough-stone-static.webm")}
+                  url={createVideoSources("rough-stone-static")}
                   playing
                   playsinline
                   controls={false}
@@ -95,7 +105,7 @@ const TheJourneyPage = () => {
             <div className="image-side">
               <div className="image">
                 <InlineVideo
-                  src={getCDNVideoUrl("question-mark.webm")}
+                  src={createVideoSources("question-mark")}
                   withLoader={false}
                   showThreshold={0}
                 />
@@ -113,7 +123,7 @@ const TheJourneyPage = () => {
             <div className="image-side">
               <div className="image">
                 <InlineVideo
-                  src={getCDNVideoUrl("question-mark.webm")}
+                  src={createVideoSources("question-mark")}
                   withLoader={false}
                   showThreshold={0}
                 />
@@ -131,7 +141,7 @@ const TheJourneyPage = () => {
             <div className="image-side">
               <div className="image">
                 <InlineVideo
-                  src={getCDNVideoUrl("physical-digital-diamond.webm")}
+                  src={createVideoSources("physical-digital-diamond")}
                   withLoader={false}
                   showThreshold={0}
                 />

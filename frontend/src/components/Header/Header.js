@@ -17,15 +17,15 @@ import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/Logo";
 import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
-import { usePageSizeLimit } from "components/PageSizeLimit/PageSizeLimit";
 import CTAButton from "components/CTAButton";
 import { TwitterLink } from "components/Links";
 import usePermission from "hooks/usePermission";
+import { useDesktopMediaQuery } from "hooks/useMediaQueries";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const isDesktop = usePageSizeLimit();
+  const isDesktop = useDesktopMediaQuery();
   const { muted, showHPLogo } = useSelector(uiSelector);
   const canAccessDD = usePermission();
 

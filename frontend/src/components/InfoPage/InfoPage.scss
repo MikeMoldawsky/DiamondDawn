@@ -1,9 +1,6 @@
 @import "css/varsNEW";
-@import "css/functions";
 
 .page.info-page {
-  --base-font-size: 16;
-
   .mine-background {
     .walls {
       top: 3.5%;
@@ -13,7 +10,7 @@
     }
 
     .cave {
-      background: url($CDN_URL + "/images/about/cave.png") no-repeat 155% 8vh;
+      background: url($CDN_URL + "/images/cave.jpg") no-repeat 155% 8vh;
       background-size: 72%;
       z-index: -2;
     }
@@ -41,40 +38,34 @@
 
   .content-section {
     position: relative;
+    align-items: center;
     margin: 0 auto;
     z-index: 1;
   }
 }
 
-@media only screen and (max-width: 1680px) {
-  .page.info-page {
-    font-size: $font15px;
-  }
-}
-
 @media only screen and (max-width: 1540px) {
-  .page.info-page {
-    --base-font-size: 22;
-    font-size: $font14px;
-
+  .page.info-page.tech-page {
     .general {
       margin-left: 7.5%;
     }
   }
 }
 
-@media only screen and (max-width: 1366px) {
-  .page.info-page {
-    font-size: $font13px;
+@media only screen and (max-width: 1199px) {
+  .page.info-page.tech-page {
   }
 }
 
-@media only screen and (max-width: 1200px) {
-  .page.info-page {
-    font-size: $font12px;
-
+@media only screen and (max-width: 768px) {
+  .page.info-page.tech-page {
     .general {
-      margin-left: 5%;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    .content-section {
+      width: 80%;
     }
   }
 }

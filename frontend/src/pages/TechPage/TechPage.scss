@@ -1,10 +1,6 @@
 @import "css/varsNEW";
 
 .page.info-page.tech-page {
-  .content-section {
-    width: 50%;
-  }
-
   ul {
     list-style-type: decimal;
   }
@@ -12,6 +8,16 @@
   .teaser-video {
     .react-player {
       opacity: 0.25;
+    }
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  .page.info-page.tech-page {
+    .teaser-video {
+      .react-player {
+        opacity: 0.5;
+      }
     }
   }
 }

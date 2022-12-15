@@ -8,6 +8,7 @@
 
   .inner-page {
     width: 80%;
+    font-size: 1.1em;
   }
 
   h1 {
@@ -36,6 +37,9 @@
     .category-name {
       opacity: 0.8;
       font-size: $font12px;
+      margin-bottom: 0.5em;
+      color: $gold;
+      font-weight: 500;
     }
 
     .credit-to {
@@ -43,13 +47,39 @@
         margin-top: 0.6em;
       }
     }
+
+    .profile-image {
+      width: 3em;
+      height: 3em;
+      margin-right: 1.2em;
+    }
   }
 
   footer {
     margin-top: 2em;
+  }
+}
 
-    .footer-inner {
-      padding-top: 6rem;
+@media only screen and (max-width: 767px) {
+  .page.credits-page {
+    .inner-page {
+      font-size: $font20px;
+    }
+
+    .credits-category {
+      margin: 1em 0;
+    }
+
+    footer.footer {
+      margin-top: 8em;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .page.credits-page {
+    .inner-page {
+      font-size: $font22px;
     }
   }
 }

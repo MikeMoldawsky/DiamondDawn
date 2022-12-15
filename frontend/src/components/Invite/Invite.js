@@ -109,6 +109,12 @@ const Invite = () => {
       </>
     );
 
+  const renderTwitterButton = () => (
+    <TwitterLink className="button gold icon-after">
+      Follow <FontAwesomeIcon icon={faTwitter} />
+    </TwitterLink>
+  );
+
   return (
     <div className="box-content opaque invite-view">
       <div className="layout-box">
@@ -125,26 +131,24 @@ const Invite = () => {
                   4.44 ETH.
                 </div>
               </div>
-              {!showSubmittedModal && (
-                <div className="center-spaced-column bottom-content">
-                  <div className="center-aligned-row follow-box">
-                    <div className="follow-text">
-                      <b>
-                        Make sure to follow request{" "}
-                        <TwitterLink className="text-gold">
-                          <b>@DiamondDawnNFT</b>
-                        </TwitterLink>
-                      </b>
-                      <br />
+              <div className="center-spaced-column bottom-content">
+                <div className="center-aligned-row follow-box">
+                  <div className="follow-text">
+                    <b>
+                      Make sure to follow request{" "}
+                      <TwitterLink className="text-gold">
+                        <b>@DiamondDawnNFT</b>
+                      </TwitterLink>
+                    </b>{" "}
+                    <MobileOrTablet>{renderTwitterButton()}</MobileOrTablet>
+                    <span>
                       We’ll send you a Twitter DM if you are accepted.
-                    </div>
-                    <TwitterLink className="button gold icon-after">
-                      Follow <FontAwesomeIcon icon={faTwitter} />
-                    </TwitterLink>
+                    </span>
                   </div>
-                  <MintAddressRow />
+                  <Desktop>{renderTwitterButton()}</Desktop>
                 </div>
-              )}
+                <MintAddressRow />
+              </div>
             </div>
           ) : (
             <>

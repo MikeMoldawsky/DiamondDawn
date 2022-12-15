@@ -110,93 +110,69 @@ footer.footer {
       to(rgba(0, 0, 0, 1))
     );
   }
-
-  &.faqs-open {
-    -webkit-mask-image: -webkit-gradient(
-      linear,
-      left top,
-      left 2%,
-      from(rgba(0, 0, 0, 0)),
-      to(rgba(0, 0, 0, 1))
-    );
-  }
 }
 
-@mixin footer-portrait {
-  .bg.bg-footer {
-    height: 41em;
-  }
-
-  .footer-inner {
-    min-width: unset;
-    flex-direction: column-reverse;
-    width: 75%;
-  }
-
-  .footer-menu {
-    flex-direction: row;
-    align-items: flex-end;
-    margin-bottom: 2.5em;
-    justify-content: space-between;
-
-    .separator {
-      display: none;
+@media only screen and (max-width: 1200px) {
+  footer.footer {
+    .bg.bg-footer {
+      height: 37em;
     }
 
-    .top-menu,
-    .bottom-menu {
-      flex-direction: column;
-      align-items: flex-start;
+    .footer-inner {
+      min-width: unset;
+      flex-direction: column-reverse;
+      width: 75%;
+    }
+
+    .footer-menu {
+      flex-direction: row;
+      align-items: flex-end;
+      margin-bottom: 2.5em;
       justify-content: space-between;
-      line-height: 1.3em;
 
-      a {
-        margin-top: 1rem;
-      }
-    }
-
-    .top-menu {
-      margin-bottom: -2.6em;
-
-      a {
-        margin-top: -1.8em;
+      .separator {
+        display: none;
       }
 
-      span.icon {
-        display: inline-block !important;
-        transform: translate(-250%, -80%);
+      .top-menu,
+      .bottom-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        line-height: 1.3em;
 
-        svg {
-          width: 1.25em;
+        a {
+          margin-top: 1rem;
+        }
+      }
+
+      .top-menu {
+        margin-bottom: -2.6em;
+
+        a {
+          margin-top: -1.8em;
+        }
+
+        span.icon {
+          display: inline-block !important;
+          transform: translate(-250%, -80%);
+
+          svg {
+            width: 1.25em;
+          }
+        }
+      }
+
+      .bottom-menu {
+        a {
+          margin-right: 0 !important;
         }
       }
     }
 
-    .bottom-menu {
-      a {
-        margin-right: 0 !important;
-      }
+    .faq-section {
+      width: 85%;
+      padding-top: 10em;
     }
-  }
-
-  .faq-section {
-    width: 85%;
-    padding-top: 10em;
-  }
-}
-
-@media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
-  footer.footer {
-    @include footer-portrait;
-
-    .bg.bg-footer {
-      height: 37em;
-    }
-  }
-}
-
-@media only screen and (max-width: 768px) {
-  footer.footer {
-    @include footer-portrait;
   }
 }

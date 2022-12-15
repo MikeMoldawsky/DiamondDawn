@@ -16,7 +16,7 @@ import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { collectorSelector } from "store/collectorReducer";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
 

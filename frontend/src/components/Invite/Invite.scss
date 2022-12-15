@@ -130,15 +130,15 @@
       padding: 2em 1em 0;
 
       .leading-text {
-        font-size: 5.75vw;
+        font-size: 1.5em;
       }
 
       .tagline-text {
-        font-size: 4.5vw;
+        font-size: 1.1em;
       }
 
       .video-box {
-        height: 30vh;
+        height: 26vh;
         margin-top: 1em;
       }
 
@@ -173,13 +173,20 @@
           }
         }
 
+        .request-status {
+          .text-comment {
+            font-size: 0.95em;
+          }
+        }
+
         .follow-box {
           flex-direction: column;
-          font-size: 3.3vw;
+          font-size: 0.875em;
+          line-height: 1.75em;
 
           .button {
-            margin: 1em 0 0.5em;
-            align-self: flex-end;
+            margin: 0.5em 0 0 1em;
+            float: right;
           }
         }
       }
@@ -212,7 +219,7 @@
   .invite-view {
     .layout-box {
       .video-box {
-        height: 22.5vh;
+        height: 20vh;
       }
     }
   }

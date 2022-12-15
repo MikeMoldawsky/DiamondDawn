@@ -2,8 +2,6 @@
 
 .page.info-page.about-page {
   .our-values {
-    width: 50%;
-
     .gia-report {
       width: 33%;
       float: right;
@@ -85,26 +83,128 @@
           }
         }
 
+        &:nth-child(1) {
+          width: 47.5%;
+        }
         &:nth-child(2) {
+          width: 47.5%;
+
           .animated-text {
             transition-delay: 0.15s;
           }
         }
-
         &:nth-child(3) {
+          .animated-text {
+          }
+        }
+        &:nth-child(4) {
+          .animated-text {
+            transition-delay: 0.15s;
+          }
+        }
+        &:nth-child(5) {
           .animated-text {
             transition-delay: 0.3s;
           }
         }
       }
+    }
+  }
+}
 
-      &.team-members-2 {
-        justify-content: space-between;
+@media only screen and (max-width: 1199px) {
+  .page.info-page.about-page {
+    .our-values {
+      .gia-report {
+        width: 100%;
+        clear: both;
+      }
+    }
 
+    .team {
+      width: 90%;
+
+      .team-members {
         .team-member {
-          width: 47.5%;
         }
       }
+    }
+  }
+}
+
+@mixin full-width-team-member {
+  width: 100% !important;
+
+  .team-member-header {
+    flex-direction: row;
+    align-items: flex-end;
+    margin-bottom: 1.5em;
+
+    .profile-image {
+      margin-right: 1.5em;
+    }
+
+    .tagline-text,
+    .member-title {
+      margin: 0;
+    }
+  }
+
+  .animated-text {
+    transition-delay: 0s !important;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .page.info-page.about-page {
+    .team {
+      width: 80%;
+
+      .team-members {
+        .team-member {
+          &:nth-child(1) {
+            @include full-width-team-member;
+          }
+          &:nth-child(2),
+          &:nth-child(4) {
+            width: 47.5%;
+
+            .animated-text {
+              transition-delay: 0s;
+            }
+          }
+          &:nth-child(3),
+          &:nth-child(5) {
+            width: 47.5%;
+
+            .animated-text {
+              transition-delay: 0.15s;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .page.info-page.about-page {
+    .team {
+      width: 80%;
+
+      .team-members {
+        .team-member {
+          @include full-width-team-member;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .page.info-page.about-page {
+    .team {
+      width: 90%;
     }
   }
 }

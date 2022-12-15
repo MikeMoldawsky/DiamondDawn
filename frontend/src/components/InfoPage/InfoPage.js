@@ -1,12 +1,12 @@
 import React from "react";
 import "./InfoPage.scss";
 import Footer from "components/Footer";
-import PageSizeLimit from "components/PageSizeLimit";
 import VideoBackground from "components/VideoBackground";
 import classNames from "classnames";
 import { getCDNImageUrl } from "utils";
 import Page from "containers/Page";
 import useMusic from "hooks/useMusic";
+import PageSizeLimit from "components/PageSizeLimit";
 
 const InfoPage = ({ className, teaser, children }) => {
   useMusic("homepage.mp3");
@@ -17,7 +17,7 @@ const InfoPage = ({ className, teaser, children }) => {
         pageName="info"
         images={[
           getCDNImageUrl("/about/mine-walls.png"),
-          getCDNImageUrl("/about/cave.png"),
+          getCDNImageUrl("/cave.jpg"),
         ]}
       >
         <div className={classNames("page info-page", className)}>

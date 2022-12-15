@@ -1,8 +1,8 @@
 import React from "react";
 import "./Legal.scss";
 import Footer from "components/Footer";
-import PageSizeLimit from "components/PageSizeLimit/PageSizeLimit";
 import { MailToSupportLink } from "components/Links";
+import PageSizeLimit from "components/PageSizeLimit";
 
 const PrivacyPage = () => (
   <PageSizeLimit>

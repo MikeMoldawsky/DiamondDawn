@@ -188,8 +188,9 @@ export const createVideoSources = (fileName) => [
   { src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" },
 ];
 
-export const isPortraitMode = (width, height) => {
-  return width <= 768 || (width <= 1024 && height > width);
+export const getVideoBitrate = (width) => {
+  return width <= 1024 ? "2.5m" : "5m";
+  // return width <= 768 || (width <= 1024 && height > width);
 };
 export const shortenEthAddress = (address) =>
   address
