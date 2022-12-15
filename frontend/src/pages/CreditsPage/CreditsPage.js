@@ -4,7 +4,7 @@ import Footer from "components/Footer";
 import map from "lodash/map";
 import Link from "components/Links";
 import PageSizeLimit from "components/PageSizeLimit";
-import {getCDNImageUrl} from "utils";
+import { getCDNImageUrl } from "utils";
 import classNames from "classnames";
 
 const CREDITS = [
@@ -27,21 +27,51 @@ const CREDITS = [
     link: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
   },
   { id: "aviva", title: "Designer", name: "Aviva Moldawsky", link: "" },
-  { id: "tony", title: "Advisor", name: "Tony Herrera", link: "https://twitter.com/tonyherrera" },
-  { id: "daniel", title: "Advisor", name: "Daniel Moldawsky", link: "https://twitter.com/DanielMoldawsky" },
-  { id: "abel", title: "Sound Wizard", name: "Abel Okugawa", link: "https://twitter.com/Abel_Okugawa" },
-  { id: "gals", title: "Marketing", name: "Gal Shriki", link: "https://twitter.com/Shrikmeister" },
-  { id: "zen", title: "Art Piece Videos", name: "Zen", link: "https://www.zenvideopro.com" },
+  {
+    id: "tony",
+    title: "Advisor",
+    name: "Tony Herrera",
+    link: "https://twitter.com/tonyherrera",
+  },
+  {
+    id: "daniel",
+    title: "Advisor",
+    name: "Daniel Moldawsky",
+    link: "https://twitter.com/DanielMoldawsky",
+  },
+  {
+    id: "abel",
+    title: "Sound Wizard",
+    name: "Abel Okugawa",
+    link: "https://twitter.com/Abel_Okugawa",
+  },
+  {
+    id: "gals",
+    title: "Marketing",
+    name: "Gal Shriki",
+    link: "https://twitter.com/Shrikmeister",
+  },
+  {
+    id: "zen",
+    title: "Art Piece Videos",
+    name: "Zen",
+    link: "https://www.zenvideopro.com",
+  },
   {
     id: "galk",
     title: "Smart Contracts",
     name: "Gal Kleinman",
     link: "https://www.linkedin.com/in/gal-kleinman-16898384/",
   },
-  { id: "alan", title: "Smart Contracts Audit", name: "Alan Boost", link: "https://twitter.com/ltsCuzzo" },
+  {
+    id: "alan",
+    title: "Smart Contracts Audit",
+    name: "Alan Boost",
+    link: "https://twitter.com/ltsCuzzo",
+  },
   { id: "yanay", title: "Web Designer", name: "Yanay Halevy", link: "" },
   { id: "mor", title: "Project Manager", name: "Mor Lupa", link: "" },
-]
+];
 
 const CreditsPage = () => (
   <PageSizeLimit>

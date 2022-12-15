@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, { useCallback, useEffect } from "react";
 import "components/MintKey/MintKey.scss";
 import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
@@ -8,7 +8,7 @@ import isFunction from "lodash/isFunction";
 import { BigNumber, utils as ethersUtils } from "ethers";
 import InvitationsStatus from "components/InvitationsStatus";
 import { useDispatch, useSelector } from "react-redux";
-import {createVideoSources, getCDNImageUrl, getCDNVideoUrl} from "utils";
+import { createVideoSources, getCDNImageUrl, getCDNVideoUrl } from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
@@ -17,7 +17,7 @@ import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useMusic from "hooks/useMusic";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
-import {useSearchParams} from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const MintKeyView = ({
   mintPrice = 4.44,
@@ -41,9 +41,9 @@ const MintKeyView = ({
 
   useEffect(() => {
     if (showInvitesParam) {
-      toggleInvites(true)
+      toggleInvites(true);
     }
-  }, [showInvitesParam])
+  }, [showInvitesParam]);
 
   const mintPriceText = BigNumber.isBigNumber(mintPrice)
     ? ethersUtils.formatUnits(mintPrice)
@@ -92,19 +92,19 @@ const MintKeyView = ({
         </ActionButton>
       </div>
     </div>
-  )
+  );
 
-  const { countdownText, date: countdownEnd } = useMineOpenCountdown()
+  const { countdownText, date: countdownEnd } = useMineOpenCountdown();
 
-  const countdownEndDate = canMint ? expiresAt : countdownEnd
-  const countdownTextLine = canMint ? "When the time runs out, you'll no longer be able to join Diamond Dawn" : countdownText
+  const countdownEndDate = canMint ? expiresAt : countdownEnd;
+  const countdownTextLine = canMint
+    ? "When the time runs out, you'll no longer be able to join Diamond Dawn"
+    : countdownText;
 
   return (
     <div className="action-view enter">
       <div className="layout-box">
-        {!showInvites && (
-          <MobileOrTablet>{renderTitle()}</MobileOrTablet>
-        )}
+        {!showInvites && <MobileOrTablet>{renderTitle()}</MobileOrTablet>}
         <Desktop>{renderHandAndKeyVideo()}</Desktop>
         <div className="content-box">
           {showInvites ? (

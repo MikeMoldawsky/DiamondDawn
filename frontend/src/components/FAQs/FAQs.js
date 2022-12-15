@@ -26,9 +26,7 @@ const FAQS = [
   },
   {
     title: "When DD's public sale starts?",
-    content: () => (
-      <p>Diamond Dawn's public sale will start on January 18.</p>
-    ),
+    content: () => <p>Diamond Dawn's public sale will start on January 18.</p>,
   },
   {
     title: "What is DD’s blockchain?",
@@ -52,8 +50,8 @@ const FAQS = [
     content: () => (
       <p>
         4.44 ETH. <br /> That’s the cost for the entire Diamond Dawn journey,
-        including the physical diamond art piece and shipping (if you choose
-        to take it).{" "}
+        including the physical diamond art piece and shipping (if you choose to
+        take it).{" "}
       </p>
     ),
   },
@@ -84,10 +82,10 @@ const FAQS = [
     title: "What is a Diamond Dawn Phase?",
     content: () => (
       <p>
-        A phase is a limited time window where you need to decide if you want
-        to change (evolve) your NFT to its next form or not. <br /> If you do
-        NOT evolve your NFT in that time frame, it'll stay in its current
-        state for eternity.
+        A phase is a limited time window where you need to decide if you want to
+        change (evolve) your NFT to its next form or not. <br /> If you do NOT
+        evolve your NFT in that time frame, it'll stay in its current state for
+        eternity.
       </p>
     ),
   },
@@ -96,8 +94,8 @@ const FAQS = [
     content: () => (
       <p>
         Every Diamond Dawn Phase is exactly 3 weeks, 3 days and 3 hours long.{" "}
-        <br /> An exception to that is the last phase (The Final Choice),
-        where you need to choose between the physical and the digital worlds.
+        <br /> An exception to that is the last phase (The Final Choice), where
+        you need to choose between the physical and the digital worlds.
       </p>
     ),
   },
@@ -105,8 +103,8 @@ const FAQS = [
     title: "How much time will I have to wait between DD’s phases?",
     content: () => (
       <p>
-        When a Diamond Dawn Phase ends, we’ll notify on @DiamondDawnNFT when
-        the next phase starts.
+        When a Diamond Dawn Phase ends, we’ll notify on @DiamondDawnNFT when the
+        next phase starts.
         <br /> The “cool-down” period between phases will be shorter than 3
         weeks.
       </p>
@@ -151,11 +149,11 @@ const FAQS = [
         9.8 in.).
         <br />
         Diamond Dawn’s art piece is made from high-quality black wood and
-        acrylic panes, and in its heart, you’ll find your GIA-certified
-        diamond. <br />
+        acrylic panes, and in its heart, you’ll find your GIA-certified diamond.{" "}
+        <br />
         Diamond Dawn’s diamonds are high-quality natural Cape Diamonds (graded
-        K-Z color), and their weight varies between 0.4-0.8 carat (according
-        to your randomly-chosen NFT attributes).
+        K-Z color), and their weight varies between 0.4-0.8 carat (according to
+        your randomly-chosen NFT attributes).
         <br />
         Diamond Dawn is a work of art that you can proudly display as a
         centerpiece on a desk, bookcase, or in any room.
@@ -166,9 +164,9 @@ const FAQS = [
     title: "What is a Diamond Certification?",
     content: () => (
       <p>
-        A diamond certification is a process where an independent gem lab
-        tests and assesses your diamond attributes, such as its carat, color,
-        clarity, and cut grading.
+        A diamond certification is a process where an independent gem lab tests
+        and assesses your diamond attributes, such as its carat, color, clarity,
+        and cut grading.
       </p>
     ),
   },
@@ -198,9 +196,9 @@ const FAQS = [
     title: "What countries do you ship to?",
     content: () => (
       <p>
-        We offer global shipping to any non-OFAC sanctioned country. <br />{" "}
-        Feel free to contact support@diamonddawn.art or @DiamondDawnNFT with
-        any further questions, and we'll do our best to help.
+        We offer global shipping to any non-OFAC sanctioned country. <br /> Feel
+        free to contact support@diamonddawn.art or @DiamondDawnNFT with any
+        further questions, and we'll do our best to help.
       </p>
     ),
   },

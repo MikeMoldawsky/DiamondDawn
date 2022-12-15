@@ -113,7 +113,7 @@ const Invite = () => {
     <TwitterLink className="button gold icon-after">
       Follow <FontAwesomeIcon icon={faTwitter} />
     </TwitterLink>
-  )
+  );
 
   return (
     <div className="box-content opaque invite-view">
@@ -141,7 +141,9 @@ const Invite = () => {
                       </TwitterLink>
                     </b>{" "}
                     <MobileOrTablet>{renderTwitterButton()}</MobileOrTablet>
-                    <span>We’ll send you a Twitter DM if you are accepted.</span>
+                    <span>
+                      We’ll send you a Twitter DM if you are accepted.
+                    </span>
                   </div>
                   <Desktop>{renderTwitterButton()}</Desktop>
                 </div>
