@@ -1,0 +1,61 @@
+@import "css/varsNEW";
+
+.page-size-limit {
+  position: fixed;
+  z-index: 100;
+  background-color: black;
+  width: 100vw;
+  height: 80vh;
+  top: 0;
+  left: 0;
+  justify-content: flex-start;
+  margin: 15vh 0 5vh;
+
+  .text-content {
+    width: 80%;
+
+    .react-player.dd-text {
+      margin: 0 0 1em -1.2em;
+      height: 10vw;
+    }
+
+    .tagline-text {
+      color: $gold;
+      text-align: left;
+      margin-bottom: 0.4em;
+      font-size: $font25px;
+    }
+
+    .text {
+      font-size: $font18px;
+      text-align: left;
+      max-width: unset;
+    }
+  }
+
+  .video-box {
+    margin-top: 5%;
+    width: 80%;
+    border: none;
+    box-shadow: 0 0 8px 4px #bbbbbb44;
+
+    .react-player {
+      &.loader {
+        padding: 0;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 481px) {
+  .page-size-limit {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .page-size-limit {
+    font-size: 20px;
+    margin-top: 10vh;
+  }
+}

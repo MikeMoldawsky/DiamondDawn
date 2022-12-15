@@ -8,7 +8,7 @@ import isFunction from "lodash/isFunction";
 import { BigNumber, utils as ethersUtils } from "ethers";
 import InvitationsStatus from "components/InvitationsStatus";
 import { useDispatch, useSelector } from "react-redux";
-import { getCDNImageUrl, getCDNVideoUrl } from "utils";
+import {createVideoSources, getCDNImageUrl, getCDNVideoUrl} from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
@@ -63,10 +63,9 @@ const MintKeyView = ({
   );
 
   const renderInlineVideo = useCallback(() => {
-    console.log("RENDERING hand-key video");
     return (
       <InlineVideo
-        src={getCDNVideoUrl("hand-key-particles.webm")}
+        src={createVideoSources("hand-key-particles")}
         showThreshold={0}
         withLoader={false}
       />
