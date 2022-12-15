@@ -76,7 +76,7 @@ const InvitedModalContent = ({ close, onCopy, invite }) => {
       </div>
       <div className="text-center">
         <CopyButton content={copyContent} onCopy={onCopyClick}>
-          COPY PASSWORD
+          USE PASSWORD
         </CopyButton>
       </div>
     </>

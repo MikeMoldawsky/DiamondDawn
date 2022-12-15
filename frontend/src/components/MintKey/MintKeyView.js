@@ -44,7 +44,7 @@ const MintKeyView = ({
       toggleInvites(true)
     }
   }, [showInvitesParam])
-  
+
   const mintPriceText = BigNumber.isBigNumber(mintPrice)
     ? ethersUtils.formatUnits(mintPrice)
     : "4.44";
