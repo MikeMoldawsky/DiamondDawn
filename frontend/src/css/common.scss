@@ -359,6 +359,16 @@ a:not(.no-hover) {
     background-size: auto 100%;
     filter: grayscale(0.75);
   }
+
+  &.yanay {
+    background: url($CDN_URL + "/images/team/yanay.jpeg") no-repeat center center;
+    background-size: auto 100%;
+  }
+
+  &.mor {
+    background: url($CDN_URL + "/images/team/mor.jpeg") no-repeat center center;
+    background-size: auto 100%;
+  }
 }
 
 .center-aligned-row {
