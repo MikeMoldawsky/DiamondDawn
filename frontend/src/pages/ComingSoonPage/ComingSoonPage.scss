@@ -45,21 +45,23 @@
       background-color: transparent;
 
       &.ps-text {
-        height: 2.2vh;
+        width: 12.5vw;
         max-width: 480px;
         transform: translateY(-50%);
         margin-right: 0.4em;
       }
 
       &.ps-date {
-        height: 3.5vh;
+        width: 6.9vw;
         max-width: 480px;
-        transform: translateY(-30%);
+        transform: translateY(-32%);
       }
     }
   }
 
   .text-column {
+    top: 3.5%;
+
     .tagline-text {
       color: $gold;
       font-weight: 400;
@@ -125,11 +127,12 @@
 
     .react-player {
       &.ps-text {
-        height: 2vh;
+        width: 25.5vw;
+        transform: translateY(-45%);
       }
 
       &.ps-date {
-        height: 3.2vh;
+        width: 13.8vw;
       }
     }
   }
@@ -180,13 +183,19 @@
     .project-title {
       .react-player {
         &.ps-text {
-          height: 1.75vh;
+          width: 36vw;
+          transform: translateY(-55%);
         }
 
         &.ps-date {
-          height: 2.75vh;
+          width: 20vw;
+          transform: translateY(-35%);
         }
       }
+    }
+
+    .text-column {
+      top: 5vh;
     }
   }
 }
