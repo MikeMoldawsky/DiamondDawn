@@ -148,18 +148,20 @@ const ComingSoonPage = () => {
               src={getDDTextVideo(width)}
               showThreshold={0}
             />
-            <InlineVideo
-              withLoader={false}
-              className="ps-text"
-              src={getPSTextVideo(width)}
-              showThreshold={0}
-            />
-            <InlineVideo
-              withLoader={false}
-              className="ps-date"
-              src={getPSDateVideo(width)}
-              showThreshold={0}
-            />
+            <div className="center-center-aligned-row ps-row">
+              <InlineVideo
+                withLoader={false}
+                className="ps-text"
+                src={getPSTextVideo(width)}
+                showThreshold={0}
+              />
+              <InlineVideo
+                withLoader={false}
+                className="ps-date"
+                src={getPSDateVideo(width)}
+                showThreshold={0}
+              />
+            </div>
           </div>
           <div className="center-aligned-column cs-section text-column">
             <div className="tagline-text">
