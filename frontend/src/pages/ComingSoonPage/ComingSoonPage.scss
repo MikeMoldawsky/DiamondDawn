@@ -46,15 +46,23 @@
 
       &.ps-text {
         margin: 0 auto;
+        width: 12%;
+        max-width: 480px;
+        transform: translateY(-50%);
+      }
+
+      &.ps-date {
+        margin: 0 auto;
         width: 10%;
         max-width: 480px;
-        transform: translateY(-60%);
+        transform: translateY(-35%);
       }
     }
   }
 
   .text-column {
-    top: 3.5%;
+    //top: 3.5%;
+
 
     .tagline-text {
       color: $gold;
@@ -119,13 +127,21 @@
   .project-title {
     top: 17%;
 
-    .react-player.ps-text {
-      width: 30%;
+    .react-player {
+      &.ps-text {
+        width: 32%;
+        transform: translateY(-30%);
+      }
+
+      &.ps-date {
+        width: 25%;
+        transform: translateY(-30%);
+      }
     }
   }
 
   .text-column {
-    top: 5vh;
+    top: 3vh;
 
     .tagline-text {
       font-size: $font22px;

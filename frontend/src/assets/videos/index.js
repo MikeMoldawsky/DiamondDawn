@@ -19,6 +19,11 @@ export const getPSTextVideo = (width) => {
   return createVideoSources(fileName);
 };
 
+export const getPSDateVideo = (width) => {
+  let fileName = "ps-date";
+  return createVideoSources(fileName);
+};
+
 export const getMobileBGVideo = (width) => {
   let fileName = "coming_soon_mobile";
   if (width <= 360) fileName += "-300";
