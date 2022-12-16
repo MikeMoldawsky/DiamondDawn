@@ -10,10 +10,35 @@ import classNames from "classnames";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const FAQS = [
-  {
-    title: "What is DD?",
-    content: () => <p>Diamond Dawn.</p>,
-  },
+    {
+        title: "Are the diamonds real?",
+        content: () => (
+            <p>
+                Yes. <br /> Diamond Dawn's diamonds are real, natural diamonds, and a
+                GIA diamond certificate backs each stone.
+            </p>
+        ),
+    },
+    {
+        title: "How is Diamond Dawn’s physical art piece designed?",
+        content: () => (
+            <p>
+                If you choose the physical art piece, expect a heavy shipment! The art
+                piece weighs ~8 kg (17.6 lb) and measures 25 x 25 x 25 cm (9.8 x 9.8 x
+                9.8 in.).
+                <br />
+                Diamond Dawn’s art piece is made from high-quality black wood and
+                acrylic panes, and in its heart, you’ll find your GIA-certified diamond.{" "}
+                <br />
+                Diamond Dawn’s diamonds are high-quality natural Cape Diamonds (graded
+                K-Z color), and their weight varies between 0.4-0.8 carat (according to
+                your randomly-chosen NFT attributes).
+                <br />
+                Diamond Dawn is a work of art that you can proudly display as a
+                centerpiece on a desk, bookcase, or in any room.
+            </p>
+        ),
+    },
   {
     title: "When DD's private sale starts?",
     content: () => (
@@ -128,35 +153,6 @@ const FAQS = [
         Diamond Dawn's smart contracts.
         <br />
         We have zero control over it, for better or worse.
-      </p>
-    ),
-  },
-  {
-    title: "Are the diamonds real?",
-    content: () => (
-      <p>
-        Yes. <br /> Diamond Dawn's diamonds are real, natural diamonds, and a
-        GIA diamond certificate backs each stone.
-      </p>
-    ),
-  },
-  {
-    title: "How is Diamond Dawn’s physical art piece designed?",
-    content: () => (
-      <p>
-        If you choose the physical art piece, expect a heavy shipment! The art
-        piece weighs ~8 kg (17.6 lb) and measures 25 x 25 x 25 cm (9.8 x 9.8 x
-        9.8 in.).
-        <br />
-        Diamond Dawn’s art piece is made from high-quality black wood and
-        acrylic panes, and in its heart, you’ll find your GIA-certified diamond.{" "}
-        <br />
-        Diamond Dawn’s diamonds are high-quality natural Cape Diamonds (graded
-        K-Z color), and their weight varies between 0.4-0.8 carat (according to
-        your randomly-chosen NFT attributes).
-        <br />
-        Diamond Dawn is a work of art that you can proudly display as a
-        centerpiece on a desk, bookcase, or in any room.
       </p>
     ),
   },

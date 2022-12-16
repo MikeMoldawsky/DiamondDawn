@@ -4,7 +4,6 @@ import Footer from "components/Footer";
 import map from "lodash/map";
 import Link from "components/Links";
 import PageSizeLimit from "components/PageSizeLimit";
-import { getCDNImageUrl } from "utils";
 import classNames from "classnames";
 
 const CREDITS = [
@@ -34,16 +33,28 @@ const CREDITS = [
     link: "https://twitter.com/tonyherrera",
   },
   {
+    id: "abel",
+    title: "Sound Wizard",
+    name: "Abel Okugawa",
+    link: "https://twitter.com/Abel_Okugawa",
+  },
+  {
     id: "daniel",
     title: "Advisor",
     name: "Daniel Moldawsky",
     link: "https://twitter.com/DanielMoldawsky",
   },
   {
-    id: "abel",
-    title: "Sound Wizard",
-    name: "Abel Okugawa",
-    link: "https://twitter.com/Abel_Okugawa",
+    id: "danny",
+    title: "Community Leader",
+    name: "Danny",
+    link: "https://twitter.com/BrainEmojis",
+  },
+  {
+    id: "coy",
+    title: "Community Wizard",
+    name: "The Digital Coy",
+    link: "https://twitter.com/TheDigitalCoy",
   },
   {
     id: "gals",
@@ -53,7 +64,7 @@ const CREDITS = [
   },
   {
     id: "zen",
-    title: "Art Piece Videos",
+    title: "The Physical Trailer",
     name: "Zen",
     link: "https://www.zenvideopro.com",
   },
