@@ -45,24 +45,21 @@
       background-color: transparent;
 
       &.ps-text {
-        margin: 0 auto;
-        width: 12%;
+        height: 2.2vh;
         max-width: 480px;
         transform: translateY(-50%);
+        margin-right: 0.4em;
       }
 
       &.ps-date {
-        margin: 0 auto;
-        width: 10%;
+        height: 3.5vh;
         max-width: 480px;
-        transform: translateY(-35%);
+        transform: translateY(-30%);
       }
     }
   }
 
   .text-column {
-    //top: 3.5%;
-
     .tagline-text {
       color: $gold;
       font-weight: 400;
@@ -128,13 +125,11 @@
 
     .react-player {
       &.ps-text {
-        width: 32%;
-        transform: translateY(-30%);
+        height: 2vh;
       }
 
       &.ps-date {
-        width: 25%;
-        transform: translateY(-30%);
+        height: 3.2vh;
       }
     }
   }
@@ -178,8 +173,20 @@
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 480px) {
   .page.coming-soon {
     @include coming-soon-portrait;
+
+    .project-title {
+      .react-player {
+        &.ps-text {
+          height: 1.75vh;
+        }
+
+        &.ps-date {
+          height: 2.75vh;
+        }
+      }
+    }
   }
 }
