@@ -22,6 +22,7 @@ import {
   getDDTextVideo,
   getPSTextVideo,
   getMobileBGVideo,
+  getPSDateVideo,
 } from "assets/videos";
 import { GetPasswordLink } from "components/Links";
 
@@ -151,6 +152,12 @@ const ComingSoonPage = () => {
               withLoader={false}
               className="ps-text"
               src={getPSTextVideo(width)}
+              showThreshold={0}
+            />
+            <InlineVideo
+              withLoader={false}
+              className="ps-date"
+              src={getPSDateVideo(width)}
               showThreshold={0}
             />
           </div>
