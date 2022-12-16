@@ -21,7 +21,8 @@ import useButtonSFX from "hooks/useButtonSFX";
 import {
   getDDTextVideo,
   getPSTextVideo,
-  getMobileBGVideo, getPSDateVideo,
+  getMobileBGVideo,
+  getPSDateVideo,
 } from "assets/videos";
 import { GetPasswordLink } from "components/Links";
 
