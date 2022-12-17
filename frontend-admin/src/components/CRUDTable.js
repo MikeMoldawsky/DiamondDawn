@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import _ from "lodash";
-import { DataGrid, GridRowModes, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridRowModes,
+  GridActionsCellItem,
+  GridToolbar,
+} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
-import {useSelector} from "react-redux";
-import {isActionPendingSelector} from "store/actionStatusReducer";
+import { useSelector } from "react-redux";
+import { isActionPendingSelector } from "store/actionStatusReducer";
 import BeatLoader from "react-spinners/BeatLoader";
 
 const CRUDTable = ({
@@ -28,7 +33,7 @@ const CRUDTable = ({
 }) => {
   const [rowModesModel, setRowModesModel] = useState({});
   const [selectionModel, setSelectionModel] = useState([]);
-  const isLoading = useSelector(isActionPendingSelector(loadActionKey || ""))
+  const isLoading = useSelector(isActionPendingSelector(loadActionKey || ""));
 
   const additionalColumns = [];
   if (!readonly) {

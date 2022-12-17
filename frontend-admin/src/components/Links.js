@@ -21,7 +21,7 @@ export const Link = ({ href, className, disabled, title = "", children }) => {
 };
 
 export const TwitterLink = ({ className, handle }) => {
-  if (!handle || !handle.startsWith("@")) return handle
+  if (!handle || !handle.startsWith("@")) return handle;
   const username = handle.startsWith("@") ? handle.substring(1) : handle;
   return (
     <Link
