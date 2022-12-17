@@ -19,15 +19,18 @@ export const isActionPendingSelector = (actionKey) => (state) =>
   actionStatusSelector(actionKey)(state) === "pending";
 
 // REDUCER
+const reduceToStatus = status => (state, action) => {
+  const { actionKey } = action.payload;
+  return {
+    ...state,
+    [actionKey]: status,
+  };
+}
+
 export const actionStatusReducer = makeReducer(
   {
-    "ACTION_STATUS.PENDING": (state, action) => {
-      const { actionKey } = action.payload;
-      return {
-        ...state,
-        [actionKey]: "pending",
-      };
-    },
+    "ACTION_STATUS.PENDING": reduceToStatus("pending"),
+    "ACTION_STATUS.SUCCESS": reduceToStatus("success"),
     "ACTION_STATUS.CLEAR": (state, action) => {
       const { actionKey } = action.payload;
       return _.omit(state, actionKey);

@@ -9,36 +9,31 @@ import {
 import NewInvitationForm from "components/NewInvitationForm";
 import copy from 'copy-to-clipboard';
 import {showSuccess} from "utils";
+import _ from "lodash"
+import {TwitterLink} from "components/Links";
+import format from "date-fns/format";
+import useActionDispatch from "hooks/useActionDispatch";
+
 
 const INVITATION_COLUMNS = [
   {
     field: "createdAt",
     headerName: "Created At",
     type: "dateTime",
-    width: 180,
+    width: 150,
+    valueFormatter: (params) => format(new Date(params.value), "dd/MM/yy hh:mm"),
   },
-  {
-    field: "createdBy",
-    headerName: "Created By",
-    width: 200,
-  },
+  // {
+  //   field: "createdBy",
+  //   headerName: "Created By",
+  //   width: 200,
+  // },
   {
     field: "inviter",
     headerName: "Inviter Twitter Override",
-    width: 200,
+    width: 150,
     editable: true,
-  },
-  {
-    field: "usedBy",
-    headerName: "Used By",
-    width: 200,
-  },
-  {
-    field: "revoked",
-    headerName: "Revoked",
-    type: "boolean",
-    width: 80,
-    editable: true,
+    renderCell: (params) => <TwitterLink handle={params.row.inviter} />,
   },
   {
     field: "note",
@@ -48,15 +43,38 @@ const INVITATION_COLUMNS = [
     editable: true,
     showIfRequest: true,
   },
+  // {
+  //   field: "usedBy",
+  //   headerName: "Used By",
+  //   width: 200,
+  // },
+  {
+    field: "usedBy",
+    headerName: "Used",
+    type: "boolean",
+    width: 80,
+    valueFormatter: (params) => !_.isEmpty(params.value),
+  },
+  {
+    field: "revoked",
+    headerName: "Revoked",
+    type: "boolean",
+    width: 80,
+    editable: true,
+  },
 ];
 
 const getInviteLink = inviteId => `${process.env.REACT_APP_INVITE_BASE_URL}?invite=${inviteId}`;
 
 const InvitationsTab = () => {
   const [invitations, setInvitations] = useState([]);
+  const actionDispatch = useActionDispatch()
 
-  const fetchInvites = async () => {
-    setInvitations(await getInvitationsApi());
+  const fetchInvites = () => {
+    actionDispatch(
+      async () => setInvitations(await getInvitationsApi()),
+      "load-invitations",
+    )
   };
 
   useEffect(() => {
@@ -75,8 +93,14 @@ const InvitationsTab = () => {
     setInvitations(await getInvitationsApi());
   };
 
-  const onRowClick = (invite) => {
-    const link = getInviteLink(invite.id);
+  const isRowSelectable = ({row}) => {
+    return _.isEmpty(row.usedBy)
+  }
+
+  const onRowClick = ({ row }) => {
+    if (!isRowSelectable({row})) return
+
+    const link = getInviteLink(row.id);
     copy(link)
     showSuccess(`Link Copied - ${link}`)
   }
@@ -96,6 +120,9 @@ const InvitationsTab = () => {
         renderActions={renderActions}
         onRowClick={onRowClick}
         disableSelectionOnClick={false}
+        isRowSelectable={isRowSelectable}
+        getRowClassName={({ row }) => isRowSelectable({ row }) ? "" : "disabled"}
+        loadActionKey="load-invitations"
       />
     </div>
   );

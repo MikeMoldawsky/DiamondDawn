@@ -5,6 +5,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
+import {useSelector} from "react-redux";
+import {isActionPendingSelector} from "store/actionStatusReducer";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const CRUDTable = ({
   CRUD = {},
@@ -19,11 +22,13 @@ const CRUDTable = ({
   readonly,
   getRowId = (row) => row._id,
   getIsRowDeletable,
-  disableSelectionOnClick = true,
+  disableSelectionOnClick,
+  loadActionKey,
   ...gridProps
 }) => {
   const [rowModesModel, setRowModesModel] = useState({});
   const [selectionModel, setSelectionModel] = useState([]);
+  const isLoading = useSelector(isActionPendingSelector(loadActionKey || ""))
 
   const additionalColumns = [];
   if (!readonly) {
@@ -156,26 +161,35 @@ const CRUDTable = ({
   return (
     <>
       <div className="table-container">
-        <DataGrid
-          rows={rows}
-          columns={_columns}
-          autoHeight
-          onSelectionModelChange={(newSelectionModel) => {
-            setSelectionModel(newSelectionModel);
-          }}
-          selectionModel={selectionModel}
-          keepNonExistentRowsSelected
-          disableSelectionOnClick={disableSelectionOnClick}
-          editMode="row"
-          experimentalFeatures={{ newEditingApi: true }}
-          disableColumnMenu
-          getRowId={getRowId}
-          rowModesModel={rowModesModel}
-          onRowEditStart={handleRowEditStart}
-          onRowEditStop={handleRowEditStop}
-          processRowUpdate={processRowUpdate}
-          {...gridProps}
-        />
+        {isLoading ? (
+          <div className="center-aligned-column table-loading">
+            <div>Loading invitations</div>
+            <div className="loader">
+              <BeatLoader color={"#000"} loading={true} size={20} />
+            </div>
+          </div>
+        ) : (
+          <DataGrid
+            rows={rows}
+            columns={_columns}
+            autoHeight
+            onSelectionModelChange={(newSelectionModel) => {
+              setSelectionModel(newSelectionModel);
+            }}
+            selectionModel={selectionModel}
+            keepNonExistentRowsSelected
+            disableSelectionOnClick={disableSelectionOnClick}
+            editMode="row"
+            experimentalFeatures={{ newEditingApi: true }}
+            disableColumnMenu
+            getRowId={getRowId}
+            rowModesModel={rowModesModel}
+            onRowEditStart={handleRowEditStart}
+            onRowEditStop={handleRowEditStop}
+            processRowUpdate={processRowUpdate}
+            {...gridProps}
+          />
+        )}
       </div>
       <div className="center-aligned-row">
         <div />
