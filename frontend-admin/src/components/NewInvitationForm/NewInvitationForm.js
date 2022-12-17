@@ -54,8 +54,8 @@ const NewInvitationForm = ({ onSuccess }) => {
     );
   };
 
-  const createInvitation = async ({ note, inviter }) => {
-    await createInvitationApi(ddCollector._id, note, inviter);
+  const createInvitation = async ({ note, inviter, count }) => {
+    await createInvitationApi(ddCollector._id, note, inviter, count);
     setIsSubmitSuccess(true);
     onSuccess && (await onSuccess());
   };
