@@ -19,6 +19,7 @@ const CRUDTable = ({
   readonly,
   getRowId = (row) => row._id,
   getIsRowDeletable,
+  disableSelectionOnClick = true,
   ...gridProps
 }) => {
   const [rowModesModel, setRowModesModel] = useState({});
@@ -164,7 +165,7 @@ const CRUDTable = ({
           }}
           selectionModel={selectionModel}
           keepNonExistentRowsSelected
-          disableSelectionOnClick
+          disableSelectionOnClick={disableSelectionOnClick}
           editMode="row"
           experimentalFeatures={{ newEditingApi: true }}
           disableColumnMenu

@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import CRUDTable from "components/CRUDTable";
-import { GridActionsCellItem } from "@mui/x-data-grid";
 import {
   getInvitationsApi,
   createInvitationApi,
   updateInvitationApi,
 } from "api/serverApi";
 import NewInvitationForm from "components/NewInvitationForm";
+import copy from 'copy-to-clipboard';
+import {showSuccess} from "utils";
 
 const INVITATION_COLUMNS = [
   {
@@ -52,33 +50,7 @@ const INVITATION_COLUMNS = [
   },
 ];
 
-const ClipboardButton = ({ inviteId }) => {
-  const [isCopied, setIsCopied] = useState(false);
-
-  useEffect(() => {
-    if (isCopied) {
-      setTimeout(() => setIsCopied(false), 1000);
-    }
-  }, [isCopied]);
-
-  const link = `${process.env.REACT_APP_INVITE_BASE_URL}?invite=${inviteId}`;
-
-  return (
-    <GridActionsCellItem
-      icon={
-        <CopyToClipboard text={link} onCopy={() => setIsCopied(true)}>
-          <FontAwesomeIcon
-            icon={faLink}
-            className={classNames({ copied: isCopied })}
-          />
-        </CopyToClipboard>
-      }
-      label="Edit"
-      className="textPrimary"
-      color="inherit"
-    />
-  );
-};
+const getInviteLink = inviteId => `${process.env.REACT_APP_INVITE_BASE_URL}?invite=${inviteId}`;
 
 const InvitationsTab = () => {
   const [invitations, setInvitations] = useState([]);
@@ -97,11 +69,17 @@ const InvitationsTab = () => {
     update: updateInvitationApi,
   };
 
-  const renderActions = ({ id }) => [<ClipboardButton inviteId={id} />];
+  const renderActions = () => [];
 
   const onCreateSuccess = async () => {
     setInvitations(await getInvitationsApi());
   };
+
+  const onRowClick = (invite) => {
+    const link = getInviteLink(invite.id);
+    copy(link)
+    showSuccess(`Link Copied - ${link}`)
+  }
 
   return (
     <div className={classNames("tab-content invitations")}>
@@ -116,6 +94,8 @@ const InvitationsTab = () => {
         getNewItem={createInvitationApi}
         newCreatedOnServer
         renderActions={renderActions}
+        onRowClick={onRowClick}
+        disableSelectionOnClick={false}
       />
     </div>
   );
