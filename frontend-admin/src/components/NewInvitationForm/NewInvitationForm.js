@@ -19,6 +19,9 @@ const NewInvitationForm = ({ onSuccess }) => {
     reset,
   } = useForm({
     mode: "onChange",
+    defaultValues: {
+      count: 1,
+    }
   });
 
   const fetchDDCollector = async () => {
@@ -68,6 +71,13 @@ const NewInvitationForm = ({ onSuccess }) => {
           required: false,
           pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
         })}
+        <input
+          type="number"
+          placeholder="Invitation Count"
+          {...register("count", {
+            valueAsNumber: true,
+          })}
+        />
         <ActionButton
           actionKey="Create Invitation"
           onClick={handleSubmit(createInvitation)}

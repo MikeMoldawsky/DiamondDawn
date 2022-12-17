@@ -2,8 +2,13 @@ import axios from "axios";
 
 // AUTH
 export const adminAuthApi = async (pwd) => {
-  const res = await axios.post(`/api/admin_auth`, { pwd });
-  return res.data?.auth;
+  let auth = Boolean(localStorage.getItem("ddAdminAuth") || "false")
+  if (!auth) {
+    const res = await axios.post(`/api/admin_auth`, { pwd });
+    auth = res.data?.auth
+  }
+  localStorage.setItem("ddAdminAuth", auth.toString());
+  return auth;
 };
 
 // CONTRACTS
