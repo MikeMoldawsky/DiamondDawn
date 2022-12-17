@@ -1,5 +1,11 @@
 import axios from "axios";
 
+// AUTH
+export const adminAuthApi = async (pwd) => {
+  const res = await axios.post(`/api/admin_auth`, { pwd });
+  return res.data?.auth;
+};
+
 // CONTRACTS
 export const getContractDataApi = async () => {
   try {

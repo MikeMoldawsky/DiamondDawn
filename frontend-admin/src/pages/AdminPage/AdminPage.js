@@ -1,6 +1,5 @@
 import React from "react";
 import classNames from "classnames";
-import "../App/App.scss";
 import "./AdminPage.scss";
 import CollectorsTab from "./CollectorsTab";
 import InvitationsTab from "./InvitationsTab";
