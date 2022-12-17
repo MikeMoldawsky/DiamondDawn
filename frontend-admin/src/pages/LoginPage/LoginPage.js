@@ -7,9 +7,11 @@ const LoginPage = ({ onLogin }) => {
   return (
     <div className={classNames("page login-page")}>
       <main>
-        <PasswordBox onCorrect={onLogin}
-                     passwordLength={8}
-                     buttonText="ENTER"  />
+        <PasswordBox
+          onCorrect={onLogin}
+          passwordLength={8}
+          buttonText="ENTER"
+        />
       </main>
     </div>
   );

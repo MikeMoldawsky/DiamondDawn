@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminPage from "pages/AdminPage";
@@ -9,11 +9,13 @@ import useActionDispatch from "hooks/useActionDispatch";
 import { loadContractInfo } from "store/systemReducer";
 import AppLoader from "layout/AppLoader";
 import LoginPage from "pages/LoginPage";
-import "css/main.scss"
+import "css/main.scss";
 
 const MainLayout = () => {
   const actionDispatch = useActionDispatch();
-  const [isLoggedIn, setIsLoggedIn] = useState(Boolean(localStorage.getItem("ddAdminAuth") || 0))
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    Boolean(localStorage.getItem("ddAdminAuth") || 0)
+  );
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");

@@ -2,10 +2,10 @@ import axios from "axios";
 
 // AUTH
 export const adminAuthApi = async (pwd) => {
-  let auth = Boolean(localStorage.getItem("ddAdminAuth") || "false")
+  let auth = Boolean(localStorage.getItem("ddAdminAuth") || "false");
   if (!auth) {
     const res = await axios.post(`/api/admin_auth`, { pwd });
-    auth = res.data?.auth
+    auth = res.data?.auth;
   }
   localStorage.setItem("ddAdminAuth", auth.toString());
   return auth;

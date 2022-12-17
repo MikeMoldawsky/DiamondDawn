@@ -1,16 +1,11 @@
 import React, { useState, useRef } from "react";
 import classNames from "classnames";
 import "./PasswordBox.scss";
-import {adminAuthApi} from "api/serverApi";
+import { adminAuthApi } from "api/serverApi";
 import map from "lodash/map";
 import ActionButton from "components/ActionButton";
 
-const PasswordBox = ({
-  className,
-  onCorrect,
-  passwordLength,
-  buttonText,
-}) => {
+const PasswordBox = ({ className, onCorrect, passwordLength, buttonText }) => {
   const [password, setPassword] = useState("");
   const pwdInput = useRef(null);
   const [checkingPassword, setCheckingPassword] = useState(false);

@@ -21,7 +21,7 @@ const NewInvitationForm = ({ onSuccess }) => {
     mode: "onChange",
     defaultValues: {
       count: 1,
-    }
+    },
   });
 
   const fetchDDCollector = async () => {

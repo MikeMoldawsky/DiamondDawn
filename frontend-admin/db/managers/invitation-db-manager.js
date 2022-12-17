@@ -1,7 +1,7 @@
 const { getOrCreateDDCollector } = require("./common-operation-manager");
 const Invitation = require("../models/InvitationModel");
 const Collector = require("../models/CollectorModel");
-const _ = require("lodash")
+const _ = require("lodash");
 
 async function createInvitations(createdBy, note, overrideInviter, count = 1) {
   const inviter = await getOrCreateDDCollector();
@@ -10,9 +10,9 @@ async function createInvitations(createdBy, note, overrideInviter, count = 1) {
     createdBy: inviter,
     note,
     inviter: overrideInviter,
-  }))
+  }));
 
-  return await Invitation.insertMany(invitations)
+  return await Invitation.insertMany(invitations);
 }
 
 async function getInvitationObjectById(inviteId) {
