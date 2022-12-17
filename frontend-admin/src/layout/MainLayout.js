@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminPage from "pages/AdminPage";
@@ -8,9 +8,14 @@ import "react-toastify/dist/ReactToastify.css";
 import useActionDispatch from "hooks/useActionDispatch";
 import { loadContractInfo } from "store/systemReducer";
 import AppLoader from "layout/AppLoader";
+import LoginPage from "pages/LoginPage";
+import "css/main.scss";
 
 const MainLayout = () => {
   const actionDispatch = useActionDispatch();
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    Boolean(localStorage.getItem("ddAdminAuth") || 0)
+  );
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");
@@ -18,21 +23,25 @@ const MainLayout = () => {
 
   return (
     <div className={classNames("main-layout")}>
-      <Router>
-        <Routes>
-          <Route
-            path="/"
-            exact
-            element={
-              <WagmiWrapper>
-                <AppLoader>
-                  <AdminPage />
-                </AppLoader>
-              </WagmiWrapper>
-            }
-          />
-        </Routes>
-      </Router>
+      {isLoggedIn ? (
+        <Router>
+          <Routes>
+            <Route
+              path="/"
+              exact
+              element={
+                <WagmiWrapper>
+                  <AppLoader>
+                    <AdminPage />
+                  </AppLoader>
+                </WagmiWrapper>
+              }
+            />
+          </Routes>
+        </Router>
+      ) : (
+        <LoginPage onLogin={() => setIsLoggedIn(true)} />
+      )}
       <ToastContainer />
     </div>
   );

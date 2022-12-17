@@ -1,5 +1,16 @@
 import axios from "axios";
 
+// AUTH
+export const adminAuthApi = async (pwd) => {
+  let auth = Boolean(localStorage.getItem("ddAdminAuth") || "false");
+  if (!auth) {
+    const res = await axios.post(`/api/admin_auth`, { pwd });
+    auth = res.data?.auth;
+  }
+  localStorage.setItem("ddAdminAuth", auth.toString());
+  return auth;
+};
+
 // CONTRACTS
 export const getContractDataApi = async () => {
   try {
@@ -103,11 +114,12 @@ export const getInvitationsApi = async () => {
   }
 };
 
-export const createInvitationApi = async (createdBy, note, inviter) => {
+export const createInvitationApi = async (createdBy, note, inviter, count) => {
   const res = await axios.post(`/api/create_invitation`, {
     createdBy,
     note,
     inviter,
+    count,
   });
   return res.data;
 };
