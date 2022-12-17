@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import _ from "lodash";
-import { DataGrid, GridRowModes, GridActionsCellItem } from "@mui/x-data-grid";
+import { DataGrid, GridRowModes, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
@@ -187,6 +187,13 @@ const CRUDTable = ({
             onRowEditStart={handleRowEditStart}
             onRowEditStop={handleRowEditStop}
             processRowUpdate={processRowUpdate}
+            components={{ Toolbar: GridToolbar }}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: true,
+                quickFilterProps: { debounceMs: 500 },
+              },
+            }}
             {...gridProps}
           />
         )}
