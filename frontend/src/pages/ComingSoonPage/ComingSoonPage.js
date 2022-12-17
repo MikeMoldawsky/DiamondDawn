@@ -25,6 +25,7 @@ import {
   getPSDateVideo,
 } from "assets/videos";
 import { GetPasswordLink } from "components/Links";
+import { viewInviteApi } from "api/serverApi";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -46,7 +47,6 @@ const ComingSoonPage = () => {
   const { width, height } = useWindowDimensions();
   const isPortrait = height > width;
   const usePortraitAsset = isPortrait && width <= 768;
-  // const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
 
   useMusic("homepage.mp3");
 
@@ -68,7 +68,12 @@ const ComingSoonPage = () => {
 
   const { clickWithSFX } = useButtonSFX(onInviteClick, "explore");
 
-  useEffect(loadInvite, [inviteId]);
+  useEffect(() => {
+    if (inviteId) {
+      loadInvite();
+      viewInviteApi(inviteId);
+    }
+  }, [inviteId]);
 
   const isCollectorReady = !account?.address || isCollectorFetched;
 
