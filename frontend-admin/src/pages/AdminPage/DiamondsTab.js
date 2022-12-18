@@ -225,7 +225,6 @@ const DiamondsTable = ({ deployedGIAs = [], renderDeployButton }) => {
       itemName="Diamond"
       getNewItem={getEmptyDiamond}
       renderButtons={renderDeployButton}
-      checkboxSelection
       getRowId={(row) => row.number}
       readonly
       getRowClassName={(params) =>

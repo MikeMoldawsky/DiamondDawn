@@ -7,7 +7,7 @@ const InvitationSchema = new mongoose.Schema({
   createdBy: { type: ObjectId, ref: "Collector" },
   inviter: { type: String },
   note: { type: String },
-  sent: { type: Boolean },
+  sent: { type: Boolean, default: true },
   viewed: { type: Boolean },
   usedBy: { type: ObjectId, ref: "Collector" },
   revoked: { type: Boolean },
