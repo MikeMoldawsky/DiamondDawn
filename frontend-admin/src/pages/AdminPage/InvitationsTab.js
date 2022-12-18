@@ -148,7 +148,7 @@ const InvitationsTab = () => {
   };
 
   const onRowClick = ({ row }) => {
-    const link = getInviteLink(row._);
+    const link = getInviteLink(row._id);
     copy(link);
     showSuccess(`Link Copied - ${link}`);
   };

@@ -11,13 +11,18 @@ import {
   getCollectorsApi,
   updateCollectorApi,
 } from "api/serverApi";
+import format from "date-fns/format";
+import { OpenseaLink, TwitterLink } from "components/Links";
+import useActionDispatch from "hooks/useActionDispatch";
 
 const INVITATION_COLUMNS = [
   {
     field: "createdAt",
     headerName: "Created At",
     type: "dateTime",
-    width: 180,
+    width: 150,
+    valueFormatter: (params) =>
+      format(new Date(params.value), "dd/MM/yy hh:mm"),
     showIfRequest: true,
   },
   {
@@ -26,6 +31,7 @@ const INVITATION_COLUMNS = [
     width: 200,
     editable: true,
     showIfRequest: true,
+    renderCell: (params) => <TwitterLink handle={params.row.twitter} />,
   },
   {
     field: "email",
@@ -39,12 +45,13 @@ const INVITATION_COLUMNS = [
     headerName: "Invited By",
     width: 200,
     showIfRequest: true,
+    renderCell: (params) => <TwitterLink handle={params.row.invitedBy} />,
   },
   {
     field: "note",
     headerName: "Notes",
-    width: 300,
-    flex: 1,
+    minWidth: 400,
+    flex: 2,
     editable: true,
     showIfRequest: true,
   },
@@ -59,11 +66,12 @@ const INVITATION_COLUMNS = [
         ethersUtils.isAddress(params.props.value);
       return { ...params.props, error: !isValid };
     },
+    renderCell: (params) => <OpenseaLink address={params.row.address} />,
   },
   {
     field: "location",
     headerName: "Location",
-    width: 150,
+    width: 200,
     showIfRequest: true,
   },
   {
@@ -119,7 +127,8 @@ const ApproveButton = ({ collectorId, onApprove }) => {
 
   return (
     <GridActionsCellItem
-      icon={<FontAwesomeIcon icon={faCheck} onClick={approve} />}
+      icon={<FontAwesomeIcon icon={faCheck} />}
+      onClick={approve}
       label="Approve"
       className="textPrimary"
       color="inherit"
@@ -129,9 +138,13 @@ const ApproveButton = ({ collectorId, onApprove }) => {
 
 const InvitationsTab = ({ approved }) => {
   const [collectors, setCollectors] = useState([]);
+  const actionDispatch = useActionDispatch();
 
-  const fetchCollectors = async () => {
-    setCollectors(await getCollectorsApi(approved));
+  const fetchCollectors = () => {
+    actionDispatch(
+      async () => setCollectors(await getCollectorsApi(approved)),
+      "load-collectors"
+    );
   };
 
   useEffect(() => {
@@ -171,6 +184,7 @@ const InvitationsTab = ({ approved }) => {
         itemName="Collector"
         newCreatedOnServer
         renderActions={renderActions}
+        loadActionKey="load-collectors"
       />
     </div>
   );

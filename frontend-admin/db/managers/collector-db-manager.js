@@ -1,5 +1,5 @@
 const _ = require("lodash");
-const { createInvitation } = require("./invitation-db-manager");
+const { createInvitations } = require("./invitation-db-manager");
 const { getCollectorObjectById } = require("./common-operation-manager");
 const Collector = require("../models/CollectorModel");
 
@@ -36,8 +36,8 @@ async function approveCollector(collectorId) {
   };
   if (collector.invitations.length === 0) {
     const noteName = collector.twitter || collector.address;
-    const i1 = await createInvitation(collector, `${noteName} - Invite 1`);
-    const i2 = await createInvitation(collector, `${noteName} - Invite 2`);
+    const [i1] = await createInvitations(collector, `${noteName} - Invite 1`);
+    const [i2] = await createInvitations(collector, `${noteName} - Invite 2`);
     update.invitations = [i1, i2];
   }
   return updateCollector(update);

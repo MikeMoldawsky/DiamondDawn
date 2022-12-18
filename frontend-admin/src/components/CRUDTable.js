@@ -168,7 +168,7 @@ const CRUDTable = ({
       <div className="table-container">
         {isLoading ? (
           <div className="center-aligned-column table-loading">
-            <div>Loading invitations</div>
+            <div>Loading {itemName}s</div>
             <div className="loader">
               <BeatLoader color={"#000"} loading={true} size={20} />
             </div>

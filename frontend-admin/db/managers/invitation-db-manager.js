@@ -4,10 +4,8 @@ const Collector = require("../models/CollectorModel");
 const _ = require("lodash");
 
 async function createInvitations(createdBy, note, overrideInviter, count = 1) {
-  const ddCollector = await getOrCreateDDCollector();
-
   const invitations = _.map(Array(count), () => ({
-    createdBy: ddCollector,
+    createdBy,
     note,
     inviter: overrideInviter,
   }));
