@@ -71,6 +71,12 @@ export const applyToDDApi = async (
   return invite;
 };
 
+export const viewInviteApi = async (inviteId) => {
+  try {
+    await axios.post(`/api/view_invite`, { inviteId });
+  } catch (e) {}
+};
+
 export const openMintWindowApi = async (collectorId, address) => {
   const { data: collector } = await axios.post(`/api/open_mint_window`, {
     collectorId,

@@ -30,6 +30,17 @@ function validateInvite(invite) {
 async function validateInviteById(inviteId) {
   const invite = await getInviteById(inviteId);
   validateInvite(invite);
+  return invite;
+}
+
+async function viewInvite(inviteId) {
+  const invite = await validateInviteById(inviteId);
+  if (invite.viewed) {
+    return invite;
+  }
+
+  await Invitation.findOneAndUpdate({ _id: inviteId }, { viewed: true });
+  return await getInviteById(inviteId);
 }
 
 async function useInvite(inviteId, collectorId) {
@@ -44,5 +55,6 @@ module.exports = {
   createInvitation,
   validateInviteById,
   getInviteById,
+  viewInvite,
   useInvite,
 };
