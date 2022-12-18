@@ -8,6 +8,7 @@ async function createInvitations(createdBy, note, overrideInviter, count = 1) {
     createdBy,
     note,
     inviter: overrideInviter,
+    sent: false,
   }));
 
   return await Invitation.insertMany(invitations);

@@ -199,6 +199,7 @@ const CRUDTable = ({
                 quickFilterProps: { debounceMs: 500 },
               },
             }}
+            checkboxSelection
             {...gridProps}
           />
         )}
