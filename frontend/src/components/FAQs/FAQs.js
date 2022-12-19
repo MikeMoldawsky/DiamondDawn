@@ -50,7 +50,7 @@ const FAQS = [
     ),
   },
   {
-    title: "What is a Diamond Certification?",
+    title: "What's a Diamond Certification?",
     content: () => (
       <p>
         A diamond certification is a process where an independent gem lab tests
@@ -60,7 +60,7 @@ const FAQS = [
     ),
   },
   {
-    title: "What is GIA certificate?",
+    title: "What's a GIA certificate?",
     content: () => (
       <p>
         Diamond Dawn uses GIA certifications to back all of the project's
@@ -78,11 +78,11 @@ const FAQS = [
     content: () => <p>Diamond Dawn's public sale will start on January 18.</p>,
   },
   {
-    title: "What is DD’s supply?",
+    title: "What's the supply?",
     content: () => <p>333 Editions.</p>,
   },
   {
-    title: "What is DD’s mint price?",
+    title: "What's the mint price?",
     content: () => (
       <p>
         4.44 ETH. <br /> That’s the cost for the entire Diamond Dawn journey,
@@ -101,7 +101,7 @@ const FAQS = [
     ),
   },
   {
-    title: "Is DD 100% decentralized?",
+    title: "Is Diamond Dawn 100% decentralized?",
     content: () => (
       <p>
         Yes. <br />
@@ -115,11 +115,11 @@ const FAQS = [
     ),
   },
   {
-    title: "What is DD’s blockchain?",
+    title: "What's DD’s blockchain?",
     content: () => <p>Ethereum.</p>,
   },
   {
-    title: "What is DD's NFT standard?",
+    title: "What's the NFT standard?",
     content: () => (
       <p>
         ERC-721.
@@ -128,7 +128,7 @@ const FAQS = [
     ),
   },
   {
-    title: "What is a Diamond Dawn Phase?",
+    title: "What's a Diamond Dawn Phase?",
     content: () => (
       <p>
         A phase is a limited time window where you need to decide if you want to
