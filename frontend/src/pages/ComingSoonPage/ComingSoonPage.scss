@@ -45,10 +45,16 @@
       background-color: transparent;
 
       &.ps-text {
-        margin: 0 auto;
-        width: 10%;
+        width: 12.5vw;
         max-width: 480px;
-        transform: translateY(-60%);
+        transform: translateY(-50%);
+        margin-right: 0.4em;
+      }
+
+      &.ps-date {
+        width: 6.9vw;
+        max-width: 480px;
+        transform: translateY(-32%);
       }
     }
   }
@@ -119,13 +125,20 @@
   .project-title {
     top: 17%;
 
-    .react-player.ps-text {
-      width: 30%;
+    .react-player {
+      &.ps-text {
+        width: 25.5vw;
+        transform: translateY(-45%);
+      }
+
+      &.ps-date {
+        width: 13.8vw;
+      }
     }
   }
 
   .text-column {
-    top: 5vh;
+    top: 3vh;
 
     .tagline-text {
       font-size: $font22px;
@@ -163,8 +176,26 @@
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 480px) {
   .page.coming-soon {
     @include coming-soon-portrait;
+
+    .project-title {
+      .react-player {
+        &.ps-text {
+          width: 36vw;
+          transform: translateY(-35%);
+        }
+
+        &.ps-date {
+          width: 20vw;
+          transform: translateY(-20%);
+        }
+      }
+    }
+
+    .text-column {
+      top: 5vh;
+    }
   }
 }

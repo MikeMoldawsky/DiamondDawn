@@ -16,6 +16,7 @@ const ActionButton = ({
   onClick,
   disabled,
   children,
+  isLoading,
   ...props
 }) => {
   const isPending = useSelector(isActionPendingSelector(actionKey));
@@ -35,12 +36,12 @@ const ActionButton = ({
   return (
     <div
       className={classNames("button", _.kebabCase(actionKey), className, {
-        disabled: disabled || isPending,
+        disabled: disabled || isLoading || isPending,
       })}
       onClick={clickHandler}
       {...props}
     >
-      {isPending ? (
+      {isPending || isLoading ? (
         <BeatLoader color={"#fff"} loading={true} size={10} />
       ) : (
         <div className="button-content">{children}</div>

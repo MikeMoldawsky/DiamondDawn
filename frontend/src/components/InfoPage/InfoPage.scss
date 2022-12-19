@@ -45,7 +45,7 @@
 }
 
 @media only screen and (max-width: 1540px) {
-  .page.info-page.tech-page {
+  .page.info-page {
     .general {
       margin-left: 7.5%;
     }
@@ -53,12 +53,15 @@
 }
 
 @media only screen and (max-width: 1199px) {
-  .page.info-page.tech-page {
+  .page.info-page {
+    .subtitle-text {
+      margin-top: 2em;
+    }
   }
 }
 
 @media only screen and (max-width: 768px) {
-  .page.info-page.tech-page {
+  .page.info-page {
     .general {
       width: 80%;
       margin: 0 auto;

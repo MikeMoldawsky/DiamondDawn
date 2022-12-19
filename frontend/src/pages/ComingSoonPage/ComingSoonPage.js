@@ -22,8 +22,10 @@ import {
   getDDTextVideo,
   getPSTextVideo,
   getMobileBGVideo,
+  getPSDateVideo,
 } from "assets/videos";
 import { GetPasswordLink } from "components/Links";
+import { viewInviteApi } from "api/serverApi";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -45,7 +47,6 @@ const ComingSoonPage = () => {
   const { width, height } = useWindowDimensions();
   const isPortrait = height > width;
   const usePortraitAsset = isPortrait && width <= 768;
-  // const usePortraitAsset = (isPortrait && width <= 1024) || width <= 768;
 
   useMusic("homepage.mp3");
 
@@ -67,7 +68,12 @@ const ComingSoonPage = () => {
 
   const { clickWithSFX } = useButtonSFX(onInviteClick, "explore");
 
-  useEffect(loadInvite, [inviteId]);
+  useEffect(() => {
+    if (inviteId) {
+      loadInvite();
+      viewInviteApi(inviteId);
+    }
+  }, [inviteId]);
 
   const isCollectorReady = !account?.address || isCollectorFetched;
 
@@ -147,12 +153,20 @@ const ComingSoonPage = () => {
               src={getDDTextVideo(width)}
               showThreshold={0}
             />
-            <InlineVideo
-              withLoader={false}
-              className="ps-text"
-              src={getPSTextVideo(width)}
-              showThreshold={0}
-            />
+            <div className="center-center-aligned-row ps-row">
+              <InlineVideo
+                withLoader={false}
+                className="ps-text"
+                src={getPSTextVideo(width)}
+                showThreshold={0}
+              />
+              <InlineVideo
+                withLoader={false}
+                className="ps-date"
+                src={getPSDateVideo(width)}
+                showThreshold={0}
+              />
+            </div>
           </div>
           <div className="center-aligned-column cs-section text-column">
             <div className="tagline-text">

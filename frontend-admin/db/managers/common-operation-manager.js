@@ -3,8 +3,22 @@ const add = require("date-fns/add");
 
 async function getCollectorObjectById(collectorId) {
   try {
-    const collector = (await Collector.findById(collectorId)).toObject();
+    const collector = (
+      await Collector.findById(collectorId).populate({
+        path: "invitedBy",
+        populate: {
+          path: "createdBy",
+          model: "Collector",
+        },
+      })
+    ).toObject();
     if (!collector) return null;
+
+    collector.invitedBy =
+      collector.invitedBy?.inviter ||
+      collector.invitedBy?.createdBy?.twitter ||
+      collector.invitedBy?.createdBy?.email ||
+      "";
 
     if (
       collector.mintWindowStart &&

@@ -3,7 +3,6 @@ import "./CreditsPage.scss";
 import Footer from "components/Footer";
 import map from "lodash/map";
 import Link from "components/Links";
-import PageSizeLimit from "components/PageSizeLimit";
 import classNames from "classnames";
 
 const CREDITS = [
@@ -85,32 +84,30 @@ const CREDITS = [
 ];
 
 const CreditsPage = () => (
-  <PageSizeLimit>
-    <div className="page credits-page">
-      <div className="inner-page">
-        <h1>CREDITS</h1>
-        <div className="credits">
-          {map(CREDITS, ({ id, title, name, link }) => (
-            <div
-              key={`credits-category-${name}`}
-              className="start-start-aligned-row credits-category"
-            >
-              <div className={classNames("profile-image", id)} />
-              <div className="left-top-aligned-column">
-                <div className="category-name">{title}</div>
-                <div className="right-spaced-column">
-                  <div key={`credit-to-${name}`} className="credit-to">
-                    <Link href={link}>{name}</Link>
-                  </div>
+  <div className="page credits-page">
+    <div className="inner-page">
+      <h1>CREDITS</h1>
+      <div className="credits">
+        {map(CREDITS, ({ id, title, name, link }) => (
+          <div
+            key={`credits-category-${name}`}
+            className="start-start-aligned-row credits-category"
+          >
+            <div className={classNames("profile-image", id)} />
+            <div className="left-top-aligned-column">
+              <div className="category-name">{title}</div>
+              <div className="right-spaced-column">
+                <div key={`credit-to-${name}`} className="credit-to">
+                  <Link href={link}>{name}</Link>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-      <Footer />
     </div>
-  </PageSizeLimit>
+    <Footer />
+  </div>
 );
 
 export default CreditsPage;

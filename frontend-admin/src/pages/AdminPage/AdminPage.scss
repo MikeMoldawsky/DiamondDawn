@@ -128,6 +128,20 @@
 
   .table-container {
     background-color: white;
+
+    .table-loading {
+      color: black;
+      height: 200px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .loader {
+        margin-top: 1em;
+      }
+    }
   }
 
   .stage-tab {
@@ -345,6 +359,20 @@
           }
         }
       }
+    }
+  }
+
+  .MuiDataGrid-row {
+    cursor: pointer;
+
+    &.Mui-selected {
+      cursor: default;
+      background-color: $selected !important;
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      background-color: #d8d8d8;
     }
   }
 }

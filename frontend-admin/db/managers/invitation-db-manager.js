@@ -1,32 +1,17 @@
 const { getOrCreateDDCollector } = require("./common-operation-manager");
 const Invitation = require("../models/InvitationModel");
 const Collector = require("../models/CollectorModel");
+const _ = require("lodash");
 
-const MAX_INVITES_FOR_COLLECTOR = 2;
-const DD_TWITTER_HANDLE = "@DiamondDawnNFT";
-
-async function createInvitation(createdBy, note, overrideInviter) {
-  let inviter = await Collector.findById(createdBy);
-
-  let inviterInvitations = await Invitation.count({ createdBy });
-  if (
-    inviterInvitations >= MAX_INVITES_FOR_COLLECTOR &&
-    inviter.twitter !== DD_TWITTER_HANDLE
-  ) {
-    throw new Error("Invitation limit reached");
-  }
-
-  if (inviter.twitter === DD_TWITTER_HANDLE) {
-    // make sure DD "Collector" exists
-    inviter = await getOrCreateDDCollector();
-  }
-
-  const invitation = new Invitation({
-    createdBy: inviter,
+async function createInvitations(createdBy, note, overrideInviter, count = 1) {
+  const invitations = _.map(Array(count), () => ({
+    createdBy,
     note,
     inviter: overrideInviter,
-  });
-  return invitation.save();
+    sent: false,
+  }));
+
+  return await Invitation.insertMany(invitations);
 }
 
 async function getInvitationObjectById(inviteId) {
@@ -57,7 +42,7 @@ async function updateInvitation(update) {
 }
 
 module.exports = {
-  createInvitation,
+  createInvitations,
   getInvitations,
   updateInvitation,
 };

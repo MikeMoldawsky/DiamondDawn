@@ -6,10 +6,9 @@ import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 import "./NewInvitationForm.scss";
-import { createInvitationApi, getDDCollectorApi } from "api/serverApi";
+import { createInvitationApi } from "api/serverApi";
 
-const NewInvitationForm = ({ onSuccess }) => {
-  const [ddCollector, setDDCollector] = useState([]);
+const NewInvitationForm = ({ ddCollector, onSuccess }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const {
     register,
@@ -19,15 +18,10 @@ const NewInvitationForm = ({ onSuccess }) => {
     reset,
   } = useForm({
     mode: "onChange",
+    defaultValues: {
+      count: 1,
+    },
   });
-
-  const fetchDDCollector = async () => {
-    setDDCollector(await getDDCollectorApi());
-  };
-
-  useEffect(() => {
-    fetchDDCollector();
-  }, []);
 
   useEffect(() => {
     reset();
@@ -51,8 +45,8 @@ const NewInvitationForm = ({ onSuccess }) => {
     );
   };
 
-  const createInvitation = async ({ note, inviter }) => {
-    await createInvitationApi(ddCollector._id, note, inviter);
+  const createInvitation = async ({ note, inviter, count }) => {
+    await createInvitationApi(ddCollector._id, note, inviter, count);
     setIsSubmitSuccess(true);
     onSuccess && (await onSuccess());
   };
@@ -68,6 +62,13 @@ const NewInvitationForm = ({ onSuccess }) => {
           required: false,
           pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
         })}
+        <input
+          type="number"
+          placeholder="Invitation Count"
+          {...register("count", {
+            valueAsNumber: true,
+          })}
+        />
         <ActionButton
           actionKey="Create Invitation"
           onClick={handleSubmit(createInvitation)}
