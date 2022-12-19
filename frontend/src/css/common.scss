@@ -335,23 +335,27 @@ a:not(.no-hover) {
   &.mike {
     background: url($CDN_URL + "/images/team/mike.jpg") no-repeat center center;
     background-size: auto 100%;
+    filter: grayscale(0.8);
   }
 
   &.david {
     background: url($CDN_URL + "/images/team/david.jpeg") no-repeat center
       center;
     background-size: auto 100%;
+    filter: grayscale(0.9);
   }
 
   &.asaf {
     background: url($CDN_URL + "/images/team/asaf.jpeg") no-repeat center top;
     background-size: 100% auto;
+    filter: grayscale(0.95);
   }
 
   &.aviva {
     background: url($CDN_URL + "/images/team/aviva.jpeg") no-repeat center
       center;
     background-size: auto 100%;
+    filter: grayscale(0.85);
   }
 
   &.tony {
@@ -363,14 +367,14 @@ a:not(.no-hover) {
   &.abel {
     background: url($CDN_URL + "/images/team/abel.jpeg") no-repeat center center;
     background-size: auto 100%;
-    filter: grayscale(0.75);
+    filter: grayscale(0.85);
   }
 
   &.daniel {
     background: url($CDN_URL + "/images/team/daniel.jpeg") no-repeat center
       center;
     background-size: auto 100%;
-    filter: grayscale(0.75);
+    filter: grayscale(0.85);
   }
 
   &.danny {
@@ -399,17 +403,25 @@ a:not(.no-hover) {
   &.gals {
     background: url($CDN_URL + "/images/team/gals.jpeg") no-repeat center center;
     background-size: auto 100%;
+    filter: grayscale(0.7);
   }
 
   &.galk {
     background: url($CDN_URL + "/images/team/galk.jpeg") no-repeat center center;
     background-size: auto 100%;
+    filter: grayscale(0.75);
   }
 
   &.zen {
     background: url($CDN_URL + "/images/team/zen.jpeg") no-repeat center center;
     background-size: auto 100%;
     filter: grayscale(0.75);
+  }
+
+  &.alan {
+    background: url($CDN_URL + "/images/team/alan.jpeg") no-repeat center center;
+    background-size: auto 100%;
+    filter: grayscale(0.8);
   }
 }
 
