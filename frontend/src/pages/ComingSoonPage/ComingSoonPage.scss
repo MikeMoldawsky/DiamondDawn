@@ -200,7 +200,7 @@
         width: 35%;
         margin: 0 0 1em 0;
 
-        &:nth-last-child(-n+2) {
+        &:nth-last-child(-n + 2) {
           margin-bottom: 0;
         }
       }
