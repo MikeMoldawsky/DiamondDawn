@@ -63,12 +63,6 @@ const CREDITS = [
     link: "https://twitter.com/Shrikmeister",
   },
   {
-    id: "zen",
-    title: "The Physical Trailer",
-    name: "Zen",
-    link: "https://www.zenvideopro.com",
-  },
-  {
     id: "galk",
     title: "Smart Contracts",
     name: "Gal Kleinman",
@@ -82,6 +76,12 @@ const CREDITS = [
   },
   { id: "yanay", title: "Web Designer", name: "Yanay Halevy", link: "" },
   { id: "mor", title: "Project Manager", name: "Mor Lupa", link: "" },
+  {
+    id: "zen",
+    title: "The Physical Trailer",
+    name: "Zen",
+    link: "https://www.zenvideopro.com",
+  },
 ];
 
 const CreditsPage = () => (
