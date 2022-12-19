@@ -11,21 +11,21 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 const FAQS = [
   {
+    title: "Are the diamonds real?",
+    content: () => (
+      <p>
+        Yes. <br /> Diamond Dawn's diamonds are real, natural diamonds, and a
+        GIA diamond certificate backs each stone.
+      </p>
+    ),
+  },
+  {
     title: "When does the private sale start?",
     content: () => (
       <p>
         Diamond Dawn's private sale will start on January 11.
         <br />
         The sale will be open for only ONE week.
-      </p>
-    ),
-  },
-  {
-    title: "Are the diamonds real?",
-    content: () => (
-      <p>
-        Yes. <br /> Diamond Dawn's diamonds are real, natural diamonds, and a
-        GIA diamond certificate backs each stone.
       </p>
     ),
   },
