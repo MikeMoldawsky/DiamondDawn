@@ -11,11 +11,16 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 const FAQS = [
   {
-    title: "What is DD?",
-    content: () => <p>Diamond Dawn.</p>,
+    title: "Are the diamonds real?",
+    content: () => (
+      <p>
+        Yes. <br /> Diamond Dawn's diamonds are real, natural diamonds, and a
+        GIA diamond certificate backs each stone.
+      </p>
+    ),
   },
   {
-    title: "When DD's private sale starts?",
+    title: "When does the private sale start?",
     content: () => (
       <p>
         Diamond Dawn's private sale will start on January 11.
@@ -25,28 +30,59 @@ const FAQS = [
     ),
   },
   {
-    title: "When DD's public sale starts?",
-    content: () => <p>Diamond Dawn's public sale will start on January 18.</p>,
-  },
-  {
-    title: "What is DD’s blockchain?",
-    content: () => <p>Ethereum.</p>,
-  },
-  {
-    title: "What is DD's NFT standard?",
+    title: "How's the physical art piece designed?",
     content: () => (
       <p>
-        ERC-721.
-        <br /> Every NFT has a unique edition number (token ID).
+        If you choose the physical art piece, expect a heavy shipment! <br />
+        The art piece weighs ~8 kg (17.6 lb) and measures 25 x 25 x 25 cm (9.8 x
+        9.8 x 9.8 in.).
+        <br />
+        Diamond Dawn’s art piece is made from high-quality black wood and
+        acrylic panes, and in its heart, you’ll find your GIA-certified diamond.{" "}
+        <br />
+        The diamonds are high-quality natural Cape Diamonds (graded K-Z color),
+        and their weight varies between 0.4-0.8 carat (according to your
+        randomly-chosen NFT attributes).
+        <br />
+        Diamond Dawn is a work of art that you can proudly display as a
+        centerpiece on a desk, bookcase, or in any room.
       </p>
     ),
   },
   {
-    title: "What is DD’s supply?",
+    title: "What's a Diamond Certification?",
+    content: () => (
+      <p>
+        A diamond certification is a process where an independent gem lab tests
+        and assesses your diamond attributes, such as its carat, color, clarity,
+        and cut grading.
+      </p>
+    ),
+  },
+  {
+    title: "What's a GIA certificate?",
+    content: () => (
+      <p>
+        Diamond Dawn uses GIA certifications to back all of the project's
+        diamonds.
+        <br />
+        The Gemological Institute of America (GIA) is one of the best diamond
+        grading labs in the world. <br />
+        GIA has the best reputation for accurate diamond grading due to its
+        strict standards.
+      </p>
+    ),
+  },
+  {
+    title: "When does the public sale start?",
+    content: () => <p>Diamond Dawn's public sale will start on January 18.</p>,
+  },
+  {
+    title: "What's the supply?",
     content: () => <p>333 Editions.</p>,
   },
   {
-    title: "What is DD’s mint price?",
+    title: "What's the mint price?",
     content: () => (
       <p>
         4.44 ETH. <br /> That’s the cost for the entire Diamond Dawn journey,
@@ -65,7 +101,7 @@ const FAQS = [
     ),
   },
   {
-    title: "Is DD 100% decentralized?",
+    title: "Is Diamond Dawn 100% decentralized?",
     content: () => (
       <p>
         Yes. <br />
@@ -79,7 +115,20 @@ const FAQS = [
     ),
   },
   {
-    title: "What is a Diamond Dawn Phase?",
+    title: "What's DD’s blockchain?",
+    content: () => <p>Ethereum.</p>,
+  },
+  {
+    title: "What's the NFT standard?",
+    content: () => (
+      <p>
+        ERC-721.
+        <br /> Every NFT has a unique edition number (token ID).
+      </p>
+    ),
+  },
+  {
+    title: "What's a Diamond Dawn Phase?",
     content: () => (
       <p>
         A phase is a limited time window where you need to decide if you want to
@@ -128,56 +177,6 @@ const FAQS = [
         Diamond Dawn's smart contracts.
         <br />
         We have zero control over it, for better or worse.
-      </p>
-    ),
-  },
-  {
-    title: "Are the diamonds real?",
-    content: () => (
-      <p>
-        Yes. <br /> Diamond Dawn's diamonds are real, natural diamonds, and a
-        GIA diamond certificate backs each stone.
-      </p>
-    ),
-  },
-  {
-    title: "How is Diamond Dawn’s physical art piece designed?",
-    content: () => (
-      <p>
-        If you choose the physical art piece, expect a heavy shipment! The art
-        piece weighs ~8 kg (17.6 lb) and measures 25 x 25 x 25 cm (9.8 x 9.8 x
-        9.8 in.).
-        <br />
-        Diamond Dawn’s art piece is made from high-quality black wood and
-        acrylic panes, and in its heart, you’ll find your GIA-certified diamond.{" "}
-        <br />
-        Diamond Dawn’s diamonds are high-quality natural Cape Diamonds (graded
-        K-Z color), and their weight varies between 0.4-0.8 carat (according to
-        your randomly-chosen NFT attributes).
-        <br />
-        Diamond Dawn is a work of art that you can proudly display as a
-        centerpiece on a desk, bookcase, or in any room.
-      </p>
-    ),
-  },
-  {
-    title: "What is a Diamond Certification?",
-    content: () => (
-      <p>
-        A diamond certification is a process where an independent gem lab tests
-        and assesses your diamond attributes, such as its carat, color, clarity,
-        and cut grading.
-      </p>
-    ),
-  },
-  {
-    title: "What is GIA?",
-    content: () => (
-      <p>
-        The Gemological Institute of America (GIA) is one of the best diamond
-        grading labs in the world. <br />
-        GIA has the best reputation for accurate diamond grading due to its
-        strict standards.
       </p>
     ),
   },

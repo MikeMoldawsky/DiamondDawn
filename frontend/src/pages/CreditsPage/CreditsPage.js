@@ -10,7 +10,7 @@ const CREDITS = [
     id: "mike",
     title: "Project Creator",
     name: "Mike Moldawsky",
-    link: "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
+    link: "https://twitter.com/tweezers0x",
   },
   {
     id: "david",
@@ -44,16 +44,22 @@ const CREDITS = [
     link: "https://twitter.com/Abel_Okugawa",
   },
   {
+    id: "danny",
+    title: "Community Leader",
+    name: "Danny",
+    link: "https://twitter.com/BrainEmojis",
+  },
+  {
+    id: "coy",
+    title: "Community Wizard",
+    name: "The Digital Coy",
+    link: "https://twitter.com/TheDigitalCoy",
+  },
+  {
     id: "gals",
     title: "Marketing",
     name: "Gal Shriki",
     link: "https://twitter.com/Shrikmeister",
-  },
-  {
-    id: "zen",
-    title: "Art Piece Videos",
-    name: "Zen",
-    link: "https://www.zenvideopro.com",
   },
   {
     id: "galk",
@@ -69,6 +75,12 @@ const CREDITS = [
   },
   { id: "yanay", title: "Web Designer", name: "Yanay Halevy", link: "" },
   { id: "mor", title: "Project Manager", name: "Mor Lupa", link: "" },
+  {
+    id: "zen",
+    title: "The Physical Trailer",
+    name: "Zen",
+    link: "https://www.zenvideopro.com",
+  },
 ];
 
 const CreditsPage = () => (
