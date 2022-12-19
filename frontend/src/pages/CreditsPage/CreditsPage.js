@@ -70,7 +70,7 @@ const CREDITS = [
   {
     id: "alan",
     title: "Smart Contracts Audit",
-    name: "Alan Boost",
+    name: "Alan Boothe",
     link: "https://twitter.com/ltsCuzzo",
   },
   { id: "yanay", title: "Web Designer", name: "Yanay Halevy", link: "" },
