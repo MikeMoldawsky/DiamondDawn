@@ -40,9 +40,9 @@ const FAQS = [
         Diamond Dawn’s art piece is made from high-quality black wood and
         acrylic panes, and in its heart, you’ll find your GIA-certified diamond.{" "}
         <br />
-        Diamond Dawn’s diamonds are high-quality natural Cape Diamonds (graded
-        K-Z color), and their weight varies between 0.4-0.8 carat (according to
-        your randomly-chosen NFT attributes).
+        The diamonds are high-quality natural Cape Diamonds (graded K-Z color),
+        and their weight varies between 0.4-0.8 carat (according to your
+        randomly-chosen NFT attributes).
         <br />
         Diamond Dawn is a work of art that you can proudly display as a
         centerpiece on a desk, bookcase, or in any room.
