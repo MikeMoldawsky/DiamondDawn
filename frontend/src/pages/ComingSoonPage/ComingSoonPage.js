@@ -26,6 +26,7 @@ import {
 } from "assets/videos";
 import { GetPasswordLink } from "components/Links";
 import { viewInviteApi } from "api/serverApi";
+import FeaturedIn from "components/FeaturedIn";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -198,6 +199,7 @@ const ComingSoonPage = () => {
             <GetPasswordLink />
           )}
         </div>
+        <FeaturedIn />
       </div>
       {showInvitedModal && (
         <InvitedModal

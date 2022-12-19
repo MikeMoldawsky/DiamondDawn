@@ -60,7 +60,7 @@
   }
 
   .text-column {
-    top: 3.5%;
+    top: 2%;
 
     .tagline-text {
       color: $gold;
@@ -76,10 +76,14 @@
   }
 
   .password-box {
-    bottom: 10%;
+    bottom: 17%;
 
     .input-container {
       margin: 0 auto 1.5em;
+    }
+
+    &.with-invite {
+      bottom: 14%;
     }
   }
 
@@ -88,7 +92,7 @@
     position: absolute;
     width: 16em;
     left: 2%;
-    bottom: 9.5%;
+    bottom: 13.5%;
     animation: growShrinkLoop 2.5s ease-out infinite;
 
     img {
@@ -107,10 +111,18 @@
       width: unset;
       font-size: $font16px;
       left: 50%;
-      bottom: 4.5%;
+      bottom: 12%;
       transform: translateX(-50%);
       text-decoration: underline;
     }
+  }
+
+  .featured-in {
+    position: absolute;
+    left: 50%;
+    bottom: .5%;
+    transform: translateX(-50%);
+    font-size: $font14px;
   }
 }
 
