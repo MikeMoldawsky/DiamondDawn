@@ -26,8 +26,8 @@ export const getPSDateVideo = (width) => {
 
 export const getMobileBGVideo = (width) => {
   let fileName = "coming_soon_mobile";
-  if (width <= 360) fileName += "-300";
-  else if (width <= 480) fileName += "-400";
+  // if (width <= 360) fileName += "-300";
+  if (width <= 480) fileName += "-400";
   else if (width <= 768) fileName += "-588";
 
   return [{ src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" }];

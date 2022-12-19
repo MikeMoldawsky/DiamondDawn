@@ -1,0 +1,75 @@
+@import "css/varsNEW";
+
+.featured-in {
+  backdrop-filter: blur(30px);
+  padding: 1em 6em 1.25em;
+
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff22;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+
+  .featured-title {
+    color: $text_gray;
+    white-space: nowrap;
+    padding: 0 1em;
+  }
+
+  .horizontal-line {
+    height: 1px;
+    width: 100%;
+    background-color: $disabled_gray;
+  }
+
+  .articles {
+    margin-top: 0.75em;
+    padding: 0 2.5em;
+
+    .article {
+      svg.MuiSvgIcon-root {
+        width: 0.75em;
+        height: 0.75em;
+        margin-left: 0.25em;
+      }
+
+      svg:not(.MuiSvgIcon-root) {
+        height: 1.75em;
+        width: auto;
+
+        path {
+          fill: white;
+        }
+      }
+
+      .icon {
+        & > div {
+          display: flex;
+          align-items: center;
+        }
+
+        &.fortune,
+        &.investing {
+          svg {
+            height: 1.25em;
+          }
+        }
+
+        &.coinmarketcap {
+          svg {
+            height: 1.5em;
+          }
+        }
+      }
+
+      &:not(:last-child) {
+        margin-right: 5em;
+      }
+    }
+  }
+}
