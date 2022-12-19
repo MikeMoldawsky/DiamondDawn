@@ -120,7 +120,7 @@
   .featured-in {
     position: absolute;
     left: 50%;
-    bottom: .5%;
+    bottom: 0;
     transform: translateX(-50%);
     font-size: $font14px;
   }
@@ -128,14 +128,17 @@
 
 @mixin coming-soon-portrait {
   --base-font-size: 45;
+  overflow: unset;
 
   .react-player.bg-video {
     min-width: 100%;
     min-height: 100%;
+    width: 100vw;
+    height: 100vh;
   }
 
   .project-title {
-    top: 17%;
+    top: 21%;
 
     .react-player {
       &.ps-text {
@@ -150,7 +153,7 @@
   }
 
   .text-column {
-    top: 3vh;
+    top: 4vh;
 
     .tagline-text {
       font-size: $font22px;
@@ -158,18 +161,18 @@
   }
 
   .password-box {
-    bottom: 15%;
+    bottom: 17.5%;
     margin-top: 5vh;
 
     &.with-invite {
-      bottom: 17%;
+      bottom: 21%;
     }
   }
 
   .invite-image {
-    bottom: 2%;
-    width: 100%;
-    left: unset;
+    bottom: 9%;
+    width: 80%;
+    left: 10%;
 
     img {
       width: 40%;
@@ -177,7 +180,30 @@
 
     &.no-invite {
       font-size: $font18px;
-      bottom: 7%;
+      bottom: 11%;
+    }
+  }
+
+  .featured-in {
+    font-size: 1em;
+    width: 100%;
+    padding: 1em 2em 1.25em;
+    bottom: 0;
+    transform: translate(-50%, 5em);
+
+    .articles {
+      flex-wrap: wrap;
+      padding: 0;
+      justify-content: space-around;
+
+      .article {
+        width: 35%;
+        margin: 0 0 1em 0;
+
+        &:nth-last-child(-n+2) {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 }
@@ -207,7 +233,12 @@
     }
 
     .text-column {
-      top: 5vh;
+      top: 9vh;
+    }
+
+    .invite-image {
+      width: 100%;
+      left: 0;
     }
   }
 }
