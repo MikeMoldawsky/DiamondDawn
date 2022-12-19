@@ -10,7 +10,7 @@ const CREDITS = [
     id: "mike",
     title: "Project Creator",
     name: "Mike Moldawsky",
-    link: "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
+    link: "https://twitter.com/tweezers0x",
   },
   {
     id: "david",
@@ -32,16 +32,16 @@ const CREDITS = [
     link: "https://twitter.com/tonyherrera",
   },
   {
-    id: "abel",
-    title: "Sound Wizard",
-    name: "Abel Okugawa",
-    link: "https://twitter.com/Abel_Okugawa",
-  },
-  {
     id: "daniel",
     title: "Advisor",
     name: "Daniel Moldawsky",
     link: "https://twitter.com/DanielMoldawsky",
+  },
+  {
+    id: "abel",
+    title: "Sound Wizard",
+    name: "Abel Okugawa",
+    link: "https://twitter.com/Abel_Okugawa",
   },
   {
     id: "danny",
