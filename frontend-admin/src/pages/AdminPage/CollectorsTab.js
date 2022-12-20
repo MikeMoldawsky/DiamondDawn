@@ -15,6 +15,8 @@ import format from "date-fns/format";
 import { OpenseaLink, TwitterLink } from "components/Links";
 import useActionDispatch from "hooks/useActionDispatch";
 
+const renderCellWithTooltip = params => (<span title={params.value}>{params.value}</span>)
+
 const INVITATION_COLUMNS = [
   {
     field: "createdAt",
@@ -39,6 +41,7 @@ const INVITATION_COLUMNS = [
     width: 200,
     editable: true,
     showIfRequest: true,
+    renderCell: renderCellWithTooltip,
   },
   {
     field: "invitedBy",
@@ -54,6 +57,7 @@ const INVITATION_COLUMNS = [
     flex: 2,
     editable: true,
     showIfRequest: true,
+    renderCell: renderCellWithTooltip,
   },
   {
     field: "address",
@@ -73,6 +77,7 @@ const INVITATION_COLUMNS = [
     headerName: "Location",
     width: 200,
     showIfRequest: true,
+    renderCell: renderCellWithTooltip,
   },
   {
     field: "isDao",

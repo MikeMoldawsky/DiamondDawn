@@ -19,6 +19,8 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
+const renderCellWithTooltip = params => (<span title={params.value}>{params.value}</span>)
+
 const INVITATION_COLUMNS = [
   {
     field: "createdAt",
@@ -41,6 +43,7 @@ const INVITATION_COLUMNS = [
     flex: 1,
     editable: true,
     showIfRequest: true,
+    renderCell: renderCellWithTooltip,
   },
   {
     field: "sent",
