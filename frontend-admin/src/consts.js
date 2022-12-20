@@ -76,4 +76,4 @@ export const COLLECTOR_STATUS = {
   Maybe: "Maybe",
   ToApprove: "ToApprove",
   Approved: "Approved",
-}
+};

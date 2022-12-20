@@ -19,7 +19,9 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
-const renderCellWithTooltip = params => (<span title={params.value}>{params.value}</span>)
+const renderCellWithTooltip = (params) => (
+  <span title={params.value}>{params.value}</span>
+);
 
 const INVITATION_COLUMNS = [
   {

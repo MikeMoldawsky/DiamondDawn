@@ -14,9 +14,11 @@ import {
 import format from "date-fns/format";
 import { OpenseaLink, TwitterLink } from "components/Links";
 import useActionDispatch from "hooks/useActionDispatch";
-import {COLLECTOR_STATUS} from "consts";
+import { COLLECTOR_STATUS } from "consts";
 
-const renderCellWithTooltip = params => (<span title={params.value}>{params.value}</span>)
+const renderCellWithTooltip = (params) => (
+  <span title={params.value}>{params.value}</span>
+);
 
 const INVITATION_COLUMNS = [
   {
@@ -60,14 +62,19 @@ const INVITATION_COLUMNS = [
     headerName: "Status",
     type: "singleSelect",
     valueOptions: (params) => {
-      console.log({ params })
+      console.log({ params });
       switch (params.row.status) {
         case COLLECTOR_STATUS.Applied:
-          return [COLLECTOR_STATUS.Applied, COLLECTOR_STATUS.InReview]
+          return [COLLECTOR_STATUS.Applied, COLLECTOR_STATUS.InReview];
         case COLLECTOR_STATUS.Approved:
-          return [COLLECTOR_STATUS.Approved]
+          return [COLLECTOR_STATUS.Approved];
         default:
-          return [COLLECTOR_STATUS.InReview, COLLECTOR_STATUS.Maybe, COLLECTOR_STATUS.Rejected, COLLECTOR_STATUS.ToApprove]
+          return [
+            COLLECTOR_STATUS.InReview,
+            COLLECTOR_STATUS.Maybe,
+            COLLECTOR_STATUS.Rejected,
+            COLLECTOR_STATUS.ToApprove,
+          ];
       }
     },
     width: 150,
@@ -154,8 +161,11 @@ const INVITATION_COLUMNS = [
 
 const ReviewButton = ({ collectorId, onSuccess }) => {
   const review = async () => {
-    if (window.confirm("Set collector to \"InReview\"?")) {
-      await updateCollectorApi({_id: collectorId, status: COLLECTOR_STATUS.InReview});
+    if (window.confirm('Set collector to "InReview"?')) {
+      await updateCollectorApi({
+        _id: collectorId,
+        status: COLLECTOR_STATUS.InReview,
+      });
       onSuccess();
     }
   };
@@ -210,7 +220,11 @@ const InvitationsTab = ({ approved }) => {
     update: updateCollectorApi,
   };
 
-  const columns = _.filter(INVITATION_COLUMNS, ({ hideIfPending, hideIfApproved }) => approved ? !hideIfApproved : !hideIfPending);
+  const columns = _.filter(
+    INVITATION_COLUMNS,
+    ({ hideIfPending, hideIfApproved }) =>
+      approved ? !hideIfApproved : !hideIfPending
+  );
 
   const setLocalCollector = (id, update) => {
     setCollectors(
@@ -221,19 +235,32 @@ const InvitationsTab = ({ approved }) => {
   };
 
   const renderActions = ({ id, row }) => {
-    const actions = []
-    if (approved) return actions
+    const actions = [];
+    if (approved) return actions;
 
     if (row.status === COLLECTOR_STATUS.Applied) {
       actions.push(
-        <ReviewButton collectorId={id} onSuccess={() => setLocalCollector(id, { status: COLLECTOR_STATUS.InReview })} />
-      )
+        <ReviewButton
+          collectorId={id}
+          onSuccess={() =>
+            setLocalCollector(id, { status: COLLECTOR_STATUS.InReview })
+          }
+        />
+      );
     }
     actions.push(
-      <ApproveButton collectorId={id} onSuccess={() => setLocalCollector(id, { approved: true, status: COLLECTOR_STATUS.Approved })} />
-    )
-    return actions
-  }
+      <ApproveButton
+        collectorId={id}
+        onSuccess={() =>
+          setLocalCollector(id, {
+            approved: true,
+            status: COLLECTOR_STATUS.Approved,
+          })
+        }
+      />
+    );
+    return actions;
+  };
 
   return (
     <div className={classNames("tab-content invitations")}>
