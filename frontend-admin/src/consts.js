@@ -68,3 +68,12 @@ export const CONTRACTS = {
   DiamondDawn: "DiamondDawn",
   DiamondDawnMine: "DiamondDawnMine",
 };
+
+export const COLLECTOR_STATUS = {
+  Applied: "Applied",
+  InReview: "InReview",
+  Rejected: "Rejected",
+  Maybe: "Maybe",
+  ToApprove: "ToApprove",
+  Approved: "Approved",
+};

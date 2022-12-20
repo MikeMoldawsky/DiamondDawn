@@ -29,6 +29,7 @@ const CRUDTable = ({
   getIsRowDeletable,
   disableSelectionOnClick,
   loadActionKey,
+  omitUpdateFields = [],
   ...gridProps
 }) => {
   const [rowModesModel, setRowModesModel] = useState({});
@@ -65,7 +66,6 @@ const CRUDTable = ({
         }
 
         return [
-          ...(renderActions ? renderActions(params) : []),
           <GridActionsCellItem
             icon={<EditIcon />}
             label="Edit"
@@ -73,6 +73,7 @@ const CRUDTable = ({
             onClick={handleEditClick(id)}
             color="inherit"
           />,
+          ...(renderActions ? renderActions(params) : []),
           ...(_.isFunction(CRUD.delete) &&
           (!getIsRowDeletable || getIsRowDeletable(params.row))
             ? [
@@ -145,7 +146,7 @@ const CRUDTable = ({
 
     let _newRow = await (newRow.isNew
       ? CRUD.create(_.omit(newRow, ["_id", "isNew"]))
-      : CRUD.update(newRow));
+      : CRUD.update(_.omit(newRow, omitUpdateFields)));
 
     if (_newRow) {
       setRows(rows.map((row) => (row._id === newRow._id ? _newRow : row)));

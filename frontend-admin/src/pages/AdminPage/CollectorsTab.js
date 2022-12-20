@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faEye } from "@fortawesome/free-solid-svg-icons";
 import CRUDTable from "components/CRUDTable";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { utils as ethersUtils } from "ethers";
@@ -14,6 +14,11 @@ import {
 import format from "date-fns/format";
 import { OpenseaLink, TwitterLink } from "components/Links";
 import useActionDispatch from "hooks/useActionDispatch";
+import { COLLECTOR_STATUS } from "consts";
+
+const renderCellWithTooltip = (params) => (
+  <span title={params.value}>{params.value}</span>
+);
 
 const INVITATION_COLUMNS = [
   {
@@ -23,14 +28,12 @@ const INVITATION_COLUMNS = [
     width: 150,
     valueFormatter: (params) =>
       format(new Date(params.value), "dd/MM/yy hh:mm"),
-    showIfRequest: true,
   },
   {
     field: "twitter",
     headerName: "Twitter",
     width: 200,
     editable: true,
-    showIfRequest: true,
     renderCell: (params) => <TwitterLink handle={params.row.twitter} />,
   },
   {
@@ -38,28 +41,65 @@ const INVITATION_COLUMNS = [
     headerName: "Email",
     width: 200,
     editable: true,
-    showIfRequest: true,
+    renderCell: renderCellWithTooltip,
   },
   {
     field: "invitedBy",
     headerName: "Invited By",
     width: 200,
-    showIfRequest: true,
     renderCell: (params) => <TwitterLink handle={params.row.invitedBy} />,
   },
   {
     field: "note",
     headerName: "Notes",
-    minWidth: 400,
+    minWidth: 300,
     flex: 2,
     editable: true,
-    showIfRequest: true,
+    renderCell: renderCellWithTooltip,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    type: "singleSelect",
+    valueOptions: (params) => {
+      console.log({ params });
+      switch (params.row.status) {
+        case COLLECTOR_STATUS.Applied:
+          return [COLLECTOR_STATUS.Applied, COLLECTOR_STATUS.InReview];
+        case COLLECTOR_STATUS.Approved:
+          return [COLLECTOR_STATUS.Approved];
+        default:
+          return [
+            COLLECTOR_STATUS.InReview,
+            COLLECTOR_STATUS.Maybe,
+            COLLECTOR_STATUS.Rejected,
+            COLLECTOR_STATUS.ToApprove,
+          ];
+      }
+    },
+    width: 150,
+    editable: true,
+    hideIfApproved: true,
+  },
+  {
+    field: "statusInfo",
+    headerName: "Status Info",
+    minWidth: 300,
+    editable: true,
+    renderCell: renderCellWithTooltip,
+  },
+  {
+    field: "buyProbability",
+    headerName: "Buy Probability",
+    type: "singleSelect",
+    valueOptions: [1, 2, 3, 4, 5],
+    width: 150,
+    editable: true,
   },
   {
     field: "address",
     headerName: "Address",
     width: 400,
-    showIfRequest: true,
     preProcessEditCellProps: (params) => {
       const isValid =
         _.isEmpty(params.props.value) ||
@@ -72,21 +112,19 @@ const INVITATION_COLUMNS = [
     field: "location",
     headerName: "Location",
     width: 200,
-    showIfRequest: true,
+    renderCell: renderCellWithTooltip,
   },
   {
     field: "isDao",
     headerName: "DAO",
     type: "boolean",
     width: 100,
-    showIfRequest: true,
   },
   {
     field: "approved",
     headerName: "Approved",
     type: "boolean",
     width: 100,
-    showIfRequest: true,
     editable: true,
   },
   {
@@ -94,18 +132,21 @@ const INVITATION_COLUMNS = [
     headerName: "Mint Window Start",
     type: "dateTime",
     width: 180,
+    hideIfPending: true,
   },
   {
     field: "minted",
     headerName: "Minted",
     type: "boolean",
     width: 80,
+    hideIfPending: true,
   },
   {
     field: "expired",
     headerName: "Expired",
     type: "boolean",
     width: 80,
+    hideIfPending: true,
   },
   {
     field: "invitations",
@@ -114,14 +155,37 @@ const INVITATION_COLUMNS = [
     preProcessEditCellProps: (params) => {
       return { ...params.props, value: params.props.value.join(",") };
     },
+    hideIfPending: true,
   },
 ];
 
-const ApproveButton = ({ collectorId, onApprove }) => {
+const ReviewButton = ({ collectorId, onSuccess }) => {
+  const review = async () => {
+    if (window.confirm('Set collector to "InReview"?')) {
+      await updateCollectorApi({
+        _id: collectorId,
+        status: COLLECTOR_STATUS.InReview,
+      });
+      onSuccess();
+    }
+  };
+
+  return (
+    <GridActionsCellItem
+      icon={<FontAwesomeIcon icon={faEye} />}
+      onClick={review}
+      label="Review"
+      className="textPrimary"
+      color="inherit"
+    />
+  );
+};
+
+const ApproveButton = ({ collectorId, onSuccess }) => {
   const approve = async () => {
     if (window.confirm("Are you sure you want to approve this collector?")) {
       await approveCollectorApi(collectorId);
-      onApprove();
+      onSuccess();
     }
   };
 
@@ -156,22 +220,47 @@ const InvitationsTab = ({ approved }) => {
     update: updateCollectorApi,
   };
 
-  const columns = approved
-    ? INVITATION_COLUMNS
-    : _.filter(INVITATION_COLUMNS, ({ showIfRequest }) => showIfRequest);
+  const columns = _.filter(
+    INVITATION_COLUMNS,
+    ({ hideIfPending, hideIfApproved }) =>
+      approved ? !hideIfApproved : !hideIfPending
+  );
 
-  const setApproved = (inviteId) => {
+  const setLocalCollector = (id, update) => {
     setCollectors(
-      _.map(collectors, (invite) => {
-        return invite._id === inviteId ? { ...invite, approved: true } : invite;
+      _.map(collectors, (collector) => {
+        return collector._id === id ? { ...collector, ...update } : collector;
       })
     );
   };
 
-  const renderActions = ({ id }) =>
-    approved
-      ? []
-      : [<ApproveButton collectorId={id} onApprove={() => setApproved(id)} />];
+  const renderActions = ({ id, row }) => {
+    const actions = [];
+    if (approved) return actions;
+
+    if (row.status === COLLECTOR_STATUS.Applied) {
+      actions.push(
+        <ReviewButton
+          collectorId={id}
+          onSuccess={() =>
+            setLocalCollector(id, { status: COLLECTOR_STATUS.InReview })
+          }
+        />
+      );
+    }
+    actions.push(
+      <ApproveButton
+        collectorId={id}
+        onSuccess={() =>
+          setLocalCollector(id, {
+            approved: true,
+            status: COLLECTOR_STATUS.Approved,
+          })
+        }
+      />
+    );
+    return actions;
+  };
 
   return (
     <div className={classNames("tab-content invitations")}>
@@ -185,6 +274,7 @@ const InvitationsTab = ({ approved }) => {
         newCreatedOnServer
         renderActions={renderActions}
         loadActionKey="load-collectors"
+        omitUpdateFields={["invitedBy"]}
       />
     </div>
   );

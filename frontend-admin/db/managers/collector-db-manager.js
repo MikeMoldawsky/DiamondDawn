@@ -33,6 +33,7 @@ async function approveCollector(collectorId) {
   const update = {
     _id: collectorId,
     approved: true,
+    status: "Approved",
   };
   if (collector.invitations.length === 0) {
     const noteName = collector.twitter || collector.address;
