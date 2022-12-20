@@ -78,7 +78,7 @@ const CREDITS = [
   {
     id: "zen",
     title: "The Physical Trailer",
-    name: "Zen",
+    name: "Zen Video Production",
     link: "https://www.zenvideopro.com",
   },
 ];
