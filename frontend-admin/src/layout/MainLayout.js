@@ -14,7 +14,7 @@ import "css/main.scss";
 const MainLayout = () => {
   const actionDispatch = useActionDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(
-    Boolean(localStorage.getItem("ddAdminAuth") || 0)
+    localStorage.getItem("ddAdminAuth") === "true"
   );
 
   useEffect(() => {

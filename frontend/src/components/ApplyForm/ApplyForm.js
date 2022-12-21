@@ -18,7 +18,7 @@ import { uiSelector } from "store/uiReducer";
 const getValidationError = (name, value) => {
   switch (name) {
     case "email":
-      return "Invalid email address";
+      return !value ? "Required" : "Invalid email address";
     case "twitter":
       if (!value.startsWith("@")) {
         return "Must start with '@'";
@@ -41,7 +41,6 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   } = useForm({
     mode: "onChange",
   });
-  const [isRequiredError, setIsRequiredError] = useState(false);
   const account = useAccount();
   const invite = useSelector(inviteSelector);
   const { geoLocation } = useSelector(uiSelector);
@@ -51,10 +50,6 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
     setIsSubmitSuccess(false);
   }, [isSubmitSuccess]);
 
-  const clearErrors = () => {
-    setIsRequiredError(false);
-  };
-
   const renderInput = (name, placeholder, opts = {}) => {
     const hasError = !isNil(get(errors, name));
     return (
@@ -62,7 +57,6 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
         <input
           {...register(name, {
             required: true,
-            onChange: clearErrors,
             ...opts,
           })}
           disabled={disabled}
@@ -73,7 +67,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
         />
         {hasError && (
           <div className="form-error">
-            {getValidationError(name, watch(name))}
+            * {getValidationError(name, watch(name))}
           </div>
         )}
       </>
@@ -81,12 +75,6 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   };
 
   const applyToDD = async (data) => {
-    clearErrors();
-    const { twitter, email } = data;
-    if (!twitter && !email) {
-      setIsRequiredError(true);
-      return;
-    }
     try {
       if (!invite?._id) {
         throw new Error(
@@ -111,17 +99,17 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
       <form>
         <div className="center-aligned-row inputs-row">
           <div className="input-container">
+            <div className="label">Email</div>
+            {renderInput("email", "diamond@gmail.com", {
+              required: true,
+              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            })}
+          </div>
+          <div className="input-container">
             <div className="label">Twitter Handle</div>
             {renderInput("twitter", "@diamond", {
               required: false,
               pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
-            })}
-          </div>
-          <div className="input-container">
-            <div className="label">Email</div>
-            {renderInput("email", "diamond@gmail.com", {
-              required: false,
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
             })}
           </div>
         </div>
