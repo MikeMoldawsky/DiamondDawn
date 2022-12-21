@@ -135,14 +135,15 @@ const Invite = () => {
                 <div className="center-aligned-row follow-box">
                   <div className="follow-text">
                     <b>
-                      Make sure to follow request{" "}
+                      Make sure to follow{" "}
                       <TwitterLink className="text-gold">
                         <b>@DiamondDawnNFT</b>
                       </TwitterLink>
                     </b>{" "}
                     <MobileOrTablet>{renderTwitterButton()}</MobileOrTablet>
                     <span>
-                      We’ll send you a Twitter DM if you are accepted.
+                      We’ll send you an email or a Twitter DM if you are
+                      accepted.
                     </span>
                   </div>
                   <Desktop>{renderTwitterButton()}</Desktop>
