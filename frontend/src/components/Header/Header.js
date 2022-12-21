@@ -23,6 +23,10 @@ import usePermission from "hooks/usePermission";
 import { useDesktopMediaQuery } from "hooks/useMediaQueries";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { collectorSelector } from "store/collectorReducer";
+import {
+  DIAMOND_DAWN_COLLECTORS_TELEGRAM,
+  DIAMOND_DAWN_PUBLIC_TELEGRAM,
+} from "consts";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
@@ -76,11 +80,17 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
               <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
             </TwitterLink>
             {collector?.approved && (
-              <TelegramLink className="social-link no-hover private-tg">
+              <TelegramLink
+                className="social-link no-hover private-tg"
+                href={DIAMOND_DAWN_COLLECTORS_TELEGRAM}
+              >
                 <TelegramIcon />
               </TelegramLink>
             )}
-            <TelegramLink className="social-link no-hover">
+            <TelegramLink
+              className="social-link no-hover"
+              href={DIAMOND_DAWN_PUBLIC_TELEGRAM}
+            >
               <TelegramIcon />
             </TelegramLink>
           </div>
