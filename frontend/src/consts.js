@@ -38,7 +38,8 @@ export const EVENTS = {
 
 export const DIAMOND_DAWN_TWITTER_URL = "https://twitter.com/DiamondDawnNFT";
 
-export const DIAMOND_DAWN_COLLECTORS_TELEGRAM = "https://t.me/+h-IWpeZM_dNkODk0";
+export const DIAMOND_DAWN_COLLECTORS_TELEGRAM =
+  "https://t.me/+h-IWpeZM_dNkODk0";
 export const DIAMOND_DAWN_PUBLIC_TELEGRAM = "https://t.me/DiamondDawnNFT";
 
 export const DIAMOND_DAWN_OPENSEA = "";

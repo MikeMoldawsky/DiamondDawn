@@ -17,22 +17,29 @@ const CreditsPage = lazy(() => import("pages/CreditsPage"));
 const FAQsPage = lazy(() => import("pages/FAQsPage"));
 
 const SuspenseFallback = ({ requireAccess = true }) => {
-  useAccessDDGuard(requireAccess)
-}
+  useAccessDDGuard(requireAccess);
+};
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" exact element={
-        <Suspense fallback={<SuspenseFallback requireAccess={false} />}>
-          <ComingSoonPage />
-        </Suspense>
-      } />
-      <Route path="/explore" element={
-        <Suspense fallback={<SuspenseFallback />}>
-          <Homepage />
-        </Suspense>
-      } />
+      <Route
+        path="/"
+        exact
+        element={
+          <Suspense fallback={<SuspenseFallback requireAccess={false} />}>
+            <ComingSoonPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/explore"
+        element={
+          <Suspense fallback={<SuspenseFallback />}>
+            <Homepage />
+          </Suspense>
+        }
+      />
       <Route
         path="process"
         element={

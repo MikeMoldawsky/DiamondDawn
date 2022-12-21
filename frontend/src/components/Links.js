@@ -61,19 +61,17 @@ export const CollectorLink = ({ className, collector, twitter }) => {
 export const TelegramLink = ({ className, children }) => {
   const collector = useSelector(collectorSelector);
 
-  const props = collector?.approved ? {
-    href: DIAMOND_DAWN_COLLECTORS_TELEGRAM,
-    className: classNames("tg-link private-tg", className)
-  } : {
-    href: DIAMOND_DAWN_PUBLIC_TELEGRAM,
-    className: classNames("tg-link", className),
-  }
+  const props = collector?.approved
+    ? {
+        href: DIAMOND_DAWN_COLLECTORS_TELEGRAM,
+        className: classNames("tg-link private-tg", className),
+      }
+    : {
+        href: DIAMOND_DAWN_PUBLIC_TELEGRAM,
+        className: classNames("tg-link", className),
+      };
 
-  return (
-    <Link {...props}>
-      {children}
-    </Link>
-  );
+  return <Link {...props}>{children}</Link>;
 };
 
 export const OpenseaLink = ({ className, children }) => {
