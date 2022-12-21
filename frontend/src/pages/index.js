@@ -1,30 +1,52 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import ComingSoonPage from "pages/ComingSoonPage";
-import Homepage from "pages/Homepage";
 import TokensProvider from "containers/TokensProvider";
-import ProcessPage from "pages/ProcessPage";
-import RebirthPage from "pages/RebirthPage";
-import CollectorPage from "pages/CollectorPage";
-import NFTPage from "pages/NFTPage";
-import TheJourneyPage from "pages/TheJourneyPage";
-import AboutUsPage from "pages/AboutUsPage";
-import TechPage from "pages/TechPage";
-import PrivacyPage from "pages/Legal/PrivacyPage";
-import TNCPage from "pages/Legal/TNCPage";
-import CreditsPage from "pages/CreditsPage";
-import FAQsPage from "pages/FAQsPage";
+import useAccessDDGuard from "hooks/useAccessDDGuard";
+const ComingSoonPage = lazy(() => import("pages/ComingSoonPage"));
+const Homepage = lazy(() => import("pages/Homepage"));
+const ProcessPage = lazy(() => import("pages/ProcessPage"));
+const RebirthPage = lazy(() => import("pages/RebirthPage"));
+const CollectorPage = lazy(() => import("pages/CollectorPage"));
+const NFTPage = lazy(() => import("pages/NFTPage"));
+const TheJourneyPage = lazy(() => import("pages/TheJourneyPage"));
+const AboutUsPage = lazy(() => import("pages/AboutUsPage"));
+const TechPage = lazy(() => import("pages/TechPage"));
+const PrivacyPage = lazy(() => import("pages/Legal/PrivacyPage"));
+const TNCPage = lazy(() => import("pages/Legal/TNCPage"));
+const CreditsPage = lazy(() => import("pages/CreditsPage"));
+const FAQsPage = lazy(() => import("pages/FAQsPage"));
+
+const SuspenseFallback = ({ requireAccess = true }) => {
+  useAccessDDGuard(requireAccess);
+};
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" exact element={<ComingSoonPage />} />
-      <Route path="/explore" element={<Homepage />} />
+      <Route
+        path="/"
+        exact
+        element={
+          <Suspense fallback={<SuspenseFallback requireAccess={false} />}>
+            <ComingSoonPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/explore"
+        element={
+          <Suspense fallback={<SuspenseFallback />}>
+            <Homepage />
+          </Suspense>
+        }
+      />
       <Route
         path="process"
         element={
           <TokensProvider withLoader isGated>
-            <ProcessPage />
+            <Suspense fallback={<SuspenseFallback />}>
+              <ProcessPage />
+            </Suspense>
           </TokensProvider>
         }
       />
@@ -32,6 +54,7 @@ const AppRoutes = () => {
         path="rebirth/:tokenId"
         element={
           <TokensProvider withLoader isGated>
+            <Suspense fallback={<SuspenseFallback />}></Suspense>
             <RebirthPage />
           </TokensProvider>
         }
@@ -40,7 +63,9 @@ const AppRoutes = () => {
         path="collector"
         element={
           <TokensProvider goThrough>
-            <CollectorPage />
+            <Suspense fallback={<SuspenseFallback />}>
+              <CollectorPage />
+            </Suspense>
           </TokensProvider>
         }
       />
@@ -48,17 +73,68 @@ const AppRoutes = () => {
         path="nft/:tokenId"
         element={
           <TokensProvider withLoader isGated>
-            <NFTPage />
+            <Suspense fallback={<SuspenseFallback />}>
+              <NFTPage />
+            </Suspense>
           </TokensProvider>
         }
       />
-      <Route path="the-journey" element={<TheJourneyPage />} />
-      <Route path="about-us" element={<AboutUsPage />} />
-      <Route path="technology" element={<TechPage />} />
-      <Route path="privacy" element={<PrivacyPage />} />
-      <Route path="tnc" element={<TNCPage />} />
-      <Route path="credits" element={<CreditsPage />} />
-      <Route path="faq" element={<FAQsPage />} />
+      <Route
+        path="the-journey"
+        element={
+          <Suspense fallback={<SuspenseFallback />}>
+            <TheJourneyPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="about-us"
+        element={
+          <Suspense fallback={<SuspenseFallback />}>
+            <AboutUsPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="technology"
+        element={
+          <Suspense fallback={<SuspenseFallback />}>
+            <TechPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="privacy"
+        element={
+          <Suspense fallback={<SuspenseFallback />}>
+            <PrivacyPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="tnc"
+        element={
+          <Suspense fallback={<SuspenseFallback />}>
+            <TNCPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="credits"
+        element={
+          <Suspense fallback={<SuspenseFallback />}>
+            <CreditsPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="faq"
+        element={
+          <Suspense fallback={<SuspenseFallback />}>
+            <FAQsPage />
+          </Suspense>
+        }
+      />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
