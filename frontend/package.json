@@ -9,6 +9,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.1.2",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
+    "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.0",
     "@n8tb1t/use-scroll-position": "^2.0.3",
