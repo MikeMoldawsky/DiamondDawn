@@ -62,7 +62,7 @@
       .buttons-row {
         margin-top: 3.5rem;
         justify-content: space-between;
-        font-size: $font18px;
+        font-size: $font20px;
 
         .play-button:not(:last-child) {
           margin-right: 6em;
@@ -76,7 +76,7 @@
     }
 
     .countdown-container {
-      font-size: $font10px;
+      font-size: .6em;
       position: relative;
       margin: 3rem 0 0;
 
