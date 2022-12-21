@@ -142,7 +142,7 @@ const Invite = () => {
                     </b>{" "}
                     <MobileOrTablet>{renderTwitterButton()}</MobileOrTablet>
                     <span>
-                      We’ll send you an email or a Twitter DM if you are
+                      we’ll send you an email or a Twitter DM if you are
                       accepted.
                     </span>
                   </div>
