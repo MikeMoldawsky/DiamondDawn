@@ -18,9 +18,10 @@ import Logo from "components/Logo";
 import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import CTAButton from "components/CTAButton";
-import { TwitterLink } from "components/Links";
+import { TwitterLink, TelegramLink } from "components/Links";
 import usePermission from "hooks/usePermission";
 import { useDesktopMediaQuery } from "hooks/useMediaQueries";
+import TelegramIcon from "@mui/icons-material/Telegram";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
@@ -71,6 +72,9 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           <TwitterLink className="no-hover">
             <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
           </TwitterLink>
+          <TelegramLink className="no-hover">
+            <TelegramIcon />
+          </TelegramLink>
           <div className="vertical-sep" />
           <FontAwesomeIcon
             className="menu-icon mute-icon"
