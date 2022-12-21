@@ -13,7 +13,9 @@ import "css/main.scss";
 
 const MainLayout = () => {
   const actionDispatch = useActionDispatch();
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("ddAdminAuth") === "true");
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("ddAdminAuth") === "true"
+  );
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");
