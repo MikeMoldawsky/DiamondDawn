@@ -1,9 +1,11 @@
 import React from "react";
 import "./Legal.scss";
 import Footer from "components/Footer";
+import Page from "containers/Page";
 
 const TNCPage = () => (
-  <div className="page tnc-page">
+  <Page pageName="tnc">
+    <div className="page tnc-page">
     <div className="inner-page">
       <h1>Terms and Conditions</h1>
       <h2>Effective Date: October 26, 2022</h2>
@@ -890,6 +892,7 @@ const TNCPage = () => (
     </div>
     <Footer />
   </div>
+  </Page>
 );
 
 export default TNCPage;

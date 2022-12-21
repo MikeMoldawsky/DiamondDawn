@@ -425,6 +425,16 @@ a:not(.no-hover) {
   }
 }
 
+.tg-link {
+  &.private-tg {
+    svg {
+      path {
+        fill: $gold;
+      }
+    }
+  }
+}
+
 .center-aligned-row {
   display: flex;
   align-items: center;

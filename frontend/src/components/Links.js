@@ -1,6 +1,7 @@
 import React from "react";
 import {
-  DIAMOND_DAWN_TELEGRAM,
+  DIAMOND_DAWN_PUBLIC_TELEGRAM,
+  DIAMOND_DAWN_COLLECTORS_TELEGRAM,
   DIAMOND_DAWN_TWITTER_URL,
   PRIVATE_TWITTER_MESSAGE_URL,
   DIAMOND_DAWN_OPENSEA,
@@ -60,11 +61,19 @@ export const CollectorLink = ({ className, collector, twitter }) => {
 export const TelegramLink = ({ className, children }) => {
   const collector = useSelector(collectorSelector);
 
-  return collector?.approved ? (
-    <Link href={DIAMOND_DAWN_TELEGRAM} className={className}>
+  const props = collector?.approved ? {
+    href: DIAMOND_DAWN_COLLECTORS_TELEGRAM,
+    className: classNames("tg-link private-tg", className)
+  } : {
+    href: DIAMOND_DAWN_PUBLIC_TELEGRAM,
+    className: classNames("tg-link", className),
+  }
+
+  return (
+    <Link {...props}>
       {children}
     </Link>
-  ) : null;
+  );
 };
 
 export const OpenseaLink = ({ className, children }) => {

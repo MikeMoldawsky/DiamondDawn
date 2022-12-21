@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import TokensProvider from "containers/TokensProvider";
+import useAccessDDGuard from "hooks/useAccessDDGuard";
 const ComingSoonPage = lazy(() => import("pages/ComingSoonPage"));
 const Homepage = lazy(() => import("pages/Homepage"));
 const ProcessPage = lazy(() => import("pages/ProcessPage"));
@@ -15,16 +16,28 @@ const TNCPage = lazy(() => import("pages/Legal/TNCPage"));
 const CreditsPage = lazy(() => import("pages/CreditsPage"));
 const FAQsPage = lazy(() => import("pages/FAQsPage"));
 
+const SuspenseFallback = ({ requireAccess = true }) => {
+  useAccessDDGuard(requireAccess)
+}
+
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" exact element={<ComingSoonPage />} />
-      <Route path="/explore" element={<Homepage />} />
+      <Route path="/" exact element={
+        <Suspense fallback={<SuspenseFallback requireAccess={false} />}>
+          <ComingSoonPage />
+        </Suspense>
+      } />
+      <Route path="/explore" element={
+        <Suspense fallback={<SuspenseFallback />}>
+          <Homepage />
+        </Suspense>
+      } />
       <Route
         path="process"
         element={
           <TokensProvider withLoader isGated>
-            <Suspense fallback={<></>}>
+            <Suspense fallback={<SuspenseFallback />}>
               <ProcessPage />
             </Suspense>
           </TokensProvider>
@@ -34,7 +47,7 @@ const AppRoutes = () => {
         path="rebirth/:tokenId"
         element={
           <TokensProvider withLoader isGated>
-            <Suspense fallback={<></>}></Suspense>
+            <Suspense fallback={<SuspenseFallback />}></Suspense>
             <RebirthPage />
           </TokensProvider>
         }
@@ -43,7 +56,7 @@ const AppRoutes = () => {
         path="collector"
         element={
           <TokensProvider goThrough>
-            <Suspense fallback={<></>}>
+            <Suspense fallback={<SuspenseFallback />}>
               <CollectorPage />
             </Suspense>
           </TokensProvider>
@@ -53,7 +66,7 @@ const AppRoutes = () => {
         path="nft/:tokenId"
         element={
           <TokensProvider withLoader isGated>
-            <Suspense fallback={<></>}>
+            <Suspense fallback={<SuspenseFallback />}>
               <NFTPage />
             </Suspense>
           </TokensProvider>
@@ -62,7 +75,7 @@ const AppRoutes = () => {
       <Route
         path="the-journey"
         element={
-          <Suspense fallback={<></>}>
+          <Suspense fallback={<SuspenseFallback />}>
             <TheJourneyPage />
           </Suspense>
         }
@@ -70,7 +83,7 @@ const AppRoutes = () => {
       <Route
         path="about-us"
         element={
-          <Suspense fallback={<></>}>
+          <Suspense fallback={<SuspenseFallback />}>
             <AboutUsPage />
           </Suspense>
         }
@@ -78,7 +91,7 @@ const AppRoutes = () => {
       <Route
         path="technology"
         element={
-          <Suspense fallback={<></>}>
+          <Suspense fallback={<SuspenseFallback />}>
             <TechPage />
           </Suspense>
         }
@@ -86,7 +99,7 @@ const AppRoutes = () => {
       <Route
         path="privacy"
         element={
-          <Suspense fallback={<></>}>
+          <Suspense fallback={<SuspenseFallback />}>
             <PrivacyPage />
           </Suspense>
         }
@@ -94,7 +107,7 @@ const AppRoutes = () => {
       <Route
         path="tnc"
         element={
-          <Suspense fallback={<></>}>
+          <Suspense fallback={<SuspenseFallback />}>
             <TNCPage />
           </Suspense>
         }
@@ -102,7 +115,7 @@ const AppRoutes = () => {
       <Route
         path="credits"
         element={
-          <Suspense fallback={<></>}>
+          <Suspense fallback={<SuspenseFallback />}>
             <CreditsPage />
           </Suspense>
         }
@@ -110,7 +123,7 @@ const AppRoutes = () => {
       <Route
         path="faq"
         element={
-          <Suspense fallback={<></>}>
+          <Suspense fallback={<SuspenseFallback />}>
             <FAQsPage />
           </Suspense>
         }
