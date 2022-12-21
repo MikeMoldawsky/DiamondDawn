@@ -21,29 +21,43 @@
       svg {
         height: 90%;
         margin-top: 5%;
-        margin-left: 0.3em;
         width: auto;
       }
     }
   }
 
-  a.disabled {
-    opacity: 1;
-  }
+  a {
+    padding: 0 0.75em;
 
-  a:not(:last-child) .icon {
-    padding-right: 1em;
-    margin-right: 0.6em;
-    position: relative;
+    &.disabled {
+      opacity: 1;
+    }
 
-    &:after {
-      content: "";
-      position: absolute;
-      top: 0.3em;
-      bottom: 0.3em;
-      width: 1px;
-      right: 0;
-      background-color: white;
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+
+    &:not(:last-child) .icon {
+      position: relative;
+
+      &:after {
+        content: "";
+        position: absolute;
+        top: 0.4em;
+        bottom: 0.4em;
+        width: 1px;
+        right: -0.75em;
+        background-color: white;
+        opacity: 0.75;
+      }
+    }
+
+    &.tg-link.private-tg:after {
+      top: 90%;
     }
   }
 }

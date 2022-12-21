@@ -12,6 +12,7 @@ import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import { systemSelector } from "store/systemReducer";
+import TelegramIcon from "@mui/icons-material/Telegram";
 
 export const Link = ({ href, className, disabled, title = "", children }) => {
   const aProps = {};
@@ -58,20 +59,12 @@ export const CollectorLink = ({ className, collector, twitter }) => {
   );
 };
 
-export const TelegramLink = ({ className, children }) => {
-  const collector = useSelector(collectorSelector);
-
-  const props = collector?.approved
-    ? {
-        href: DIAMOND_DAWN_COLLECTORS_TELEGRAM,
-        className: classNames("tg-link private-tg", className),
-      }
-    : {
-        href: DIAMOND_DAWN_PUBLIC_TELEGRAM,
-        className: classNames("tg-link", className),
-      };
-
-  return <Link {...props}>{children}</Link>;
+export const TelegramLink = ({ className, href, children }) => {
+  return (
+    <Link className={classNames("tg-link", className)} href={href}>
+      {children}
+    </Link>
+  );
 };
 
 export const OpenseaLink = ({ className, children }) => {

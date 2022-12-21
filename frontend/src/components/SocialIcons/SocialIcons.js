@@ -6,8 +6,16 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { TwitterLink, TelegramLink, OpenseaLink } from "components/Links";
 import openSeaIcon from "assets/images/opensea.svg";
 import SVG from "components/SVG";
+import { useSelector } from "react-redux";
+import { collectorSelector } from "store/collectorReducer";
+import {
+  DIAMOND_DAWN_COLLECTORS_TELEGRAM,
+  DIAMOND_DAWN_PUBLIC_TELEGRAM,
+} from "consts";
 
 const SocialIcons = () => {
+  const collector = useSelector(collectorSelector);
+
   return (
     <div className="center-center-aligned-row social-icons">
       <TwitterLink className="no-hover">
@@ -15,7 +23,17 @@ const SocialIcons = () => {
           <FontAwesomeIcon icon={faTwitter} />
         </div>
       </TwitterLink>
-      <TelegramLink className="no-hover">
+      {collector?.approved && (
+        <TelegramLink
+          href={DIAMOND_DAWN_COLLECTORS_TELEGRAM}
+          className="no-hover private-tg"
+        >
+          <div className="icon">
+            <TelegramIcon />
+          </div>
+        </TelegramLink>
+      )}
+      <TelegramLink href={DIAMOND_DAWN_PUBLIC_TELEGRAM} className="no-hover">
         <div className="icon">
           <TelegramIcon />
         </div>

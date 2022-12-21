@@ -81,15 +81,28 @@ header {
     cursor: pointer;
   }
 
-  .fa-twitter {
-    margin-top: 0.4em;
-  }
+  .social-links {
+    .social-link {
+      margin: 0 0.4em;
 
-  .tg-link .MuiSvgIcon-root {
-    margin-top: 0.3em;
-    margin-left: 0.5em;
-    height: 1.1em;
-    width: auto;
+      .fa-twitter {
+        margin-top: 0.4em;
+      }
+
+      &.tg-link .MuiSvgIcon-root {
+        margin-top: 0.3em;
+        height: 1.1em;
+        width: auto;
+      }
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 
   @keyframes fadeInGrowLogo {
@@ -134,9 +147,8 @@ header {
     font-size: $font25px;
 
     .tg-link .MuiSvgIcon-root {
-      margin-top: 0.5em;
-      margin-left: 0.5em;
-      height: 1.8em;
+      margin-top: 0.5em !important;
+      height: 1.8em !important;
     }
   }
 }
@@ -162,9 +174,8 @@ header {
     }
 
     .tg-link .MuiSvgIcon-root {
-      margin-top: 0.5em;
-      margin-left: 0.5em;
-      height: 1.6em;
+      margin-top: 0.5em !important;
+      height: 1.6em !important;
     }
   }
 }

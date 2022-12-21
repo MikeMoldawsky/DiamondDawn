@@ -22,6 +22,7 @@ import { TwitterLink, TelegramLink } from "components/Links";
 import usePermission from "hooks/usePermission";
 import { useDesktopMediaQuery } from "hooks/useMediaQueries";
 import TelegramIcon from "@mui/icons-material/Telegram";
+import { collectorSelector } from "store/collectorReducer";
 
 const Header = ({ isMenuOpen, toggleMenu }) => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const isDesktop = useDesktopMediaQuery();
   const { muted, showHPLogo } = useSelector(uiSelector);
   const canAccessDD = usePermission();
+  const collector = useSelector(collectorSelector);
 
   const isHomepage = location.pathname === "/explore";
   const animateShowLogo = isHomepage && showHPLogo;
@@ -69,12 +71,19 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
         />
         <div className="center-aligned-row header-side">
           {showRestrictedContent && <CTAButton className="md collector-btn" />}
-          <TwitterLink className="no-hover">
-            <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
-          </TwitterLink>
-          <TelegramLink className="no-hover">
-            <TelegramIcon />
-          </TelegramLink>
+          <div className="center-aligned-row social-links">
+            <TwitterLink className="social-link no-hover">
+              <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
+            </TwitterLink>
+            {collector?.approved && (
+              <TelegramLink className="social-link no-hover private-tg">
+                <TelegramIcon />
+              </TelegramLink>
+            )}
+            <TelegramLink className="social-link no-hover">
+              <TelegramIcon />
+            </TelegramLink>
+          </div>
           <div className="vertical-sep" />
           <FontAwesomeIcon
             className="menu-icon mute-icon"
