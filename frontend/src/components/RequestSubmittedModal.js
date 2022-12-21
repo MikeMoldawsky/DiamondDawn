@@ -18,7 +18,7 @@ const RequestSubmittedModal = ({ close }) => {
         <div className="heading">You're On The Waitlist!</div>
         <div>
           If you’re accepted, we’ll send you an email and a Twitter DM. Make
-          sure to follow request{" "}
+          sure to follow{" "}
           <TwitterLink className="text-gold">
             <b>@DiamondDawnNFT</b>
           </TwitterLink>

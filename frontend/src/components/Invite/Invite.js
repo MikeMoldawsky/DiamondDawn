@@ -135,7 +135,7 @@ const Invite = () => {
                 <div className="center-aligned-row follow-box">
                   <div className="follow-text">
                     <b>
-                      Make sure to follow request{" "}
+                      Make sure to follow{" "}
                       <TwitterLink className="text-gold">
                         <b>@DiamondDawnNFT</b>
                       </TwitterLink>
