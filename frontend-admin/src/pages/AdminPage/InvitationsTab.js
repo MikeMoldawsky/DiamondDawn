@@ -19,6 +19,9 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
+const getInviteLink = (inviteId) =>
+  `${process.env.REACT_APP_INVITE_BASE_URL}?invite=${inviteId}`;
+
 const renderCellWithTooltip = (params) => (
   <span title={params.value}>{params.value}</span>
 );
@@ -74,10 +77,13 @@ const INVITATION_COLUMNS = [
     width: 80,
     editable: true,
   },
+  {
+    field: "link",
+    headerName: "Invite Link",
+    width: 250,
+    valueGetter: ({ id }) => getInviteLink(id),
+  },
 ];
-
-const getInviteLink = (inviteId) =>
-  `${process.env.REACT_APP_INVITE_BASE_URL}?invite=${inviteId}`;
 
 const SendButton = ({ inviteId, onSent }) => {
   const setSent = async () => {
