@@ -425,6 +425,28 @@ a:not(.no-hover) {
   }
 }
 
+.tg-link {
+  &.private-tg {
+    color: $gold;
+    position: relative;
+
+    svg {
+      path {
+        fill: $gold;
+      }
+    }
+
+    &:after {
+      font-size: 0.5em;
+      content: "PRIVATE";
+      position: absolute;
+      top: 75%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
 .center-aligned-row {
   display: flex;
   align-items: center;
