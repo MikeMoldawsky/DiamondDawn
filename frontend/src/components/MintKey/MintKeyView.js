@@ -114,16 +114,17 @@ const MintKeyView = ({
               </div>
               <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
               <div className="text">
-                You’ve been granted 2 invitations to share with your web3
-                friends.
+                You've been granted 2 invitations to share with your web3
+                friends. Diamond Dawn's unique invitation mechanism is the{" "}
+                <b>fairest</b> way to spread the project within web3
+                communities.
                 <br />
-                Diamond Dawn's unique invitation mechanism is the fairest way to
-                spread the project within web3 communities.
                 <br />
+                Why?
                 <br />
-                We’re giving YOU the power to choose who can join Diamond Dawn
-                and trust that you’ll share your 2 invitation links responsibly
-                with other collectors.
+                Because we're giving YOU the power to choose who can join
+                Diamond Dawn, we trust you'll share your 2 invitation links
+                responsibly with other collectors.
               </div>
               <InvitationsStatus />
             </div>
