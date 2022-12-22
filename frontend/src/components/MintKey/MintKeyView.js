@@ -114,17 +114,16 @@ const MintKeyView = ({
               </div>
               <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
               <div className="text">
-                As a future Diamond Dawn participant, you can invite 2
-                collectors to Diamond Dawn’s historical journey.
+                You’ve been granted 2 invitations to share with your web3
+                friends.
                 <br />
-                These unique links will allow them to bypass Diamond Dawn’s
-                password into the private sale.
+                Diamond Dawn's unique invitation mechanism is the fairest way to
+                spread the project within web3 communities.
                 <br />
                 <br />
-                <b>
-                  These links can only be used ONCE - make sure to use them
-                  wisely.
-                </b>
+                We’re giving YOU the power to choose who can join Diamond Dawn
+                and trust that you’ll share your 2 invitation links responsibly
+                with other collectors.
               </div>
               <InvitationsStatus />
             </div>
