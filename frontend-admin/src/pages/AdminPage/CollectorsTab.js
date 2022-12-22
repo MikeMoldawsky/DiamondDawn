@@ -62,7 +62,10 @@ const INVITATION_COLUMNS = [
     headerName: "Status",
     type: "singleSelect",
     valueOptions: (params) => {
-      console.log({ params });
+      if (!params.row) {
+        // no row - called from filter
+        return Object.values(COLLECTOR_STATUS);
+      }
       switch (params.row.status) {
         case COLLECTOR_STATUS.Applied:
           return [COLLECTOR_STATUS.Applied, COLLECTOR_STATUS.InReview];
@@ -92,7 +95,13 @@ const INVITATION_COLUMNS = [
     field: "buyProbability",
     headerName: "Buy Probability",
     type: "singleSelect",
-    valueOptions: [1, 2, 3, 4, 5],
+    valueOptions: [
+      { value: 1, label: "1" },
+      { value: 2, label: "2" },
+      { value: 3, label: "3" },
+      { value: 4, label: "4" },
+      { value: 5, label: "5" },
+    ],
     width: 150,
     editable: true,
   },
