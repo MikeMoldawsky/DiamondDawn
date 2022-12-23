@@ -184,8 +184,8 @@ export const getCDNAudioUrl = (objectPath) =>
   getCDNObjectUrl(`/audio${prependBackslash(objectPath)}`);
 
 export const createVideoSources = (fileName) => [
-  { src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm" },
   { src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" },
+  { src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm" },
 ];
 
 export const getVideoBitrate = (width) => {
