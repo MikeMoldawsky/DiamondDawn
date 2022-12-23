@@ -7,8 +7,8 @@ const AnimatedLogo = ({ withText }) => {
   return (
     <ReactPlayer
       // url={[{ src: getCDNVideoUrl("infinity.mp4"), type: "video/mp4" }]}
-      url={createVideoSources("infinity")}
-      // url={createVideoSources("infinity-720")}
+      // url={createVideoSources("infinity")}
+      url={createVideoSources("infinity-720")}
       playing
       playsinline
       controls={false}
