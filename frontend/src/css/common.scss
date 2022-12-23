@@ -531,6 +531,13 @@ a:not(.no-hover) {
   justify-content: space-between;
 }
 
+.spaced-aligned-column {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
 .right-spaced-column {
   display: flex;
   flex-direction: column;

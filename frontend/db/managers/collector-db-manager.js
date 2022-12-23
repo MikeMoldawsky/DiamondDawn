@@ -56,9 +56,9 @@ function validateCollector(collector, address, requireApproved = true) {
   if (address !== collector.address) {
     throw new Error(`Wrong Ethereum address`);
   }
-  if (collector.minted) {
-    throw new Error("collector already minted");
-  }
+  // if (collector.minted) {
+  //   throw new Error("collector already minted");
+  // }
   if (requireApproved && !collector.approved) {
     throw new Error("Collector pending approval");
   }
