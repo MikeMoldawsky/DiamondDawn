@@ -1,12 +1,14 @@
 import React from "react";
 import ReactPlayer from "react-player";
-import { createVideoSources } from "utils";
+import {createVideoSources, getCDNVideoUrl} from "utils";
 import classNames from "classnames";
 
 const AnimatedLogo = ({ withText }) => {
   return (
     <ReactPlayer
-      url={createVideoSources("infinity-720")}
+      // url={[{ src: getCDNVideoUrl("infinity.mp4"), type: "video/mp4" }]}
+      url={createVideoSources("infinity")}
+      // url={createVideoSources("infinity-720")}
       playing
       playsinline
       controls={false}
