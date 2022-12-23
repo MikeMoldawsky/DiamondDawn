@@ -57,7 +57,11 @@ const TheJourneyPage = () => {
             <div className="image-side">
               <div className="image">
                 <ReactPlayer
-                  url={createVideoSources("key-static")}
+                  url={[
+                    { src: getCDNVideoUrl("MINE_KEY_STATIC_004_H.265.mp4"), type: "video/mp4" },
+                    { src: getCDNVideoUrl("key-static.webm"), type: "video/webm" }
+                  ]}
+                  // url={createVideoSources("key-static")}
                   playing
                   playsinline
                   controls={false}
