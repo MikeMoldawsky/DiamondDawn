@@ -27,7 +27,6 @@ import {
 import { GetPasswordLink } from "components/Links";
 import { viewInviteApi } from "api/serverApi";
 import FeaturedIn from "components/FeaturedIn";
-import Button from "components/Button";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
@@ -79,10 +78,10 @@ const ComingSoonPage = () => {
   const isCollectorReady = !account?.address || isCollectorFetched;
 
   useEffect(() => {
-    if (pageReady && isCollectorReady && !canAccessDD && invite) {
+    if (inviteId && invite && pageReady && isCollectorReady) {
       setShowInvitedModal(true);
     }
-  }, [pageReady, isCollectorReady, canAccessDD, invite?._id]);
+  }, [inviteId, pageReady, isCollectorReady, invite?._id]);
 
   useEffect(() => {
     if (canAccessDD && !autoFillPassword) {

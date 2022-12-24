@@ -60,7 +60,7 @@ const ChainAppLoader = () => {
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
   const contract = useDDContract();
-  
+
   useEffect(() => {
     dispatch(loadSystemStage(contract));
 

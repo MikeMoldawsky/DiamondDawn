@@ -15,7 +15,11 @@ module.exports = async function (req, res) {
     await clientDBPromise;
     const { inviteId, address, twitter, email, note, location, isDao } =
       req.body;
-    await validateInviteById(inviteId);
+
+    if (inviteId) {
+      await validateInviteById(inviteId);
+    }
+
     let collector = await createCollector(
       address,
       twitter,
@@ -24,11 +28,16 @@ module.exports = async function (req, res) {
       location,
       isDao
     );
-    const invite = await useInvite(inviteId, collector.id);
-    collector = await updateCollector({
-      _id: collector._id,
-      invitedBy: invite,
-    });
+
+    let invite = null
+    if (inviteId) {
+      invite = await useInvite(inviteId, collector.id);
+      collector = await updateCollector({
+        _id: collector._id,
+        invitedBy: invite,
+      });
+    }
+
     await onApplicationSubmitted(collector);
     res.send({ collector, invite });
     console.log(`Execution time: ${Date.now() - start} ms`);
