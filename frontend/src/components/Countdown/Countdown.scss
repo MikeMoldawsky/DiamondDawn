@@ -1,66 +1,45 @@
 @import "css/varsNEW";
 
 .countdown {
-  justify-content: space-between;
-  align-items: flex-end;
+  align-items: stretch;
   position: relative;
 
   .value {
-    font-size: $font80px;
     line-height: 1em;
-    margin-bottom: 0.05em;
+    font-size: $font80px;
     font-weight: 100;
+    margin-bottom: 0.25rem;
   }
 
   .caption {
-    font-size: max($font15px, 8px);
-  }
-
-  .small-parts {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    position: absolute;
-    right: -11em;
-    width: 9em;
-  }
-
-  .countdown-part.small {
-    opacity: 0.4;
-
-    .value {
-      font-size: $font42px !important;
-      margin-bottom: 0.6rem;
-    }
-
-    .caption {
-      font-size: max($font12px, 8px) !important;
-      margin-bottom: 0.2rem;
-    }
+    line-height: 1em;
+    font-size: max($font15px, 10px);
   }
 
   &.custom {
-    align-items: flex-end;
-
     .w-d {
-      height: 100%;
       border-right: solid 1px white;
       margin-right: 2em;
-      padding-right: 4em;
+      padding-right: 3em;
+      align-items: flex-start;
+      justify-content: space-around;
 
       .countdown-part {
         flex-direction: row;
-        justify-content: space-between;
-        width: 7em;
+        justify-content: flex-start;
+        align-items: flex-end;
 
         .value {
-          font-size: $font44px !important;
+          width: 1.275em;
+          font-size: $font44px;
           margin-right: 0.4em;
-          margin-bottom: 0.25em;
+          margin-bottom: 0;
+          text-align: right;
+          line-height: 0.75em;
         }
 
         .caption {
-          font-size: max($font11px, 8px) !important;
+          font-size: max($font11px, 9px);
         }
       }
     }
@@ -85,5 +64,24 @@
   &.left-aligned {
     align-items: center;
     justify-content: flex-start;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .countdown.custom {
+    .caption {
+      font-size: max(0.9375em, 6px) !important;
+    }
+
+    .w-d {
+      .countdown-part {
+        .value {
+          font-size: 3em;
+        }
+        .caption {
+          font-size: max(0.6875em, 6px) !important;
+        }
+      }
+    }
   }
 }

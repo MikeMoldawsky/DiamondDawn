@@ -1,10 +1,15 @@
 const mailchimp = require("@mailchimp/mailchimp_marketing");
 const md5 = require("md5");
+const _ = require("lodash");
 
-mailchimp.setConfig({
-  apiKey: process.env.MAILCHIMP_API_KEY,
-  server: "us21",
-});
+const isEmailActive = !_.isEmpty(process.env.MAILCHIMP_API_KEY);
+
+if (isEmailActive) {
+  mailchimp.setConfig({
+    apiKey: process.env.MAILCHIMP_API_KEY,
+    server: "us21",
+  });
+}
 
 const APPROVED_LIST_ID = "11f455b394";
 const APPLICANTS_LIST_ID = "ed3fc1dea7";
@@ -23,6 +28,8 @@ async function removeFromList(email) {
 }
 
 async function onApplicationApproved(applicant) {
+  if (!isEmailActive) return;
+
   try {
     console.log("onApplicationSubmitted");
     if (!applicant || !applicant.email) {

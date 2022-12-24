@@ -1,7 +1,7 @@
 const mailchimp = require("@mailchimp/mailchimp_marketing");
-const _ = require("lodash")
+const _ = require("lodash");
 
-const isEmailActive = !_.isEmpty(process.env.MAILCHIMP_API_KEY)
+const isEmailActive = !_.isEmpty(process.env.MAILCHIMP_API_KEY);
 
 if (isEmailActive) {
   mailchimp.setConfig({
@@ -13,7 +13,7 @@ if (isEmailActive) {
 const APPLICANTS_LIST_ID = "ed3fc1dea7";
 
 async function onApplicationSubmitted(applicant) {
-  if (!isEmailActive) return
+  if (!isEmailActive) return;
 
   try {
     console.log("onApplicationSubmitted");
