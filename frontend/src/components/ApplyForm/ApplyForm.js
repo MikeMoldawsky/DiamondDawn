@@ -25,6 +25,8 @@ const getValidationError = (name, value) => {
         return "Must start with '@'";
       }
       return "Invalid twitter handle";
+    case "note":
+      return "Required";
     default:
       return `Invalid ${name}`;
   }
@@ -35,7 +37,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
     watch,
     reset,
     setValue,
@@ -51,8 +53,15 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
     setIsSubmitSuccess(false);
   }, [isSubmitSuccess]);
 
+  const renderErrorMessage = (name) => {
+    return !isNil(get(errors, name)) ? (
+      <div className="form-error">
+        * {getValidationError(name, watch(name))}
+      </div>
+    ) : null
+  }
+
   const renderInput = (name, placeholder, opts = {}) => {
-    const hasError = !isNil(get(errors, name));
     return (
       <>
         <input
@@ -62,15 +71,9 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
           })}
           disabled={disabled}
           placeholder={placeholder}
-          className={classNames("input", {
-            "validation-error": hasError,
-          })}
+          className={classNames("input")}
         />
-        {hasError && (
-          <div className="form-error">
-            * {getValidationError(name, watch(name))}
-          </div>
-        )}
+        {renderErrorMessage(name)}
       </>
     );
   };
@@ -109,7 +112,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
           <div className="input-container">
             <div className="label">Twitter Handle</div>
             {renderInput("twitter", "@diamond", {
-              required: false,
+              required: true,
               pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
             })}
           </div>
@@ -127,11 +130,12 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
         <div className="input-container textarea-container">
           <div className="label">Reason</div>
           <textarea
-            {...register("note")}
+            {...register("note", { required: true })}
             disabled={disabled}
             className="input"
             placeholder="Why are you a good fit for Diamond Dawn? (optional)"
           />
+          {renderErrorMessage("note")}
         </div>
         <div className="center-aligned-row address-row">
           <div className="input-container">
@@ -144,7 +148,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
               title="If approved, this address will be the one eligible for mint"
             />
           </div>
-          {!account?.address && <Wallet />}
+          {!account?.address && <Wallet className={classNames({ 'error': isSubmitted })} />}
         </div>
         <div className="text-comment">
           * Don't worry, you can change your minting address at any point
@@ -154,12 +158,6 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
             actionKey="Request Invitation"
             className="gold"
             onClick={handleSubmit(applyToDD)}
-            disabled={
-              disabled ||
-              !account?.address ||
-              !isEmpty(errors) ||
-              (!twitter && !email)
-            }
             sfx="action"
           >
             SUBMIT

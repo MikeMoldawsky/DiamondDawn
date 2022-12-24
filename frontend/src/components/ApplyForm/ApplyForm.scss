@@ -43,6 +43,10 @@
       border-color: $gold;
       color: $gold;
     }
+
+    .wallet.error {
+      color: red;
+    }
   }
 
   .inputs-row {

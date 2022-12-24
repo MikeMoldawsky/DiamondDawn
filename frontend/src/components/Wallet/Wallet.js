@@ -5,7 +5,7 @@ import { useAccount, useEnsName } from "wagmi";
 import { shortenEthAddress } from "utils";
 import classNames from "classnames";
 
-const Wallet = ({ connectedText }) => {
+const Wallet = ({ className, connectedText }) => {
   const account = useAccount();
   const ensName = useEnsName({ address: account?.address });
   const { isOpen, open, close } = useWeb3Modal();
@@ -22,7 +22,7 @@ const Wallet = ({ connectedText }) => {
     <div
       className={classNames("link-hover wallet", {
         connected: !!account?.address,
-      })}
+      }, className)}
       onClick={() => (isOpen ? close() : open())}
     >
       {getText()}
