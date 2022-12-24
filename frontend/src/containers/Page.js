@@ -5,7 +5,7 @@ import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import useTimeout from "hooks/useTimeout";
-import usePermission from "hooks/usePermission";
+import useCanAccessDD from "hooks/useCanAccessDD";
 import useWaitFor from "hooks/useWaitFor";
 import PageCover from "components/PageCover";
 import useOnConnect from "hooks/useOnConnect";
@@ -32,7 +32,7 @@ const Page = ({
   const [fade, setFade] = useState(false);
   const [showText, setShowText] = useState(false);
   const contentReady = useWaitFor({ images, videos });
-  const canAccessDD = usePermission();
+  const canAccessDD = useCanAccessDD();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );

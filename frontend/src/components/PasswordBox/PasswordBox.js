@@ -14,6 +14,7 @@ const PasswordBox = ({
   passwordLength,
   buttonText,
   autoFill,
+  disabled,
 }) => {
   const [password, setPassword] = useState("");
   const pwdInput = useRef(null);
@@ -64,6 +65,7 @@ const PasswordBox = ({
       className={classNames("password-box", className, {
         loading: checkingPassword,
         "has-error": passwordError,
+        "pwd-hidden": disabled,
       })}
     >
       <div className="password-title">ENTER PASSWORD</div>

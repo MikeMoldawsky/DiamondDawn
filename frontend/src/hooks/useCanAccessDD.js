@@ -6,7 +6,7 @@ import { uiSelector } from "store/uiReducer";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useAccount } from "wagmi";
 
-const usePermission = () => {
+const useCanAccessDD = () => {
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );
@@ -24,4 +24,4 @@ const usePermission = () => {
   return privateSaleAuth;
 };
 
-export default usePermission;
+export default useCanAccessDD;
