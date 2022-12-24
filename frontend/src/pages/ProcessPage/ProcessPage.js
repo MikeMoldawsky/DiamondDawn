@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import useAutoSelectToken from "hooks/useAutoSelectToken";
-import useMountLogger from "hooks/useMountLogger";
 import { setSelectedTokenId } from "store/uiReducer";
 import Mine from "./Mine";
 import Cut from "./Cut";
@@ -24,8 +23,6 @@ const ProcessPage = () => {
       dispatch(setSelectedTokenId(-1));
     };
   }, []);
-
-  useMountLogger("ProcessPage");
 
   const renderByStage = useCallback(() => {
     switch (systemStage) {

@@ -11,7 +11,6 @@ import {
 import { tokensSelector, watchTokenMinedBy } from "store/tokensReducer";
 import { useAccount } from "wagmi";
 import ActionView from "components/ActionView";
-import useMountLogger from "hooks/useMountLogger";
 import { forgeApi } from "api/contractApi";
 import { confirmMintedApi, signMintApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
@@ -36,8 +35,6 @@ const MintKey = () => {
   const collector = useSelector(collectorSelector);
 
   const maxTokenId = _.max(_.map(tokens, "id"));
-
-  useMountLogger("MintKey");
 
   useEffect(() => {
     dispatch(loadMinePrice(contract));

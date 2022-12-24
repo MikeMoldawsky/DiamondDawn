@@ -5,7 +5,6 @@ import Loading from "components/Loading";
 
 const PageCover = ({
   fade,
-  showText,
   title = "DIAMOND DAWN",
   text = "Loading...",
 }) => {
@@ -19,9 +18,9 @@ const PageCover = ({
     >
       <Loading />
       <div className="tagline-text">
-        {showText && title}
+        {title}
         <br />
-        {showText && text}
+        {text}
       </div>
     </div>
   );

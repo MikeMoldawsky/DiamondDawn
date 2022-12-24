@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect } from "react";
-import useMountLogger from "hooks/useMountLogger";
 import { useProvider } from "wagmi";
 import { useDispatch } from "react-redux";
 import useActionDispatch from "hooks/useActionDispatch";
@@ -20,8 +19,6 @@ import pick from "lodash/pick";
 const ServerAppLoader = () => {
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
-
-  useMountLogger("NoContractAppLoader");
 
   const getGeoLocation = async () => {
     try {
@@ -63,9 +60,7 @@ const ChainAppLoader = () => {
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
   const contract = useDDContract();
-
-  useMountLogger("AppLoader");
-
+  
   useEffect(() => {
     dispatch(loadSystemStage(contract));
 

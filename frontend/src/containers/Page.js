@@ -11,12 +11,10 @@ import PageCover from "components/PageCover";
 import useOnConnect from "hooks/useOnConnect";
 
 const DEFAULT_TIMEOUT = 10000;
-const SHOW_TEXT_TIME = 100;
 const FADE_DURATION = 150;
 
 const Page = ({
   pageName,
-  className,
   images = [],
   videos = [],
   timeout = DEFAULT_TIMEOUT,
@@ -30,7 +28,6 @@ const Page = ({
   const dispatch = useDispatch();
   const [hidden, setHidden] = useState(false);
   const [fade, setFade] = useState(false);
-  const [showText, setShowText] = useState(false);
   const contentReady = useWaitFor({ images, videos });
   const canAccessDD = useCanAccessDD();
   const isCollectorFetched = useSelector(
@@ -90,16 +87,11 @@ const Page = ({
     timeout > -1 && setAssetsReady();
   }, timeout);
 
-  // TODO - remove this after setting up app-shell caching
-  setTimeout(() => {
-    setShowText(true);
-  }, SHOW_TEXT_TIME);
-
   return (
     <>
       {children}
       {withLoader && !pageReady && !hidden && (
-        <PageCover fade={fade} showText={showText} />
+        <PageCover fade={fade} />
       )}
     </>
   );
