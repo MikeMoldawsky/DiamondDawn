@@ -31,7 +31,7 @@
 
         .value {
           width: 1.275em;
-          font-size: $font44px !important;
+          font-size: $font44px;
           margin-right: 0.4em;
           margin-bottom: 0;
           text-align: right;
@@ -39,7 +39,7 @@
         }
 
         .caption {
-          font-size: max($font11px, 9px) !important;
+          font-size: max($font11px, 9px);
         }
       }
     }
@@ -64,5 +64,24 @@
   &.left-aligned {
     align-items: center;
     justify-content: flex-start;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .countdown.custom {
+    .caption {
+      font-size: max(0.9375em, 6px);
+    }
+
+    .w-d {
+      .countdown-part {
+        .value {
+          font-size: 3em;
+        }
+        .caption {
+          font-size: max(0.6875em, 6px);
+        }
+      }
+    }
   }
 }
