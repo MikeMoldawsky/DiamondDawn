@@ -1,13 +1,20 @@
 const mailchimp = require("@mailchimp/mailchimp_marketing");
+const _ = require("lodash");
 
-mailchimp.setConfig({
-  apiKey: process.env.MAILCHIMP_API_KEY,
-  server: "us21",
-});
+const isEmailActive = !_.isEmpty(process.env.MAILCHIMP_API_KEY);
+
+if (isEmailActive) {
+  mailchimp.setConfig({
+    apiKey: process.env.MAILCHIMP_API_KEY,
+    server: "us21",
+  });
+}
 
 const APPLICANTS_LIST_ID = "ed3fc1dea7";
 
 async function onApplicationSubmitted(applicant) {
+  if (!isEmailActive) return;
+
   try {
     console.log("onApplicationSubmitted");
     if (!applicant || !applicant.email) {

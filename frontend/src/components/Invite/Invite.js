@@ -22,6 +22,7 @@ import useSound from "use-sound";
 import sparklesSFX from "assets/audio/end-sparkles.mp3";
 import MintAddressRow from "components/MintAddressRow";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
+import { StageCountdownWithText } from "components/Countdown/Countdown";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -148,6 +149,7 @@ const Invite = () => {
                   </div>
                   <Desktop>{renderTwitterButton()}</Desktop>
                 </div>
+                <StageCountdownWithText />
                 <MintAddressRow />
               </div>
             </div>

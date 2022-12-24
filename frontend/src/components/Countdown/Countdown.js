@@ -5,6 +5,7 @@ import toLower from "lodash/toLower";
 import isNil from "lodash/isNil";
 import get from "lodash/get";
 import classNames from "classnames";
+import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 
 const CountdownComp = ({
   date,
@@ -76,6 +77,23 @@ const CountdownComp = ({
   if (!date) return null;
 
   return <Countdown date={date} renderer={renderer} onComplete={onComplete} />;
+};
+
+export const StageCountdown = (props) => {
+  const { countdownText, ...countdownProps } = useMineOpenCountdown();
+
+  return <CountdownComp {...countdownProps} {...props} />;
+};
+
+export const StageCountdownWithText = (props) => {
+  const { countdownText, ...countdownProps } = useMineOpenCountdown();
+
+  return (
+    <div className="countdown-container">
+      <div className="text">{countdownText}</div>
+      <CountdownComp {...countdownProps} {...props} />
+    </div>
+  );
 };
 
 export default CountdownComp;

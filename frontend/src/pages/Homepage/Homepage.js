@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { setSelectedTokenId } from "store/uiReducer";
 import { getCDNImageUrl } from "utils";
 import HomeBackground from "components/HomeBackground";
-import Countdown from "components/Countdown";
 import Footer from "components/Footer";
 import HomepageContentBackground from "components/HomepageContentBackground";
 import AnimatedLogo from "components/AnimatedLogo";
@@ -20,14 +19,13 @@ import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import VideoBackground from "components/VideoBackground";
-import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import CTAButton from "../../components/CTAButton";
 import PlayButton from "components/PlayButton";
 import { getEarthAndMoonVideo, getTrailerVideos } from "assets/videos";
 import useScrollTop from "hooks/useScrollTop";
+import { StageCountdownWithText } from "components/Countdown/Countdown";
 
 const HomeTopContent = () => {
-  const { countdownText, ...countdownProps } = useMineOpenCountdown();
   const scroll = useScrollTop();
   const { width, height } = useWindowDimensions();
   const [mousePos, setMousePos] = useState([width / 2, height / 2]);
@@ -71,10 +69,7 @@ const HomeTopContent = () => {
             index={1}
           />
         </div>
-        <div className="countdown-container">
-          <div className="text">{countdownText}</div>
-          <Countdown {...countdownProps} />
-        </div>
+        <StageCountdownWithText />
       </div>
     </div>
   );
