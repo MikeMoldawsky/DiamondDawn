@@ -20,9 +20,13 @@ const Wallet = ({ className, connectedText }) => {
 
   return (
     <div
-      className={classNames("link-hover wallet", {
-        connected: !!account?.address,
-      }, className)}
+      className={classNames(
+        "link-hover wallet",
+        {
+          connected: !!account?.address,
+        },
+        className
+      )}
       onClick={() => (isOpen ? close() : open())}
     >
       {getText()}

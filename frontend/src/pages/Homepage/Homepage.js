@@ -23,7 +23,7 @@ import CTAButton from "../../components/CTAButton";
 import PlayButton from "components/PlayButton";
 import { getEarthAndMoonVideo, getTrailerVideos } from "assets/videos";
 import useScrollTop from "hooks/useScrollTop";
-import {StageCountdownWithText} from "components/Countdown/Countdown";
+import { StageCountdownWithText } from "components/Countdown/Countdown";
 
 const HomeTopContent = () => {
   const scroll = useScrollTop();

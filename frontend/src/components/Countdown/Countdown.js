@@ -82,8 +82,8 @@ const CountdownComp = ({
 export const StageCountdown = (props) => {
   const { countdownText, ...countdownProps } = useMineOpenCountdown();
 
-  return (<CountdownComp {...countdownProps} {...props} />)
-}
+  return <CountdownComp {...countdownProps} {...props} />;
+};
 
 export const StageCountdownWithText = (props) => {
   const { countdownText, ...countdownProps } = useMineOpenCountdown();
@@ -93,7 +93,7 @@ export const StageCountdownWithText = (props) => {
       <div className="text">{countdownText}</div>
       <CountdownComp {...countdownProps} {...props} />
     </div>
-  )
-}
+  );
+};
 
 export default CountdownComp;

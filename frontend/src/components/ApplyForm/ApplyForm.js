@@ -14,7 +14,7 @@ import Checkbox from "components/Checkbox";
 import { showError } from "utils";
 import Wallet from "components/Wallet";
 import { uiSelector } from "store/uiReducer";
-import {StageCountdown} from "components/Countdown/Countdown";
+import { StageCountdown } from "components/Countdown/Countdown";
 
 const getValidationError = (name, value) => {
   switch (name) {
@@ -59,8 +59,8 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
       <div className="form-error">
         * {getValidationError(name, watch(name))}
       </div>
-    ) : null
-  }
+    ) : null;
+  };
 
   const renderInput = (name, placeholder, opts = {}) => {
     return (
@@ -149,7 +149,9 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
               title="If approved, this address will be the one eligible for mint"
             />
           </div>
-          {!account?.address && <Wallet className={classNames({ 'error': isSubmitted })} />}
+          {!account?.address && (
+            <Wallet className={classNames({ error: isSubmitted })} />
+          )}
         </div>
         <div className="text-comment">
           * Don't worry, you can change your minting address at any point

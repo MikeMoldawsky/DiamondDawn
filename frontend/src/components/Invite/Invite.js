@@ -22,7 +22,7 @@ import useSound from "use-sound";
 import sparklesSFX from "assets/audio/end-sparkles.mp3";
 import MintAddressRow from "components/MintAddressRow";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
-import {StageCountdownWithText} from "components/Countdown/Countdown";
+import { StageCountdownWithText } from "components/Countdown/Countdown";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
