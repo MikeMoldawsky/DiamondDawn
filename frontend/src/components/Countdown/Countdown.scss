@@ -70,7 +70,7 @@
 @media only screen and (max-width: 480px) {
   .countdown.custom {
     .caption {
-      font-size: max(0.9375em, 6px);
+      font-size: max(0.9375em, 6px) !important;
     }
 
     .w-d {
@@ -79,7 +79,7 @@
           font-size: 3em;
         }
         .caption {
-          font-size: max(0.6875em, 6px);
+          font-size: max(0.6875em, 6px) !important;
         }
       }
     }

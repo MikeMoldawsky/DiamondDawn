@@ -21,6 +21,7 @@ const getValidationError = (name, value) => {
     case "email":
       return !value ? "Required" : "Invalid email address";
     case "twitter":
+      if (!value) return "Required";
       if (!value.startsWith("@")) {
         return "Must start with '@'";
       }

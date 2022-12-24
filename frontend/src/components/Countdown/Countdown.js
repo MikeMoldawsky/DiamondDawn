@@ -85,4 +85,15 @@ export const StageCountdown = (props) => {
   return (<CountdownComp {...countdownProps} {...props} />)
 }
 
+export const StageCountdownWithText = (props) => {
+  const { countdownText, ...countdownProps } = useMineOpenCountdown();
+
+  return (
+    <div className="countdown-container">
+      <div className="text">{countdownText}</div>
+      <CountdownComp {...countdownProps} {...props} />
+    </div>
+  )
+}
+
 export default CountdownComp;
