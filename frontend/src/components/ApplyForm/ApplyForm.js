@@ -14,6 +14,7 @@ import Checkbox from "components/Checkbox";
 import { showError } from "utils";
 import Wallet from "components/Wallet";
 import { uiSelector } from "store/uiReducer";
+import {StageCountdown} from "components/Countdown/Countdown";
 
 const getValidationError = (name, value) => {
   switch (name) {
@@ -148,7 +149,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
         <div className="text-comment">
           * Don't worry, you can change your minting address at any point
         </div>
-        <div className="stretch-center-aligned-row buttons">
+        <div className="left-center-aligned-row buttons">
           <ActionButton
             actionKey="Request Invitation"
             className="gold"
@@ -163,6 +164,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
           >
             SUBMIT
           </ActionButton>
+          <StageCountdown />
         </div>
       </form>
     </div>
