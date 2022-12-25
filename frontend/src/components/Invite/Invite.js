@@ -112,7 +112,9 @@ const Invite = () => {
     );
 
   const renderTwitterButton = (className) => (
-    <TwitterLink className={classNames("no-hover button gold icon-after", className)}>
+    <TwitterLink
+      className={classNames("no-hover button gold icon-after", className)}
+    >
       Follow <FontAwesomeIcon icon={faTwitter} />
     </TwitterLink>
   );
@@ -133,7 +135,8 @@ const Invite = () => {
                   4.44 ETH. Make sure you follow{" "}
                   <TwitterLink className="text-gold">
                     <b>@DiamondDawnNFT</b>
-                  </TwitterLink>.
+                  </TwitterLink>
+                  .
                 </div>
               </div>
               <div className="center-spaced-column bottom-content">

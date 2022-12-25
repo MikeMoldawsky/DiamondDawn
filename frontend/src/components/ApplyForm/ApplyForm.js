@@ -14,7 +14,10 @@ import Checkbox from "components/Checkbox";
 import { showError } from "utils";
 import Wallet from "components/Wallet";
 import { uiSelector } from "store/uiReducer";
-import {StageCountdown, StageCountdownWithText} from "components/Countdown/Countdown";
+import {
+  StageCountdown,
+  StageCountdownWithText,
+} from "components/Countdown/Countdown";
 
 const getValidationError = (name, value) => {
   switch (name) {
@@ -72,7 +75,9 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
           })}
           disabled={disabled}
           placeholder={placeholder}
-          className={classNames("input", { "with-error": !isNil(get(errors, name)) })}
+          className={classNames("input", {
+            "with-error": !isNil(get(errors, name)),
+          })}
         />
         {renderErrorMessage(name)}
       </>
@@ -133,7 +138,9 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
           <textarea
             {...register("note", { required: true })}
             disabled={disabled}
-            className={classNames("input", { "with-error": !isNil(get(errors, "note")) })}
+            className={classNames("input", {
+              "with-error": !isNil(get(errors, "note")),
+            })}
             placeholder="Why are you a good fit for Diamond Dawn? (optional)"
           />
           {renderErrorMessage("note")}
@@ -143,15 +150,15 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
             <div className="label">Minting Address</div>
             <input
               type="text"
-              className={classNames("input full-width", { "with-error": !account?.address && isSubmitted })}
+              className={classNames("input full-width", {
+                "with-error": !account?.address && isSubmitted,
+              })}
               disabled
               value={account?.address || ""}
               title="If approved, this address will be the one eligible for mint"
             />
           </div>
-          {!account?.address && (
-            <Wallet />
-          )}
+          {!account?.address && <Wallet />}
         </div>
         <div className="text-comment">
           * Don't worry, you can change your minting address at any point
