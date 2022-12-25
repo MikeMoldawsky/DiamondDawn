@@ -21,7 +21,11 @@ import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useSound from "use-sound";
 import sparklesSFX from "assets/audio/end-sparkles.mp3";
 import MintAddressRow from "components/MintAddressRow";
-import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
+import {
+  Desktop,
+  MobileOrTablet,
+  useMobileOrTablet,
+} from "hooks/useMediaQueries";
 import { StageCountdownWithText } from "components/Countdown/Countdown";
 import classNames from "classnames";
 
@@ -32,6 +36,7 @@ const Invite = () => {
   const collector = useSelector(collectorSelector);
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
   const [playSparklesSFX] = useSound(sparklesSFX);
+  const isMobileOrTablet = useMobileOrTablet();
 
   const loadCollector = async (address) =>
     dispatch(loadCollectorByAddress(address));
@@ -53,9 +58,14 @@ const Invite = () => {
     }
   }, [systemStage, collector?.approved, collector?.mintWindowStart]);
 
-  const videoSrc = createVideoSources(
-    collector ? "embedded-diamonds" : "diamond-evolution"
-  );
+  let videoSrc;
+  if (collector) {
+    videoSrc = createVideoSources(
+      isMobileOrTablet ? "embedded-diamonds-wide" : "embedded-diamonds"
+    );
+  } else {
+    videoSrc = createVideoSources("diamond-evolution");
+  }
 
   const renderInlineVideo = useCallback(
     () => <InlineVideo src={videoSrc} showThreshold={0} />,
