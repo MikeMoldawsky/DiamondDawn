@@ -27,8 +27,6 @@ const localChain = {
   testnet: true,
 };
 
-console.log(process.env);
-
 function WagmiWrapper({ children }) {
   const chainByEnv =
     process.env.REACT_APP_ENVIRONMENT === "production"

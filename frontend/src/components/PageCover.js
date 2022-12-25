@@ -3,12 +3,7 @@ import useNoScrollView from "hooks/useNoScrollView";
 import classNames from "classnames";
 import Loading from "components/Loading";
 
-const PageCover = ({
-  fade,
-  showText,
-  title = "DIAMOND DAWN",
-  text = "Loading...",
-}) => {
+const PageCover = ({ fade, title = "DIAMOND DAWN", text = "Loading..." }) => {
   useNoScrollView();
 
   return (
@@ -19,9 +14,9 @@ const PageCover = ({
     >
       <Loading />
       <div className="tagline-text">
-        {showText && title}
+        {title}
         <br />
-        {showText && text}
+        {text}
       </div>
     </div>
   );

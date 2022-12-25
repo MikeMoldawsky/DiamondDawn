@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import CRUDTable from "components/CRUDTable";
-import { GridActionsCellItem } from "@mui/x-data-grid";
+import { GridActionsCellItem, useGridApiContext } from "@mui/x-data-grid";
 import { utils as ethersUtils } from "ethers";
 import {
   approveCollectorApi,
@@ -12,7 +12,7 @@ import {
   updateCollectorApi,
 } from "api/serverApi";
 import format from "date-fns/format";
-import { OpenseaLink, TwitterLink } from "components/Links";
+import { EtherscanLink, OpenseaLink, TwitterLink } from "components/Links";
 import useActionDispatch from "hooks/useActionDispatch";
 import { COLLECTOR_STATUS } from "consts";
 
@@ -20,34 +20,68 @@ const renderCellWithTooltip = (params) => (
   <span title={params.value}>{params.value}</span>
 );
 
+const MultilineTextEdit = (props) => {
+  const { id, value, field } = props;
+  const apiRef = useGridApiContext();
+
+  const handleValueChange = (event) => {
+    const newValue = event.target.value; // The new value entered by the user
+    apiRef.current.setEditCellValue({ id, field, value: newValue });
+  };
+
+  return (
+    <textarea
+      className="cell-edit"
+      value={value}
+      onChange={handleValueChange}
+    />
+  );
+};
+
 const INVITATION_COLUMNS = [
   {
     field: "createdAt",
     headerName: "Created At",
     type: "dateTime",
-    width: 150,
+    width: 140,
     valueFormatter: (params) =>
       format(new Date(params.value), "dd/MM/yy hh:mm"),
   },
   {
+    field: "invitedBy",
+    headerName: "Invited By",
+    width: 150,
+    renderCell: (params) => <TwitterLink handle={params.row.invitedBy} />,
+  },
+  {
     field: "twitter",
     headerName: "Twitter",
-    width: 200,
+    width: 150,
     editable: true,
     renderCell: (params) => <TwitterLink handle={params.row.twitter} />,
   },
   {
-    field: "email",
-    headerName: "Email",
-    width: 200,
-    editable: true,
-    renderCell: renderCellWithTooltip,
+    field: "address",
+    headerName: "ETH Account",
+    width: 180,
+    preProcessEditCellProps: (params) => {
+      const isValid =
+        _.isEmpty(params.props.value) ||
+        ethersUtils.isAddress(params.props.value);
+      return { ...params.props, error: !isValid };
+    },
+    renderCell: (params) => (
+      <>
+        <OpenseaLink address={params.row.address}>Opensea</OpenseaLink>
+        <EtherscanLink address={params.row.address}>Etherscan</EtherscanLink>
+      </>
+    ),
   },
   {
-    field: "invitedBy",
-    headerName: "Invited By",
-    width: 200,
-    renderCell: (params) => <TwitterLink handle={params.row.invitedBy} />,
+    field: "location",
+    headerName: "Location",
+    width: 180,
+    renderCell: renderCellWithTooltip,
   },
   {
     field: "note",
@@ -55,32 +89,16 @@ const INVITATION_COLUMNS = [
     minWidth: 300,
     flex: 2,
     editable: true,
+    multiline: true,
     renderCell: renderCellWithTooltip,
+    renderEditCell: (params) => <MultilineTextEdit {...params} />,
   },
   {
     field: "status",
     headerName: "Status",
     type: "singleSelect",
-    valueOptions: (params) => {
-      if (!params.row) {
-        // no row - called from filter
-        return Object.values(COLLECTOR_STATUS);
-      }
-      switch (params.row.status) {
-        case COLLECTOR_STATUS.Applied:
-          return [COLLECTOR_STATUS.Applied, COLLECTOR_STATUS.InReview];
-        case COLLECTOR_STATUS.Approved:
-          return [COLLECTOR_STATUS.Approved];
-        default:
-          return [
-            COLLECTOR_STATUS.InReview,
-            COLLECTOR_STATUS.Maybe,
-            COLLECTOR_STATUS.Rejected,
-            COLLECTOR_STATUS.ToApprove,
-          ];
-      }
-    },
-    width: 150,
+    valueOptions: Object.values(COLLECTOR_STATUS),
+    width: 100,
     editable: true,
     hideIfApproved: true,
   },
@@ -89,7 +107,9 @@ const INVITATION_COLUMNS = [
     headerName: "Status Info",
     minWidth: 300,
     editable: true,
+    multiline: true,
     renderCell: renderCellWithTooltip,
+    renderEditCell: (params) => <MultilineTextEdit {...params} />,
   },
   {
     field: "buyProbability",
@@ -102,25 +122,14 @@ const INVITATION_COLUMNS = [
       { value: 4, label: "4" },
       { value: 5, label: "5" },
     ],
-    width: 150,
+    width: 80,
     editable: true,
   },
   {
-    field: "address",
-    headerName: "Address",
-    width: 400,
-    preProcessEditCellProps: (params) => {
-      const isValid =
-        _.isEmpty(params.props.value) ||
-        ethersUtils.isAddress(params.props.value);
-      return { ...params.props, error: !isValid };
-    },
-    renderCell: (params) => <OpenseaLink address={params.row.address} />,
-  },
-  {
-    field: "location",
-    headerName: "Location",
-    width: 200,
+    field: "email",
+    headerName: "Email",
+    width: 150,
+    editable: true,
     renderCell: renderCellWithTooltip,
   },
   {
@@ -157,38 +166,16 @@ const INVITATION_COLUMNS = [
     width: 80,
     hideIfPending: true,
   },
-  {
-    field: "invitations",
-    headerName: "Invitations",
-    width: 200,
-    preProcessEditCellProps: (params) => {
-      return { ...params.props, value: params.props.value.join(",") };
-    },
-    hideIfPending: true,
-  },
+  // {
+  //   field: "invitations",
+  //   headerName: "Invitations",
+  //   width: 200,
+  //   preProcessEditCellProps: (params) => {
+  //     return { ...params.props, value: params.props.value.join(",") };
+  //   },
+  //   hideIfPending: true,
+  // },
 ];
-
-const ReviewButton = ({ collectorId, onSuccess }) => {
-  const review = async () => {
-    if (window.confirm('Set collector to "InReview"?')) {
-      await updateCollectorApi({
-        _id: collectorId,
-        status: COLLECTOR_STATUS.InReview,
-      });
-      onSuccess();
-    }
-  };
-
-  return (
-    <GridActionsCellItem
-      icon={<FontAwesomeIcon icon={faEye} />}
-      onClick={review}
-      label="Review"
-      className="textPrimary"
-      color="inherit"
-    />
-  );
-};
 
 const ApproveButton = ({ collectorId, onSuccess }) => {
   const approve = async () => {
@@ -243,37 +230,28 @@ const InvitationsTab = ({ approved }) => {
     );
   };
 
-  const renderActions = ({ id, row }) => {
-    const actions = [];
-    if (approved) return actions;
-
-    if (row.status === COLLECTOR_STATUS.Applied) {
-      actions.push(
-        <ReviewButton
-          collectorId={id}
-          onSuccess={() =>
-            setLocalCollector(id, { status: COLLECTOR_STATUS.InReview })
-          }
-        />
-      );
-    }
-    actions.push(
-      <ApproveButton
-        collectorId={id}
-        onSuccess={() =>
-          setLocalCollector(id, {
-            approved: true,
-            status: COLLECTOR_STATUS.Approved,
-          })
-        }
-      />
-    );
-    return actions;
-  };
+  const renderActions = ({ id }) => [
+    <ApproveButton
+      collectorId={id}
+      onSuccess={() =>
+        setLocalCollector(id, {
+          approved: true,
+          status: COLLECTOR_STATUS.Approved,
+        })
+      }
+    />,
+  ];
 
   return (
     <div className={classNames("tab-content invitations")}>
       <h1>{approved ? "Approved" : "Pending"} Collectors</h1>
+      <div className="legends">
+        <div className="legend inreview">InReview</div>
+        <div className="legend toapprove">ToApprove</div>
+        <div className="legend good">Good</div>
+        <div className="legend maybe">Maybe</div>
+        <div className="legend rejected">Rejected</div>
+      </div>
       <CRUDTable
         CRUD={CRUD}
         columns={columns}
@@ -281,9 +259,11 @@ const InvitationsTab = ({ approved }) => {
         setRows={setCollectors}
         itemName="Collector"
         newCreatedOnServer
-        renderActions={renderActions}
+        renderActions={approved ? null : renderActions}
         loadActionKey="load-collectors"
         omitUpdateFields={["invitedBy"]}
+        actionsFirst
+        getRowClassName={({ row }) => row.status.toLowerCase()}
       />
     </div>
   );

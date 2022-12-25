@@ -4,7 +4,12 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { getCDNImageUrl, getCDNVideoUrl, createVideoSources } from "utils";
+import {
+  getCDNImageUrl,
+  getCDNVideoUrl,
+  createVideoSources,
+  isPrivateSale,
+} from "utils";
 import classNames from "classnames";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useMusic from "hooks/useMusic";
@@ -15,7 +20,7 @@ import InvitedModal from "components/InvitedModal/InvitedModal";
 import { isActionSuccessSelector } from "store/actionStatusReducer";
 import { useAccount } from "wagmi";
 import useActionDispatch from "hooks/useActionDispatch";
-import usePermission from "hooks/usePermission";
+import useCanAccessDD from "hooks/useCanAccessDD";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useButtonSFX from "hooks/useButtonSFX";
 import {
@@ -39,11 +44,10 @@ const ComingSoonPage = () => {
   const isCollectorFetched = useSelector(
     isActionSuccessSelector("get-collector-by-address")
   );
-  const canAccessDD = usePermission();
+  const canAccessDD = useCanAccessDD();
   const [autoFillPassword, setAutoFillPassword] = useState("");
   const [pageReady, setPageReady] = useState(false);
   const [showInvitedModal, setShowInvitedModal] = useState(false);
-  const [startTransition, setStartTransition] = useState(false);
   const [videoProgress, setVideoProgress] = useState({});
   const { width, height } = useWindowDimensions();
   const isPortrait = height > width;
@@ -79,10 +83,10 @@ const ComingSoonPage = () => {
   const isCollectorReady = !account?.address || isCollectorFetched;
 
   useEffect(() => {
-    if (pageReady && isCollectorReady && !canAccessDD && invite) {
+    if (inviteId && invite && pageReady && isCollectorReady) {
       setShowInvitedModal(true);
     }
-  }, [pageReady, isCollectorReady, canAccessDD, invite?._id]);
+  }, [inviteId, pageReady, isCollectorReady, invite?._id]);
 
   useEffect(() => {
     if (canAccessDD && !autoFillPassword) {
@@ -111,24 +115,14 @@ const ComingSoonPage = () => {
     );
   }, [JSON.stringify(bgVideoUrl)]);
 
-  const transition = () => {
-    if (process.env.REACT_APP_ENABLE_TRANSITIONS !== "true") {
-      return navigate("/explore");
+  const explore = () => navigate("/explore");
+
+  const onCorrectPassword = (pwdDisabled) => {
+    if (!pwdDisabled) {
+      dispatch(updateUiState({ privateSaleAuth: true }));
+      localStorage.setItem("privateSaleAuth", "true");
     }
-
-    setStartTransition(true);
-
-    const EFFECT_TIME_MULTIPLIER = 2;
-
-    setTimeout(() => {
-      navigate("/explore");
-    }, 2850 * EFFECT_TIME_MULTIPLIER);
-  };
-
-  const onCorrectPassword = () => {
-    dispatch(updateUiState({ privateSaleAuth: true }));
-    localStorage.setItem("privateSaleAuth", "true");
-    transition();
+    explore();
   };
 
   return (
@@ -139,12 +133,7 @@ const ComingSoonPage = () => {
       videos={[{ progress: videoProgress, threshold: 0.1 }]}
       onReady={() => setPageReady(true)}
     >
-      <div
-        className={classNames("page coming-soon", {
-          horizontal: true,
-          "transition-out": startTransition,
-        })}
-      >
+      <div className={classNames("page coming-soon")}>
         {renderBgPlayer()}
         <div className="center-aligned-column content-column">
           <div className="cs-section project-title">
@@ -177,6 +166,7 @@ const ComingSoonPage = () => {
           </div>
           <PasswordBox
             className={classNames("cs-section", { "with-invite": !!inviteId })}
+            disabled={!isPrivateSale()}
             autoFill={autoFillPassword}
             inviteId={invite?._id}
             onCorrect={onCorrectPassword}
@@ -196,7 +186,7 @@ const ComingSoonPage = () => {
               <div className="text-center your-invite-text">YOUR INVITE</div>
             </>
           ) : (
-            <GetPasswordLink />
+            isPrivateSale() && <GetPasswordLink />
           )}
         </div>
         <FeaturedIn />

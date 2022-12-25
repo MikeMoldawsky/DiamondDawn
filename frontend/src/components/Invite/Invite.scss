@@ -146,7 +146,7 @@
       }
 
       .video-box {
-        height: 26vh;
+        height: 40vw;
         margin-top: 1em;
       }
 
@@ -250,10 +250,6 @@
 @media only screen and (max-width: 480px) {
   .invite-view {
     .layout-box {
-      .video-box {
-        height: 20vh;
-      }
-
       .content-box {
         .request-status {
           .cta-row {

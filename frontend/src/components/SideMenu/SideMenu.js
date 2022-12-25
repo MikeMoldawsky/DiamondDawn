@@ -16,7 +16,12 @@ const SideMenu = ({ isOpen, closeMenu }) => {
   const collector = useSelector(collectorSelector);
   const invite = useSelector(inviteSelector);
 
-  const invitedBy = collector?.invitedBy || invite;
+  let invitedBy = invite;
+  if (collector) {
+    invitedBy = collector.invitedBy || {
+      createdBy: { twitter: "@DiamondDawnNFT" },
+    };
+  }
 
   const goToInvites = useGoToInvites();
 

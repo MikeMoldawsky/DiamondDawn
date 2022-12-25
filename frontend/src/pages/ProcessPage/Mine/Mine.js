@@ -6,7 +6,6 @@ import Countdown from "components/Countdown";
 import { tokenByIdSelector } from "store/tokensReducer";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
-import useMountLogger from "hooks/useMountLogger";
 import { mineApi } from "api/contractApi";
 import { uiSelector } from "store/uiReducer";
 import DiamondPicker from "components/DiamondPicker";
@@ -16,8 +15,6 @@ const Mine = () => {
   const contract = useDDContract();
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-
-  useMountLogger("Mine");
 
   const MineContent = useCallback(
     ({ execute, endTime }) => (

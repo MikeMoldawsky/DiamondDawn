@@ -136,7 +136,7 @@ const VideoPlayer = (props) => {
             minWait={delayPlay}
             videos={[{ progress: videoProgress, threshold: 0.05, src }]}
             onReady={onVideoReady}
-            Loader={() => <PageCover showText text="Video Loading..." />}
+            Loader={() => <PageCover text="Video Loading..." />}
           >
             <Video
               src={src}

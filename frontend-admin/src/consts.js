@@ -74,6 +74,7 @@ export const COLLECTOR_STATUS = {
   InReview: "InReview",
   Rejected: "Rejected",
   Maybe: "Maybe",
+  Good: "Good",
   ToApprove: "ToApprove",
   Approved: "Approved",
 };

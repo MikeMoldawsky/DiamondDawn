@@ -5,7 +5,6 @@ import "css/elements.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import useMountLogger from "hooks/useMountLogger";
 import WagmiWrapper from "containers/WagmiWrapper";
 import AppLoader from "containers/AppLoader";
 import AppRoutes from "pages";
@@ -20,8 +19,6 @@ import NetworkGuard from "containers/NetworkGuard";
 import CopyNotification from "components/CopyNotification";
 
 const App = () => {
-  useMountLogger("App");
-
   const [drawerOpen, setDrawerOpen] = useState(false);
   const actionDispatch = useActionDispatch();
 

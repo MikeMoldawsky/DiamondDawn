@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import isEmpty from "lodash/isEmpty";
 import isNil from "lodash/isNil";
 import get from "lodash/get";
 import { useForm } from "react-hook-form";
@@ -7,7 +6,7 @@ import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 import "./ApplyForm.scss";
 import { applyToDDApi } from "api/serverApi";
-import { useAccount } from "wagmi";
+import { useAccount, useSignMessage } from "wagmi";
 import { useSelector } from "react-redux";
 import { inviteSelector } from "store/inviteReducer";
 import Checkbox from "components/Checkbox";
@@ -36,13 +35,16 @@ const getValidationError = (name, value) => {
   }
 };
 
-const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
+const ApplyForm = ({ onSuccess, onError }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitted },
+    getValues,
     watch,
+    trigger,
     reset,
     setValue,
   } = useForm({
@@ -51,6 +53,44 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   const account = useAccount();
   const invite = useSelector(inviteSelector);
   const { geoLocation } = useSelector(uiSelector);
+
+  const applyToDD = async () => {
+    try {
+      const data = getValues();
+      const inviteId =
+        invite && !invite.used && !invite.revoked ? invite._id : null;
+      await applyToDDApi(inviteId, account.address, data, geoLocation);
+      setIsSubmitSuccess(true);
+      onSuccess && (await onSuccess(account.address));
+    } catch (e) {
+      showError(e, "Apply Failed");
+      onError && onError();
+    }
+  };
+
+  const { signMessage } = useSignMessage({
+    message:
+      "Welcome to Diamond Dawn!\n" +
+      "\n" +
+      "Sign to accept the Terms of Agreement: https://diamonddawn.art/tnc\n" +
+      "\n" +
+      "This request will not trigger a blockchain transaction or cost any gas fees.",
+    onError(error) {
+      showError(error, "Sign Failed");
+      setDisabled(false);
+    },
+    onSuccess(data) {
+      applyToDD();
+    },
+  });
+
+  const signAndApply = () => {
+    if (!account?.address) {
+      return trigger();
+    }
+    setDisabled(true);
+    signMessage();
+  };
 
   useEffect(() => {
     reset();
@@ -83,26 +123,6 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
       </>
     );
   };
-
-  const applyToDD = async (data) => {
-    try {
-      if (!invite?._id) {
-        throw new Error(
-          "You did not enter Diamond Dawn with a valid invite link"
-        );
-      }
-      onSubmit && onSubmit();
-      await applyToDDApi(invite._id, account.address, data, geoLocation);
-      setIsSubmitSuccess(true);
-      onSuccess && (await onSuccess(account.address));
-    } catch (e) {
-      showError(e, "Apply Failed");
-      onError && onError();
-    }
-  };
-
-  const twitter = watch("twitter");
-  const email = watch("email");
 
   return (
     <div className="request-form">
@@ -167,10 +187,11 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
           <ActionButton
             actionKey="Request Invitation"
             className="gold"
-            onClick={handleSubmit(applyToDD)}
+            isLoading={disabled}
+            onClick={handleSubmit(signAndApply)}
             sfx="action"
           >
-            SUBMIT
+            SIGN & SUBMIT
           </ActionButton>
           <StageCountdownWithText />
         </div>

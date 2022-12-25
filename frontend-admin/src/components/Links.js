@@ -33,10 +33,24 @@ export const TwitterLink = ({ className, handle }) => {
   );
 };
 
-export const OpenseaLink = ({ className, address }) => {
+export const OpenseaLink = ({ className, address, children }) => {
   return (
-    <Link href={`https://opensea.io/${address}`} className={className}>
-      {address}
+    <Link
+      href={`https://opensea.io/${address}`}
+      className={classNames("opensea-link", className)}
+    >
+      {children || address}
+    </Link>
+  );
+};
+
+export const EtherscanLink = ({ className, address, children }) => {
+  return (
+    <Link
+      href={`https://etherscan.io/address/${address}`}
+      className={classNames("etherscan-link", className)}
+    >
+      {children || address}
     </Link>
   );
 };
