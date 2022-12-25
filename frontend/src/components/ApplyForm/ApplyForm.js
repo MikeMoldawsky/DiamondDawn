@@ -13,14 +13,17 @@ import Checkbox from "components/Checkbox";
 import { showError } from "utils";
 import Wallet from "components/Wallet";
 import { uiSelector } from "store/uiReducer";
-import { StageCountdown } from "components/Countdown/Countdown";
+import {
+  StageCountdown,
+  StageCountdownWithText,
+} from "components/Countdown/Countdown";
 
 const getValidationError = (name, value) => {
   switch (name) {
     case "email":
       return !value ? "Required" : "Invalid email address";
     case "twitter":
-      if (!value) return "Required";
+      if (!value) return "";
       if (!value.startsWith("@")) {
         return "Must start with '@'";
       }
@@ -102,7 +105,9 @@ const ApplyForm = ({ onSuccess, onError }) => {
           })}
           disabled={disabled}
           placeholder={placeholder}
-          className={classNames("input")}
+          className={classNames("input", {
+            "with-error": !isNil(get(errors, name)),
+          })}
         />
         {renderErrorMessage(name)}
       </>
@@ -123,7 +128,7 @@ const ApplyForm = ({ onSuccess, onError }) => {
           <div className="input-container">
             <div className="label">Twitter Handle</div>
             {renderInput("twitter", "@diamond", {
-              required: true,
+              required: false,
               pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
             })}
           </div>
@@ -143,7 +148,9 @@ const ApplyForm = ({ onSuccess, onError }) => {
           <textarea
             {...register("note", { required: true })}
             disabled={disabled}
-            className="input"
+            className={classNames("input", {
+              "with-error": !isNil(get(errors, "note")),
+            })}
             placeholder="Why are you a good fit for Diamond Dawn? (optional)"
           />
           {renderErrorMessage("note")}
@@ -153,15 +160,15 @@ const ApplyForm = ({ onSuccess, onError }) => {
             <div className="label">Minting Address</div>
             <input
               type="text"
-              className="input full-width"
+              className={classNames("input full-width", {
+                "with-error": !account?.address && isSubmitted,
+              })}
               disabled
               value={account?.address || ""}
               title="If approved, this address will be the one eligible for mint"
             />
           </div>
-          {!account?.address && (
-            <Wallet className={classNames({ error: isSubmitted })} />
-          )}
+          {!account?.address && <Wallet />}
         </div>
         <div className="text-comment">
           * Don't worry, you can change your minting address at any point
@@ -176,7 +183,7 @@ const ApplyForm = ({ onSuccess, onError }) => {
           >
             SIGN & SUBMIT
           </ActionButton>
-          <StageCountdown />
+          <StageCountdownWithText />
         </div>
       </form>
     </div>

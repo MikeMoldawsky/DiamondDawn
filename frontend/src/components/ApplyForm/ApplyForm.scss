@@ -27,14 +27,25 @@
         margin-right: 2em;
       }
 
-      .countdown {
-        font-size: 0.35em;
-        .caption {
-          font-size: max(0.9375em, 8px);
+      .countdown-container {
+        .text {
+          font-size: 0.7em;
+          font-weight: 500;
+          color: $gold;
+          margin-bottom: 0.4rem;
+          letter-spacing: 0.05em;
         }
 
-        .w-d .caption {
-          font-size: max(0.6875em, 7px);
+        .countdown {
+          font-size: 0.35em;
+
+          .caption {
+            font-size: max(0.9375em, 8px);
+          }
+
+          .w-d .caption {
+            font-size: max(0.6875em, 7px);
+          }
         }
       }
     }
@@ -86,10 +97,9 @@
       .buttons {
         justify-content: space-between;
         margin-top: 2em;
-        align-items: center;
 
         .countdown {
-          font-size: 0.3em;
+          font-size: 0.3em !important;
         }
       }
     }
@@ -102,6 +112,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        margin-left: unset;
       }
     }
 
