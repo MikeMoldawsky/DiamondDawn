@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import _ from "lodash";
-import {
-  DataGrid,
-  GridRowModes,
-  GridToolbar,
-} from "@mui/x-data-grid";
+import { DataGrid, GridRowModes, GridToolbar } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
 import { isActionPendingSelector } from "store/actionStatusReducer";
 import BeatLoader from "react-spinners/BeatLoader";
@@ -25,24 +21,30 @@ const CRUDTable = ({
   disableSelectionOnClick,
   loadActionKey,
   omitUpdateFields = [],
+  actionsFirst,
   ...gridProps
 }) => {
   const [rowModesModel, setRowModesModel] = useState({});
   const [selectionModel, setSelectionModel] = useState([]);
   const isLoading = useSelector(isActionPendingSelector(loadActionKey || ""));
 
-  const additionalColumns = [];
+  const _columns = _.clone(columns);
   if (!readonly && renderActions) {
-    additionalColumns.push({
+    const actionsColumn = {
       field: "actions",
       type: "actions",
       headerName: "Actions",
-      width: 120,
+      width: 80,
       cellClassName: "actions",
       getActions: renderActions,
-    });
+    };
+
+    if (actionsFirst) {
+      _columns.unshift(actionsColumn);
+    } else {
+      _columns.push(actionsColumn);
+    }
   }
-  const _columns = [...columns, ...additionalColumns];
 
   const cancelEdit = (id) => () => {
     setRowModesModel({
@@ -72,18 +74,21 @@ const CRUDTable = ({
 
   const handleRowEditStart = async (params, event) => {
     event.defaultMuiPrevented = true;
-    setRowModesModel({ ...rowModesModel, [params.id]: { mode: GridRowModes.Edit } });
+    setRowModesModel({
+      ...rowModesModel,
+      [params.id]: { mode: GridRowModes.Edit },
+    });
   };
 
   const handleRowEditStop = async (params, event) => {
-    const { id, reason, field, columns } = params
+    const { id, reason, field, columns } = params;
     if (reason === "escapeKeyDown") {
-      cancelEdit(id)()
-      return
+      cancelEdit(id)();
+      return;
     }
     if (reason === "enterKeyDown") {
-      const col = _.find(columns, { field })
-      if (!event.ctrlKey && col?.multiline) return
+      const col = _.find(columns, { field });
+      if (!event.ctrlKey && col?.multiline) return;
     }
     event.defaultMuiPrevented = true;
     if (window.confirm(`Are you sure you want to update ${itemName}?`)) {
@@ -115,7 +120,7 @@ const CRUDTable = ({
             rows={rows}
             columns={_columns}
             autoHeight
-            getRowHeight={() => 'auto'}
+            getRowHeight={() => "auto"}
             onSelectionModelChange={(newSelectionModel) => {
               setSelectionModel(newSelectionModel);
             }}
@@ -137,6 +142,7 @@ const CRUDTable = ({
                 quickFilterProps: { debounceMs: 500 },
               },
             }}
+            pageSize={25}
             {...gridProps}
           />
         )}

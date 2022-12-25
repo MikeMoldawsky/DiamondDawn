@@ -198,6 +198,7 @@ const InvitationsTab = () => {
         isRowSelectable={isRowSelectable}
         getRowClassName={getRowClassName}
         loadActionKey="load-invitations"
+        pageSize={50}
       />
     </div>
   );

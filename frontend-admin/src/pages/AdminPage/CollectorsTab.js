@@ -12,7 +12,7 @@ import {
   updateCollectorApi,
 } from "api/serverApi";
 import format from "date-fns/format";
-import { OpenseaLink, TwitterLink } from "components/Links";
+import { EtherscanLink, OpenseaLink, TwitterLink } from "components/Links";
 import useActionDispatch from "hooks/useActionDispatch";
 import { COLLECTOR_STATUS } from "consts";
 
@@ -29,37 +29,59 @@ const MultilineTextEdit = (props) => {
     apiRef.current.setEditCellValue({ id, field, value: newValue });
   };
 
-  return <textarea className="cell-edit" value={value} onChange={handleValueChange} />;
-}
+  return (
+    <textarea
+      className="cell-edit"
+      value={value}
+      onChange={handleValueChange}
+    />
+  );
+};
 
 const INVITATION_COLUMNS = [
   {
     field: "createdAt",
     headerName: "Created At",
     type: "dateTime",
-    width: 150,
+    width: 140,
     valueFormatter: (params) =>
       format(new Date(params.value), "dd/MM/yy hh:mm"),
   },
   {
+    field: "invitedBy",
+    headerName: "Invited By",
+    width: 150,
+    renderCell: (params) => <TwitterLink handle={params.row.invitedBy} />,
+  },
+  {
     field: "twitter",
     headerName: "Twitter",
-    width: 200,
+    width: 150,
     editable: true,
     renderCell: (params) => <TwitterLink handle={params.row.twitter} />,
   },
   {
-    field: "email",
-    headerName: "Email",
-    width: 200,
-    editable: true,
-    renderCell: renderCellWithTooltip,
+    field: "address",
+    headerName: "ETH Account",
+    width: 180,
+    preProcessEditCellProps: (params) => {
+      const isValid =
+        _.isEmpty(params.props.value) ||
+        ethersUtils.isAddress(params.props.value);
+      return { ...params.props, error: !isValid };
+    },
+    renderCell: (params) => (
+      <>
+        <OpenseaLink address={params.row.address}>Opensea</OpenseaLink>
+        <EtherscanLink address={params.row.address}>Etherscan</EtherscanLink>
+      </>
+    ),
   },
   {
-    field: "invitedBy",
-    headerName: "Invited By",
-    width: 200,
-    renderCell: (params) => <TwitterLink handle={params.row.invitedBy} />,
+    field: "location",
+    headerName: "Location",
+    width: 180,
+    renderCell: renderCellWithTooltip,
   },
   {
     field: "note",
@@ -69,16 +91,14 @@ const INVITATION_COLUMNS = [
     editable: true,
     multiline: true,
     renderCell: renderCellWithTooltip,
-    renderEditCell: (params) => (
-      <MultilineTextEdit {...params} />
-    ),
+    renderEditCell: (params) => <MultilineTextEdit {...params} />,
   },
   {
     field: "status",
     headerName: "Status",
     type: "singleSelect",
     valueOptions: Object.values(COLLECTOR_STATUS),
-    width: 150,
+    width: 100,
     editable: true,
     hideIfApproved: true,
   },
@@ -89,9 +109,7 @@ const INVITATION_COLUMNS = [
     editable: true,
     multiline: true,
     renderCell: renderCellWithTooltip,
-    renderEditCell: (params) => (
-      <MultilineTextEdit {...params} />
-    ),
+    renderEditCell: (params) => <MultilineTextEdit {...params} />,
   },
   {
     field: "buyProbability",
@@ -104,25 +122,14 @@ const INVITATION_COLUMNS = [
       { value: 4, label: "4" },
       { value: 5, label: "5" },
     ],
-    width: 150,
+    width: 80,
     editable: true,
   },
   {
-    field: "address",
-    headerName: "Address",
-    width: 400,
-    preProcessEditCellProps: (params) => {
-      const isValid =
-        _.isEmpty(params.props.value) ||
-        ethersUtils.isAddress(params.props.value);
-      return { ...params.props, error: !isValid };
-    },
-    renderCell: (params) => <OpenseaLink address={params.row.address} />,
-  },
-  {
-    field: "location",
-    headerName: "Location",
-    width: 200,
+    field: "email",
+    headerName: "Email",
+    width: 150,
+    editable: true,
     renderCell: renderCellWithTooltip,
   },
   {
@@ -159,15 +166,15 @@ const INVITATION_COLUMNS = [
     width: 80,
     hideIfPending: true,
   },
-  {
-    field: "invitations",
-    headerName: "Invitations",
-    width: 200,
-    preProcessEditCellProps: (params) => {
-      return { ...params.props, value: params.props.value.join(",") };
-    },
-    hideIfPending: true,
-  },
+  // {
+  //   field: "invitations",
+  //   headerName: "Invitations",
+  //   width: 200,
+  //   preProcessEditCellProps: (params) => {
+  //     return { ...params.props, value: params.props.value.join(",") };
+  //   },
+  //   hideIfPending: true,
+  // },
 ];
 
 const ApproveButton = ({ collectorId, onSuccess }) => {
@@ -232,7 +239,7 @@ const InvitationsTab = ({ approved }) => {
           status: COLLECTOR_STATUS.Approved,
         })
       }
-    />
+    />,
   ];
 
   return (
@@ -248,6 +255,7 @@ const InvitationsTab = ({ approved }) => {
         renderActions={approved ? null : renderActions}
         loadActionKey="load-collectors"
         omitUpdateFields={["invitedBy"]}
+        actionsFirst
       />
     </div>
   );

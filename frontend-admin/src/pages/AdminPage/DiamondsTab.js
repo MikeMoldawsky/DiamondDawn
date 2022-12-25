@@ -232,6 +232,7 @@ const DiamondsTable = ({ deployedGIAs = [], renderDeployButton }) => {
       }
       isRowSelectable={(params) => !isRowDeployed(params.row)}
       checkboxSelection
+      pageSize={100}
     />
   );
 };
