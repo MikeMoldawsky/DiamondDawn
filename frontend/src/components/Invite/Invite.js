@@ -112,7 +112,7 @@ const Invite = () => {
     );
 
   const renderTwitterButton = (className) => (
-    <TwitterLink className={classNames("button gold icon-after", className)}>
+    <TwitterLink className={classNames("no-hover button gold icon-after", className)}>
       Follow <FontAwesomeIcon icon={faTwitter} />
     </TwitterLink>
   );
@@ -136,17 +136,16 @@ const Invite = () => {
                   </TwitterLink>.
                 </div>
               </div>
-              <div className="center-aligned-row">
-                <div className="center-aligned-row">
-                  <div className="follow-text">
-                    <MobileOrTablet>{renderTwitterButton()}</MobileOrTablet>
-                  </div>
-                  <Desktop>{renderTwitterButton("lg")}</Desktop>
-                </div>
-                <StageCountdownWithText />
-              </div>
               <div className="center-spaced-column bottom-content">
-
+                <div className="center-aligned-row cta-row">
+                  <div className="center-aligned-row">
+                    <div className="follow-text">
+                      <MobileOrTablet>{renderTwitterButton()}</MobileOrTablet>
+                    </div>
+                    <Desktop>{renderTwitterButton("lg")}</Desktop>
+                  </div>
+                  <StageCountdownWithText />
+                </div>
                 <MintAddressRow />
               </div>
             </div>
