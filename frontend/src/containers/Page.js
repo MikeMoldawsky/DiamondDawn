@@ -90,9 +90,7 @@ const Page = ({
   return (
     <>
       {children}
-      {withLoader && !pageReady && !hidden && (
-        <PageCover fade={fade} />
-      )}
+      {withLoader && !pageReady && !hidden && <PageCover fade={fade} />}
     </>
   );
 };

@@ -29,7 +29,7 @@ module.exports = async function (req, res) {
       isDao
     );
 
-    let invite = null
+    let invite = null;
     if (inviteId) {
       invite = await useInvite(inviteId, collector.id);
       collector = await updateCollector({

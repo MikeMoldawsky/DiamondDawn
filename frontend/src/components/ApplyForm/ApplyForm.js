@@ -37,7 +37,7 @@ const getValidationError = (name, value) => {
 
 const ApplyForm = ({ onSuccess, onError }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
-  const [disabled, setDisabled] = useState(false)
+  const [disabled, setDisabled] = useState(false);
   const {
     register,
     handleSubmit,
@@ -56,8 +56,9 @@ const ApplyForm = ({ onSuccess, onError }) => {
 
   const applyToDD = async () => {
     try {
-      const data = getValues()
-      const inviteId = invite && !invite.used && !invite.revoked ? invite._id : null
+      const data = getValues();
+      const inviteId =
+        invite && !invite.used && !invite.revoked ? invite._id : null;
       await applyToDDApi(inviteId, account.address, data, geoLocation);
       setIsSubmitSuccess(true);
       onSuccess && (await onSuccess(account.address));
@@ -68,23 +69,28 @@ const ApplyForm = ({ onSuccess, onError }) => {
   };
 
   const { signMessage } = useSignMessage({
-    message: 'gm wagmi frens',
+    message:
+      "Welcome to Diamond Dawn!\n" +
+      "\n" +
+      "Sign to accept the Terms of Agreement: https://diamonddawn.art/tnc\n" +
+      "\n" +
+      "This request will not trigger a blockchain transaction or cost any gas fees.",
     onError(error) {
       showError(error, "Sign Failed");
-      setDisabled(false)
+      setDisabled(false);
     },
     onSuccess(data) {
-      applyToDD()
+      applyToDD();
     },
-  })
+  });
 
   const signAndApply = () => {
     if (!account?.address) {
-      return trigger()
+      return trigger();
     }
-    setDisabled(true)
-    signMessage()
-  }
+    setDisabled(true);
+    signMessage();
+  };
 
   useEffect(() => {
     reset();

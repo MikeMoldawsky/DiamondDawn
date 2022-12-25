@@ -15,10 +15,12 @@ import SocialIcons from "components/SocialIcons";
 const SideMenu = ({ isOpen, closeMenu }) => {
   const collector = useSelector(collectorSelector);
   const invite = useSelector(inviteSelector);
-  
-  let invitedBy = invite
+
+  let invitedBy = invite;
   if (collector) {
-    invitedBy = collector.invitedBy || { createdBy: { twitter: "@DiamondDawnNFT"}}
+    invitedBy = collector.invitedBy || {
+      createdBy: { twitter: "@DiamondDawnNFT" },
+    };
   }
 
   const goToInvites = useGoToInvites();

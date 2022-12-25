@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import ApplyForm from "components/ApplyForm";
 import { useAccount } from "wagmi";
-import {clearInvite} from "store/inviteReducer";
+import { clearInvite } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import MintKey from "components/MintKey";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
@@ -40,7 +40,7 @@ const Invite = () => {
     setShowSubmittedModal(true);
     playSparklesSFX();
     loadCollector(address);
-    dispatch(clearInvite())
+    dispatch(clearInvite());
   };
 
   useEffect(() => {

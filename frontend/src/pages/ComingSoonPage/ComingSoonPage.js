@@ -4,7 +4,12 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch, useSelector } from "react-redux";
-import {getCDNImageUrl, getCDNVideoUrl, createVideoSources, isPrivateSale} from "utils";
+import {
+  getCDNImageUrl,
+  getCDNVideoUrl,
+  createVideoSources,
+  isPrivateSale,
+} from "utils";
 import classNames from "classnames";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useMusic from "hooks/useMusic";
@@ -117,7 +122,7 @@ const ComingSoonPage = () => {
       dispatch(updateUiState({ privateSaleAuth: true }));
       localStorage.setItem("privateSaleAuth", "true");
     }
-    explore()
+    explore();
   };
 
   return (
