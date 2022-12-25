@@ -141,7 +141,7 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
             className={classNames("input", {
               "with-error": !isNil(get(errors, "note")),
             })}
-            placeholder="Why are you a good fit for Diamond Dawn? (optional)"
+            placeholder="Why are you a good fit for Diamond Dawn?"
           />
           {renderErrorMessage("note")}
         </div>

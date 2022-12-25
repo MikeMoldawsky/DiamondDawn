@@ -24,11 +24,13 @@ import PlayButton from "components/PlayButton";
 import { getEarthAndMoonVideo, getTrailerVideos } from "assets/videos";
 import useScrollTop from "hooks/useScrollTop";
 import { StageCountdownWithText } from "components/Countdown/Countdown";
+import { useMobileOrTablet } from "hooks/useMediaQueries";
 
 const HomeTopContent = () => {
   const scroll = useScrollTop();
   const { width, height } = useWindowDimensions();
   const [mousePos, setMousePos] = useState([width / 2, height / 2]);
+  const isMobileOrTablet = useMobileOrTablet();
 
   useShowLogoOnScroll(3.5);
 
@@ -37,11 +39,13 @@ const HomeTopContent = () => {
     scroll < winHeightLimit ? scroll : winHeightLimit;
 
   const topViewStyles = useMemo(() => {
+    if (isMobileOrTablet) return {};
+
     return {
       opacity: 1 - (scroll * 1.5) / winHeightLimit,
       transform: `scale(${1 - scroll / winHeightLimit / 1.5})`,
     };
-  }, [topViewEffectScrollLimit]);
+  }, [topViewEffectScrollLimit, isMobileOrTablet]);
 
   const trailerSources = getTrailerVideos(width, height);
 
