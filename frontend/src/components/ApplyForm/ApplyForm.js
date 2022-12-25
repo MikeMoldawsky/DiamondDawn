@@ -44,6 +44,7 @@ const ApplyForm = ({ onSuccess, onError }) => {
     formState: { errors, isSubmitted },
     getValues,
     watch,
+    trigger,
     reset,
     setValue,
   } = useForm({
@@ -78,6 +79,9 @@ const ApplyForm = ({ onSuccess, onError }) => {
   })
 
   const signAndApply = () => {
+    if (!account?.address) {
+      return trigger()
+    }
     setDisabled(true)
     signMessage()
   }
