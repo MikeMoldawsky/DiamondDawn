@@ -5,18 +5,16 @@ import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import useTimeout from "hooks/useTimeout";
-import usePermission from "hooks/usePermission";
+import useCanAccessDD from "hooks/useCanAccessDD";
 import useWaitFor from "hooks/useWaitFor";
 import PageCover from "components/PageCover";
 import useOnConnect from "hooks/useOnConnect";
 
 const DEFAULT_TIMEOUT = 10000;
-const SHOW_TEXT_TIME = 100;
 const FADE_DURATION = 150;
 
 const Page = ({
   pageName,
-  className,
   images = [],
   videos = [],
   timeout = DEFAULT_TIMEOUT,
@@ -30,9 +28,8 @@ const Page = ({
   const dispatch = useDispatch();
   const [hidden, setHidden] = useState(false);
   const [fade, setFade] = useState(false);
-  const [showText, setShowText] = useState(false);
   const contentReady = useWaitFor({ images, videos });
-  const canAccessDD = usePermission();
+  const canAccessDD = useCanAccessDD();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );
@@ -90,17 +87,10 @@ const Page = ({
     timeout > -1 && setAssetsReady();
   }, timeout);
 
-  // TODO - remove this after setting up app-shell caching
-  setTimeout(() => {
-    setShowText(true);
-  }, SHOW_TEXT_TIME);
-
   return (
     <>
       {children}
-      {withLoader && !pageReady && !hidden && (
-        <PageCover fade={fade} showText={showText} />
-      )}
+      {withLoader && !pageReady && !hidden && <PageCover fade={fade} />}
     </>
   );
 };

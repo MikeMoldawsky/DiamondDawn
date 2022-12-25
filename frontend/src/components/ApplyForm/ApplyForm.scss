@@ -20,9 +20,33 @@
 
     .buttons {
       align-items: flex-end;
+      margin-top: 1.4em;
 
       .button {
-        margin-top: 1.4em;
+        margin-top: 0;
+        margin-right: 2em;
+      }
+
+      .countdown-container {
+        .text {
+          font-size: 0.7em;
+          font-weight: 500;
+          color: $gold;
+          margin-bottom: 0.4rem;
+          letter-spacing: 0.05em;
+        }
+
+        .countdown {
+          font-size: 0.35em;
+
+          .caption {
+            font-size: max(0.9375em, 8px);
+          }
+
+          .w-d .caption {
+            font-size: max(0.6875em, 7px);
+          }
+        }
       }
     }
   }
@@ -37,6 +61,10 @@
       margin-left: 0;
       border-color: $gold;
       color: $gold;
+    }
+
+    .wallet.error {
+      color: red;
     }
   }
 
@@ -67,8 +95,11 @@
   .request-form {
     form {
       .buttons {
-        .button {
-          margin-top: 2em;
+        justify-content: space-between;
+        margin-top: 2em;
+
+        .countdown {
+          font-size: 0.3em !important;
         }
       }
     }
@@ -81,11 +112,24 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        margin-left: unset;
       }
     }
 
     button:not(.button) {
       margin: 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .request-form {
+    form {
+      .buttons {
+        .button {
+          margin-right: 1em;
+        }
+      }
     }
   }
 }

@@ -7,7 +7,6 @@ const useOnConnect = (onConnect, onDisconnect) => {
 
   useEffect(() => {
     if (account?.address) {
-      console.log("USER CONNECTED");
       if (isConnected) {
         // user switched
         onDisconnect && onDisconnect();
@@ -15,7 +14,6 @@ const useOnConnect = (onConnect, onDisconnect) => {
       onConnect && onConnect(account?.address);
       setIsConnected(true);
     } else {
-      console.log("USER DISCONNECTED");
       onDisconnect && onDisconnect();
       setIsConnected(false);
     }

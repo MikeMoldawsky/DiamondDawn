@@ -7,6 +7,7 @@ const COLLECTOR_STATUS = [
   "InReview",
   "Rejected",
   "Maybe",
+  "Good",
   "ToApprove",
   "Approved",
 ];

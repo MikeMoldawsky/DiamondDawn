@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
-import usePermission from "hooks/usePermission";
+import useCanAccessDD from "hooks/useCanAccessDD";
 
 const useAccessDDGuard = (requireAccess = true) => {
-  const canAccessDD = usePermission();
+  const canAccessDD = useCanAccessDD();
   const isCollectorFetched = useSelector(
     isActionFirstCompleteSelector("get-collector-by-address")
   );

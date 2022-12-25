@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import isEmpty from "lodash/isEmpty";
-import size from "lodash/size";
 import { useSelector } from "react-redux";
 import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import Loading from "components/Loading";
@@ -16,11 +15,6 @@ const TokensProvider = ({ children, withLoader, isGated, goThrough }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("TokensProvider", {
-      isReady,
-      tokens: size(tokens),
-      account: account?.address,
-    });
     if (
       isGated &&
       (isEmpty(account?.address) || (isReady && isEmpty(tokens)))

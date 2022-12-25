@@ -362,17 +362,105 @@
     }
   }
 
+  textarea.cell-edit {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .etherscan-link {
+    margin-left: 1em;
+  }
+
   .MuiDataGrid-row {
     cursor: pointer;
 
+    .MuiDataGrid-cell {
+      padding: 1em 1em;
+      position: relative;
+    }
+
     &.Mui-selected {
       cursor: default;
-      background-color: $selected !important;
     }
 
     &.disabled {
       cursor: not-allowed;
       background-color: #d8d8d8;
+    }
+
+    &.toapprove {
+      background-color: $toApprove;
+    }
+
+    &.good {
+      background-color: $good;
+    }
+
+    &.maybe {
+      background-color: $maybe;
+    }
+
+    &.rejected {
+      opacity: 0.4;
+      background-color: $rejected;
+    }
+
+    &.inreview {
+      background-color: $inReview;
+    }
+  }
+
+  .legends {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: white;
+    color: black;
+    padding: 0.8em 0.4em;
+
+    .legend {
+      margin: 0 2em;
+      position: relative;
+
+      &:before {
+        content: "";
+        position: absolute;
+        border-radius: 25%;
+        width: 0.85em;
+        aspect-ratio: 1;
+        top: 50%;
+        transform: translateY(-50%);
+        left: -1.5em;
+      }
+
+      &.inreview {
+        &:before {
+          background-color: $inReview;
+        }
+      }
+      &.toapprove {
+        &:before {
+          background-color: $toApprove;
+        }
+      }
+      &.good {
+        &:before {
+          background-color: $good;
+        }
+      }
+      &.maybe {
+        &:before {
+          background-color: $maybe;
+        }
+      }
+      &.rejected {
+        &:before {
+          background-color: $rejected;
+        }
+      }
     }
   }
 }

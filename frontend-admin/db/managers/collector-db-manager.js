@@ -5,7 +5,9 @@ const Collector = require("../models/CollectorModel");
 
 async function getCollectors(approved) {
   try {
-    const dbCollectors = await Collector.find({ approved });
+    const dbCollectors = await Collector.find({ approved }).sort({
+      createdAt: -1,
+    });
     return await Promise.all(
       _.map(dbCollectors, ({ _id }) => getCollectorObjectById(_id))
     );

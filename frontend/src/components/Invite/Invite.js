@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import ApplyForm from "components/ApplyForm";
 import { useAccount } from "wagmi";
-import { inviteSelector, loadInviteById } from "store/inviteReducer";
+import { clearInvite } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import MintKey from "components/MintKey";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
@@ -21,33 +21,32 @@ import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useSound from "use-sound";
 import sparklesSFX from "assets/audio/end-sparkles.mp3";
 import MintAddressRow from "components/MintAddressRow";
-import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
+import {
+  Desktop,
+  MobileOrTablet,
+  useMobileOrTablet,
+} from "hooks/useMediaQueries";
+import { StageCountdownWithText } from "components/Countdown/Countdown";
+import classNames from "classnames";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
   const dispatch = useDispatch();
   const account = useAccount();
-  const invite = useSelector(inviteSelector);
   const collector = useSelector(collectorSelector);
-  const [submitting, setSubmitting] = useState(false);
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
   const [playSparklesSFX] = useSound(sparklesSFX);
+  const isMobileOrTablet = useMobileOrTablet();
 
-  const loadInvite = async () => invite && dispatch(loadInviteById(invite._id));
   const loadCollector = async (address) =>
     dispatch(loadCollectorByAddress(address));
 
-  const onSubmit = () => setSubmitting(true);
-
   const onSubmitSuccess = (address) => {
-    setSubmitting(false);
     setShowSubmittedModal(true);
     playSparklesSFX();
     loadCollector(address);
-    loadInvite();
+    dispatch(clearInvite());
   };
-
-  const onSubmitError = () => setSubmitting(false);
 
   useEffect(() => {
     if (
@@ -59,9 +58,14 @@ const Invite = () => {
     }
   }, [systemStage, collector?.approved, collector?.mintWindowStart]);
 
-  const videoSrc = createVideoSources(
-    collector ? "embedded-diamonds" : "diamond-evolution"
-  );
+  let videoSrc;
+  if (collector) {
+    videoSrc = createVideoSources(
+      isMobileOrTablet ? "embedded-diamonds-wide" : "embedded-diamonds"
+    );
+  } else {
+    videoSrc = createVideoSources("diamond-evolution");
+  }
 
   const renderInlineVideo = useCallback(
     () => <InlineVideo src={videoSrc} showThreshold={0} />,
@@ -109,8 +113,10 @@ const Invite = () => {
       </>
     );
 
-  const renderTwitterButton = () => (
-    <TwitterLink className="button gold icon-after">
+  const renderTwitterButton = (className) => (
+    <TwitterLink
+      className={classNames("no-hover button gold icon-after", className)}
+    >
       Follow <FontAwesomeIcon icon={faTwitter} />
     </TwitterLink>
   );
@@ -128,25 +134,22 @@ const Invite = () => {
                 <div className="text-comment">
                   If you're accepted to Diamond Dawn, you'll have exactly
                   <b> 3 days, 3 hours, and 3 minutes</b> to mint your key for
-                  4.44 ETH.
+                  4.44 ETH. Make sure you follow{" "}
+                  <TwitterLink className="text-gold">
+                    <b>@DiamondDawnNFT</b>
+                  </TwitterLink>
+                  .
                 </div>
               </div>
               <div className="center-spaced-column bottom-content">
-                <div className="center-aligned-row follow-box">
-                  <div className="follow-text">
-                    <b>
-                      Make sure to follow{" "}
-                      <TwitterLink className="text-gold">
-                        <b>@DiamondDawnNFT</b>
-                      </TwitterLink>
-                    </b>{" "}
-                    <MobileOrTablet>{renderTwitterButton()}</MobileOrTablet>
-                    <span>
-                      we’ll send you an email or a Twitter DM if you are
-                      accepted.
-                    </span>
+                <div className="center-aligned-row cta-row">
+                  <div className="center-aligned-row">
+                    <div className="follow-text">
+                      <MobileOrTablet>{renderTwitterButton()}</MobileOrTablet>
+                    </div>
+                    <Desktop>{renderTwitterButton("lg")}</Desktop>
                   </div>
-                  <Desktop>{renderTwitterButton()}</Desktop>
+                  <StageCountdownWithText />
                 </div>
                 <MintAddressRow />
               </div>
@@ -154,12 +157,7 @@ const Invite = () => {
           ) : (
             <>
               <Desktop>{renderTitle()}</Desktop>
-              <ApplyForm
-                disabled={submitting}
-                onSubmit={onSubmit}
-                onSuccess={onSubmitSuccess}
-                onError={onSubmitError}
-              />
+              <ApplyForm onSuccess={onSubmitSuccess} />
             </>
           )}
           {showSubmittedModal && (

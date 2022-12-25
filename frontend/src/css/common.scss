@@ -89,6 +89,11 @@ form {
     margin: 0.8em 0;
     font-size: $font18px;
     width: 100%;
+
+    &.with-error {
+      border-color: $red !important;
+      opacity: 1 !important;
+    }
   }
 
   .textarea-container {
@@ -101,7 +106,6 @@ form {
 
   .button {
     margin-top: 0.8em;
-    align-self: flex-start;
   }
 
   .checkbox {
@@ -114,15 +118,15 @@ form {
 
     &.with-error {
       input {
-        outline: solid 1px red;
+        outline: solid 1px $red;
       }
     }
   }
 
   .form-error {
-    color: red;
+    color: $red;
     position: absolute;
-    top: 90%;
+    top: 87.5%;
     left: 1.5em;
     font-size: $font13px;
   }

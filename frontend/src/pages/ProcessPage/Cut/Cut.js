@@ -6,7 +6,6 @@ import { uiSelector } from "store/uiReducer";
 import { tokenByIdSelector } from "store/tokensReducer";
 import ActionButton from "components/ActionButton";
 import ActionView from "components/ActionView";
-import useMountLogger from "hooks/useMountLogger";
 import { cutApi } from "api/contractApi";
 import DiamondPicker from "components/DiamondPicker";
 import { getCDNVideoUrl } from "utils";
@@ -15,8 +14,6 @@ const Cut = () => {
   const contract = useDDContract();
   const { selectedTokenId } = useSelector(uiSelector);
   const token = useSelector(tokenByIdSelector(selectedTokenId));
-
-  useMountLogger("Cut");
 
   const CutContent = useCallback(
     ({ execute, endTime }) => (

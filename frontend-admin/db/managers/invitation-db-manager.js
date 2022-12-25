@@ -24,7 +24,7 @@ async function getInvitationObjectById(inviteId) {
 
 async function getInvitations() {
   try {
-    return await Invitation.find();
+    return await Invitation.find().sort({ createdAt: -1 });
   } catch (e) {
     console.log(`Failed to get all invites`, e);
   }

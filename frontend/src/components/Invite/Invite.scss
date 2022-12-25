@@ -25,21 +25,6 @@
       position: relative;
       justify-self: center;
 
-      .follow-box {
-        border: solid 1px #ffffff22;
-        background-color: #ffffff22;
-        padding: 1em;
-        width: 100%;
-
-        font-size: $font15px;
-
-        .button {
-          padding-left: 2em;
-          padding-right: 2em;
-          margin-left: 2em;
-        }
-      }
-
       .bottom-content {
         width: 100%;
       }
@@ -59,6 +44,29 @@
         .text-comment {
           font-size: $font18px;
           margin: 1.2em 0 2.4em;
+        }
+
+        .cta-row {
+          width: 100%;
+          align-items: flex-end;
+          justify-content: flex-start;
+        }
+
+        .countdown-container {
+          font-size: 0.9em;
+          margin-left: 2rem;
+
+          .countdown {
+            font-size: 0.55em;
+          }
+
+          .text {
+            font-size: 0.9em;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.05em;
+            color: $gold;
+          }
         }
       }
 
@@ -138,7 +146,7 @@
       }
 
       .video-box {
-        height: 26vh;
+        height: 40vw;
         margin-top: 1em;
       }
 
@@ -177,6 +185,20 @@
           .text-comment {
             font-size: 0.95em;
           }
+
+          .cta-row {
+            .countdown-container {
+              margin-left: 2em;
+
+              .text {
+                font-size: 0.7em;
+              }
+
+              .countdown {
+                font-size: 0.3em !important;
+              }
+            }
+          }
         }
 
         .follow-box {
@@ -210,6 +232,16 @@
         .modal {
           bottom: 8vh;
         }
+
+        .request-status {
+          .cta-row {
+            justify-content: space-between;
+          }
+
+          .countdown-container {
+            margin-left: unset;
+          }
+        }
       }
     }
   }
@@ -218,8 +250,18 @@
 @media only screen and (max-width: 480px) {
   .invite-view {
     .layout-box {
-      .video-box {
-        height: 20vh;
+      .content-box {
+        .request-status {
+          .cta-row {
+            .countdown-container {
+              font-size: 1rem;
+            }
+
+            .button {
+              padding: 0 1.25em;
+            }
+          }
+        }
       }
     }
   }

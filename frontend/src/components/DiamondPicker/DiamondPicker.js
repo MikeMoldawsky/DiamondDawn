@@ -9,7 +9,6 @@ import _ from "lodash";
 import { getActionableTokens } from "utils";
 import { tokensSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
-import useMountLogger from "hooks/useMountLogger";
 import { isActionPendingSelector } from "store/actionStatusReducer";
 import useTimeout from "hooks/useTimeout";
 
@@ -22,8 +21,6 @@ const DiamondPicker = ({ actionKey, disabled }) => {
   const isActionPending = useSelector(isActionPendingSelector(actionKey));
   const canSelect = !disabled && !isActionPending;
   const [transitionTime, setTransitionTime] = useState(0);
-
-  useMountLogger("DiamondPicker");
 
   useEffect(() => {
     setActionableTokens(getActionableTokens(tokens, systemStage, isActive));

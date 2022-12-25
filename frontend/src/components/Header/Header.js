@@ -19,7 +19,7 @@ import { toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import CTAButton from "components/CTAButton";
 import { TwitterLink, TelegramLink } from "components/Links";
-import usePermission from "hooks/usePermission";
+import useCanAccessDD from "hooks/useCanAccessDD";
 import { useDesktopMediaQuery } from "hooks/useMediaQueries";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { collectorSelector } from "store/collectorReducer";
@@ -33,7 +33,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   const location = useLocation();
   const isDesktop = useDesktopMediaQuery();
   const { muted, showHPLogo } = useSelector(uiSelector);
-  const canAccessDD = usePermission();
+  const canAccessDD = useCanAccessDD();
   const collector = useSelector(collectorSelector);
 
   const isHomepage = location.pathname === "/explore";

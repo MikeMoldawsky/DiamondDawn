@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import isEmpty from "lodash/isEmpty";
 import isNil from "lodash/isNil";
 import get from "lodash/get";
 import { useForm } from "react-hook-form";
@@ -7,35 +6,45 @@ import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 import "./ApplyForm.scss";
 import { applyToDDApi } from "api/serverApi";
-import { useAccount } from "wagmi";
+import { useAccount, useSignMessage } from "wagmi";
 import { useSelector } from "react-redux";
 import { inviteSelector } from "store/inviteReducer";
 import Checkbox from "components/Checkbox";
 import { showError } from "utils";
 import Wallet from "components/Wallet";
 import { uiSelector } from "store/uiReducer";
+import {
+  StageCountdown,
+  StageCountdownWithText,
+} from "components/Countdown/Countdown";
 
 const getValidationError = (name, value) => {
   switch (name) {
     case "email":
       return !value ? "Required" : "Invalid email address";
     case "twitter":
+      if (!value) return "";
       if (!value.startsWith("@")) {
         return "Must start with '@'";
       }
       return "Invalid twitter handle";
+    case "note":
+      return "Required";
     default:
       return `Invalid ${name}`;
   }
 };
 
-const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
+const ApplyForm = ({ onSuccess, onError }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
+    getValues,
     watch,
+    trigger,
     reset,
     setValue,
   } = useForm({
@@ -45,13 +54,58 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
   const invite = useSelector(inviteSelector);
   const { geoLocation } = useSelector(uiSelector);
 
+  const applyToDD = async () => {
+    try {
+      const data = getValues();
+      const inviteId =
+        invite && !invite.used && !invite.revoked ? invite._id : null;
+      await applyToDDApi(inviteId, account.address, data, geoLocation);
+      setIsSubmitSuccess(true);
+      onSuccess && (await onSuccess(account.address));
+    } catch (e) {
+      showError(e, "Apply Failed");
+      onError && onError();
+    }
+  };
+
+  const { signMessage } = useSignMessage({
+    message:
+      "Welcome to Diamond Dawn!\n" +
+      "\n" +
+      "Sign to accept the Terms of Agreement: https://diamonddawn.art/tnc\n" +
+      "\n" +
+      "This request will not trigger a blockchain transaction or cost any gas fees.",
+    onError(error) {
+      showError(error, "Sign Failed");
+      setDisabled(false);
+    },
+    onSuccess(data) {
+      applyToDD();
+    },
+  });
+
+  const signAndApply = () => {
+    if (!account?.address) {
+      return trigger();
+    }
+    setDisabled(true);
+    signMessage();
+  };
+
   useEffect(() => {
     reset();
     setIsSubmitSuccess(false);
   }, [isSubmitSuccess]);
 
+  const renderErrorMessage = (name) => {
+    return !isNil(get(errors, name)) ? (
+      <div className="form-error">
+        * {getValidationError(name, watch(name))}
+      </div>
+    ) : null;
+  };
+
   const renderInput = (name, placeholder, opts = {}) => {
-    const hasError = !isNil(get(errors, name));
     return (
       <>
         <input
@@ -62,37 +116,13 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
           disabled={disabled}
           placeholder={placeholder}
           className={classNames("input", {
-            "validation-error": hasError,
+            "with-error": !isNil(get(errors, name)),
           })}
         />
-        {hasError && (
-          <div className="form-error">
-            * {getValidationError(name, watch(name))}
-          </div>
-        )}
+        {renderErrorMessage(name)}
       </>
     );
   };
-
-  const applyToDD = async (data) => {
-    try {
-      if (!invite?._id) {
-        throw new Error(
-          "You did not enter Diamond Dawn with a valid invite link"
-        );
-      }
-      onSubmit && onSubmit();
-      await applyToDDApi(invite._id, account.address, data, geoLocation);
-      setIsSubmitSuccess(true);
-      onSuccess && (await onSuccess(account.address));
-    } catch (e) {
-      showError(e, "Apply Failed");
-      onError && onError();
-    }
-  };
-
-  const twitter = watch("twitter");
-  const email = watch("email");
 
   return (
     <div className="request-form">
@@ -126,18 +156,23 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
         <div className="input-container textarea-container">
           <div className="label">Reason</div>
           <textarea
-            {...register("note")}
+            {...register("note", { required: true })}
             disabled={disabled}
-            className="input"
-            placeholder="Why are you a good fit for Diamond Dawn? (optional)"
+            className={classNames("input", {
+              "with-error": !isNil(get(errors, "note")),
+            })}
+            placeholder="Why are you a good fit for Diamond Dawn?"
           />
+          {renderErrorMessage("note")}
         </div>
         <div className="center-aligned-row address-row">
           <div className="input-container">
             <div className="label">Minting Address</div>
             <input
               type="text"
-              className="input full-width"
+              className={classNames("input full-width", {
+                "with-error": !account?.address && isSubmitted,
+              })}
               disabled
               value={account?.address || ""}
               title="If approved, this address will be the one eligible for mint"
@@ -148,21 +183,17 @@ const ApplyForm = ({ disabled, onSubmit, onSuccess, onError }) => {
         <div className="text-comment">
           * Don't worry, you can change your minting address at any point
         </div>
-        <div className="stretch-center-aligned-row buttons">
+        <div className="left-center-aligned-row buttons">
           <ActionButton
             actionKey="Request Invitation"
             className="gold"
-            onClick={handleSubmit(applyToDD)}
-            disabled={
-              disabled ||
-              !account?.address ||
-              !isEmpty(errors) ||
-              (!twitter && !email)
-            }
+            isLoading={disabled}
+            onClick={handleSubmit(signAndApply)}
             sfx="action"
           >
-            SUBMIT
+            SIGN & SUBMIT
           </ActionButton>
+          <StageCountdownWithText />
         </div>
       </form>
     </div>
