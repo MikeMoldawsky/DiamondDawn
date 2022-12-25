@@ -384,12 +384,92 @@
 
     &.Mui-selected {
       cursor: default;
-      background-color: $selected !important;
     }
 
     &.disabled {
       cursor: not-allowed;
       background-color: #d8d8d8;
+    }
+
+    &.toapprove {
+      .MuiDataGrid-cell:first-child {
+        background-color: $toApprove;
+      }
+    }
+
+    &.good {
+      .MuiDataGrid-cell:first-child {
+        background-color: $good;
+      }
+    }
+
+    &.maybe {
+      .MuiDataGrid-cell:first-child {
+        background-color: $maybe;
+      }
+    }
+
+    &.rejected {
+      opacity: .4;
+
+      .MuiDataGrid-cell:first-child {
+        background-color: $rejected;
+      }
+    }
+
+    &.inreview {
+      .MuiDataGrid-cell:first-child {
+        background-color: $inReview;
+      }
+    }
+  }
+
+  .legends {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: .5em;
+
+    .legend {
+      margin: 0 2em;
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        border-radius: 25%;
+        width: .85em;
+        aspect-ratio: 1;
+        top: 50%;
+        transform: translateY(-50%);
+        left: -1.5em;
+      }
+
+      &.inreview {
+        &:before {
+          background-color: $inReview;
+        }
+      }
+      &.toapprove {
+        &:before {
+          background-color: $toApprove;
+        }
+      }
+      &.good {
+        &:before {
+          background-color: $good;
+        }
+      }
+      &.maybe {
+        &:before {
+          background-color: $maybe;
+        }
+      }
+      &.rejected {
+        &:before {
+          background-color: $rejected;
+        }
+      }
     }
   }
 }

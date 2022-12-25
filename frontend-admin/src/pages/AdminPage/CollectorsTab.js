@@ -245,6 +245,13 @@ const InvitationsTab = ({ approved }) => {
   return (
     <div className={classNames("tab-content invitations")}>
       <h1>{approved ? "Approved" : "Pending"} Collectors</h1>
+      <div className="legends">
+        <div className="legend inreview">InReview</div>
+        <div className="legend toapprove">ToApprove</div>
+        <div className="legend good">Good</div>
+        <div className="legend maybe">Maybe</div>
+        <div className="legend rejected">Rejected</div>
+      </div>
       <CRUDTable
         CRUD={CRUD}
         columns={columns}
@@ -256,6 +263,7 @@ const InvitationsTab = ({ approved }) => {
         loadActionKey="load-collectors"
         omitUpdateFields={["invitedBy"]}
         actionsFirst
+        getRowClassName={({ row }) => row.status.toLowerCase()}
       />
     </div>
   );
