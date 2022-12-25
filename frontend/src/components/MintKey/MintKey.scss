@@ -46,7 +46,7 @@
     color: white;
     position: relative;
     flex-grow: 2;
-    padding: 0 1em;
+    padding: 0 1.25em;
     justify-content: space-between;
 
     .center-aligned-row {
@@ -74,32 +74,37 @@
 
     .open-soon {
       position: relative;
-      padding-left: 2em;
-      margin-left: 2em;
     }
   }
 
   .timer-box {
     align-items: stretch;
     justify-content: space-evenly;
-    padding: 1em 0 1em;
-    text-align: center;
+    padding: 1em 0;
 
     .text-comment {
-      font-size: $font15px;
+      font-size: 0.85em;
+      font-weight: 400;
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.05em;
     }
 
     .countdown {
       font-size: 0.45em;
       margin: 1em auto 0;
       color: $text_gray;
+      font-weight: 500;
 
       .value {
-        font-weight: 200 !important;
+        font-weight: 200;
       }
 
-      &.countdown.custom .w-d {
+      &.countdown .w-d {
         border-right-color: $text_gray;
+
+        .value {
+          font-weight: 300;
+        }
       }
     }
   }

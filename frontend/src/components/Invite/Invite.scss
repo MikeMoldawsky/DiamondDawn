@@ -46,24 +46,15 @@
           margin: 1.2em 0 2.4em;
         }
 
-        .follow-box {
-          border: solid 1px #ffffff22;
-          background-color: #ffffff22;
-          padding: 1em;
+        .cta-row {
           width: 100%;
-
-          font-size: $font15px;
-
-          .button {
-            padding-left: 2em;
-            padding-right: 2em;
-            margin-left: 2em;
-          }
+          align-items: flex-end;
+          justify-content: flex-start;
         }
 
         .countdown-container {
-          text-align: center;
-          margin-top: 2em;
+          font-size: 0.9em;
+          margin-left: 2rem;
 
           .countdown {
             font-size: 0.55em;
@@ -71,8 +62,10 @@
 
           .text {
             font-size: 0.9em;
-            font-weight: 300;
-            margin-bottom: 0.5em;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.05em;
+            color: $gold;
           }
         }
       }
