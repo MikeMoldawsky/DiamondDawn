@@ -231,6 +231,7 @@ const DiamondsTable = ({ deployedGIAs = [], renderDeployButton }) => {
         isRowDeployed(params.row) ? "deployed" : ""
       }
       isRowSelectable={(params) => !isRowDeployed(params.row)}
+      checkboxSelection
     />
   );
 };

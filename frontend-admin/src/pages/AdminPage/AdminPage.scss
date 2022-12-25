@@ -362,8 +362,21 @@
     }
   }
 
+  textarea.cell-edit {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
   .MuiDataGrid-row {
     cursor: pointer;
+
+    .MuiDataGrid-cell {
+      padding: 1em 1em;
+      position: relative;
+    }
 
     &.Mui-selected {
       cursor: default;

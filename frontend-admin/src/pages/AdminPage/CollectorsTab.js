@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import CRUDTable from "components/CRUDTable";
-import { GridActionsCellItem } from "@mui/x-data-grid";
+import { GridActionsCellItem, useGridApiContext } from "@mui/x-data-grid";
 import { utils as ethersUtils } from "ethers";
 import {
   approveCollectorApi,
@@ -19,6 +19,18 @@ import { COLLECTOR_STATUS } from "consts";
 const renderCellWithTooltip = (params) => (
   <span title={params.value}>{params.value}</span>
 );
+
+const MultilineTextEdit = (props) => {
+  const { id, value, field } = props;
+  const apiRef = useGridApiContext();
+
+  const handleValueChange = (event) => {
+    const newValue = event.target.value; // The new value entered by the user
+    apiRef.current.setEditCellValue({ id, field, value: newValue });
+  };
+
+  return <textarea className="cell-edit" value={value} onChange={handleValueChange} />;
+}
 
 const INVITATION_COLUMNS = [
   {
@@ -55,31 +67,17 @@ const INVITATION_COLUMNS = [
     minWidth: 300,
     flex: 2,
     editable: true,
+    multiline: true,
     renderCell: renderCellWithTooltip,
+    renderEditCell: (params) => (
+      <MultilineTextEdit {...params} />
+    ),
   },
   {
     field: "status",
     headerName: "Status",
     type: "singleSelect",
-    valueOptions: (params) => {
-      if (!params.row) {
-        // no row - called from filter
-        return Object.values(COLLECTOR_STATUS);
-      }
-      switch (params.row.status) {
-        case COLLECTOR_STATUS.Applied:
-          return [COLLECTOR_STATUS.Applied, COLLECTOR_STATUS.InReview];
-        case COLLECTOR_STATUS.Approved:
-          return [COLLECTOR_STATUS.Approved];
-        default:
-          return [
-            COLLECTOR_STATUS.InReview,
-            COLLECTOR_STATUS.Maybe,
-            COLLECTOR_STATUS.Rejected,
-            COLLECTOR_STATUS.ToApprove,
-          ];
-      }
-    },
+    valueOptions: Object.values(COLLECTOR_STATUS),
     width: 150,
     editable: true,
     hideIfApproved: true,
@@ -89,7 +87,11 @@ const INVITATION_COLUMNS = [
     headerName: "Status Info",
     minWidth: 300,
     editable: true,
+    multiline: true,
     renderCell: renderCellWithTooltip,
+    renderEditCell: (params) => (
+      <MultilineTextEdit {...params} />
+    ),
   },
   {
     field: "buyProbability",
@@ -168,28 +170,6 @@ const INVITATION_COLUMNS = [
   },
 ];
 
-const ReviewButton = ({ collectorId, onSuccess }) => {
-  const review = async () => {
-    if (window.confirm('Set collector to "InReview"?')) {
-      await updateCollectorApi({
-        _id: collectorId,
-        status: COLLECTOR_STATUS.InReview,
-      });
-      onSuccess();
-    }
-  };
-
-  return (
-    <GridActionsCellItem
-      icon={<FontAwesomeIcon icon={faEye} />}
-      onClick={review}
-      label="Review"
-      className="textPrimary"
-      color="inherit"
-    />
-  );
-};
-
 const ApproveButton = ({ collectorId, onSuccess }) => {
   const approve = async () => {
     if (window.confirm("Are you sure you want to approve this collector?")) {
@@ -243,33 +223,17 @@ const InvitationsTab = ({ approved }) => {
     );
   };
 
-  const renderActions = ({ id, row }) => {
-    const actions = [];
-    if (approved) return actions;
-
-    if (row.status === COLLECTOR_STATUS.Applied) {
-      actions.push(
-        <ReviewButton
-          collectorId={id}
-          onSuccess={() =>
-            setLocalCollector(id, { status: COLLECTOR_STATUS.InReview })
-          }
-        />
-      );
-    }
-    actions.push(
-      <ApproveButton
-        collectorId={id}
-        onSuccess={() =>
-          setLocalCollector(id, {
-            approved: true,
-            status: COLLECTOR_STATUS.Approved,
-          })
-        }
-      />
-    );
-    return actions;
-  };
+  const renderActions = ({ id }) => [
+    <ApproveButton
+      collectorId={id}
+      onSuccess={() =>
+        setLocalCollector(id, {
+          approved: true,
+          status: COLLECTOR_STATUS.Approved,
+        })
+      }
+    />
+  ];
 
   return (
     <div className={classNames("tab-content invitations")}>
@@ -281,7 +245,7 @@ const InvitationsTab = ({ approved }) => {
         setRows={setCollectors}
         itemName="Collector"
         newCreatedOnServer
-        renderActions={renderActions}
+        renderActions={approved ? null : renderActions}
         loadActionKey="load-collectors"
         omitUpdateFields={["invitedBy"]}
       />
