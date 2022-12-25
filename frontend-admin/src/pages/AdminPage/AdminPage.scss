@@ -392,35 +392,24 @@
     }
 
     &.toapprove {
-      .MuiDataGrid-cell:first-child {
-        background-color: $toApprove;
-      }
+      background-color: $toApprove;
     }
 
     &.good {
-      .MuiDataGrid-cell:first-child {
-        background-color: $good;
-      }
+      background-color: $good;
     }
 
     &.maybe {
-      .MuiDataGrid-cell:first-child {
-        background-color: $maybe;
-      }
+      background-color: $maybe;
     }
 
     &.rejected {
       opacity: 0.4;
-
-      .MuiDataGrid-cell:first-child {
-        background-color: $rejected;
-      }
+      background-color: $rejected;
     }
 
     &.inreview {
-      .MuiDataGrid-cell:first-child {
-        background-color: $inReview;
-      }
+      background-color: $inReview;
     }
   }
 
@@ -428,7 +417,9 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 0.5em;
+    background-color: white;
+    color: black;
+    padding: .8em 0.4em;
 
     .legend {
       margin: 0 2em;
