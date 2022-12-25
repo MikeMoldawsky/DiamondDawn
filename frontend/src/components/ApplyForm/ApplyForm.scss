@@ -27,14 +27,23 @@
         margin-right: 2em;
       }
 
-      .countdown {
-        font-size: 0.35em;
-        .caption {
-          font-size: max(0.9375em, 8px);
+      .countdown-container {
+        .text {
+          font-size: .7em;
+          font-weight: 500;
+          margin-bottom: .25rem;
         }
 
-        .w-d .caption {
-          font-size: max(0.6875em, 7px);
+        .countdown {
+          font-size: 0.35em;
+
+          .caption {
+            font-size: max(0.9375em, 8px);
+          }
+
+          .w-d .caption {
+            font-size: max(0.6875em, 7px);
+          }
         }
       }
     }

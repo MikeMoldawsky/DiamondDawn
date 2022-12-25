@@ -23,6 +23,7 @@ import sparklesSFX from "assets/audio/end-sparkles.mp3";
 import MintAddressRow from "components/MintAddressRow";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 import { StageCountdownWithText } from "components/Countdown/Countdown";
+import classNames from "classnames";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -110,8 +111,8 @@ const Invite = () => {
       </>
     );
 
-  const renderTwitterButton = () => (
-    <TwitterLink className="button gold icon-after">
+  const renderTwitterButton = (className) => (
+    <TwitterLink className={classNames("button gold icon-after", className)}>
       Follow <FontAwesomeIcon icon={faTwitter} />
     </TwitterLink>
   );
@@ -129,27 +130,23 @@ const Invite = () => {
                 <div className="text-comment">
                   If you're accepted to Diamond Dawn, you'll have exactly
                   <b> 3 days, 3 hours, and 3 minutes</b> to mint your key for
-                  4.44 ETH.
+                  4.44 ETH. Make sure you follow{" "}
+                  <TwitterLink className="text-gold">
+                    <b>@DiamondDawnNFT</b>
+                  </TwitterLink>.
                 </div>
               </div>
-              <div className="center-spaced-column bottom-content">
-                <div className="center-aligned-row follow-box">
+              <div className="center-aligned-row">
+                <div className="center-aligned-row">
                   <div className="follow-text">
-                    <b>
-                      Make sure to follow{" "}
-                      <TwitterLink className="text-gold">
-                        <b>@DiamondDawnNFT</b>
-                      </TwitterLink>
-                    </b>{" "}
                     <MobileOrTablet>{renderTwitterButton()}</MobileOrTablet>
-                    <span>
-                      we’ll send you an email or a Twitter DM if you are
-                      accepted.
-                    </span>
                   </div>
-                  <Desktop>{renderTwitterButton()}</Desktop>
+                  <Desktop>{renderTwitterButton("lg")}</Desktop>
                 </div>
                 <StageCountdownWithText />
+              </div>
+              <div className="center-spaced-column bottom-content">
+
                 <MintAddressRow />
               </div>
             </div>
