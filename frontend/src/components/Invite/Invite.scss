@@ -185,6 +185,20 @@
           .text-comment {
             font-size: 0.95em;
           }
+
+          .cta-row {
+            .countdown-container {
+              margin-left: 2em;
+
+              .text {
+                font-size: 0.7em;
+              }
+
+              .countdown {
+                font-size: 0.3em !important;
+              }
+            }
+          }
         }
 
         .follow-box {
@@ -220,8 +234,12 @@
         }
 
         .request-status {
+          .cta-row {
+            justify-content: space-between;
+          }
+
           .countdown-container {
-            font-size: 0.8em;
+            margin-left: unset;
           }
         }
       }
@@ -238,8 +256,14 @@
 
       .content-box {
         .request-status {
-          .countdown-container {
-            font-size: 0.7em;
+          .cta-row {
+            .countdown-container {
+              font-size: 1rem;
+            }
+
+            .button {
+              padding: 0 1.25em;
+            }
           }
         }
       }
