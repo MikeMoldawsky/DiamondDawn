@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import ApplyForm from "components/ApplyForm";
 import { useAccount } from "wagmi";
-import {clearInvite, inviteSelector, loadInviteById} from "store/inviteReducer";
+import {clearInvite} from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import MintKey from "components/MintKey";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
@@ -28,26 +28,19 @@ const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
   const dispatch = useDispatch();
   const account = useAccount();
-  const invite = useSelector(inviteSelector);
   const collector = useSelector(collectorSelector);
-  const [submitting, setSubmitting] = useState(false);
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
   const [playSparklesSFX] = useSound(sparklesSFX);
 
   const loadCollector = async (address) =>
     dispatch(loadCollectorByAddress(address));
 
-  const onSubmit = () => setSubmitting(true);
-
   const onSubmitSuccess = (address) => {
-    setSubmitting(false);
     setShowSubmittedModal(true);
     playSparklesSFX();
     loadCollector(address);
     dispatch(clearInvite())
   };
-
-  const onSubmitError = () => setSubmitting(false);
 
   useEffect(() => {
     if (
@@ -155,12 +148,7 @@ const Invite = () => {
           ) : (
             <>
               <Desktop>{renderTitle()}</Desktop>
-              <ApplyForm
-                disabled={submitting}
-                onSubmit={onSubmit}
-                onSuccess={onSubmitSuccess}
-                onError={onSubmitError}
-              />
+              <ApplyForm onSuccess={onSubmitSuccess} />
             </>
           )}
           {showSubmittedModal && (
