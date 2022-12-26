@@ -45,6 +45,7 @@ const TEAM = [
     links: {
       twitter: "https://twitter.com/tweezers0x",
       linkedin: "https://www.linkedin.com/in/mike-moldawsky-608a2098/",
+      website: "https://linktr.ee/tweezers0xffff",
     },
   },
   {
@@ -74,6 +75,7 @@ const TEAM = [
     Text: AvivaText,
     links: {
       linkedin: "https://www.linkedin.com/in/aviva-moldawsky-12589315/",
+      website: "https://www.moldawskydiamonds.com/",
     },
   },
   {
