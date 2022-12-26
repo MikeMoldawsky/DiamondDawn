@@ -25,7 +25,12 @@ const CREDITS = [
     name: "Asaf Snir",
     link: "https://www.linkedin.com/in/asaf-snir-87b581b6/",
   },
-  { id: "aviva", title: "Designer", name: "Aviva Moldawsky", link: "" },
+  {
+    id: "aviva",
+    title: "Designer",
+    name: "Aviva Moldawsky",
+    link: "https://www.linkedin.com/in/aviva-moldawsky-12589315/",
+  },
   {
     id: "tony",
     title: "Advisor",

@@ -72,7 +72,9 @@ const TEAM = [
     name: "Aviva Moldawsky",
     title: "Diamond Art Designer",
     Text: AvivaText,
-    links: {},
+    links: {
+      linkedin: "https://www.linkedin.com/in/aviva-moldawsky-12589315/",
+    },
   },
   {
     id: "tony",
