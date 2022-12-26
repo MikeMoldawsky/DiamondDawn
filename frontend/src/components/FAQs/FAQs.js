@@ -8,6 +8,7 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "components/Button";
 import classNames from "classnames";
 import { NavLink, useNavigate } from "react-router-dom";
+import { TwitterLink } from "components/Links";
 
 const FAQS = [
   {
@@ -16,16 +17,6 @@ const FAQS = [
       <p>
         Yes. <br /> Diamond Dawn's diamonds are real, natural diamonds, and a
         GIA diamond certificate backs each stone.
-      </p>
-    ),
-  },
-  {
-    title: "When does the private sale start?",
-    content: () => (
-      <p>
-        Diamond Dawn's private sale will start on January 11.
-        <br />
-        The sale will be open for only ONE week.
       </p>
     ),
   },
@@ -48,6 +39,67 @@ const FAQS = [
         centerpiece on a desk, bookcase, or in any room.
       </p>
     ),
+  },
+  {
+    title: "Is Diamond Dawn 100% decentralized?",
+    content: () => (
+      <p>
+        Yes. <br />
+        Diamond Dawn's NFT attributes live on the Ethereum blockchain, and the
+        videos are stored on the Arweave decentralized network (read{" "}
+        <NavLink to="/technology">
+          <span className="link">Timeless Technology</span>
+        </NavLink>{" "}
+        for additional info).{" "}
+      </p>
+    ),
+  },
+  {
+    title: "How many NFTs are reserved for the team?",
+    content: () => (
+      <p>
+        None.
+        <br />
+        The Diamond Dawn team has no reserved NFTs - we will be minting NFTs
+        just like any other collector.
+      </p>
+    ),
+  },
+  {
+    title: "How do I increase my chances of getting accepted?",
+    content: () => (
+      <p>
+        <ul>
+          <li>
+            Follow{" "}
+            <TwitterLink className="text-gold">
+              <b>@DiamondDawnNFT</b>
+            </TwitterLink>
+            .
+          </li>
+          <li>Get an invite from an accepted collector.</li>
+          <li>Submit a genuine reason for joining.</li>
+          <li>
+            Prove your ability to participate in a high mint project (having
+            4.44 ETH is 10/10)
+          </li>
+        </ul>
+      </p>
+    ),
+  },
+  {
+    title: "When does the private sale start?",
+    content: () => (
+      <p>
+        Diamond Dawn's private sale will start on January 11.
+        <br />
+        The sale will be open for only ONE week.
+      </p>
+    ),
+  },
+  {
+    title: "When does the public sale start?",
+    content: () => <p>Diamond Dawn's public sale will start on January 18.</p>,
   },
   {
     title: "What's a Diamond Certification?",
@@ -74,10 +126,6 @@ const FAQS = [
     ),
   },
   {
-    title: "When does the public sale start?",
-    content: () => <p>Diamond Dawn's public sale will start on January 18.</p>,
-  },
-  {
     title: "What's the supply?",
     content: () => <p>333 Editions.</p>,
   },
@@ -97,20 +145,6 @@ const FAQS = [
       <p>
         No. <br />
         There is a maximum of 1 NFT per wallet.
-      </p>
-    ),
-  },
-  {
-    title: "Is Diamond Dawn 100% decentralized?",
-    content: () => (
-      <p>
-        Yes. <br />
-        Diamond Dawn's NFT attributes live on the Ethereum blockchain, and the
-        videos are stored on the Arweave decentralized network (read{" "}
-        <NavLink to="/technology">
-          <span className="link">Timeless Technology</span>
-        </NavLink>{" "}
-        for additional info).{" "}
       </p>
     ),
   },
@@ -248,7 +282,7 @@ const FAQ = ({ title, content }) => {
 const FAQs = ({ collapsed }) => {
   const navigate = useNavigate();
 
-  const faqs = !collapsed ? FAQS : take(FAQS, 3);
+  const faqs = !collapsed ? FAQS : take(FAQS, 5);
 
   return (
     <div className={classNames("faqs", { collapsed })}>
