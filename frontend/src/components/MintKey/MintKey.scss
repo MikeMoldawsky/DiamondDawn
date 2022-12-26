@@ -249,8 +249,9 @@
           font-size: 0.9125em;
 
           .image img {
-            height: 5em;
-            margin: -1em -3em -2em -1.5em;
+            height: unset;
+            width: 135%;
+            margin: 0 0 -1em -1.5em;
           }
 
           .invites-box-text {

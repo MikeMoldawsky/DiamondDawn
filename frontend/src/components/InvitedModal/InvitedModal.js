@@ -68,16 +68,16 @@ const InvitedModalContent = ({ close, onCopy, invite }) => {
       <div className="text">
         You’ve been invited by{" "}
         <CollectorLink collector={createdBy} twitter={inviter} /> to participate
-        in Diamond Dawn’s private sale.
+        in Diamond Dawn’s journey.
       </div>
       <div className="text">
-        The following password can ONLY be used for one application - make sure
-        to keep it safe.
+        Your invitation means you're a top candidate for the project, and you'll
+        get priority in the review process over other collectors.
       </div>
       <div className="text-center">
-        <CopyButton content={copyContent} onCopy={onCopyClick}>
-          USE PASSWORD
-        </CopyButton>
+        <Button className="gold" onClick={close}>
+          Continue
+        </Button>
       </div>
     </>
   );

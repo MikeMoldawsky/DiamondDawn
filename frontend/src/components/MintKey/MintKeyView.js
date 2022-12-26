@@ -114,17 +114,17 @@ const MintKeyView = ({
               </div>
               <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
               <div className="text">
-                You've been granted 2 invitations to share with your web3
-                friends. Diamond Dawn's unique invitation mechanism is the{" "}
-                <b>fairest</b> way to spread the project within web3
-                communities.
+                Diamond Dawn's invitation system is designed to ensure fairness
+                by granting you the power to choose who should join the project.
+                <br />
+                <br />
+                <b>These invitations are extremely valuable.</b>
                 <br />
                 <br />
                 Why?
                 <br />
-                Because we're giving YOU the power to choose who can join
-                Diamond Dawn, we trust you'll share your 2 invitation links
-                responsibly with other collectors.
+                Because your invited friends will get priority in the review
+                process over other collectors.
               </div>
               <InvitationsStatus />
             </div>
@@ -156,7 +156,9 @@ const MintKeyView = ({
                   <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
                 </div>
                 <div className="center-aligned-row invites-box-text">
-                  <div className="text">You’ve been granted 2 invitations</div>
+                  <div className="text">
+                    Increase your friend's chances of being accepted
+                  </div>
                   <Button className="gold" onClick={() => toggleInvites(true)}>
                     INVITE A FRIEND
                   </Button>
