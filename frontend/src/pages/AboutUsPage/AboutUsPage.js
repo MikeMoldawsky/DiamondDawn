@@ -74,6 +74,7 @@ const TEAM = [
     Text: AvivaText,
     links: {
       linkedin: "https://www.linkedin.com/in/aviva-moldawsky-12589315/",
+      website: "https://www.moldawskydiamonds.com/"
     },
   },
   {
