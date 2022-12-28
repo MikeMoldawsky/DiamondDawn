@@ -16,9 +16,9 @@ import Diamond from "components/Diamond";
 import { PageTransition } from "@steveeeie/react-page-transition";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import DiamondInfo from "components/DiamondInfo";
 import NFTTraits from "components/NFTs/NFTTraits";
-import {NFT_NAME_BY_STAGE, SYSTEM_STAGE, SYSTEM_STAGE_NAME} from "consts";
+import {NFT_NAME_BY_STAGE, SYSTEM_STAGE} from "consts";
+import classNames from "classnames";
 
 const NFTs = () => {
   const tokens = useSelector(tokensSelector);
@@ -29,21 +29,24 @@ const NFTs = () => {
   const { selectedTokenId } = useSelector(uiSelector)
   const selectedToken = useSelector(tokenByIdSelector(selectedTokenId))
   const [transitionName, setTransitionName] = useState("")
+  const [startTransition, setStartTransition] = useState(false)
 
   const tokenCount = size(tokens)
-  const tokenIds = Object.keys(tokens)
+  const tokenIds = Object.keys(tokens).map(safeParseInt)
   const selectedIndex = tokenIds.indexOf(selectedTokenId)
   const firstId = safeParseInt(head(tokenIds))
   const lastId = safeParseInt(last(tokenIds))
 
   const selectToken = (index, transition) => {
     if (transition) {
+      setStartTransition(true)
       setTransitionName(transition)
     }
     setTimeout(() => {
       const id = tokenIds[index]
-      dispatch(setSelectedTokenId(id))
-    }, 0)
+      dispatch(setSelectedTokenId(safeParseInt(id)))
+      setStartTransition(false)
+    }, 350)
   }
 
   useEffect(() => {
@@ -59,7 +62,6 @@ const NFTs = () => {
   };
 
   const renderPlateEntry = (stage, name) => {
-    console.log({ stage, name })
     switch (stage) {
       case SYSTEM_STAGE.KEY:
         return (
@@ -80,10 +82,24 @@ const NFTs = () => {
     }
   }
 
-  return selectedToken ? (
+  console.log({ selectedTokenId, firstId, lastId })
+
+  if (!selectedToken) return null
+
+  const showBackButton = selectedTokenId !== firstId
+  const showForwardButton = selectedTokenId !== lastId
+  const middleBorderClassNames = {
+    "with-back-btn": showBackButton,
+    "with-forward-btn": showForwardButton,
+  }
+
+  return (
     <div className="box-content opaque nfts">
       <div className="layout-box">
-        {selectedTokenId !== firstId && (
+        <div className={classNames("border-box top-border-box")} />
+        <div className={classNames("border-box middle-border-box", middleBorderClassNames)} />
+        <div className={classNames("border-box bottom-border-box")} />
+        {showBackButton && (
           <div className="box-button back" onClick={() => selectToken(selectedIndex - 1, "moveToLeftUnfoldRight")}>
             <ArrowBackIosNewIcon />
           </div>
@@ -96,17 +112,13 @@ const NFTs = () => {
             <Diamond diamond={selectedToken} />
           </PageTransition>
         </div>
-        <div className="spaced-aligned-column content-box">
+        <div className={classNames("spaced-aligned-column content-box", { hidden: startTransition})}>
           <div className="center-aligned-row card-header">
             <div>
               <div className="subtitle-text">{selectedToken.name}</div>
               <div className="tagline-text">NFT #{selectedToken.id} / 333</div>
             </div>
-            <img
-              // className="certificate"
-              src={getCDNImageUrl("certificate.svg")}
-              alt=""
-            />
+            <img src={getCDNImageUrl("certificate.svg")} alt="" />
           </div>
           <div>
             <div className="certificate">
@@ -131,7 +143,7 @@ const NFTs = () => {
             </div>
           </div>
         </div>
-        {selectedTokenId !== lastId && (
+        {showForwardButton && (
           <div className="box-button forward" onClick={() => selectToken(selectedIndex + 1, "moveToRightUnfoldLeft")}>
             <ArrowForwardIosIcon />
           </div>
@@ -143,7 +155,7 @@ const NFTs = () => {
         </div>
       )}
     </div>
-  ) : null;
+  )
 };
 
 export default NFTs;

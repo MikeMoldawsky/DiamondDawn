@@ -11,7 +11,41 @@
     width: 90%;
     justify-content: flex-start;
     position: relative;
-    border: solid 1px #ffffff88;
+
+    .border-box {
+      position: absolute;
+      width: 100%;
+      height: calc(50% - 1.5em);
+      left: 0;
+      border: solid 1px white;
+      z-index: -1;
+
+      &.top-border-box {
+        top: 0;
+        border-bottom: none;
+      }
+
+      &.bottom-border-box {
+        bottom: 0;
+        border-top: none;
+      }
+
+      &.middle-border-box {
+        height: 3em;
+        top: calc(50% - 1.5em);
+        border-top: none;
+        border-bottom: none;
+        border-left: solid 1px white;
+        border-right: solid 1px white;
+
+        &.with-back-btn {
+          border-left: none;
+        }
+        &.with-forward-btn {
+          border-right: none;
+        }
+      }
+    }
 
     img {
       width: 5em;
@@ -20,6 +54,7 @@
     .diamond-box {
       height: 100%;
       aspect-ratio: 1;
+      padding: .5em;
     }
 
     .certificate {
@@ -52,9 +87,17 @@
     .content-box {
       flex-grow: 2;
       padding: 1.5em 3em 2.5em;
+      animation: showCertificate .25s ease-out forwards;
+      animation-delay: 1s;
+      opacity: 0;
+      z-index: -1;
 
       .tagline-text {
         color: white;
+      }
+
+      &.hidden {
+        animation: hideCertificate .25s ease-in forwards;
       }
     }
 
@@ -121,7 +164,7 @@
       transform: translate(-50%, -50%);
       z-index: 1;
       cursor: pointer;
-      border: solid 2px #ffffff88;
+      border: solid 2px #ffffffbb;
       border-radius: 50%;
       padding-right: .2em;
       display: flex;
@@ -129,7 +172,7 @@
       justify-content: center;
       width: 3em;
       height: 3em;
-      background-color: black;
+      background-color: #4d4d4d88;
 
       svg {
         font-size: 1.8em;
@@ -145,6 +188,46 @@
         padding-right: 0;
         padding-left: .2em;
       }
+    }
+  }
+
+  @keyframes showCertificate {
+    0% {
+      transform: translateX(-95%);
+      opacity: 0;
+      z-index: -1;
+    }
+    10% {
+      transform: translateX(-85.5%);
+      opacity: 1;
+    }
+    99% {
+      z-index: -1;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+      z-index: 0;
+    }
+  }
+
+  @keyframes hideCertificate {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+      z-index: 0;
+    }
+    1% {
+      z-index: -1;
+    }
+    90% {
+      transform: translateX(-85.5%);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-95%);
+      opacity: 0;
+      z-index: -1;
     }
   }
 }
