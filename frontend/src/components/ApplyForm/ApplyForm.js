@@ -191,7 +191,7 @@ const ApplyForm = ({ onSuccess, onError }) => {
             onClick={handleSubmit(signAndApply)}
             sfx="action"
           >
-            SIGN & SUBMIT
+            SUBMIT
           </ActionButton>
           <StageCountdownWithText />
         </div>

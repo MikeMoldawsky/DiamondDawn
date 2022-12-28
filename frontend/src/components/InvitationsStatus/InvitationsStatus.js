@@ -44,7 +44,7 @@ const InvitationsStatus = () => {
               disabled={disabled || !!usedBy}
               sfx="utility"
             >
-              INVITATION 0{i + 1}
+              INVITE 0{i + 1}
             </CopyButton>
             <div className="status">{renderStatus(invite)}</div>
           </div>
