@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from "react";
-import map from "lodash/map";
 import size from "lodash/size";
 import head from "lodash/head";
 import last from "lodash/last";
-import padStart from "lodash/padStart";
-import filter from "lodash/filter";
 import "./NFTs.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {tokenByIdSelector, tokensSelector} from "store/tokensReducer";
@@ -16,8 +13,8 @@ import Diamond from "components/Diamond";
 import { PageTransition } from "@steveeeie/react-page-transition";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import NFTTraits from "components/NFTs/NFTTraits";
-import {NFT_NAME_BY_STAGE, SYSTEM_STAGE} from "consts";
+import NFTTraits from "./NFTTraits";
+import NFTPlate from "./NFTPlate";
 import classNames from "classnames";
 
 const NFTs = () => {
@@ -61,27 +58,6 @@ const NFTs = () => {
     navigate("/process");
   };
 
-  const renderPlateEntry = (stage, name) => {
-    switch (stage) {
-      case SYSTEM_STAGE.KEY:
-        return (
-          <>
-            <div>{name}</div>
-            <div># {padStart(selectedTokenId, 3, '0')} / 333</div>
-          </>
-        )
-      case SYSTEM_STAGE.DAWN:
-        return (
-          <>
-            <div>{name}</div>
-            <div># 000 / 333</div>
-          </>
-        )
-      default:
-        return <div className="unrevealed">?</div>
-    }
-  }
-
   console.log({ selectedTokenId, firstId, lastId })
 
   if (!selectedToken) return null
@@ -124,23 +100,7 @@ const NFTs = () => {
             <div className="certificate">
               <NFTTraits traits={selectedToken.attributes} />
             </div>
-            <div className="nft-plate">
-              <div className="bg">
-                <div className="nail"/>
-                <div className="nail"/>
-                <div className="nail"/>
-                <div className="nail"/>
-              </div>
-              <div className="center-aligned-row phases">
-                {map(NFT_NAME_BY_STAGE, (name, stage) => (
-                  <div key={`plate-phase-${stage}`} className="center-aligned-column phase-info">
-                    <div className="left-centered-aligned-column">
-                      {renderPlateEntry(parseInt(stage), name)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <NFTPlate />
           </div>
         </div>
         {showForwardButton && (
