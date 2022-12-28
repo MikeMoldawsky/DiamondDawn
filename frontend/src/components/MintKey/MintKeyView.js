@@ -18,6 +18,7 @@ import useMusic from "hooks/useMusic";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import { useSearchParams } from "react-router-dom";
+import classNames from "classnames";
 
 const MintKeyView = ({
   mintPrice = 4.44,
@@ -96,13 +97,14 @@ const MintKeyView = ({
 
   const { countdownText, date: countdownEnd } = useMineOpenCountdown();
 
+  console.log({ canMint, expiresAt })
   const countdownEndDate = canMint ? expiresAt : countdownEnd;
   const countdownTextLine = canMint
     ? "When the time runs out, you'll no longer be able to join Diamond Dawn"
     : countdownText;
 
   return (
-    <div className="action-view enter">
+    <div className={classNames("action-view enter", { minting: canMint })}>
       <div className="layout-box">
         {!showInvites && <MobileOrTablet>{renderTitle()}</MobileOrTablet>}
         <Desktop>{renderHandAndKeyVideo()}</Desktop>

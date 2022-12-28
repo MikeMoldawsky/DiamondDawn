@@ -58,11 +58,61 @@
       }
     }
 
-    .ids-plate {
+    .nft-plate {
       margin-top: 2em;
-      height: 4em;
-      //width: 100%;
-      background-color: #b5b5b5;
+      height: 5.25em;
+      position: relative;
+      font-size: .8em;
+      font-weight: 500;
+      padding: 0 .5em;
+
+      .bg {
+        background: url($CDN_URL + "/images/collector/nft-plate.jpg") no-repeat center center;
+        background-size: 100% auto;
+
+        .nail {
+          position: absolute;
+          $nailMargin: .125em;
+          $nailSize: .8em;
+          width: $nailSize;
+          height: $nailSize;
+          background: url($CDN_URL + "/images/collector/plate-nail.png") no-repeat center center;
+
+          &:nth-child(1) {
+            top: $nailMargin;
+            left: $nailMargin;
+          }
+          &:nth-child(2) {
+            top: $nailMargin;
+            right: $nailMargin;
+          }
+          &:nth-child(3) {
+            bottom: $nailMargin;
+            right: $nailMargin;
+          }
+          &:nth-child(4) {
+            bottom: $nailMargin;
+            left: $nailMargin;
+          }
+        }
+      }
+
+      .phases {
+        height: 100%;
+        justify-content: space-around;
+
+        .phase-info {
+          width: 20%;
+
+          .unrevealed {
+            font-size: 2.5em;
+          }
+
+          &:not(:first-child) {
+            border-left: solid 1px #ccccccaa;
+          }
+        }
+      }
     }
 
     .box-button {

@@ -187,7 +187,6 @@ export const createVideoSources = (fileName) => [
   { src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm" },
   { src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" },
 ];
-
 export const getVideoBitrate = (width) => {
   return width <= 1024 ? "2.5m" : "5m";
   // return width <= 768 || (width <= 1024 && height > width);
@@ -214,3 +213,12 @@ export const chainNameById = (chainId) => {
       return "Local";
   }
 };
+
+export const safeParseInt = v => {
+  try {
+    return parseInt(v)
+  } catch (e) {
+    console.error("safeParseInt threw", e)
+    return -1
+  }
+}

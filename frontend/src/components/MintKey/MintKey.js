@@ -56,7 +56,7 @@ const MintKey = () => {
         onCountdownEnd={onMintWindowClose}
       />
     ),
-    [minePrice, maxDiamonds, diamondCount, canMint]
+    [minePrice, maxDiamonds, diamondCount, canMint, collector.mintWindowClose]
   );
 
   if (!collector || collector.minted || collector.mintClosed) return null;

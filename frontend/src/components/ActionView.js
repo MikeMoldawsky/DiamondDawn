@@ -9,7 +9,7 @@ import Loading from "components/Loading";
 import classNames from "classnames";
 import { loadConfig, systemSelector } from "store/systemReducer";
 import _ from "lodash";
-import { setShouldIgnoreTokenTransferWatch, uiSelector } from "store/uiReducer";
+import {setSelectedTokenId, setShouldIgnoreTokenTransferWatch, uiSelector} from "store/uiReducer";
 import { getTokenUriApi } from "api/contractApi";
 import { getStageName, isTokenActionable } from "utils";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
@@ -64,7 +64,10 @@ const ActionView = ({
     if (completeVideoEnded && processedTokenId > -1 && processedTokenUri) {
       dispatch(setTokenUri(processedTokenId, processedTokenUri));
       dispatch(setShouldIgnoreTokenTransferWatch(false));
-      navigate(`/nft/${processedTokenId}`);
+      dispatch(setSelectedTokenId(processedTokenId))
+      if (!isEnter) {
+        navigate(`/nft/${processedTokenId}`);
+      }
     }
   }, [completeVideoEnded, processedTokenId, processedTokenUri]);
 

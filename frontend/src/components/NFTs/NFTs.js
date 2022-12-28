@@ -3,11 +3,13 @@ import map from "lodash/map";
 import size from "lodash/size";
 import head from "lodash/head";
 import last from "lodash/last";
+import padStart from "lodash/padStart";
+import filter from "lodash/filter";
 import "./NFTs.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {tokenByIdSelector, tokensSelector} from "store/tokensReducer";
 import { useNavigate } from "react-router-dom";
-import {getCDNImageUrl, getTokenNextStageName, isTokenActionable} from "utils";
+import {getCDNImageUrl, getTokenNextStageName, isTokenActionable, safeParseInt} from "utils";
 import {setSelectedTokenId, uiSelector} from "store/uiReducer";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
@@ -16,6 +18,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DiamondInfo from "components/DiamondInfo";
 import NFTTraits from "components/NFTs/NFTTraits";
+import {NFT_NAME_BY_STAGE, SYSTEM_STAGE, SYSTEM_STAGE_NAME} from "consts";
 
 const NFTs = () => {
   const tokens = useSelector(tokensSelector);
@@ -30,8 +33,8 @@ const NFTs = () => {
   const tokenCount = size(tokens)
   const tokenIds = Object.keys(tokens)
   const selectedIndex = tokenIds.indexOf(selectedTokenId)
-  const firstId = head(tokenIds)
-  const lastId = last(tokenIds)
+  const firstId = safeParseInt(head(tokenIds))
+  const lastId = safeParseInt(last(tokenIds))
 
   const selectToken = (index, transition) => {
     if (transition) {
@@ -45,7 +48,7 @@ const NFTs = () => {
 
   useEffect(() => {
     if (selectedTokenId === -1 && tokenCount > 0) {
-      selectToken(firstId)
+      dispatch(setSelectedTokenId(firstId))
     }
   }, [selectedTokenId, tokenCount])
 
@@ -54,6 +57,28 @@ const NFTs = () => {
     dispatch(setSelectedTokenId(tokenId));
     navigate("/process");
   };
+
+  const renderPlateEntry = (stage, name) => {
+    console.log({ stage, name })
+    switch (stage) {
+      case SYSTEM_STAGE.KEY:
+        return (
+          <>
+            <div>{name}</div>
+            <div># {padStart(selectedTokenId, 3, '0')} / 333</div>
+          </>
+        )
+      case SYSTEM_STAGE.DAWN:
+        return (
+          <>
+            <div>{name}</div>
+            <div># 000 / 333</div>
+          </>
+        )
+      default:
+        return <div className="unrevealed">?</div>
+    }
+  }
 
   return selectedToken ? (
     <div className="box-content opaque nfts">
@@ -87,8 +112,22 @@ const NFTs = () => {
             <div className="certificate">
               <NFTTraits traits={selectedToken.attributes} />
             </div>
-            <div className="ids-plate">
-
+            <div className="nft-plate">
+              <div className="bg">
+                <div className="nail"/>
+                <div className="nail"/>
+                <div className="nail"/>
+                <div className="nail"/>
+              </div>
+              <div className="center-aligned-row phases">
+                {map(NFT_NAME_BY_STAGE, (name, stage) => (
+                  <div key={`plate-phase-${stage}`} className="center-aligned-column phase-info">
+                    <div className="left-centered-aligned-column">
+                      {renderPlateEntry(parseInt(stage), name)}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

@@ -18,6 +18,14 @@ export const SYSTEM_STAGE_NAME = {
   [SYSTEM_STAGE.COMPLETED]: "Completed",
 };
 
+export const NFT_NAME_BY_STAGE = {
+  [SYSTEM_STAGE.KEY]: "Mine Key",
+  [SYSTEM_STAGE.MINE]: "Rough Stone",
+  [SYSTEM_STAGE.CUT]: "Formation",
+  [SYSTEM_STAGE.POLISH]: "Diamond",
+  [SYSTEM_STAGE.DAWN]: "Dawn",
+}
+
 export const ROUGH_SHAPE = {
   NO_SHAPE: 0,
   MAKEABLE_1: 1,
