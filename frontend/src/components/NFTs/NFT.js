@@ -1,6 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import {getCDNImageUrl, getTokenNextStageName, isTokenActionable} from "utils";
+import {
+  getCDNImageUrl,
+  getTokenNextStageName,
+  isTokenActionable,
+} from "utils";
 import { systemSelector } from "store/systemReducer";
 import Diamond from "components/Diamond";
 import { PageTransition } from "@steveeeie/react-page-transition";
@@ -21,7 +25,11 @@ const NFT = ({ token, hideCertificate, transitionName, goToProcess }) => {
           <Diamond diamond={token} />
         </PageTransition>
       </div>
-      <div className={classNames("spaced-aligned-column content-box", { hidden: hideCertificate})}>
+      <div
+        className={classNames("spaced-aligned-column content-box", {
+          hidden: hideCertificate,
+        })}
+      >
         <div className="center-aligned-row card-header">
           <div>
             <div className="subtitle-text">{token.name}</div>
@@ -42,7 +50,7 @@ const NFT = ({ token, hideCertificate, transitionName, goToProcess }) => {
         </div>
       )}
     </>
-  )
+  );
 };
 
 export default NFT;

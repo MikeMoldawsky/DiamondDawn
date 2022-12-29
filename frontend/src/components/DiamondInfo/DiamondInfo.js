@@ -30,7 +30,7 @@ const DiamondInfo = ({ diamond }) => {
         </div>
       ))}
     </div>
-  )
+  );
 };
 
 export default DiamondInfo;

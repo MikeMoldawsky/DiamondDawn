@@ -217,11 +217,11 @@ export const chainNameById = (chainId) => {
   }
 };
 
-export const safeParseInt = v => {
+export const safeParseInt = (v) => {
   try {
-    return parseInt(v)
+    return parseInt(v);
   } catch (e) {
-    console.error("safeParseInt threw", e)
-    return -1
+    console.error("safeParseInt threw", e);
+    return -1;
   }
-}
+};

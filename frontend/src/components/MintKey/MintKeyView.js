@@ -97,7 +97,7 @@ const MintKeyView = ({
 
   const { countdownText, date: countdownEnd } = useMineOpenCountdown();
 
-  console.log({ canMint, expiresAt })
+  console.log({ canMint, expiresAt });
   const countdownEndDate = canMint ? expiresAt : countdownEnd;
   const countdownTextLine = canMint
     ? "When the time runs out, you'll no longer be able to join Diamond Dawn"

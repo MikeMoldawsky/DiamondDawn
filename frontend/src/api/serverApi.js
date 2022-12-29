@@ -12,15 +12,21 @@ export const getContractInfoApi = async () => {
       };
     }
     if (process.env.REACT_APP_USE_LOCAL_CONTRACT === "cdn") {
-      const [{data: addresses}, {data: ddAbi}, {data: ddMineAbi}] = await Promise.all([
-        axios.get(getCDNContractUrl(`${process.env.NODE_ENV}_contracts.json`)),
-        axios.get(getCDNContractUrl("dd_abi.json")),
-        axios.get(getCDNContractUrl("dd_mine_abi.json")),
-      ])
-      console.log("CDN contracts response", { addresses, ddAbi, ddMineAbi })
+      const [{ data: addresses }, { data: ddAbi }, { data: ddMineAbi }] =
+        await Promise.all([
+          axios.get(
+            getCDNContractUrl(`${process.env.NODE_ENV}_contracts.json`)
+          ),
+          axios.get(getCDNContractUrl("dd_abi.json")),
+          axios.get(getCDNContractUrl("dd_mine_abi.json")),
+        ]);
+      console.log("CDN contracts response", { addresses, ddAbi, ddMineAbi });
       return {
         ddContract: { address: addresses.dd, artifact: { abi: ddAbi } },
-        ddMineContract: { address: addresses.dd_mine, artifact: { abi: ddMineAbi } },
+        ddMineContract: {
+          address: addresses.dd_mine,
+          artifact: { abi: ddMineAbi },
+        },
       };
     }
     const { data } = await axios.get(`/api/get_contract`);

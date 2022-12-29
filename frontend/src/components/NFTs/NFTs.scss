@@ -5,7 +5,8 @@
   align-items: center;
   justify-content: center;
 
-  .layout-box, .gallery {
+  .layout-box,
+  .gallery {
     display: flex;
     height: 85%;
     width: 90%;
@@ -58,7 +59,7 @@
     .diamond-box {
       height: 100%;
       aspect-ratio: 1;
-      padding: .5em;
+      padding: 0.5em;
     }
 
     .certificate {
@@ -67,18 +68,18 @@
 
         .trait {
           line-height: 1.5em;
-          margin-bottom: .5em;
+          margin-bottom: 0.5em;
 
           .underline {
             position: relative;
             flex-grow: 2;
             height: 1.5em;
             overflow: hidden;
-            margin: 0 .25em;
+            margin: 0 0.25em;
 
             &:after {
-              content: '.........................................................................';
-              letter-spacing: .1em;
+              content: ".........................................................................";
+              letter-spacing: 0.1em;
               position: absolute;
               bottom: 0;
               width: 100%;
@@ -91,8 +92,8 @@
     .content-box {
       flex-grow: 2;
       padding: 1.5em 3em 2.5em;
-      animation: showCertificate .25s ease-out forwards;
-      animation-delay: .75s;
+      animation: showCertificate 0.25s ease-out forwards;
+      animation-delay: 0.75s;
       opacity: 0;
       z-index: -1;
 
@@ -101,7 +102,7 @@
       }
 
       &.hidden {
-        animation: hideCertificate .25s ease-in forwards;
+        animation: hideCertificate 0.25s ease-in forwards;
       }
     }
 
@@ -109,21 +110,23 @@
       margin-top: 2em;
       height: 5.25em;
       position: relative;
-      font-size: .8em;
+      font-size: 0.8em;
       font-weight: 500;
-      padding: 0 .5em;
+      padding: 0 0.5em;
 
       .bg {
-        background: url($CDN_URL + "/images/collector/nft-plate.jpg") no-repeat center center;
+        background: url($CDN_URL + "/images/collector/nft-plate.jpg") no-repeat
+          center center;
         background-size: 100% auto;
 
         .nail {
           position: absolute;
-          $nailMargin: .125em;
-          $nailSize: .8em;
+          $nailMargin: 0.125em;
+          $nailSize: 0.8em;
           width: $nailSize;
           height: $nailSize;
-          background: url($CDN_URL + "/images/collector/plate-nail.png") no-repeat center center;
+          background: url($CDN_URL + "/images/collector/plate-nail.png")
+            no-repeat center center;
 
           &:nth-child(1) {
             top: $nailMargin;
@@ -170,7 +173,7 @@
       cursor: pointer;
       border: solid 2px #ffffffbb;
       border-radius: 50%;
-      padding-right: .2em;
+      padding-right: 0.2em;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -180,7 +183,7 @@
 
       svg {
         font-size: 1.8em;
-        opacity: .75;
+        opacity: 0.75;
       }
 
       &.back {
@@ -190,7 +193,7 @@
       &.forward {
         left: 100%;
         padding-right: 0;
-        padding-left: .2em;
+        padding-left: 0.2em;
       }
     }
   }
@@ -204,7 +207,7 @@
       position: relative;
 
       &.active {
-        transition: all .5s ease-out;
+        transition: all 0.5s ease-out;
         position: absolute;
         z-index: 1;
         top: 0;

@@ -29,7 +29,7 @@ const NFTTraits = ({ traits }) => {
         </div>
       ))}
     </div>
-  )
+  );
 };
 
 export default NFTTraits;
