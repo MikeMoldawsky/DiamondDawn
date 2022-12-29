@@ -1,15 +1,16 @@
 import { useContract, useProvider, useSigner } from "wagmi";
 import { useSelector } from "react-redux";
-import { systemSelector } from "store/systemReducer";
+import {contractSelector} from "store/systemReducer";
+import { CONTRACTS } from "consts";
 
-function useDDContract() {
-  const { ddContractInfo } = useSelector(systemSelector);
+function useDDContract(contractType = CONTRACTS.DiamondDawn) {
+  const contractData = useSelector(contractSelector(contractType));
   const provider = useProvider();
   const { data: signer } = useSigner();
 
   const contractConfig = {
-    address: ddContractInfo.address,
-    abi: ddContractInfo.artifact.abi,
+    address: contractData.address,
+    abi: contractData.artifact.abi,
     signerOrProvider: signer || provider,
   };
 

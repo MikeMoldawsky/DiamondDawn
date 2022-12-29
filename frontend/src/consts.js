@@ -116,3 +116,8 @@ export const DIAMOND_ANIMATION_MAPPING = {
 };
 
 export const PROCESS_GAS_LIMIT = 220000;
+
+export const CONTRACTS = {
+  DiamondDawn: "DiamondDawn",
+  DiamondDawnMine: "DiamondDawnMine",
+};

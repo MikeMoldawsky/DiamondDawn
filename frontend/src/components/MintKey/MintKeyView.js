@@ -22,8 +22,8 @@ import classNames from "classnames";
 
 const MintKeyView = ({
   mintPrice = 4.44,
-  maxDiamonds = 333,
-  diamondCount = 0,
+  maxEntrance = 333,
+  tokensMinted = 0,
   canMint,
   mint,
   expiresAt,
@@ -96,8 +96,6 @@ const MintKeyView = ({
   );
 
   const { countdownText, date: countdownEnd } = useMineOpenCountdown();
-
-  console.log({ canMint, expiresAt });
   const countdownEndDate = canMint ? expiresAt : countdownEnd;
   const countdownTextLine = canMint
     ? "When the time runs out, you'll no longer be able to join Diamond Dawn"
@@ -173,7 +171,7 @@ const MintKeyView = ({
       </div>
       {!showInvites && (
         <div className="status-box">
-          {diamondCount} / {maxDiamonds} MINTED
+          {tokensMinted} / {maxEntrance} MINTED
         </div>
       )}
     </div>

@@ -3,9 +3,8 @@ import _ from "lodash";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  loadDiamondCount,
-  loadMaxDiamonds,
-  loadMinePrice,
+  loadMaxEntrance,
+  loadMinePrice, loadTokenCount,
   systemSelector,
 } from "store/systemReducer";
 import { tokensSelector, watchTokenMinedBy } from "store/tokensReducer";
@@ -16,7 +15,7 @@ import { confirmMintedApi, signMintApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { getCDNVideoUrl, isNoContractMode } from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
-import { SYSTEM_STAGE } from "consts";
+import {CONTRACTS, SYSTEM_STAGE} from "consts";
 import {
   collectorSelector,
   loadCollectorByAddress,
@@ -24,10 +23,11 @@ import {
 import useActionDispatch from "hooks/useActionDispatch";
 
 const MintKey = () => {
-  const { systemStage, isActive, minePrice, maxDiamonds, diamondCount } =
+  const { systemStage, isActive, minePrice, maxEntrance, tokensMinted } =
     useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
+  const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
   const tokens = useSelector(tokensSelector);
@@ -38,8 +38,8 @@ const MintKey = () => {
 
   useEffect(() => {
     dispatch(loadMinePrice(contract));
-    dispatch(loadMaxDiamonds(contract));
-    dispatch(loadDiamondCount(contract));
+    dispatch(loadMaxEntrance(contract));
+    dispatch(loadTokenCount(mineContract));
   }, []);
 
   const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
@@ -48,15 +48,15 @@ const MintKey = () => {
     ({ execute }) => (
       <MintKeyView
         mintPrice={minePrice}
-        maxDiamonds={maxDiamonds}
-        diamondCount={diamondCount}
+        maxEntrance={maxEntrance}
+        tokensMinted={tokensMinted}
         canMint={canMint}
         mint={execute}
         expiresAt={collector.mintWindowClose}
         onCountdownEnd={onMintWindowClose}
       />
     ),
-    [minePrice, maxDiamonds, diamondCount, canMint, collector.mintWindowClose]
+    [minePrice, maxEntrance, tokensMinted, canMint, collector.mintWindowClose]
   );
 
   if (!collector || collector.minted || collector.mintClosed) return null;
