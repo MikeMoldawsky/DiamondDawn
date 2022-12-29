@@ -1,12 +1,27 @@
 import axios from "axios";
-import { logApiError } from "utils";
+import { logApiError, getCDNContractUrl } from "utils";
 import { getGeoLocationApi } from "api/externalApi";
 
 // CONTRACT INFO
 export const getContractInfoApi = async () => {
   try {
     if (process.env.REACT_APP_USE_LOCAL_CONTRACT === "true") {
-      return await import("contracts/DiamondDawn.json");
+      return {
+        ddContract: await import("contracts/DiamondDawn.json"),
+        ddMineContract: await import("contracts/DiamondDawnMine.json"),
+      };
+    }
+    if (process.env.REACT_APP_USE_LOCAL_CONTRACT === "cdn") {
+      const [{data: addresses}, {data: ddAbi}, {data: ddMineAbi}] = await Promise.all([
+        axios.get(getCDNContractUrl(`${process.env.NODE_ENV}_contracts.json`)),
+        axios.get(getCDNContractUrl("dd_abi.json")),
+        axios.get(getCDNContractUrl("dd_mine_abi.json")),
+      ])
+      console.log("CDN contracts response", { addresses, ddAbi, ddMineAbi })
+      return {
+        ddContract: { address: addresses.dd, artifact: { abi: ddAbi } },
+        ddMineContract: { address: addresses.dd_mine, artifact: { abi: ddMineAbi } },
+      };
     }
     const { data } = await axios.get(`/api/get_contract`);
     return data;

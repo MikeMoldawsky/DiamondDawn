@@ -183,6 +183,9 @@ export const getCDNVideoUrl = (objectPath) =>
 export const getCDNAudioUrl = (objectPath) =>
   getCDNObjectUrl(`/audio${prependBackslash(objectPath)}`);
 
+export const getCDNContractUrl = (objectPath) =>
+  getCDNObjectUrl(`/contracts${prependBackslash(objectPath)}`);
+
 export const createVideoSources = (fileName) => [
   { src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm" },
   { src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" },

@@ -60,10 +60,11 @@ export const loadConfig = () => async (dispatch) => {
 };
 
 export const loadContractInfo = () => async (dispatch) => {
-  const ddContractInfo = await getContractInfoApi();
+  const { ddContract, ddMineContract } = await getContractInfoApi();
+
   dispatch({
     type: "SYSTEM.SET_DD_CONTRACT_INFO",
-    payload: { ddContractInfo },
+    payload: { ddContractInfo: ddContract, ddMineContractInfo: ddMineContract },
   });
 };
 
