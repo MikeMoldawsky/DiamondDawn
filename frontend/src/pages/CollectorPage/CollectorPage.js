@@ -1,9 +1,7 @@
 import React from "react";
 import classNames from "classnames";
-import size from "lodash/size";
 import "./CollectorPage.scss";
 import { useSelector } from "react-redux";
-import { tokensSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
 import { useAccount, useEnsName } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
@@ -23,7 +21,6 @@ const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
   useNoScrollView(isMobile);
 
-  const tokens = useSelector(tokensSelector);
   const { systemStage } = useSelector(systemSelector);
   const account = useAccount();
   const ensName = useEnsName({ address: account?.address });
@@ -33,16 +30,8 @@ const CollectorPage = () => {
   useMusic("collector.mp3");
 
   const renderContent = () => {
-    if (size(tokens) > 0) return <NFTs />;
-
-    if (systemStage <= SYSTEM_STAGE.KEY) return <Invite />;
-
-    return (
-      <div className="box-content opaque opensea">
-        <div className="tagline-text">Your Collection is Empty</div>
-        <div className="button link-opensea">GO TO OPENSEA</div>
-      </div>
-    );
+    if (collector?.minted || systemStage > SYSTEM_STAGE.KEY) return <NFTs />;
+    return <Invite />;
   };
 
   return (

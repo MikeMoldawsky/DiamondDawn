@@ -6,7 +6,8 @@
   justify-content: center;
 
   .layout-box,
-  .gallery {
+  .gallery,
+  .goto-opensea {
     display: flex;
     height: 85%;
     width: 90%;
@@ -215,6 +216,28 @@
         height: 100%;
         width: auto;
       }
+    }
+  }
+
+  .goto-opensea {
+    .logo {
+      width: 7.5em;
+      font-size: 2.5em;
+      margin-bottom: 2em;
+
+      .react-player {
+        width: 100% !important;
+
+        video {
+          margin: -2.8em 0;
+        }
+      }
+    }
+
+    .text {
+      margin: 1em 0 3em;
+      font-size: $font20px;
+      max-width: 32em;
     }
   }
 

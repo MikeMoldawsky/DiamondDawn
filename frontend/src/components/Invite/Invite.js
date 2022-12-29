@@ -72,26 +72,7 @@ const Invite = () => {
     [videoSrc]
   );
 
-  if (systemStage > SYSTEM_STAGE.KEY) return null;
-
-  if (collector?.mintClosed) {
-    return (
-      <div className="box-content opaque">
-        <div className="center-center-aligned-row tagline-text">
-          Invitation Expired
-        </div>
-      </div>
-    );
-  }
-
-  if (collector?.minted)
-    return (
-      <div className="box-content opaque">
-        <div className="center-center-aligned-row tagline-text">
-          Address already minted
-        </div>
-      </div>
-    );
+  if (systemStage > SYSTEM_STAGE.KEY || collector?.minted) return null;
 
   if (collector?.approved)
     return (
@@ -127,7 +108,7 @@ const Invite = () => {
         <MobileOrTablet>{renderTitle()}</MobileOrTablet>
         <div className="video-box">{renderInlineVideo()}</div>
         <div className="content-box">
-          {collector ? (
+          {collector && !collector.mintClosed ? (
             <div className="left-spaced-aligned-column request-status">
               <div className="left-top-aligned-column">
                 <Desktop>{renderTitle()}</Desktop>
