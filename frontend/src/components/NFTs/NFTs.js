@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./NFTs.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { tokenByIdSelector, tokensSelector } from "store/tokensReducer";
@@ -8,6 +8,9 @@ import NFT from "./NFT";
 import CarouselBox from "components/CarouselBox/CarouselBox";
 import { useNavigate } from "react-router-dom";
 import NFTGallery from "components/NFTs/NFTGallery";
+import size from "lodash/size"
+import head from "lodash/head"
+import values from "lodash/values"
 
 const NFTs = () => {
   const tokens = useSelector(tokensSelector);
@@ -18,6 +21,12 @@ const NFTs = () => {
   const selectedToken = useSelector(tokenByIdSelector(selectedTokenId));
   const [transitionName, setTransitionName] = useState("");
   const [startTransition, setStartTransition] = useState(false);
+
+  useEffect(() => {
+    if (selectedTokenId === -1 && size(tokens) === 1) {
+      dispatch(setSelectedTokenId(head(values(tokens)).id))
+    }
+  }, [])
 
   const selectToken = (id, transition) => {
     if (transition) {

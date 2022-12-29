@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from "react";
-import _ from "lodash";
+import map from "lodash/map"
+import max from "lodash/max"
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -34,7 +35,7 @@ const MintKey = () => {
   const navigateToDefault = useNavigateToDefault();
   const collector = useSelector(collectorSelector);
 
-  const maxTokenId = _.max(_.map(tokens, "id"));
+  const maxTokenId = max(map(tokens, "id"));
 
   useEffect(() => {
     dispatch(loadMinePrice(contract));
