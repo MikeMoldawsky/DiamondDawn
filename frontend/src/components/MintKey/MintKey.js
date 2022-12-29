@@ -19,7 +19,7 @@ import MintKeyView from "components/MintKey/MintKeyView";
 import {CONTRACTS, SYSTEM_STAGE} from "consts";
 import {
   collectorSelector,
-  loadCollectorByAddress,
+  loadCollectorByAddress, openMintWindow,
 } from "store/collectorReducer";
 import useActionDispatch from "hooks/useActionDispatch";
 
@@ -44,6 +44,16 @@ const MintKey = () => {
   }, []);
 
   const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
+
+  useEffect(() => {
+    if (
+      canMint &&
+      collector?.approved &&
+      !collector?.mintWindowStart
+    ) {
+      dispatch(openMintWindow(collector._id, account.address));
+    }
+  }, [canMint, collector?.approved, collector?.mintWindowStart]);
 
   const MintKeyContent = useCallback(
     ({ execute }) => (
