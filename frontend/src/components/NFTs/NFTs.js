@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from "react";
-import size from "lodash/size";
-import head from "lodash/head";
+import React, {useState} from "react";
 import "./NFTs.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {tokenByIdSelector, tokensSelector} from "store/tokensReducer";
@@ -9,6 +7,7 @@ import {setSelectedTokenId, uiSelector} from "store/uiReducer";
 import NFT from "./NFT";
 import CarouselBox from "components/CarouselBox/CarouselBox";
 import {useNavigate} from "react-router-dom";
+import NFTGallery from "components/NFTs/NFTGallery";
 
 const NFTs = () => {
   const tokens = useSelector(tokensSelector);
@@ -19,17 +18,6 @@ const NFTs = () => {
   const selectedToken = useSelector(tokenByIdSelector(selectedTokenId))
   const [transitionName, setTransitionName] = useState("")
   const [startTransition, setStartTransition] = useState(false)
-
-  const tokenCount = size(tokens)
-  const tokenIds = Object.keys(tokens).map(safeParseInt)
-
-  useEffect(() => {
-    if (selectedTokenId === -1 && tokenCount > 0) {
-      dispatch(setSelectedTokenId(safeParseInt(head(tokenIds))))
-    }
-  }, [selectedTokenId, tokenCount])
-
-  if (!selectedToken) return null
 
   const selectToken = (id, transition) => {
     if (transition) {
@@ -54,9 +42,13 @@ const NFTs = () => {
 
   return (
     <div className="box-content opaque nfts">
-      <CarouselBox className="layout-box" items={tokens} activeItemId={selectedTokenId} onChange={onChangeNFT}>
-        <NFT token={selectedToken} hideCertificate={startTransition} transitionName={transitionName} goToProcess={goToProcess} />
-      </CarouselBox>
+      {selectedToken ? (
+        <CarouselBox className="layout-box" items={tokens} activeItemId={selectedTokenId} onChange={onChangeNFT}>
+          <NFT token={selectedToken} hideCertificate={startTransition} transitionName={transitionName} goToProcess={goToProcess} />
+        </CarouselBox>
+      ) : (
+        <NFTGallery goToProcess={goToProcess} />
+      )}
     </div>
   )
 };
