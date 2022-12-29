@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
-import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
+import {isActionSuccessSelector} from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import useTimeout from "hooks/useTimeout";
@@ -39,7 +39,7 @@ const Page = ({
     waitForActions.push("get-contract")
   }
   if (isConnected) {
-    waitForActions.push({ isFirstComplete: true, key: "get-collector-by-address" })
+    waitForActions.push("get-collector-by-address")
   }
   if (waitForTokens) {
     waitForActions.push({ isFirstComplete: true, key: "load-nfts" })
@@ -48,7 +48,7 @@ const Page = ({
   const contentReady = useWaitFor({ images, videos, actions: waitForActions });
   const canAccessDD = useCanAccessDD();
   const isCollectorFetched = useSelector(
-    isActionFirstCompleteSelector("get-collector-by-address")
+    isActionSuccessSelector("get-collector-by-address")
   );
   const navigate = useNavigate();
   const isCollectorReady = isCollectorFetched || !account?.address;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import classNames from "classnames";
 import "./CollectorPage.scss";
 import { useSelector } from "react-redux";
@@ -14,8 +14,9 @@ import Page from "containers/Page";
 import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useNavigate } from "react-router-dom";
-import { collectorSelector } from "store/collectorReducer";
+import {collectorSelector, loadCollectorByAddress} from "store/collectorReducer";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
+import useActionDispatch from "hooks/useActionDispatch";
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
@@ -26,8 +27,18 @@ const CollectorPage = () => {
   const ensName = useEnsName({ address: account?.address });
   const navigate = useNavigate();
   const collector = useSelector(collectorSelector);
+  const actionDispatch = useActionDispatch();
 
   useMusic("collector.mp3");
+
+  useEffect(() => {
+    if (account?.address) {
+      actionDispatch(
+        loadCollectorByAddress(account?.address),
+        "get-collector-by-address"
+      );
+    }
+  }, [account?.address])
 
   const renderContent = () => {
     if (collector?.minted || systemStage > SYSTEM_STAGE.KEY) return <NFTs />;

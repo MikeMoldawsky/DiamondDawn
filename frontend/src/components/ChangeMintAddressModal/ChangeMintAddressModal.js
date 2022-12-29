@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import ActionButton from "components/ActionButton";
 import { showError } from "utils";
 import { changeMintAddressApi } from "api/serverApi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   collectorSelector,
   loadCollectorByAddress,
@@ -16,14 +16,12 @@ import isNil from "lodash/isNil";
 import get from "lodash/get";
 import "./ChangeMintAddressModal.scss";
 import useActionDispatch from "hooks/useActionDispatch";
-import { clearActionStatus } from "store/actionStatusReducer";
 import { ethers } from "ethers";
 
 const ChangeMintAddressModal = ({ close }) => {
   const collector = useSelector(collectorSelector);
   const account = useAccount();
   const actionDispatch = useActionDispatch();
-  const dispatch = useDispatch();
 
   const {
     register,
@@ -37,8 +35,6 @@ const ChangeMintAddressModal = ({ close }) => {
   const changeMintAddress = async ({ newAddress }) => {
     try {
       await changeMintAddressApi(collector._id, account.address, newAddress);
-
-      dispatch(clearActionStatus("get-collector-by-address"));
       actionDispatch(
         loadCollectorByAddress(account.address),
         "get-collector-by-address"
