@@ -8,15 +8,14 @@ import { systemSelector } from "store/systemReducer";
 import { useAccount, useEnsName } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
 import Box from "components/Box";
-import WaitFor from "containers/WaitFor";
 import Invite from "components/Invite";
 import NFTs from "components/NFTs";
-import { getCDNImageUrl, isNoContractMode, shortenEthAddress } from "utils";
+import { getCDNImageUrl, shortenEthAddress } from "utils";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { collectorSelector } from "store/collectorReducer";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
 
@@ -46,23 +45,12 @@ const CollectorPage = () => {
     );
   };
 
-  let waitForActions = [];
-  if (
-    !isNoContractMode() &&
-    systemStage >= SYSTEM_STAGE.KEY &&
-    account?.address
-  ) {
-    waitForActions = [
-      "get-contract",
-      { isFirstComplete: true, key: "load-nfts" },
-    ];
-  }
-
   return (
     <Page
       pageName="collector"
       images={[getCDNImageUrl("/collector/collector-bg.png")]}
       collectorLoader={!!collector}
+      waitForTokens
     >
       <div className={classNames("page collector-page")}>
         <div className="bg collector-bg" />
@@ -72,12 +60,7 @@ const CollectorPage = () => {
             {ensName?.data || shortenEthAddress(account?.address)}
           </div>
           <Box className={"main-box"}>
-            <WaitFor
-              containerClassName="box-content opaque"
-              actions={waitForActions}
-            >
-              {renderContent()}
-            </WaitFor>
+            {renderContent()}
             <HighlightOffIcon
               className="close"
               onClick={() => navigate("/explore")}
