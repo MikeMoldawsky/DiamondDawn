@@ -1,4 +1,4 @@
-import {makeReducer, reduceSetFull, reduceUpdateFull} from "./reduxUtils";
+import { makeReducer, reduceSetFull, reduceUpdateFull } from "./reduxUtils";
 import {
   confirmMintedApi,
   getCollectorByAddressApi,

@@ -5,8 +5,8 @@ import useGoToInvites from "hooks/useGoToInvites";
 import { useNavigate } from "react-router-dom";
 import Button from "components/Button";
 import classNames from "classnames";
-import {isMintOpenSelector, systemSelector} from "store/systemReducer";
-import {SYSTEM_STAGE} from "consts";
+import { isMintOpenSelector, systemSelector } from "store/systemReducer";
+import { SYSTEM_STAGE } from "consts";
 
 const CTAButton = ({ className, onClick }) => {
   const collector = useSelector(collectorSelector);
@@ -37,9 +37,9 @@ const CTAButton = ({ className, onClick }) => {
     return canMint && !collector.minted && !collector.mintClosed
       ? renderButton({ text: "MINT NOW" })
       : renderButton({
-        text: "INVITE A FRIEND",
-        customCTAClick: goToInvites,
-      });
+          text: "INVITE A FRIEND",
+          customCTAClick: goToInvites,
+        });
 
   return renderButton({ text: "APPLICATION STATUS", sfx: "explore" });
 };

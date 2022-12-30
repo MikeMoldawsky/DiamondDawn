@@ -7,7 +7,7 @@ import {
   getSystemStageApi,
   getTokenCountApi,
 } from "api/contractApi";
-import {CONTRACTS, SYSTEM_STAGE} from "consts";
+import { CONTRACTS, SYSTEM_STAGE } from "consts";
 
 const INITIAL_STATE = {
   ddContractInfo: null,

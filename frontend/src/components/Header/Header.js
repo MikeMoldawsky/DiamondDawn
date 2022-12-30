@@ -15,7 +15,7 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { isNoContractMode } from "utils";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/Logo";
-import {setSideMenuOpen, toggleMuted, uiSelector} from "store/uiReducer";
+import { setSideMenuOpen, toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import CTAButton from "components/CTAButton";
 import { TwitterLink, TelegramLink } from "components/Links";
@@ -47,7 +47,7 @@ const Header = () => {
 
   const getMenuIcon = () => (sideMenuOpen ? faX : faBars);
 
-  const toggleMenu = () => dispatch(setSideMenuOpen(!sideMenuOpen))
+  const toggleMenu = () => dispatch(setSideMenuOpen(!sideMenuOpen));
 
   const showRestrictedContent = canAccessDD && isDesktop;
 

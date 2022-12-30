@@ -1,7 +1,7 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
 import { NavLink } from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import InvitationsStatus from "components/InvitationsStatus";
 import { getCDNImageUrl } from "utils";
@@ -11,7 +11,7 @@ import useGoToInvites from "hooks/useGoToInvites";
 import { CollectorLink } from "components/Links";
 import CTAButton from "components/CTAButton";
 import SocialIcons from "components/SocialIcons";
-import {setSideMenuOpen, uiSelector} from "store/uiReducer";
+import { setSideMenuOpen, uiSelector } from "store/uiReducer";
 
 const SideMenu = () => {
   const collector = useSelector(collectorSelector);
@@ -28,7 +28,7 @@ const SideMenu = () => {
 
   const goToInvites = useGoToInvites();
 
-  const closeMenu = () => dispatch(setSideMenuOpen(false))
+  const closeMenu = () => dispatch(setSideMenuOpen(false));
 
   const onInvitesTitleClick = () => {
     goToInvites();

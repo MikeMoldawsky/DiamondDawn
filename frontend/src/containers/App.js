@@ -17,11 +17,11 @@ import AudioPlayer from "components/AudioPlayer";
 import VideoPlayer from "components/VideoPlayer";
 import NetworkGuard from "containers/NetworkGuard";
 import CopyNotification from "components/CopyNotification";
-import {useSelector} from "react-redux";
-import {uiSelector} from "store/uiReducer";
+import { useSelector } from "react-redux";
+import { uiSelector } from "store/uiReducer";
 
 const App = () => {
-  const { sideMenuOpen } = useSelector(uiSelector)
+  const { sideMenuOpen } = useSelector(uiSelector);
   const actionDispatch = useActionDispatch();
 
   useEffect(() => {
