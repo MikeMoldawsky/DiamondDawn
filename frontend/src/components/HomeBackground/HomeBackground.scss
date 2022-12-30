@@ -1,4 +1,5 @@
 @import "css/varsNEW";
+@import "css/functions";
 
 .home-background {
   background-color: black;
@@ -16,6 +17,7 @@
 
       .art-by-david {
         margin-top: 0.1 * $viewHeightRef;
+        font-size: calc-font-size(10px);
 
         .art-by {
           font-size: $font20px;
@@ -111,6 +113,10 @@
       &.black-box {
         height: 40vh;
         top: 84%;
+
+        .art-by-david {
+          margin-top: 35vw;
+        }
       }
 
       &.stars {

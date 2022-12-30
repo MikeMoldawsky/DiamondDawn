@@ -149,6 +149,7 @@
 @media only screen and (max-width: 1199px) {
   .page.homepage {
     --text-margin-left: 10%;
+    --base-font-size: 40;
 
     .top-content {
       width: 100%;
@@ -156,7 +157,6 @@
       justify-content: flex-start;
 
       .opening {
-        --base-font-size: 40;
         max-width: 75%;
         margin-top: 0;
 
@@ -209,11 +209,7 @@
 
 @media only screen and (max-width: 480px) {
   .page.homepage {
-    .top-content {
-      .opening {
-        --base-font-size: 50;
-      }
-    }
+    --base-font-size: 50;
 
     .eternal-treasures {
       .text-section {
