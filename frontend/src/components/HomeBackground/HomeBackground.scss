@@ -13,6 +13,22 @@
       top: 99%;
       background-color: black;
       z-index: -21;
+
+      .art-by-david {
+        margin-top: 0.1 * $viewHeightRef;
+
+        .art-by {
+          font-size: $font20px;
+          font-weight: 500;
+          line-height: 1.2em;
+          margin-left: 0.2em;
+        }
+
+        .by-david {
+          line-height: 1em;
+          letter-spacing: .04em;
+        }
+      }
     }
 
     &.stars {
