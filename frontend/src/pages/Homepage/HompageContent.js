@@ -78,7 +78,7 @@ export const ValueText = () => (
 
 export const TeaserText = () => (
   <>
-    <div className="subtitle-text">THE EXPERIMENT</div>
+    <div className="subtitle-text">PHYSICAL VS DIGITAL</div>
     <div className="text">
       <p>
         Diamond Dawn is a <b>blockchain social experiment</b> that pushes this
