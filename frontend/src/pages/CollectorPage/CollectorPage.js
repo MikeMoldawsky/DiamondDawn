@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import classNames from "classnames";
 import "./CollectorPage.scss";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import { useAccount, useEnsName } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
@@ -13,21 +13,25 @@ import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import {collectorSelector, loadCollectorByAddress} from "store/collectorReducer";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
 import useActionDispatch from "hooks/useActionDispatch";
+import {setSelectedTokenId, uiSelector} from "store/uiReducer";
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
   useNoScrollView(isMobile);
 
   const { systemStage } = useSelector(systemSelector);
+  const { selectedTokenId } = useSelector(uiSelector)
   const account = useAccount();
   const ensName = useEnsName({ address: account?.address });
   const navigate = useNavigate();
   const collector = useSelector(collectorSelector);
   const actionDispatch = useActionDispatch();
+  const dispatch = useDispatch()
 
   useMusic("collector.mp3");
 
@@ -61,6 +65,12 @@ const CollectorPage = () => {
           </div>
           <Box className={"main-box"}>
             {renderContent()}
+            {selectedTokenId > -1 && (
+              <ArrowBackIcon
+                className="back-to-gallery"
+                onClick={() => dispatch(setSelectedTokenId(-1))}
+              />
+            )}
             <HighlightOffIcon
               className="close"
               onClick={() => navigate("/explore")}
