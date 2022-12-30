@@ -5,7 +5,7 @@
   .layout-box {
     display: flex;
     height: 100%;
-    padding: 4em 4em 3em 4em;
+    padding: 4em 4em 3.5em 4em;
     justify-content: flex-start;
 
     .leading-text {
@@ -35,6 +35,10 @@
 
       .request-status {
         height: 100%;
+
+        .minting-address-row {
+          margin-bottom: 1em;
+        }
 
         .leading-text {
           font-size: $font34px;

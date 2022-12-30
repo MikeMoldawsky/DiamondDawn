@@ -17,6 +17,7 @@ import {
   StageCountdown,
   StageCountdownWithText,
 } from "components/Countdown/Countdown";
+import IncreaseChances from "components/IncreaseChances";
 
 const getValidationError = (name, value) => {
   switch (name) {
@@ -195,6 +196,7 @@ const ApplyForm = ({ onSuccess, onError }) => {
           </ActionButton>
           <StageCountdownWithText />
         </div>
+        <IncreaseChances />
       </form>
     </div>
   );

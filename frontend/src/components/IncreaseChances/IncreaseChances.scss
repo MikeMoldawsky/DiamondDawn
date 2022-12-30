@@ -1,0 +1,37 @@
+@import "css/varsNEW";
+
+.increase-chances {
+  position: absolute;
+  bottom: -2.5em;
+  right: 0;
+  width: 100%;
+
+  .increase-text {
+    font-size: $font13px;
+    cursor: pointer;
+    text-decoration: underline;
+    width: 24em;
+    margin: 0 auto;
+  }
+
+  .popup {
+    position: absolute;
+    bottom: 2em;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: $modal_bg_gray;
+    border: solid 1px $close_modal;
+    text-align: left;
+    padding: .5em;
+    width: 26em;
+    z-index: 20;
+
+    ul {
+      list-style-type: decimal;
+
+      li {
+        margin-bottom: .5em;
+      }
+    }
+  }
+}
