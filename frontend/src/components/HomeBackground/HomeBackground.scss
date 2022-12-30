@@ -1,4 +1,5 @@
 @import "css/varsNEW";
+@import "css/functions";
 
 .home-background {
   background-color: black;
@@ -13,6 +14,23 @@
       top: 99%;
       background-color: black;
       z-index: -21;
+
+      .art-by-david {
+        margin-top: 0.1 * $viewHeightRef;
+        font-size: calc-font-size(10px);
+
+        .art-by {
+          font-size: $font20px;
+          font-weight: 500;
+          line-height: 1.2em;
+          margin-left: 0.2em;
+        }
+
+        .by-david {
+          line-height: 1em;
+          letter-spacing: 0.04em;
+        }
+      }
     }
 
     &.stars {
@@ -95,6 +113,10 @@
       &.black-box {
         height: 40vh;
         top: 84%;
+
+        .art-by-david {
+          margin-top: 35vw;
+        }
       }
 
       &.stars {

@@ -5,7 +5,7 @@
   .layout-box {
     display: flex;
     height: 100%;
-    padding: 4em 4em 3em 4em;
+    padding: 4em 4em 3.5em 4em;
     justify-content: flex-start;
 
     .leading-text {
@@ -35,6 +35,10 @@
 
       .request-status {
         height: 100%;
+
+        .minting-address-row {
+          margin-bottom: 1em;
+        }
 
         .leading-text {
           font-size: $font34px;
@@ -128,6 +132,13 @@
         }
       }
     }
+
+    .increase-chances {
+      position: absolute;
+      bottom: -2.5em;
+      left: 0;
+      width: 100%;
+    }
   }
 }
 
@@ -135,7 +146,7 @@
   .invite-view {
     .layout-box {
       flex-direction: column;
-      padding: 2em 1em 0;
+      padding: 2em 1em 3em;
 
       .leading-text {
         font-size: 1.5em;
@@ -199,6 +210,10 @@
               }
             }
           }
+
+          .minting-address-row {
+            margin-bottom: 0;
+          }
         }
 
         .follow-box {
@@ -211,6 +226,10 @@
             float: right;
           }
         }
+      }
+
+      .increase-chances {
+        bottom: -1.75em;
       }
     }
   }

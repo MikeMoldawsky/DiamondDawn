@@ -14,6 +14,7 @@ import {
 } from "hooks/useMediaQueries";
 import { StageCountdownWithText } from "components/Countdown/Countdown";
 import classNames from "classnames";
+import IncreaseChances from "components/IncreaseChances";
 
 const PendingApproval = ({ showModal }) => {
   const [showSubmittedModal, setShowSubmittedModal] = useState(showModal);
@@ -75,6 +76,7 @@ const PendingApproval = ({ showModal }) => {
               <MintAddressRow />
             </div>
           </div>
+          <IncreaseChances />
           {showSubmittedModal && (
             <RequestSubmittedModal close={() => setShowSubmittedModal(false)} />
           )}

@@ -3,6 +3,8 @@ import "./HomeBackground.scss";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import ScrollMarker from "components/ScrollMarker";
 import useScrollTop from "hooks/useScrollTop";
+import Link, { CollectorLink, TwitterLink } from "components/Links";
+import classNames from "classnames";
 
 const HomeBackground = ({ mousePos }) => {
   const scroll = useScrollTop();
@@ -60,7 +62,21 @@ const HomeBackground = ({ mousePos }) => {
             scrollWithMouse * parallaxRef
           }px, 0px)`,
         }}
-      />
+      >
+        <div className="center-aligned-column art-by-david">
+          <div className="left-centered-aligned-column">
+            <div className="art-by">Art by</div>
+            <div className="leading-text by-david">
+              <Link
+                href={`https://twitter.com/DavidAriew`}
+                className="text-gold"
+              >
+                DAVID ARIEW
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="bg stars" />
     </div>
   );
