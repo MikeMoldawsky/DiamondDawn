@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import map from "lodash/map"
 import max from "lodash/max"
 import useDDContract from "hooks/useDDContract";
@@ -8,20 +8,19 @@ import {
   loadMinePrice, loadTokenCount,
   systemSelector,
 } from "store/systemReducer";
-import { tokensSelector, watchTokenMinedBy } from "store/tokensReducer";
-import { useAccount } from "wagmi";
-import ActionView from "components/ActionView";
-import { forgeApi } from "api/contractApi";
-import { signMintApi } from "api/serverApi";
-import useNavigateToDefault from "hooks/useNavigateToDefault";
-import { getCDNVideoUrl, isNoContractMode } from "utils";
+import {setTokenUri, tokensSelector, watchTokenMinedBy} from "store/tokensReducer";
+import {useAccount, useProvider} from "wagmi";
+import {forgeApi, getTokenUriApi} from "api/contractApi";
+import {confirmMintedApi, signMintApi} from "api/serverApi";
+import {isNoContractMode, showError} from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
 import {CONTRACTS, SYSTEM_STAGE} from "consts";
 import {
-  collectorSelector, confirmMinted,
-  loadCollectorByAddress, openMintWindow,
+  collectorSelector,
+  loadCollectorByAddress, openMintWindow, updateCollector,
 } from "store/collectorReducer";
 import useActionDispatch from "hooks/useActionDispatch";
+import {setSelectedTokenId, setShouldIgnoreTokenTransferWatch} from "store/uiReducer";
 
 const MintKey = () => {
   const { systemStage, isActive, minePrice, maxEntrance, tokensMinted } =
@@ -32,18 +31,47 @@ const MintKey = () => {
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
   const tokens = useSelector(tokensSelector);
-  const navigateToDefault = useNavigateToDefault();
   const collector = useSelector(collectorSelector);
+  const provider = useProvider();
+  const [isMinting, setIsMinting] = useState(false)
 
   const maxTokenId = max(map(tokens, "id"));
+  const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
+
+  const mint = async () => {
+    setIsMinting(true)
+    const { signature } = await signMintApi(collector._id, account.address);
+    dispatch(setShouldIgnoreTokenTransferWatch(true));
+    const tx = await forgeApi(contract, minePrice, signature);
+    return await tx.wait();
+  };
+
+  const onMintSuccess = async tokenId => {
+    dispatch(setShouldIgnoreTokenTransferWatch(false));
+    try {
+      confirmMintedApi(collector._id, account.address)
+      const tokenUri = await getTokenUriApi(contract, tokenId)
+      dispatch(setTokenUri(tokenId, tokenUri));
+      dispatch(setSelectedTokenId(tokenId));
+      setIsMinting(false)
+      dispatch(updateCollector({ minted: true }))
+    }
+    catch (e) {
+      showError(e)
+    }
+  }
 
   useEffect(() => {
     dispatch(loadMinePrice(contract));
     dispatch(loadMaxEntrance(contract));
     dispatch(loadTokenCount(mineContract));
-  }, []);
 
-  const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
+    const unwatch = watchTokenMinedBy(contract, provider, account.address, maxTokenId, onMintSuccess);
+
+    return () => {
+      unwatch();
+    };
+  }, []);
 
   useEffect(() => {
     if (
@@ -55,23 +83,6 @@ const MintKey = () => {
     }
   }, [canMint, collector?.approved, collector?.mintWindowStart]);
 
-  const MintKeyContent = useCallback(
-    ({ execute }) => (
-      <MintKeyView
-        mintPrice={minePrice}
-        maxEntrance={maxEntrance}
-        tokensMinted={tokensMinted}
-        canMint={canMint}
-        mint={execute}
-        expiresAt={collector.mintWindowClose}
-        onCountdownEnd={onMintWindowClose}
-      />
-    ),
-    [minePrice, maxEntrance, tokensMinted, canMint, collector.mintWindowClose]
-  );
-
-  if (!collector || collector.minted || collector.mintClosed) return null;
-
   const onMintWindowClose = () => {
     actionDispatch(
       loadCollectorByAddress(account.address),
@@ -79,34 +90,20 @@ const MintKey = () => {
     );
   };
 
-  const executeEnterMine = async () => {
-    let signature;
-    try {
-      const response = await signMintApi(collector._id, account.address);
-      signature = response.signature;
-    } catch (e) {
-      navigateToDefault();
-      throw new Error(e);
-    }
-    const tx = await forgeApi(contract, minePrice, signature);
-    await tx.wait();
-    try {
-      await confirmMinted(collector._id, account.address);
-    } catch (e) {
-      // do not show error not to confuse the user
-    }
-    return tx;
-  };
+  if (!collector || collector.minted || collector.mintClosed) return null;
 
   return (
-    <ActionView
-      isEnter
-      watch={watchTokenMinedBy(account.address, maxTokenId)}
-      transact={executeEnterMine}
-      videoUrl={getCDNVideoUrl("post_enter.mp4")}
-    >
-      <MintKeyContent />
-    </ActionView>
+    <MintKeyView
+      mintPrice={minePrice}
+      maxEntrance={maxEntrance}
+      tokensMinted={tokensMinted}
+      canMint={canMint}
+      mint={mint}
+      expiresAt={collector.mintWindowClose}
+      onCountdownEnd={onMintWindowClose}
+      forceButtonLoading={isMinting}
+      onMintError={() => setIsMinting(false)}
+    />
   );
 };
 

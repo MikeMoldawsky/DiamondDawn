@@ -28,6 +28,8 @@ const MintKeyView = ({
   mint,
   expiresAt,
   onCountdownEnd,
+  forceButtonLoading,
+  onMintError,
 }) => {
   const [searchParams] = useSearchParams();
   const showInvitesParam = searchParams.get("invites") === "true";
@@ -87,7 +89,9 @@ const MintKeyView = ({
           actionKey="MintKey"
           className="gold lg mint-button"
           disabled={!canMint || !isFunction(mint)}
+          isLoading={forceButtonLoading}
           onClick={() => isFunction(mint) && mint()}
+          onError={onMintError}
         >
           {mintPriceText} <FontAwesomeIcon icon={faEthereum} /> MINT
         </ActionButton>

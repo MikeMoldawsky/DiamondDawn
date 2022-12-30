@@ -27,11 +27,6 @@ export const openMintWindow = (collectorId, address) => async (dispatch) => {
   dispatch(updateCollector(collector));
 };
 
-export const confirmMinted = (collectorId, address) => async (dispatch) => {
-  const collector = await confirmMintedApi(collectorId, address);
-  dispatch(updateCollector(collector))
-};
-
 export const clearCollector = () => ({
   type: "COLLECTOR.CLEAR",
 });

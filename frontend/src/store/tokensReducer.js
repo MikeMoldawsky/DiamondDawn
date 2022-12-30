@@ -78,8 +78,7 @@ export const readAndWatchAccountTokens =
   };
 
 export const watchTokenMinedBy =
-  (address, maxAddressTokenId = -1) =>
-  (contract, provider, callback) => {
+  (contract, provider, address, maxAddressTokenId = -1, callback) => {
     console.log("WATCHING TOKEN_MINED_BY", { address, maxAddressTokenId });
     const filter = contract.filters.Transfer(null, address);
 
