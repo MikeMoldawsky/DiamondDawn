@@ -148,7 +148,12 @@ const MintKeyView = ({
                     <div className="text-comment">{countdownTextLine}</div>
                     <Countdown
                       date={countdownEndDate}
-                      defaultParts={{ days: 3, hours: 3, minutes: 3, seconds: 0 }}
+                      defaultParts={{
+                        days: 3,
+                        hours: 3,
+                        minutes: 3,
+                        seconds: 0,
+                      }}
                       onComplete={() =>
                         isFunction(onCountdownEnd) && onCountdownEnd()
                       }

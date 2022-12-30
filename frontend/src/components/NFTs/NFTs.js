@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./NFTs.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { tokenByIdSelector, tokensSelector } from "store/tokensReducer";
@@ -8,9 +8,9 @@ import NFT from "./NFT";
 import CarouselBox from "components/CarouselBox";
 import { useNavigate } from "react-router-dom";
 import NFTGallery from "./NFTGallery";
-import size from "lodash/size"
-import head from "lodash/head"
-import values from "lodash/values"
+import size from "lodash/size";
+import head from "lodash/head";
+import values from "lodash/values";
 import GoToOpensea from "./GoToOpensea";
 
 const NFTs = () => {
@@ -25,9 +25,9 @@ const NFTs = () => {
 
   useEffect(() => {
     if (selectedTokenId === -1 && size(tokens) === 1) {
-      dispatch(setSelectedTokenId(head(values(tokens)).id))
+      dispatch(setSelectedTokenId(head(values(tokens)).id));
     }
-  }, [])
+  }, []);
 
   const selectToken = (id, transition) => {
     if (transition) {
@@ -54,35 +54,29 @@ const NFTs = () => {
   };
 
   const renderContent = () => {
-    if (size(tokens) === 0) return (<GoToOpensea />)
+    if (size(tokens) === 0) return <GoToOpensea />;
 
-    if (selectedToken) return (
-      <CarouselBox
-        className="layout-box"
-        items={tokens}
-        activeItemId={selectedTokenId}
-        onChange={onChangeNFT}
-      >
-        <NFT
-          token={selectedToken}
-          hideCertificate={startTransition}
-          transitionName={transitionName}
-          goToProcess={goToProcess}
-        />
-      </CarouselBox>
-    )
+    if (selectedToken)
+      return (
+        <CarouselBox
+          className="layout-box"
+          items={tokens}
+          activeItemId={selectedTokenId}
+          onChange={onChangeNFT}
+        >
+          <NFT
+            token={selectedToken}
+            hideCertificate={startTransition}
+            transitionName={transitionName}
+            goToProcess={goToProcess}
+          />
+        </CarouselBox>
+      );
 
-    return (
-      <NFTGallery goToProcess={goToProcess} />
-    )
-  }
+    return <NFTGallery goToProcess={goToProcess} />;
+  };
 
-
-  return (
-    <div className="box-content opaque nfts">
-      {renderContent()}
-    </div>
-  );
+  return <div className="box-content opaque nfts">{renderContent()}</div>;
 };
 
 export default NFTs;

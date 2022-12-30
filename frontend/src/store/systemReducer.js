@@ -4,9 +4,10 @@ import { getConfigApi, getContractInfoApi } from "api/serverApi";
 import {
   getMaxEntranceApi,
   getMinePriceApi,
-  getSystemStageApi, getTokenCountApi,
+  getSystemStageApi,
+  getTokenCountApi,
 } from "api/contractApi";
-import {CONTRACTS} from "consts";
+import { CONTRACTS } from "consts";
 
 const INITIAL_STATE = {
   ddContractInfo: null,
@@ -76,11 +77,11 @@ export const isStageActiveSelector = (stage) => (state) => {
 
 export const contractSelector =
   (contractType = CONTRACTS.DiamondDawn) =>
-    (state) => {
-      return contractType === CONTRACTS.DiamondDawn
-        ? state.system.ddContractInfo
-        : state.system.ddMineContractInfo;
-    };
+  (state) => {
+    return contractType === CONTRACTS.DiamondDawn
+      ? state.system.ddContractInfo
+      : state.system.ddMineContractInfo;
+  };
 
 export const systemReducer = makeReducer(
   {

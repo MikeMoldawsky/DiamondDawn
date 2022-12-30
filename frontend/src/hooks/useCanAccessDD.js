@@ -3,7 +3,7 @@ import { isPrivateSale } from "utils";
 import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import { uiSelector } from "store/uiReducer";
-import {isActionSuccessSelector} from "store/actionStatusReducer";
+import { isActionSuccessSelector } from "store/actionStatusReducer";
 import { useAccount } from "wagmi";
 
 const useCanAccessDD = () => {

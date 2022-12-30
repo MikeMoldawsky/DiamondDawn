@@ -1,7 +1,7 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import "./CollectorPage.scss";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import { useAccount, useEnsName } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
@@ -13,25 +13,28 @@ import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
-import {collectorSelector, loadCollectorByAddress} from "store/collectorReducer";
+import {
+  collectorSelector,
+  loadCollectorByAddress,
+} from "store/collectorReducer";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
 import useActionDispatch from "hooks/useActionDispatch";
-import {setSelectedTokenId, uiSelector} from "store/uiReducer";
+import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
   useNoScrollView(isMobile);
 
   const { systemStage } = useSelector(systemSelector);
-  const { selectedTokenId } = useSelector(uiSelector)
+  const { selectedTokenId } = useSelector(uiSelector);
   const account = useAccount();
   const ensName = useEnsName({ address: account?.address });
   const navigate = useNavigate();
   const collector = useSelector(collectorSelector);
   const actionDispatch = useActionDispatch();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useMusic("collector.mp3");
 
@@ -42,10 +45,15 @@ const CollectorPage = () => {
         "get-collector-by-address"
       );
     }
-  }, [account?.address])
+  }, [account?.address]);
 
   const renderContent = () => {
-    if (collector?.minted || collector?.mintClosed || systemStage > SYSTEM_STAGE.KEY) return <NFTs />;
+    if (
+      collector?.minted ||
+      collector?.mintClosed ||
+      systemStage > SYSTEM_STAGE.KEY
+    )
+      return <NFTs />;
     return <Invite />;
   };
 

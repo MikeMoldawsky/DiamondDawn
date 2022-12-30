@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, { useCallback, useState } from "react";
 import { useAccount } from "wagmi";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -54,8 +54,8 @@ const PendingApproval = ({ showModal }) => {
               <Desktop>{renderTitle()}</Desktop>
               <div className="text-comment">
                 If you're accepted to Diamond Dawn, you'll have exactly
-                <b> 3 days, 3 hours, and 3 minutes</b> to mint your key for
-                4.44 ETH. Make sure you follow{" "}
+                <b> 3 days, 3 hours, and 3 minutes</b> to mint your key for 4.44
+                ETH. Make sure you follow{" "}
                 <TwitterLink className="text-gold">
                   <b>@DiamondDawnNFT</b>
                 </TwitterLink>

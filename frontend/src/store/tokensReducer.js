@@ -77,30 +77,35 @@ export const readAndWatchAccountTokens =
     });
   };
 
-export const watchTokenMinedBy =
-  (contract, provider, address, maxAddressTokenId = -1, callback) => {
-    console.log("WATCHING TOKEN_MINED_BY", { address, maxAddressTokenId });
-    const filter = contract.filters.Transfer(null, address);
+export const watchTokenMinedBy = (
+  contract,
+  provider,
+  address,
+  maxAddressTokenId = -1,
+  callback
+) => {
+  console.log("WATCHING TOKEN_MINED_BY", { address, maxAddressTokenId });
+  const filter = contract.filters.Transfer(null, address);
 
-    const transferListener = (from, to, tokenId) => {
-      const numTokenId = tokenId.toNumber();
-      if (maxAddressTokenId === -1 || numTokenId > maxAddressTokenId) {
-        console.log("TOKEN MINED EVENT", { from, to, tokenId });
-        callback(numTokenId);
-      }
-    };
-
-    const blockListener = () => {
-      contract.on(filter, transferListener);
-    };
-
-    provider.once("block", blockListener);
-
-    return () => {
-      contract.off(filter, transferListener);
-      provider.off("block", blockListener);
-    };
+  const transferListener = (from, to, tokenId) => {
+    const numTokenId = tokenId.toNumber();
+    if (maxAddressTokenId === -1 || numTokenId > maxAddressTokenId) {
+      console.log("TOKEN MINED EVENT", { from, to, tokenId });
+      callback(numTokenId);
+    }
   };
+
+  const blockListener = () => {
+    contract.on(filter, transferListener);
+  };
+
+  provider.once("block", blockListener);
+
+  return () => {
+    contract.off(filter, transferListener);
+    provider.off("block", blockListener);
+  };
+};
 
 export const setTokenUri = (tokenId, tokenUri) => ({
   type: "TOKENS.SET_TOKEN",

@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import {isActionFirstCompleteSelector, isActionSuccessSelector} from "store/actionStatusReducer";
+import {
+  isActionFirstCompleteSelector,
+  isActionSuccessSelector,
+} from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import useCanAccessDD from "hooks/useCanAccessDD";

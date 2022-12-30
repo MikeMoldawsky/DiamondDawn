@@ -6,7 +6,10 @@ import { useAccount } from "wagmi";
 import { clearInvite } from "store/inviteReducer";
 import { SYSTEM_STAGE } from "consts";
 import MintKey from "components/MintKey";
-import { collectorSelector, loadCollectorByAddress } from "store/collectorReducer";
+import {
+  collectorSelector,
+  loadCollectorByAddress,
+} from "store/collectorReducer";
 import PendingApproval from "./PendingApproval";
 import Apply from "./Apply";
 import useSound from "use-sound";
@@ -19,7 +22,12 @@ const Invite = () => {
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
   const [playSparklesSFX] = useSound(sparklesSFX);
 
-  if (systemStage > SYSTEM_STAGE.KEY || collector?.minted || collector?.mintClosed) return null;
+  if (
+    systemStage > SYSTEM_STAGE.KEY ||
+    collector?.minted ||
+    collector?.mintClosed
+  )
+    return null;
 
   const onSubmitSuccess = (address) => {
     dispatch(loadCollectorByAddress(address));
@@ -28,17 +36,17 @@ const Invite = () => {
     dispatch(clearInvite());
   };
 
-  if (collector?.approved) return (
-    <div className="box-content approved">
-      <MintKey />
-    </div>
-  );
+  if (collector?.approved)
+    return (
+      <div className="box-content approved">
+        <MintKey />
+      </div>
+    );
 
-  if (collector || showSubmittedModal) return (
-    <PendingApproval showModal={showSubmittedModal} />
-  )
+  if (collector || showSubmittedModal)
+    return <PendingApproval showModal={showSubmittedModal} />;
 
-  return <Apply onSubmitSuccess={onSubmitSuccess} />
+  return <Apply onSubmitSuccess={onSubmitSuccess} />;
 };
 
 export default Invite;

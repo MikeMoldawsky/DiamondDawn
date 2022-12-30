@@ -1,6 +1,6 @@
 import { useContract, useProvider, useSigner } from "wagmi";
 import { useSelector } from "react-redux";
-import {contractSelector} from "store/systemReducer";
+import { contractSelector } from "store/systemReducer";
 import { CONTRACTS } from "consts";
 
 function useDDContract(contractType = CONTRACTS.DiamondDawn) {

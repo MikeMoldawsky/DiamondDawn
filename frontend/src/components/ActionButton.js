@@ -31,7 +31,7 @@ const ActionButton = ({
       await onClick();
     } catch (e) {
       showError(e, `${actionKey} Failed`);
-      onError && onError(e)
+      onError && onError(e);
     }
     dispatch(clearActionStatus(actionKey));
   };

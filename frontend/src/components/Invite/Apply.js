@@ -3,10 +3,7 @@ import ApplyForm from "components/ApplyForm";
 import { useAccount } from "wagmi";
 import { createVideoSources } from "utils";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
-import {
-  Desktop,
-  MobileOrTablet,
-} from "hooks/useMediaQueries";
+import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 
 const Apply = ({ onSubmitSuccess }) => {
   const videoSrc = createVideoSources("diamond-evolution");

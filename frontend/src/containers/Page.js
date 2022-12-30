@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
-import {isActionSuccessSelector} from "store/actionStatusReducer";
+import { isActionSuccessSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import useTimeout from "hooks/useTimeout";
@@ -9,7 +9,7 @@ import useCanAccessDD from "hooks/useCanAccessDD";
 import useWaitFor from "hooks/useWaitFor";
 import PageCover from "components/PageCover";
 import useOnConnect from "hooks/useOnConnect";
-import {isNoContractMode} from "utils";
+import { isNoContractMode } from "utils";
 
 const DEFAULT_TIMEOUT = 10000;
 const FADE_DURATION = 150;
@@ -32,17 +32,17 @@ const Page = ({
   const dispatch = useDispatch();
   const [hidden, setHidden] = useState(false);
   const [fade, setFade] = useState(false);
-  const isConnected = account?.address
+  const isConnected = account?.address;
 
-  const waitForActions = [...actions]
+  const waitForActions = [...actions];
   if (!isNoContractMode()) {
-    waitForActions.push("get-contract")
+    waitForActions.push("get-contract");
   }
   if (isConnected) {
-    waitForActions.push("get-collector-by-address")
+    waitForActions.push("get-collector-by-address");
   }
   if (waitForTokens) {
-    waitForActions.push({ isFirstComplete: true, key: "load-nfts" })
+    waitForActions.push({ isFirstComplete: true, key: "load-nfts" });
   }
 
   const contentReady = useWaitFor({ images, videos, actions: waitForActions });
@@ -55,7 +55,7 @@ const Page = ({
   const pageReady = assetReadyPages[pageName] && isCollectorReady;
 
   const setAssetsReady = () => {
-    if (requireAccess && !canAccessDD) return
+    if (requireAccess && !canAccessDD) return;
 
     setFade(true);
     setTimeout(() => {
@@ -86,7 +86,7 @@ const Page = ({
   // monitor contentReady
   useEffect(() => {
     if (contentReady) {
-      setAssetsReady()
+      setAssetsReady();
     }
   }, [contentReady]);
 
@@ -98,11 +98,7 @@ const Page = ({
   return (
     <>
       {children}
-      {
-        withLoader
-        && !pageReady
-        && !hidden
-        && <PageCover fade={fade} />}
+      {withLoader && !pageReady && !hidden && <PageCover fade={fade} />}
     </>
   );
 };

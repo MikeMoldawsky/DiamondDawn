@@ -18,7 +18,9 @@ export const getContractInfoApi = async () => {
         const [{ data: addresses }, { data: ddAbi }, { data: ddMineAbi }] =
           await Promise.all([
             axios.get(
-              getCDNContractUrl(`${process.env.REACT_APP_CONTRACT_ORIGIN}_contracts.json`)
+              getCDNContractUrl(
+                `${process.env.REACT_APP_CONTRACT_ORIGIN}_contracts.json`
+              )
             ),
             axios.get(getCDNContractUrl("dd_abi.json")),
             axios.get(getCDNContractUrl("dd_mine_abi.json")),
