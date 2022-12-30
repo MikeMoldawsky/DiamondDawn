@@ -3,7 +3,7 @@ import "./HomeBackground.scss";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import ScrollMarker from "components/ScrollMarker";
 import useScrollTop from "hooks/useScrollTop";
-import Link, {CollectorLink, TwitterLink} from "components/Links";
+import Link, { CollectorLink, TwitterLink } from "components/Links";
 import classNames from "classnames";
 
 const HomeBackground = ({ mousePos }) => {

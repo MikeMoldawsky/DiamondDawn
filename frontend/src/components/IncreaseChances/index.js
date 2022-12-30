@@ -1,3 +1,3 @@
-import IncreaseChances from "./IncreaseChances"
+import IncreaseChances from "./IncreaseChances";
 
-export default IncreaseChances
+export default IncreaseChances;
