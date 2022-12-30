@@ -7,7 +7,7 @@ import {
   getSystemStageApi,
   getTokenCountApi,
 } from "api/contractApi";
-import { CONTRACTS } from "consts";
+import {CONTRACTS, SYSTEM_STAGE} from "consts";
 
 const INITIAL_STATE = {
   ddContractInfo: null,
@@ -74,6 +74,8 @@ export const isStageActiveSelector = (stage) => (state) => {
   const { systemStage, isActive } = systemSelector(state);
   return systemStage === stage && isActive;
 };
+
+export const isMintOpenSelector = isStageActiveSelector(SYSTEM_STAGE.KEY);
 
 export const contractSelector =
   (contractType = CONTRACTS.DiamondDawn) =>
