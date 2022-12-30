@@ -18,15 +18,18 @@ import useMusic from "hooks/useMusic";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import { useSearchParams } from "react-router-dom";
+import classNames from "classnames";
 
 const MintKeyView = ({
   mintPrice = 4.44,
-  maxDiamonds = 333,
-  diamondCount = 0,
+  maxEntrance = 333,
+  tokensMinted = 0,
   canMint,
   mint,
   expiresAt,
   onCountdownEnd,
+  forceButtonLoading,
+  onMintError,
 }) => {
   const [searchParams] = useSearchParams();
   const showInvitesParam = searchParams.get("invites") === "true";
@@ -86,7 +89,9 @@ const MintKeyView = ({
           actionKey="MintKey"
           className="gold lg mint-button"
           disabled={!canMint || !isFunction(mint)}
+          isLoading={forceButtonLoading}
           onClick={() => isFunction(mint) && mint()}
+          onError={onMintError}
         >
           {mintPriceText} <FontAwesomeIcon icon={faEthereum} /> MINT
         </ActionButton>
@@ -95,14 +100,13 @@ const MintKeyView = ({
   );
 
   const { countdownText, date: countdownEnd } = useMineOpenCountdown();
-
   const countdownEndDate = canMint ? expiresAt : countdownEnd;
   const countdownTextLine = canMint
     ? "When the time runs out, you'll no longer be able to join Diamond Dawn"
     : countdownText;
 
   return (
-    <div className="action-view enter">
+    <div className={classNames("action-view enter", { minting: canMint })}>
       <div className="layout-box">
         {!showInvites && <MobileOrTablet>{renderTitle()}</MobileOrTablet>}
         <Desktop>{renderHandAndKeyVideo()}</Desktop>
@@ -144,6 +148,12 @@ const MintKeyView = ({
                     <div className="text-comment">{countdownTextLine}</div>
                     <Countdown
                       date={countdownEndDate}
+                      defaultParts={{
+                        days: 3,
+                        hours: 3,
+                        minutes: 3,
+                        seconds: 0,
+                      }}
                       onComplete={() =>
                         isFunction(onCountdownEnd) && onCountdownEnd()
                       }
@@ -171,7 +181,7 @@ const MintKeyView = ({
       </div>
       {!showInvites && (
         <div className="status-box">
-          {diamondCount} / {maxDiamonds} MINTED
+          {tokensMinted} / {maxEntrance} MINTED
         </div>
       )}
     </div>

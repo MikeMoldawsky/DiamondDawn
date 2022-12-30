@@ -40,14 +40,12 @@ const ServerAppLoader = () => {
 
   useOnConnect(
     (address) => {
-      dispatch(clearActionStatus("get-collector-by-address"));
       actionDispatch(
         loadCollectorByAddress(address),
         "get-collector-by-address"
       );
     },
     () => {
-      dispatch(clearActionStatus("get-collector-by-address"));
       dispatch({ type: "RESET_STATE" });
     }
   );

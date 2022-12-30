@@ -198,6 +198,16 @@
       font-size: 1.5em;
     }
   }
+
+  &.minting {
+    .mint-box {
+      padding: 0;
+    }
+
+    .timer-box {
+      max-width: 20vw;
+    }
+  }
 }
 
 @media only screen and (max-width: 1199px) {
@@ -265,7 +275,7 @@
 
         .timer-box {
           padding: 0;
-          text-align: center;
+          max-width: 65vw;
 
           .countdown {
             width: 85%;

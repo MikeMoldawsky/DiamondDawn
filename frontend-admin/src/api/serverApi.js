@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCDNContractUrl } from "utils";
 
 // AUTH
 export const adminAuthApi = async (pwd) => {
@@ -14,14 +15,35 @@ export const adminAuthApi = async (pwd) => {
 // CONTRACTS
 export const getContractDataApi = async () => {
   try {
-    if (process.env.REACT_APP_USE_LOCAL_CONTRACT === "true") {
-      return {
-        ddContract: await import("contracts/DiamondDawn.json"),
-        ddMineContract: await import("contracts/DiamondDawnMine.json"),
-      };
+    switch (process.env.REACT_APP_CONTRACT_ORIGIN) {
+      case "local":
+        return {
+          ddContract: await import("contracts/DiamondDawn.json"),
+          ddMineContract: await import("contracts/DiamondDawnMine.json"),
+        };
+      case "db":
+        const { data } = await axios.get(`/api/get_contract`);
+        return data;
+      default:
+        const [{ data: addresses }, { data: ddAbi }, { data: ddMineAbi }] =
+          await Promise.all([
+            axios.get(
+              getCDNContractUrl(
+                `${process.env.REACT_APP_CONTRACT_ORIGIN}_contracts.json`
+              )
+            ),
+            axios.get(getCDNContractUrl("dd_abi.json")),
+            axios.get(getCDNContractUrl("dd_mine_abi.json")),
+          ]);
+        console.log("CDN contracts response", { addresses, ddAbi, ddMineAbi });
+        return {
+          ddContract: { address: addresses.dd, artifact: { abi: ddAbi } },
+          ddMineContract: {
+            address: addresses.dd_mine,
+            artifact: { abi: ddMineAbi },
+          },
+        };
     }
-    const { data } = await axios.get(`/api/get_contract`);
-    return data;
   } catch (e) {
     console.error("Failed to get contract data!!!!", e);
     return null;

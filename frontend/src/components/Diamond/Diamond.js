@@ -5,7 +5,7 @@ import { getCDNNftUrl, getTokenTrait } from "utils";
 import { DIAMOND_ANIMATION_MAPPING, SHAPE_NAME } from "consts";
 
 const Diamond = ({ diamond }) => {
-  const { animation_url, isBurned, stage } = diamond;
+  const { isBurned, stage } = diamond;
 
   const shape = getTokenTrait(diamond, "Shape") || SHAPE_NAME.NO_SHAPE;
 
@@ -13,8 +13,6 @@ const Diamond = ({ diamond }) => {
     ? "burn.mp4"
     : DIAMOND_ANIMATION_MAPPING[stage][shape];
   const videoUrl = getCDNNftUrl(fileName);
-
-  console.log("Diamond", { diamond, shape, videoUrl, animation_url });
 
   const renderPlayer = useCallback(() => {
     return (

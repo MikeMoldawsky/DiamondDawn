@@ -2,12 +2,12 @@ import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import { BigNumber } from "ethers";
 import { getConfigApi, getContractInfoApi } from "api/serverApi";
 import {
-  getMaxDiamondsApi,
-  getMineDiamondCountApi,
+  getMaxEntranceApi,
   getMinePriceApi,
   getSystemStageApi,
+  getTokenCountApi,
 } from "api/contractApi";
-import get from "lodash/get";
+import { CONTRACTS } from "consts";
 
 const INITIAL_STATE = {
   ddContractInfo: null,
@@ -15,8 +15,8 @@ const INITIAL_STATE = {
   paused: false,
   config: {},
   minePrice: BigNumber.from(0),
-  maxDiamonds: 333,
-  diamondCount: 0,
+  maxEntrance: 333,
+  tokensMinted: 0,
 };
 
 export const loadMinePrice = (contract) => async (dispatch) => {
@@ -35,19 +35,19 @@ export const loadSystemStage = (contract) => async (dispatch) => {
   });
 };
 
-export const loadMaxDiamonds = (contract) => async (dispatch) => {
-  const maxDiamonds = await getMaxDiamondsApi(contract);
+export const loadMaxEntrance = (contract) => async (dispatch) => {
+  const maxEntrance = await getMaxEntranceApi(contract);
   dispatch({
     type: "SYSTEM.UPDATE_STATE",
-    payload: { maxDiamonds },
+    payload: { maxEntrance },
   });
 };
 
-export const loadDiamondCount = (mineContract) => async (dispatch) => {
-  const diamondCount = await getMineDiamondCountApi(mineContract);
+export const loadTokenCount = (mineContract) => async (dispatch) => {
+  const tokensMinted = await getTokenCountApi(mineContract);
   dispatch({
-    type: "SYSTEM.SET_DIAMOND_COUNT",
-    payload: { diamondCount },
+    type: "SYSTEM.UPDATE_STATE",
+    payload: { tokensMinted },
   });
 };
 
@@ -60,10 +60,11 @@ export const loadConfig = () => async (dispatch) => {
 };
 
 export const loadContractInfo = () => async (dispatch) => {
-  const ddContractInfo = await getContractInfoApi();
+  const { ddContract, ddMineContract } = await getContractInfoApi();
+
   dispatch({
     type: "SYSTEM.SET_DD_CONTRACT_INFO",
-    payload: { ddContractInfo },
+    payload: { ddContractInfo: ddContract, ddMineContractInfo: ddMineContract },
   });
 };
 
@@ -73,6 +74,14 @@ export const isStageActiveSelector = (stage) => (state) => {
   const { systemStage, isActive } = systemSelector(state);
   return systemStage === stage && isActive;
 };
+
+export const contractSelector =
+  (contractType = CONTRACTS.DiamondDawn) =>
+  (state) => {
+    return contractType === CONTRACTS.DiamondDawn
+      ? state.system.ddContractInfo
+      : state.system.ddMineContractInfo;
+  };
 
 export const systemReducer = makeReducer(
   {

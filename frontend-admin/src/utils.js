@@ -79,3 +79,12 @@ export const unixTimestampToDateString = (timestamp) => {
 
 export const isNoContractMode = () =>
   process.env.REACT_APP_NO_CONTRACT === "true";
+
+const prependBackslash = (objectPath) =>
+  `${objectPath[0] !== "/" ? "/" : ""}${objectPath}`;
+
+const getCDNObjectUrl = (objectPath) =>
+  `${process.env.REACT_APP_CDN_URL}${prependBackslash(objectPath)}`;
+
+export const getCDNContractUrl = (objectPath) =>
+  getCDNObjectUrl(`/contracts${prependBackslash(objectPath)}`);

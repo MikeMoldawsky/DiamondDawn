@@ -1,68 +1,68 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
-import size from "lodash/size";
 import "./CollectorPage.scss";
-import { useSelector } from "react-redux";
-import { tokensSelector } from "store/tokensReducer";
+import { useDispatch, useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
 import { useAccount, useEnsName } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
 import Box from "components/Box";
-import WaitFor from "containers/WaitFor";
 import Invite from "components/Invite";
 import NFTs from "components/NFTs";
-import { getCDNImageUrl, isNoContractMode, shortenEthAddress } from "utils";
+import { getCDNImageUrl, shortenEthAddress } from "utils";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { collectorSelector } from "store/collectorReducer";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router-dom";
+import {
+  collectorSelector,
+  loadCollectorByAddress,
+} from "store/collectorReducer";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
+import useActionDispatch from "hooks/useActionDispatch";
+import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
   useNoScrollView(isMobile);
 
-  const tokens = useSelector(tokensSelector);
   const { systemStage } = useSelector(systemSelector);
+  const { selectedTokenId } = useSelector(uiSelector);
   const account = useAccount();
   const ensName = useEnsName({ address: account?.address });
   const navigate = useNavigate();
   const collector = useSelector(collectorSelector);
+  const actionDispatch = useActionDispatch();
+  const dispatch = useDispatch();
 
   useMusic("collector.mp3");
 
+  useEffect(() => {
+    if (account?.address) {
+      actionDispatch(
+        loadCollectorByAddress(account?.address),
+        "get-collector-by-address"
+      );
+    }
+  }, [account?.address]);
+
   const renderContent = () => {
-    if (size(tokens) > 0) return <NFTs />;
-
-    if (systemStage <= SYSTEM_STAGE.KEY) return <Invite />;
-
-    return (
-      <div className="box-content opaque opensea">
-        <div className="tagline-text">Your Collection is Empty</div>
-        <div className="button link-opensea">GO TO OPENSEA</div>
-      </div>
-    );
+    if (
+      collector?.minted ||
+      collector?.mintClosed ||
+      systemStage > SYSTEM_STAGE.KEY
+    )
+      return <NFTs />;
+    return <Invite />;
   };
-
-  let waitForActions = [];
-  if (
-    !isNoContractMode() &&
-    systemStage >= SYSTEM_STAGE.KEY &&
-    account?.address
-  ) {
-    waitForActions = [
-      "get-contract",
-      { isFirstComplete: true, key: "load-nfts" },
-    ];
-  }
 
   return (
     <Page
       pageName="collector"
       images={[getCDNImageUrl("/collector/collector-bg.png")]}
       collectorLoader={!!collector}
+      waitForTokens
     >
       <div className={classNames("page collector-page")}>
         <div className="bg collector-bg" />
@@ -72,12 +72,13 @@ const CollectorPage = () => {
             {ensName?.data || shortenEthAddress(account?.address)}
           </div>
           <Box className={"main-box"}>
-            <WaitFor
-              containerClassName="box-content opaque"
-              actions={waitForActions}
-            >
-              {renderContent()}
-            </WaitFor>
+            {renderContent()}
+            {selectedTokenId > -1 && (
+              <ArrowBackIcon
+                className="back-to-gallery"
+                onClick={() => dispatch(setSelectedTokenId(-1))}
+              />
+            )}
             <HighlightOffIcon
               className="close"
               onClick={() => navigate("/explore")}

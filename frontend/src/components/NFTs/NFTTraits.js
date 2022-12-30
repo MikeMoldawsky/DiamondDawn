@@ -1,6 +1,6 @@
 import React from "react";
-import "./DiamondInfo.scss";
-import _ from "lodash";
+import map from "lodash/map";
+import kebabCase from "lodash/kebabCase";
 import { TRAIT } from "consts";
 import format from "date-fns/format";
 
@@ -15,17 +15,16 @@ const formatTraitValue = (trait_type, value) => {
   }
 };
 
-const DiamondInfo = ({ diamond }) => {
-  const { attributes } = diamond;
-
+const NFTTraits = ({ traits }) => {
   return (
     <div className="traits">
-      {_.map(attributes, ({ trait_type, value }, i) => (
+      {map(traits, ({ trait_type, value }, i) => (
         <div
-          key={`trait-${_.kebabCase(trait_type)}-${i}`}
+          key={`trait-${kebabCase(trait_type)}-${i}`}
           className="center-aligned-row trait"
         >
           <span>{trait_type}</span>
+          <span className="underline" />
           <span>{formatTraitValue(trait_type, value)}</span>
         </div>
       ))}
@@ -33,4 +32,4 @@ const DiamondInfo = ({ diamond }) => {
   );
 };
 
-export default DiamondInfo;
+export default NFTTraits;

@@ -183,11 +183,13 @@ export const getCDNVideoUrl = (objectPath) =>
 export const getCDNAudioUrl = (objectPath) =>
   getCDNObjectUrl(`/audio${prependBackslash(objectPath)}`);
 
+export const getCDNContractUrl = (objectPath) =>
+  getCDNObjectUrl(`/contracts${prependBackslash(objectPath)}`);
+
 export const createVideoSources = (fileName) => [
   { src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm" },
   { src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" },
 ];
-
 export const getVideoBitrate = (width) => {
   return width <= 1024 ? "2.5m" : "5m";
   // return width <= 768 || (width <= 1024 && height > width);
@@ -212,5 +214,14 @@ export const chainNameById = (chainId) => {
       return "Goerli Testnet";
     default:
       return "Local";
+  }
+};
+
+export const safeParseInt = (v) => {
+  try {
+    return parseInt(v);
+  } catch (e) {
+    console.error("safeParseInt threw", e);
+    return -1;
   }
 };

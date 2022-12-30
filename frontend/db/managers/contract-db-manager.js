@@ -1,8 +1,14 @@
 const ContractModel = require("../models/ContractModel");
+
 const DIAMOND_DAWN_CONTRACT_NAME = "DiamondDawn";
+const DIAMOND_DAWN_MINE_CONTRACT_NAME = "DiamondDawnMine";
 
 async function getDiamondDawnContract() {
   return await getContractByName(DIAMOND_DAWN_CONTRACT_NAME);
+}
+
+async function getDiamondDawnMineContract() {
+  return await getContractByName(DIAMOND_DAWN_MINE_CONTRACT_NAME);
 }
 
 async function getContractByName(name) {
@@ -15,4 +21,5 @@ async function getContractByName(name) {
 
 module.exports = {
   getDiamondDawnContract,
+  getDiamondDawnMineContract,
 };

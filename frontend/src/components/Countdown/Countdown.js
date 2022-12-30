@@ -9,6 +9,7 @@ import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 
 const CountdownComp = ({
   date,
+  defaultParts,
   parts,
   renderParts,
   flat,
@@ -74,7 +75,7 @@ const CountdownComp = ({
 
   if (parts) return renderer(parts);
 
-  if (!date) return null;
+  if (!date) return defaultParts ? renderer(defaultParts) : null;
 
   return <Countdown date={date} renderer={renderer} onComplete={onComplete} />;
 };

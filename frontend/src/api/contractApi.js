@@ -24,12 +24,14 @@ export const getMinePriceApi = async (contract) => {
   }
 };
 
-export const getMaxDiamondsApi = async (contract) => {
-  return await contract.maxDiamonds();
+export const getMaxEntranceApi = async (contract) => {
+  return await contract.MAX_ENTRANCE();
 };
 
-export const getMineDiamondCountApi = async (mineContract) => {
-  return await mineContract.diamondCount();
+export const getTokenCountApi = async (mineContract) => {
+  const events = await mineContract.queryFilter("Forge");
+
+  return events.length;
 };
 
 // PROCESS

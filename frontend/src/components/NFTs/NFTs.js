@@ -1,20 +1,51 @@
-import React from "react";
-import map from "lodash/map";
-import size from "lodash/size";
+import React, { useEffect, useState } from "react";
 import "./NFTs.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { tokensSelector } from "store/tokensReducer";
-import { NavLink, useNavigate } from "react-router-dom";
-import { getTokenNextStageName, isTokenActionable } from "utils";
-import { setSelectedTokenId } from "store/uiReducer";
-import { systemSelector } from "store/systemReducer";
-import Diamond from "components/Diamond";
+import { tokenByIdSelector, tokensSelector } from "store/tokensReducer";
+import { safeParseInt } from "utils";
+import { setSelectedTokenId, uiSelector } from "store/uiReducer";
+import NFT from "./NFT";
+import CarouselBox from "components/CarouselBox";
+import { useNavigate } from "react-router-dom";
+import NFTGallery from "./NFTGallery";
+import size from "lodash/size";
+import head from "lodash/head";
+import values from "lodash/values";
+import GoToOpensea from "./GoToOpensea";
 
 const NFTs = () => {
   const tokens = useSelector(tokensSelector);
-  const { systemStage, isActive } = useSelector(systemSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { selectedTokenId } = useSelector(uiSelector);
+  const selectedToken = useSelector(tokenByIdSelector(selectedTokenId));
+  const [transitionName, setTransitionName] = useState("");
+  const [startTransition, setStartTransition] = useState(false);
+
+  useEffect(() => {
+    if (selectedTokenId === -1 && size(tokens) === 1) {
+      dispatch(setSelectedTokenId(head(values(tokens)).id));
+    }
+  }, []);
+
+  const selectToken = (id, transition) => {
+    if (transition) {
+      setStartTransition(true);
+      setTransitionName(transition);
+    }
+    setTimeout(() => {
+      dispatch(setSelectedTokenId(safeParseInt(id)));
+      setStartTransition(false);
+    }, 350);
+  };
+
+  const onChangeNFT = (direction, tokenId) => {
+    selectToken(
+      tokenId,
+      direction === "prev" ? "moveToLeftUnfoldRight" : "moveToRightUnfoldLeft"
+    );
+  };
 
   const goToProcess = (tokenId) => (e) => {
     e.stopPropagation();
@@ -22,29 +53,30 @@ const NFTs = () => {
     navigate("/process");
   };
 
-  const renderNFTCard = (token) => {
-    const { name, id } = token;
-    return (
-      <div key={`token-card-${id}`} className="card-container">
-        <div className="token-card">
-          <NavLink to={`/nft/${id}`}>
-            <div className="token-id">{name}</div>
-            <Diamond diamond={token} />
-            <div className="card-footer" />
-          </NavLink>
-          {isTokenActionable(token, systemStage, isActive) && (
-            <div className="button" onClick={goToProcess(token.id)}>
-              {getTokenNextStageName(token)}
-            </div>
-          )}
-        </div>
-      </div>
-    );
+  const renderContent = () => {
+    if (size(tokens) === 0) return <GoToOpensea />;
+
+    if (selectedToken)
+      return (
+        <CarouselBox
+          className="layout-box"
+          items={tokens}
+          activeItemId={selectedTokenId}
+          onChange={onChangeNFT}
+        >
+          <NFT
+            token={selectedToken}
+            hideCertificate={startTransition}
+            transitionName={transitionName}
+            goToProcess={goToProcess}
+          />
+        </CarouselBox>
+      );
+
+    return <NFTGallery goToProcess={goToProcess} />;
   };
 
-  return size(tokens) > 0 ? (
-    <div className="box-content nfts">{map(tokens, renderNFTCard)}</div>
-  ) : null;
+  return <div className="box-content opaque nfts">{renderContent()}</div>;
 };
 
 export default NFTs;

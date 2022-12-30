@@ -2,33 +2,282 @@
 
 .page.collector-page .nfts {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 
-  .card-container {
-    width: 50%;
+  .layout-box,
+  .gallery,
+  .goto-opensea {
+    display: flex;
+    height: 85%;
+    width: 90%;
+    position: relative;
+  }
 
-    .token-card {
-      border: solid 1px $border_gray;
-      margin: 40px;
+  .layout-box {
+    justify-content: flex-start;
+    $nftBorderColor: white;
+
+    .border-box {
+      position: absolute;
+      width: 100%;
+      height: calc(50% - 1.5em);
+      left: 0;
+      border: solid 1px $nftBorderColor;
+      z-index: -1;
+
+      &.top-border-box {
+        top: 0;
+        border-bottom: none;
+      }
+
+      &.bottom-border-box {
+        bottom: 0;
+        border-top: none;
+      }
+
+      &.middle-border-box {
+        height: 3em;
+        top: calc(50% - 1.5em);
+        border-top: none;
+        border-bottom: none;
+        border-left: solid 1px $nftBorderColor;
+        border-right: solid 1px $nftBorderColor;
+
+        &.with-back-btn {
+          border-left: none;
+        }
+        &.with-forward-btn {
+          border-right: none;
+        }
+      }
+    }
+
+    img {
+      width: 5em;
+    }
+
+    .diamond-box {
+      height: 100%;
+      aspect-ratio: 1;
+      padding: 0.5em;
+    }
+
+    .certificate {
+      .traits {
+        width: 50%;
+
+        .trait {
+          line-height: 1.5em;
+          margin-bottom: 0.5em;
+
+          .underline {
+            position: relative;
+            flex-grow: 2;
+            height: 1.5em;
+            overflow: hidden;
+            margin: 0 0.25em;
+
+            &:after {
+              content: ".........................................................................";
+              letter-spacing: 0.1em;
+              position: absolute;
+              bottom: 0;
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+
+    .content-box {
+      flex-grow: 2;
+      padding: 1.5em 3em 2.5em;
+      animation: showCertificate 0.25s ease-out forwards;
+      animation-delay: 0.75s;
+      opacity: 0;
+      z-index: -1;
+
+      .tagline-text {
+        color: white;
+      }
+
+      &.hidden {
+        animation: hideCertificate 0.25s ease-in forwards;
+      }
+    }
+
+    .nft-plate {
+      margin-top: 2em;
+      height: 5.25em;
+      position: relative;
+      font-size: 0.8em;
+      font-weight: 500;
+      padding: 0 0.5em;
+
+      .bg {
+        background: url($CDN_URL + "/images/collector/nft-plate.jpg") no-repeat
+          center center;
+        background-size: 100% auto;
+
+        .nail {
+          position: absolute;
+          $nailMargin: 0.125em;
+          $nailSize: 0.8em;
+          width: $nailSize;
+          height: $nailSize;
+          background: url($CDN_URL + "/images/collector/plate-nail.png")
+            no-repeat center center;
+
+          &:nth-child(1) {
+            top: $nailMargin;
+            left: $nailMargin;
+          }
+          &:nth-child(2) {
+            top: $nailMargin;
+            right: $nailMargin;
+          }
+          &:nth-child(3) {
+            bottom: $nailMargin;
+            right: $nailMargin;
+          }
+          &:nth-child(4) {
+            bottom: $nailMargin;
+            left: $nailMargin;
+          }
+        }
+      }
+
+      .phases {
+        height: 100%;
+        justify-content: space-around;
+
+        .phase-info {
+          width: 20%;
+
+          .unrevealed {
+            font-size: 2.5em;
+          }
+
+          &:not(:first-child) {
+            border-left: solid 1px #ccccccaa;
+          }
+        }
+      }
+    }
+
+    .box-button {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      cursor: pointer;
+      border: solid 2px #ffffffbb;
+      border-radius: 50%;
+      padding-right: 0.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3em;
+      height: 3em;
+      background-color: #4d4d4d88;
+
+      svg {
+        font-size: 1.8em;
+        opacity: 0.75;
+      }
+
+      &.back {
+        left: 0;
+      }
+
+      &.forward {
+        left: 100%;
+        padding-right: 0;
+        padding-left: 0.2em;
+      }
+    }
+  }
+
+  .gallery {
+    justify-content: space-evenly;
+
+    .gallery-item {
+      width: 25%;
+      cursor: pointer;
       position: relative;
 
-      .token-id {
-        font-weight: 500;
-        font-size: 1.2em;
-        margin: 10px 0;
-        text-align: center;
-      }
-
-      .card-footer {
-        height: 80px;
-      }
-
-      .button {
-        height: 40px;
+      &.active {
+        transition: all 0.5s ease-out;
         position: absolute;
-        right: 20px;
-        bottom: 20px;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: auto;
       }
+    }
+  }
+
+  .goto-opensea {
+    .logo {
+      width: 7.5em;
+      font-size: 2.5em;
+      margin-bottom: 2em;
+
+      .react-player {
+        width: 100% !important;
+
+        video {
+          margin: -2.8em 0;
+        }
+      }
+    }
+
+    .text {
+      margin: 1em 0 3em;
+      font-size: $font20px;
+      max-width: 32em;
+    }
+  }
+
+  @keyframes showCertificate {
+    0% {
+      transform: translateX(-95%);
+      opacity: 0;
+      z-index: -1;
+    }
+    10% {
+      transform: translateX(-85.5%);
+      opacity: 1;
+    }
+    99% {
+      z-index: -1;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+      z-index: 0;
+    }
+  }
+
+  @keyframes hideCertificate {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+      z-index: 0;
+    }
+    1% {
+      z-index: -1;
+    }
+    90% {
+      transform: translateX(-85.5%);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-95%);
+      opacity: 0;
+      z-index: -1;
     }
   }
 }

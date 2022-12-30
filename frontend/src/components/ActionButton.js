@@ -14,6 +14,7 @@ const ActionButton = ({
   actionKey,
   className,
   onClick,
+  onError,
   disabled,
   isLoading,
   children,
@@ -30,6 +31,7 @@ const ActionButton = ({
       await onClick();
     } catch (e) {
       showError(e, `${actionKey} Failed`);
+      onError && onError(e);
     }
     dispatch(clearActionStatus(actionKey));
   };
