@@ -132,6 +132,13 @@
         }
       }
     }
+
+    .increase-chances {
+      position: absolute;
+      bottom: -2.5em;
+      left: 0;
+      width: 100%;
+    }
   }
 }
 
@@ -139,7 +146,7 @@
   .invite-view {
     .layout-box {
       flex-direction: column;
-      padding: 2em 1em 0;
+      padding: 2em 1em 3em;
 
       .leading-text {
         font-size: 1.5em;
@@ -203,6 +210,10 @@
               }
             }
           }
+
+          .minting-address-row {
+            margin-bottom: 0;
+          }
         }
 
         .follow-box {
@@ -215,6 +226,10 @@
             float: right;
           }
         }
+      }
+
+      .increase-chances {
+        bottom: -1.75em;
       }
     }
   }
