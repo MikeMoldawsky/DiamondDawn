@@ -145,6 +145,10 @@ describe("DiamondDawn", () => {
     });
 
     it("Should REVERT when trying to mine more than once", async () => {
+      await expect(
+        dd.forge(adminSig, 3, { value: PRICE.add(PRICE).add(PRICE) })
+      ).to.be.revertedWith("Exceeds max quantity");
+
       await dd.forge(adminSig, 2, { value: PRICE.add(PRICE) });
       await expect(dd.forge(adminSig, 1, { value: PRICE })).to.be.revertedWith(
         "Already minted"

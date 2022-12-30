@@ -264,7 +264,7 @@ contract DiamondDawn is
 
     function _forge(bytes calldata signature, uint256 quantity) private isActiveStage(Stage.KEY) isNotFull(quantity) {
         require(_isValid(signature, bytes32(uint256(uint160(_msgSender())))), "Not allowed to mint");
-        require(quantity <= MAX_MINT);
+        require(quantity <= MAX_MINT, "Exceeds max quantity");
         require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
         for (uint i = 0; i < quantity; i++) {
