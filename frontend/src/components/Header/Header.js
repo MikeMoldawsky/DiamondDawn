@@ -15,7 +15,7 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { isNoContractMode } from "utils";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from "components/Logo";
-import { toggleMuted, uiSelector } from "store/uiReducer";
+import { setSideMenuOpen, toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import CTAButton from "components/CTAButton";
 import { TwitterLink, TelegramLink } from "components/Links";
@@ -28,11 +28,11 @@ import {
   DIAMOND_DAWN_PUBLIC_TELEGRAM,
 } from "consts";
 
-const Header = ({ isMenuOpen, toggleMenu }) => {
+const Header = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const isDesktop = useDesktopMediaQuery();
-  const { muted, showHPLogo } = useSelector(uiSelector);
+  const { muted, showHPLogo, sideMenuOpen } = useSelector(uiSelector);
   const canAccessDD = useCanAccessDD();
   const collector = useSelector(collectorSelector);
 
@@ -45,16 +45,14 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
     dispatch(toggleMuted(true));
   };
 
-  const getMenuIcon = () => (isMenuOpen ? faX : faBars);
+  const getMenuIcon = () => (sideMenuOpen ? faX : faBars);
 
-  const onMenuIconClick = () => {
-    toggleMenu();
-  };
+  const toggleMenu = () => dispatch(setSideMenuOpen(!sideMenuOpen));
 
   const showRestrictedContent = canAccessDD && isDesktop;
 
   return (
-    <header onClick={() => isMenuOpen && toggleMenu()}>
+    <header onClick={() => sideMenuOpen && toggleMenu()}>
       <div className="header-internal">
         <div className="center-aligned-row header-side">
           <Wallet />
@@ -104,7 +102,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             <FontAwesomeIcon
               className="menu-icon"
               icon={getMenuIcon()}
-              onClick={onMenuIconClick}
+              onClick={toggleMenu}
             />
           )}
         </div>

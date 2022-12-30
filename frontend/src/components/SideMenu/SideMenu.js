@@ -1,7 +1,7 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import InvitationsStatus from "components/InvitationsStatus";
 import { getCDNImageUrl } from "utils";
@@ -11,10 +11,13 @@ import useGoToInvites from "hooks/useGoToInvites";
 import { CollectorLink } from "components/Links";
 import CTAButton from "components/CTAButton";
 import SocialIcons from "components/SocialIcons";
+import { setSideMenuOpen, uiSelector } from "store/uiReducer";
 
-const SideMenu = ({ isOpen, closeMenu }) => {
+const SideMenu = () => {
   const collector = useSelector(collectorSelector);
   const invite = useSelector(inviteSelector);
+  const { sideMenuOpen } = useSelector(uiSelector);
+  const dispatch = useDispatch();
 
   let invitedBy = invite;
   if (collector) {
@@ -25,6 +28,8 @@ const SideMenu = ({ isOpen, closeMenu }) => {
 
   const goToInvites = useGoToInvites();
 
+  const closeMenu = () => dispatch(setSideMenuOpen(false));
+
   const onInvitesTitleClick = () => {
     goToInvites();
     closeMenu();
@@ -33,7 +38,7 @@ const SideMenu = ({ isOpen, closeMenu }) => {
   return (
     <Drawer
       anchor="right"
-      open={isOpen}
+      open={sideMenuOpen}
       ModalProps={{ onBackdropClick: closeMenu }}
     >
       <div className="stretch-top-aligned-column">

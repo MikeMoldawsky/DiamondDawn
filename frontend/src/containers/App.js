@@ -17,9 +17,11 @@ import AudioPlayer from "components/AudioPlayer";
 import VideoPlayer from "components/VideoPlayer";
 import NetworkGuard from "containers/NetworkGuard";
 import CopyNotification from "components/CopyNotification";
+import { useSelector } from "react-redux";
+import { uiSelector } from "store/uiReducer";
 
 const App = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const { sideMenuOpen } = useSelector(uiSelector);
   const actionDispatch = useActionDispatch();
 
   useEffect(() => {
@@ -27,20 +29,14 @@ const App = () => {
   }, []);
 
   return (
-    <div className={classNames("main-layout", { "drawer-open": drawerOpen })}>
+    <div className={classNames("main-layout", { "drawer-open": sideMenuOpen })}>
       <WagmiWrapper>
         <NetworkGuard>
           <Router>
             <ScrollToTop />
-            <Header
-              isMenuOpen={drawerOpen}
-              toggleMenu={() => setDrawerOpen(!drawerOpen)}
-            />
+            <Header />
             <AppRoutes />
-            <SideMenu
-              isOpen={drawerOpen}
-              closeMenu={() => setDrawerOpen(false)}
-            />
+            <SideMenu />
             <AppLoader />
             <AudioPlayer />
             <VideoPlayer />

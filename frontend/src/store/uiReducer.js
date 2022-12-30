@@ -21,11 +21,17 @@ const INITIAL_STATE = {
   mintViewShowInvites: false,
   copyNotification: null,
   geoLocation: null,
+  sideMenuOpen: false,
 };
 
 export const setSelectedTokenId = (selectedTokenId) => ({
   type: "UI.SET_SELECTED_TOKEN_ID",
   payload: { selectedTokenId },
+});
+
+export const setSideMenuOpen = (sideMenuOpen) => ({
+  type: "UI.UPDATE_STATE",
+  payload: { sideMenuOpen },
 });
 
 export const setShouldIgnoreTokenTransferWatch = (
