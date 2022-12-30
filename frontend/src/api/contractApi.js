@@ -34,7 +34,7 @@ export const getMineDiamondCountApi = async (mineContract) => {
 
 // PROCESS
 export const forgeApi = async (contract, minePrice, signature) => {
-  return contract.dd.forge(signature, 1, {
+  return contract.forge(signature, 1, {
     value: minePrice,
     gasLimit: PROCESS_GAS_LIMIT,
   });
