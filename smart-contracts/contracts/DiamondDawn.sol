@@ -275,7 +275,7 @@ contract DiamondDawn is
     function _forgeOne() private {
         uint256 tokenId = ++_numTokens;
         ddMine.forge(tokenId);
-        _mint(_msgSender(), tokenId);
+        _safeMint(_msgSender(), tokenId);
     }
 
     function _isValid(bytes calldata signature, bytes32 message) private view returns (bool) {
