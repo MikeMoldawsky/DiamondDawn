@@ -19,6 +19,8 @@ const Invite = () => {
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
   const [playSparklesSFX] = useSound(sparklesSFX);
 
+  if (systemStage > SYSTEM_STAGE.KEY || collector?.minted || collector?.mintClosed) return null;
+
   const onSubmitSuccess = (address) => {
     dispatch(loadCollectorByAddress(address));
     playSparklesSFX();
@@ -26,15 +28,13 @@ const Invite = () => {
     dispatch(clearInvite());
   };
 
-  if (systemStage > SYSTEM_STAGE.KEY || collector?.minted) return null;
-
   if (collector?.approved) return (
     <div className="box-content approved">
       <MintKey />
     </div>
   );
 
-  if ((collector && !collector.mintClosed) || showSubmittedModal) return (
+  if (collector || showSubmittedModal) return (
     <PendingApproval showModal={showSubmittedModal} />
   )
 

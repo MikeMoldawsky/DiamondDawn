@@ -12,13 +12,13 @@ import { tokensSelector, watchTokenMinedBy } from "store/tokensReducer";
 import { useAccount } from "wagmi";
 import ActionView from "components/ActionView";
 import { forgeApi } from "api/contractApi";
-import { confirmMintedApi, signMintApi } from "api/serverApi";
+import { signMintApi } from "api/serverApi";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { getCDNVideoUrl, isNoContractMode } from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
 import {CONTRACTS, SYSTEM_STAGE} from "consts";
 import {
-  collectorSelector,
+  collectorSelector, confirmMinted,
   loadCollectorByAddress, openMintWindow,
 } from "store/collectorReducer";
 import useActionDispatch from "hooks/useActionDispatch";
@@ -91,7 +91,7 @@ const MintKey = () => {
     const tx = await forgeApi(contract, minePrice, signature);
     await tx.wait();
     try {
-      await confirmMintedApi(collector._id, account.address);
+      await confirmMinted(collector._id, account.address);
     } catch (e) {
       // do not show error not to confuse the user
     }

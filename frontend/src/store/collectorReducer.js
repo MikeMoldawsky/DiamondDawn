@@ -1,6 +1,6 @@
 import { makeReducer, reduceSetFull } from "./reduxUtils";
 import {
-  generateInvitationsApi,
+  confirmMintedApi,
   getCollectorByAddressApi,
   openMintWindowApi,
 } from "api/serverApi";
@@ -27,9 +27,9 @@ export const openMintWindow = (collectorId, address) => async (dispatch) => {
   dispatch(updateCollector(collector));
 };
 
-export const generateInvitations = (collectorId) => async (dispatch) => {
-  const collector = await generateInvitationsApi(collectorId);
-  dispatch(updateCollector(collector));
+export const confirmMinted = (collectorId, address) => async (dispatch) => {
+  const collector = await confirmMintedApi(collectorId, address);
+  dispatch(updateCollector(collector))
 };
 
 export const clearCollector = () => ({

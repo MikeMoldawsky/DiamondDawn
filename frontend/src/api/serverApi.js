@@ -133,11 +133,6 @@ export const changeMintAddressApi = async (
   return res.data;
 };
 
-export const generateInvitationsApi = async (collectorId) => {
-  const res = await axios.post(`/api/generate_invitations`, { collectorId });
-  return res.data;
-};
-
 // Signature
 export const signDawnApi = async (address, tokenId) => {
   const res = await axios.post(`/api/sign_dawn`, { address, tokenId });

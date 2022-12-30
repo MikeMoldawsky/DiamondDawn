@@ -41,7 +41,7 @@ const CollectorPage = () => {
   }, [account?.address])
 
   const renderContent = () => {
-    if (collector?.minted || systemStage > SYSTEM_STAGE.KEY) return <NFTs />;
+    if (collector?.minted || collector?.mintClosed || systemStage > SYSTEM_STAGE.KEY) return <NFTs />;
     return <Invite />;
   };
 
