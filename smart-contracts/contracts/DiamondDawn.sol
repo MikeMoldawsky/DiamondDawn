@@ -50,6 +50,7 @@ contract DiamondDawn is
 
     uint public constant PRICE = 4.44 ether;
     uint public constant PRICE_MARRIAGE = 4.99 ether;
+    uint8 public constant MAX_MINT = 2;
     uint16 public constant MAX_ENTRANCE = 333;
 
     bool public isLocked; // immutable
@@ -102,8 +103,8 @@ contract DiamondDawn is
         _;
     }
 
-    modifier costs(uint price) {
-        require(msg.value == price, string.concat("Cost is: ", Strings.toString(price)));
+    modifier costs(uint price, uint quantity) {
+        require(msg.value == (price * quantity), string.concat("Cost is: ", Strings.toString(price)));
         _;
     }
 
@@ -114,12 +115,16 @@ contract DiamondDawn is
 
     /**********************     External Functions     ************************/
 
-    function forge(bytes calldata signature) external payable costs(PRICE) {
-        _forge(signature);
+    function forge(bytes calldata signature, uint256 quantity) external payable costs(PRICE, quantity) {
+        _forge(signature, quantity);
     }
 
-    function forgeWithPartner(bytes calldata signature) external payable costs(PRICE_MARRIAGE) {
-        _forge(signature);
+    function forgeWithPartner(bytes calldata signature, uint256 quantity)
+        external
+        payable
+        costs(PRICE_MARRIAGE, quantity)
+    {
+        _forge(signature, quantity);
     }
 
     function mine(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.MINE) {
@@ -257,13 +262,20 @@ contract DiamondDawn is
 
     /**********************     Private Functions     ************************/
 
-    function _forge(bytes calldata signature) private isActiveStage(Stage.KEY) isNotFull {
+    function _forge(bytes calldata signature, uint256 quantity) private isActiveStage(Stage.KEY) isNotFull {
         require(_isValid(signature, bytes32(uint256(uint160(_msgSender())))), "Not allowed to mint");
+        require(quantity <= MAX_MINT);
         require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
+        for (uint i = 0; i < quantity; i++) {
+            _forgeOne();
+        }
+    }
+
+    function _forgeOne() private {
         uint256 tokenId = ++_numTokens;
         ddMine.forge(tokenId);
-        _safeMint(_msgSender(), tokenId);
+        _mint(_msgSender(), tokenId);
     }
 
     function _isValid(bytes calldata signature, bytes32 message) private view returns (bool) {

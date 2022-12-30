@@ -82,11 +82,11 @@ describe("Diamond Dawn Admin", () => {
     });
 
     it("Should not allow to forge key", async () => {
-      await expect(dd.forge(adminSig, { value: PRICE })).to.be.revertedWith(
+      await expect(dd.forge(adminSig, 1, { value: PRICE })).to.be.revertedWith(
         "Wrong stage"
       );
       await expect(
-        dd.forgeWithPartner(adminSig, { value: PRICE_MARRIAGE })
+        dd.forgeWithPartner(adminSig, 1, { value: PRICE_MARRIAGE })
       ).to.be.revertedWith("Wrong stage");
     });
   });
@@ -326,7 +326,7 @@ describe("Diamond Dawn Admin", () => {
 
     it("should lock from transfers", async () => {
       const tokenId = 1;
-      await dd.forge(adminSig, { value: PRICE });
+      await dd.forge(adminSig, 1, { value: PRICE });
       expect(await dd.balanceOf(admin.address)).to.equal(1);
       await dd.pause();
       await expect(
@@ -384,7 +384,7 @@ describe("Diamond Dawn Admin", () => {
 
     it("should enable transfers", async () => {
       const tokenId = 1;
-      await dd.forge(adminSig, { value: PRICE });
+      await dd.forge(adminSig, 1, { value: PRICE });
       expect(await dd.balanceOf(admin.address)).to.equal(1);
       await dd.pause();
       await expect(
@@ -492,7 +492,7 @@ describe("Diamond Dawn Admin", () => {
 
     it("should properly work", async () => {
       expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
-      await dd.forge(adminSig, { value: PRICE });
+      await dd.forge(adminSig, 1, { value: PRICE });
       expect(await ethers.provider.getBalance(dd.address)).to.equal(PRICE);
       // await expect(() => dd.withdraw()).to.changeEtherBalances(
       //   [dd, admin],
@@ -504,10 +504,10 @@ describe("Diamond Dawn Admin", () => {
 
     it("should properly work when locked", async () => {
       expect(await ethers.provider.getBalance(dd.address)).to.equal(0);
-      await dd.forge(adminSig, { value: PRICE });
+      await dd.forge(adminSig, 1, { value: PRICE });
       await dd
         .connect(userA)
-        .forgeWithPartner(userASig, { value: PRICE_MARRIAGE });
+        .forgeWithPartner(userASig, 1, { value: PRICE_MARRIAGE });
       const expectedBalance = PRICE.add(PRICE_MARRIAGE);
       expect(await ethers.provider.getBalance(dd.address)).to.equal(
         expectedBalance
