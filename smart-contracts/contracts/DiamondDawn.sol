@@ -78,8 +78,8 @@ contract DiamondDawn is
         _;
     }
 
-    modifier isNotFull() {
-        require(_numTokens < MAX_ENTRANCE, "Max capacity");
+    modifier isNotFull(uint256 quantity) {
+        require((_numTokens + quantity) <= MAX_ENTRANCE, "Max capacity");
         _;
     }
 
@@ -104,7 +104,7 @@ contract DiamondDawn is
     }
 
     modifier costs(uint price, uint quantity) {
-        require(msg.value == (price * quantity), string.concat("Cost is: ", Strings.toString(price)));
+        require(msg.value == (price * quantity), string.concat("Cost is: ", Strings.toString(price * quantity)));
         _;
     }
 
@@ -262,7 +262,7 @@ contract DiamondDawn is
 
     /**********************     Private Functions     ************************/
 
-    function _forge(bytes calldata signature, uint256 quantity) private isActiveStage(Stage.KEY) isNotFull {
+    function _forge(bytes calldata signature, uint256 quantity) private isActiveStage(Stage.KEY) isNotFull(quantity) {
         require(_isValid(signature, bytes32(uint256(uint160(_msgSender())))), "Not allowed to mint");
         require(quantity <= MAX_MINT);
         require(!_minted[_msgSender()], "Already minted");

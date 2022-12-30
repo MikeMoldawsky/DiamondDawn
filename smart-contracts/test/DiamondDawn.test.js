@@ -70,6 +70,19 @@ describe("DiamondDawn", () => {
           value: PRICE.sub(parseEther("0.0001")),
         })
       ).to.be.revertedWith(`Cost is: ${PRICE_MARRIAGE.toString()}`);
+      // Test for quantity 2
+
+      await expect(
+        dd.forge(adminSig, 2, {
+          value: PRICE_MARRIAGE,
+        })
+      ).to.be.revertedWith(`Cost is: ${(PRICE * 2).toString()}`);
+
+      await expect(
+        dd.forgeWithPartner(adminSig, 2, {
+          value: PRICE_MARRIAGE,
+        })
+      ).to.be.revertedWith(`Cost is: ${(PRICE_MARRIAGE * 2).toString()}`);
     });
 
     it("Should REVERT when not KEY stage", async () => {
@@ -100,13 +113,17 @@ describe("DiamondDawn", () => {
 
     it("Should REVERT when mine is full", async () => {
       await Promise.all(
-        _.range(NUM_TOKENS).map(async (i) => {
+        _.range(NUM_TOKENS - 1).map(async (i) => {
           const signature = await signForgeMessage(signer1, users1[i]);
           return await dd
             .connect(users1[i])
             .forge(signature, 1, { value: PRICE });
         })
       );
+      await expect(
+        dd.forge(adminSig, 2, { value: PRICE.add(PRICE) })
+      ).to.be.revertedWith("Max capacity");
+      await dd.forge(adminSig, 1, { value: PRICE }); // success mining 1 left
       await expect(dd.forge(adminSig, 1, { value: PRICE })).to.be.revertedWith(
         "Max capacity"
       );
@@ -128,7 +145,7 @@ describe("DiamondDawn", () => {
     });
 
     it("Should REVERT when trying to mine more than once", async () => {
-      await dd.forge(adminSig, 1, { value: PRICE });
+      await dd.forge(adminSig, 2, { value: PRICE.add(PRICE) });
       await expect(dd.forge(adminSig, 1, { value: PRICE })).to.be.revertedWith(
         "Already minted"
       );
@@ -195,6 +212,26 @@ describe("DiamondDawn", () => {
       expect(await ethers.provider.getBalance(dd.address)).to.equal(
         PRICE.add(PRICE_MARRIAGE)
       );
+      await dd
+        .connect(users1[0])
+        .forge(await signForgeMessage(signer1, users1[0]), 2, {
+          value: PRICE.add(PRICE),
+        });
+      expect(await ethers.provider.getBalance(dd.address)).to.equal(
+        PRICE.add(PRICE_MARRIAGE).add(PRICE).add(PRICE)
+      );
+      await dd
+        .connect(users1[1])
+        .forgeWithPartner(await signForgeMessage(signer1, users1[1]), 2, {
+          value: PRICE_MARRIAGE.add(PRICE_MARRIAGE),
+        });
+      expect(await ethers.provider.getBalance(dd.address)).to.equal(
+        PRICE.add(PRICE_MARRIAGE)
+          .add(PRICE)
+          .add(PRICE)
+          .add(PRICE_MARRIAGE)
+          .add(PRICE_MARRIAGE)
+      );
     });
 
     it("Should mint to owner, emit events & have the right token ID", async () => {
@@ -220,6 +257,62 @@ describe("DiamondDawn", () => {
       expect(await dd.ownerOf(2)).to.be.equal(admin.address);
       expect(await dd.balanceOf(user.address)).to.equal(1);
       expect(await dd.balanceOf(admin.address)).to.equal(1);
+      // test 2 mints
+      await expect(
+        dd
+          .connect(users1[0])
+          .forge(await signForgeMessage(signer1, users1[0]), 2, {
+            value: PRICE.add(PRICE),
+          })
+      )
+        .to.emit(dd, "Transfer")
+        .withArgs(
+          "0x0000000000000000000000000000000000000000",
+          users1[0].address,
+          3
+        )
+        .to.emit(dd, "Transfer")
+        .withArgs(
+          "0x0000000000000000000000000000000000000000",
+          users1[0].address,
+          4
+        )
+        .to.emit(ddMine, "Forge")
+        .withArgs(3)
+        .to.emit(ddMine, "Forge")
+        .withArgs(4);
+
+      expect(await dd.ownerOf(3)).to.be.equal(users1[0].address);
+      expect(await dd.ownerOf(4)).to.be.equal(users1[0].address);
+      expect(await dd.balanceOf(users1[0].address)).to.equal(2);
+
+      await expect(
+        dd
+          .connect(users1[1])
+          .forgeWithPartner(await signForgeMessage(signer1, users1[1]), 2, {
+            value: PRICE_MARRIAGE.add(PRICE_MARRIAGE),
+          })
+      )
+        .to.emit(dd, "Transfer")
+        .withArgs(
+          "0x0000000000000000000000000000000000000000",
+          users1[1].address,
+          5
+        )
+        .to.emit(dd, "Transfer")
+        .withArgs(
+          "0x0000000000000000000000000000000000000000",
+          users1[1].address,
+          6
+        )
+        .to.emit(ddMine, "Forge")
+        .withArgs(5)
+        .to.emit(ddMine, "Forge")
+        .withArgs(6);
+
+      expect(await dd.ownerOf(5)).to.be.equal(users1[1].address);
+      expect(await dd.ownerOf(6)).to.be.equal(users1[1].address);
+      expect(await dd.balanceOf(users1[1].address)).to.equal(2);
     });
   });
 
