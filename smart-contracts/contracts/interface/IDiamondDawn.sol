@@ -2,9 +2,9 @@
 pragma solidity ^0.8.15;
 
 interface IDiamondDawn {
-    function forge(bytes calldata signature) external payable;
+    function forge(bytes calldata signature, uint256 quantity) external payable;
 
-    function forgeWithPartner(bytes calldata signature) external payable;
+    function forgeWithPartner(bytes calldata signature, uint256 quantity) external payable;
 
     function mine(uint tokenId) external;
 
