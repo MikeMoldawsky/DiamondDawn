@@ -88,11 +88,17 @@ export const Phase3Text = () => (
 export const Phase4Text = () => (
   <div className="text">
     <p>
-      You'll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide:
-    </p>
-    <p>
-      Keep your diamond digital (NFT) or <b>burn</b> it in exchange for your
-      physical diamond art piece (GIA-certified).
+      You now own a perfect digital diamond (NFT) designed by David Ariew with
+      all of its GIA attributes. At this point you'll have{" "}
+      <b>3 months, 3 weeks, and 3 days</b> to decide:
+      <lu>
+        <li>Keep the diamond in its digital form forever.</li>
+        <li>
+          Burn the digital diamond and transform it to a physical GIA-certified
+          diamond with the same attributes. Your diamond will be used as part of
+          a luxurious ~8kg artwork and delivered to your doorstep.
+        </li>
+      </lu>
     </p>
   </div>
 );
