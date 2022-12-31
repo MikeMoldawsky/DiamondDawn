@@ -98,6 +98,10 @@ const FAQS = [
     ),
   },
   {
+    title: "What's the supply?",
+    content: () => <p>333 Editions.</p>,
+  },
+  {
     title: "How many NFTs can I mint?",
     content: () => (
       <p>
@@ -144,10 +148,6 @@ const FAQS = [
         strict standards.
       </p>
     ),
-  },
-  {
-    title: "What's the supply?",
-    content: () => <p>333 Editions.</p>,
   },
   {
     title: "What's DD’s blockchain?",
@@ -283,7 +283,7 @@ const FAQ = ({ title, content }) => {
 const FAQs = ({ collapsed }) => {
   const navigate = useNavigate();
 
-  const faqs = !collapsed ? FAQS : take(FAQS, 6);
+  const faqs = !collapsed ? FAQS : take(FAQS, 8);
 
   return (
     <div className={classNames("faqs", { collapsed })}>

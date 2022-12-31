@@ -3,8 +3,10 @@ import "./HomeBackground.scss";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import ScrollMarker from "components/ScrollMarker";
 import useScrollTop from "hooks/useScrollTop";
+import { NavLink } from "react-router-dom";
 import Link, { CollectorLink, TwitterLink } from "components/Links";
 import classNames from "classnames";
+import { NavHashLink } from "react-router-hash-link";
 
 const HomeBackground = ({ mousePos }) => {
   const scroll = useScrollTop();
@@ -64,15 +66,19 @@ const HomeBackground = ({ mousePos }) => {
         }}
       >
         <div className="center-aligned-column art-by-david">
-          <div className="left-centered-aligned-column">
-            <div className="art-by">Art by</div>
-            <div className="leading-text by-david">
-              <Link
-                href={`https://twitter.com/DavidAriew`}
-                className="text-gold"
-              >
-                DAVID ARIEW
-              </Link>
+          <div className="center-bottom-aligned-row">
+            <div className="profile-image david" />
+            <div className="left-centered-aligned-column">
+              <div className="art-by">Art by</div>
+              <div className="subtitle-text by-david">
+                <NavHashLink
+                  to={`/about-us/#david`}
+                  smooth
+                  className="text-gold"
+                >
+                  DAVID ARIEW
+                </NavHashLink>
+              </div>
             </div>
           </div>
         </div>

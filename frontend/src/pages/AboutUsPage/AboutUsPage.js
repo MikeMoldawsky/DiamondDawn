@@ -105,6 +105,7 @@ const TeamMember = ({ name, id, title, Text, links }) => {
   return (
     <div className="left-spaced-aligned-column team-member">
       <div className="left-top-aligned-column team-member-header">
+        <div id={id} />
         <div className={classNames("profile-image", id)} />
         <div>
           <div className="tagline-text">{name}</div>
