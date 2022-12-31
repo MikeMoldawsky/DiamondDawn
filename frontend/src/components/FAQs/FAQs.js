@@ -50,19 +50,20 @@ const FAQS = [
         The art piece weighs ~8 kg (17.6 lb) and measures 25 x 25 x 25 cm (9.8 x
         9.8 x 9.8 in.).
         <br />
-        Diamond Dawn’s art piece is made from high-quality black wood and
-        acrylic panes, and in its heart, you’ll find your GIA-certified diamond.{" "}
+        Diamond Dawn's art piece is crafted from high-quality black wood and
+        acrylic panes.
+        <br />
+        At the center of the piece is your diamond with a special (web3) design.
         All of Diamond Dawn's diamonds are:
         <ul>
-          <li>
-            GIA-certified <b>natural</b> diamonds.
-          </li>
-          <li>High quality diamonds (graded Good, Very Good or Excellent).</li>
-          <li>Cape diamonds (graded K-Z color).</li>
-          <li>Shape round, pear, oval or cushion.</li>
-          <li>Carat weight between 0.4-0.8 (averages 0.6 carats).</li>
-          <li>High Fluorescence grade of None or Faint</li>
-          <li>High Clarity grade VS2, VS1, VVS2, VVS1, IF or FL</li>
+          <lu>Natural diamonds.</lu>
+          <lu>GIA-certified.</lu>
+          <lu>High quality diamonds (graded Good, Very Good or Excellent).</lu>
+          <lu>Cape diamonds (graded K-Z color).</lu>
+          <lu>Shape round, pear, oval or cushion.</lu>
+          <lu>Carat weight 0.4-0.8 (averages 0.6 carats).</lu>
+          <lu>Fluorescence grade of None or Faint</lu>
+          <lu>Clarity grade VS2, VS1, VVS2, VVS1, IF or FL</lu>
         </ul>
         <br />
         Diamond Dawn is a work of art that you can proudly display as a
