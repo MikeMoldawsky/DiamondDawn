@@ -96,7 +96,7 @@ export const Phase4Text = () => (
       a physical GIA-certified diamond that will be set as part of a luxurious
       8kg artwork delivered to your doorstep.
       <br />
-      These artworks are made with the first diamonds to be fully crafted and
+      These artworks are made with the first diamonds to be entirely crafted and
       recorded on the blockchain.
       <br />
       You'll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide.
