@@ -90,7 +90,7 @@ export const Phase4Text = () => (
     <p>
       You own a perfect digital diamond (NFT) designed by David Ariew with all
       of its GIA attributes. <br /> Now, you'll need to decide what's more
-      valuable the physical or digital.
+      valuable, the physical or digital.
       <br />
       You can keep your diamond in its digital form forever or transform it into
       a physical GIA-certified diamond that will be set as part of a luxurious
