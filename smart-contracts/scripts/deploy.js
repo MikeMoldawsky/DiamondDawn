@@ -13,6 +13,78 @@ const {
 const { clearEruptionTxs } = require("../db/config-db-manager");
 const { STAGE } = require("./utils/EnumConverterUtils");
 
+const DIAMOND_OPTIONS = [
+  {
+    number: 1111111111,
+    date: 1659254421,
+    shape: 1,
+    points: 55,
+    color: 4,
+    clarity: 5,
+    cut: 2,
+    polish: 1,
+    symmetry: 3,
+    fluorescence: 1,
+    length: 512,
+    width: 512,
+    depth: 350,
+  },
+  {
+    number: 2222222222,
+    date: 1659254421,
+    shape: 2,
+    points: 70,
+    color: 14,
+    clarity: 4,
+    cut: 3,
+    polish: 3,
+    symmetry: 3,
+    fluorescence: 1,
+    length: 512,
+    width: 512,
+    depth: 350,
+  },
+  {
+    number: 3333333333,
+    date: 1659254421,
+    shape: 3,
+    points: 45,
+    color: 11,
+    clarity: 2,
+    cut: 3,
+    polish: 2,
+    symmetry: 2,
+    fluorescence: 1,
+    length: 512,
+    width: 512,
+    depth: 350,
+  },
+  {
+    number: 3333333333,
+    date: 1659254421,
+    shape: 4,
+    points: 66,
+    color: 8,
+    clarity: 1,
+    cut: 1,
+    polish: 2,
+    symmetry: 1,
+    fluorescence: 2,
+    length: 512,
+    width: 512,
+    depth: 350,
+  },
+];
+
+const DIAMOND_COUNT = 333;
+
+const DIAMONDS = [];
+for (let i = 0; i < DIAMOND_COUNT; i++) {
+  DIAMONDS.push({
+    ...DIAMOND_OPTIONS[i % 4],
+    number: 1000000000 + i,
+  });
+}
 
 async function main() {
   if (!hre.network.name || hre.network.name === "hardhat") {
