@@ -95,8 +95,8 @@ export const Phase4Text = () => (
         <li>Keep the diamond in its digital form forever.</li>
         <li>
           Burn the digital diamond and transform it to a physical GIA-certified
-          diamond with the same attributes. Your diamond will be used as part of
-          a luxurious ~8kg artwork and delivered to your doorstep.
+          diamond with the same attributes. Your diamond will be inlaid as part
+          of a luxurious ~8kg artwork delivered to your doorstep.
         </li>
       </lu>
     </p>
