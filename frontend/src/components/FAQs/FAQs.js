@@ -54,6 +54,7 @@ const FAQS = [
         acrylic panes.
         <br />
         At the center of the piece is your diamond with a special (web3) design.
+        <br />
         All of Diamond Dawn's diamonds are:
         <ul>
           <li>Natural diamonds.</li>
