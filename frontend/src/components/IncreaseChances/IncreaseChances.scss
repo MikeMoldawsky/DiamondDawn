@@ -28,3 +28,12 @@
     }
   }
 }
+
+@media only screen and (max-width: 1199px) {
+  .increase-chances {
+    .popup {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
