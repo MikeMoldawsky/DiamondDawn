@@ -92,7 +92,33 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    top: 9vh;
+    top: 5vh;
+  }
+
+  .art-by-david {
+    font-size: calc-font-size(10px);
+    z-index: 1;
+    position: relative;
+    margin-bottom: 10em;
+
+    .profile-image {
+      width: 6em;
+      height: 6em;
+      margin-right: 1em;
+    }
+
+    .art-by {
+      font-weight: 500;
+      line-height: 1.2em;
+      margin-left: 0.2em;
+    }
+
+    .by-david {
+      font-size: 2em;
+      line-height: 1em;
+      letter-spacing: 0.04em;
+      border-bottom: solid 2px $gold;
+    }
   }
 
   .eternal-treasures,
@@ -180,6 +206,10 @@
           font-size: $font9px;
         }
       }
+    }
+
+    .art-by-david {
+      margin-bottom: 17.5em;
     }
 
     .homepage-content-background {

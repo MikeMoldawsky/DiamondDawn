@@ -64,25 +64,7 @@ const HomeBackground = ({ mousePos }) => {
             scrollWithMouse * parallaxRef
           }px, 0px)`,
         }}
-      >
-        <div className="center-aligned-column art-by-david">
-          <div className="center-bottom-aligned-row">
-            <div className="profile-image david" />
-            <div className="left-centered-aligned-column">
-              <div className="art-by">Art by</div>
-              <div className="subtitle-text by-david">
-                <NavHashLink
-                  to={`/about-us/#david`}
-                  smooth
-                  className="text-gold"
-                >
-                  DAVID ARIEW
-                </NavHashLink>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      />
       <div className="bg stars" />
     </div>
   );

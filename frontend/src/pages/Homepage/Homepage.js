@@ -25,6 +25,7 @@ import { getEarthAndMoonVideo, getTrailerVideos } from "assets/videos";
 import useScrollTop from "hooks/useScrollTop";
 import { StageCountdownWithText } from "components/Countdown/Countdown";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
+import { NavHashLink } from "react-router-hash-link";
 
 const HomeTopContent = () => {
   const scroll = useScrollTop();
@@ -81,6 +82,20 @@ const HomeTopContent = () => {
   );
 };
 
+const ArtByDavid = () => (
+  <div className="center-bottom-aligned-row art-by-david">
+    <div className="profile-image david" />
+    <div className="left-centered-aligned-column">
+      <div className="art-by">Art by</div>
+      <div className="subtitle-text by-david">
+        <NavHashLink to={`/about-us/#david`} smooth className="text-gold">
+          DAVID ARIEW
+        </NavHashLink>
+      </div>
+    </div>
+  </div>
+);
+
 const Homepage = () => {
   const dispatch = useDispatch();
   const { width, height } = useWindowDimensions();
@@ -102,6 +117,7 @@ const Homepage = () => {
     >
       <div className="page homepage">
         <HomeTopContent />
+        <ArtByDavid />
         <div className="homepage-content">
           <HomepageContentBackground />
           <div className="eternal-treasures">
