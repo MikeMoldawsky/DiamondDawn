@@ -56,14 +56,14 @@ const FAQS = [
         At the center of the piece is your diamond with a special (web3) design.
         All of Diamond Dawn's diamonds are:
         <ul>
-          <lu>Natural diamonds.</lu>
-          <lu>GIA-certified.</lu>
-          <lu>High quality diamonds (graded Good, Very Good or Excellent).</lu>
-          <lu>Cape diamonds (graded K-Z color).</lu>
-          <lu>Shape round, pear, oval or cushion.</lu>
-          <lu>Carat weight 0.4-0.8 (averages 0.6 carats).</lu>
-          <lu>Fluorescence grade of None or Faint</lu>
-          <lu>Clarity grade VS2, VS1, VVS2, VVS1, IF or FL</lu>
+          <li>Natural diamonds.</li>
+          <li>GIA-certified.</li>
+          <li>High quality diamonds (graded Good, Very Good or Excellent).</li>
+          <li>Cape diamonds (graded K-Z color).</li>
+          <li>Shape round, pear, oval or cushion.</li>
+          <li>Carat weight 0.4-0.8 (averages 0.6 carats).</li>
+          <li>Fluorescence grade of None or Faint</li>
+          <li>Clarity grade VS2, VS1, VVS2, VVS1, IF or FL</li>
         </ul>
         Diamond Dawn is a work of art that you can proudly display as a
         centerpiece on a desk, bookcase, or in any room.
