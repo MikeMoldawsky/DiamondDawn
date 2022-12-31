@@ -26,8 +26,9 @@ export const TheJourneyMainText = () => (
         <b>3 months, 3 weeks, and 3 days</b> to decide on your Final Choice:
       </p>
       <p>
-        Keep your diamond NFT digital or burn it in exchange for a physical,
-        limited-edition art piece that contains your diamond (GIA-certified).
+        Keep your diamond NFT digital or burn it in exchange for a physical, 8
+        kg (17.6 lb) limited-edition art piece that contains your GIA-certified
+        diamond.
       </p>
       <p>
         Once your decision is finalized on the blockchain, your physical art
