@@ -94,9 +94,9 @@ export const Phase4Text = () => (
       <lu>
         <li>Keep the diamond in its digital form forever.</li>
         <li>
-          Transform your digital diamond into a physical, GIA-certified diamond
-          by burning your NFT. The diamond will be set as part of a luxurious
-          8kg artwork and delivered to your doorstep.
+          Transform your digital diamond into its physical form by burning your
+          NFT. Your GIA-certified diamond will be set as part of a luxurious 8kg
+          artwork and delivered to your doorstep.
         </li>
       </lu>
     </p>
