@@ -92,14 +92,15 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    top: 5vh;
+    overflow: hidden;
+    padding-top: 7.5em;
   }
 
   .art-by-david {
     font-size: calc-font-size(10px);
     z-index: 1;
     position: relative;
-    margin-bottom: 10em;
+    margin-bottom: 7.5em;
 
     .profile-image {
       width: 6em;
@@ -209,7 +210,7 @@
     }
 
     .art-by-david {
-      margin-bottom: 17.5em;
+      margin-bottom: 10em;
     }
 
     .homepage-content-background {

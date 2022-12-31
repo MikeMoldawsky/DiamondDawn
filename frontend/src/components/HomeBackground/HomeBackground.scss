@@ -17,7 +17,7 @@
     }
 
     &.stars {
-      height: $viewHeightRef;
+      height: 1.5 * $viewHeightRef;
       top: 100vh;
       background: black url($CDN_URL + "/images/homepage/stars.png") repeat-y
         center center;

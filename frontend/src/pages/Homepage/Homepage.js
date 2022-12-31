@@ -32,7 +32,7 @@ const HomeTopContent = () => {
   const { width, height } = useWindowDimensions();
   const [mousePos, setMousePos] = useState([width / 2, height / 2]);
   const isMobileOrTablet = useMobileOrTablet();
-  const scrollOffset = isMobileOrTablet ? height / 3 : 0;
+  const scrollOffset = isMobileOrTablet ? height / 3 : height / 5;
   const fixedScroll = scroll - scrollOffset;
 
   useShowLogoOnScroll(3.5);
@@ -44,9 +44,11 @@ const HomeTopContent = () => {
   const topViewStyles = useMemo(() => {
     if (fixedScroll < 0) return {};
 
+    const opacity = 1 - (fixedScroll * 1.5) / winHeightLimit;
+    const scale = 1 - fixedScroll / winHeightLimit / 1.5;
     return {
-      opacity: 1 - (fixedScroll * 1.5) / winHeightLimit,
-      transform: `scale(${1 - fixedScroll / winHeightLimit / 1.5})`,
+      opacity: opacity > 0 ? opacity : 0,
+      transform: `scale(${scale > 0 ? scale : 0})`,
     };
   }, [topViewEffectScrollLimit, isMobileOrTablet]);
 
