@@ -41,10 +41,9 @@ export const TheJourneyMainText = () => (
 export const TheJourneyText = () => (
   <div className="text">
     <p>
-      Throughout this historical journey, you’ll learn about the hidden world of
-      the diamond industry, take part in the creation of the{" "}
-      <b>first digital diamonds</b> that live on the blockchain, and discover
-      the secrets behind their famous sparkle.
+      Throughout this historical journey, you’ll take part in the creation of
+      the <b>first diamonds</b> to be entirely crafted and materialized on the
+      blockchain, and learn about the hidden world of the diamond industry.
     </p>
     Diamond Dawn has 4 phases.
   </div>
