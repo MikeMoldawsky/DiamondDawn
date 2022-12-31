@@ -88,17 +88,18 @@ export const Phase3Text = () => (
 export const Phase4Text = () => (
   <div className="text">
     <p>
-      You now own a perfect digital diamond (NFT) designed by David Ariew with
-      all of its GIA attributes. <br /> At this point you'll have{" "}
-      <b>3 months, 3 weeks, and 3 days</b> to decide what's is more valuable the
-      physical or digital.
+      You own a perfect digital diamond (NFT) designed by David Ariew with all
+      of its GIA attributes. <br /> Now, you'll need to decide what's more
+      valuable, the physical or digital.
       <br />
       You can keep your diamond in its digital form forever or transform it into
       a physical GIA-certified diamond that will be set as part of a luxurious
       8kg artwork delivered to your doorstep.
       <br />
-      These artworks are made with the first diamonds to be fully crafted and
+      These artworks are made with the first diamonds to be entirely crafted and
       recorded on the blockchain.
+      <br />
+      You'll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide.
     </p>
   </div>
 );
