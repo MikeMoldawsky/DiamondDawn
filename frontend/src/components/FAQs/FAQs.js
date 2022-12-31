@@ -63,6 +63,30 @@ const FAQS = [
     ),
   },
   {
+    title: "What's the mint price?",
+    content: () => (
+      <p>
+        4.44 ETH. <br /> That’s the cost for the entire Diamond Dawn journey,
+        including the physical diamond art piece and shipping (if you choose to
+        take it).{" "}
+      </p>
+    ),
+  },
+  {
+    title: "What's the supply?",
+    content: () => <p>333 Editions.</p>,
+  },
+  {
+    title: "How many NFTs can I mint?",
+    content: () => (
+      <p>
+        There is a maximum of 2 NFTs per wallet. <br />
+        It is your decision whether to keep them digital or transform them into
+        a physical diamond art piece.
+      </p>
+    ),
+  },
+  {
     title: "Is Diamond Dawn 100% decentralized?",
     content: () => (
       <p>
@@ -84,26 +108,6 @@ const FAQS = [
         <br />
         The Diamond Dawn team has no reserved NFTs - we will be minting NFTs
         just like any other collector.
-      </p>
-    ),
-  },
-  {
-    title: "What's the mint price?",
-    content: () => (
-      <p>
-        4.44 ETH. <br /> That’s the cost for the entire Diamond Dawn journey,
-        including the physical diamond art piece and shipping (if you choose to
-        take it).{" "}
-      </p>
-    ),
-  },
-  {
-    title: "How many NFTs can I mint?",
-    content: () => (
-      <p>
-        There is a maximum of 2 NFTs per wallet. <br />
-        It is your decision whether to keep them digital or transform them into
-        a physical diamond art piece.
       </p>
     ),
   },
@@ -144,10 +148,6 @@ const FAQS = [
         strict standards.
       </p>
     ),
-  },
-  {
-    title: "What's the supply?",
-    content: () => <p>333 Editions.</p>,
   },
   {
     title: "What's DD’s blockchain?",
@@ -283,7 +283,7 @@ const FAQ = ({ title, content }) => {
 const FAQs = ({ collapsed }) => {
   const navigate = useNavigate();
 
-  const faqs = !collapsed ? FAQS : take(FAQS, 6);
+  const faqs = !collapsed ? FAQS : take(FAQS, 8);
 
   return (
     <div className={classNames("faqs", { collapsed })}>

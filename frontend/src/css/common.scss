@@ -457,6 +457,12 @@ a:not(.no-hover) {
   justify-content: space-between;
 }
 
+.center-bottom-aligned-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
 .right-center-aligned-row {
   display: flex;
   align-items: center;
