@@ -65,7 +65,6 @@ const FAQS = [
           <lu>Fluorescence grade of None or Faint</lu>
           <lu>Clarity grade VS2, VS1, VVS2, VVS1, IF or FL</lu>
         </ul>
-        <br />
         Diamond Dawn is a work of art that you can proudly display as a
         centerpiece on a desk, bookcase, or in any room.
       </p>
