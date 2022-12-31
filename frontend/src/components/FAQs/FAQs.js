@@ -12,6 +12,28 @@ import { TwitterLink } from "components/Links";
 
 const FAQS = [
   {
+    title: "How do I increase my chances of getting accepted?",
+    content: () => (
+      <p>
+        <ul>
+          <li>
+            Follow{" "}
+            <TwitterLink className="text-gold">
+              <b>@DiamondDawnNFT</b>
+            </TwitterLink>
+            .
+          </li>
+          <li>Get an invite from an accepted collector.</li>
+          <li>Submit a genuine reason for joining.</li>
+          <li>
+            Prove your ability to participate in a high mint project (having
+            4.44 ETH is 10/10)
+          </li>
+        </ul>
+      </p>
+    ),
+  },
+  {
     title: "Are the diamonds real?",
     content: () => (
       <p>
@@ -66,24 +88,12 @@ const FAQS = [
     ),
   },
   {
-    title: "How do I increase my chances of getting accepted?",
+    title: "What's the mint price?",
     content: () => (
       <p>
-        <ul>
-          <li>
-            Follow{" "}
-            <TwitterLink className="text-gold">
-              <b>@DiamondDawnNFT</b>
-            </TwitterLink>
-            .
-          </li>
-          <li>Get an invite from an accepted collector.</li>
-          <li>Submit a genuine reason for joining.</li>
-          <li>
-            Prove your ability to participate in a high mint project (having
-            4.44 ETH is 10/10)
-          </li>
-        </ul>
+        4.44 ETH. <br /> That’s the cost for the entire Diamond Dawn journey,
+        including the physical diamond art piece and shipping (if you choose to
+        take it).{" "}
       </p>
     ),
   },
@@ -138,16 +148,6 @@ const FAQS = [
   {
     title: "What's the supply?",
     content: () => <p>333 Editions.</p>,
-  },
-  {
-    title: "What's the mint price?",
-    content: () => (
-      <p>
-        4.44 ETH. <br /> That’s the cost for the entire Diamond Dawn journey,
-        including the physical diamond art piece and shipping (if you choose to
-        take it).{" "}
-      </p>
-    ),
   },
   {
     title: "What's DD’s blockchain?",
