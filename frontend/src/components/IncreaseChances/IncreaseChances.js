@@ -35,7 +35,7 @@ const IncreaseChances = () => {
   return (
     <div className="increase-chances">
       <div className="increase-text" onClick={() => setShowPopup(true)}>
-        How to increase your chances of getting approved?
+        How to increase my chances?
       </div>
       {showPopup && <IncreaseChancesPopup hide={() => setShowPopup(false)} />}
     </div>
