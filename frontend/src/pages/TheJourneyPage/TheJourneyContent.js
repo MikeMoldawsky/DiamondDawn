@@ -5,11 +5,9 @@ export const TheJourneyMainText = () => (
   <>
     <div className="text">
       <p>
-        Diamond Dawn is a 6-month art NFT featuring 333 limited edition NFTs,
-        each of which is paired with a real diamond. The project is a
-        collaboration between Mike Moldawsky, renowned artist David Ariew, and
-        respected diamond company Moldawsky Diamonds as well a team of software
-        engineers and visual artists.
+        Diamond Dawn is a 6-month art NFT project featuring 333 limited edition
+        NFTs, each of which is paired with a real diamond. These 333 natural
+        diamonds add an extra level of value and rarity to the project.
       </p>
       <p>Your Diamond Dawn journey will consist of 4 phases.</p>
       <p>

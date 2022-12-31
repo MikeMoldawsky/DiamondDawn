@@ -5,8 +5,9 @@ import Link from "components/Links";
 export const AboutUsText = () => (
   <div className="text our-team">
     <p>
-      Diamond Dawn was created by a team of forward-thinking individuals from
-      various fields who share a common set of values.
+      Diamond Dawn was created by Mike Moldawsky, renowned artist David Ariew,
+      and respected diamond company Moldawsky Diamonds as well a team of
+      software engineers and visual artists who share a common set of values.
     </p>
     <p>
       We all believe that <b>decentralization</b> is the key to a better future
