@@ -59,12 +59,13 @@ const FAQS = [
         <ul>
           <li>Natural diamonds.</li>
           <li>GIA-certified.</li>
-          <li>High quality diamonds (graded Good, Very Good or Excellent).</li>
+          <li>
+            High quality diamonds with a good to excellent grade, none or faint
+            fluorescence, and a clarity of VS2 to FL.
+          </li>
           <li>Cape diamonds (graded K-Z color).</li>
-          <li>Shape round, pear, oval or cushion.</li>
           <li>Carat weight 0.4-0.8 (averages 0.6 carats).</li>
-          <li>Fluorescence grade of None or Faint</li>
-          <li>Clarity grade VS2, VS1, VVS2, VVS1, IF or FL</li>
+          <li>Round, pear, oval or cushion shapes.</li>
         </ul>
         Diamond Dawn is a work of art that you can proudly display as a
         centerpiece on a desk, bookcase, or in any room.
