@@ -46,7 +46,7 @@ const FAQS = [
     title: "How's the physical art piece designed?",
     content: () => (
       <p>
-        If you choose the physical art piece, expect a heavy shipment! <br />
+        If you choose the physical art piece, expect a heavy shipment. <br />
         The art piece weighs ~8 kg (17.6 lb) and measures 25 x 25 x 25 cm (9.8 x
         9.8 x 9.8 in.).
         <br />
