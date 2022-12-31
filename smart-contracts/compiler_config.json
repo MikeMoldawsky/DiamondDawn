@@ -23,7 +23,7 @@
         ]
       }
     },
-    "evmVersion": "merge",
+    "evmVersion": "london",
     "viaIR": true
   }
 }

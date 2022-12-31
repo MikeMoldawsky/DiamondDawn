@@ -1,17 +1,15 @@
 import React from "react";
-import { getCDNImageUrl } from "utils";
 import CTAButton from "components/CTAButton";
-import Countdown from "components/Countdown";
-import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 
 export const TheJourneyMainText = () => (
   <>
     <div className="text">
       <p>
-        Diamond Dawn is a social experiment developed by a passionate team
-        that’s made up of software engineers, visual artists, and a
-        world-renowned 3D designer alongside one of the most respected companies
-        in the diamond industry.
+        Diamond Dawn is a 6-month art NFT featuring 333 limited edition NFTs,
+        each of which is paired with a real diamond. The project is a
+        collaboration between Mike Moldawsky, renowned artist David Ariew, and
+        respected diamond company Moldawsky Diamonds as well a team of software
+        engineers and visual artists.
       </p>
       <p>Your Diamond Dawn journey will consist of 4 phases.</p>
       <p>
