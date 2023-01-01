@@ -17,7 +17,15 @@ function Checkbox({ className, register, watch, setValue, name, children }) {
   );
 }
 
-export const Radio = ({ className, register, watch, setValue, name, value, children }) => {
+export const Radio = ({
+  className,
+  register,
+  watch,
+  setValue,
+  name,
+  value,
+  children,
+}) => {
   const currValue = watch(name);
 
   return (
@@ -30,6 +38,6 @@ export const Radio = ({ className, register, watch, setValue, name, value, child
       {children}
     </div>
   );
-}
+};
 
 export default Checkbox;

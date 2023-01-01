@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "components/MintKey/MintKey.scss";
 import Countdown from "components/Countdown";
 import ActionButton from "components/ActionButton";
@@ -20,18 +20,22 @@ import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import { useSearchParams } from "react-router-dom";
 import classNames from "classnames";
 
-const RadioButtons = ({values, selectedValue, setSelectedValue}) => {
+const RadioButtons = ({ values, selectedValue, setSelectedValue }) => {
   return (
     <div className="radio-buttons">
-      {values.map(value => (
-        <div className={classNames("radio-button", { selected: selectedValue === value})}
-             onClick={() => setSelectedValue(value)}>
+      {values.map((value) => (
+        <div
+          className={classNames("radio-button", {
+            selected: selectedValue === value,
+          })}
+          onClick={() => setSelectedValue(value)}
+        >
           {value}
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
 const MintKeyView = ({
   mintPrice = 4.44,
@@ -48,7 +52,7 @@ const MintKeyView = ({
   const showInvitesParam = searchParams.get("invites") === "true";
   const dispatch = useDispatch();
   const { mintViewShowInvites: showInvites } = useSelector(uiSelector);
-  const [numNfts, setNumNfts] = useState(1)
+  const [numNfts, setNumNfts] = useState(1);
 
   const toggleInvites = (show) => {
     dispatch(updateUiState({ mintViewShowInvites: show }));
@@ -96,7 +100,13 @@ const MintKeyView = ({
   const renderMintButton = () => (
     <div className="center-aligned-column button-column">
       <div className="left-center-aligned-row price-text">
-        ACTIVATE <RadioButtons values={[1, 2]} selectedValue={numNfts} setSelectedValue={setNumNfts} /> KEY{numNfts > 1 ? "S" : ""}
+        ACTIVATE{" "}
+        <RadioButtons
+          values={[1, 2]}
+          selectedValue={numNfts}
+          setSelectedValue={setNumNfts}
+        />{" "}
+        KEY{numNfts > 1 ? "S" : ""}
       </div>
       <div>
         <ActionButton

@@ -1,5 +1,5 @@
 import { logApiError } from "utils";
-import {MINT_GAS_LIMIT, PROCESS_GAS_LIMIT} from "consts";
+import { MINT_GAS_LIMIT, PROCESS_GAS_LIMIT } from "consts";
 
 // STATE/STORAGE
 export const getSystemStageApi = async (contract) => {

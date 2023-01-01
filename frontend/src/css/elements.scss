@@ -72,27 +72,27 @@ textarea.input {
 .radio-buttons {
   display: flex;
   align-items: center;
-  margin: 0 .5em;
+  margin: 0 0.5em;
   color: $disabled_gray;
 
   .radio-button {
     border-bottom: solid 1px $disabled_gray;
-    padding: .1em 0;
+    padding: 0.1em 0;
     cursor: pointer;
     width: 1.5em;
     text-align: center;
     position: relative;
 
     &:not(:first-child) {
-      margin-left: .4em;
+      margin-left: 0.4em;
     }
 
     &:not(:last-child) {
-      margin-right: .4em;
+      margin-right: 0.4em;
 
       &:after {
         color: $disabled_gray;
-        content: '/';
+        content: "/";
         position: absolute;
         left: 120%;
         top: 50%;

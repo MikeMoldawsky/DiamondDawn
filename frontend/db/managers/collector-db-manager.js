@@ -64,7 +64,7 @@ function validateCollector(collector, address, requireApproved = true) {
 }
 
 async function createCollector(payload) {
-  const { address, location } = payload
+  const { address, location } = payload;
   validateAddress(address);
   let collector = await Collector.findOne({ address });
   if (collector) {

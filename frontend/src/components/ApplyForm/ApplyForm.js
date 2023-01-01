@@ -18,7 +18,7 @@ import {
   StageCountdownWithText,
 } from "components/Countdown/Countdown";
 import IncreaseChances from "components/IncreaseChances";
-import {Radio} from "components/Checkbox/Checkbox";
+import { Radio } from "components/Checkbox/Checkbox";
 
 const getValidationError = (name, value) => {
   switch (name) {
@@ -148,8 +148,24 @@ const ApplyForm = ({ onSuccess, onError }) => {
         <div className="center-aligned-row inputs-row row-2">
           <div className="left-center-aligned-row input-container radio-input-container">
             I would like to mint
-            <Radio register={register} watch={watch} setValue={setValue} name="numNFTs" value={1}>1 NFT</Radio>
-            <Radio register={register} watch={watch} setValue={setValue} name="numNFTs" value={2}>2 NFTs</Radio>
+            <Radio
+              register={register}
+              watch={watch}
+              setValue={setValue}
+              name="numNFTs"
+              value={1}
+            >
+              1 NFT
+            </Radio>
+            <Radio
+              register={register}
+              watch={watch}
+              setValue={setValue}
+              name="numNFTs"
+              value={2}
+            >
+              2 NFTs
+            </Radio>
           </div>
           <div className="input-container">
             <Checkbox

@@ -52,7 +52,12 @@ const MintKey = () => {
     setIsMinting(true);
     const { signature } = await signMintApi(collector._id, account.address);
     dispatch(setShouldIgnoreTokenTransferWatch(true));
-    const tx = await forgeApi(contract, numNfts, minePrice.mul(numNfts), signature);
+    const tx = await forgeApi(
+      contract,
+      numNfts,
+      minePrice.mul(numNfts),
+      signature
+    );
     return await tx.wait();
   };
 
