@@ -38,6 +38,11 @@ const MultilineTextEdit = (props) => {
   );
 };
 
+const numNFTsValidation = (params) => {
+  const { value } = params.props;
+  return { ...params.props, error: !value || value < 1 || value > 2 };
+};
+
 const INVITATION_COLUMNS = [
   {
     field: "createdAt",
@@ -82,6 +87,14 @@ const INVITATION_COLUMNS = [
     headerName: "Location",
     width: 180,
     renderCell: renderCellWithTooltip,
+  },
+  {
+    field: "numNFTs",
+    headerName: "# NFTs",
+    type: "number",
+    width: 70,
+    valueGetter: ({ value }) => value,
+    preProcessEditCellProps: numNFTsValidation,
   },
   {
     field: "note",
