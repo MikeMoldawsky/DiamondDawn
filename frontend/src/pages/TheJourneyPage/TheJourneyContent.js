@@ -1,17 +1,13 @@
 import React from "react";
-import { getCDNImageUrl } from "utils";
 import CTAButton from "components/CTAButton";
-import Countdown from "components/Countdown";
-import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 
 export const TheJourneyMainText = () => (
   <>
     <div className="text">
       <p>
-        Diamond Dawn is a social experiment developed by a passionate team
-        that’s made up of software engineers, visual artists, and a
-        world-renowned 3D designer alongside one of the most respected companies
-        in the diamond industry.
+        Diamond Dawn is a 6-month art NFT project featuring 333 limited edition
+        NFTs, each of which is paired with a real diamond. These 333 natural
+        diamonds add an extra level of value and rarity to the project.
       </p>
       <p>Your Diamond Dawn journey will consist of 4 phases.</p>
       <p>
@@ -31,11 +27,12 @@ export const TheJourneyMainText = () => (
       </p>
       <p>
         Keep your diamond NFT digital or burn it in exchange for a physical,
-        limited-edition art piece that contains your diamond (GIA-certified).
+        GIA-certified diamond that is set as part of a luxurious 8kg (17.6 lb)
+        artwork.
       </p>
       <p>
         Once your decision is finalized on the blockchain, your physical art
-        piece will be <b>shipped</b> to your specified address.
+        piece will be <b>delivered</b> to your doorstep.
       </p>
     </div>
   </>
@@ -44,10 +41,9 @@ export const TheJourneyMainText = () => (
 export const TheJourneyText = () => (
   <div className="text">
     <p>
-      Throughout this historical journey, you’ll learn about the hidden world of
-      the diamond industry, take part in the creation of the{" "}
-      <b>first digital diamonds</b> that live on the blockchain, and discover
-      the secrets behind their famous sparkle.
+      Throughout this historical journey, you’ll take part in the creation of
+      the <b>first diamonds</b> to be entirely crafted and materialized on the
+      blockchain, and learn about the hidden world of the diamond industry.
     </p>
     Diamond Dawn has 4 phases.
   </div>
@@ -92,11 +88,18 @@ export const Phase3Text = () => (
 export const Phase4Text = () => (
   <div className="text">
     <p>
-      You'll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide:
-    </p>
-    <p>
-      Keep your diamond digital (NFT) or <b>burn</b> it in exchange for your
-      physical diamond art piece (GIA-certified).
+      You own a perfect digital diamond (NFT) designed by David Ariew with all
+      of its GIA attributes. <br /> Now, you'll need to decide what's more
+      valuable, the physical or digital.
+      <br />
+      You can keep your diamond in its digital form forever or transform it into
+      a physical GIA-certified diamond that will be set as part of a luxurious
+      8kg artwork delivered to your doorstep.
+      <br />
+      These artworks are made with the first diamonds to be entirely crafted and
+      recorded on the blockchain.
+      <br />
+      You'll have exactly <b>3 months, 3 weeks, and 3 days</b> to decide.
     </p>
   </div>
 );

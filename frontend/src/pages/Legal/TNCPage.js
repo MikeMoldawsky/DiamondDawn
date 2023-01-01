@@ -157,6 +157,15 @@ const TNCPage = () => (
           <div>3.3.</div>
           <div>
             <p>
+              We do not guarantee the value and size of the diamond's Jewelry,
+              which may vary between 0.4 to 0.8 carat.
+            </p>
+          </div>
+        </div>
+        <div className="start-start-aligned-row">
+          <div>3.4.</div>
+          <div>
+            <p>
               The Diamond-NFTs are minted through a smart contract on the
               Ethereum blockchain leveraging smart contract technology. You
               acknowledge and agree that certain information, including your

@@ -81,8 +81,8 @@ export const TeaserText = () => (
     <div className="subtitle-text">PHYSICAL VS DIGITAL</div>
     <div className="text">
       <p>
-        Diamond Dawn is a <b>blockchain social experiment</b> that pushes this
-        concept to the limit.
+        Diamond Dawn is a 6-month <b>blockchain social experiment</b> that
+        pushes this concept to the limit.
       </p>
       <p>
         For the first time in history, collectors will create their digital
