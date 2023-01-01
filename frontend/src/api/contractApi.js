@@ -1,5 +1,5 @@
 import { logApiError } from "utils";
-import { PROCESS_GAS_LIMIT } from "consts";
+import {MINT_GAS_LIMIT, PROCESS_GAS_LIMIT} from "consts";
 
 // STATE/STORAGE
 export const getSystemStageApi = async (contract) => {
@@ -35,10 +35,10 @@ export const getTokenCountApi = async (mineContract) => {
 };
 
 // PROCESS
-export const forgeApi = async (contract, minePrice, signature) => {
-  return contract.forge(signature, 1, {
+export const forgeApi = async (contract, numNfts, minePrice, signature) => {
+  return contract.forge(signature, numNfts, {
     value: minePrice,
-    gasLimit: PROCESS_GAS_LIMIT,
+    gasLimit: MINT_GAS_LIMIT,
   });
 };
 
