@@ -239,15 +239,6 @@
   .invite-view {
     .layout-box {
       .content-box {
-        .inputs-row {
-          flex-direction: column;
-          align-items: stretch;
-
-          .input-container {
-            width: 100% !important;
-          }
-        }
-
         .modal {
           bottom: 8vh;
         }

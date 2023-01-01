@@ -19,7 +19,7 @@ import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import VideoBackground from "components/VideoBackground";
-import CTAButton from "../../components/CTAButton";
+import CTAButton from "components/CTAButton";
 import PlayButton from "components/PlayButton";
 import { getEarthAndMoonVideo, getTrailerVideos } from "assets/videos";
 import useScrollTop from "hooks/useScrollTop";
