@@ -28,11 +28,11 @@ export const TheJourneyMainText = () => (
       <p>
         Keep your diamond NFT digital or burn it in exchange for a physical,
         GIA-certified diamond that is set as part of a luxurious 8kg (17.6 lb)
-        artwork that will be delivered to your doorstep.
+        artwork.
       </p>
       <p>
         Once your decision is finalized on the blockchain, your physical art
-        piece will be <b>shipped</b> to your specified address.
+        piece will be <b>delivered</b> to your doorstep.
       </p>
     </div>
   </>
