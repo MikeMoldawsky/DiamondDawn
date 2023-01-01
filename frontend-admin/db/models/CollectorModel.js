@@ -18,6 +18,7 @@ const CollectorSchema = new mongoose.Schema({
   twitter: { type: String },
   email: { type: String, unique: true },
   location: { type: String },
+  numNFTs: { type: Number, min: 1, max: 2 },
   note: { type: String },
   invitedBy: { type: ObjectId, ref: "Invitation" },
   status: { type: String, enum: COLLECTOR_STATUS, default: "Applied" },

@@ -5,6 +5,7 @@
   --edge-offset: 0;
   --stone-top: -21%;
   --stone-bottom: -16%;
+  top: 7.5em;
 
   .bg {
     &.statue {
@@ -142,12 +143,12 @@
       }
 
       &.bg-right-hand {
-        background-position-y: 37%;
+        background-position-y: 33%;
         background-size: 60% auto;
       }
 
       &.bg-left-hand {
-        background-position: 10% 53%;
+        background-position: 10% 47%;
         background-size: 35% auto;
       }
     }

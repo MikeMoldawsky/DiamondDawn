@@ -48,11 +48,16 @@ const MintKey = () => {
   const maxTokenId = max(map(tokens, "id"));
   const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
 
-  const mint = async () => {
+  const mint = async (numNfts) => {
     setIsMinting(true);
     const { signature } = await signMintApi(collector._id, account.address);
     dispatch(setShouldIgnoreTokenTransferWatch(true));
-    const tx = await forgeApi(contract, minePrice, signature);
+    const tx = await forgeApi(
+      contract,
+      numNfts,
+      minePrice.mul(numNfts),
+      signature
+    );
     return await tx.wait();
   };
 

@@ -1,6 +1,7 @@
 @import "css/varsNEW";
 
-.checkbox {
+.checkbox,
+.radio {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -20,7 +21,8 @@
     }
   }
 
-  input[type="checkbox"] {
+  input[type="checkbox"],
+  input[type="radio"] {
     width: 1em;
     height: 1em;
     margin-right: 0.25em;
@@ -32,7 +34,7 @@
     height: $font13px;
     position: absolute;
     border: solid 1px white;
-    border-radius: 50%;
+    border-radius: calc($font13px / 2);
 
     &.checked:after {
       content: "";
@@ -40,10 +42,14 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      border-radius: 50%;
+      border-radius: 0.2em;
       width: 0.4em;
       height: 0.4em;
       transform: translate(-50%, -50%);
     }
   }
+}
+
+.radio {
+  margin-left: 0.8em;
 }

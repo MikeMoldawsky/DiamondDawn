@@ -68,3 +68,42 @@
 textarea.input {
   border-radius: 0.65em;
 }
+
+.radio-buttons {
+  display: flex;
+  align-items: center;
+  margin: 0 0.5em;
+  color: $disabled_gray;
+
+  .radio-button {
+    border-bottom: solid 1px $disabled_gray;
+    padding: 0.1em 0;
+    cursor: pointer;
+    width: 1.5em;
+    text-align: center;
+    position: relative;
+
+    &:not(:first-child) {
+      margin-left: 0.4em;
+    }
+
+    &:not(:last-child) {
+      margin-right: 0.4em;
+
+      &:after {
+        color: $disabled_gray;
+        content: "/";
+        position: absolute;
+        left: 120%;
+        top: 50%;
+        transform: translate(0, -50%);
+      }
+    }
+
+    &.selected {
+      border-color: $gold;
+      color: $gold;
+      cursor: default;
+    }
+  }
+}

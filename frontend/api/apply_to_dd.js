@@ -13,21 +13,13 @@ module.exports = async function (req, res) {
   try {
     const start = Date.now();
     await clientDBPromise;
-    const { inviteId, address, twitter, email, note, location, isDao } =
-      req.body;
+    const { inviteId, ...payload } = req.body;
 
     if (inviteId) {
       await validateInviteById(inviteId);
     }
 
-    let collector = await createCollector(
-      address,
-      twitter,
-      email,
-      note,
-      location,
-      isDao
-    );
+    let collector = await createCollector(payload);
 
     let invite = null;
     if (inviteId) {

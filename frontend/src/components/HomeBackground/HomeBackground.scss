@@ -14,34 +14,10 @@
       top: 99%;
       background-color: black;
       z-index: -21;
-
-      .art-by-david {
-        margin-top: 0.1 * $viewHeightRef;
-        font-size: calc-font-size(10px);
-
-        .profile-image {
-          width: 6em;
-          height: 6em;
-          margin-right: 1em;
-        }
-
-        .art-by {
-          font-weight: 500;
-          line-height: 1.2em;
-          margin-left: 0.2em;
-        }
-
-        .by-david {
-          font-size: 2em;
-          line-height: 1em;
-          letter-spacing: 0.04em;
-          border-bottom: solid 2px $gold;
-        }
-      }
     }
 
     &.stars {
-      height: $viewHeightRef;
+      height: 1.5 * $viewHeightRef;
       top: 100vh;
       background: black url($CDN_URL + "/images/homepage/stars.png") repeat-y
         center center;
@@ -120,10 +96,6 @@
       &.black-box {
         height: 40vh;
         top: 84%;
-
-        .art-by-david {
-          margin-top: 35vw;
-        }
       }
 
       &.stars {

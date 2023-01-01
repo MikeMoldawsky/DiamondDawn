@@ -17,4 +17,27 @@ function Checkbox({ className, register, watch, setValue, name, children }) {
   );
 }
 
+export const Radio = ({
+  className,
+  register,
+  watch,
+  setValue,
+  name,
+  value,
+  children,
+}) => {
+  const currValue = watch(name);
+
+  return (
+    <div
+      className={classNames("radio", className)}
+      onClick={() => setValue(name, value)}
+    >
+      <input {...register(name)} type="radio" value={value} />
+      <div className={classNames("cbx", { checked: value === currValue })} />
+      {children}
+    </div>
+  );
+};
+
 export default Checkbox;

@@ -63,19 +63,16 @@ function validateCollector(collector, address, requireApproved = true) {
   }
 }
 
-async function createCollector(address, twitter, email, note, location, isDao) {
+async function createCollector(payload) {
+  const { address, location } = payload;
   validateAddress(address);
   let collector = await Collector.findOne({ address });
   if (collector) {
     throw new Error("Collector with this address already exists");
   }
   collector = new Collector({
-    address,
-    twitter,
-    email,
-    note,
+    ...payload,
     location: location || "Unknown",
-    isDao,
   });
   return collector.save();
 }

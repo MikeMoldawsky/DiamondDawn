@@ -19,19 +19,20 @@ import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import VideoBackground from "components/VideoBackground";
-import CTAButton from "../../components/CTAButton";
+import CTAButton from "components/CTAButton";
 import PlayButton from "components/PlayButton";
 import { getEarthAndMoonVideo, getTrailerVideos } from "assets/videos";
 import useScrollTop from "hooks/useScrollTop";
 import { StageCountdownWithText } from "components/Countdown/Countdown";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
+import { NavHashLink } from "react-router-hash-link";
 
 const HomeTopContent = () => {
   const scroll = useScrollTop();
   const { width, height } = useWindowDimensions();
   const [mousePos, setMousePos] = useState([width / 2, height / 2]);
   const isMobileOrTablet = useMobileOrTablet();
-  const scrollOffset = isMobileOrTablet ? height / 3 : 0;
+  const scrollOffset = isMobileOrTablet ? height / 3 : height / 5;
   const fixedScroll = scroll - scrollOffset;
 
   useShowLogoOnScroll(3.5);
@@ -43,9 +44,11 @@ const HomeTopContent = () => {
   const topViewStyles = useMemo(() => {
     if (fixedScroll < 0) return {};
 
+    const opacity = 1 - (fixedScroll * 1.5) / winHeightLimit;
+    const scale = 1 - fixedScroll / winHeightLimit / 1.5;
     return {
-      opacity: 1 - (fixedScroll * 1.5) / winHeightLimit,
-      transform: `scale(${1 - fixedScroll / winHeightLimit / 1.5})`,
+      opacity: opacity > 0 ? opacity : 0,
+      transform: `scale(${scale > 0 ? scale : 0})`,
     };
   }, [topViewEffectScrollLimit, isMobileOrTablet]);
 
@@ -81,6 +84,20 @@ const HomeTopContent = () => {
   );
 };
 
+const ArtByDavid = () => (
+  <div className="center-bottom-aligned-row art-by-david">
+    <div className="profile-image david" />
+    <div className="left-centered-aligned-column">
+      <div className="art-by">Art by</div>
+      <div className="subtitle-text by-david">
+        <NavHashLink to={`/about-us/#david`} smooth className="text-gold">
+          DAVID ARIEW
+        </NavHashLink>
+      </div>
+    </div>
+  </div>
+);
+
 const Homepage = () => {
   const dispatch = useDispatch();
   const { width, height } = useWindowDimensions();
@@ -102,6 +119,7 @@ const Homepage = () => {
     >
       <div className="page homepage">
         <HomeTopContent />
+        <ArtByDavid />
         <div className="homepage-content">
           <HomepageContentBackground />
           <div className="eternal-treasures">
