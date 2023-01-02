@@ -1,9 +1,8 @@
 const ethers = require("ethers");
 
-const signer = new ethers.Wallet(process.env.SIGNER_PRIVATE_KEY);
-
 async function signAddress(address) {
   try {
+    const signer = new ethers.Wallet(process.env.SIGNER_PRIVATE_KEY);
     // Convert provided `ethAddress` to correct checksum address format.
     // This step is critical as signing an incorrectly formatted wallet address
     // can result in invalid signatures when it comes to minting.
@@ -22,6 +21,7 @@ async function signAddress(address) {
 
 async function signAddressAndTokenId(address, tokenId) {
   try {
+    const signer = new ethers.Wallet(process.env.SIGNER_PRIVATE_KEY);
     // Convert provided `ethAddress` to correct checksum address format.
     // This step is critical as signing an incorrectly formatted wallet address
     // can result in invalid signatures when it comes to minting.

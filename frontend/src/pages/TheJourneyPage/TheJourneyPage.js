@@ -1,6 +1,6 @@
 import React from "react";
 import "./TheJourneyPage.scss";
-import { createVideoSources, getCDNImageUrl, getCDNVideoUrl } from "utils";
+import { createVideoSources, getCDNImageUrl } from "utils";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
 import {
@@ -27,7 +27,7 @@ const TheJourneyPage = () => {
   return (
     <InfoPage
       className="the-journey-page"
-      teaser={{ src: getPhysicalLoopVideo(width), overlap: "-25%" }}
+      teaser={{ src: getPhysicalLoopVideo(width), overlap: "-22.5%" }}
     >
       <div className="text-section general">
         <div className="leading-text">THE JOURNEY</div>
@@ -138,7 +138,7 @@ const TheJourneyPage = () => {
               </AnimatedText>
             </div>
           </div>
-          <div className="center-aligned-row journey-row phase-3">
+          <div className="center-aligned-row journey-row phase-4">
             <div className="image-side">
               <div className="image">
                 <InlineVideo
@@ -154,20 +154,15 @@ const TheJourneyPage = () => {
               <AnimatedText>
                 <Phase4Text />
               </AnimatedText>
-              <img
-                className="certificate"
-                src={getCDNImageUrl("certificate.svg")}
-                alt=""
-              />
             </div>
           </div>
-          <div className="center-aligned-row journey-row phase-4">
+          <div className="center-aligned-row journey-row phase-5">
             <div className="image-side">
               <div className="image">
-                <InlineVideo
-                  src={createVideoSources("question-mark")}
-                  withLoader={false}
-                  showThreshold={0}
+                <img
+                  className="certificate"
+                  src={getCDNImageUrl("certificate.svg")}
+                  alt=""
                 />
               </div>
             </div>

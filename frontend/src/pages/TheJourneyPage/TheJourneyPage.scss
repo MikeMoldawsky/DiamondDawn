@@ -18,10 +18,10 @@
     .scale {
       position: absolute;
       top: 1.3em;
-      width: 3.75em;
-      left: 14em;
+      width: 3em;
+      left: 14.75em;
       background: url($CDN_URL + "/images/about/scale.svg") no-repeat center top;
-      height: 96%;
+      height: 87%;
       background-size: auto 100%;
 
       .marker {
@@ -138,24 +138,20 @@
       }
 
       &.phase-1 {
-        .stone-image {
-          height: 10em;
-        }
-      }
-
-      &.phase-1 {
         .image-side {
           .image {
             img,
             .react-player {
-              transform: translateY(-50%) rotate(75deg);
+              height: 10em;
+              transform: translateY(-45%) rotate(75deg);
             }
           }
         }
       }
 
       &.phase-2,
-      &.phase-3 {
+      &.phase-3,
+      &.phase-5 {
         .image-side {
           .image {
             img,
@@ -188,16 +184,11 @@
           width: 80%;
           position: relative;
         }
+      }
 
+      &:last-child {
         .meter {
           bottom: unset;
-        }
-
-        img.certificate {
-          position: absolute;
-          width: 6.1em;
-          top: 0.8em;
-          right: 0;
         }
       }
     }
@@ -224,16 +215,6 @@
           .image {
             width: 8em;
             height: 8em;
-          }
-        }
-
-        &.phase-4 {
-          .text {
-            img.certificate {
-              right: 3em;
-              width: 5em;
-              height: 5em;
-            }
           }
         }
       }
@@ -333,18 +314,8 @@
         }
 
         &.phase-4 {
-          .meter {
-            bottom: 35em;
-          }
-
           .image-side {
             align-self: unset;
-
-            .image {
-              .react-player {
-                transform: translateY(-7.5%);
-              }
-            }
           }
 
           .text-side {
@@ -352,13 +323,25 @@
               width: 100%;
             }
           }
+        }
 
-          img.certificate {
-            z-index: 1;
-            left: 50%;
-            transform: translateX(-50%);
-            top: unset;
-            width: 7em;
+        &.phase-5 {
+          .image-side .image img {
+            transform: translateY(0);
+          }
+
+          .text-side {
+            text-align: center;
+          }
+        }
+
+        &:last-child {
+          .text-side {
+            padding-bottom: 0;
+
+            .meter {
+              bottom: 19em;
+            }
           }
         }
       }
