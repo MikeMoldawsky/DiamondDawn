@@ -53,6 +53,7 @@ const Header = () => {
 
   return (
     <header onClick={() => sideMenuOpen && toggleMenu()}>
+      <div className="bg header-bg" />
       <div className="header-internal">
         <div className="center-aligned-row header-side">
           <Wallet />

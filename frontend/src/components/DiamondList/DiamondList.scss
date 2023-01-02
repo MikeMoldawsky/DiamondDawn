@@ -1,4 +1,4 @@
-@import "css/vars";
+@import "css/varsNEW";
 
 .diamond-list {
   display: flex;
@@ -10,12 +10,12 @@
     position: relative;
 
     .token-icon {
-      margin-right: 16px;
+      margin-right: 1em;
       cursor: pointer;
       border: solid 1px transparent;
       border-radius: 4px;
-      padding: 5px 8px;
-      opacity: 0.7;
+      padding: .25em .4em;
+      align-items: flex-end;
 
       svg {
         width: 1.4em;
@@ -24,7 +24,9 @@
 
       .token-id {
         font-size: 0.8em;
-        margin-left: 5px;
+        line-height: 1em;
+        color: $gold;
+        font-weight: 500;
       }
     }
 
@@ -49,17 +51,19 @@
 
   .diamond-info-container {
     background-color: black;
-    width: 240px;
+    width: 15em;
     position: absolute;
-    right: 0;
-    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 3em;
     z-index: 1;
-    border: solid 1px $darker-gray;
+    border: solid 1px $disabled_gray;
 
     .token-id {
       text-align: center;
-      border-top: solid 1px $darker-gray;
-      padding: 10px 0;
+      padding: 0.6em 0;
+      margin-top: -0.45em;
+      color: $gold;
     }
   }
 }
