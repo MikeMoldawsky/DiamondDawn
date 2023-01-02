@@ -104,4 +104,14 @@
       background-color: white;
     }
   }
+
+  &.is-loading {
+    .btn-loader {
+      position: absolute;
+    }
+
+    *:not(.btn-loader) {
+      opacity: 0;
+    }
+  }
 }
