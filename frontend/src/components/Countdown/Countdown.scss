@@ -16,59 +16,52 @@
     font-size: max($font15px, 10px);
   }
 
-  &.custom {
-    .w-d {
-      border-right: solid 1px white;
-      margin-right: 2em;
-      padding-right: 3em;
-      align-items: flex-start;
-      justify-content: space-around;
+  .w-d {
+    border-right: solid 1px white;
+    margin-right: 2em;
+    padding-right: 3em;
+    align-items: flex-start;
+    justify-content: space-around;
 
-      .countdown-part {
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: flex-end;
+    .countdown-part {
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: flex-end;
 
-        .value {
-          width: 1.275em;
-          font-size: $font44px;
-          margin-right: 0.4em;
-          margin-bottom: 0;
-          text-align: right;
-          line-height: 0.75em;
-        }
-
-        .caption {
-          font-size: max($font11px, 9px);
-        }
+      .value {
+        width: 1.275em;
+        font-size: $font44px;
+        margin-right: 0.4em;
+        margin-bottom: 0;
+        text-align: right;
+        line-height: 0.75em;
       }
-    }
 
-    .colon {
-      font-size: 4.5em;
-      margin: 0 0.4em;
-      align-self: flex-start;
-      line-height: 1em;
-      font-weight: 100;
-    }
-
-    .h-m-s {
-      transform: translateY(-5%);
-
-      .countdown-part {
-        width: 6.5em;
+      .caption {
+        font-size: max($font11px, 9px);
       }
     }
   }
 
-  &.left-aligned {
-    align-items: center;
-    justify-content: flex-start;
+  .colon {
+    font-size: 4.5em;
+    margin: 0 0.4em;
+    align-self: flex-start;
+    line-height: 1em;
+    font-weight: 100;
+  }
+
+  .h-m-s {
+    transform: translateY(-5%);
+
+    .countdown-part {
+      width: 6.5em;
+    }
   }
 }
 
 @media only screen and (max-width: 480px) {
-  .countdown.custom {
+  .countdown {
     .caption {
       font-size: max(0.9375em, 6px) !important;
     }

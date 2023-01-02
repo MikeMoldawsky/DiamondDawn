@@ -114,10 +114,6 @@
         }
       }
 
-      .countdown {
-        font-size: $font10px;
-      }
-
       &.journey-desc {
         .text-side {
           padding-bottom: 6em;
@@ -343,6 +339,22 @@
               bottom: 19em;
             }
           }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .page.info-page.the-journey-page {
+    .journey {
+      .text-section {
+        width: unset !important;
+      }
+
+      .journey-row {
+        .text-side {
+          width: 100%;
         }
       }
     }

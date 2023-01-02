@@ -26,7 +26,7 @@ const CountdownComp = ({
 
     return (
       <div
-        className="center-aligned-row countdown custom"
+        className="center-aligned-row countdown"
       >
         <div className="center-spaced-column w-d">
           {renderPart("WEEKS", weeks)}
