@@ -11,6 +11,7 @@ import {
   Phase2Text,
   Phase3Text,
   Phase4Text,
+  Phase5Text,
 } from "./TheJourneyContent";
 import InfoPage from "components/InfoPage";
 import AnimatedText from "components/AnimatedText";
@@ -137,7 +138,7 @@ const TheJourneyPage = () => {
               </AnimatedText>
             </div>
           </div>
-          <div className="center-aligned-row journey-row phase-4">
+          <div className="center-aligned-row journey-row phase-3">
             <div className="image-side">
               <div className="image">
                 <InlineVideo
@@ -158,6 +159,24 @@ const TheJourneyPage = () => {
                 src={getCDNImageUrl("certificate.svg")}
                 alt=""
               />
+            </div>
+          </div>
+          <div className="center-aligned-row journey-row phase-4">
+            <div className="image-side">
+              <div className="image">
+                <InlineVideo
+                  src={createVideoSources("question-mark")}
+                  withLoader={false}
+                  showThreshold={0}
+                />
+              </div>
+            </div>
+            <div className="text-side">
+              <div className="meter" />
+              <div className="tagline-text">Phase 5</div>
+              <AnimatedText>
+                <Phase5Text />
+              </AnimatedText>
             </div>
           </div>
         </div>
