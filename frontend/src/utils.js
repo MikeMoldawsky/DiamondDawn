@@ -162,6 +162,9 @@ export const getActionableTokens = (tokens, systemStage, isActive) => {
 export const isNoContractMode = () =>
   process.env.REACT_APP_NO_CONTRACT === "true";
 
+export const isInviteOnly = () =>
+  process.env.REACT_APP_IS_INVITE_ONLY === "true";
+
 export const isPrivateSale = () =>
   process.env.REACT_APP_IS_PRIVATE_SALE === "true";
 

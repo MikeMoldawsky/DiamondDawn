@@ -7,8 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getCDNImageUrl,
   getCDNVideoUrl,
-  createVideoSources,
-  isPrivateSale,
+  isInviteOnly,
 } from "utils";
 import classNames from "classnames";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -166,7 +165,7 @@ const ComingSoonPage = () => {
           </div>
           <PasswordBox
             className={classNames("cs-section", { "with-invite": !!inviteId })}
-            disabled={!isPrivateSale()}
+            disabled={!isInviteOnly()}
             autoFill={autoFillPassword}
             inviteId={invite?._id}
             onCorrect={onCorrectPassword}
@@ -186,7 +185,7 @@ const ComingSoonPage = () => {
               <div className="text-center your-invite-text">YOUR INVITE</div>
             </>
           ) : (
-            isPrivateSale() && <GetPasswordLink />
+            isInviteOnly() && <GetPasswordLink />
           )}
         </div>
         <FeaturedIn />
