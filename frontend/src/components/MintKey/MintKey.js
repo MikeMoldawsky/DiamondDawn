@@ -31,6 +31,7 @@ import {
   setSelectedTokenId,
   setShouldIgnoreTokenTransferWatch,
 } from "store/uiReducer";
+import Loading from "components/Loading";
 
 const MintKey = () => {
   const { systemStage, isActive, minePrice, maxEntrance, tokensMinted } =
@@ -44,6 +45,7 @@ const MintKey = () => {
   const collector = useSelector(collectorSelector);
   const provider = useProvider();
   const [isMinting, setIsMinting] = useState(false);
+  const [isForging, setIsForging] = useState(false);
 
   const maxTokenId = max(map(tokens, "id"));
   const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
@@ -58,6 +60,7 @@ const MintKey = () => {
       minePrice.mul(numNfts),
       signature
     );
+    setIsForging(true)
     return await tx.wait();
   };
 
@@ -108,6 +111,8 @@ const MintKey = () => {
 
   if (!collector || collector.minted || collector.mintClosed) return null;
 
+  if (isForging) return (<Loading />)
+
   return (
     <MintKeyView
       mintPrice={minePrice}
@@ -118,7 +123,10 @@ const MintKey = () => {
       expiresAt={collector.mintWindowClose}
       onCountdownEnd={onMintWindowClose}
       forceButtonLoading={isMinting}
-      onMintError={() => setIsMinting(false)}
+      onMintError={() => {
+        setIsMinting(false);
+        setIsForging(false);
+      }}
     />
   );
 };

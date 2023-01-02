@@ -65,6 +65,18 @@ const MintKeyView = ({
     }
   }, [showInvitesParam]);
 
+  const renderHandAndKeyVideo = useCallback(() => {
+    return (
+      <div className="image-box">
+        <InlineVideo
+          src={createVideoSources("hand-key-particles")}
+          showThreshold={0}
+          withLoader={false}
+        />
+      </div>
+    );
+  }, []);
+
   const mintPriceText = BigNumber.isBigNumber(mintPrice)
     ? ethersUtils.formatUnits(mintPrice)
     : "4.44";
@@ -83,18 +95,6 @@ const MintKeyView = ({
       </div>
     </div>
   );
-
-  const renderHandAndKeyVideo = useCallback(() => {
-    return (
-      <div className="image-box">
-        <InlineVideo
-          src={createVideoSources("hand-key-particles")}
-          showThreshold={0}
-          withLoader={false}
-        />
-      </div>
-    );
-  }, []);
 
   const renderMintButton = () => (
     <div className="center-aligned-column button-column">
