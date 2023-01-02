@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import "components/MintKey/MintKey.scss";
-import Countdown from "components/Countdown";
+import "./MintKey.scss";
 import ActionButton from "components/ActionButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEthereum } from "@fortawesome/free-brands-svg-icons/faEthereum";
@@ -8,7 +7,7 @@ import isFunction from "lodash/isFunction";
 import { BigNumber, utils as ethersUtils } from "ethers";
 import InvitationsStatus from "components/InvitationsStatus";
 import { useDispatch, useSelector } from "react-redux";
-import { createVideoSources, getCDNImageUrl, getCDNVideoUrl } from "utils";
+import { createVideoSources, getCDNImageUrl } from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
@@ -16,9 +15,9 @@ import MintAddressRow from "components/MintAddressRow";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useMusic from "hooks/useMusic";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
-import useMineOpenCountdown from "hooks/useMineOpenCountdown";
 import { useSearchParams } from "react-router-dom";
 import classNames from "classnames";
+import {CountdownWithText, SystemCountdown} from "components/Countdown/Countdown";
 
 const RadioButtons = ({ values, selectedValue, setSelectedValue }) => {
   return (
@@ -123,11 +122,23 @@ const MintKeyView = ({
     </div>
   );
 
-  const { countdownText, date: countdownEnd } = useMineOpenCountdown();
-  const countdownEndDate = canMint ? expiresAt : countdownEnd;
-  const countdownTextLine = canMint
-    ? "When the time runs out, you'll no longer be able to join Diamond Dawn"
-    : countdownText;
+  const renderCountdown = () => {
+    return canMint ? (
+      <CountdownWithText className="timer-box"
+                         date={expiresAt}
+                         defaultParts={{
+                           days: 3,
+                           hours: 3,
+                           minutes: 3,
+                           seconds: 0,
+                         }}
+                         text="When the time runs out, you'll no longer be able to join Diamond Dawn"
+                         onComplete={onCountdownEnd}
+      />
+    ) : (
+      <SystemCountdown className="timer-box" />
+    )
+  }
 
   return (
     <div className={classNames("action-view enter", { minting: canMint })}>
@@ -168,21 +179,7 @@ const MintKeyView = ({
                 </MobileOrTablet>
                 <Desktop>{renderMintButton()}</Desktop>
                 <div className="center-aligned-column open-soon">
-                  <div className="timer-box">
-                    <div className="text-comment">{countdownTextLine}</div>
-                    <Countdown
-                      date={countdownEndDate}
-                      defaultParts={{
-                        days: 3,
-                        hours: 3,
-                        minutes: 3,
-                        seconds: 0,
-                      }}
-                      onComplete={() =>
-                        isFunction(onCountdownEnd) && onCountdownEnd()
-                      }
-                    />
-                  </div>
+                  {renderCountdown()}
                 </div>
               </div>
               <div className="center-aligned-row invites-box">

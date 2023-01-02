@@ -12,7 +12,7 @@ import {
   MobileOrTablet,
   useMobileOrTablet,
 } from "hooks/useMediaQueries";
-import { StageCountdownWithText } from "components/Countdown/Countdown";
+import { SystemCountdown } from "components/Countdown/Countdown";
 import classNames from "classnames";
 import IncreaseChances from "components/IncreaseChances";
 
@@ -71,7 +71,7 @@ const PendingApproval = ({ showModal }) => {
                   </div>
                   <Desktop>{renderTwitterButton("lg")}</Desktop>
                 </div>
-                <StageCountdownWithText />
+                <SystemCountdown />
               </div>
               <MintAddressRow />
             </div>

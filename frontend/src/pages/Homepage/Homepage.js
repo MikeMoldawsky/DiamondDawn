@@ -23,7 +23,7 @@ import CTAButton from "components/CTAButton";
 import PlayButton from "components/PlayButton";
 import { getEarthAndMoonVideo, getTrailerVideos } from "assets/videos";
 import useScrollTop from "hooks/useScrollTop";
-import { StageCountdownWithText } from "components/Countdown/Countdown";
+import { SystemCountdown } from "components/Countdown/Countdown";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
 import { NavHashLink } from "react-router-hash-link";
 
@@ -78,7 +78,7 @@ const HomeTopContent = () => {
             index={1}
           />
         </div>
-        <StageCountdownWithText />
+        <SystemCountdown />
       </div>
     </div>
   );
