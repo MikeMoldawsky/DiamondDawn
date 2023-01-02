@@ -1,6 +1,6 @@
 import React from "react";
 import "./TheJourneyPage.scss";
-import { createVideoSources, getCDNImageUrl, getCDNVideoUrl } from "utils";
+import { createVideoSources, getCDNImageUrl } from "utils";
 import classNames from "classnames";
 import ReactPlayer from "react-player";
 import {
@@ -11,6 +11,7 @@ import {
   Phase2Text,
   Phase3Text,
   Phase4Text,
+  Phase5Text,
 } from "./TheJourneyContent";
 import InfoPage from "components/InfoPage";
 import AnimatedText from "components/AnimatedText";
@@ -26,7 +27,7 @@ const TheJourneyPage = () => {
   return (
     <InfoPage
       className="the-journey-page"
-      teaser={{ src: getPhysicalLoopVideo(width), overlap: "-25%" }}
+      teaser={{ src: getPhysicalLoopVideo(width), overlap: "-22.5%" }}
     >
       <div className="text-section general">
         <div className="leading-text">THE JOURNEY</div>
@@ -153,11 +154,24 @@ const TheJourneyPage = () => {
               <AnimatedText>
                 <Phase4Text />
               </AnimatedText>
-              <img
-                className="certificate"
-                src={getCDNImageUrl("certificate.svg")}
-                alt=""
-              />
+            </div>
+          </div>
+          <div className="center-aligned-row journey-row phase-5">
+            <div className="image-side">
+              <div className="image">
+                <img
+                  className="certificate"
+                  src={getCDNImageUrl("certificate.svg")}
+                  alt=""
+                />
+              </div>
+            </div>
+            <div className="text-side">
+              <div className="meter" />
+              <div className="tagline-text">Phase 5</div>
+              <AnimatedText>
+                <Phase5Text />
+              </AnimatedText>
             </div>
           </div>
         </div>
