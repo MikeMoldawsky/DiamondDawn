@@ -185,26 +185,8 @@
   }
 
   .featured-in {
-    font-size: 1em;
-    width: 100%;
-    padding: 1em 2em 1.25em;
     bottom: 0;
     transform: translate(-50%, 5em);
-
-    .articles {
-      flex-wrap: wrap;
-      padding: 0;
-      justify-content: space-around;
-
-      .article {
-        width: 35%;
-        margin: 0 0 1em 0;
-
-        &:nth-last-child(-n + 2) {
-          margin-bottom: 0;
-        }
-      }
-    }
   }
 }
 
@@ -216,8 +198,6 @@
 
 @media only screen and (max-width: 480px) {
   .page.coming-soon {
-    @include coming-soon-portrait;
-
     .project-title {
       .react-player {
         &.ps-text {

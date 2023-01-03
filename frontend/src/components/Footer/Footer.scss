@@ -7,27 +7,36 @@ footer.footer {
   align-items: stretch;
   justify-content: stretch;
   background-color: black;
-  margin-top: -3em;
-  -webkit-mask-image: -webkit-gradient(
-    linear,
-    left top,
-    left 10%,
-    from(rgba(0, 0, 0, 0)),
-    to(rgba(0, 0, 0, 1))
-  );
-  overflow: hidden;
 
   .bg.bg-footer {
     background: url($CDN_URL + "/images/footer.png") no-repeat center center;
     background-size: cover;
     height: 17.5em;
     top: unset;
+    z-index: 0;
+  }
+
+  .top-mask {
+    position: absolute;
+    top: -2em;
+    left: 0;
+    height: 2em;
+    width: 100%;
+    background-color: black;
+    -webkit-mask-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
+    );
   }
 
   .footer-inner {
     margin: 0 auto 0;
-    padding: 12rem 0 2.5rem;
+    padding: 17rem 0 2.5rem;
     min-width: 40em;
+    z-index: 1;
 
     & > div {
       padding: 0 0 0.25em;
@@ -100,7 +109,7 @@ footer.footer {
     width: 50%;
     font-size: $font14px;
     margin: 0 auto;
-    padding-top: 8em;
+    padding-top: 10em;
     z-index: 1;
     position: relative;
 
@@ -111,14 +120,24 @@ footer.footer {
     }
   }
 
+  .featured-in {
+    margin-top: 10em;
+    padding: 2em 0 3em;
+    z-index: 1;
+
+    .articles {
+      margin-top: 1.25em;
+    }
+  }
+
   &.with-faqs {
-    -webkit-mask-image: -webkit-gradient(
-      linear,
-      left top,
-      left 4%,
-      from(rgba(0, 0, 0, 0)),
-      to(rgba(0, 0, 0, 1))
-    );
+    .footer-inner {
+      padding-top: 15rem;
+    }
+
+    .featured-in {
+      margin-top: 6em;
+    }
   }
 }
 
@@ -182,7 +201,16 @@ footer.footer {
 
     .faq-section {
       width: 85%;
-      padding-top: 10em;
+      padding-top: 7em;
+    }
+
+    .featured-in {
+      margin-top: 6em;
+      padding: 1.5em 0 2em;
+
+      .articles {
+        margin-top: .75em;
+      }
     }
   }
 }
