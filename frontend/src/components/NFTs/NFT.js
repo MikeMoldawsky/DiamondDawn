@@ -22,7 +22,7 @@ const NFT = ({ token, hideCertificate, transitionName, goToProcess }) => {
           preset={transitionName}
           transitionKey={`token-${token.id}`}
         >
-          <Diamond diamond={token} />
+          <Diamond diamond={token} withSound />
         </PageTransition>
       </div>
       <div

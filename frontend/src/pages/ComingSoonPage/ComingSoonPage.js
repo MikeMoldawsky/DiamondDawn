@@ -136,25 +136,10 @@ const ComingSoonPage = () => {
         {renderBgPlayer()}
         <div className="center-aligned-column content-column">
           <div className="cs-section project-title">
-            <InlineVideo
-              withLoader={false}
-              className="dd-text"
-              src={getDDTextVideo(width)}
-              showThreshold={0}
-            />
+            <InlineVideo className="dd-text" src={getDDTextVideo(width)} />
             <div className="center-center-aligned-row ps-row">
-              <InlineVideo
-                withLoader={false}
-                className="ps-text"
-                src={getPSTextVideo(width)}
-                showThreshold={0}
-              />
-              <InlineVideo
-                withLoader={false}
-                className="ps-date"
-                src={getPSDateVideo(width)}
-                showThreshold={0}
-              />
+              <InlineVideo className="ps-text" src={getPSTextVideo(width)} />
+              <InlineVideo className="ps-date" src={getPSDateVideo(width)} />
             </div>
           </div>
           <div className="center-aligned-column cs-section text-column">

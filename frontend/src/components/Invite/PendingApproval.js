@@ -25,7 +25,7 @@ const PendingApproval = ({ showModal }) => {
   );
 
   const renderInlineVideo = useCallback(
-    () => <InlineVideo src={videoSrc} showThreshold={0} />,
+    () => <InlineVideo src={videoSrc} withLoader />,
     [videoSrc]
   );
 

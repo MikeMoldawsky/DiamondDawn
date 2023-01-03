@@ -638,6 +638,14 @@ a:not(.no-hover) {
   }
 }
 
+.video-mute-icon {
+  font-size: 1.5em;
+  bottom: 0.5em;
+  position: absolute;
+  right: 0.5em;
+  cursor: pointer;
+}
+
 .video-placeholder {
   height: 100% !important;
   width: 100% !important;

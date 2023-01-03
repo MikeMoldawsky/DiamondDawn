@@ -1,20 +1,39 @@
-import React, { useCallback, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import ReactPlayer from "react-player";
 import WaitFor from "containers/WaitFor";
 import classNames from "classnames";
-import { useSelector } from "react-redux";
-import { uiSelector } from "store/uiReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {setAudioMuted, uiSelector} from "store/uiReducer";
+import {faVolumeMute, faVolumeUp} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const InlineVideo = ({
   className,
   src,
-  showThreshold = 0.5,
-  withLoader = true,
-  forceMuted,
+  showThreshold = 0,
+  withLoader,
+  withSound,
   ...props
 }) => {
-  const { muted } = useSelector(uiSelector);
   const [videoProgress, setVideoProgress] = useState({});
+  const [muted, setMuted] = useState(!withSound)
+  const dispatch = useDispatch();
+  const { muted: globalMuted } = useSelector(uiSelector);
+  const [wasMutedWhenMounted] = useState(globalMuted);
+
+  useEffect(() => {
+    if (!withSound) return
+
+    if (!muted) {
+      dispatch(setAudioMuted(true));
+    }
+
+    return () => {
+      if (!wasMutedWhenMounted) {
+        dispatch(setAudioMuted(false));
+      }
+    }
+  }, [withSound])
 
   const renderVideo = useCallback(() => {
     return (
@@ -23,7 +42,7 @@ const InlineVideo = ({
         playing
         playsinline
         controls={false}
-        muted={muted || forceMuted}
+        muted={muted}
         loop
         className={classNames("react-player", className)}
         {...props}
@@ -32,7 +51,7 @@ const InlineVideo = ({
         onProgress={setVideoProgress}
       />
     );
-  }, [JSON.stringify(src)]);
+  }, [JSON.stringify(src), muted]);
 
   return (
     <WaitFor
@@ -40,6 +59,13 @@ const InlineVideo = ({
       withLoader={withLoader}
     >
       {renderVideo()}
+      {withSound && (
+        <FontAwesomeIcon
+          className="video-mute-icon"
+          icon={muted ? faVolumeMute : faVolumeUp}
+          onClick={() => setMuted(!muted)}
+        />
+      )}
     </WaitFor>
   );
 };
