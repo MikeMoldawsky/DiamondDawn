@@ -61,6 +61,11 @@ footer.footer {
       }
     }
 
+    a.active {
+      font-size: 1.15em;
+      cursor: default;
+    }
+
     .top-menu {
       font-size: $font20px;
 
