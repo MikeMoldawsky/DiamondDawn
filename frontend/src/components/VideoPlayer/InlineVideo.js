@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import WaitFor from "containers/WaitFor";
 import classNames from "classnames";
-import {useDispatch, useSelector} from "react-redux";
-import {setAudioMuted, uiSelector} from "store/uiReducer";
-import {faVolumeMute, faVolumeUp} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { useDispatch, useSelector } from "react-redux";
+import { setAudioMuted, uiSelector } from "store/uiReducer";
+import { faVolumeMute, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const InlineVideo = ({
   className,
@@ -16,13 +16,13 @@ const InlineVideo = ({
   ...props
 }) => {
   const [videoProgress, setVideoProgress] = useState({});
-  const [muted, setMuted] = useState(!withSound)
+  const [muted, setMuted] = useState(!withSound);
   const dispatch = useDispatch();
   const { muted: globalMuted } = useSelector(uiSelector);
   const [wasMutedWhenMounted] = useState(globalMuted);
 
   useEffect(() => {
-    if (!withSound) return
+    if (!withSound) return;
 
     if (!muted) {
       dispatch(setAudioMuted(true));
@@ -32,8 +32,8 @@ const InlineVideo = ({
       if (!wasMutedWhenMounted) {
         dispatch(setAudioMuted(false));
       }
-    }
-  }, [withSound])
+    };
+  }, [withSound]);
 
   const renderVideo = useCallback(() => {
     return (

@@ -1,5 +1,5 @@
 import React from "react";
-import {isInviteOnly} from "utils";
+import { isInviteOnly } from "utils";
 import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import { uiSelector } from "store/uiReducer";

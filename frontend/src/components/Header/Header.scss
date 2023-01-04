@@ -9,11 +9,11 @@ header {
 
   .header-bg {
     -webkit-mask-image: -webkit-gradient(
-                    linear,
-                    left bottom,
-                    left 80%,
-                    from(rgba(0, 0, 0, 0)),
-                    to(rgba(0, 0, 0, 1))
+      linear,
+      left bottom,
+      left 80%,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
     );
     backdrop-filter: blur(2.5em);
   }
@@ -99,7 +99,7 @@ header {
       }
 
       &.substack-link {
-        margin-top: .3em;
+        margin-top: 0.3em;
         width: auto;
 
         svg {
@@ -215,7 +215,8 @@ header {
       }
     }
 
-    .tg-link, .substack-link {
+    .tg-link,
+    .substack-link {
       display: none;
     }
   }

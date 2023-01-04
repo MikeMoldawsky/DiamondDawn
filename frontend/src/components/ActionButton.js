@@ -36,7 +36,7 @@ const ActionButton = ({
     dispatch(clearActionStatus(actionKey));
   };
 
-  const showLoader = isLoading || isPending
+  const showLoader = isLoading || isPending;
 
   return (
     <Button
@@ -47,7 +47,12 @@ const ActionButton = ({
     >
       <span>{children}</span>
       {showLoader && (
-        <BeatLoader className="btn-loader" color={"#fff"} loading={true} size={10} />
+        <BeatLoader
+          className="btn-loader"
+          color={"#fff"}
+          loading={true}
+          size={10}
+        />
       )}
     </Button>
   );

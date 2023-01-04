@@ -17,7 +17,8 @@ const Diamond = ({ diamond, ...props }) => {
   return (
     <div className="diamond-art">
       <InlineVideo src={videoUrl} {...props} />
-    </div>);
+    </div>
+  );
 };
 
 export default Diamond;

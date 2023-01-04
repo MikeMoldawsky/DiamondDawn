@@ -3,14 +3,9 @@ import Countdown from "react-countdown";
 import "./Countdown.scss";
 import classNames from "classnames";
 import useSystemCountdown from "hooks/useSystemCountdown";
-import padStart from 'lodash/padStart'
+import padStart from "lodash/padStart";
 
-const CountdownComp = ({
-  date,
-  defaultParts,
-  onComplete,
-}) => {
-
+const CountdownComp = ({ date, defaultParts, onComplete }) => {
   const renderPart = (caption, value) => {
     return (
       <div className="center-aligned-column countdown-part">
@@ -25,9 +20,7 @@ const CountdownComp = ({
     days = days % 7;
 
     return (
-      <div
-        className="center-aligned-row countdown"
-      >
+      <div className="center-aligned-row countdown">
         <div className="center-spaced-column w-d">
           {renderPart("WEEKS", weeks)}
           {renderPart("DAYS", days)}
@@ -43,12 +36,13 @@ const CountdownComp = ({
     );
   };
 
-  if (date) return (
-    <Countdown date={date} renderer={renderer} onComplete={onComplete} />
-  )
-  if (defaultParts) return renderer(defaultParts)
+  if (date)
+    return (
+      <Countdown date={date} renderer={renderer} onComplete={onComplete} />
+    );
+  if (defaultParts) return renderer(defaultParts);
 
-  return null
+  return null;
 };
 
 export const CountdownWithText = ({ className, text, ...props }) => {
@@ -57,14 +51,18 @@ export const CountdownWithText = ({ className, text, ...props }) => {
       <div className="text">{text || text}</div>
       <CountdownComp {...props} />
     </div>
-  )
-}
+  );
+};
 
 export const SystemCountdown = ({ text, ...props }) => {
   const { countdownText, ...countdownProps } = useSystemCountdown();
 
   return (
-    <CountdownWithText text={text || countdownText} {...countdownProps} {...props} />
+    <CountdownWithText
+      text={text || countdownText}
+      {...countdownProps}
+      {...props}
+    />
   );
 };
 

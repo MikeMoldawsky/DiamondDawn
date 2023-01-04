@@ -17,7 +17,10 @@ import useMusic from "hooks/useMusic";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 import { useSearchParams } from "react-router-dom";
 import classNames from "classnames";
-import {CountdownWithText, SystemCountdown} from "components/Countdown/Countdown";
+import {
+  CountdownWithText,
+  SystemCountdown,
+} from "components/Countdown/Countdown";
 
 const RadioButtons = ({ values, selectedValue, setSelectedValue }) => {
   return (
@@ -120,21 +123,22 @@ const MintKeyView = ({
 
   const renderCountdown = () => {
     return canMint ? (
-      <CountdownWithText className="timer-box"
-                         date={expiresAt}
-                         defaultParts={{
-                           days: 3,
-                           hours: 3,
-                           minutes: 3,
-                           seconds: 0,
-                         }}
-                         text="When the time runs out, you'll no longer be able to join Diamond Dawn"
-                         onComplete={onCountdownEnd}
+      <CountdownWithText
+        className="timer-box"
+        date={expiresAt}
+        defaultParts={{
+          days: 3,
+          hours: 3,
+          minutes: 3,
+          seconds: 0,
+        }}
+        text="When the time runs out, you'll no longer be able to join Diamond Dawn"
+        onComplete={onCountdownEnd}
       />
     ) : (
       <SystemCountdown className="timer-box" />
-    )
-  }
+    );
+  };
 
   return (
     <div className={classNames("action-view enter", { minting: canMint })}>

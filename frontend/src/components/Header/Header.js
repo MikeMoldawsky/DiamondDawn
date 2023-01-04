@@ -19,14 +19,19 @@ import Logo from "components/Logo";
 import { setSideMenuOpen, toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import CTAButton from "components/CTAButton";
-import Link, {TwitterLink, TelegramLink, SubstackLink} from "components/Links";
+import Link, {
+  TwitterLink,
+  TelegramLink,
+  SubstackLink,
+} from "components/Links";
 import useCanAccessDD from "hooks/useCanAccessDD";
 import { useDesktopMediaQuery } from "hooks/useMediaQueries";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { collectorSelector } from "store/collectorReducer";
 import {
   DIAMOND_DAWN_COLLECTORS_TELEGRAM,
-  DIAMOND_DAWN_PUBLIC_TELEGRAM, DIAMOND_DAWN_SUBSTACK,
+  DIAMOND_DAWN_PUBLIC_TELEGRAM,
+  DIAMOND_DAWN_SUBSTACK,
 } from "consts";
 
 const Header = () => {

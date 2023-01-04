@@ -60,7 +60,7 @@ const MintKey = () => {
       minePrice.mul(numNfts),
       signature
     );
-    setIsForging(true)
+    setIsForging(true);
     return await tx.wait();
   };
 
@@ -111,7 +111,7 @@ const MintKey = () => {
 
   if (!collector || collector.minted || collector.mintClosed) return null;
 
-  if (isForging) return (<Loading />)
+  if (isForging) return <Loading />;
 
   return (
     <MintKeyView
