@@ -1,6 +1,6 @@
 import React from "react";
 import "./TheJourneyPage.scss";
-import { createVideoSources, getCDNImageUrl } from "utils";
+import { createVideoSources } from "utils";
 import classNames from "classnames";
 import {
   TheJourneyMainText,
@@ -22,17 +22,13 @@ import {useSelector} from "react-redux";
 import {systemSelector} from "store/systemReducer";
 import {SYSTEM_STAGE} from "consts";
 
-const Phase = ({ className, active, title, Art, Text, artSrc, artClassName }) => {
+const Phase = ({ className, active, title, Text, artSrc, artClassName }) => {
 
   return (
     <div className={classNames("center-aligned-row journey-row", className)}>
       <div className="image-side">
         <div className="image">
-          {Art ? (
-            <Art />
-          ) : (
-            <InlineVideo src={createVideoSources(artSrc)} className={artClassName} />
-          )}
+          <InlineVideo src={createVideoSources(artSrc)} className={artClassName} />
         </div>
       </div>
       <div className="text-side">
@@ -86,43 +82,38 @@ const TheJourneyPage = () => {
                  artClassName="key-image"
                  title="Phase 0 - Mint Your Key"
                  Text={Phase0Text}
-                 active={systemStage <= SYSTEM_STAGE.KEY}
+                 active={true}
           />
           <Phase className="phase-1"
                  artSrc="rough-stone-static"
                  artClassName="stone-image"
                  title="Phase 1 - Enter & Mine"
                  Text={Phase1Text}
-                 active={systemStage === SYSTEM_STAGE.MINE}
+                 active={systemStage >= SYSTEM_STAGE.MINE}
           />
           <Phase className="phase-2"
                  artSrc="question-mark"
                  title="Phase 2"
                  Text={Phase2Text}
-                 active={systemStage === SYSTEM_STAGE.CUT}
+                 active={systemStage >= SYSTEM_STAGE.CUT}
           />
           <Phase className="phase-3"
                  artSrc="question-mark"
                  title="Phase 3"
                  Text={Phase3Text}
-                 active={systemStage === SYSTEM_STAGE.POLISH}
+                 active={systemStage >= SYSTEM_STAGE.POLISH}
           />
           <Phase className="phase-4"
                  artSrc="physical-digital-diamond"
                  title="Phase 4 - The Final Choice"
                  Text={Phase4Text}
-                 active={systemStage === SYSTEM_STAGE.DAWN}
+                 active={systemStage >= SYSTEM_STAGE.DAWN}
           />
           <Phase className="phase-5"
-                 Art={() => (
-                   <img
-                     className="certificate"
-                     src={getCDNImageUrl("certificate.svg")}
-                     alt=""
-                   />
-                 )}
+                 artSrc="nft-certificate"
                  title="Phase 5"
                  Text={Phase5Text}
+                 active={systemStage >= SYSTEM_STAGE.DAWN}
           />
         </div>
       </div>
