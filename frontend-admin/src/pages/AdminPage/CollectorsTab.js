@@ -179,15 +179,16 @@ const INVITATION_COLUMNS = [
     width: 80,
     hideIfPending: true,
   },
-  // {
-  //   field: "invitations",
-  //   headerName: "Invitations",
-  //   width: 200,
-  //   preProcessEditCellProps: (params) => {
-  //     return { ...params.props, value: params.props.value.join(",") };
-  //   },
-  //   hideIfPending: true,
-  // },
+  {
+    field: "invitations",
+    headerName: "Invitations",
+    width: 80,
+    valueGetter: ({ value }) => value.length,
+    preProcessEditCellProps: (params) => {
+      return { ...params.props, value: params.props.value.join(",") };
+    },
+    hideIfPending: true,
+  },
 ];
 
 const ApproveButton = ({ collectorId, onSuccess }) => {
@@ -209,7 +210,7 @@ const ApproveButton = ({ collectorId, onSuccess }) => {
   );
 };
 
-const InvitationsTab = ({ approved }) => {
+const CollectorsTab = ({ approved }) => {
   const [collectors, setCollectors] = useState([]);
   const actionDispatch = useActionDispatch();
 
@@ -255,6 +256,14 @@ const InvitationsTab = ({ approved }) => {
     />,
   ];
 
+  const getRowClassName = ({ row }) => {
+    if (!row.approved) return row.status.toLowerCase();
+
+    if (row.invitations.length < 2 && row.twitter !== "@DiamondDawnNFT") {
+      return "error";
+    }
+  };
+
   return (
     <div className={classNames("tab-content invitations")}>
       <h1>{approved ? "Approved" : "Pending"} Collectors</h1>
@@ -276,10 +285,10 @@ const InvitationsTab = ({ approved }) => {
         loadActionKey="load-collectors"
         omitUpdateFields={["invitedBy"]}
         actionsFirst
-        getRowClassName={({ row }) => row.status.toLowerCase()}
+        getRowClassName={getRowClassName}
       />
     </div>
   );
 };
 
-export default InvitationsTab;
+export default CollectorsTab;

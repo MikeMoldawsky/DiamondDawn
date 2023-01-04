@@ -411,6 +411,25 @@
     &.inreview {
       background-color: $inReview;
     }
+
+    &.error {
+      animation: highlight 2s ease-in-out infinite;
+    }
+  }
+
+  @keyframes highlight {
+    0% {
+      background-color: red;
+    }
+    25% {
+      background-color: white;
+    }
+    50% {
+      background-color: red;
+    }
+    100% {
+      background-color: red;
+    }
   }
 
   .legends {
