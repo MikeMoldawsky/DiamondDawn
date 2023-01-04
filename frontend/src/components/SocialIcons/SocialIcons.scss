@@ -1,32 +1,10 @@
 @import "css/varsNEW";
 
 .social-icons {
-  .icon {
-    height: $font34px;
-
-    svg {
-      height: 100%;
-
-      &.fa-twitter {
-        height: 90%;
-        margin-top: 5%;
-      }
-
-      &.MuiSvgIcon-root {
-        width: unset;
-      }
-    }
-
-    &.opensea {
-      svg {
-        height: 90%;
-        margin-top: 5%;
-        width: auto;
-      }
-    }
-  }
-
   a {
+    height: 100%;
+    display: flex;
+    align-items: center;
     padding: 0 0.75em;
 
     &.disabled {
@@ -41,23 +19,50 @@
       padding-right: 0;
     }
 
-    &:not(:last-child) .icon {
+    &:not(:last-child) {
       position: relative;
 
       &:after {
         content: "";
         position: absolute;
-        top: 0.4em;
-        bottom: 0.4em;
+        top: 0.3em;
+        bottom: 0.3em;
         width: 1px;
-        right: -0.75em;
+        right: 0;
         background-color: white;
         opacity: 0.75;
       }
     }
 
-    &.tg-link.private-tg:after {
-      top: 90%;
+    .icon {
+      height: $font34px;
+
+      svg {
+        height: 100%;
+        width: auto;
+
+        &.MuiSvgIcon-root {
+          width: unset;
+        }
+      }
+    }
+
+    &.twitter-link {
+      .icon {
+        height: 1.75em;
+      }
+    }
+
+    &.opensea {
+      .icon {
+        height: 1.75em;
+      }
+    }
+
+    &.substack-link {
+      .icon {
+        height: 1.6em;
+      }
     }
   }
 }

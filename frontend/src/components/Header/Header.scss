@@ -98,6 +98,15 @@ header {
         width: auto;
       }
 
+      &.substack-link {
+        margin-top: .3em;
+        width: auto;
+
+        svg {
+          height: 1.2em;
+        }
+      }
+
       &:first-child {
         margin-left: 0;
       }
@@ -206,7 +215,7 @@ header {
       }
     }
 
-    .tg-link {
+    .tg-link, .substack-link {
       display: none;
     }
   }

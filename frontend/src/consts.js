@@ -55,6 +55,8 @@ export const DIAMOND_DAWN_OPENSEA = "";
 export const PRIVATE_TWITTER_MESSAGE_URL =
   "https://twitter.com/messages/compose?recipient_id=1537474700514836485&text=I%20would%20like%20to%20participate%20in%20Diamond%20Dawn's%20journey";
 
+export const DIAMOND_DAWN_SUBSTACK = "";
+
 export const TRAIT = {
   carat: "Carat",
   clarity: "Clarity",

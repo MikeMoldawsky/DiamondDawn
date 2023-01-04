@@ -10,6 +10,7 @@ import {
   faVolumeMute,
   faVolumeUp,
   faX,
+  faBookOpen,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { isNoContractMode } from "utils";
@@ -18,14 +19,14 @@ import Logo from "components/Logo";
 import { setSideMenuOpen, toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import CTAButton from "components/CTAButton";
-import { TwitterLink, TelegramLink } from "components/Links";
+import Link, {TwitterLink, TelegramLink, SubstackLink} from "components/Links";
 import useCanAccessDD from "hooks/useCanAccessDD";
 import { useDesktopMediaQuery } from "hooks/useMediaQueries";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { collectorSelector } from "store/collectorReducer";
 import {
   DIAMOND_DAWN_COLLECTORS_TELEGRAM,
-  DIAMOND_DAWN_PUBLIC_TELEGRAM,
+  DIAMOND_DAWN_PUBLIC_TELEGRAM, DIAMOND_DAWN_SUBSTACK,
 } from "consts";
 
 const Header = () => {
@@ -92,6 +93,9 @@ const Header = () => {
             >
               <TelegramIcon />
             </TelegramLink>
+            <SubstackLink className="social-link no-hover">
+              <FontAwesomeIcon icon={faBookOpen} />
+            </SubstackLink>
           </div>
           <div className="vertical-sep" />
           <FontAwesomeIcon
