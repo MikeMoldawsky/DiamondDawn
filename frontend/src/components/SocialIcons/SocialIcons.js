@@ -47,7 +47,7 @@ const SocialIcons = () => {
       <OpenseaLink className="no-hover">
         <SVG src={openSeaIcon} />
       </OpenseaLink>
-      <SubstackLink className="no-hover">
+      <SubstackLink className="text-gold no-hover">
         <div className="icon">
           <FontAwesomeIcon icon={faBookOpen} />
         </div>

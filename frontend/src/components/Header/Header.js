@@ -98,7 +98,7 @@ const Header = () => {
             >
               <TelegramIcon />
             </TelegramLink>
-            <SubstackLink className="social-link no-hover">
+            <SubstackLink className="social-link text-gold no-hover">
               <FontAwesomeIcon icon={faBookOpen} />
             </SubstackLink>
           </div>

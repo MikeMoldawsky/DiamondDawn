@@ -53,6 +53,12 @@
       }
     }
 
+    &.tg-link.private-tg {
+      &:before {
+        top: 90%;
+      }
+    }
+
     &.opensea {
       .icon {
         height: 1.75em;
