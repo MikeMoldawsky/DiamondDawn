@@ -1,8 +1,7 @@
 import React from "react";
 import "./TheJourneyPage.scss";
-import { createVideoSources, getCDNImageUrl } from "utils";
+import { createVideoSources } from "utils";
 import classNames from "classnames";
-import ReactPlayer from "react-player";
 import {
   TheJourneyMainText,
   TheJourneyText,
@@ -19,10 +18,36 @@ import InlineVideo from "components/VideoPlayer/InlineVideo";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
 import { getPhysicalLoopVideo } from "assets/videos";
 import useWindowDimensions from "hooks/useWindowDimensions";
+import { useSelector } from "react-redux";
+import { systemSelector } from "store/systemReducer";
+import { SYSTEM_STAGE } from "consts";
+
+const Phase = ({ className, active, title, Text, artName, artClassName }) => {
+  return (
+    <div className={classNames("center-aligned-row journey-row", className)}>
+      <div className="image-side">
+        <div className="image">
+          <InlineVideo
+            src={createVideoSources(artName)}
+            className={artClassName}
+          />
+        </div>
+      </div>
+      <div className="text-side">
+        <div className={classNames("meter", { active })} />
+        <div className="tagline-text">{title}</div>
+        <AnimatedText>
+          <Text />
+        </AnimatedText>
+      </div>
+    </div>
+  );
+};
 
 const TheJourneyPage = () => {
   const isMobile = useMobileOrTablet();
   const { width } = useWindowDimensions();
+  const { systemStage } = useSelector(systemSelector);
 
   return (
     <InfoPage
@@ -54,126 +79,50 @@ const TheJourneyPage = () => {
             <div className="marker marker60">-60</div>
             <div className="marker marker90">-90</div>
           </div>
-          <div className="center-aligned-row journey-row phase-0">
-            <div className="image-side">
-              <div className="image">
-                <ReactPlayer
-                  url={createVideoSources("key-static")}
-                  playing
-                  playsinline
-                  controls={false}
-                  muted
-                  loop
-                  className={classNames("react-player key-image")}
-                  width=""
-                  height=""
-                />
-              </div>
-            </div>
-            <div className="text-side">
-              <div className="meter active" />
-              <div className="tagline-text">Phase 0 - Mint Your Key</div>
-              <AnimatedText>
-                <Phase0Text />
-              </AnimatedText>
-            </div>
-          </div>
-          <div className="center-aligned-row journey-row phase-1">
-            <div className="image-side">
-              <div className="image">
-                <ReactPlayer
-                  url={createVideoSources("rough-stone-static")}
-                  playing
-                  playsinline
-                  controls={false}
-                  muted
-                  loop
-                  className={classNames("react-player stone-image")}
-                  width=""
-                  height=""
-                />
-              </div>
-            </div>
-            <div className="text-side">
-              <div className="meter" />
-              <div className="tagline-text">Phase 1 - Enter & Mine</div>
-              <AnimatedText>
-                <Phase1Text />
-              </AnimatedText>
-            </div>
-          </div>
-          <div className="center-aligned-row journey-row phase-2">
-            <div className="image-side">
-              <div className="image">
-                <InlineVideo
-                  src={createVideoSources("question-mark")}
-                  withLoader={false}
-                  showThreshold={0}
-                />
-              </div>
-            </div>
-            <div className="text-side">
-              <div className="meter" />
-              <div className="tagline-text">Phase 2</div>
-              <AnimatedText>
-                <Phase2Text />
-              </AnimatedText>
-            </div>
-          </div>
-          <div className="center-aligned-row journey-row phase-3">
-            <div className="image-side">
-              <div className="image">
-                <InlineVideo
-                  src={createVideoSources("question-mark")}
-                  withLoader={false}
-                  showThreshold={0}
-                />
-              </div>
-            </div>
-            <div className="text-side">
-              <div className="meter" />
-              <div className="tagline-text">Phase 3</div>
-              <AnimatedText>
-                <Phase3Text />
-              </AnimatedText>
-            </div>
-          </div>
-          <div className="center-aligned-row journey-row phase-4">
-            <div className="image-side">
-              <div className="image">
-                <InlineVideo
-                  src={createVideoSources("physical-digital-diamond")}
-                  withLoader={false}
-                  showThreshold={0}
-                />
-              </div>
-            </div>
-            <div className="text-side">
-              <div className="meter" />
-              <div className="tagline-text">Phase 4 - The Final Choice</div>
-              <AnimatedText>
-                <Phase4Text />
-              </AnimatedText>
-            </div>
-          </div>
-          <div className="center-aligned-row journey-row phase-5">
-            <div className="image-side">
-              <div className="image">
-                <img
-                  className="certificate"
-                  src={getCDNImageUrl("certificate.svg")}
-                  alt=""
-                />
-              </div>
-            </div>
-            <div className="text-side">
-              <div className="meter" />
-              <div className="tagline-text">Phase 5</div>
-              <AnimatedText>
-                <Phase5Text />
-              </AnimatedText>
-            </div>
-          </div>
+          <Phase
+            className="phase-0"
+            artName="key-static"
+            artClassName="key-image"
+            title="Phase 0 - Mint Your Key"
+            Text={Phase0Text}
+            active={true}
+          />
+          <Phase
+            className="phase-1"
+            artName="rough-stone-static"
+            artClassName="stone-image"
+            title="Phase 1 - Enter & Mine"
+            Text={Phase1Text}
+            active={systemStage >= SYSTEM_STAGE.MINE}
+          />
+          <Phase
+            className="phase-2"
+            artName="question-mark"
+            title="Phase 2"
+            Text={Phase2Text}
+            active={systemStage >= SYSTEM_STAGE.CUT}
+          />
+          <Phase
+            className="phase-3"
+            artName="question-mark"
+            title="Phase 3"
+            Text={Phase3Text}
+            active={systemStage >= SYSTEM_STAGE.POLISH}
+          />
+          <Phase
+            className="phase-4"
+            artName="physical-digital-diamond"
+            title="Phase 4 - The Final Choice"
+            Text={Phase4Text}
+            active={systemStage >= SYSTEM_STAGE.DAWN}
+          />
+          <Phase
+            className="phase-5"
+            artName="nft-certification"
+            title="Phase 5"
+            Text={Phase5Text}
+            active={systemStage >= SYSTEM_STAGE.DAWN}
+          />
         </div>
       </div>
     </InfoPage>

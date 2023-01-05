@@ -9,7 +9,7 @@ const Apply = ({ onSubmitSuccess }) => {
   const videoSrc = createVideoSources("diamond-evolution");
 
   const renderInlineVideo = useCallback(
-    () => <InlineVideo src={videoSrc} showThreshold={0} />,
+    () => <InlineVideo src={videoSrc} withLoader />,
     [videoSrc]
   );
 

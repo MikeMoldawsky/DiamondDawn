@@ -6,6 +6,7 @@ import {
   PRIVATE_TWITTER_MESSAGE_URL,
   DIAMOND_DAWN_OPENSEA,
   SYSTEM_STAGE,
+  DIAMOND_DAWN_SUBSTACK,
 } from "consts";
 import { collectorDisplayName } from "utils";
 import classNames from "classnames";
@@ -13,6 +14,8 @@ import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import { systemSelector } from "store/systemReducer";
 import TelegramIcon from "@mui/icons-material/Telegram";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
 export const Link = ({ href, className, disabled, title = "", children }) => {
   const aProps = {};
@@ -34,7 +37,10 @@ export const Link = ({ href, className, disabled, title = "", children }) => {
 };
 
 export const TwitterLink = ({ className, children }) => (
-  <Link href={DIAMOND_DAWN_TWITTER_URL} className={className}>
+  <Link
+    href={DIAMOND_DAWN_TWITTER_URL}
+    className={classNames("twitter-link", className)}
+  >
     {children}
   </Link>
 );
@@ -77,9 +83,20 @@ export const OpenseaLink = ({ className, children }) => {
   return (
     <Link
       href={DIAMOND_DAWN_OPENSEA}
-      className={className}
+      className={classNames("opensea", className)}
       disabled={disabled}
       title={title}
+    >
+      {children}
+    </Link>
+  );
+};
+
+export const SubstackLink = ({ className, children }) => {
+  return (
+    <Link
+      className={classNames("substack-link", className)}
+      href={DIAMOND_DAWN_SUBSTACK}
     >
       {children}
     </Link>

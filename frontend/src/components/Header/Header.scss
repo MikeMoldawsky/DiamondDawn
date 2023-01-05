@@ -5,15 +5,18 @@ header {
   z-index: 10000;
   width: 100%;
   height: calc(var(--header-height) + 1em);
-  -webkit-mask-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left 80%,
-    from(rgba(0, 0, 0, 0)),
-    to(rgba(0, 0, 0, 1))
-  );
-  backdrop-filter: blur(2.5em);
   --logo-translate-x: -50%;
+
+  .header-bg {
+    -webkit-mask-image: -webkit-gradient(
+      linear,
+      left bottom,
+      left 80%,
+      from(rgba(0, 0, 0, 0)),
+      to(rgba(0, 0, 0, 1))
+    );
+    backdrop-filter: blur(2.5em);
+  }
 
   .header-internal {
     padding: 0 2.5rem;
@@ -93,6 +96,15 @@ header {
         margin-top: 0.3em;
         height: 1.1em;
         width: auto;
+      }
+
+      &.substack-link {
+        margin-top: 0.3em;
+        width: auto;
+
+        svg {
+          height: 1.2em;
+        }
       }
 
       &:first-child {
@@ -203,7 +215,8 @@ header {
       }
     }
 
-    .tg-link {
+    .tg-link,
+    .substack-link {
       display: none;
     }
   }

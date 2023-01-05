@@ -114,10 +114,6 @@
         }
       }
 
-      .countdown {
-        font-size: $font10px;
-      }
-
       &.journey-desc {
         .text-side {
           padding-bottom: 6em;
@@ -150,8 +146,7 @@
       }
 
       &.phase-2,
-      &.phase-3,
-      &.phase-5 {
+      &.phase-3 {
         .image-side {
           .image {
             img,
@@ -183,6 +178,18 @@
         .text {
           width: 80%;
           position: relative;
+        }
+      }
+
+      &.phase-5 {
+        .image-side {
+          .image {
+            .react-player {
+              max-width: 80%;
+              transform: translateY(-40%);
+              margin: 0 auto;
+            }
+          }
         }
       }
 
@@ -326,8 +333,11 @@
         }
 
         &.phase-5 {
-          .image-side .image img {
-            transform: translateY(0);
+          .image-side {
+            .image {
+              transform: translateY(25%);
+              width: 12em;
+            }
           }
 
           .text-side {
@@ -343,6 +353,22 @@
               bottom: 19em;
             }
           }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .page.info-page.the-journey-page {
+    .journey {
+      .text-section {
+        width: unset !important;
+      }
+
+      .journey-row {
+        .text-side {
+          width: 100%;
         }
       }
     }

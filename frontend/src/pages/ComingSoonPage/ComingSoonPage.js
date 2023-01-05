@@ -4,12 +4,7 @@ import ReactPlayer from "react-player";
 import PasswordBox from "components/PasswordBox";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getCDNImageUrl,
-  getCDNVideoUrl,
-  createVideoSources,
-  isPrivateSale,
-} from "utils";
+import { getCDNImageUrl, getCDNVideoUrl, isInviteOnly } from "utils";
 import classNames from "classnames";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useMusic from "hooks/useMusic";
@@ -137,25 +132,10 @@ const ComingSoonPage = () => {
         {renderBgPlayer()}
         <div className="center-aligned-column content-column">
           <div className="cs-section project-title">
-            <InlineVideo
-              withLoader={false}
-              className="dd-text"
-              src={getDDTextVideo(width)}
-              showThreshold={0}
-            />
+            <InlineVideo className="dd-text" src={getDDTextVideo(width)} />
             <div className="center-center-aligned-row ps-row">
-              <InlineVideo
-                withLoader={false}
-                className="ps-text"
-                src={getPSTextVideo(width)}
-                showThreshold={0}
-              />
-              <InlineVideo
-                withLoader={false}
-                className="ps-date"
-                src={getPSDateVideo(width)}
-                showThreshold={0}
-              />
+              <InlineVideo className="ps-text" src={getPSTextVideo(width)} />
+              <InlineVideo className="ps-date" src={getPSDateVideo(width)} />
             </div>
           </div>
           <div className="center-aligned-column cs-section text-column">
@@ -166,7 +146,7 @@ const ComingSoonPage = () => {
           </div>
           <PasswordBox
             className={classNames("cs-section", { "with-invite": !!inviteId })}
-            disabled={!isPrivateSale()}
+            disabled={!isInviteOnly()}
             autoFill={autoFillPassword}
             inviteId={invite?._id}
             onCorrect={onCorrectPassword}
@@ -186,7 +166,7 @@ const ComingSoonPage = () => {
               <div className="text-center your-invite-text">YOUR INVITE</div>
             </>
           ) : (
-            isPrivateSale() && <GetPasswordLink />
+            isInviteOnly() && <GetPasswordLink />
           )}
         </div>
         <FeaturedIn />

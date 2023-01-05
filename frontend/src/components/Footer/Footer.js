@@ -7,6 +7,7 @@ import SVG from "components/SVG";
 import star from "assets/images/star.svg";
 import FAQs from "components/FAQs";
 import classNames from "classnames";
+import FeaturedIn from "components/FeaturedIn";
 
 const Footer = ({ withFAQs }) => {
   return (
@@ -16,6 +17,8 @@ const Footer = ({ withFAQs }) => {
       })}
     >
       <div className="bg bg-footer" />
+      <div className="top-mask" />
+      <FeaturedIn />
       {withFAQs && (
         <div className="faq-section">
           <div className="subtitle-text">FAQs</div>

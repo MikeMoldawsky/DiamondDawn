@@ -16,6 +16,17 @@ import { SYSTEM_STAGE } from "consts";
 import add from "date-fns/add";
 import Countdown from "react-countdown";
 
+const getStageDuration = (stage) => {
+  switch (stage) {
+    case SYSTEM_STAGE.KEY:
+      return { weeks: 1 };
+    case SYSTEM_STAGE.DAWN:
+      return { months: 3, weeks: 3, days: 3 };
+    default:
+      return { weeks: 3, days: 3, hours: 3 };
+  }
+};
+
 const StageTab = ({ stage }) => {
   const { systemStage, isActive, maxDiamonds, diamondCount, videoArt, config } =
     useSelector(systemSelector);
@@ -28,7 +39,7 @@ const StageTab = ({ stage }) => {
   const setSystemStage = async (systemStage) => {
     await setSystemStageApi(contract, systemStage);
     dispatch(loadSystemStage(contract));
-    const timestamp = add(new Date(), { weeks: 3, days: 3, hours: 3 });
+    const timestamp = add(new Date(), getStageDuration(systemStage));
     dispatch(updateStageTime(timestamp));
   };
 

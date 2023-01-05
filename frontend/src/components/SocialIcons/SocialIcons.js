@@ -3,7 +3,12 @@ import "./SocialIcons.scss";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { TwitterLink, TelegramLink, OpenseaLink } from "components/Links";
+import Link, {
+  TwitterLink,
+  TelegramLink,
+  OpenseaLink,
+  SubstackLink,
+} from "components/Links";
 import openSeaIcon from "assets/images/opensea.svg";
 import SVG from "components/SVG";
 import { useSelector } from "react-redux";
@@ -12,6 +17,7 @@ import {
   DIAMOND_DAWN_COLLECTORS_TELEGRAM,
   DIAMOND_DAWN_PUBLIC_TELEGRAM,
 } from "consts";
+import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
 const SocialIcons = () => {
   const collector = useSelector(collectorSelector);
@@ -39,10 +45,13 @@ const SocialIcons = () => {
         </div>
       </TelegramLink>
       <OpenseaLink className="no-hover">
-        <div className="icon">
-          <SVG src={openSeaIcon} className="opensea" />
-        </div>
+        <SVG src={openSeaIcon} />
       </OpenseaLink>
+      <SubstackLink className="text-gold no-hover">
+        <div className="icon">
+          <FontAwesomeIcon icon={faBookOpen} />
+        </div>
+      </SubstackLink>
     </div>
   );
 };

@@ -440,7 +440,7 @@ a:not(.no-hover) {
       }
     }
 
-    &:after {
+    &:before {
       font-size: 0.5em;
       content: "PRIVATE";
       position: absolute;
@@ -636,6 +636,14 @@ a:not(.no-hover) {
     left: 0.5em;
     height: auto;
   }
+}
+
+.video-mute-icon {
+  font-size: 1.5em;
+  bottom: 0.5em;
+  position: absolute;
+  right: 0.5em;
+  cursor: pointer;
 }
 
 .video-placeholder {

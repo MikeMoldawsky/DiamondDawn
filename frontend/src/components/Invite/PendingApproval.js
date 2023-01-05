@@ -12,7 +12,7 @@ import {
   MobileOrTablet,
   useMobileOrTablet,
 } from "hooks/useMediaQueries";
-import { StageCountdownWithText } from "components/Countdown/Countdown";
+import { SystemCountdown } from "components/Countdown/Countdown";
 import classNames from "classnames";
 import IncreaseChances from "components/IncreaseChances";
 
@@ -25,7 +25,7 @@ const PendingApproval = ({ showModal }) => {
   );
 
   const renderInlineVideo = useCallback(
-    () => <InlineVideo src={videoSrc} showThreshold={0} />,
+    () => <InlineVideo src={videoSrc} withLoader />,
     [videoSrc]
   );
 
@@ -54,9 +54,13 @@ const PendingApproval = ({ showModal }) => {
             <div className="left-top-aligned-column">
               <Desktop>{renderTitle()}</Desktop>
               <div className="text-comment">
-                If you're accepted to Diamond Dawn, you'll have exactly
-                <b> 3 days, 3 hours, and 3 minutes</b> to mint your key for 4.44
-                ETH. Make sure you follow{" "}
+                If you're accepted to Diamond Dawn, you'll have exactly 3 days,
+                3 hours, and 3 minutes to mint one or two NFTs.
+                <br />
+                Each NFT costs 4.44 ETH.
+                <br />
+                <br />
+                Make sure you follow{" "}
                 <TwitterLink className="text-gold">
                   <b>@DiamondDawnNFT</b>
                 </TwitterLink>
@@ -71,7 +75,7 @@ const PendingApproval = ({ showModal }) => {
                   </div>
                   <Desktop>{renderTwitterButton("lg")}</Desktop>
                 </div>
-                <StageCountdownWithText />
+                <SystemCountdown />
               </div>
               <MintAddressRow />
             </div>

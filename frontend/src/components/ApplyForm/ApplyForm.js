@@ -13,10 +13,7 @@ import Checkbox from "components/Checkbox";
 import { showError } from "utils";
 import Wallet from "components/Wallet";
 import { uiSelector } from "store/uiReducer";
-import {
-  StageCountdown,
-  StageCountdownWithText,
-} from "components/Countdown/Countdown";
+import { SystemCountdown } from "components/Countdown/Countdown";
 import IncreaseChances from "components/IncreaseChances";
 import { Radio } from "components/Checkbox/Checkbox";
 
@@ -218,7 +215,7 @@ const ApplyForm = ({ onSuccess, onError }) => {
           >
             SUBMIT
           </ActionButton>
-          <StageCountdownWithText />
+          <SystemCountdown />
         </div>
         <IncreaseChances />
       </form>

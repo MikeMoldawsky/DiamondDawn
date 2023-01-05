@@ -1,5 +1,5 @@
 import React from "react";
-import { isPrivateSale } from "utils";
+import { isInviteOnly } from "utils";
 import { useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import { uiSelector } from "store/uiReducer";
@@ -12,10 +12,10 @@ const useCanAccessDD = () => {
   );
   const collector = useSelector(collectorSelector);
   const { privateSaleAuth } = useSelector(uiSelector);
-  const privateSale = isPrivateSale();
+  const inviteOnly = isInviteOnly();
 
   // only relevant for private sale
-  if (!privateSale) return true;
+  if (!inviteOnly) return true;
 
   // collector's permission
   if (isCollectorFetched && !!collector) return true;

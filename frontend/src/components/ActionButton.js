@@ -36,17 +36,23 @@ const ActionButton = ({
     dispatch(clearActionStatus(actionKey));
   };
 
+  const showLoader = isLoading || isPending;
+
   return (
     <Button
-      className={classNames(actionKey, className)}
+      className={classNames(actionKey, className, { "is-loading": showLoader })}
       onClick={clickHandler}
       disabled={disabled || isLoading || isPending}
       {...props}
     >
-      {isLoading || isPending ? (
-        <BeatLoader color={"#fff"} loading={true} size={10} />
-      ) : (
-        children
+      <span>{children}</span>
+      {showLoader && (
+        <BeatLoader
+          className="btn-loader"
+          color={"#fff"}
+          loading={true}
+          size={10}
+        />
       )}
     </Button>
   );

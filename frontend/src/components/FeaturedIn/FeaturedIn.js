@@ -27,23 +27,25 @@ const FEATURED_IN = [
 
 const FeaturedIn = () => {
   return (
-    <div className="featured-in">
-      <div className="center-aligned-row">
-        <div className="horizontal-line" />
-        <div className="featured-title">FEATURED IN</div>
-        <div className="horizontal-line" />
-      </div>
-      <div className="center-aligned-row articles">
-        {map(FEATURED_IN, ({ name, link }) => (
-          <Link
-            className="center-aligned-row article"
-            key={`featured-article-${name}`}
-            href={link}
-          >
-            <SVG src={logos[name]} className={name} wrapper="div" />
-            <ArrowForwardIosIcon />
-          </Link>
-        ))}
+    <div className="center-aligned-column featured-in">
+      <div className="spaced-aligned-column">
+        <div className="center-aligned-row">
+          <div className="horizontal-line" />
+          <div className="featured-title">FEATURED IN</div>
+          <div className="horizontal-line" />
+        </div>
+        <div className="center-aligned-row articles">
+          {map(FEATURED_IN, ({ name, link }) => (
+            <Link
+              className="center-aligned-row article"
+              key={`featured-article-${name}`}
+              href={link}
+            >
+              <SVG src={logos[name]} className={name} wrapper="div" />
+              <ArrowForwardIosIcon />
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
