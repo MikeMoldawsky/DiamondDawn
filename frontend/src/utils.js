@@ -1,11 +1,8 @@
 import { toast } from "react-toastify";
-import { ROUGH_SHAPE, SHAPE, SYSTEM_STAGE, TRAIT } from "consts";
-import { faGem } from "@fortawesome/free-solid-svg-icons";
+import { SYSTEM_STAGE } from "consts";
 import get from "lodash/get"
 import includes from "lodash/includes"
 import find from "lodash/find"
-import toUpper from "lodash/toUpper"
-import snakeCase from "lodash/snakeCase"
 import filter from "lodash/filter"
 import split from "lodash/split"
 import isEmpty from "lodash/isEmpty"
@@ -77,57 +74,6 @@ export const getTokenNextStageName = (token) => {
 export const getTokenTrait = (token, trait) => {
   const t = find(token?.attributes, { trait_type: trait });
   return t?.value;
-};
-
-export const getDiamondIcon = (token) => {
-  const shapeName = getTokenTrait(token, TRAIT.shape);
-  let shape;
-
-  switch (token.stage) {
-    case SYSTEM_STAGE.KEY:
-      return faGem;
-    case SYSTEM_STAGE.MINE:
-      shape = ROUGH_SHAPE[toUpper(snakeCase(shapeName))];
-      switch (shape) {
-        case ROUGH_SHAPE.MAKEABLE_1:
-        case ROUGH_SHAPE.MAKEABLE_2:
-          return faGem;
-        default:
-          return null;
-      }
-    case SYSTEM_STAGE.CUT:
-      shape = SHAPE[toUpper(shapeName)];
-      switch (shape) {
-        case SHAPE.PEAR:
-          return faGem;
-        case SHAPE.ROUND:
-          return faGem;
-        case SHAPE.OVAL:
-          return faGem;
-        case SHAPE.CUSHION:
-          return faGem;
-        default:
-          return null;
-      }
-    case SYSTEM_STAGE.POLISH:
-      shape = SHAPE[toUpper(shapeName)];
-      switch (shape) {
-        case SHAPE.PEAR:
-          return faGem;
-        case SHAPE.ROUND:
-          return faGem;
-        case SHAPE.OVAL:
-          return faGem;
-        case SHAPE.CUSHION:
-          return faGem;
-        default:
-          return null;
-      }
-    case SYSTEM_STAGE.DAWN:
-      return faGem;
-    default:
-      return null;
-  }
 };
 
 export const isTokenDone = (token, systemStage, isActive) => {

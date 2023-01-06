@@ -17,16 +17,21 @@
       padding: 0.25em 0.4em;
       align-items: flex-end;
 
-      svg {
-        width: 1.4em;
-        height: 1.4em;
-      }
-
       .token-id {
         font-size: 0.8em;
         line-height: 1em;
         color: $gold;
         font-weight: 500;
+      }
+
+      &.key {
+        svg {
+          transform: rotate(-90deg);
+        }
+
+        .token-id {
+          transform: translateX(-0.25em);
+        }
       }
     }
 
