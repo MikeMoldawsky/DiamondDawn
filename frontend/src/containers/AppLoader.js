@@ -14,7 +14,6 @@ import { isNoContractMode } from "utils";
 import ContractProvider from "containers/ContractProvider";
 import { getGeoLocationApi } from "api/externalApi";
 import { updateUiState } from "store/uiReducer";
-import pick from "lodash/pick";
 
 const ServerAppLoader = () => {
   const dispatch = useDispatch();
@@ -23,7 +22,7 @@ const ServerAppLoader = () => {
   const getGeoLocation = async () => {
     try {
       const geoLocation = await getGeoLocationApi();
-      dispatch(updateUiState(geoLocation))
+      dispatch(updateUiState({ geoLocation }))
     } catch (e) {
       // do nothing
     }

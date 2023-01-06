@@ -1,24 +1,30 @@
-import _ from "lodash";
 import { toast } from "react-toastify";
 import { ROUGH_SHAPE, SHAPE, SYSTEM_STAGE, TRAIT } from "consts";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
-import useWindowDimensions from "hooks/useWindowDimensions";
+import get from "lodash/get"
+import includes from "lodash/includes"
+import find from "lodash/find"
+import toUpper from "lodash/toUpper"
+import snakeCase from "lodash/snakeCase"
+import filter from "lodash/filter"
+import split from "lodash/split"
+import isEmpty from "lodash/isEmpty"
 
 export const parseError = (e) => {
   if (e.response?.data) return e.response.data;
-  let message = _.get(e, "error.data.message", "");
+  let message = get(e, "error.data.message", "");
   if (!message) {
-    message = _.get(e, "error.message", "");
+    message = get(e, "error.message", "");
   }
   if (!message) {
-    message = _.get(e, "message", "");
+    message = get(e, "message", "");
     try {
       const startJson = message.indexOf("{");
       const endJson = message.lastIndexOf("}") + 1;
       const sub = message.substr(startJson, endJson - startJson);
       console.log({ sub, startJson, endJson });
       message = JSON.parse(sub);
-      message = _.get(message, "value.data.message");
+      message = get(message, "value.data.message");
     } catch (err) {
       // do nothing
     }
@@ -27,7 +33,7 @@ export const parseError = (e) => {
 
   console.log("ERROR BEFORE PARSE: ", { message });
 
-  if (_.includes(message, "You can't enter the mine, you're not invited")) {
+  if (includes(message, "You can't enter the mine, you're not invited")) {
     return "You can't enter the mine, you're not invited";
   }
 
@@ -48,11 +54,12 @@ export const parseError = (e) => {
 
 export const showError = (e, prefix = "Error") => {
   const errorMessage = `${prefix} - ${parseError(e)}`;
-  toast.error(errorMessage);
+  toast.error(errorMessage, {
+    draggable: false,
+    theme: "dark",
+  });
   console.error(errorMessage);
 };
-
-export const showSuccess = toast.success;
 
 export const logApiError = (e, funcName) =>
   console.error(`Api Error - ${funcName} Failed`, e);
@@ -68,7 +75,7 @@ export const getTokenNextStageName = (token) => {
 };
 
 export const getTokenTrait = (token, trait) => {
-  const t = _.find(token?.attributes, { trait_type: trait });
+  const t = find(token?.attributes, { trait_type: trait });
   return t?.value;
 };
 
@@ -80,7 +87,7 @@ export const getDiamondIcon = (token) => {
     case SYSTEM_STAGE.KEY:
       return faGem;
     case SYSTEM_STAGE.MINE:
-      shape = ROUGH_SHAPE[_.toUpper(_.snakeCase(shapeName))];
+      shape = ROUGH_SHAPE[toUpper(snakeCase(shapeName))];
       switch (shape) {
         case ROUGH_SHAPE.MAKEABLE_1:
         case ROUGH_SHAPE.MAKEABLE_2:
@@ -89,7 +96,7 @@ export const getDiamondIcon = (token) => {
           return null;
       }
     case SYSTEM_STAGE.CUT:
-      shape = SHAPE[_.toUpper(shapeName)];
+      shape = SHAPE[toUpper(shapeName)];
       switch (shape) {
         case SHAPE.PEAR:
           return faGem;
@@ -103,7 +110,7 @@ export const getDiamondIcon = (token) => {
           return null;
       }
     case SYSTEM_STAGE.POLISH:
-      shape = SHAPE[_.toUpper(shapeName)];
+      shape = SHAPE[toUpper(shapeName)];
       switch (shape) {
         case SHAPE.PEAR:
           return faGem;
@@ -154,7 +161,7 @@ export const isTokenActionable = (token, systemStage, isActive) => {
 };
 
 export const getActionableTokens = (tokens, systemStage, isActive) => {
-  return _.filter(tokens, (token) =>
+  return filter(tokens, (token) =>
     isTokenActionable(token, systemStage, isActive)
   );
 };
@@ -228,3 +235,9 @@ export const safeParseInt = (v) => {
     return -1;
   }
 };
+
+export const isBlockedCountry = (countryCode) => {
+  const blockedCountries = split(process.env.REACT_APP_BLOCKED_COUNTRIES, ",")
+
+  return !isEmpty(blockedCountries) || includes(blockedCountries, countryCode)
+}
