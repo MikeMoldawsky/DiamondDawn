@@ -22,6 +22,7 @@ import {
 import { useMobileOrTablet } from "hooks/useMediaQueries";
 import useActionDispatch from "hooks/useActionDispatch";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
+import ContractProvider from "containers/ContractProvider";
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
@@ -72,7 +73,9 @@ const CollectorPage = () => {
             {ensName?.data || shortenEthAddress(account?.address)}
           </div>
           <Box className={"main-box"}>
-            {renderContent()}
+            <ContractProvider>
+              {renderContent()}
+            </ContractProvider>
             {selectedTokenId > -1 && (
               <ArrowBackIcon
                 className="back-to-gallery"
