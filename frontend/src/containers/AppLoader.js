@@ -64,7 +64,6 @@ const ChainAppLoader = () => {
 
     provider.once("block", () => {
       contract.on(EVENTS.StageChanged, (_stage) => {
-        console.log("EVENT StageChanged fired", { _stage });
         dispatch(loadSystemStage(contract));
         setTimeout(() => dispatch(loadConfig()), 5000);
       });

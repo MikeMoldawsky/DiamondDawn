@@ -25,7 +25,6 @@ export const getContractInfoApi = async () => {
             axios.get(getCDNContractUrl("dd_abi.json")),
             axios.get(getCDNContractUrl("dd_mine_abi.json")),
           ]);
-        console.log("CDN contracts response", { addresses, ddAbi, ddMineAbi });
         return {
           ddContract: { address: addresses.dd, artifact: { abi: ddAbi } },
           ddMineContract: {
