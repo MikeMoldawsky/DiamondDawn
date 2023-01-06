@@ -23,11 +23,7 @@ const ServerAppLoader = () => {
   const getGeoLocation = async () => {
     try {
       const geoLocation = await getGeoLocationApi();
-      dispatch(
-        updateUiState({
-          geoLocation: pick(geoLocation, ["country", "region", "city"]),
-        })
-      );
+      dispatch(updateUiState(geoLocation))
     } catch (e) {
       // do nothing
     }

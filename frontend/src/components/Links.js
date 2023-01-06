@@ -1,21 +1,12 @@
 import React from "react";
 import {
-  DIAMOND_DAWN_PUBLIC_TELEGRAM,
-  DIAMOND_DAWN_COLLECTORS_TELEGRAM,
   DIAMOND_DAWN_TWITTER_URL,
   PRIVATE_TWITTER_MESSAGE_URL,
   DIAMOND_DAWN_OPENSEA,
-  SYSTEM_STAGE,
   DIAMOND_DAWN_SUBSTACK,
 } from "consts";
-import { collectorDisplayName } from "utils";
+import {collectorDisplayName, isNoContractMode} from "utils";
 import classNames from "classnames";
-import { useSelector } from "react-redux";
-import { collectorSelector } from "store/collectorReducer";
-import { systemSelector } from "store/systemReducer";
-import TelegramIcon from "@mui/icons-material/Telegram";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
 export const Link = ({ href, className, disabled, title = "", children }) => {
   const aProps = {};
@@ -74,9 +65,7 @@ export const TelegramLink = ({ className, href, children }) => {
 };
 
 export const OpenseaLink = ({ className, children }) => {
-  const { systemStage } = useSelector(systemSelector);
-
-  const disabled = !DIAMOND_DAWN_OPENSEA || systemStage < SYSTEM_STAGE.KEY;
+  const disabled = isNoContractMode()
   const title = disabled
     ? "Opensea link will be available once mint starts"
     : "";

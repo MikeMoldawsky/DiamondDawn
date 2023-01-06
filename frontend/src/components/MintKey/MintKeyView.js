@@ -132,7 +132,7 @@ const MintKeyView = ({
           minutes: 3,
           seconds: 0,
         }}
-        text="When the time runs out, you'll no longer be able to join Diamond Dawn"
+        text="Your opportunity to mint expires in"
         onComplete={onCountdownEnd}
       />
     ) : (
