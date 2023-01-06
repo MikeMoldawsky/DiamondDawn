@@ -125,3 +125,5 @@ export const CONTRACTS = {
   DiamondDawn: "DiamondDawn",
   DiamondDawnMine: "DiamondDawnMine",
 };
+
+export const BLOCKED_COUNTRY_TEXT = "Diamond Dawn is not operational in your country"

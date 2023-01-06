@@ -16,6 +16,7 @@ import { uiSelector } from "store/uiReducer";
 import { SystemCountdown } from "components/Countdown/Countdown";
 import IncreaseChances from "components/IncreaseChances";
 import { Radio } from "components/Checkbox/Checkbox";
+import {BLOCKED_COUNTRY_TEXT} from "consts";
 
 const getValidationError = (name, value) => {
   switch (name) {
@@ -54,6 +55,8 @@ const ApplyForm = ({ onSuccess, onError }) => {
   const { geoLocation } = useSelector(uiSelector);
 
   const applyToDD = async () => {
+    if (geoLocation?.blocked) return
+
     try {
       const data = getValues();
       const inviteId =
@@ -210,6 +213,8 @@ const ApplyForm = ({ onSuccess, onError }) => {
             actionKey="Request Invitation"
             className="gold"
             isLoading={disabled}
+            disabled={geoLocation?.blocked}
+            title={geoLocation?.blocked ? BLOCKED_COUNTRY_TEXT : ""}
             onClick={handleSubmit(signAndApply)}
             sfx="action"
           >

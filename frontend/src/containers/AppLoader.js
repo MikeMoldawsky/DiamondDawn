@@ -10,7 +10,7 @@ import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
 import { loadCollectorByAddress } from "store/collectorReducer";
-import { isNoContractMode } from "utils";
+import {isBlockedCountry, isNoContractMode} from "utils";
 import ContractProvider from "containers/ContractProvider";
 import { getGeoLocationApi } from "api/externalApi";
 import { updateUiState } from "store/uiReducer";
@@ -22,7 +22,12 @@ const ServerAppLoader = () => {
   const getGeoLocation = async () => {
     try {
       const geoLocation = await getGeoLocationApi();
-      dispatch(updateUiState({ geoLocation }))
+      dispatch(updateUiState({
+        geoLocation: {
+          ...geoLocation,
+          blocked: isBlockedCountry(geoLocation.country_code)
+        }
+      }))
     } catch (e) {
       // do nothing
     }

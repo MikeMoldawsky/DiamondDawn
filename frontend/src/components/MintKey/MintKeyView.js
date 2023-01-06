@@ -21,6 +21,7 @@ import {
   CountdownWithText,
   SystemCountdown,
 } from "components/Countdown/Countdown";
+import {BLOCKED_COUNTRY_TEXT} from "consts";
 
 const RadioButtons = ({ values, selectedValue, setSelectedValue }) => {
   return (
@@ -53,7 +54,7 @@ const MintKeyView = ({
   const [searchParams] = useSearchParams();
   const showInvitesParam = searchParams.get("invites") === "true";
   const dispatch = useDispatch();
-  const { mintViewShowInvites: showInvites } = useSelector(uiSelector);
+  const { mintViewShowInvites: showInvites, geoLocation } = useSelector(uiSelector);
   const [numNfts, setNumNfts] = useState(1);
 
   const toggleInvites = (show) => {
@@ -110,7 +111,8 @@ const MintKeyView = ({
         <ActionButton
           actionKey="MintKey"
           className="gold lg mint-button"
-          disabled={!canMint || !isFunction(mint)}
+          disabled={!canMint || !isFunction(mint) || geoLocation?.blocked}
+          title={geoLocation?.blocked ? BLOCKED_COUNTRY_TEXT : ""}
           isLoading={forceButtonLoading}
           onClick={() => isFunction(mint) && mint(numNfts)}
           onError={onMintError}

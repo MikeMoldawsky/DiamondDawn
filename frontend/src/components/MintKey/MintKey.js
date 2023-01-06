@@ -29,7 +29,7 @@ import {
 import useActionDispatch from "hooks/useActionDispatch";
 import {
   setSelectedTokenId,
-  setShouldIgnoreTokenTransferWatch,
+  setShouldIgnoreTokenTransferWatch, uiSelector,
 } from "store/uiReducer";
 import Loading from "components/Loading";
 
@@ -46,11 +46,14 @@ const MintKey = () => {
   const provider = useProvider();
   const [isMinting, setIsMinting] = useState(false);
   const [isForging, setIsForging] = useState(false);
+  const { geoLocation } = useSelector(uiSelector);
 
   const maxTokenId = max(map(tokens, "id"));
   const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
 
   const mint = async (numNfts) => {
+    if (geoLocation?.blocked) return
+
     setIsMinting(true);
     const { signature } = await signMintApi(collector._id, account.address);
     dispatch(setShouldIgnoreTokenTransferWatch(true));

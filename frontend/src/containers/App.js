@@ -19,7 +19,7 @@ import NetworkGuard from "containers/NetworkGuard";
 import CopyNotification from "components/CopyNotification";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import {isBlockedCountry} from "utils";
+import {BLOCKED_COUNTRY_TEXT} from "consts";
 
 const App = () => {
   const { sideMenuOpen, geoLocation } = useSelector(uiSelector);
@@ -30,15 +30,15 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (geoLocation?.country_code && isBlockedCountry(geoLocation.country_code)) {
-      toast.error("Diamond Dawn is not operational in your country", {
+    if (geoLocation?.blocked) {
+      toast.error(BLOCKED_COUNTRY_TEXT, {
         position: "bottom-center",
         autoClose: false,
         draggable: false,
         theme: "dark",
       });
     }
-  }, [geoLocation?.country_code])
+  }, [geoLocation?.blocked])
 
   return (
     <div className={classNames("main-layout", { "drawer-open": sideMenuOpen })}>

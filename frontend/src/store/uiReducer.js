@@ -1,6 +1,5 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import isNil from "lodash/isNil";
-import {getGeoLocationApi} from "api/externalApi";
 
 const resolveDemoAuth = () => {
   const privateSaleAuth =
