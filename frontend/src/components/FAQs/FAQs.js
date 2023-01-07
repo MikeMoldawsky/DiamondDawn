@@ -14,7 +14,7 @@ const FAQS = [
   {
     title: "How do I increase my chances of getting accepted?",
     content: () => (
-      <p>
+      <div className="faq-content">
         <ul>
           <li>
             Follow{" "}
@@ -30,22 +30,22 @@ const FAQS = [
             4.44 ETH is 10/10)
           </li>
         </ul>
-      </p>
+      </div>
     ),
   },
   {
     title: "Are the diamonds real?",
     content: () => (
-      <p>
+      <div className="faq-content">
         Yes. <br /> Diamond Dawn's diamonds are real, natural diamonds, and a
         GIA diamond certificate backs each stone.
-      </p>
+      </div>
     ),
   },
   {
     title: "How's the physical art piece designed?",
     content: () => (
-      <p>
+      <div className="faq-content">
         If you choose the physical art piece, expect a heavy shipment. <br />
         The art piece weighs ~8 kg (17.6 lb) and measures 25 x 25 x 25 cm (9.8 x
         9.8 x 9.8 in.).
@@ -69,37 +69,37 @@ const FAQS = [
         </ul>
         Diamond Dawn is a work of art that you can proudly display as a
         centerpiece on a desk, bookcase, or in any room.
-      </p>
+      </div>
     ),
   },
   {
     title: "What's the mint price?",
     content: () => (
-      <p>
+      <div className="faq-content">
         4.44 ETH. <br /> That’s the cost for the entire Diamond Dawn journey,
         including the physical diamond art piece and shipping (if you choose to
         take it).{" "}
-      </p>
+      </div>
     ),
   },
   {
     title: "What's the supply?",
-    content: () => <p>333 Editions.</p>,
+    content: () => <div className="faq-content">333 Editions.</div>,
   },
   {
     title: "How many NFTs can I mint?",
     content: () => (
-      <p>
+      <div className="faq-content">
         There is a maximum of 2 NFTs per wallet. <br />
         It is your decision whether to keep them digital or transform them into
         a physical diamond art piece.
-      </p>
+      </div>
     ),
   },
   {
     title: "Is Diamond Dawn 100% decentralized?",
     content: () => (
-      <p>
+      <div className="faq-content">
         Yes. <br />
         Diamond Dawn's NFT attributes live on the Ethereum blockchain, and the
         videos are stored on the Arweave decentralized network (read{" "}
@@ -107,48 +107,48 @@ const FAQS = [
           <span className="link">Timeless Technology</span>
         </NavLink>{" "}
         for additional info).{" "}
-      </p>
+      </div>
     ),
   },
   {
     title: "How many NFTs are reserved for the team?",
     content: () => (
-      <p>
+      <div className="faq-content">
         None.
         <br />
         The Diamond Dawn team has no reserved NFTs - we will be minting NFTs
         just like any other collector.
-      </p>
+      </div>
     ),
   },
   {
     title: "When does the private sale start?",
     content: () => (
-      <p>
+      <div className="faq-content">
         Diamond Dawn's private sale will start on January 11.
         <br />
         The sale will be open for only ONE week.
-      </p>
+      </div>
     ),
   },
   {
     title: "When does the public sale start?",
-    content: () => <p>Diamond Dawn's public sale will start on January 18.</p>,
+    content: () => <div className="faq-content">Diamond Dawn's public sale will start on January 18.</div>,
   },
   {
     title: "What's a Diamond Certification?",
     content: () => (
-      <p>
+      <div className="faq-content">
         A diamond certification is a process where an independent gem lab tests
         and assesses your diamond attributes, such as its carat, color, clarity,
         and cut grading.
-      </p>
+      </div>
     ),
   },
   {
     title: "What's a GIA certificate?",
     content: () => (
-      <p>
+      <div className="faq-content">
         Diamond Dawn uses GIA certifications to back all of the project's
         diamonds.
         <br />
@@ -156,117 +156,117 @@ const FAQS = [
         grading labs in the world. <br />
         GIA has the best reputation for accurate diamond grading due to its
         strict standards.
-      </p>
+      </div>
     ),
   },
   {
     title: "What's DD’s blockchain?",
-    content: () => <p>Ethereum.</p>,
+    content: () => <div className="faq-content">Ethereum.</div>,
   },
   {
     title: "What's the NFT standard?",
     content: () => (
-      <p>
+      <div className="faq-content">
         ERC-721.
         <br /> Every NFT has a unique edition number (token ID).
-      </p>
+      </div>
     ),
   },
   {
     title: "What's a Diamond Dawn Phase?",
     content: () => (
-      <p>
+      <div className="faq-content">
         A phase is a limited time window where you need to decide if you want to
         change (evolve) your NFT to its next form or not. <br /> If you do NOT
         evolve your NFT in that time frame, it'll stay in its current state for
         eternity.
-      </p>
+      </div>
     ),
   },
   {
     title: "How long is a Diamond Dawn Phase?",
     content: () => (
-      <p>
+      <div className="faq-content">
         Every Diamond Dawn Phase is exactly 3 weeks, 3 days and 3 hours long.{" "}
         <br /> An exception to that is phase 4 (The Final Choice), where you
         need to choose between the physical and the digital worlds.
-      </p>
+      </div>
     ),
   },
   {
     title: "How much time will I have to wait between DD’s phases?",
     content: () => (
-      <p>
+      <div className="faq-content">
         When a Diamond Dawn Phase ends, we’ll notify on @DiamondDawnNFT when the
         next phase starts.
         <br /> The “cool-down” period between phases will be shorter than 3
         weeks.
-      </p>
+      </div>
     ),
   },
   {
     title: "What do you mean by Evolving NFTs?",
     content: () => (
-      <p>
+      <div className="faq-content">
         According to your (blockchain) decisions, your NFT can change its
         visuals and attributes. <br /> Only you can evolve your NFT.
-      </p>
+      </div>
     ),
   },
   {
     title:
       "I accidentally evolved my NFT. Can DD’s team help me revert my decision?",
     content: () => (
-      <p>
+      <div className="faq-content">
         No. <br /> Your decisions are ONLY between you, the blockchain and
         Diamond Dawn's smart contracts.
         <br />
         We have zero control over it, for better or worse.
-      </p>
+      </div>
     ),
   },
   {
     title: "I accidentally burned my NFT. Can I revert my decision?",
     content: () => (
-      <p>
+      <div className="faq-content">
         No. <br /> Your decisions are ONLY between you, the blockchain and
         Diamond Dawn's smart contracts.
         <br />
         We have zero control over it, for better or worse.
-      </p>
+      </div>
     ),
   },
   {
     title: "What countries do you ship to?",
     content: () => (
-      <p>
+      <div className="faq-content">
         We offer global shipping to any non-OFAC sanctioned country. <br /> Feel
         free to contact support@diamonddawn.art or @DiamondDawnNFT with any
         further questions, and we'll do our best to help.
-      </p>
+      </div>
     ),
   },
   {
     title: "How much time will I wait for Diamond Dawn's physical art piece?",
     content: () => (
-      <p>
+      <div className="faq-content">
         Diamond Dawn's delivery times are under 3 weeks, 3 days, and 3 hours.{" "}
         <br />
         Diamond Dawn's shipments are operated by FedEx Express and will be
         delivered directly to your specified address.
-      </p>
+      </div>
     ),
   },
   {
     title:
       "What will happen to my NFT if I choose Diamond Dawn’s physical art piece?",
     content: () => (
-      <p>
+      <div className="faq-content">
         Your NFT will be burned (it’ll be sent to the “dead” address).
         <br />
         This means that a physical art piece is born ONLY if its digital
         counterpart is destroyed.
-      </p>
+      </div>
     ),
   },
 ];
