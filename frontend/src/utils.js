@@ -179,8 +179,12 @@ export const safeParseInt = (v) => {
   }
 };
 
-export const isBlockedCountry = (countryCode) => {
-  const blockedCountries = split(process.env.REACT_APP_BLOCKED_COUNTRIES, ",")
+const isCountryInList = list => countryCode => {
+  const blockedCountries = split(list, ",")
 
   return !isEmpty(blockedCountries) && includes(blockedCountries, countryCode)
 }
+
+export const isBlockedCountry = isCountryInList(process.env.REACT_APP_BLOCKED_COUNTRIES)
+
+export const isVATCountry = isCountryInList(process.env.REACT_APP_VAT_COUNTRY)

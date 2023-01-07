@@ -5,7 +5,7 @@ import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loadMaxEntrance,
-  loadMinePrice,
+  loadMintPrice,
   loadTokenCount,
   systemSelector,
 } from "store/systemReducer";
@@ -34,7 +34,7 @@ import {
 import Loading from "components/Loading";
 
 const MintKey = () => {
-  const { systemStage, isActive, minePrice, maxEntrance, tokensMinted } =
+  const { systemStage, isActive, mintPrice, maxEntrance, tokensMinted } =
     useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
@@ -59,8 +59,9 @@ const MintKey = () => {
     dispatch(setShouldIgnoreTokenTransferWatch(true));
     const tx = await forgeApi(
       contract,
+      geoLocation?.vat,
       numNfts,
-      minePrice.mul(numNfts),
+      mintPrice.mul(numNfts),
       signature
     );
     setIsForging(true);
@@ -81,7 +82,7 @@ const MintKey = () => {
   };
 
   useEffect(() => {
-    dispatch(loadMinePrice(contract));
+    dispatch(loadMintPrice(contract, geoLocation));
     dispatch(loadMaxEntrance(contract));
     dispatch(loadTokenCount(mineContract));
 
@@ -117,7 +118,7 @@ const MintKey = () => {
 
   return (
     <MintKeyView
-      mintPrice={minePrice}
+      mintPrice={mintPrice}
       maxEntrance={maxEntrance}
       tokensMinted={tokensMinted}
       canMint={canMint}

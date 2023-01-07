@@ -10,7 +10,7 @@ import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
 import { loadCollectorByAddress } from "store/collectorReducer";
-import {isBlockedCountry, isNoContractMode} from "utils";
+import {isBlockedCountry, isNoContractMode, isVATCountry} from "utils";
 import ContractProvider from "containers/ContractProvider";
 import { getGeoLocationApi } from "api/externalApi";
 import {setSelectedTokenId, updateUiState} from "store/uiReducer";
@@ -25,7 +25,8 @@ const ServerAppLoader = ({ contract }) => {
       dispatch(updateUiState({
         geoLocation: {
           ...geoLocation,
-          blocked: isBlockedCountry(geoLocation.country_code)
+          blocked: isBlockedCountry(geoLocation.country_code),
+          vat: isVATCountry(geoLocation.country_code),
         }
       }))
     } catch (e) {

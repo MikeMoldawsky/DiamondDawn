@@ -3,7 +3,7 @@ import { BigNumber } from "ethers";
 import { getConfigApi, getContractInfoApi } from "api/serverApi";
 import {
   getMaxEntranceApi,
-  getMinePriceApi,
+  getMintPriceApi, getMintPriceMarriageApi,
   getSystemStageApi,
   getTokenCountApi,
 } from "api/contractApi";
@@ -14,58 +14,45 @@ const INITIAL_STATE = {
   systemStage: -1,
   paused: false,
   config: {},
-  minePrice: BigNumber.from(0),
+  mintPrice: BigNumber.from(0),
   maxEntrance: 333,
   tokensMinted: 0,
 };
 
-export const loadMinePrice = (contract) => async (dispatch) => {
-  const minePrice = await getMinePriceApi(contract);
-  dispatch({
-    type: "SYSTEM.SET_PRICE",
-    payload: { minePrice },
-  });
+const updateState = (payload) => ({
+  type: "SYSTEM.UPDATE_STATE",
+  payload,
+})
+
+export const loadMintPrice = (contract, geoLocation) => async (dispatch) => {
+  const getPrice = geoLocation?.vat ? getMintPriceMarriageApi : getMintPriceApi
+  const mintPrice = await getPrice(contract);
+  dispatch(updateState({ mintPrice }))
 };
 
 export const loadSystemStage = (contract) => async (dispatch) => {
   const { systemStage, isActive } = await getSystemStageApi(contract);
-  dispatch({
-    type: "SYSTEM.SET_STAGE",
-    payload: { systemStage, isActive },
-  });
+  dispatch(updateState({ systemStage, isActive }))
 };
 
 export const loadMaxEntrance = (contract) => async (dispatch) => {
   const maxEntrance = await getMaxEntranceApi(contract);
-  dispatch({
-    type: "SYSTEM.UPDATE_STATE",
-    payload: { maxEntrance },
-  });
+  dispatch(updateState({ maxEntrance }))
 };
 
 export const loadTokenCount = (mineContract) => async (dispatch) => {
   const tokensMinted = await getTokenCountApi(mineContract);
-  dispatch({
-    type: "SYSTEM.UPDATE_STATE",
-    payload: { tokensMinted },
-  });
+  dispatch(updateState({ tokensMinted }))
 };
 
 export const loadConfig = () => async (dispatch) => {
   const config = await getConfigApi();
-  dispatch({
-    type: "SYSTEM.UPDATE_STATE",
-    payload: { config },
-  });
+  dispatch(updateState({ config }))
 };
 
 export const loadContractInfo = () => async (dispatch) => {
   const { ddContract, ddMineContract } = await getContractInfoApi();
-
-  dispatch({
-    type: "SYSTEM.SET_DD_CONTRACT_INFO",
-    payload: { ddContractInfo: ddContract, ddMineContractInfo: ddMineContract },
-  });
+  dispatch(updateState({ ddContractInfo: ddContract, ddMineContractInfo: ddMineContract }))
 };
 
 export const systemSelector = (state) => state.system;
@@ -87,11 +74,6 @@ export const contractSelector =
 
 export const systemReducer = makeReducer(
   {
-    "SYSTEM.SET_STAGE": reduceUpdateFull,
-    "SYSTEM.SET_PRICE": reduceUpdateFull,
-    "SYSTEM.SET_PAUSED": reduceUpdateFull,
-    "SYSTEM.SET_SCHEDULE": reduceUpdateFull,
-    "SYSTEM.SET_DD_CONTRACT_INFO": reduceUpdateFull,
     "SYSTEM.UPDATE_STATE": reduceUpdateFull,
   },
   INITIAL_STATE,

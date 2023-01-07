@@ -71,6 +71,14 @@
     .button-column {
       position: relative;
       align-items: flex-start;
+
+      .vat-text {
+        position: absolute;
+        top: calc(100% + .4em);
+        left: 0;
+        font-size: $font14px;
+        color: $text_gray
+      }
     }
 
     .open-soon {

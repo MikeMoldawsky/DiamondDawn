@@ -17,11 +17,20 @@ export const getSystemStageApi = async (contract) => {
   }
 };
 
-export const getMinePriceApi = async (contract) => {
+export const getMintPriceApi = async (contract) => {
   try {
     return await contract.PRICE();
   } catch (e) {
-    logApiError(e, "getMinePriceApi");
+    logApiError(e, "getMintPriceApi");
+    return undefined;
+  }
+};
+
+export const getMintPriceMarriageApi = async (contract) => {
+  try {
+    return await contract.PRICE_MARRIAGE();
+  } catch (e) {
+    logApiError(e, "getMintPriceMarriageApi");
     return undefined;
   }
 };
@@ -37,9 +46,9 @@ export const getTokenCountApi = async (mineContract) => {
 };
 
 // PROCESS
-export const forgeApi = async (contract, numNfts, minePrice, signature) => {
-  return contract.forge(signature, numNfts, {
-    value: minePrice,
+export const forgeApi = async (contract, withPartner, numNfts, mintPrice, signature) => {
+  return (withPartner ? contract.forgeWithPartner : contract.forge)(signature, numNfts, {
+    value: mintPrice,
     gasLimit: MINT_GAS_LIMIT,
   });
 };

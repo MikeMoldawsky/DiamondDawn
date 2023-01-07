@@ -28,6 +28,7 @@ const RadioButtons = ({ values, selectedValue, setSelectedValue }) => {
     <div className="radio-buttons">
       {values.map((value) => (
         <div
+          key={`radio-button-${value}`}
           className={classNames("radio-button", {
             selected: selectedValue === value,
           })}
@@ -120,6 +121,9 @@ const MintKeyView = ({
           {mintPriceText * numNfts} <FontAwesomeIcon icon={faEthereum} /> MINT
         </ActionButton>
       </div>
+      {geoLocation?.vat && (
+        <div className="vat-text">* VAT included in Price</div>
+      )}
     </div>
   );
 
