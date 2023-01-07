@@ -21,7 +21,7 @@ import {
   CountdownWithText,
   SystemCountdown,
 } from "components/Countdown/Countdown";
-import {BLOCKED_COUNTRY_TEXT} from "consts";
+import { BLOCKED_COUNTRY_TEXT } from "consts";
 
 const RadioButtons = ({ values, selectedValue, setSelectedValue }) => {
   return (
@@ -55,7 +55,8 @@ const MintKeyView = ({
   const [searchParams] = useSearchParams();
   const showInvitesParam = searchParams.get("invites") === "true";
   const dispatch = useDispatch();
-  const { mintViewShowInvites: showInvites, geoLocation } = useSelector(uiSelector);
+  const { mintViewShowInvites: showInvites, geoLocation } =
+    useSelector(uiSelector);
   const [numNfts, setNumNfts] = useState(1);
 
   const toggleInvites = (show) => {

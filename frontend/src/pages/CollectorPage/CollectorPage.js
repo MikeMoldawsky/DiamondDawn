@@ -23,14 +23,16 @@ import { useMobileOrTablet } from "hooks/useMediaQueries";
 import useActionDispatch from "hooks/useActionDispatch";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import ContractProvider from "containers/ContractProvider";
-import {isActionPendingSelector} from "store/actionStatusReducer";
+import { isActionPendingSelector } from "store/actionStatusReducer";
 import useOnConnect from "hooks/useOnConnect";
 import useDDContract from "hooks/useDDContract";
 
 const CollectorLoader = () => {
   const actionDispatch = useActionDispatch();
-  const contract = useDDContract()
-  const isPending = useSelector(isActionPendingSelector("get-collector-by-address"))
+  const contract = useDDContract();
+  const isPending = useSelector(
+    isActionPendingSelector("get-collector-by-address")
+  );
 
   useOnConnect((address) => {
     if (!isPending) {
@@ -40,7 +42,7 @@ const CollectorLoader = () => {
       );
     }
   });
-}
+};
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();

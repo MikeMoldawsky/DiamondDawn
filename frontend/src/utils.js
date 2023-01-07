@@ -1,11 +1,11 @@
 import { toast } from "react-toastify";
 import { SYSTEM_STAGE } from "consts";
-import get from "lodash/get"
-import includes from "lodash/includes"
-import find from "lodash/find"
-import filter from "lodash/filter"
-import split from "lodash/split"
-import isEmpty from "lodash/isEmpty"
+import get from "lodash/get";
+import includes from "lodash/includes";
+import find from "lodash/find";
+import filter from "lodash/filter";
+import split from "lodash/split";
+import isEmpty from "lodash/isEmpty";
 
 export const parseError = (e) => {
   if (e.response?.data) return e.response.data;
@@ -179,12 +179,14 @@ export const safeParseInt = (v) => {
   }
 };
 
-const isCountryInList = list => countryCode => {
-  const blockedCountries = split(list, ",")
+const isCountryInList = (list) => (countryCode) => {
+  const blockedCountries = split(list, ",");
 
-  return !isEmpty(blockedCountries) && includes(blockedCountries, countryCode)
-}
+  return !isEmpty(blockedCountries) && includes(blockedCountries, countryCode);
+};
 
-export const isBlockedCountry = isCountryInList(process.env.REACT_APP_BLOCKED_COUNTRIES)
+export const isBlockedCountry = isCountryInList(
+  process.env.REACT_APP_BLOCKED_COUNTRIES
+);
 
-export const isVATCountry = isCountryInList(process.env.REACT_APP_VAT_COUNTRY)
+export const isVATCountry = isCountryInList(process.env.REACT_APP_VAT_COUNTRY);

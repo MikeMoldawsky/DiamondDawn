@@ -23,7 +23,7 @@ const ChangeMintAddressModal = ({ close }) => {
   const collector = useSelector(collectorSelector);
   const account = useAccount();
   const actionDispatch = useActionDispatch();
-  const contract = useDDContract()
+  const contract = useDDContract();
 
   const {
     register,

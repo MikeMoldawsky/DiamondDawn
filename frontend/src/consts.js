@@ -1,4 +1,3 @@
-
 export const SYSTEM_STAGE = {
   NO_STAGE: 0,
   KEY: 1,
@@ -126,4 +125,5 @@ export const CONTRACTS = {
   DiamondDawnMine: "DiamondDawnMine",
 };
 
-export const BLOCKED_COUNTRY_TEXT = "Diamond Dawn is not operational in your country"
+export const BLOCKED_COUNTRY_TEXT =
+  "Diamond Dawn is not operational in your country";

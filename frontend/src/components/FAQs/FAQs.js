@@ -133,7 +133,11 @@ const FAQS = [
   },
   {
     title: "When does the public sale start?",
-    content: () => <div className="faq-content">Diamond Dawn's public sale will start on January 18.</div>,
+    content: () => (
+      <div className="faq-content">
+        Diamond Dawn's public sale will start on January 18.
+      </div>
+    ),
   },
   {
     title: "What's a Diamond Certification?",

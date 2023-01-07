@@ -1,7 +1,7 @@
 import { makeReducer, reduceSetFull, reduceUpdateFull } from "./reduxUtils";
 import { getCollectorByAddressApi, openMintWindowApi } from "api/serverApi";
 import isEmpty from "lodash/isEmpty";
-import {getAddressMintedApi} from "api/contractApi";
+import { getAddressMintedApi } from "api/contractApi";
 
 const INITIAL_STATE = null;
 
@@ -15,17 +15,18 @@ export const updateCollector = (update) => ({
   payload: update,
 });
 
-export const loadCollectorByAddress = (contract, address) => async (dispatch) => {
-  const [collector, minted] = await Promise.all([
-    getCollectorByAddressApi(address),
-    contract ? getAddressMintedApi(contract, address) : () => false
-  ]);
-  if (!isEmpty(collector)) {
-    dispatch(setCollector({ ...collector, minted }));
-  } else {
-    dispatch(clearCollector());
-  }
-};
+export const loadCollectorByAddress =
+  (contract, address) => async (dispatch) => {
+    const [collector, minted] = await Promise.all([
+      getCollectorByAddressApi(address),
+      contract ? getAddressMintedApi(contract, address) : () => false,
+    ]);
+    if (!isEmpty(collector)) {
+      dispatch(setCollector({ ...collector, minted }));
+    } else {
+      dispatch(clearCollector());
+    }
+  };
 
 export const openMintWindow = (collectorId, address) => async (dispatch) => {
   const collector = await openMintWindowApi(collectorId, address);

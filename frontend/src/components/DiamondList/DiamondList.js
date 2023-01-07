@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import map from "lodash/map"
-import size from "lodash/size"
-import toLower from "lodash/toLower"
+import map from "lodash/map";
+import size from "lodash/size";
+import toLower from "lodash/toLower";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,23 +10,23 @@ import "./DiamondList.scss";
 import { systemSelector } from "store/systemReducer";
 import { tokensSelector } from "store/tokensReducer";
 import useOnClickOutside from "hooks/useClickOutside";
-import {getStageName, getTokenTrait, isTokenActionable} from "utils";
+import { getStageName, getTokenTrait, isTokenActionable } from "utils";
 import { useNavigate } from "react-router-dom";
 import Diamond from "components/Diamond";
-import {SYSTEM_STAGE, TRAIT} from "consts";
-import {faGem} from "@fortawesome/free-solid-svg-icons";
-import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import { SYSTEM_STAGE, TRAIT } from "consts";
+import { faGem } from "@fortawesome/free-solid-svg-icons";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 
-const NFTIcon = ({token}) => {
+const NFTIcon = ({ token }) => {
   const shapeName = getTokenTrait(token, TRAIT.shape);
 
   switch (token.stage) {
     case SYSTEM_STAGE.KEY:
       return <VpnKeyIcon />;
     default:
-      return <FontAwesomeIcon icon={faGem} />
+      return <FontAwesomeIcon icon={faGem} />;
   }
-}
+};
 
 const DiamondItem = ({ diamond }) => {
   const { selectedTokenId } = useSelector(uiSelector);
@@ -55,7 +55,12 @@ const DiamondItem = ({ diamond }) => {
       onMouseEnter={() => setShowInfo(true)}
       onMouseLeave={() => setShowInfo(false)}
     >
-      <div className={classNames("center-aligned-row token-icon", toLower(getStageName(diamond.stage)))}>
+      <div
+        className={classNames(
+          "center-aligned-row token-icon",
+          toLower(getStageName(diamond.stage))
+        )}
+      >
         <NFTIcon token={diamond} />
         <div className="token-id">#{id}</div>
       </div>

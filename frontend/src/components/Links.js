@@ -5,7 +5,7 @@ import {
   DIAMOND_DAWN_OPENSEA,
   DIAMOND_DAWN_SUBSTACK,
 } from "consts";
-import {collectorDisplayName, isNoContractMode} from "utils";
+import { collectorDisplayName, isNoContractMode } from "utils";
 import classNames from "classnames";
 
 export const Link = ({ href, className, disabled, title = "", children }) => {
@@ -65,7 +65,7 @@ export const TelegramLink = ({ className, href, children }) => {
 };
 
 export const OpenseaLink = ({ className, children }) => {
-  const disabled = isNoContractMode()
+  const disabled = isNoContractMode();
   const title = disabled
     ? "Opensea link will be available once mint starts"
     : "";

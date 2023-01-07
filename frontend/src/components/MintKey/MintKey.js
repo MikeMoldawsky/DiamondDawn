@@ -29,7 +29,8 @@ import {
 import useActionDispatch from "hooks/useActionDispatch";
 import {
   setSelectedTokenId,
-  setShouldIgnoreTokenTransferWatch, uiSelector,
+  setShouldIgnoreTokenTransferWatch,
+  uiSelector,
 } from "store/uiReducer";
 import Loading from "components/Loading";
 
@@ -52,7 +53,7 @@ const MintKey = () => {
   const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
 
   const mint = async (numNfts) => {
-    if (geoLocation?.blocked) return
+    if (geoLocation?.blocked) return;
 
     setIsMinting(true);
     const { signature } = await signMintApi(collector._id, account.address);

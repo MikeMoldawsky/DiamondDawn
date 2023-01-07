@@ -4,7 +4,7 @@ import "css/common.scss";
 import "css/elements.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router } from "react-router-dom";
-import {toast, ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import WagmiWrapper from "containers/WagmiWrapper";
 import AppLoader from "containers/AppLoader";
 import AppRoutes from "pages";
@@ -19,7 +19,7 @@ import NetworkGuard from "containers/NetworkGuard";
 import CopyNotification from "components/CopyNotification";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import {BLOCKED_COUNTRY_TEXT} from "consts";
+import { BLOCKED_COUNTRY_TEXT } from "consts";
 
 const App = () => {
   const { sideMenuOpen, geoLocation } = useSelector(uiSelector);
@@ -38,7 +38,7 @@ const App = () => {
         theme: "dark",
       });
     }
-  }, [geoLocation?.blocked])
+  }, [geoLocation?.blocked]);
 
   return (
     <div className={classNames("main-layout", { "drawer-open": sideMenuOpen })}>

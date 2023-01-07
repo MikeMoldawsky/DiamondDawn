@@ -74,10 +74,10 @@
 
       .vat-text {
         position: absolute;
-        top: calc(100% + .4em);
+        top: calc(100% + 0.4em);
         left: 0;
         font-size: $font14px;
-        color: $text_gray
+        color: $text_gray;
       }
     }
 

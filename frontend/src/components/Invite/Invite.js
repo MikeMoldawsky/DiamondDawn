@@ -22,7 +22,7 @@ const Invite = () => {
   const collector = useSelector(collectorSelector);
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
   const [playSparklesSFX] = useSound(sparklesSFX);
-  const contract = useDDContract()
+  const contract = useDDContract();
 
   if (
     systemStage > SYSTEM_STAGE.KEY ||
