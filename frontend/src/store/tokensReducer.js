@@ -26,12 +26,6 @@ export const readAndWatchAccountTokens =
         )
       );
 
-      console.log("readAndWatchAccountTokens", {
-        tokensToFetch,
-        tokenIdsToFetch,
-        tokenUris,
-      });
-
       actionDispatch(
         {
           type: "TOKENS.SET",
@@ -44,12 +38,6 @@ export const readAndWatchAccountTokens =
     }, 100);
 
     const processEvent = (from, to, tokenId) => {
-      console.log("event", {
-        ignore: getState().ui.shouldIgnoreTokenTransferWatch,
-        from,
-        to,
-        tokenId: tokenId.toNumber(),
-      });
       if (getState().ui.shouldIgnoreTokenTransferWatch) return;
 
       if (from === address) {
@@ -84,13 +72,11 @@ export const watchTokenMinedBy = (
   maxAddressTokenId = -1,
   callback
 ) => {
-  console.log("WATCHING TOKEN_MINED_BY", { address, maxAddressTokenId });
   const filter = contract.filters.Transfer(null, address);
 
   const transferListener = (from, to, tokenId) => {
     const numTokenId = tokenId.toNumber();
     if (maxAddressTokenId === -1 || numTokenId > maxAddressTokenId) {
-      console.log("TOKEN MINED EVENT", { from, to, tokenId });
       callback(numTokenId);
     }
   };

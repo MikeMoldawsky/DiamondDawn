@@ -1,5 +1,7 @@
 import { logApiError } from "utils";
 import { MINT_GAS_LIMIT, PROCESS_GAS_LIMIT } from "consts";
+import { constants as ethersConsts } from "ethers";
+import size from "lodash/size";
 
 // STATE/STORAGE
 export const getSystemStageApi = async (contract) => {
@@ -15,11 +17,20 @@ export const getSystemStageApi = async (contract) => {
   }
 };
 
-export const getMinePriceApi = async (contract) => {
+export const getMintPriceApi = async (contract) => {
   try {
     return await contract.PRICE();
   } catch (e) {
-    logApiError(e, "getMinePriceApi");
+    logApiError(e, "getMintPriceApi");
+    return undefined;
+  }
+};
+
+export const getMintPriceMarriageApi = async (contract) => {
+  try {
+    return await contract.PRICE_MARRIAGE();
+  } catch (e) {
+    logApiError(e, "getMintPriceMarriageApi");
     return undefined;
   }
 };
@@ -35,11 +46,21 @@ export const getTokenCountApi = async (mineContract) => {
 };
 
 // PROCESS
-export const forgeApi = async (contract, numNfts, minePrice, signature) => {
-  return contract.forge(signature, numNfts, {
-    value: minePrice,
-    gasLimit: MINT_GAS_LIMIT,
-  });
+export const forgeApi = async (
+  contract,
+  withPartner,
+  numNfts,
+  mintPrice,
+  signature
+) => {
+  return (withPartner ? contract.forgeWithPartner : contract.forge)(
+    signature,
+    numNfts,
+    {
+      value: mintPrice,
+      gasLimit: MINT_GAS_LIMIT,
+    }
+  );
 };
 
 export const mineApi = async (contract, tokenId) => {
@@ -64,7 +85,14 @@ export const dawnApi = async (contract, tokenId, signature) => {
   });
 };
 
-// TOKEN URI
+// TOKEN
+export const getAddressMintedApi = async (contract, address) => {
+  const mintEvents = await contract.queryFilter(
+    contract.filters.Transfer(ethersConsts.AddressZero, address)
+  );
+  return size(mintEvents) > 0;
+};
+
 export const getTokenUriApi = async (contract, tokenId, isBurned) => {
   try {
     const tokenUriString = await contract.tokenURI(tokenId);

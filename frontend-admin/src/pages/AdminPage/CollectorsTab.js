@@ -15,6 +15,8 @@ import format from "date-fns/format";
 import { EtherscanLink, OpenseaLink, TwitterLink } from "components/Links";
 import useActionDispatch from "hooks/useActionDispatch";
 import { COLLECTOR_STATUS } from "consts";
+import { useSelector } from "react-redux";
+import { systemSelector } from "store/systemReducer";
 
 const renderCellWithTooltip = (params) => (
   <span title={params.value}>{params.value}</span>
@@ -213,12 +215,18 @@ const ApproveButton = ({ collectorId, onSuccess }) => {
 const CollectorsTab = ({ approved }) => {
   const [collectors, setCollectors] = useState([]);
   const actionDispatch = useActionDispatch();
+  const { addressesMinted } = useSelector(systemSelector);
 
   const fetchCollectors = () => {
-    actionDispatch(
-      async () => setCollectors(await getCollectorsApi(approved)),
-      "load-collectors"
-    );
+    actionDispatch(async () => {
+      const _collectors = await getCollectorsApi(approved);
+      setCollectors(
+        _.map(_collectors, (collector) => ({
+          ...collector,
+          minted: _.get(addressesMinted, collector.address, false),
+        }))
+      );
+    }, "load-collectors");
   };
 
   useEffect(() => {
@@ -257,7 +265,7 @@ const CollectorsTab = ({ approved }) => {
   ];
 
   const getRowClassName = ({ row }) => {
-    if (!row.approved) return row.status.toLowerCase();
+    if (!approved || !row.approved) return row.status.toLowerCase();
 
     if (row.invitations.length < 2 && row.twitter !== "@DiamondDawnNFT") {
       return "error";

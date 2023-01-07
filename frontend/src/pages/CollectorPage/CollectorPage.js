@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import classNames from "classnames";
 import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,27 @@ import {
 import { useMobileOrTablet } from "hooks/useMediaQueries";
 import useActionDispatch from "hooks/useActionDispatch";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
+import ContractProvider from "containers/ContractProvider";
+import { isActionPendingSelector } from "store/actionStatusReducer";
+import useOnConnect from "hooks/useOnConnect";
+import useDDContract from "hooks/useDDContract";
+
+const CollectorLoader = () => {
+  const actionDispatch = useActionDispatch();
+  const contract = useDDContract();
+  const isPending = useSelector(
+    isActionPendingSelector("get-collector-by-address")
+  );
+
+  useOnConnect((address) => {
+    if (!isPending) {
+      actionDispatch(
+        loadCollectorByAddress(contract, address),
+        "get-collector-by-address"
+      );
+    }
+  });
+};
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
@@ -33,19 +54,9 @@ const CollectorPage = () => {
   const ensName = useEnsName({ address: account?.address });
   const navigate = useNavigate();
   const collector = useSelector(collectorSelector);
-  const actionDispatch = useActionDispatch();
   const dispatch = useDispatch();
 
   useMusic("collector.mp3");
-
-  useEffect(() => {
-    if (account?.address) {
-      actionDispatch(
-        loadCollectorByAddress(account?.address),
-        "get-collector-by-address"
-      );
-    }
-  }, [account?.address]);
 
   const renderContent = () => {
     if (
@@ -72,7 +83,10 @@ const CollectorPage = () => {
             {ensName?.data || shortenEthAddress(account?.address)}
           </div>
           <Box className={"main-box"}>
-            {renderContent()}
+            <ContractProvider>
+              <CollectorLoader />
+              {renderContent()}
+            </ContractProvider>
             {selectedTokenId > -1 && (
               <ArrowBackIcon
                 className="back-to-gallery"

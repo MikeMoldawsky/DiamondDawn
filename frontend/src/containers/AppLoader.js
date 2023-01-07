@@ -10,13 +10,12 @@ import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
 import { loadCollectorByAddress } from "store/collectorReducer";
-import { isNoContractMode } from "utils";
+import { isBlockedCountry, isNoContractMode, isVATCountry } from "utils";
 import ContractProvider from "containers/ContractProvider";
 import { getGeoLocationApi } from "api/externalApi";
-import { updateUiState } from "store/uiReducer";
-import pick from "lodash/pick";
+import { setSelectedTokenId, updateUiState } from "store/uiReducer";
 
-const ServerAppLoader = () => {
+const ServerAppLoader = ({ contract }) => {
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
 
@@ -25,7 +24,11 @@ const ServerAppLoader = () => {
       const geoLocation = await getGeoLocationApi();
       dispatch(
         updateUiState({
-          geoLocation: pick(geoLocation, ["country", "region", "city"]),
+          geoLocation: {
+            ...geoLocation,
+            blocked: isBlockedCountry(geoLocation.country_code),
+            vat: isVATCountry(geoLocation.country_code),
+          },
         })
       );
     } catch (e) {
@@ -41,7 +44,7 @@ const ServerAppLoader = () => {
   useOnConnect(
     (address) => {
       actionDispatch(
-        loadCollectorByAddress(address),
+        loadCollectorByAddress(contract, address),
         "get-collector-by-address"
       );
     },
@@ -64,7 +67,6 @@ const ChainAppLoader = () => {
 
     provider.once("block", () => {
       contract.on(EVENTS.StageChanged, (_stage) => {
-        console.log("EVENT StageChanged fired", { _stage });
         dispatch(loadSystemStage(contract));
         setTimeout(() => dispatch(loadConfig()), 5000);
       });
@@ -84,19 +86,23 @@ const ChainAppLoader = () => {
     },
     () => {
       dispatch(clearActionStatus("load-nfts"));
+      dispatch(setSelectedTokenId(-1));
     }
   );
 
   return null;
 };
 
+const ServerWithContractLoader = () => {
+  const contract = useDDContract();
+  return <ServerAppLoader contract={contract} />;
+};
+
 export default isNoContractMode()
   ? ServerAppLoader
   : () => (
-      <>
-        <ServerAppLoader />
-        <ContractProvider>
-          <ChainAppLoader />
-        </ContractProvider>
-      </>
+      <ContractProvider>
+        <ServerWithContractLoader />
+        <ChainAppLoader />
+      </ContractProvider>
     );

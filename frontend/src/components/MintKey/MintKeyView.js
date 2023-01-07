@@ -21,12 +21,14 @@ import {
   CountdownWithText,
   SystemCountdown,
 } from "components/Countdown/Countdown";
+import { BLOCKED_COUNTRY_TEXT } from "consts";
 
 const RadioButtons = ({ values, selectedValue, setSelectedValue }) => {
   return (
     <div className="radio-buttons">
       {values.map((value) => (
         <div
+          key={`radio-button-${value}`}
           className={classNames("radio-button", {
             selected: selectedValue === value,
           })}
@@ -53,7 +55,8 @@ const MintKeyView = ({
   const [searchParams] = useSearchParams();
   const showInvitesParam = searchParams.get("invites") === "true";
   const dispatch = useDispatch();
-  const { mintViewShowInvites: showInvites } = useSelector(uiSelector);
+  const { mintViewShowInvites: showInvites, geoLocation } =
+    useSelector(uiSelector);
   const [numNfts, setNumNfts] = useState(1);
 
   const toggleInvites = (show) => {
@@ -110,7 +113,8 @@ const MintKeyView = ({
         <ActionButton
           actionKey="MintKey"
           className="gold lg mint-button"
-          disabled={!canMint || !isFunction(mint)}
+          disabled={!canMint || !isFunction(mint) || geoLocation?.blocked}
+          title={geoLocation?.blocked ? BLOCKED_COUNTRY_TEXT : ""}
           isLoading={forceButtonLoading}
           onClick={() => isFunction(mint) && mint(numNfts)}
           onError={onMintError}
@@ -118,6 +122,9 @@ const MintKeyView = ({
           {mintPriceText * numNfts} <FontAwesomeIcon icon={faEthereum} /> MINT
         </ActionButton>
       </div>
+      {geoLocation?.vat && (
+        <div className="vat-text">* VAT included in Price</div>
+      )}
     </div>
   );
 
@@ -132,7 +139,7 @@ const MintKeyView = ({
           minutes: 3,
           seconds: 0,
         }}
-        text="When the time runs out, you'll no longer be able to join Diamond Dawn"
+        text="Your opportunity to mint expires in"
         onComplete={onCountdownEnd}
       />
     ) : (

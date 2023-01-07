@@ -8,11 +8,13 @@ import {
   loadMaxDiamonds,
   loadSystemPaused,
   loadSystemStage,
+  watchMintedAddresses,
 } from "store/systemReducer";
 import { CONTRACTS } from "consts";
 import { isNoContractMode } from "utils";
 import ContractProvider from "./ContractProvider";
 import _ from "lodash";
+import { useProvider } from "wagmi";
 
 const ServerAppLoader = () => {
   const dispatch = useDispatch();
@@ -27,6 +29,7 @@ const ServerAppLoader = () => {
 const ChainAppLoader = () => {
   const contract = useDDContract();
   const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
+  const provider = useProvider();
 
   const dispatch = useDispatch();
 
@@ -38,6 +41,7 @@ const ChainAppLoader = () => {
       dispatch(loadSystemPaused(contract));
       dispatch(loadMaxDiamonds(mineContract));
       dispatch(loadDiamondCount(mineContract));
+      dispatch(watchMintedAddresses(contract, provider));
     }
   }, [contractReady]);
 

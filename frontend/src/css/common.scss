@@ -667,6 +667,21 @@ a:not(.no-hover) {
 
 .Toastify__toast-container {
   top: 80px !important;
+
+  --toastify-color-dark: #b22222;
+  --toastify-toast-width: 28em;
+  --toastify-color-progress-error: white;
+
+  svg {
+    path {
+      fill: white;
+    }
+  }
+
+  &.Toastify__toast-container--bottom-center {
+    top: unset !important;
+    bottom: -0.5%;
+  }
 }
 
 .MuiTextField-root {

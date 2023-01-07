@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import "css/common.scss";
 import "css/elements.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import WagmiWrapper from "containers/WagmiWrapper";
 import AppLoader from "containers/AppLoader";
 import AppRoutes from "pages";
@@ -19,14 +19,26 @@ import NetworkGuard from "containers/NetworkGuard";
 import CopyNotification from "components/CopyNotification";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
+import { BLOCKED_COUNTRY_TEXT } from "consts";
 
 const App = () => {
-  const { sideMenuOpen } = useSelector(uiSelector);
+  const { sideMenuOpen, geoLocation } = useSelector(uiSelector);
   const actionDispatch = useActionDispatch();
 
   useEffect(() => {
     actionDispatch(loadContractInfo(), "get-contract");
   }, []);
+
+  useEffect(() => {
+    if (geoLocation?.blocked) {
+      toast.error(BLOCKED_COUNTRY_TEXT, {
+        position: "bottom-center",
+        autoClose: false,
+        draggable: false,
+        theme: "dark",
+      });
+    }
+  }, [geoLocation?.blocked]);
 
   return (
     <div className={classNames("main-layout", { "drawer-open": sideMenuOpen })}>

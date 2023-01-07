@@ -12,6 +12,8 @@ import {
   getContractDataApi,
   updateStageTimeApi,
 } from "api/serverApi";
+import { constants as ethersConsts } from "ethers";
+import _ from "lodash";
 
 const INITIAL_STATE = {
   ddContractData: null,
@@ -23,7 +25,44 @@ const INITIAL_STATE = {
   config: {},
   videoArt: {},
   maxDiamonds: -1,
+  addressesMinted: {},
 };
+
+export const watchMintedAddresses =
+  (contract, provider) => async (dispatch) => {
+    let addressesMinted = {};
+
+    const saveToStore = _.debounce(async () => {
+      dispatch({
+        type: "SYSTEM.ADD_ADDRESSES_MINTED",
+        payload: addressesMinted,
+      });
+
+      addressesMinted = {};
+    }, 100);
+
+    const processEvent = (from, to) => {
+      if (from === ethersConsts.AddressZero) {
+        addressesMinted[to] = true;
+        saveToStore();
+      }
+    };
+
+    // read past transfers
+    const events = await contract.queryFilter(contract.filters.Transfer());
+    if (_.size(events) > 0) {
+      _.forEach(events, ({ args: [from, to, tokenId] }) =>
+        processEvent(from, to, tokenId)
+      );
+    } else {
+      saveToStore();
+    }
+
+    // listen to future transfers
+    provider.once("block", () => {
+      contract.on("Transfer", processEvent);
+    });
+  };
 
 export const loadSystemStage = (contract) => async (dispatch) => {
   console.log("Loading system stage with contract", contract);
@@ -41,6 +80,7 @@ export const loadSystemPaused = (contract) => async (dispatch) => {
     payload: { paused },
   });
 };
+
 export const loadMaxDiamonds = (contract) => async (dispatch) => {
   const maxDiamonds = await getMaxDiamondsApi(contract);
   dispatch({
@@ -107,6 +147,13 @@ export const systemReducer = makeReducer(
     "SYSTEM.SET_SCHEDULE": reduceUpdateFull,
     "SYSTEM.SET_VIDEO_ART": reduceUpdateFull,
     "SYSTEM.UPDATE_STATE": reduceUpdateFull,
+    "SYSTEM.ADD_ADDRESSES_MINTED": (state, action) => ({
+      ...state,
+      addressesMinted: {
+        ...state.addressesMinted,
+        ...action.payload,
+      },
+    }),
   },
   INITIAL_STATE
 );

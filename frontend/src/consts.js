@@ -50,7 +50,7 @@ export const DIAMOND_DAWN_COLLECTORS_TELEGRAM =
   "https://t.me/+h-IWpeZM_dNkODk0";
 export const DIAMOND_DAWN_PUBLIC_TELEGRAM = "https://t.me/DiamondDawnNFT";
 
-export const DIAMOND_DAWN_OPENSEA = "";
+export const DIAMOND_DAWN_OPENSEA = "https://opensea.io/collection/diamonddawn";
 
 export const PRIVATE_TWITTER_MESSAGE_URL =
   "https://twitter.com/messages/compose?recipient_id=1537474700514836485&text=I%20would%20like%20to%20participate%20in%20Diamond%20Dawn's%20journey";
@@ -124,3 +124,6 @@ export const CONTRACTS = {
   DiamondDawn: "DiamondDawn",
   DiamondDawnMine: "DiamondDawnMine",
 };
+
+export const BLOCKED_COUNTRY_TEXT =
+  "Diamond Dawn is not operational in your country";
