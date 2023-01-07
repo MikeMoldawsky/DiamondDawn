@@ -13,9 +13,9 @@ import { loadCollectorByAddress } from "store/collectorReducer";
 import {isBlockedCountry, isNoContractMode} from "utils";
 import ContractProvider from "containers/ContractProvider";
 import { getGeoLocationApi } from "api/externalApi";
-import { updateUiState } from "store/uiReducer";
+import {setSelectedTokenId, updateUiState} from "store/uiReducer";
 
-const ServerAppLoader = () => {
+const ServerAppLoader = ({ contract }) => {
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
 
@@ -41,7 +41,7 @@ const ServerAppLoader = () => {
   useOnConnect(
     (address) => {
       actionDispatch(
-        loadCollectorByAddress(address),
+        loadCollectorByAddress(contract, address),
         "get-collector-by-address"
       );
     },
@@ -64,7 +64,6 @@ const ChainAppLoader = () => {
 
     provider.once("block", () => {
       contract.on(EVENTS.StageChanged, (_stage) => {
-        console.log("EVENT StageChanged fired", { _stage });
         dispatch(loadSystemStage(contract));
         setTimeout(() => dispatch(loadConfig()), 5000);
       });
@@ -84,19 +83,23 @@ const ChainAppLoader = () => {
     },
     () => {
       dispatch(clearActionStatus("load-nfts"));
+      dispatch(setSelectedTokenId(-1));
     }
   );
 
   return null;
 };
 
+const ServerWithContractLoader = () => {
+  const contract = useDDContract()
+  return <ServerAppLoader contract={contract} />
+}
+
 export default isNoContractMode()
   ? ServerAppLoader
   : () => (
-      <>
-        <ServerAppLoader />
-        <ContractProvider>
-          <ChainAppLoader />
-        </ContractProvider>
-      </>
+    <ContractProvider>
+      <ServerWithContractLoader />
+      <ChainAppLoader />
+    </ContractProvider>
     );

@@ -25,7 +25,6 @@ export const getContractInfoApi = async () => {
             axios.get(getCDNContractUrl("dd_abi.json")),
             axios.get(getCDNContractUrl("dd_mine_abi.json")),
           ]);
-        console.log("CDN contracts response", { addresses, ddAbi, ddMineAbi });
         return {
           ddContract: { address: addresses.dd, artifact: { abi: ddAbi } },
           ddMineContract: {
@@ -111,14 +110,6 @@ export const openMintWindowApi = async (collectorId, address) => {
 
 export const signMintApi = async (collectorId, address) => {
   const res = await axios.post(`/api/sign_mint`, { collectorId, address });
-  return res.data;
-};
-
-export const confirmMintedApi = async (collectorId, address) => {
-  const res = await axios.post(`/api/confirm_minted`, {
-    collectorId,
-    address,
-  });
   return res.data;
 };
 

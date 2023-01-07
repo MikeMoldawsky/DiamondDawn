@@ -26,7 +26,7 @@ async function getCollectorObjectById(collectorId) {
         seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
       });
 
-      if (collector.minted || collector.mintWindowClose < new Date()) {
+      if (collector.mintWindowClose < new Date()) {
         collector.mintClosed = true;
       }
     }
@@ -54,9 +54,6 @@ function validateCollector(collector, address, requireApproved = true) {
   }
   if (address !== collector.address) {
     throw new Error(`Wrong Ethereum address`);
-  }
-  if (collector.minted) {
-    throw new Error("collector already minted");
   }
   if (requireApproved && !collector.approved) {
     throw new Error("Collector pending approval");
@@ -113,16 +110,6 @@ async function signMint(collectorId, address) {
   return { collector, signature };
 }
 
-async function confirmMinted(collectorId, address) {
-  validateAddress(address);
-  const collector = await getCollectorObjectById(collectorId);
-  validateCollector(collector, address);
-
-  await Collector.findOneAndUpdate({ _id: collectorId }, { minted: true });
-
-  return await getCollectorObjectById(collectorId);
-}
-
 async function changeMintAddress(collectorId, address, newAddress) {
   validateAddress(address);
   const collector = await getCollectorObjectById(collectorId);
@@ -149,6 +136,5 @@ module.exports = {
   updateCollector,
   openMintWindow,
   signMint,
-  confirmMinted,
   changeMintAddress,
 };

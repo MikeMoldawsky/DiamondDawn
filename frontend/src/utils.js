@@ -19,7 +19,6 @@ export const parseError = (e) => {
       const startJson = message.indexOf("{");
       const endJson = message.lastIndexOf("}") + 1;
       const sub = message.substr(startJson, endJson - startJson);
-      console.log({ sub, startJson, endJson });
       message = JSON.parse(sub);
       message = get(message, "value.data.message");
     } catch (err) {
@@ -27,8 +26,6 @@ export const parseError = (e) => {
     }
   }
   if (!message) return "Unknown error";
-
-  console.log("ERROR BEFORE PARSE: ", { message });
 
   if (includes(message, "You can't enter the mine, you're not invited")) {
     return "You can't enter the mine, you're not invited";

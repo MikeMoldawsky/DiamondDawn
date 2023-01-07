@@ -24,10 +24,15 @@ const INITIAL_STATE = {
   sideMenuOpen: false,
 };
 
-export const setSelectedTokenId = (selectedTokenId) => ({
-  type: "UI.SET_SELECTED_TOKEN_ID",
-  payload: { selectedTokenId },
-});
+export const setSelectedTokenId = (selectedTokenId, onlyIfNotSet) => (dispatch, getState) => {
+  const shouldSet = onlyIfNotSet ? uiSelector(getState()).selectedTokenId === -1 : true
+  if (shouldSet) {
+    dispatch({
+      type: "UI.SET_SELECTED_TOKEN_ID",
+      payload: { selectedTokenId },
+    })
+  }
+};
 
 export const setSideMenuOpen = (sideMenuOpen) => ({
   type: "UI.UPDATE_STATE",

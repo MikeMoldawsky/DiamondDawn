@@ -16,7 +16,7 @@ import {
 } from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
 import { forgeApi, getTokenUriApi } from "api/contractApi";
-import { confirmMintedApi, signMintApi } from "api/serverApi";
+import { signMintApi } from "api/serverApi";
 import { isNoContractMode, showError } from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
 import { CONTRACTS, SYSTEM_STAGE } from "consts";
@@ -70,10 +70,9 @@ const MintKey = () => {
   const onMintSuccess = async (tokenId) => {
     dispatch(setShouldIgnoreTokenTransferWatch(false));
     try {
-      confirmMintedApi(collector._id, account.address);
       const tokenUri = await getTokenUriApi(contract, tokenId);
       dispatch(setTokenUri(tokenId, tokenUri));
-      dispatch(setSelectedTokenId(tokenId));
+      dispatch(setSelectedTokenId(tokenId, true));
       setIsMinting(false);
       dispatch(updateCollector({ minted: true }));
     } catch (e) {
@@ -107,7 +106,7 @@ const MintKey = () => {
 
   const onMintWindowClose = () => {
     actionDispatch(
-      loadCollectorByAddress(account.address),
+      loadCollectorByAddress(contract, account.address),
       "get-collector-by-address"
     );
   };

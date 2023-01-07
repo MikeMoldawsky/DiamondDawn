@@ -1,5 +1,7 @@
 import { logApiError } from "utils";
 import { MINT_GAS_LIMIT, PROCESS_GAS_LIMIT } from "consts";
+import { constants as ethersConsts } from "ethers";
+import size from "lodash/size"
 
 // STATE/STORAGE
 export const getSystemStageApi = async (contract) => {
@@ -64,7 +66,12 @@ export const dawnApi = async (contract, tokenId, signature) => {
   });
 };
 
-// TOKEN URI
+// TOKEN
+export const getAddressMintedApi = async (contract, address) => {
+  const mintEvents = await contract.queryFilter(contract.filters.Transfer(ethersConsts.AddressZero, address));
+  return size(mintEvents) > 0
+}
+
 export const getTokenUriApi = async (contract, tokenId, isBurned) => {
   try {
     const tokenUriString = await contract.tokenURI(tokenId);
