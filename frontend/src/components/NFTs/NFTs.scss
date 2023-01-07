@@ -53,14 +53,17 @@
       }
     }
 
-    img {
-      width: 5em;
-    }
-
     .diamond-box {
       height: 100%;
       aspect-ratio: 1;
       padding: 0.5em;
+      position: relative;
+      z-index: 1;
+      background-color: black;
+    }
+
+    .carousel-box {
+      height: 100%;
     }
 
     .certificate {
@@ -79,6 +82,7 @@
             margin: 0 0.25em;
 
             &:after {
+              color: $gold;
               content: ".........................................................................";
               letter-spacing: 0.1em;
               position: absolute;
@@ -97,6 +101,17 @@
       animation-delay: 0.75s;
       opacity: 0;
       z-index: -1;
+      background-color: #1f1f1f;
+      border: solid 3px $border_opaque;
+      margin: 1.25em 0 .5em;
+      border-left: none;
+
+      .card-header {
+        .react-player {
+          width: 8em;
+          margin-top: -.25em;
+        }
+      }
 
       .tagline-text {
         color: white;
@@ -116,9 +131,10 @@
       padding: 0 0.5em;
 
       .bg {
-        background: url($CDN_URL + "/images/collector/nft-plate.jpg") no-repeat
+        background: black url($CDN_URL + "/images/collector/nft-plate.jpg") no-repeat
           center center;
         background-size: 100% auto;
+        opacity: .5;
 
         .nail {
           position: absolute;
@@ -157,6 +173,10 @@
 
           .unrevealed {
             font-size: 2.5em;
+
+            .react-player {
+              width: 2.5em;
+            }
           }
 
           &:not(:first-child) {

@@ -5,7 +5,6 @@ import { tokenByIdSelector, tokensSelector } from "store/tokensReducer";
 import { safeParseInt } from "utils";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import NFT from "./NFT";
-import CarouselBox from "components/CarouselBox";
 import { useNavigate } from "react-router-dom";
 import NFTGallery from "./NFTGallery";
 import size from "lodash/size";
@@ -56,27 +55,22 @@ const NFTs = () => {
   const renderContent = () => {
     if (size(tokens) === 0) return <GoToOpensea />;
 
-    if (selectedToken)
-      return (
-        <CarouselBox
-          className="layout-box"
-          items={tokens}
-          activeItemId={selectedTokenId}
-          onChange={onChangeNFT}
-        >
-          <NFT
-            token={selectedToken}
-            hideCertificate={startTransition}
-            transitionName={transitionName}
-            goToProcess={goToProcess}
-          />
-        </CarouselBox>
-      );
+    if (selectedToken) return (
+      <div className="layout-box">
+        <NFT
+          token={selectedToken}
+          hideCertificate={startTransition}
+          transitionName={transitionName}
+          goToProcess={goToProcess}
+          onChangeNFT={onChangeNFT}
+        />
+      </div>
+    )
 
     return <NFTGallery goToProcess={goToProcess} />;
   };
 
-  return <div className="box-content opaque nfts">{renderContent()}</div>;
+  return <div className="box-content nfts">{renderContent()}</div>;
 };
 
 export default NFTs;

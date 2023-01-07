@@ -26,6 +26,7 @@ import ContractProvider from "containers/ContractProvider";
 import { isActionPendingSelector } from "store/actionStatusReducer";
 import useOnConnect from "hooks/useOnConnect";
 import useDDContract from "hooks/useDDContract";
+import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
 
 const CollectorLoader = () => {
   const actionDispatch = useActionDispatch();
@@ -88,10 +89,9 @@ const CollectorPage = () => {
               {renderContent()}
             </ContractProvider>
             {selectedTokenId > -1 && (
-              <ArrowBackIcon
-                className="back-to-gallery"
-                onClick={() => dispatch(setSelectedTokenId(-1))}
-              />
+              <div className="back-to-gallery" onClick={() => dispatch(setSelectedTokenId(-1))}>
+                <CollectionsOutlinedIcon />
+              </div>
             )}
             <HighlightOffIcon
               className="close"

@@ -4,6 +4,8 @@ import padStart from "lodash/padStart";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { NFT_NAME_BY_STAGE, SYSTEM_STAGE } from "consts";
+import InlineVideo from "components/VideoPlayer/InlineVideo";
+import {createVideoSources} from "utils";
 
 const NFTPlate = () => {
   const { selectedTokenId } = useSelector(uiSelector);
@@ -18,14 +20,20 @@ const NFTPlate = () => {
           </>
         );
       case SYSTEM_STAGE.DAWN:
+      case SYSTEM_STAGE.MINE:
         return (
           <>
             <div>{name}</div>
-            <div># 000 / 333</div>
+            <div># 000 / ?</div>
           </>
         );
       default:
-        return <div className="unrevealed">?</div>;
+        return (
+          <div className="unrevealed">
+            ?
+            {/*<InlineVideo src={createVideoSources("question-mark")} />*/}
+          </div>
+        )
     }
   };
 
