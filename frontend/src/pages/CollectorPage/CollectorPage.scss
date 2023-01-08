@@ -107,5 +107,8 @@
 
 @media only screen and (max-width: 480px) {
   .page.collector-page {
+    .nft-selected {
+      border: none;
+    }
   }
 }

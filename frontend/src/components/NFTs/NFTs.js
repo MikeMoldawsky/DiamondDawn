@@ -52,10 +52,14 @@ const NFTs = () => {
     navigate("/process");
   };
 
-  const renderContent = () => {
-    if (size(tokens) === 0) return <GoToOpensea />;
+  if (size(tokens) === 0) return (
+    <div className="box-content opaque nfts">
+      <GoToOpensea />
+    </div>
+  );
 
-    if (selectedToken) return (
+  if (selectedToken) return (
+    <div className="box-content nfts nft">
       <div className="layout-box">
         <NFT
           token={selectedToken}
@@ -65,12 +69,14 @@ const NFTs = () => {
           onChangeNFT={onChangeNFT}
         />
       </div>
-    )
+    </div>
+  )
 
-    return <NFTGallery goToProcess={goToProcess} />;
-  };
-
-  return <div className="box-content nfts">{renderContent()}</div>;
+  return (
+    <div className="box-content nfts">
+      <NFTGallery goToProcess={goToProcess} />
+    </div>
+  );
 };
 
 export default NFTs;

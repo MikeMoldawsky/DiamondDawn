@@ -83,7 +83,7 @@ const CollectorPage = () => {
           <div className="center-center-aligned-row account">
             {ensName?.data || shortenEthAddress(account?.address)}
           </div>
-          <Box className={"main-box"}>
+          <Box className={classNames("main-box", { "nft-selected": selectedTokenId > -1})}>
             <ContractProvider>
               <CollectorLoader />
               {renderContent()}
