@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
 import { NFT_NAME_BY_STAGE, SYSTEM_STAGE } from "consts";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
-import {createVideoSources} from "utils";
+import { createVideoSources } from "utils";
 
 const NFTPlate = () => {
   const { selectedTokenId } = useSelector(uiSelector);
@@ -30,10 +30,9 @@ const NFTPlate = () => {
       default:
         return (
           <div className="unrevealed">
-            ?
-            {/*<InlineVideo src={createVideoSources("question-mark")} />*/}
+            ?{/*<InlineVideo src={createVideoSources("question-mark")} />*/}
           </div>
-        )
+        );
     }
   };
 

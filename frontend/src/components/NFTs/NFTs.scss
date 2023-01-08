@@ -102,14 +102,13 @@
       opacity: 0;
       z-index: -1;
       background-color: #1f1f1f;
-      border: solid 3px $border_opaque;
-      margin: 1.25em 0 .5em;
-      border-left: none;
+      margin: 1.25em 0 0.5em;
+      box-shadow: 0 0 2px 2px #5c5c5cbb;
 
       .card-header {
         .react-player {
           width: 8em;
-          margin-top: -.25em;
+          margin: -0.5em -1em 0 0;
         }
       }
 
@@ -131,10 +130,10 @@
       padding: 0 0.5em;
 
       .bg {
-        background: black url($CDN_URL + "/images/collector/nft-plate.jpg") no-repeat
-          center center;
+        background: black url($CDN_URL + "/images/collector/nft-plate.jpg")
+          no-repeat center center;
         background-size: 100% auto;
-        opacity: .5;
+        opacity: 0.5;
 
         .nail {
           position: absolute;
@@ -187,6 +186,7 @@
     }
 
     .box-button {
+      font-size: 0.75em;
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
@@ -303,7 +303,7 @@
 }
 
 @media only screen and (max-width: 480px) {
-  .page.collector-page .nfts.nft  {
+  .page.collector-page .nfts.nft {
     &:before {
       background-color: unset;
     }
@@ -323,17 +323,6 @@
         border-top: none;
         border-left: solid 3px $border_opaque;
         margin: 0;
-
-        .card-header {
-          .react-player {
-            margin-right: -1em;
-            margin-top: -0.5em;
-          }
-        }
-      }
-
-      .box-button {
-        font-size: .75em;
       }
     }
 

@@ -26,7 +26,7 @@ import ContractProvider from "containers/ContractProvider";
 import { isActionPendingSelector } from "store/actionStatusReducer";
 import useOnConnect from "hooks/useOnConnect";
 import useDDContract from "hooks/useDDContract";
-import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
+import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
 
 const CollectorLoader = () => {
   const actionDispatch = useActionDispatch();
@@ -83,13 +83,20 @@ const CollectorPage = () => {
           <div className="center-center-aligned-row account">
             {ensName?.data || shortenEthAddress(account?.address)}
           </div>
-          <Box className={classNames("main-box", { "nft-selected": selectedTokenId > -1})}>
+          <Box
+            className={classNames("main-box", {
+              "nft-selected": selectedTokenId > -1,
+            })}
+          >
             <ContractProvider>
               <CollectorLoader />
               {renderContent()}
             </ContractProvider>
             {selectedTokenId > -1 && (
-              <div className="back-to-gallery" onClick={() => dispatch(setSelectedTokenId(-1))}>
+              <div
+                className="back-to-gallery"
+                onClick={() => dispatch(setSelectedTokenId(-1))}
+              >
                 <CollectionsOutlinedIcon />
               </div>
             )}

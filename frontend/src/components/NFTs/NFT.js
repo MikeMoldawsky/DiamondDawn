@@ -12,11 +12,17 @@ import NFTTraits from "./NFTTraits";
 import NFTPlate from "./NFTPlate";
 import classNames from "classnames";
 import CarouselBox from "components/CarouselBox";
-import {tokensSelector} from "store/tokensReducer";
-import {uiSelector} from "store/uiReducer";
+import { tokensSelector } from "store/tokensReducer";
+import { uiSelector } from "store/uiReducer";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 
-const NFT = ({ token, hideCertificate, transitionName, goToProcess, onChangeNFT }) => {
+const NFT = ({
+  token,
+  hideCertificate,
+  transitionName,
+  goToProcess,
+  onChangeNFT,
+}) => {
   const { systemStage, isActive } = useSelector(systemSelector);
   const tokens = useSelector(tokensSelector);
   const { selectedTokenId } = useSelector(uiSelector);

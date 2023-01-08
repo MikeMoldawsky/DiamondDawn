@@ -52,25 +52,27 @@ const NFTs = () => {
     navigate("/process");
   };
 
-  if (size(tokens) === 0) return (
-    <div className="box-content opaque nfts">
-      <GoToOpensea />
-    </div>
-  );
-
-  if (selectedToken) return (
-    <div className="box-content nfts nft">
-      <div className="layout-box">
-        <NFT
-          token={selectedToken}
-          hideCertificate={startTransition}
-          transitionName={transitionName}
-          goToProcess={goToProcess}
-          onChangeNFT={onChangeNFT}
-        />
+  if (size(tokens) === 0)
+    return (
+      <div className="box-content opaque nfts">
+        <GoToOpensea />
       </div>
-    </div>
-  )
+    );
+
+  if (selectedToken)
+    return (
+      <div className="box-content nfts nft">
+        <div className="layout-box">
+          <NFT
+            token={selectedToken}
+            hideCertificate={startTransition}
+            transitionName={transitionName}
+            goToProcess={goToProcess}
+            onChangeNFT={onChangeNFT}
+          />
+        </div>
+      </div>
+    );
 
   return (
     <div className="box-content nfts">
