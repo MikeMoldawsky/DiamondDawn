@@ -31,14 +31,14 @@ const CarouselBox = ({
 
   return (
     <div className={classNames("carousel-box", className)}>
-      <div className={classNames("border-box top-border-box")} />
+      <div className="border-box top-border-box" />
       <div
         className={classNames(
           "border-box middle-border-box",
           middleBorderClassNames
         )}
       />
-      <div className={classNames("border-box bottom-border-box")} />
+      <div className="border-box bottom-border-box" />
       {showBackButton && (
         <div
           className="box-button back"

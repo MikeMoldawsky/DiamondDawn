@@ -53,14 +53,17 @@
       }
     }
 
-    img {
-      width: 5em;
-    }
-
     .diamond-box {
       height: 100%;
       aspect-ratio: 1;
       padding: 0.5em;
+      position: relative;
+      z-index: 1;
+      background-color: black;
+    }
+
+    .carousel-box {
+      height: 100%;
     }
 
     .certificate {
@@ -79,6 +82,7 @@
             margin: 0 0.25em;
 
             &:after {
+              color: $gold;
               content: ".........................................................................";
               letter-spacing: 0.1em;
               position: absolute;
@@ -97,6 +101,16 @@
       animation-delay: 0.75s;
       opacity: 0;
       z-index: -1;
+      background-color: #1f1f1f;
+      margin: 1.25em 0 0.5em;
+      box-shadow: 0 0 2px 2px #5c5c5cbb;
+
+      .card-header {
+        .react-player {
+          width: 8em;
+          margin: -0.5em -1em 0 0;
+        }
+      }
 
       .tagline-text {
         color: white;
@@ -116,9 +130,10 @@
       padding: 0 0.5em;
 
       .bg {
-        background: url($CDN_URL + "/images/collector/nft-plate.jpg") no-repeat
-          center center;
+        background: black url($CDN_URL + "/images/collector/nft-plate.jpg")
+          no-repeat center center;
         background-size: 100% auto;
+        opacity: 0.5;
 
         .nail {
           position: absolute;
@@ -157,6 +172,10 @@
 
           .unrevealed {
             font-size: 2.5em;
+
+            .react-player {
+              width: 2.5em;
+            }
           }
 
           &:not(:first-child) {
@@ -167,6 +186,7 @@
     }
 
     .box-button {
+      font-size: 0.75em;
       position: absolute;
       top: 50%;
       transform: translate(-50%, -50%);
@@ -278,6 +298,72 @@
       transform: translateX(-95%);
       opacity: 0;
       z-index: -1;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .page.collector-page .nfts.nft {
+    &:before {
+      background-color: unset;
+    }
+
+    .layout-box {
+      flex-direction: column;
+      width: 105%;
+      height: unset;
+      margin-top: -2.5%;
+
+      .diamond-box {
+        height: 90vw;
+      }
+
+      .content-box {
+        padding: 2em 1.5em 2.5em;
+        border-top: none;
+        border-left: solid 3px $border_opaque;
+        margin: 0;
+      }
+    }
+
+    @keyframes showCertificate {
+      0% {
+        transform: translateY(-95%);
+        opacity: 0;
+        z-index: -1;
+      }
+      10% {
+        transform: translateY(-85.5%);
+        opacity: 1;
+      }
+      99% {
+        z-index: -1;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+        z-index: 0;
+      }
+    }
+
+    @keyframes hideCertificate {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+        z-index: 0;
+      }
+      1% {
+        z-index: -1;
+      }
+      90% {
+        transform: translateY(-85.5%);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-95%);
+        opacity: 0;
+        z-index: -1;
+      }
     }
   }
 }
