@@ -233,12 +233,29 @@
   }
 
   .gallery {
-    justify-content: space-evenly;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 6.5% 6.5% 0;
+    width: 100%;
 
     .gallery-item {
-      width: 25%;
+      width: 27.5%;
+      margin-bottom: 6.5%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       position: relative;
+
+      .react-player {
+        width: 100%;
+        height: 100%;
+      }
+
+      .token-id {
+        font-size: $font20px;
+      }
 
       &.active {
         transition: all 0.5s ease-out;

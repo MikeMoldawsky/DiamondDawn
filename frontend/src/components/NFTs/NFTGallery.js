@@ -4,16 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { tokensSelector } from "store/tokensReducer";
 import { safeParseInt } from "utils";
 import { setSelectedTokenId } from "store/uiReducer";
-import Diamond from "components/Diamond";
-import classNames from "classnames";
-
-const TokenItem = ({ token, select, className }) => {
-  return (
-    <div className={classNames("gallery-item", className)} onClick={select}>
-      <Diamond diamond={token} />
-    </div>
-  );
-};
+import DiamondThumbnail from "components/DiamondThumbnail";
 
 const NFTGallery = ({ goToProcess }) => {
   const tokens = useSelector(tokensSelector);
@@ -26,10 +17,11 @@ const NFTGallery = ({ goToProcess }) => {
   return (
     <div className="center-aligned-row gallery">
       {map(tokens, (token) => (
-        <TokenItem
+        <DiamondThumbnail
           key={`token-gallery-${token.id}`}
-          token={token}
-          select={() => selectToken(token.id)}
+          className="gallery-item"
+          diamond={token}
+          onClick={() => selectToken(token.id)}
         />
       ))}
     </div>
