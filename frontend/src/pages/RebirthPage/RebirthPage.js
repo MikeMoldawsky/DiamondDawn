@@ -12,7 +12,8 @@ import { setSelectedTokenId } from "store/uiReducer";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { signDawnApi } from "api/serverApi";
 import { useAccount } from "wagmi";
-import { getCDNVideoUrl } from "utils";
+import { getCDNImageUrl, getCDNVideoUrl } from "utils";
+import Page from "containers/Page";
 
 function RebirthPage() {
   const { tokenId } = useParams();
@@ -77,17 +78,23 @@ function RebirthPage() {
   };
 
   return (
-    <div className="page rebirth-page">
-      <div className="inner-page">
-        <ActionView
-          isRebirth
-          transact={executeRebirth}
-          videoUrl={getCDNVideoUrl("post_rebirth.mp4")}
-        >
-          <RebirthContent />
-        </ActionView>
+    <Page
+      pageName="collector"
+      images={[getCDNImageUrl("/collector/collector-bg.png")]}
+      waitForTokens
+    >
+      <div className="page rebirth-page">
+        <div className="inner-page">
+          <ActionView
+            isRebirth
+            transact={executeRebirth}
+            videoUrl={getCDNVideoUrl("post_rebirth.mp4")}
+          >
+            <RebirthContent />
+          </ActionView>
+        </div>
       </div>
-    </div>
+    </Page>
   );
 }
 
