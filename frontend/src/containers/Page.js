@@ -37,12 +37,13 @@ const Page = ({
   const waitForActions = [...actions];
   if (!isNoContractMode()) {
     waitForActions.push("get-contract");
+
+    if (waitForTokens) {
+      waitForActions.push({ isFirstComplete: true, key: "load-nfts" });
+    }
   }
   if (isConnected) {
     waitForActions.push("get-collector-by-address");
-  }
-  if (waitForTokens) {
-    waitForActions.push({ isFirstComplete: true, key: "load-nfts" });
   }
 
   const contentReady = useWaitFor({ images, videos, actions: waitForActions });

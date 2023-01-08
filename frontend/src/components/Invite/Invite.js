@@ -14,7 +14,6 @@ import PendingApproval from "./PendingApproval";
 import Apply from "./Apply";
 import useSound from "use-sound";
 import sparklesSFX from "assets/audio/end-sparkles.mp3";
-import useDDContract from "hooks/useDDContract";
 
 const Invite = () => {
   const { systemStage } = useSelector(systemSelector);
@@ -22,7 +21,6 @@ const Invite = () => {
   const collector = useSelector(collectorSelector);
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
   const [playSparklesSFX] = useSound(sparklesSFX);
-  const contract = useDDContract();
 
   if (
     systemStage > SYSTEM_STAGE.KEY ||
@@ -32,7 +30,7 @@ const Invite = () => {
     return null;
 
   const onSubmitSuccess = (address) => {
-    dispatch(loadCollectorByAddress(contract, address));
+    dispatch(loadCollectorByAddress(address));
     playSparklesSFX();
     setShowSubmittedModal(true);
     dispatch(clearInvite());

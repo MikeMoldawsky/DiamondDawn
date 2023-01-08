@@ -13,37 +13,12 @@ import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import useNoScrollView from "hooks/useNoScrollView";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
-import {
-  collectorSelector,
-  loadCollectorByAddress,
-} from "store/collectorReducer";
+import { collectorSelector } from "store/collectorReducer";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
-import useActionDispatch from "hooks/useActionDispatch";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
-import ContractProvider from "containers/ContractProvider";
-import { isActionPendingSelector } from "store/actionStatusReducer";
-import useOnConnect from "hooks/useOnConnect";
-import useDDContract from "hooks/useDDContract";
 import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
-
-const CollectorLoader = () => {
-  const actionDispatch = useActionDispatch();
-  const contract = useDDContract();
-  const isPending = useSelector(
-    isActionPendingSelector("get-collector-by-address")
-  );
-
-  useOnConnect((address) => {
-    if (!isPending) {
-      actionDispatch(
-        loadCollectorByAddress(contract, address),
-        "get-collector-by-address"
-      );
-    }
-  });
-};
+import CollectorLoader from "containers/CollectorLoader";
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
@@ -88,10 +63,8 @@ const CollectorPage = () => {
               "nft-selected": selectedTokenId > -1,
             })}
           >
-            <ContractProvider>
-              <CollectorLoader />
-              {renderContent()}
-            </ContractProvider>
+            <CollectorLoader />
+            {renderContent()}
             {selectedTokenId > -1 && (
               <div
                 className="back-to-gallery"

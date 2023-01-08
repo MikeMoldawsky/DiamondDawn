@@ -9,6 +9,7 @@ import {
   getTokenCountApi,
 } from "api/contractApi";
 import { CONTRACTS, SYSTEM_STAGE } from "consts";
+import { isNoContractMode } from "utils";
 
 const INITIAL_STATE = {
   ddContractInfo: null,
@@ -52,6 +53,8 @@ export const loadConfig = () => async (dispatch) => {
 };
 
 export const loadContractInfo = () => async (dispatch) => {
+  if (isNoContractMode()) return;
+
   const { ddContract, ddMineContract } = await getContractInfoApi();
   dispatch(
     updateState({

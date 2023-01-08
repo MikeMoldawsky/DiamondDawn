@@ -17,13 +17,11 @@ import get from "lodash/get";
 import "./ChangeMintAddressModal.scss";
 import useActionDispatch from "hooks/useActionDispatch";
 import { ethers } from "ethers";
-import useDDContract from "hooks/useDDContract";
 
 const ChangeMintAddressModal = ({ close }) => {
   const collector = useSelector(collectorSelector);
   const account = useAccount();
   const actionDispatch = useActionDispatch();
-  const contract = useDDContract();
 
   const {
     register,
@@ -38,7 +36,7 @@ const ChangeMintAddressModal = ({ close }) => {
     try {
       await changeMintAddressApi(collector._id, account.address, newAddress);
       actionDispatch(
-        loadCollectorByAddress(contract, account.address),
+        loadCollectorByAddress(account.address),
         "get-collector-by-address"
       );
     } catch (e) {
