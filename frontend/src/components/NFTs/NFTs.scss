@@ -67,6 +67,8 @@
     }
 
     .certificate {
+      margin-top: 2em;
+
       .traits {
         width: 50%;
 
@@ -123,17 +125,17 @@
 
     .nft-plate {
       margin-top: 2em;
-      height: 5.25em;
       position: relative;
       font-size: 0.8em;
       font-weight: 500;
       padding: 0 0.5em;
+      --seperator-color: #caa87555;
 
       .bg {
         background: black url($CDN_URL + "/images/collector/nft-plate.jpg")
           no-repeat center center;
         background-size: 100% auto;
-        opacity: 0.5;
+        opacity: 0.3;
 
         .nail {
           position: absolute;
@@ -169,6 +171,9 @@
 
         .phase-info {
           width: 20%;
+          height: 4em;
+          margin: .5em 0;
+          position: relative;
 
           .unrevealed {
             font-size: 2.5em;
@@ -178,8 +183,16 @@
             }
           }
 
-          &:not(:first-child) {
-            border-left: solid 1px #ccccccaa;
+          &:not(:last-child) {
+            &:after {
+              content: "";
+              position: absolute;
+              top: .3em;
+              bottom: .3em;
+              right: 0;
+              width: 1px;
+              background-color: var(--seperator-color);
+            }
           }
         }
       }
@@ -323,6 +336,50 @@
         border-top: none;
         border-left: solid 3px $border_opaque;
         margin: 0;
+      }
+
+      .nft-plate {
+        height: unset;
+
+        .bg {
+          background-size: auto 100%;
+        }
+
+        .phases {
+          flex-wrap: wrap;
+
+          .phase-info {
+            width: 33.33%;
+            &:nth-child(3) {
+              &:after {
+                display: none;
+              }
+            }
+            &:nth-child(4), &:nth-child(5) {
+              width: 50%;
+
+              &:before {
+                content: "";
+                position: absolute;
+                left: .8em;
+                right: .8em;
+                top: -0.5em;
+                height: 1px;
+                background-color: var(--seperator-color);
+              }
+            }
+            &:nth-child(4) {
+              &:before {
+                right: 0;
+              }
+            }
+            &:nth-child(5) {
+              &:before {
+                left: 0;
+              }
+            }
+          }
+        }
       }
     }
 
