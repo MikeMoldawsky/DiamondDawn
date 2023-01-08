@@ -19,7 +19,7 @@ import { forgeApi, getTokenUriApi } from "api/contractApi";
 import { signMintApi } from "api/serverApi";
 import { isNoContractMode, showError } from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
-import { CONTRACTS, SYSTEM_STAGE } from "consts";
+import {ACTION_KEYS, CONTRACTS, SYSTEM_STAGE} from "consts";
 import {
   collectorSelector,
   loadCollectorByAddress,
@@ -109,7 +109,7 @@ const MintKey = () => {
   const onMintWindowClose = () => {
     actionDispatch(
       loadCollectorByAddress(account.address, contract),
-      "get-collector-by-address"
+      ACTION_KEYS.GET_COLLECTOR_BY_ADDRESS
     );
   };
 

@@ -5,10 +5,11 @@ import { collectorSelector } from "store/collectorReducer";
 import { uiSelector } from "store/uiReducer";
 import { isActionSuccessSelector } from "store/actionStatusReducer";
 import { useAccount } from "wagmi";
+import {ACTION_KEYS} from "consts";
 
 const useCanAccessDD = () => {
   const isCollectorFetched = useSelector(
-    isActionSuccessSelector("get-collector-by-address")
+    isActionSuccessSelector(ACTION_KEYS.GET_COLLECTOR_BY_ADDRESS)
   );
   const collector = useSelector(collectorSelector);
   const { privateSaleAuth } = useSelector(uiSelector);

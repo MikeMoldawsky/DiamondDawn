@@ -7,10 +7,11 @@ import ContractProvider from "containers/ContractProvider";
 import { useAccount } from "wagmi";
 import { tokensSelector } from "store/tokensReducer";
 import { useNavigate } from "react-router-dom";
+import {ACTION_KEYS} from "consts";
 
 const TokensProvider = ({ children, withLoader, isGated, goThrough }) => {
   const account = useAccount();
-  const isReady = useSelector(isActionFirstCompleteSelector("load-nfts"));
+  const isReady = useSelector(isActionFirstCompleteSelector(ACTION_KEYS.LOAD_NFTS));
   const tokens = useSelector(tokensSelector);
   const navigate = useNavigate();
 

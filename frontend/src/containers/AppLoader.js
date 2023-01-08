@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import useActionDispatch from "hooks/useActionDispatch";
 import useDDContract from "hooks/useDDContract";
 import { loadConfig, loadSystemStage } from "store/systemReducer";
-import { EVENTS } from "consts";
+import {ACTION_KEYS, EVENTS} from "consts";
 import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
@@ -78,7 +78,7 @@ const ChainAppLoader = () => {
       );
     },
     () => {
-      dispatch(clearActionStatus("load-nfts"));
+      dispatch(clearActionStatus(ACTION_KEYS.LOAD_NFTS));
       dispatch(setSelectedTokenId(-1));
     }
   );

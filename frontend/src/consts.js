@@ -127,3 +127,9 @@ export const CONTRACTS = {
 
 export const BLOCKED_COUNTRY_TEXT =
   "Diamond Dawn is not operational in your country";
+
+export const ACTION_KEYS = {
+  GET_CONTRACT: "get-contract",
+  GET_COLLECTOR_BY_ADDRESS: "get-collector-by-address",
+  LOAD_NFTS: "load-nfts",
+}
