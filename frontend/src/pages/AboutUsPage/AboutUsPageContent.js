@@ -78,7 +78,8 @@ export const IRLImpactText = () => (
     </p>
     <p>
       <b>
-        NFT technology will disrupt all traditional industries in remarkable ways.
+        NFT technology will disrupt all traditional industries in remarkable
+        ways.
       </b>
     </p>
     <div className="gia-report">
