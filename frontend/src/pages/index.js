@@ -54,8 +54,9 @@ const AppRoutes = () => {
         path="rebirth/:tokenId"
         element={
           <TokensProvider withLoader isGated>
-            <Suspense fallback={<SuspenseFallback />}></Suspense>
-            <RebirthPage />
+            <Suspense fallback={<SuspenseFallback />}>
+              <RebirthPage />
+            </Suspense>
           </TokensProvider>
         }
       />
