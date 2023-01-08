@@ -79,7 +79,7 @@ function RebirthPage() {
 
   return (
     <Page
-      pageName="collector"
+      pageName="rebirth"
       images={[getCDNImageUrl("/collector/collector-bg.png")]}
       waitForTokens
     >
