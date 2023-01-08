@@ -9,15 +9,14 @@ import { EVENTS } from "consts";
 import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
-import { loadCollectorByAddress } from "store/collectorReducer";
 import { isBlockedCountry, isNoContractMode, isVATCountry } from "utils";
-import ContractProvider from "containers/ContractProvider";
 import { getGeoLocationApi } from "api/externalApi";
 import { setSelectedTokenId, updateUiState } from "store/uiReducer";
+import CollectorLoader from "containers/CollectorLoader";
+import ContractProvider from "containers/ContractProvider";
 
-const ServerAppLoader = ({ contract }) => {
+const ServerAppLoader = () => {
   const dispatch = useDispatch();
-  const actionDispatch = useActionDispatch();
 
   const getGeoLocation = async () => {
     try {
@@ -41,19 +40,13 @@ const ServerAppLoader = ({ contract }) => {
     dispatch(loadConfig());
   }, []);
 
-  useOnConnect(
-    (address) => {
-      actionDispatch(
-        loadCollectorByAddress(contract, address),
-        "get-collector-by-address"
-      );
-    },
-    () => {
-      dispatch({ type: "RESET_STATE" });
-    }
+  return (
+    <CollectorLoader
+      onDisconnect={() => {
+        dispatch({ type: "RESET_STATE" });
+      }}
+    />
   );
-
-  return null;
 };
 
 const ChainAppLoader = () => {
@@ -93,16 +86,13 @@ const ChainAppLoader = () => {
   return null;
 };
 
-const ServerWithContractLoader = () => {
-  const contract = useDDContract();
-  return <ServerAppLoader contract={contract} />;
-};
-
-export default isNoContractMode()
-  ? ServerAppLoader
-  : () => (
+export default () => (
+  <>
+    <ServerAppLoader />
+    {!isNoContractMode() && (
       <ContractProvider>
-        <ServerWithContractLoader />
         <ChainAppLoader />
       </ContractProvider>
-    );
+    )}
+  </>
+);

@@ -108,7 +108,7 @@ const MintKey = () => {
 
   const onMintWindowClose = () => {
     actionDispatch(
-      loadCollectorByAddress(contract, account.address),
+      loadCollectorByAddress(account.address, contract),
       "get-collector-by-address"
     );
   };
