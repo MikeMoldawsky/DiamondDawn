@@ -25,6 +25,9 @@ module.exports = {
     ],
   },
   networks: {
+    mainnet: {
+      url: process.env.MAINNET_URL,
+    },
     hardhat: {
       accounts: {
         count: 350,
