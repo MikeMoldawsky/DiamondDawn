@@ -126,7 +126,7 @@ export const CONTRACTS = {
 };
 
 export const BLOCKED_COUNTRY_TEXT =
-  "Diamond Dawn is not operational in your country";
+  "Diamond Dawn is not available in your location.";
 
 export const ACTION_KEYS = {
   GET_CONTRACT: "get-contract",
