@@ -1,4 +1,5 @@
 @import "css/varsNEW";
+@import "css/animations";
 
 .page.collector-page .nfts {
   display: flex;
@@ -15,8 +16,12 @@
   }
 
   .layout-box {
+    position: absolute;
     justify-content: flex-start;
     $nftBorderColor: white;
+    opacity: 0;
+    animation: fadeIn .25s ease-in forwards;
+    animation-delay: .4s;
 
     .border-box {
       position: absolute;
@@ -100,7 +105,7 @@
       flex-grow: 2;
       padding: 1.5em 3em 2.5em;
       animation: showCertificate 0.25s ease-out forwards;
-      animation-delay: 0.75s;
+      animation-delay: 1s;
       opacity: 0;
       z-index: -1;
       background-color: #1f1f1f;
@@ -233,20 +238,24 @@
   }
 
   .gallery {
-    justify-content: space-around;
+    justify-content: flex-start;
     flex-wrap: wrap;
-    padding: 6.5% 6.5% 0;
+    padding: 0 5%;
     width: 100%;
 
     .gallery-item {
-      width: 27.5%;
-      margin-bottom: 6.5%;
+      width: 33.33%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       position: relative;
+      transition: opacity .5s ease-out;
+
+      .diamond-thumbnail {
+        width: 75%;
+      }
 
       .react-player {
         width: 100%;
@@ -288,6 +297,14 @@
       margin: 1em 0 3em;
       font-size: $font20px;
       max-width: 32em;
+    }
+  }
+
+  &.has-selected {
+    .gallery {
+      .gallery-item {
+        opacity: 0;
+      }
     }
   }
 

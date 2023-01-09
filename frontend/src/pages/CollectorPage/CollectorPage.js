@@ -19,12 +19,15 @@ import { useMobileOrTablet } from "hooks/useMediaQueries";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
 import CollectorLoader from "containers/CollectorLoader";
+import {tokensSelector} from "store/tokensReducer";
+import size from "lodash/size"
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
   useNoScrollView(isMobile);
 
   const { systemStage } = useSelector(systemSelector);
+  const tokens = useSelector(tokensSelector);
   const { selectedTokenId } = useSelector(uiSelector);
   const account = useAccount();
   const ensName = useEnsName({ address: account?.address });
@@ -61,6 +64,7 @@ const CollectorPage = () => {
           <Box
             className={classNames("main-box", {
               "nft-selected": selectedTokenId > -1,
+              "nfts-gallery": size(tokens) > 0 && selectedTokenId === -1,
             })}
           >
             <CollectorLoader />
