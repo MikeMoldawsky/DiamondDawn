@@ -79,7 +79,7 @@ describe("DiamondDawn", () => {
       ).to.be.revertedWith(`Cost is: ${(PRICE * 2).toString()}`);
 
       await expect(
-        dd.forgeWithPartner(adminSig, 2, {
+        dd.forgeWithPa_rtner(adminSig, 2, {
           value: PRICE_MARRIAGE,
         })
       ).to.be.revertedWith(`Cost is: ${(PRICE_MARRIAGE * 2).toString()}`);
