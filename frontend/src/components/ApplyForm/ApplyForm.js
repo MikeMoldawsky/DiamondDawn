@@ -55,8 +55,6 @@ const ApplyForm = ({ onSuccess, onError }) => {
   const { geoLocation } = useSelector(uiSelector);
 
   const applyToDD = async () => {
-    if (geoLocation?.blocked) return;
-
     try {
       const data = getValues();
       const inviteId =
@@ -213,8 +211,6 @@ const ApplyForm = ({ onSuccess, onError }) => {
             actionKey="Request Invitation"
             className="gold"
             isLoading={disabled}
-            disabled={geoLocation?.blocked}
-            title={geoLocation?.blocked ? BLOCKED_COUNTRY_TEXT : ""}
             onClick={handleSubmit(signAndApply)}
             sfx="action"
           >
