@@ -6,8 +6,6 @@
 const hre = require("hardhat");
 
 async function verifyContract(address, args) {
-
-
   const taskArgs = { address: address, constructorArguments: args };
   try {
     console.log("Verifying contract", taskArgs);

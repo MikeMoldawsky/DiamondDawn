@@ -154,11 +154,9 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         isLocked = true;
     }
 
-    function eruption(Certificate[] calldata diamonds)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-        mineOverflow(diamonds.length)
-    {
+    function eruption(
+        Certificate[] calldata diamonds
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) mineOverflow(diamonds.length) {
         for (uint i = 0; i < diamonds.length; i++) {
             _mine.push(diamonds[i]);
         }
