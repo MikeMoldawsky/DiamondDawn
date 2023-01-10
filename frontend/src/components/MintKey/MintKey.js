@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   loadMaxEntrance,
   loadMintPrice,
-  loadTokenCount,
   systemSelector,
 } from "store/systemReducer";
 import {
@@ -39,7 +38,6 @@ const MintKey = () => {
     useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
-  const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
   const tokens = useSelector(tokensSelector);
@@ -85,7 +83,6 @@ const MintKey = () => {
   useEffect(() => {
     dispatch(loadMintPrice(contract, geoLocation));
     dispatch(loadMaxEntrance(contract));
-    dispatch(loadTokenCount(mineContract));
 
     const unwatch = watchTokenMinedBy(
       contract,

@@ -42,6 +42,8 @@ export const SHAPE = {
 
 export const EVENTS = {
   StageChanged: "StageChanged",
+  Transfer: "Transfer",
+  Forge: "Forge",
 };
 
 export const DIAMOND_DAWN_TWITTER_URL = "https://twitter.com/DiamondDawnNFT";

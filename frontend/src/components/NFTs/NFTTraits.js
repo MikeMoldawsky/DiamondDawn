@@ -23,9 +23,13 @@ const NFTTraits = ({ traits }) => {
           key={`trait-${kebabCase(trait_type)}-${i}`}
           className="center-aligned-row trait"
         >
-          <span>{trait_type}</span>
+          <div className="bg">
+            <div className="nail" />
+            <div className="nail" />
+          </div>
+          <span className="trait-name">{trait_type}</span>
           <span className="underline" />
-          <span>{formatTraitValue(trait_type, value)}</span>
+          <span className="trait-value">{formatTraitValue(trait_type, value)}</span>
         </div>
       ))}
     </div>

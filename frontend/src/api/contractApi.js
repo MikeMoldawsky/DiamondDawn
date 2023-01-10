@@ -39,12 +39,6 @@ export const getMaxEntranceApi = async (contract) => {
   return await contract.MAX_ENTRANCE();
 };
 
-export const getTokenCountApi = async (mineContract) => {
-  const events = await mineContract.queryFilter("Forge");
-
-  return events.length;
-};
-
 // PROCESS
 export const forgeApi = async (
   contract,

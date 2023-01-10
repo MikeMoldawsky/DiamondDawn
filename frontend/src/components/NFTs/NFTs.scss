@@ -71,14 +71,52 @@
     }
 
     .certificate {
-      margin-top: 2em;
-
       .traits {
         width: 50%;
 
         .trait {
           line-height: 1.5em;
           margin-bottom: 0.5em;
+          color: white;
+          position: relative;
+          padding: .4em 1.5em;
+
+          .bg {
+            background: black url($CDN_URL + "/images/collector/nft-plate.jpg")
+            no-repeat center center;
+            background-size: 100% auto;
+            opacity: 0.3;
+
+            .nail {
+              position: absolute;
+              $nailMargin: 0.25em;
+              $nailSize: 0.8em;
+              width: $nailSize;
+              height: $nailSize;
+              background: url($CDN_URL + "/images/collector/plate-nail.png")
+              no-repeat center center;
+
+              &:nth-child(1) {
+                top: calc(50% - 0.4em);
+                left: $nailMargin;
+              }
+              &:nth-child(2) {
+                top: calc(50% - 0.4em);
+                right: $nailMargin;
+              }
+            }
+          }
+
+          .trait-name {
+            color: $gold;
+            font-size: .9em;
+            font-weight: 500;
+          }
+
+          .trait-value {
+            color: white;
+            font-weight: 500;
+          }
 
           .underline {
             position: relative;
@@ -88,7 +126,7 @@
             margin: 0 0.25em;
 
             &:after {
-              color: $gold;
+              color: white;
               content: ".........................................................................";
               letter-spacing: 0.1em;
               position: absolute;
@@ -139,9 +177,11 @@
         background: black url($CDN_URL + "/images/collector/nft-plate.jpg")
           no-repeat center center;
         background-size: 100% auto;
-        opacity: 0.3;
+        opacity: 0.2;
+        filter: invert(1);
 
         .nail {
+          filter: invert(1);
           position: absolute;
           $nailMargin: 0.125em;
           $nailSize: 0.8em;
@@ -180,11 +220,20 @@
           position: relative;
 
           .unrevealed {
-            font-size: 2.5em;
+            font-size: 2em;
 
             .react-player {
               width: 2.5em;
             }
+          }
+
+          .phase-title {
+            color: $gold;
+            font-size: 1.1em;
+          }
+
+          .phase-token-count {
+
           }
 
           &:not(:last-child) {

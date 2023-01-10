@@ -6,10 +6,12 @@ import {
   getMintPriceApi,
   getMintPriceMarriageApi,
   getSystemStageApi,
-  getTokenCountApi,
 } from "api/contractApi";
-import { CONTRACTS, SYSTEM_STAGE } from "consts";
+import {CONTRACTS, EVENTS, SYSTEM_STAGE} from "consts";
 import { isNoContractMode } from "utils";
+import get from "lodash/get"
+import size from "lodash/size"
+import debounce from "lodash/debounce"
 
 const INITIAL_STATE = {
   ddContractInfo: null,
@@ -42,9 +44,26 @@ export const loadMaxEntrance = (contract) => async (dispatch) => {
   dispatch(updateState({ maxEntrance }));
 };
 
-export const loadTokenCount = (mineContract) => async (dispatch) => {
-  const tokensMinted = await getTokenCountApi(mineContract);
-  dispatch(updateState({ tokensMinted }));
+const updateTokensMinted = (addMinted) => ({
+  type: "SYSTEM.TOKENS_MINTED",
+  payload: { count: addMinted },
+})
+
+export const watchTokensMinted = (mineContract) => async (dispatch) => {
+  let addMinted = 0
+
+  const updateStore = debounce(() => {
+    console.log("Forge adding", addMinted)
+    dispatch(updateTokensMinted(addMinted))
+    addMinted = 0
+  }, 100)
+
+  // listen to future events
+  mineContract.on(EVENTS.Forge, (event) => {
+    console.log("Forge raised", event)
+    addMinted++;
+    updateStore()
+  })
 };
 
 export const loadConfig = () => async (dispatch) => {
@@ -84,6 +103,10 @@ export const contractSelector =
 export const systemReducer = makeReducer(
   {
     "SYSTEM.UPDATE_STATE": reduceUpdateFull,
+    "SYSTEM.TOKENS_MINTED": (state, action) => ({
+      ...state,
+      tokensMinted: state.tokensMinted + get(action, 'payload.count', 0)
+    })
   },
   INITIAL_STATE,
   false
