@@ -56,7 +56,7 @@ export const CountdownWithText = ({ className, text, ...props }) => {
   );
 };
 
-export const SystemCountdown = ({ text, onComplete, ...props }) => {
+export const SystemCountdown = ({ className, text, onComplete, ...props }) => {
   const [overridePhase, setOverridePhase] = useState(null)
   const { countdownPhase, countdownText, ...countdownProps } = useSystemCountdown(overridePhase);
   const [playMintOpenSFX] = useSound(mintOpenSFX, { volume: 1, interrupt: false });
@@ -91,7 +91,7 @@ export const SystemCountdown = ({ text, onComplete, ...props }) => {
       text={text || countdownText}
       {...countdownProps}
       {...props}
-      className={classNames({ 'complete': isComplete })}
+      className={classNames(className, { 'complete': isComplete })}
       onComplete={onCountdownComplete}
     />
   );
