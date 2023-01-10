@@ -32,6 +32,8 @@ import {
   uiSelector,
 } from "store/uiReducer";
 import Loading from "components/Loading";
+import mintCompleteSFX from "assets/audio/mint-complete.mp3";
+import useSound from "use-sound";
 
 const MintKey = () => {
   const { systemStage, isActive, mintPrice, maxEntrance, tokensMinted } =
@@ -46,6 +48,7 @@ const MintKey = () => {
   const [isMinting, setIsMinting] = useState(false);
   const [isForging, setIsForging] = useState(false);
   const { geoLocation } = useSelector(uiSelector);
+  const [playMintCompleteSFX] = useSound(mintCompleteSFX);
 
   const maxTokenId = max(map(tokens, "id"));
   const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
@@ -74,6 +77,7 @@ const MintKey = () => {
       dispatch(setTokenUri(tokenId, tokenUri));
       dispatch(setSelectedTokenId(tokenId, true));
       setIsMinting(false);
+      playMintCompleteSFX()
       dispatch(updateCollector({ minted: true }));
     } catch (e) {
       showError(e);
@@ -122,7 +126,7 @@ const MintKey = () => {
       canMint={canMint}
       mint={mint}
       expiresAt={collector.mintWindowClose}
-      onCountdownEnd={onMintWindowClose}
+      onMintWindowClose={onMintWindowClose}
       forceButtonLoading={isMinting}
       onMintError={() => {
         setIsMinting(false);

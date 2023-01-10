@@ -48,7 +48,7 @@ const MintKeyView = ({
   canMint,
   mint,
   expiresAt,
-  onCountdownEnd,
+  onMintWindowClose,
   forceButtonLoading,
   onMintError,
 }) => {
@@ -113,6 +113,7 @@ const MintKeyView = ({
         <ActionButton
           actionKey="MintKey"
           className="gold lg mint-button"
+          sfx="action"
           disabled={!canMint || !isFunction(mint) || geoLocation?.blocked}
           title={geoLocation?.blocked ? BLOCKED_COUNTRY_TEXT : ""}
           isLoading={forceButtonLoading}
@@ -140,7 +141,7 @@ const MintKeyView = ({
           seconds: 0,
         }}
         text="Your opportunity to mint expires in"
-        onComplete={onCountdownEnd}
+        onComplete={onMintWindowClose}
       />
     ) : (
       <SystemCountdown className="timer-box" />

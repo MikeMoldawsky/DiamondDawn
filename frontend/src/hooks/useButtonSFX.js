@@ -23,7 +23,7 @@ const getSFX = (name) => {
 const useButtonSFX = (onClick, sfx, { disabled, unmuteDelay = 0 } = {}) => {
   const { muted, explicitMute } = useSelector(uiSelector);
   const [playHoverSFX, { stop: stopHoverSFX }] = useSound(hoverSFX);
-  const [playClickSFX] = useSound(getSFX(sfx));
+  const [playClickSFX] = useSound(getSFX(sfx), { volume: 1 });
   const dispatch = useDispatch();
 
   const playSFX = sfx && !disabled && !(muted && explicitMute);

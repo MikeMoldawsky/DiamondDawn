@@ -1,11 +1,13 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Countdown from "react-countdown";
 import "./Countdown.scss";
 import classNames from "classnames";
-import useSystemCountdown from "hooks/useSystemCountdown";
+import useSystemCountdown, {COUNTDOWN_PHASES} from "hooks/useSystemCountdown";
 import padStart from "lodash/padStart";
+import useSound from "use-sound";
+import mintOpenSFX from "assets/audio/mint-open.mp3";
 
-const CountdownComp = ({ date, defaultParts, onComplete }) => {
+const CountdownComp = ({ className, date, defaultParts, onComplete }) => {
   const renderPart = (caption, value) => {
     return (
       <div className="center-aligned-column countdown-part">
@@ -38,7 +40,7 @@ const CountdownComp = ({ date, defaultParts, onComplete }) => {
 
   if (date)
     return (
-      <Countdown date={date} renderer={renderer} onComplete={onComplete} />
+      <Countdown className={className} date={date} renderer={renderer} onComplete={onComplete} />
     );
   if (defaultParts) return renderer(defaultParts);
 
@@ -54,14 +56,43 @@ export const CountdownWithText = ({ className, text, ...props }) => {
   );
 };
 
-export const SystemCountdown = ({ text, ...props }) => {
-  const { countdownText, ...countdownProps } = useSystemCountdown();
+export const SystemCountdown = ({ text, onComplete, ...props }) => {
+  const [overridePhase, setOverridePhase] = useState(null)
+  const { countdownPhase, countdownText, ...countdownProps } = useSystemCountdown(overridePhase);
+  const [playMintOpenSFX] = useSound(mintOpenSFX, { volume: 1, interrupt: false });
+  const [isComplete, setIsComplete] = useState(false)
+
+  useEffect(() => {
+    if (isComplete) {
+      setTimeout(() => {
+        setOverridePhase(countdownPhase + 1)
+        setIsComplete(false)
+      }, 3000)
+    }
+  }, [isComplete])
+
+  useEffect(() => {
+    if (overridePhase && overridePhase === countdownPhase) {
+      setOverridePhase(null)
+    }
+  }, [countdownPhase, overridePhase])
+
+  // console.log({ countdownPhase })
+  const onCountdownComplete = () => {
+    if (countdownPhase === COUNTDOWN_PHASES.BEFORE_MINT) {
+      playMintOpenSFX()
+    }
+    setIsComplete(true)
+    onComplete && onComplete()
+  }
 
   return (
     <CountdownWithText
       text={text || countdownText}
       {...countdownProps}
       {...props}
+      className={classNames({ 'complete': isComplete })}
+      onComplete={onCountdownComplete}
     />
   );
 };
