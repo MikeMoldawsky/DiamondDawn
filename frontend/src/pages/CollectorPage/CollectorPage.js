@@ -24,8 +24,6 @@ import size from "lodash/size"
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
-  useNoScrollView(isMobile);
-
   const { systemStage } = useSelector(systemSelector);
   const tokens = useSelector(tokensSelector);
   const { selectedTokenId } = useSelector(uiSelector);
@@ -34,6 +32,11 @@ const CollectorPage = () => {
   const navigate = useNavigate();
   const collector = useSelector(collectorSelector);
   const dispatch = useDispatch();
+  const sizeTokens = size(tokens)
+  const isNftGallery = sizeTokens > 0 && selectedTokenId === -1
+  const galleryRows = isMobile ? sizeTokens : Math.ceil(sizeTokens / 3)
+
+  useNoScrollView(isMobile || (isNftGallery && galleryRows > 1));
 
   useMusic("collector.mp3");
 
@@ -46,6 +49,12 @@ const CollectorPage = () => {
       return <NFTs />;
     return <Invite />;
   };
+
+  const getGalleryVWHeight = () => galleryRows * (isMobile ? 90 : 30)
+
+  const mainBoxStyles = isNftGallery ? {
+    height: `${getGalleryVWHeight()}vw`
+  }  : {}
 
   return (
     <Page
@@ -64,8 +73,9 @@ const CollectorPage = () => {
           <Box
             className={classNames("main-box", {
               "nft-selected": selectedTokenId > -1,
-              "nfts-gallery": size(tokens) > 0 && selectedTokenId === -1,
+              "nfts-gallery": isNftGallery,
             })}
+            style={mainBoxStyles}
           >
             <CollectorLoader />
             {renderContent()}
