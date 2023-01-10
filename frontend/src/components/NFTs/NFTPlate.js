@@ -38,7 +38,8 @@ const NFTPlate = () => {
 
   return (
     <div className="nft-plate">
-      <div className="bg">
+      <div className="bg bg-plate" />
+      <div className="bg bg-nails">
         <div className="nail" />
         <div className="nail" />
         <div className="nail" />

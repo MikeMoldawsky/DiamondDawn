@@ -70,8 +70,50 @@
       height: 100%;
     }
 
+    .bg-plate {
+      background: black url($CDN_URL + "/images/collector/nft-plate.jpg")
+      no-repeat center center;
+      background-size: 100% 100%;
+      opacity: 0.2;
+      z-index: -2;
+    }
+
+    .bg-nails {
+      opacity: .5;
+      z-index: -1;
+
+      .nail {
+        position: absolute;
+        $nailMargin: 0.35rem;
+        $nailSize: 0.5rem;
+        width: $nailSize;
+        height: $nailSize;
+        background: url($CDN_URL + "/images/collector/plate-nail.png")
+        no-repeat center center;
+        background-size: 100% 100%;
+
+        &:nth-child(1) {
+          top: $nailMargin;
+          left: $nailMargin;
+        }
+        &:nth-child(2) {
+          top: $nailMargin;
+          right: $nailMargin;
+        }
+        &:nth-child(3) {
+          bottom: $nailMargin;
+          right: $nailMargin;
+        }
+        &:nth-child(4) {
+          bottom: $nailMargin;
+          left: $nailMargin;
+        }
+      }
+    }
+
     .certificate {
       .traits {
+        margin-bottom: 2em;
         width: 50%;
 
         .trait {
@@ -81,29 +123,9 @@
           position: relative;
           padding: .4em 1.5em;
 
-          .bg {
-            background: black url($CDN_URL + "/images/collector/nft-plate.jpg")
-            no-repeat center center;
-            background-size: 100% auto;
-            opacity: 0.3;
-
+          .bg-nails {
             .nail {
-              position: absolute;
-              $nailMargin: 0.25em;
-              $nailSize: 0.8em;
-              width: $nailSize;
-              height: $nailSize;
-              background: url($CDN_URL + "/images/collector/plate-nail.png")
-              no-repeat center center;
-
-              &:nth-child(1) {
-                top: calc(50% - 0.4em);
-                left: $nailMargin;
-              }
-              &:nth-child(2) {
-                top: calc(50% - 0.4em);
-                right: $nailMargin;
-              }
+              top: calc(50% - 0.25rem);
             }
           }
 
@@ -173,40 +195,8 @@
       padding: 0 0.5em;
       --seperator-color: #caa87555;
 
-      .bg {
-        background: black url($CDN_URL + "/images/collector/nft-plate.jpg")
-          no-repeat center center;
-        background-size: 100% auto;
-        opacity: 0.2;
+      .bg-plate {
         filter: invert(1);
-
-        .nail {
-          filter: invert(1);
-          position: absolute;
-          $nailMargin: 0.125em;
-          $nailSize: 0.8em;
-          width: $nailSize;
-          height: $nailSize;
-          background: url($CDN_URL + "/images/collector/plate-nail.png")
-            no-repeat center center;
-
-          &:nth-child(1) {
-            top: $nailMargin;
-            left: $nailMargin;
-          }
-          &:nth-child(2) {
-            top: $nailMargin;
-            right: $nailMargin;
-          }
-          &:nth-child(3) {
-            bottom: $nailMargin;
-            right: $nailMargin;
-          }
-          &:nth-child(4) {
-            bottom: $nailMargin;
-            left: $nailMargin;
-          }
-        }
       }
 
       .phases {
@@ -428,53 +418,23 @@
         }
 
         .content-box {
-          padding: 2em 1.5em 2.5em;
+          padding: 2em 1.5em 1.5em;
           border-top: none;
           border-left: solid 3px $border_opaque;
           margin: 0;
         }
 
-        .nft-plate {
-          height: unset;
-
-          .bg {
-            background-size: auto 100%;
+        .certificate {
+          .traits {
+            width: 66.6%;
           }
+        }
+
+        .nft-plate {
+          padding: 0;
 
           .phases {
-            flex-wrap: wrap;
-
-            .phase-info {
-              width: 33.33%;
-              &:nth-child(3) {
-                &:after {
-                  display: none;
-                }
-              }
-              &:nth-child(4), &:nth-child(5) {
-                width: 50%;
-
-                &:before {
-                  content: "";
-                  position: absolute;
-                  left: .8em;
-                  right: .8em;
-                  top: -0.5em;
-                  height: 1px;
-                  background-color: var(--seperator-color);
-                }
-              }
-              &:nth-child(4) {
-                &:before {
-                  right: 0;
-                }
-              }
-              &:nth-child(5) {
-                &:before {
-                  left: 0;
-                }
-              }
-            }
+            font-size: .725em;
           }
         }
       }
