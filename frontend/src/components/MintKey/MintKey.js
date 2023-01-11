@@ -31,6 +31,7 @@ import {
   setSelectedTokenId,
   setShouldIgnoreTokenTransferWatch,
   uiSelector,
+  updateUiState,
 } from "store/uiReducer";
 import Loading from "components/Loading";
 import usePollingEffect from "hooks/usePollingEffect";
@@ -78,7 +79,10 @@ const MintKey = () => {
       mintPrice.mul(numNfts),
       signature
     );
-    setIsForging(true);
+    dispatch(updateUiState({ collectorBoxAnimation: "close" }));
+    setTimeout(() => {
+      setIsForging(true);
+    }, 500);
     return await tx.wait();
   };
 
@@ -94,6 +98,12 @@ const MintKey = () => {
       showError(e);
     }
   };
+
+  useEffect(() => {
+    if (isForging) {
+      dispatch(updateUiState({ collectorBoxAnimation: "" }));
+    }
+  }, [isForging]);
 
   useEffect(() => {
     dispatch(loadMintPrice(contract, geoLocation));

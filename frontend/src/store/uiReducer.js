@@ -22,6 +22,7 @@ const INITIAL_STATE = {
   copyNotification: null,
   geoLocation: null,
   sideMenuOpen: false,
+  collectorBoxAnimation: "",
 };
 
 export const setSelectedTokenId =
