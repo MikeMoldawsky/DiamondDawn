@@ -5,7 +5,7 @@ import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loadMaxEntrance,
-  loadMintPrice,
+  loadMintPrice, loadTotalSupply,
   systemSelector,
 } from "store/systemReducer";
 import {
@@ -16,9 +16,9 @@ import {
 import { useAccount, useProvider } from "wagmi";
 import { forgeApi, getTokenUriApi } from "api/contractApi";
 import { signMintApi } from "api/serverApi";
-import { calcTokensMinted, isNoContractMode, showError } from "utils";
+import { isNoContractMode, showError } from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
-import { ACTION_KEYS, CONTRACTS, SYSTEM_STAGE } from "consts";
+import { ACTION_KEYS, SYSTEM_STAGE } from "consts";
 import {
   collectorSelector,
   loadCollectorByAddress,
@@ -42,7 +42,6 @@ const MintKey = () => {
     systemStage,
     isActive,
     isMintOpen,
-    config,
   } = useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
@@ -105,18 +104,16 @@ const MintKey = () => {
     };
   }, []);
 
-  const [offset, setOffset] = useState(config.offset);
   usePollingEffect(
     () => {
-      setOffset(calcTokensMinted(tokensMinted, config));
+      dispatch(loadTotalSupply(contract))
     },
     [],
     {
-      interval: 10_000,
+      interval: 3_000,
       stopPolling: !canMint,
     }
   );
-  console.log({ offset, canMint });
 
   useEffect(() => {
     if (canMint && collector?.approved && !collector?.mintWindowStart) {
@@ -139,7 +136,7 @@ const MintKey = () => {
     <MintKeyView
       mintPrice={mintPrice}
       maxEntrance={maxEntrance}
-      tokensMinted={canMint ? offset : 0}
+      tokensMinted={canMint ? tokensMinted : 0}
       canMint={canMint}
       mint={mint}
       expiresAt={collector.mintWindowClose}

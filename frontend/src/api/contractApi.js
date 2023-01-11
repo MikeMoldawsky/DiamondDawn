@@ -105,3 +105,13 @@ export const tokenIdToURI = async (contract, tokenId, isBurned) => {
     tokenUri: { ...tokenUri, isBurned },
   };
 };
+
+export const getTotalSupplyApi = async (contract) => {
+  try {
+    const totalSupply = await contract.totalSupply();
+    return totalSupply.toNumber()
+  } catch (e) {
+    logApiError(e, "getTotalSupplyApi");
+    return undefined;
+  }
+};
