@@ -111,8 +111,8 @@ export const updateStageTime = (timestamp) => async (dispatch) => {
   dispatch(loadConfig());
 };
 
-export const toggleIsMintOpen = (timestamp) => async (dispatch) => {
-  await toggleIsMintOpenApi(timestamp);
+export const toggleIsMintOpen = (timestamp, offset) => async (dispatch) => {
+  await toggleIsMintOpenApi(timestamp, offset);
   dispatch(loadConfig());
 };
 

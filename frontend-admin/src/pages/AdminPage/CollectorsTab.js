@@ -166,6 +166,7 @@ const INVITATION_COLUMNS = [
     type: "dateTime",
     width: 180,
     hideIfPending: true,
+    editable: true,
   },
   {
     field: "minted",
