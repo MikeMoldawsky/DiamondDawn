@@ -46,7 +46,6 @@
     color: white;
     position: relative;
     flex-grow: 2;
-    padding: 0 1.25em;
     justify-content: space-between;
 
     .center-aligned-row {
@@ -90,6 +89,7 @@
     align-items: stretch;
     justify-content: space-evenly;
     padding: 1em 0;
+    max-width: 20vw;
 
     .text-comment {
       font-size: 0.85em;
@@ -205,16 +205,6 @@
     .invitations-status {
       margin-top: 2em;
       font-size: 1.5em;
-    }
-  }
-
-  &.minting {
-    .mint-box {
-      padding: 0;
-    }
-
-    .timer-box {
-      max-width: 20vw;
     }
   }
 }

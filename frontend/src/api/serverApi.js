@@ -49,6 +49,15 @@ export const getConfigApi = async () => {
   }
 };
 
+export const getIsMintOpenApi = async (address) => {
+  try {
+    const { data } = await axios.post(`/api/mint_open`, { address });
+    return data;
+  } catch (e) {
+    return false;
+  }
+};
+
 // COLLECTOR & INVITATION
 export const getInviteApi = async (inviteId) => {
   const res = await axios.post(`/api/get_invite`, { inviteId });

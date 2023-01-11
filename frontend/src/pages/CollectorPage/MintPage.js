@@ -21,8 +21,7 @@ import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
 import CollectorLoader from "containers/CollectorLoader";
 import {tokensSelector} from "store/tokensReducer";
 import size from "lodash/size"
-import useSound from "use-sound";
-import mintCompleteSFX from "assets/audio/mint-complete.mp3";
+import useOnConnect from "hooks/useOnConnect";
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
@@ -37,21 +36,14 @@ const CollectorPage = () => {
   const sizeTokens = size(tokens)
   const isNftGallery = sizeTokens > 0 && selectedTokenId === -1
   const galleryRows = isMobile ? sizeTokens : Math.ceil(sizeTokens / 3)
-  const [playMintCompleteSFX] = useSound(mintCompleteSFX);
 
   useNoScrollView(isMobile || (isNftGallery && galleryRows > 1));
 
   useMusic("collector.mp3");
 
-  useEffect(() => {
-    if (collector?.minted) {
-      playMintCompleteSFX()
-    }
-  }, [collector?.minted])
-
-  useEffect(() => {
-    dispatch(loadIsMintOpen())
-  }, [])
+  useOnConnect((address) => {
+    dispatch(loadIsMintOpen(address))
+  })
 
   const renderContent = () => {
     if (

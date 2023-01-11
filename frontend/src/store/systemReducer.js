@@ -1,6 +1,6 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import { BigNumber } from "ethers";
-import { getConfigApi, getContractInfoApi } from "api/serverApi";
+import {getConfigApi, getContractInfoApi, getIsMintOpenApi} from "api/serverApi";
 import {
   getMaxEntranceApi,
   getMintPriceApi,
@@ -10,7 +10,7 @@ import {
 import {CONTRACTS, EVENTS, SYSTEM_STAGE} from "consts";
 import { isNoContractMode } from "utils";
 import get from "lodash/get"
-import size from "lodash/size"
+import isEmpty from "lodash/isEmpty"
 import debounce from "lodash/debounce"
 
 const INITIAL_STATE = {
@@ -21,6 +21,7 @@ const INITIAL_STATE = {
   mintPrice: BigNumber.from(0),
   maxEntrance: 333,
   tokensMinted: 0,
+  isMintOpen: false,
 };
 
 const updateState = (payload) => ({
@@ -71,6 +72,14 @@ export const loadConfig = () => async (dispatch) => {
   dispatch(updateState({ config }));
 };
 
+export const loadIsMintOpen = (address) => async (dispatch) => {
+  const { isMintOpen, stageTime } = await getIsMintOpenApi(address);
+  dispatch({
+    type: "SYSTEM.SET_IS_MINT_OPEN",
+    payload: { isMintOpen, stageTime },
+  });
+};
+
 export const loadContractInfo = () => async (dispatch) => {
   if (isNoContractMode()) return;
 
@@ -90,6 +99,11 @@ export const isStageActiveSelector = (stage) => (state) => {
   return systemStage === stage && isActive;
 };
 
+export const canMintSelector = (state) => {
+  const { systemStage, isActive } = systemSelector(state);
+  return systemStage === SYSTEM_STAGE.KEY && isActive && isEmpty(process.env.REACT_APP_WL);
+};
+
 export const isMintOpenSelector = isStageActiveSelector(SYSTEM_STAGE.KEY);
 
 export const contractSelector =
@@ -103,6 +117,17 @@ export const contractSelector =
 export const systemReducer = makeReducer(
   {
     "SYSTEM.UPDATE_STATE": reduceUpdateFull,
+    "SYSTEM.SET_IS_MINT_OPEN": (state, action) => {
+      const { isMintOpen, stageTime } = action.payload
+      return {
+        ...state,
+        isMintOpen,
+        config: {
+          ...state.config,
+          stageTime
+        }
+      }
+    },
     "SYSTEM.TOKENS_MINTED": (state, action) => ({
       ...state,
       tokensMinted: state.tokensMinted + get(action, 'payload.count', 0)

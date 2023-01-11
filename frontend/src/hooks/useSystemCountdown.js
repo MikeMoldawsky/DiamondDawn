@@ -12,13 +12,13 @@ export const COUNTDOWN_PHASES = {
   STAGE_COOLDOWN: 3,
 }
 
-const getCountdownPhase = (systemStage, isActive) => {
+const getCountdownPhase = (systemStage, isActive, isMintOpen) => {
   if (
     (systemStage === SYSTEM_STAGE.DAWN && !isActive) ||
     systemStage === SYSTEM_STAGE.COMPLETED
   )
     return COUNTDOWN_PHASES.NONE;
-  if (systemStage < SYSTEM_STAGE.KEY) return COUNTDOWN_PHASES.BEFORE_MINT;
+  if (systemStage < SYSTEM_STAGE.KEY || !isMintOpen) return COUNTDOWN_PHASES.BEFORE_MINT;
   if (systemStage === SYSTEM_STAGE.KEY && isActive) return COUNTDOWN_PHASES.PRIVATE_SALE;
 
   return isActive
@@ -49,20 +49,23 @@ const getSystemCountdownText = (phase, systemStage) => {
   }
 };
 
-const useSystemCountdown = (overridePhase) => {
-  const { systemStage, isActive, config } = useSelector(systemSelector);
-  const countdownPhase = useMemo(() => getCountdownPhase(systemStage, isActive), [systemStage, isActive])
+const useSystemCountdown = () => {
+  const { systemStage, isActive, config, isMintOpen } = useSelector(systemSelector);
   const endTime = config.stageTime;
+  const countdownPhase = useMemo(
+    () => getCountdownPhase(systemStage, isActive, isMintOpen),
+    [systemStage, isActive, endTime]
+  )
 
   return useMemo(() => {
-    const {countdownText, defaultParts} = getSystemCountdownText(overridePhase || countdownPhase, systemStage);
+    const {countdownText, defaultParts} = getSystemCountdownText(countdownPhase, systemStage);
     return {
       countdownPhase,
       countdownText,
-      date: overridePhase ? null : endTime,
+      date: endTime,
       defaultParts: defaultParts || { days: 24, hours: 3, minutes: 0, seconds: 0 },
     };
-  }, [countdownPhase, overridePhase, endTime]);
+  }, [countdownPhase, endTime]);
 };
 
 export default useSystemCountdown;

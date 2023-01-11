@@ -32,11 +32,9 @@ import {
   uiSelector,
 } from "store/uiReducer";
 import Loading from "components/Loading";
-import mintCompleteSFX from "assets/audio/mint-complete.mp3";
-import useSound from "use-sound";
 
 const MintKey = () => {
-  const { systemStage, isActive, mintPrice, maxEntrance, tokensMinted } =
+  const { mintPrice, maxEntrance, tokensMinted, systemStage, isActive, isMintOpen } =
     useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
@@ -48,13 +46,12 @@ const MintKey = () => {
   const [isMinting, setIsMinting] = useState(false);
   const [isForging, setIsForging] = useState(false);
   const { geoLocation } = useSelector(uiSelector);
-  const [playMintCompleteSFX] = useSound(mintCompleteSFX);
 
   const maxTokenId = max(map(tokens, "id"));
-  const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
+  const canMint = systemStage === SYSTEM_STAGE.KEY && isActive && isMintOpen;
 
   const mint = async (numNfts) => {
-    if (geoLocation?.blocked) return;
+    if (geoLocation?.blocked || !canMint) return;
 
     setIsMinting(true);
     const { signature } = await signMintApi(collector._id, account.address);
@@ -77,7 +74,6 @@ const MintKey = () => {
       dispatch(setTokenUri(tokenId, tokenUri));
       dispatch(setSelectedTokenId(tokenId, true));
       setIsMinting(false);
-      playMintCompleteSFX()
       dispatch(updateCollector({ minted: true }));
     } catch (e) {
       showError(e);

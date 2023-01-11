@@ -1,4 +1,6 @@
 const ConfigModel = require("../models/ConfigModel");
+const split = require("lodash/split")
+const includes = require("lodash/includes")
 
 async function getConfig() {
   try {
@@ -8,6 +10,18 @@ async function getConfig() {
   }
 }
 
+const WL = split(process.env.WL_ADDRESSES, ",")
+
+
+async function isMintOpen(address) {
+  const config = await ConfigModel.findOne({});
+  return {
+    isMintOpen: config.mintOpen || includes(WL, address),
+    stageTime: config.stageTime,
+  }
+}
+
 module.exports = {
   getConfig,
+  isMintOpen,
 };

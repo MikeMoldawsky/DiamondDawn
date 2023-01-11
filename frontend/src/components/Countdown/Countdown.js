@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState, forwardRef} from "react";
 import Countdown from "react-countdown";
 import "./Countdown.scss";
 import classNames from "classnames";
@@ -6,8 +6,11 @@ import useSystemCountdown, {COUNTDOWN_PHASES} from "hooks/useSystemCountdown";
 import padStart from "lodash/padStart";
 import useSound from "use-sound";
 import mintOpenSFX from "assets/audio/mint-open.mp3";
+import usePollingEffect from "hooks/usePollingEffect";
+import {loadIsMintOpen, systemSelector} from "store/systemReducer";
+import {useDispatch, useSelector} from "react-redux";
 
-const CountdownComp = ({ className, date, defaultParts, onComplete }) => {
+const CountdownComp = forwardRef(({ className, date, defaultParts, onComplete }, ref) => {
   const renderPart = (caption, value) => {
     return (
       <div className="center-aligned-column countdown-part">
@@ -40,54 +43,56 @@ const CountdownComp = ({ className, date, defaultParts, onComplete }) => {
 
   if (date)
     return (
-      <Countdown className={className} date={date} renderer={renderer} onComplete={onComplete} />
+      <Countdown ref={ref} className={className} date={date} renderer={renderer} onComplete={onComplete} />
     );
   if (defaultParts) return renderer(defaultParts);
 
   return null;
-};
+});
 
-export const CountdownWithText = ({ className, text, ...props }) => {
+export const CountdownWithText = forwardRef(({ className, text, ...props }, ref) => {
   return (
     <div className={classNames("countdown-container", className)}>
       <div className="text">{text || text}</div>
-      <CountdownComp {...props} />
+      <CountdownComp ref={ref} {...props} />
     </div>
   );
-};
+});
 
 export const SystemCountdown = ({ className, text, onComplete, ...props }) => {
-  const [overridePhase, setOverridePhase] = useState(null)
-  const { countdownPhase, countdownText, ...countdownProps } = useSystemCountdown(overridePhase);
+  const { countdownPhase, countdownText, ...countdownProps } = useSystemCountdown();
   const [playMintOpenSFX] = useSound(mintOpenSFX, { volume: 1, interrupt: false });
   const [isComplete, setIsComplete] = useState(false)
+  const dispatch = useDispatch()
+  const { isMintOpen } = useSelector(systemSelector)
+  const countdown = useRef(null)
 
-  useEffect(() => {
-    if (isComplete) {
-      setTimeout(() => {
-        setOverridePhase(countdownPhase + 1)
-        setIsComplete(false)
-      }, 3000)
-    }
-  }, [isComplete])
-
-  useEffect(() => {
-    if (overridePhase && overridePhase === countdownPhase) {
-      setOverridePhase(null)
-    }
-  }, [countdownPhase, overridePhase])
-
-  // console.log({ countdownPhase })
-  const onCountdownComplete = () => {
+  usePollingEffect(() => {
     if (countdownPhase === COUNTDOWN_PHASES.BEFORE_MINT) {
-      playMintOpenSFX()
+      dispatch(loadIsMintOpen())
     }
+  }, [countdownPhase], {
+    interval: 3_000,
+    stopPolling: !isComplete,
+  })
+
+  useEffect(() => {
+    if (isComplete && isMintOpen) {
+      const countdownApi = countdown.current.getApi()
+      countdownApi.start()
+      playMintOpenSFX()
+      setIsComplete(false)
+    }
+  }, [isComplete, isMintOpen])
+
+  const onCountdownComplete = () => {
     setIsComplete(true)
     onComplete && onComplete()
   }
 
   return (
     <CountdownWithText
+      ref={countdown}
       text={text || countdownText}
       {...countdownProps}
       {...props}
