@@ -26,6 +26,20 @@ header {
     justify-content: space-between;
     position: relative;
 
+    .minted-status {
+      position: absolute;
+      font-size: 1.25em;
+      font-weight: 500;
+      top: calc(100% - 0.5em);
+      left: 1.75em;
+      color: $gold;
+      animation: linkHoverGold 3s ease-in-out infinite;
+
+      svg {
+        transform: rotate(-90deg) translateX(-0.2em);
+      }
+    }
+
     .wallet {
       button {
         letter-spacing: 0.1em;
@@ -171,6 +185,11 @@ header {
 
     .header-internal {
       padding: 0 1em;
+
+      .minted-status {
+        font-size: 1em;
+        left: 0.75em;
+      }
     }
 
     .logo-box {

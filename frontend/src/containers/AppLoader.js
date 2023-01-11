@@ -1,11 +1,17 @@
 import React from "react";
 import { useEffect } from "react";
 import { useProvider } from "wagmi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useActionDispatch from "hooks/useActionDispatch";
 import useDDContract from "hooks/useDDContract";
-import { loadConfig, loadSystemStage } from "store/systemReducer";
-import { ACTION_KEYS, EVENTS } from "consts";
+import {
+  loadConfig,
+  loadIsMintOpen,
+  loadSystemStage,
+  loadTotalSupply,
+  systemSelector,
+} from "store/systemReducer";
+import { ACTION_KEYS, EVENTS, SYSTEM_STAGE } from "consts";
 import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
@@ -14,6 +20,7 @@ import { getGeoLocationApi } from "api/externalApi";
 import { setSelectedTokenId, updateUiState } from "store/uiReducer";
 import CollectorLoader from "containers/CollectorLoader";
 import ContractProvider from "containers/ContractProvider";
+import usePollingEffect from "hooks/usePollingEffect";
 
 const ServerAppLoader = () => {
   const dispatch = useDispatch();
@@ -54,9 +61,12 @@ const ChainAppLoader = () => {
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
   const contract = useDDContract();
+  const { systemStage, isActive, isMintOpen } = useSelector(systemSelector);
+  const canMint = systemStage === SYSTEM_STAGE.KEY && isActive && isMintOpen;
 
   useEffect(() => {
     dispatch(loadSystemStage(contract));
+    dispatch(loadIsMintOpen());
 
     provider.once("block", () => {
       contract.on(EVENTS.StageChanged, (_stage) => {
@@ -69,6 +79,17 @@ const ChainAppLoader = () => {
       contract.removeAllListeners();
     };
   }, []);
+
+  usePollingEffect(
+    () => {
+      dispatch(loadTotalSupply(contract));
+    },
+    [canMint],
+    {
+      interval: 3_000,
+      stopPolling: !canMint,
+    }
+  );
 
   useOnConnect(
     (address) => {
