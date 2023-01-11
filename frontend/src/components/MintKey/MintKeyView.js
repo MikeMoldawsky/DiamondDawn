@@ -22,6 +22,8 @@ import {
   SystemCountdown,
 } from "components/Countdown/Countdown";
 import { BLOCKED_COUNTRY_TEXT } from "consts";
+import useSound from "use-sound";
+import mintOpenSFX from "assets/audio/mint-open.mp3";
 
 const RadioButtons = ({ values, selectedValue, setSelectedValue }) => {
   return (
@@ -130,23 +132,22 @@ const MintKeyView = ({
   );
 
   const renderCountdown = () => {
-    return <SystemCountdown className="timer-box" />;
-    // return canMint ? (
-    //   <CountdownWithText
-    //     className="timer-box"
-    //     date={expiresAt}
-    //     defaultParts={{
-    //       days: 3,
-    //       hours: 3,
-    //       minutes: 3,
-    //       seconds: 0,
-    //     }}
-    //     text="Your opportunity to mint expires in"
-    //     onComplete={onMintWindowClose}
-    //   />
-    // ) : (
-    //   <SystemCountdown className="timer-box" />
-    // );
+    return canMint ? (
+      <CountdownWithText
+        className="timer-box"
+        date={expiresAt}
+        defaultParts={{
+          days: 3,
+          hours: 3,
+          minutes: 3,
+          seconds: 0,
+        }}
+        text="Your opportunity to mint expires in"
+        onComplete={onMintWindowClose}
+      />
+    ) : (
+      <SystemCountdown className="timer-box" />
+    );
   };
 
   return (

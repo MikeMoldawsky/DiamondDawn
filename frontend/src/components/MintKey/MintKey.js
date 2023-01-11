@@ -33,6 +33,8 @@ import {
 } from "store/uiReducer";
 import Loading from "components/Loading";
 import usePollingEffect from "hooks/usePollingEffect";
+import useSound from "use-sound";
+import mintOpenSFX from "assets/audio/mint-open.mp3";
 
 const MintKey = () => {
   const {
@@ -56,6 +58,11 @@ const MintKey = () => {
 
   const maxTokenId = max(map(tokens, "id"));
   const canMint = systemStage === SYSTEM_STAGE.KEY && isActive && isMintOpen;
+  const [playMintOpenSFX] = useSound(mintOpenSFX, {
+    volume: 1,
+    interrupt: false,
+  });
+  const [canMintOnMount] = useState(canMint)
 
   const mint = async (numNfts) => {
     if (geoLocation?.blocked || !canMint) return;
@@ -103,6 +110,12 @@ const MintKey = () => {
       unwatch();
     };
   }, []);
+
+  useEffect(() => {
+    if (canMint && !canMintOnMount) {
+      playMintOpenSFX()
+    }
+  }, [canMint, canMintOnMount])
 
   usePollingEffect(
     () => {
