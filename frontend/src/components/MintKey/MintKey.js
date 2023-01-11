@@ -128,17 +128,6 @@ const MintKey = () => {
     }
   }, [canMint, canMintOnMount]);
 
-  usePollingEffect(
-    () => {
-      dispatch(loadTotalSupply(contract));
-    },
-    [],
-    {
-      interval: 3_000,
-      stopPolling: !canMint,
-    }
-  );
-
   useEffect(() => {
     if (canMint && collector?.approved && !collector?.mintWindowStart) {
       dispatch(openMintWindow(collector._id, account.address));

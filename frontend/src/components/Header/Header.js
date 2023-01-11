@@ -30,6 +30,8 @@ import {
 } from "consts";
 import { useAccount } from "wagmi";
 import useCollectorReady from "hooks/useCollectorReady";
+import { systemSelector } from "store/systemReducer";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -39,6 +41,7 @@ const Header = () => {
   const canAccessDD = useCanAccessDD();
   const collector = useSelector(collectorSelector);
   const collectorReady = useCollectorReady();
+  const { maxEntrance, tokensMinted } = useSelector(systemSelector);
 
   const isHomepage = location.pathname === "/explore";
   const animateShowLogo = isHomepage && showHPLogo;
@@ -59,6 +62,11 @@ const Header = () => {
     <header onClick={() => sideMenuOpen && toggleMenu()}>
       <div className="bg header-bg" />
       <div className="header-internal">
+        {tokensMinted > 0 && (
+          <div className="minted-status">
+            <VpnKeyIcon /> {tokensMinted} / {maxEntrance} MINTED
+          </div>
+        )}
         <div className="center-aligned-row header-side">
           <Wallet />
           {!isNoContractMode() && isDesktop && (
