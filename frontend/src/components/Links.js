@@ -42,7 +42,7 @@ export const TwitterShareNFTLink = ({ className, tokenId, children }) => {
   const { ddContractInfo } = useSelector(systemSelector);
   if (!ddContractInfo) return null
 
-  const text = encodeURIComponent(`Starting my @DiamondDawnNFT journey with Mine Key #${tokenId}/333`)
+  const text = encodeURIComponent(`I just started the @DiamondDawnNFT journey with key #${tokenId}/333\nCheck it out 💎`)
   const url = encodeURIComponent(`https://opensea.io/assets/ethereum/${ddContractInfo.address}/${tokenId}`)
   const link = `http://twitter.com/share?text=${text}&url=${url}`
 

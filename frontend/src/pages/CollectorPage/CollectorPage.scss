@@ -38,15 +38,15 @@
       position: absolute;
       right: 1.5em;
       top: 1.5em;
-      opacity: 0.7;
 
       .icon-twitter {
         position: relative;
+        margin-right: 2em;
 
         &:after {
           content: "";
           position: absolute;
-          right: .5em;
+          right: -1.5em;
           top: .1em;
           bottom: .1em;
           width: 1px;
@@ -61,19 +61,18 @@
         position: relative;
 
         &.fa-twitter {
-          color: $gold;
           opacity: 1;
           font-size: 1.6em !important;
           margin-top: .1em;
-          margin-right: .5em;
-          padding-right: .5em;
         }
 
         &.gallery-icon {
+          opacity: 0.7;
           margin-left: 0.3em;
         }
 
         &.close {
+          opacity: 0.7;
           margin-left: 0.5em;
         }
       }
@@ -146,12 +145,12 @@
     .main-box {
       .icons-menu {
         right: 0em;
-        top: -2.5em;
+        top: -2.9em;
       }
     }
 
     .main-box.nfts-gallery, .main-box.nft-selected {
-      margin-top: 2em;
+      margin-top: 3.5em;
     }
   }
 }

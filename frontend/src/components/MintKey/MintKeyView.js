@@ -76,7 +76,7 @@ const MintKeyView = ({
   const renderHandAndKeyVideo = useCallback(() => {
     return (
       <div className="image-box">
-        <InlineVideo src={createVideoSources("hand-key-particles")} />
+        <InlineVideo src={createVideoSources("hand-2-keys")} />
       </div>
     );
   }, []);

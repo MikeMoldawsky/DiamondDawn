@@ -100,8 +100,8 @@ const CollectorPage = () => {
             <div className="right-center-aligned-row icons-menu">
               {selectedTokenId > -1 && (
                 <>
-                  <TwitterShareNFTLink className="icon-twitter" tokenId={selectedTokenId}>
-                    <FontAwesomeIcon icon={faTwitter} />
+                  <TwitterShareNFTLink className="icon-twitter button gold sm icon-after" tokenId={selectedTokenId}>
+                    SHARE <FontAwesomeIcon icon={faTwitter} />
                   </TwitterShareNFTLink>
                   <CollectionsOutlinedIcon className="gallery-icon" onClick={() => dispatch(setSelectedTokenId(-1))} />
                 </>
