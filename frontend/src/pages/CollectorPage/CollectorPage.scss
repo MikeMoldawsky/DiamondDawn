@@ -111,6 +111,7 @@
       max-height: unset;
       aspect-ratio: unset;
       padding: 0.5em;
+      transition: unset;
 
       .box-content.opaque {
         &:before {
@@ -135,7 +136,7 @@
 
     .nft-selected {
       padding: 0;
-      height: unset;
+      height: 180vw;
     }
   }
 }
