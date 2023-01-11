@@ -19,11 +19,7 @@ import Logo from "components/Logo";
 import { setSideMenuOpen, toggleMuted, uiSelector } from "store/uiReducer";
 import classNames from "classnames";
 import CTAButton from "components/CTAButton";
-import Link, {
-  TwitterLink,
-  TelegramLink,
-  SubstackLink,
-} from "components/Links";
+import { TwitterLink, TelegramLink, SubstackLink } from "components/Links";
 import useCanAccessDD from "hooks/useCanAccessDD";
 import { useDesktopMediaQuery } from "hooks/useMediaQueries";
 import TelegramIcon from "@mui/icons-material/Telegram";
@@ -31,8 +27,9 @@ import { collectorSelector } from "store/collectorReducer";
 import {
   DIAMOND_DAWN_COLLECTORS_TELEGRAM,
   DIAMOND_DAWN_PUBLIC_TELEGRAM,
-  DIAMOND_DAWN_SUBSTACK,
 } from "consts";
+import { useAccount } from "wagmi";
+import useCollectorReady from "hooks/useCollectorReady";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -41,6 +38,7 @@ const Header = () => {
   const { muted, showHPLogo, sideMenuOpen } = useSelector(uiSelector);
   const canAccessDD = useCanAccessDD();
   const collector = useSelector(collectorSelector);
+  const collectorReady = useCollectorReady();
 
   const isHomepage = location.pathname === "/explore";
   const animateShowLogo = isHomepage && showHPLogo;
@@ -79,7 +77,9 @@ const Header = () => {
           })}
         />
         <div className="center-aligned-row header-side">
-          {showRestrictedContent && <CTAButton className="md collector-btn" />}
+          {showRestrictedContent && collectorReady && (
+            <CTAButton className="md collector-btn" />
+          )}
           <div className="center-aligned-row social-links">
             <TwitterLink className="social-link no-hover">
               <FontAwesomeIcon className="menu-icon" icon={faTwitter} />

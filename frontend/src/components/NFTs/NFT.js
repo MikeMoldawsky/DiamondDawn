@@ -48,19 +48,19 @@ const NFT = ({
           hidden: hideCertificate,
         })}
       >
-        <div className="top-spaced-row card-header">
-          <div>
-            <div className="subtitle-text">{token.name}</div>
-            <div className="tagline-text">NFT #{token.id} / 333</div>
-          </div>
-          <InlineVideo src={createVideoSources("nft-certification")} />
-        </div>
         <div>
+          <div className="top-spaced-row card-header">
+            <div>
+              <div className="subtitle-text">{token.name}</div>
+              <div className="tagline-text">NFT #{token.id} / 333</div>
+            </div>
+            <InlineVideo src={createVideoSources("nft-certification")} />
+          </div>
           <div className="certificate">
             <NFTTraits traits={token.attributes} />
           </div>
-          <NFTPlate />
         </div>
+        <NFTPlate />
       </div>
       {isTokenActionable(token, systemStage, isActive) && (
         <div className="button" onClick={goToProcess(token.id)}>

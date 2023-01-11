@@ -14,18 +14,18 @@ const NFTPlate = () => {
     switch (stage) {
       case SYSTEM_STAGE.KEY:
         return (
-          <>
-            <div>{name}</div>
-            <div># {padStart(selectedTokenId, 3, "0")} / 333</div>
-          </>
+          <div className="left-centered-aligned-column">
+            <div className="phase-title">{name}</div>
+            <div className="phase-token-count">#{selectedTokenId} / 333</div>
+          </div>
         );
       case SYSTEM_STAGE.DAWN:
       case SYSTEM_STAGE.MINE:
         return (
-          <>
-            <div>{name}</div>
-            <div># 000 / ?</div>
-          </>
+          <div className="center-aligned-column">
+            <div className="phase-title">{name}</div>
+            <div className="phase-token-count text-center">?</div>
+          </div>
         );
       default:
         return (
@@ -38,7 +38,8 @@ const NFTPlate = () => {
 
   return (
     <div className="nft-plate">
-      <div className="bg">
+      <div className="bg bg-plate" />
+      <div className="bg bg-nails">
         <div className="nail" />
         <div className="nail" />
         <div className="nail" />

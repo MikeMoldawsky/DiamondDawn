@@ -7,10 +7,10 @@ import Button from "components/Button";
 import { OpenseaLink } from "components/Links";
 
 const GoToOpensea = () => {
-  const { systemStage, isStageActive } = useSelector(systemSelector);
+  const { systemStage, isActive } = useSelector(systemSelector);
 
   const nextActionableName =
-    NFT_NAME_BY_STAGE[isStageActive ? systemStage : systemStage + 1];
+    NFT_NAME_BY_STAGE[isActive ? systemStage : systemStage + 1];
 
   return (
     <div className="center-aligned-column goto-opensea">

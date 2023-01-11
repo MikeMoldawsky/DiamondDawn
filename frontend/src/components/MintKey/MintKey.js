@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   loadMaxEntrance,
   loadMintPrice,
-  loadTokenCount,
   systemSelector,
 } from "store/systemReducer";
 import {
@@ -17,9 +16,9 @@ import {
 import { useAccount, useProvider } from "wagmi";
 import { forgeApi, getTokenUriApi } from "api/contractApi";
 import { signMintApi } from "api/serverApi";
-import { isNoContractMode, showError } from "utils";
+import { calcTokensMinted, isNoContractMode, showError } from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
-import { CONTRACTS, SYSTEM_STAGE } from "consts";
+import { ACTION_KEYS, CONTRACTS, SYSTEM_STAGE } from "consts";
 import {
   collectorSelector,
   loadCollectorByAddress,
@@ -33,13 +32,20 @@ import {
   uiSelector,
 } from "store/uiReducer";
 import Loading from "components/Loading";
+import usePollingEffect from "hooks/usePollingEffect";
 
 const MintKey = () => {
-  const { systemStage, isActive, mintPrice, maxEntrance, tokensMinted } =
-    useSelector(systemSelector);
+  const {
+    mintPrice,
+    maxEntrance,
+    tokensMinted,
+    systemStage,
+    isActive,
+    isMintOpen,
+    config,
+  } = useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
-  const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
   const tokens = useSelector(tokensSelector);
@@ -50,10 +56,10 @@ const MintKey = () => {
   const { geoLocation } = useSelector(uiSelector);
 
   const maxTokenId = max(map(tokens, "id"));
-  const canMint = systemStage === SYSTEM_STAGE.KEY && isActive;
+  const canMint = systemStage === SYSTEM_STAGE.KEY && isActive && isMintOpen;
 
   const mint = async (numNfts) => {
-    if (geoLocation?.blocked) return;
+    if (geoLocation?.blocked || !canMint) return;
 
     setIsMinting(true);
     const { signature } = await signMintApi(collector._id, account.address);
@@ -85,7 +91,6 @@ const MintKey = () => {
   useEffect(() => {
     dispatch(loadMintPrice(contract, geoLocation));
     dispatch(loadMaxEntrance(contract));
-    dispatch(loadTokenCount(mineContract));
 
     const unwatch = watchTokenMinedBy(
       contract,
@@ -100,6 +105,19 @@ const MintKey = () => {
     };
   }, []);
 
+  const [offset, setOffset] = useState(config.offset);
+  usePollingEffect(
+    () => {
+      setOffset(calcTokensMinted(tokensMinted, config));
+    },
+    [],
+    {
+      interval: 10_000,
+      stopPolling: !canMint,
+    }
+  );
+  console.log({ offset, canMint });
+
   useEffect(() => {
     if (canMint && collector?.approved && !collector?.mintWindowStart) {
       dispatch(openMintWindow(collector._id, account.address));
@@ -109,7 +127,7 @@ const MintKey = () => {
   const onMintWindowClose = () => {
     actionDispatch(
       loadCollectorByAddress(account.address, contract),
-      "get-collector-by-address"
+      ACTION_KEYS.GET_COLLECTOR_BY_ADDRESS
     );
   };
 
@@ -121,11 +139,11 @@ const MintKey = () => {
     <MintKeyView
       mintPrice={mintPrice}
       maxEntrance={maxEntrance}
-      tokensMinted={tokensMinted}
+      tokensMinted={canMint ? offset : 0}
       canMint={canMint}
       mint={mint}
       expiresAt={collector.mintWindowClose}
-      onCountdownEnd={onMintWindowClose}
+      onMintWindowClose={onMintWindowClose}
       forceButtonLoading={isMinting}
       onMintError={() => {
         setIsMinting(false);

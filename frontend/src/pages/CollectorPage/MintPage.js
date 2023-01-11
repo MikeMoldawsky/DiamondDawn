@@ -21,6 +21,7 @@ import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
 import CollectorLoader from "containers/CollectorLoader";
 import { tokensSelector } from "store/tokensReducer";
 import size from "lodash/size";
+import useOnConnect from "hooks/useOnConnect";
 import useSound from "use-sound";
 import mintCompleteSFX from "assets/audio/mint-complete.mp3";
 
@@ -49,9 +50,9 @@ const CollectorPage = () => {
     }
   }, [collector?.minted]);
 
-  useEffect(() => {
-    dispatch(loadIsMintOpen());
-  }, []);
+  useOnConnect((address) => {
+    dispatch(loadIsMintOpen(address));
+  });
 
   const renderContent = () => {
     if (

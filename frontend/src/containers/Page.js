@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelector, updateUiState } from "store/uiReducer";
-import { isActionSuccessSelector } from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import useTimeout from "hooks/useTimeout";
@@ -10,6 +9,8 @@ import useWaitFor from "hooks/useWaitFor";
 import PageCover from "components/PageCover";
 import useOnConnect from "hooks/useOnConnect";
 import { isNoContractMode } from "utils";
+import useCollectorReady from "hooks/useCollectorReady";
+import { ACTION_KEYS } from "consts";
 
 const DEFAULT_TIMEOUT = 10000;
 const FADE_DURATION = 150;
@@ -36,23 +37,23 @@ const Page = ({
 
   const waitForActions = [...actions];
   if (!isNoContractMode()) {
-    waitForActions.push("get-contract");
+    waitForActions.push(ACTION_KEYS.GET_CONTRACT);
 
     if (waitForTokens) {
-      waitForActions.push({ isFirstComplete: true, key: "load-nfts" });
+      waitForActions.push({
+        isFirstComplete: true,
+        key: ACTION_KEYS.LOAD_NFTS,
+      });
     }
   }
   if (isConnected) {
-    waitForActions.push("get-collector-by-address");
+    waitForActions.push(ACTION_KEYS.GET_COLLECTOR_BY_ADDRESS);
   }
 
   const contentReady = useWaitFor({ images, videos, actions: waitForActions });
   const canAccessDD = useCanAccessDD();
-  const isCollectorFetched = useSelector(
-    isActionSuccessSelector("get-collector-by-address")
-  );
+  const isCollectorReady = useCollectorReady();
   const navigate = useNavigate();
-  const isCollectorReady = isCollectorFetched || !account?.address;
   const pageReady = assetReadyPages[pageName] && isCollectorReady;
 
   const setAssetsReady = () => {

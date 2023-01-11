@@ -4,8 +4,12 @@ import { useProvider } from "wagmi";
 import { useDispatch } from "react-redux";
 import useActionDispatch from "hooks/useActionDispatch";
 import useDDContract from "hooks/useDDContract";
-import { loadConfig, loadSystemStage } from "store/systemReducer";
-import { EVENTS } from "consts";
+import {
+  loadConfig,
+  loadSystemStage,
+  watchTokensMinted,
+} from "store/systemReducer";
+import { ACTION_KEYS, CONTRACTS, EVENTS } from "consts";
 import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";
 import { clearActionStatus } from "store/actionStatusReducer";
@@ -54,9 +58,11 @@ const ChainAppLoader = () => {
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
   const contract = useDDContract();
+  const mineContract = useDDContract(CONTRACTS.DiamondDawnMine);
 
   useEffect(() => {
     dispatch(loadSystemStage(contract));
+    dispatch(watchTokensMinted(mineContract));
 
     provider.once("block", () => {
       contract.on(EVENTS.StageChanged, (_stage) => {
@@ -78,7 +84,7 @@ const ChainAppLoader = () => {
       );
     },
     () => {
-      dispatch(clearActionStatus("load-nfts"));
+      dispatch(clearActionStatus(ACTION_KEYS.LOAD_NFTS));
       dispatch(setSelectedTokenId(-1));
     }
   );

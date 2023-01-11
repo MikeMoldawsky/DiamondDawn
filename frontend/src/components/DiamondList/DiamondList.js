@@ -12,10 +12,10 @@ import { tokensSelector } from "store/tokensReducer";
 import useOnClickOutside from "hooks/useClickOutside";
 import { getStageName, getTokenTrait, isTokenActionable } from "utils";
 import { useNavigate } from "react-router-dom";
-import Diamond from "components/Diamond";
 import { SYSTEM_STAGE, TRAIT } from "consts";
 import { faGem } from "@fortawesome/free-solid-svg-icons";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import DiamondThumbnail from "components/DiamondThumbnail";
 
 const NFTIcon = ({ token }) => {
   const shapeName = getTokenTrait(token, TRAIT.shape);
@@ -64,12 +64,7 @@ const DiamondItem = ({ diamond }) => {
         <NFTIcon token={diamond} />
         <div className="token-id">#{id}</div>
       </div>
-      {showInfo && (
-        <div className="diamond-info-container">
-          <Diamond diamond={diamond} />
-          <div className="token-id">{diamond.name}</div>
-        </div>
-      )}
+      {showInfo && <DiamondThumbnail diamond={diamond} />}
     </div>
   );
 };

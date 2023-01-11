@@ -3,7 +3,7 @@ import _ from "lodash";
 import { tokenIdToURI } from "api/contractApi";
 import { constants as ethersConsts } from "ethers";
 import { getTokenTrait } from "utils";
-import { SYSTEM_STAGE, TRAIT } from "consts";
+import { ACTION_KEYS, EVENTS, SYSTEM_STAGE, TRAIT } from "consts";
 
 const INITIAL_STATE = {};
 
@@ -31,7 +31,7 @@ export const readAndWatchAccountTokens =
           type: "TOKENS.SET",
           payload: tokenUris,
         },
-        "load-nfts"
+        ACTION_KEYS.LOAD_NFTS
       );
 
       tokensToFetch = {};
@@ -61,7 +61,7 @@ export const readAndWatchAccountTokens =
 
     // listen to future transfers
     provider.once("block", () => {
-      contract.on("Transfer", processEvent);
+      contract.on(EVENTS.Transfer, processEvent);
     });
   };
 

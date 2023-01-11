@@ -11,11 +11,13 @@ import {
   loadSystemPaused,
   systemSelector,
   updateStageTime,
+  toggleIsMintOpen,
 } from "store/systemReducer";
 import classNames from "classnames";
 import { pauseApi, unpauseApi } from "api/contractApi";
 import useDDContract from "hooks/useDDContract";
 import { isNoContractMode } from "utils";
+import add from "date-fns/add";
 
 const ContractConfig = () => {
   const dispatch = useDispatch();
@@ -46,6 +48,7 @@ const ConfigTab = () => {
   const { config } = useSelector(systemSelector);
   const { stageTime } = config;
   const [displayStageTime, setDisplayStageTime] = useState(null);
+  const [offset, setOffset] = useState(0);
 
   useEffect(() => {
     dispatch(loadConfig());
@@ -54,6 +57,11 @@ const ConfigTab = () => {
   const time = displayStageTime || stageTime;
 
   const wasChanged = time && time !== stageTime;
+
+  const toggleMint = async () => {
+    const timestamp = config.mintOpen ? null : add(new Date(), { weeks: 1 });
+    dispatch(toggleIsMintOpen(timestamp, offset));
+  };
 
   return (
     <div className={classNames("tab-content config")}>
@@ -85,6 +93,21 @@ const ConfigTab = () => {
             SAVE
           </ActionButton>
         </div>
+      </div>
+      <div className="separator" />
+      <div className="title">IS MINT OPEN</div>
+      <div className="center-aligned-row input-row">
+        <div className="stage">{config.mintOpen?.toString()}</div>
+        <div className="center-aligned-row">
+          <input
+            type="number"
+            value={offset}
+            onChange={(e) => setOffset(e.target.value)}
+          />
+        </div>
+        <ActionButton actionKey="toggleIsMintOpen" onClick={toggleMint}>
+          {config.mintOpen ? "CLOSE MINT" : "OPEN MINT"}
+        </ActionButton>
       </div>
       {!isNoContractMode() && <ContractConfig />}
     </div>

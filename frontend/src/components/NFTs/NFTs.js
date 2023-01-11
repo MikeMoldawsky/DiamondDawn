@@ -11,6 +11,7 @@ import size from "lodash/size";
 import head from "lodash/head";
 import values from "lodash/values";
 import GoToOpensea from "./GoToOpensea";
+import classNames from "classnames";
 
 const NFTs = () => {
   const tokens = useSelector(tokensSelector);
@@ -59,9 +60,18 @@ const NFTs = () => {
       </div>
     );
 
-  if (selectedToken)
-    return (
-      <div className="box-content nfts nft">
+  const onGalleryItemClick = (id) => {
+    dispatch(setSelectedTokenId(safeParseInt(id)));
+  };
+
+  return (
+    <div
+      className={classNames("box-content nfts", {
+        "has-selected": selectedTokenId > -1,
+      })}
+    >
+      <NFTGallery goToProcess={goToProcess} selectToken={onGalleryItemClick} />
+      {selectedToken && (
         <div className="layout-box">
           <NFT
             token={selectedToken}
@@ -71,12 +81,7 @@ const NFTs = () => {
             onChangeNFT={onChangeNFT}
           />
         </div>
-      </div>
-    );
-
-  return (
-    <div className="box-content nfts">
-      <NFTGallery goToProcess={goToProcess} />
+      )}
     </div>
   );
 };

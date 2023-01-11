@@ -39,8 +39,10 @@ const StageTab = ({ stage }) => {
   const setSystemStage = async (systemStage) => {
     await setSystemStageApi(contract, systemStage);
     dispatch(loadSystemStage(contract));
-    const timestamp = add(new Date(), getStageDuration(systemStage));
-    dispatch(updateStageTime(timestamp));
+    if (stage !== SYSTEM_STAGE.KEY) {
+      const timestamp = add(new Date(), getStageDuration(systemStage));
+      dispatch(updateStageTime(timestamp));
+    }
   };
 
   const completeStage = async () => {

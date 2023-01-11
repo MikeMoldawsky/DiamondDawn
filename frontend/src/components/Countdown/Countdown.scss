@@ -60,6 +60,27 @@
   }
 }
 
+.countdown-container {
+  &.complete {
+    animation: growShrink 1s ease-out infinite;
+  }
+
+  @keyframes growShrink {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.05);
+    }
+    80% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
 @media only screen and (max-width: 480px) {
   .countdown {
     .caption {

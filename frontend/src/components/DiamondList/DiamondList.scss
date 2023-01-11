@@ -53,21 +53,12 @@
     }
   }
 
-  .diamond-info-container {
-    background-color: black;
+  .diamond-thumbnail {
     width: 15em;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     top: 3em;
     z-index: 1;
-    border: solid 1px $disabled_gray;
-
-    .token-id {
-      text-align: center;
-      padding: 0.6em 0;
-      margin-top: -0.45em;
-      color: $gold;
-    }
   }
 }

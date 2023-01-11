@@ -42,6 +42,8 @@ export const SHAPE = {
 
 export const EVENTS = {
   StageChanged: "StageChanged",
+  Transfer: "Transfer",
+  Forge: "Forge",
 };
 
 export const DIAMOND_DAWN_TWITTER_URL = "https://twitter.com/DiamondDawnNFT";
@@ -127,3 +129,9 @@ export const CONTRACTS = {
 
 export const BLOCKED_COUNTRY_TEXT =
   "Diamond Dawn is not available in your location.";
+
+export const ACTION_KEYS = {
+  GET_CONTRACT: "get-contract",
+  GET_COLLECTOR_BY_ADDRESS: "get-collector-by-address",
+  LOAD_NFTS: "load-nfts",
+};

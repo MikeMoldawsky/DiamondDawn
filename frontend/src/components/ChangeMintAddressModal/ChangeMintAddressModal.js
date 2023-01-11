@@ -17,6 +17,7 @@ import get from "lodash/get";
 import "./ChangeMintAddressModal.scss";
 import useActionDispatch from "hooks/useActionDispatch";
 import { ethers } from "ethers";
+import { ACTION_KEYS } from "consts";
 
 const ChangeMintAddressModal = ({ close }) => {
   const collector = useSelector(collectorSelector);
@@ -37,7 +38,7 @@ const ChangeMintAddressModal = ({ close }) => {
       await changeMintAddressApi(collector._id, account.address, newAddress);
       actionDispatch(
         loadCollectorByAddress(account.address),
-        "get-collector-by-address"
+        ACTION_KEYS.GET_COLLECTOR_BY_ADDRESS
       );
     } catch (e) {
       showError(e, "Change Address Failed");

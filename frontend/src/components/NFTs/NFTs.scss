@@ -1,4 +1,5 @@
 @import "css/varsNEW";
+@import "css/animations";
 
 .page.collector-page .nfts {
   display: flex;
@@ -6,7 +7,6 @@
   justify-content: center;
 
   .layout-box,
-  .gallery,
   .goto-opensea {
     display: flex;
     height: 85%;
@@ -15,8 +15,12 @@
   }
 
   .layout-box {
+    position: relative;
     justify-content: flex-start;
     $nftBorderColor: white;
+    opacity: 0;
+    animation: fadeIn 0.25s ease-in forwards;
+    animation-delay: 0.4s;
 
     .border-box {
       position: absolute;
@@ -66,13 +70,75 @@
       height: 100%;
     }
 
+    .bg-plate {
+      background: black url($CDN_URL + "/images/collector/nft-plate.jpg")
+        no-repeat center center;
+      background-size: 100% 100%;
+      opacity: 0.2;
+      z-index: -2;
+    }
+
+    .bg-nails {
+      opacity: 0.5;
+      z-index: -1;
+
+      .nail {
+        position: absolute;
+        $nailMargin: 0.35rem;
+        $nailSize: 0.5rem;
+        width: $nailSize;
+        height: $nailSize;
+        background: url($CDN_URL + "/images/collector/plate-nail.png") no-repeat
+          center center;
+        background-size: 100% 100%;
+
+        &:nth-child(1) {
+          top: $nailMargin;
+          left: $nailMargin;
+        }
+        &:nth-child(2) {
+          top: $nailMargin;
+          right: $nailMargin;
+        }
+        &:nth-child(3) {
+          bottom: $nailMargin;
+          right: $nailMargin;
+        }
+        &:nth-child(4) {
+          bottom: $nailMargin;
+          left: $nailMargin;
+        }
+      }
+    }
+
     .certificate {
       .traits {
+        margin-bottom: 2em;
         width: 50%;
 
         .trait {
           line-height: 1.5em;
           margin-bottom: 0.5em;
+          color: white;
+          position: relative;
+          padding: 0.4em 1.5em;
+
+          .bg-nails {
+            .nail {
+              top: calc(50% - 0.25rem);
+            }
+          }
+
+          .trait-name {
+            color: $gold;
+            font-size: 0.9em;
+            font-weight: 500;
+          }
+
+          .trait-value {
+            color: white;
+            font-weight: 500;
+          }
 
           .underline {
             position: relative;
@@ -82,7 +148,7 @@
             margin: 0 0.25em;
 
             &:after {
-              color: $gold;
+              color: white;
               content: ".........................................................................";
               letter-spacing: 0.1em;
               position: absolute;
@@ -98,7 +164,7 @@
       flex-grow: 2;
       padding: 1.5em 3em 2.5em;
       animation: showCertificate 0.25s ease-out forwards;
-      animation-delay: 0.75s;
+      animation-delay: 1s;
       opacity: 0;
       z-index: -1;
       background-color: #1f1f1f;
@@ -123,44 +189,14 @@
 
     .nft-plate {
       margin-top: 2em;
-      height: 5.25em;
       position: relative;
       font-size: 0.8em;
       font-weight: 500;
       padding: 0 0.5em;
+      --seperator-color: #caa87555;
 
-      .bg {
-        background: black url($CDN_URL + "/images/collector/nft-plate.jpg")
-          no-repeat center center;
-        background-size: 100% auto;
-        opacity: 0.5;
-
-        .nail {
-          position: absolute;
-          $nailMargin: 0.125em;
-          $nailSize: 0.8em;
-          width: $nailSize;
-          height: $nailSize;
-          background: url($CDN_URL + "/images/collector/plate-nail.png")
-            no-repeat center center;
-
-          &:nth-child(1) {
-            top: $nailMargin;
-            left: $nailMargin;
-          }
-          &:nth-child(2) {
-            top: $nailMargin;
-            right: $nailMargin;
-          }
-          &:nth-child(3) {
-            bottom: $nailMargin;
-            right: $nailMargin;
-          }
-          &:nth-child(4) {
-            bottom: $nailMargin;
-            left: $nailMargin;
-          }
-        }
+      .bg-plate {
+        filter: invert(1);
       }
 
       .phases {
@@ -169,17 +205,36 @@
 
         .phase-info {
           width: 20%;
+          height: 4em;
+          margin: 0.5em 0;
+          position: relative;
 
           .unrevealed {
-            font-size: 2.5em;
+            font-size: 2em;
 
             .react-player {
               width: 2.5em;
             }
           }
 
-          &:not(:first-child) {
-            border-left: solid 1px #ccccccaa;
+          .phase-title {
+            color: $gold;
+            font-size: 1.1em;
+          }
+
+          .phase-token-count {
+          }
+
+          &:not(:last-child) {
+            &:after {
+              content: "";
+              position: absolute;
+              top: 0.3em;
+              bottom: 0.3em;
+              right: 0;
+              width: 1px;
+              background-color: var(--seperator-color);
+            }
           }
         }
       }
@@ -220,12 +275,35 @@
   }
 
   .gallery {
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 2.5vw 5vw;
+    width: 100%;
+    height: 100%;
+    position: absolute;
 
     .gallery-item {
-      width: 25%;
+      width: 33.33%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       position: relative;
+      transition: opacity 0.5s ease-out;
+
+      .diamond-thumbnail {
+        width: 75%;
+      }
+
+      .react-player {
+        width: 100%;
+        height: 100%;
+      }
+
+      .token-id {
+        font-size: $font20px;
+      }
 
       &.active {
         transition: all 0.5s ease-out;
@@ -258,6 +336,14 @@
       margin: 1em 0 3em;
       font-size: $font20px;
       max-width: 32em;
+    }
+  }
+
+  &.has-selected {
+    .gallery {
+      .gallery-item {
+        opacity: 0;
+      }
     }
   }
 
@@ -303,26 +389,58 @@
 }
 
 @media only screen and (max-width: 480px) {
-  .page.collector-page .nfts.nft {
-    &:before {
-      background-color: unset;
-    }
-
-    .layout-box {
-      flex-direction: column;
-      width: 105%;
+  .page.collector-page .nfts {
+    .goto-opensea {
+      padding: 10vw 5vw;
+      width: unset;
       height: unset;
-      margin-top: -2.5%;
 
-      .diamond-box {
-        height: 90vw;
+      .logo {
+        font-size: 1.6em;
       }
 
-      .content-box {
-        padding: 2em 1.5em 2.5em;
-        border-top: none;
-        border-left: solid 3px $border_opaque;
-        margin: 0;
+      .subtitle-text {
+        font-size: $font24px;
+      }
+    }
+
+    &.has-selected {
+      .layout-box {
+        flex-direction: column;
+        width: calc(100% + 4px);
+        height: unset;
+        top: -1px;
+
+        .diamond-box {
+          height: 90vw;
+        }
+
+        .content-box {
+          padding: 2em 1.5em 1.5em;
+          border-top: none;
+          border-left: solid 3px $border_opaque;
+          margin: 0;
+        }
+
+        .certificate {
+          .traits {
+            width: 66.6%;
+          }
+        }
+
+        .nft-plate {
+          padding: 0;
+
+          .phases {
+            font-size: 0.725em;
+          }
+        }
+      }
+    }
+
+    .gallery {
+      .gallery-item {
+        width: 100%;
       }
     }
 

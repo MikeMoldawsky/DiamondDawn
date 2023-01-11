@@ -12,7 +12,6 @@ import Page from "containers/Page";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import { inviteSelector, loadInviteById } from "store/inviteReducer";
 import InvitedModal from "components/InvitedModal/InvitedModal";
-import { isActionSuccessSelector } from "store/actionStatusReducer";
 import { useAccount } from "wagmi";
 import useActionDispatch from "hooks/useActionDispatch";
 import useCanAccessDD from "hooks/useCanAccessDD";
@@ -27,18 +26,16 @@ import {
 import { GetPasswordLink } from "components/Links";
 import { viewInviteApi } from "api/serverApi";
 import FeaturedIn from "components/FeaturedIn";
+import useCollectorReady from "hooks/useCollectorReady";
 
 const ComingSoonPage = () => {
   const dispatch = useDispatch();
   const actionDispatch = useActionDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const account = useAccount();
   const inviteId = searchParams.get("invite");
   const invite = useSelector(inviteSelector);
-  const isCollectorFetched = useSelector(
-    isActionSuccessSelector("get-collector-by-address")
-  );
+  const isCollectorReady = useCollectorReady();
   const canAccessDD = useCanAccessDD();
   const [autoFillPassword, setAutoFillPassword] = useState("");
   const [pageReady, setPageReady] = useState(false);
@@ -74,8 +71,6 @@ const ComingSoonPage = () => {
       viewInviteApi(inviteId);
     }
   }, [inviteId]);
-
-  const isCollectorReady = !account?.address || isCollectorFetched;
 
   useEffect(() => {
     if (inviteId && invite && pageReady && isCollectorReady) {

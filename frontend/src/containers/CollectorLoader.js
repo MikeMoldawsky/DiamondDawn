@@ -8,18 +8,19 @@ import { isActionPendingSelector } from "store/actionStatusReducer";
 import useOnConnect from "hooks/useOnConnect";
 import useDDContract from "hooks/useDDContract";
 import ContractProvider from "containers/ContractProvider";
+import { ACTION_KEYS } from "consts";
 
 const CollectorLoader = ({ contract, onDisconnect }) => {
   const actionDispatch = useActionDispatch();
   const isPending = useSelector(
-    isActionPendingSelector("get-collector-by-address")
+    isActionPendingSelector(ACTION_KEYS.GET_COLLECTOR_BY_ADDRESS)
   );
 
   useOnConnect((address) => {
     if (!isPending) {
       actionDispatch(
         loadCollectorByAddress(address, contract),
-        "get-collector-by-address"
+        ACTION_KEYS.GET_COLLECTOR_BY_ADDRESS
       );
     }
   }, onDisconnect);

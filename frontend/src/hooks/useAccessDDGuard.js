@@ -1,21 +1,13 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import {
-  isActionFirstCompleteSelector,
-  isActionSuccessSelector,
-} from "store/actionStatusReducer";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 import useCanAccessDD from "hooks/useCanAccessDD";
+import useCollectorReady from "hooks/useCollectorReady";
 
 const useAccessDDGuard = (requireAccess = true) => {
   const canAccessDD = useCanAccessDD();
-  const isCollectorFetched = useSelector(
-    isActionSuccessSelector("get-collector-by-address")
-  );
   const navigate = useNavigate();
-  const account = useAccount();
-  const isCollectorReady = isCollectorFetched || !account?.address;
+  const isCollectorReady = useCollectorReady();
 
   // navigate out if doesn't have access
   useEffect(() => {

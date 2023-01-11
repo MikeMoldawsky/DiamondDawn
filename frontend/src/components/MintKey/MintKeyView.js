@@ -48,7 +48,7 @@ const MintKeyView = ({
   canMint,
   mint,
   expiresAt,
-  onCountdownEnd,
+  onMintWindowClose,
   forceButtonLoading,
   onMintError,
 }) => {
@@ -113,6 +113,7 @@ const MintKeyView = ({
         <ActionButton
           actionKey="MintKey"
           className="gold lg mint-button"
+          sfx="action"
           disabled={!canMint || !isFunction(mint) || geoLocation?.blocked}
           title={geoLocation?.blocked ? BLOCKED_COUNTRY_TEXT : ""}
           isLoading={forceButtonLoading}
@@ -129,22 +130,23 @@ const MintKeyView = ({
   );
 
   const renderCountdown = () => {
-    return canMint ? (
-      <CountdownWithText
-        className="timer-box"
-        date={expiresAt}
-        defaultParts={{
-          days: 3,
-          hours: 3,
-          minutes: 3,
-          seconds: 0,
-        }}
-        text="Your opportunity to mint expires in"
-        onComplete={onCountdownEnd}
-      />
-    ) : (
-      <SystemCountdown className="timer-box" />
-    );
+    return <SystemCountdown className="timer-box" />;
+    // return canMint ? (
+    //   <CountdownWithText
+    //     className="timer-box"
+    //     date={expiresAt}
+    //     defaultParts={{
+    //       days: 3,
+    //       hours: 3,
+    //       minutes: 3,
+    //       seconds: 0,
+    //     }}
+    //     text="Your opportunity to mint expires in"
+    //     onComplete={onMintWindowClose}
+    //   />
+    // ) : (
+    //   <SystemCountdown className="timer-box" />
+    // );
   };
 
   return (

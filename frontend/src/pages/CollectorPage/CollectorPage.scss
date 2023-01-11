@@ -3,12 +3,15 @@
 
 .page.collector-page {
   font-size: calc-font-size(1px);
+  height: unset;
+  min-height: 100%;
 
   .bg.collector-bg {
     background: url($CDN_URL + "/images/collector/collector-bg.png") no-repeat
       75% -20%;
     background-size: auto 120%;
     opacity: 0.66;
+    background-attachment: fixed;
   }
 
   .account {
@@ -26,10 +29,10 @@
   }
 
   .main-box {
-    max-width: 80%;
-    max-height: 80%;
-    aspect-ratio: 2;
+    width: 80vw;
+    height: 40vw;
     margin: 0 auto;
+    transition: all 0.4s ease-out;
 
     .close {
       position: absolute;
@@ -80,6 +83,7 @@
 
     .main-box {
       width: 90%;
+      height: unset;
       max-width: unset;
       max-height: unset;
       aspect-ratio: unset;
@@ -107,8 +111,20 @@
 
 @media only screen and (max-width: 480px) {
   .page.collector-page {
+    .inner-page {
+      overflow: hidden;
+    }
+
     .nft-selected {
-      border: none;
+      padding: 0;
+      height: unset;
+    }
+
+    .main-box {
+      .back-to-gallery {
+        right: 1em;
+        top: 1em;
+      }
     }
   }
 }
