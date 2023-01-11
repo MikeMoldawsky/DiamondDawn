@@ -6,6 +6,7 @@ import find from "lodash/find";
 import filter from "lodash/filter";
 import split from "lodash/split";
 import isEmpty from "lodash/isEmpty";
+import intervalToDuration from "date-fns/intervalToDuration"
 
 export const parseError = (e) => {
   if (e.response?.data) return e.response.data;
@@ -190,3 +191,28 @@ export const isBlockedCountry = isCountryInList(
 );
 
 export const isVATCountry = isCountryInList(process.env.REACT_APP_VAT_COUNTRY);
+
+export const calcTokensMinted = (tokensMinted, config) => {
+  const MINUTES = 20
+  const { mintOpenTime, offset } = config
+  const mintOpenDate = new Date(mintOpenTime)
+  const now = new Date()
+  if (offset > 0 && mintOpenTime) {
+    const duration = intervalToDuration({
+      start: mintOpenDate,
+      end: now,
+    })
+
+    if (duration.minutes > MINUTES) {
+      return tokensMinted
+    }
+    const calculatedOffset = offset - Math.floor(offset * duration.minutes / MINUTES)
+
+    const output = tokensMinted - calculatedOffset
+    console.log('calcConfigOffset', { config, duration, calculatedOffset, tokensMinted, output })
+
+    return output >= 0 ? output : 0
+  }
+
+  return tokensMinted
+}

@@ -4,7 +4,7 @@ const includes = require("lodash/includes")
 
 async function getConfig() {
   try {
-    return await ConfigModel.findOne({});
+    return await ConfigModel.findOne({})
   } catch (e) {
     console.log(`Failed to getConfig`, e);
   }
@@ -18,6 +18,7 @@ async function isMintOpen(address) {
   return {
     isMintOpen: config.mintOpen || includes(WL, address),
     stageTime: config.stageTime,
+    offset: config.offset,
   }
 }
 

@@ -16,7 +16,7 @@ import {
 import { useAccount, useProvider } from "wagmi";
 import { forgeApi, getTokenUriApi } from "api/contractApi";
 import { signMintApi } from "api/serverApi";
-import { isNoContractMode, showError } from "utils";
+import {calcTokensMinted, isNoContractMode, showError} from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
 import {ACTION_KEYS, CONTRACTS, SYSTEM_STAGE} from "consts";
 import {
@@ -32,9 +32,10 @@ import {
   uiSelector,
 } from "store/uiReducer";
 import Loading from "components/Loading";
+import usePollingEffect from "hooks/usePollingEffect";
 
 const MintKey = () => {
-  const { mintPrice, maxEntrance, tokensMinted, systemStage, isActive, isMintOpen } =
+  const { mintPrice, maxEntrance, tokensMinted, systemStage, isActive, isMintOpen, config } =
     useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
@@ -97,6 +98,15 @@ const MintKey = () => {
     };
   }, []);
 
+  const [offset, setOffset] = useState(config.offset)
+  usePollingEffect(() => {
+    setOffset(calcTokensMinted(tokensMinted, config))
+  }, [], {
+    interval: 10_000,
+    stopPolling: !canMint,
+  })
+  console.log({ offset, canMint })
+
   useEffect(() => {
     if (canMint && collector?.approved && !collector?.mintWindowStart) {
       dispatch(openMintWindow(collector._id, account.address));
@@ -118,7 +128,7 @@ const MintKey = () => {
     <MintKeyView
       mintPrice={mintPrice}
       maxEntrance={maxEntrance}
-      tokensMinted={tokensMinted}
+      tokensMinted={canMint ? offset : 0}
       canMint={canMint}
       mint={mint}
       expiresAt={collector.mintWindowClose}

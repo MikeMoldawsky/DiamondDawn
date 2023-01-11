@@ -10,8 +10,8 @@ import {
 import {CONTRACTS, EVENTS, SYSTEM_STAGE} from "consts";
 import { isNoContractMode } from "utils";
 import get from "lodash/get"
-import isEmpty from "lodash/isEmpty"
 import debounce from "lodash/debounce"
+import _ from "lodash";
 
 const INITIAL_STATE = {
   ddContractInfo: null,
@@ -59,6 +59,10 @@ export const watchTokensMinted = (mineContract) => async (dispatch) => {
     addMinted = 0
   }, 100)
 
+  // read past transfers
+  const forgeEvents = await mineContract.queryFilter(EVENTS.Forge);
+  dispatch(updateTokensMinted(forgeEvents.length))
+
   // listen to future events
   mineContract.on(EVENTS.Forge, (event) => {
     console.log("Forge raised", event)
@@ -99,12 +103,9 @@ export const isStageActiveSelector = (stage) => (state) => {
   return systemStage === stage && isActive;
 };
 
-export const canMintSelector = (state) => {
-  const { systemStage, isActive } = systemSelector(state);
-  return systemStage === SYSTEM_STAGE.KEY && isActive && isEmpty(process.env.REACT_APP_WL);
+export const isMintOpenSelector = state => {
+  return isStageActiveSelector(SYSTEM_STAGE.KEY)(state) && systemSelector(state).isMintOpen
 };
-
-export const isMintOpenSelector = isStageActiveSelector(SYSTEM_STAGE.KEY);
 
 export const contractSelector =
   (contractType = CONTRACTS.DiamondDawn) =>
