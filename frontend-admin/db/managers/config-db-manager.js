@@ -17,11 +17,11 @@ async function updateStageTime(timestamp) {
 async function toggleIsMintOpen({ timestamp, offset = 0 }) {
   try {
     let config = await ConfigModel.findOne({});
-    const opening = !config.mintOpen
-    const update = { mintOpen: opening }
+    const opening = !config.mintOpen;
+    const update = { mintOpen: opening };
     if (opening) {
-      update.mintOpenTime = new Date()
-      update.offset = offset
+      update.mintOpenTime = new Date();
+      update.offset = offset;
     }
     if (timestamp) {
       update.stageTime = new Date(timestamp);

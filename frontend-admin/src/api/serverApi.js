@@ -89,7 +89,10 @@ export const updateStageTimeApi = async (timestamp) => {
 
 export const toggleIsMintOpenApi = async (timestamp, offset) => {
   try {
-    const { data } = await axios.post(`/api/toggle_mint_open`, { timestamp, offset });
+    const { data } = await axios.post(`/api/toggle_mint_open`, {
+      timestamp,
+      offset,
+    });
     return data || {};
   } catch (e) {
     return {};
