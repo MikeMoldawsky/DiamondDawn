@@ -130,7 +130,7 @@ const MintKeyView = ({
   );
 
   const renderCountdown = () => {
-    return <SystemCountdown className="timer-box" />
+    return <SystemCountdown className="timer-box" />;
     // return canMint ? (
     //   <CountdownWithText
     //     className="timer-box"

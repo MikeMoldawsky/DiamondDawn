@@ -35,7 +35,7 @@ const ComingSoonPage = () => {
   const [searchParams] = useSearchParams();
   const inviteId = searchParams.get("invite");
   const invite = useSelector(inviteSelector);
-  const isCollectorReady = useCollectorReady()
+  const isCollectorReady = useCollectorReady();
   const canAccessDD = useCanAccessDD();
   const [autoFillPassword, setAutoFillPassword] = useState("");
   const [pageReady, setPageReady] = useState(false);

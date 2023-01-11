@@ -5,7 +5,7 @@ import { collectorSelector } from "store/collectorReducer";
 import { uiSelector } from "store/uiReducer";
 import { isActionSuccessSelector } from "store/actionStatusReducer";
 import { useAccount } from "wagmi";
-import {ACTION_KEYS} from "consts";
+import { ACTION_KEYS } from "consts";
 
 const useCanAccessDD = () => {
   const isCollectorFetched = useSelector(

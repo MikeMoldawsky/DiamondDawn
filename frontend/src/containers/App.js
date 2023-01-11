@@ -19,7 +19,7 @@ import NetworkGuard from "containers/NetworkGuard";
 import CopyNotification from "components/CopyNotification";
 import { useSelector } from "react-redux";
 import { uiSelector } from "store/uiReducer";
-import {ACTION_KEYS, BLOCKED_COUNTRY_TEXT} from "consts";
+import { ACTION_KEYS, BLOCKED_COUNTRY_TEXT } from "consts";
 
 const App = () => {
   const { sideMenuOpen, geoLocation } = useSelector(uiSelector);

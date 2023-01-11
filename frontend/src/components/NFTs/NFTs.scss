@@ -19,8 +19,8 @@
     justify-content: flex-start;
     $nftBorderColor: white;
     opacity: 0;
-    animation: fadeIn .25s ease-in forwards;
-    animation-delay: .4s;
+    animation: fadeIn 0.25s ease-in forwards;
+    animation-delay: 0.4s;
 
     .border-box {
       position: absolute;
@@ -72,14 +72,14 @@
 
     .bg-plate {
       background: black url($CDN_URL + "/images/collector/nft-plate.jpg")
-      no-repeat center center;
+        no-repeat center center;
       background-size: 100% 100%;
       opacity: 0.2;
       z-index: -2;
     }
 
     .bg-nails {
-      opacity: .5;
+      opacity: 0.5;
       z-index: -1;
 
       .nail {
@@ -88,8 +88,8 @@
         $nailSize: 0.5rem;
         width: $nailSize;
         height: $nailSize;
-        background: url($CDN_URL + "/images/collector/plate-nail.png")
-        no-repeat center center;
+        background: url($CDN_URL + "/images/collector/plate-nail.png") no-repeat
+          center center;
         background-size: 100% 100%;
 
         &:nth-child(1) {
@@ -121,7 +121,7 @@
           margin-bottom: 0.5em;
           color: white;
           position: relative;
-          padding: .4em 1.5em;
+          padding: 0.4em 1.5em;
 
           .bg-nails {
             .nail {
@@ -131,7 +131,7 @@
 
           .trait-name {
             color: $gold;
-            font-size: .9em;
+            font-size: 0.9em;
             font-weight: 500;
           }
 
@@ -206,7 +206,7 @@
         .phase-info {
           width: 20%;
           height: 4em;
-          margin: .5em 0;
+          margin: 0.5em 0;
           position: relative;
 
           .unrevealed {
@@ -223,15 +223,14 @@
           }
 
           .phase-token-count {
-
           }
 
           &:not(:last-child) {
             &:after {
               content: "";
               position: absolute;
-              top: .3em;
-              bottom: .3em;
+              top: 0.3em;
+              bottom: 0.3em;
               right: 0;
               width: 1px;
               background-color: var(--seperator-color);
@@ -291,7 +290,7 @@
       justify-content: center;
       cursor: pointer;
       position: relative;
-      transition: opacity .5s ease-out;
+      transition: opacity 0.5s ease-out;
 
       .diamond-thumbnail {
         width: 75%;
@@ -391,7 +390,6 @@
 
 @media only screen and (max-width: 480px) {
   .page.collector-page .nfts {
-
     .goto-opensea {
       padding: 10vw 5vw;
       width: unset;
@@ -434,7 +432,7 @@
           padding: 0;
 
           .phases {
-            font-size: .725em;
+            font-size: 0.725em;
           }
         }
       }

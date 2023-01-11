@@ -9,7 +9,8 @@ import {
 } from "api/contractApi";
 import {
   getConfigApi,
-  getContractDataApi, toggleIsMintOpenApi,
+  getContractDataApi,
+  toggleIsMintOpenApi,
   updateStageTimeApi,
 } from "api/serverApi";
 import { constants as ethersConsts } from "ethers";

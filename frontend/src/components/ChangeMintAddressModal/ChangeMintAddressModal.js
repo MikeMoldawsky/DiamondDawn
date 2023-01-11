@@ -17,7 +17,7 @@ import get from "lodash/get";
 import "./ChangeMintAddressModal.scss";
 import useActionDispatch from "hooks/useActionDispatch";
 import { ethers } from "ethers";
-import {ACTION_KEYS} from "consts";
+import { ACTION_KEYS } from "consts";
 
 const ChangeMintAddressModal = ({ close }) => {
   const collector = useSelector(collectorSelector);

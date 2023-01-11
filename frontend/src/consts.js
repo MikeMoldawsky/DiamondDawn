@@ -134,4 +134,4 @@ export const ACTION_KEYS = {
   GET_CONTRACT: "get-contract",
   GET_COLLECTOR_BY_ADDRESS: "get-collector-by-address",
   LOAD_NFTS: "load-nfts",
-}
+};

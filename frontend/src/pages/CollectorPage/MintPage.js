@@ -1,8 +1,8 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
-import {loadIsMintOpen, systemSelector} from "store/systemReducer";
+import { loadIsMintOpen, systemSelector } from "store/systemReducer";
 import { useAccount, useEnsName } from "wagmi";
 import { SYSTEM_STAGE } from "consts";
 import Box from "components/Box";
@@ -19,9 +19,11 @@ import { useMobileOrTablet } from "hooks/useMediaQueries";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
 import CollectorLoader from "containers/CollectorLoader";
-import {tokensSelector} from "store/tokensReducer";
-import size from "lodash/size"
+import { tokensSelector } from "store/tokensReducer";
+import size from "lodash/size";
 import useOnConnect from "hooks/useOnConnect";
+import useSound from "use-sound";
+import mintCompleteSFX from "assets/audio/mint-complete.mp3";
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
@@ -33,17 +35,24 @@ const CollectorPage = () => {
   const navigate = useNavigate();
   const collector = useSelector(collectorSelector);
   const dispatch = useDispatch();
-  const sizeTokens = size(tokens)
-  const isNftGallery = sizeTokens > 0 && selectedTokenId === -1
-  const galleryRows = isMobile ? sizeTokens : Math.ceil(sizeTokens / 3)
+  const sizeTokens = size(tokens);
+  const isNftGallery = sizeTokens > 0 && selectedTokenId === -1;
+  const galleryRows = isMobile ? sizeTokens : Math.ceil(sizeTokens / 3);
+  const [playMintCompleteSFX] = useSound(mintCompleteSFX);
 
   useNoScrollView(isMobile || (isNftGallery && galleryRows > 1));
 
   useMusic("collector.mp3");
 
+  useEffect(() => {
+    if (collector?.minted) {
+      playMintCompleteSFX();
+    }
+  }, [collector?.minted]);
+
   useOnConnect((address) => {
-    dispatch(loadIsMintOpen(address))
-  })
+    dispatch(loadIsMintOpen(address));
+  });
 
   const renderContent = () => {
     if (
@@ -55,11 +64,13 @@ const CollectorPage = () => {
     return <Invite />;
   };
 
-  const getGalleryVWHeight = () => galleryRows * (isMobile ? 90 : 30)
+  const getGalleryVWHeight = () => galleryRows * (isMobile ? 90 : 30);
 
-  const mainBoxStyles = isNftGallery ? {
-    height: `${getGalleryVWHeight()}vw`
-  }  : {}
+  const mainBoxStyles = isNftGallery
+    ? {
+        height: `${getGalleryVWHeight()}vw`,
+      }
+    : {};
 
   return (
     <Page

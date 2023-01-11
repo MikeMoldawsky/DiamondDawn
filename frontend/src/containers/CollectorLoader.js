@@ -8,7 +8,7 @@ import { isActionPendingSelector } from "store/actionStatusReducer";
 import useOnConnect from "hooks/useOnConnect";
 import useDDContract from "hooks/useDDContract";
 import ContractProvider from "containers/ContractProvider";
-import {ACTION_KEYS} from "consts";
+import { ACTION_KEYS } from "consts";
 
 const CollectorLoader = ({ contract, onDisconnect }) => {
   const actionDispatch = useActionDispatch();

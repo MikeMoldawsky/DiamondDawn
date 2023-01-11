@@ -65,7 +65,11 @@ const NFTs = () => {
   };
 
   return (
-    <div className={classNames("box-content nfts", { "has-selected": selectedTokenId > -1 })}>
+    <div
+      className={classNames("box-content nfts", {
+        "has-selected": selectedTokenId > -1,
+      })}
+    >
       <NFTGallery goToProcess={goToProcess} selectToken={onGalleryItemClick} />
       {selectedToken && (
         <div className="layout-box">

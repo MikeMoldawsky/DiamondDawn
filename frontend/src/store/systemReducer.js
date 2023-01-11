@@ -1,16 +1,20 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
 import { BigNumber } from "ethers";
-import {getConfigApi, getContractInfoApi, getIsMintOpenApi} from "api/serverApi";
+import {
+  getConfigApi,
+  getContractInfoApi,
+  getIsMintOpenApi,
+} from "api/serverApi";
 import {
   getMaxEntranceApi,
   getMintPriceApi,
   getMintPriceMarriageApi,
   getSystemStageApi,
 } from "api/contractApi";
-import {CONTRACTS, EVENTS, SYSTEM_STAGE} from "consts";
+import { CONTRACTS, EVENTS, SYSTEM_STAGE } from "consts";
 import { isNoContractMode } from "utils";
-import get from "lodash/get"
-import debounce from "lodash/debounce"
+import get from "lodash/get";
+import debounce from "lodash/debounce";
 import _ from "lodash";
 
 const INITIAL_STATE = {
@@ -48,27 +52,27 @@ export const loadMaxEntrance = (contract) => async (dispatch) => {
 const updateTokensMinted = (addMinted) => ({
   type: "SYSTEM.TOKENS_MINTED",
   payload: { count: addMinted },
-})
+});
 
 export const watchTokensMinted = (mineContract) => async (dispatch) => {
-  let addMinted = 0
+  let addMinted = 0;
 
   const updateStore = debounce(() => {
-    console.log("Forge adding", addMinted)
-    dispatch(updateTokensMinted(addMinted))
-    addMinted = 0
-  }, 100)
+    console.log("Forge adding", addMinted);
+    dispatch(updateTokensMinted(addMinted));
+    addMinted = 0;
+  }, 100);
 
   // read past transfers
   const forgeEvents = await mineContract.queryFilter(EVENTS.Forge);
-  dispatch(updateTokensMinted(forgeEvents.length))
+  dispatch(updateTokensMinted(forgeEvents.length));
 
   // listen to future events
   mineContract.on(EVENTS.Forge, (event) => {
-    console.log("Forge raised", event)
+    console.log("Forge raised", event);
     addMinted++;
-    updateStore()
-  })
+    updateStore();
+  });
 };
 
 export const loadConfig = () => async (dispatch) => {
@@ -103,8 +107,11 @@ export const isStageActiveSelector = (stage) => (state) => {
   return systemStage === stage && isActive;
 };
 
-export const isMintOpenSelector = state => {
-  return isStageActiveSelector(SYSTEM_STAGE.KEY)(state) && systemSelector(state).isMintOpen
+export const isMintOpenSelector = (state) => {
+  return (
+    isStageActiveSelector(SYSTEM_STAGE.KEY)(state) &&
+    systemSelector(state).isMintOpen
+  );
 };
 
 export const contractSelector =
@@ -119,20 +126,20 @@ export const systemReducer = makeReducer(
   {
     "SYSTEM.UPDATE_STATE": reduceUpdateFull,
     "SYSTEM.SET_IS_MINT_OPEN": (state, action) => {
-      const { isMintOpen, stageTime } = action.payload
+      const { isMintOpen, stageTime } = action.payload;
       return {
         ...state,
         isMintOpen,
         config: {
           ...state.config,
-          stageTime
-        }
-      }
+          stageTime,
+        },
+      };
     },
     "SYSTEM.TOKENS_MINTED": (state, action) => ({
       ...state,
-      tokensMinted: state.tokensMinted + get(action, 'payload.count', 0)
-    })
+      tokensMinted: state.tokensMinted + get(action, "payload.count", 0),
+    }),
   },
   INITIAL_STATE,
   false

@@ -30,7 +30,9 @@ const NFTTraits = ({ traits }) => {
           </div>
           <span className="trait-name">{trait_type}</span>
           <span className="underline" />
-          <span className="trait-value">{formatTraitValue(trait_type, value)}</span>
+          <span className="trait-value">
+            {formatTraitValue(trait_type, value)}
+          </span>
         </div>
       ))}
     </div>

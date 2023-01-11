@@ -64,9 +64,7 @@ const DiamondItem = ({ diamond }) => {
         <NFTIcon token={diamond} />
         <div className="token-id">#{id}</div>
       </div>
-      {showInfo && (
-        <DiamondThumbnail diamond={diamond} />
-      )}
+      {showInfo && <DiamondThumbnail diamond={diamond} />}
     </div>
   );
 };

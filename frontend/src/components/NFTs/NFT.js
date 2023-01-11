@@ -49,13 +49,13 @@ const NFT = ({
         })}
       >
         <div>
-        <div className="top-spaced-row card-header">
-          <div>
-            <div className="subtitle-text">{token.name}</div>
-            <div className="tagline-text">NFT #{token.id} / 333</div>
+          <div className="top-spaced-row card-header">
+            <div>
+              <div className="subtitle-text">{token.name}</div>
+              <div className="tagline-text">NFT #{token.id} / 333</div>
+            </div>
+            <InlineVideo src={createVideoSources("nft-certification")} />
           </div>
-          <InlineVideo src={createVideoSources("nft-certification")} />
-        </div>
           <div className="certificate">
             <NFTTraits traits={token.attributes} />
           </div>

@@ -3,7 +3,7 @@ import _ from "lodash";
 import { tokenIdToURI } from "api/contractApi";
 import { constants as ethersConsts } from "ethers";
 import { getTokenTrait } from "utils";
-import {ACTION_KEYS, EVENTS, SYSTEM_STAGE, TRAIT} from "consts";
+import { ACTION_KEYS, EVENTS, SYSTEM_STAGE, TRAIT } from "consts";
 
 const INITIAL_STATE = {};
 

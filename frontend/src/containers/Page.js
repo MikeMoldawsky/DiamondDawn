@@ -10,7 +10,7 @@ import PageCover from "components/PageCover";
 import useOnConnect from "hooks/useOnConnect";
 import { isNoContractMode } from "utils";
 import useCollectorReady from "hooks/useCollectorReady";
-import {ACTION_KEYS} from "consts";
+import { ACTION_KEYS } from "consts";
 
 const DEFAULT_TIMEOUT = 10000;
 const FADE_DURATION = 150;
@@ -40,7 +40,10 @@ const Page = ({
     waitForActions.push(ACTION_KEYS.GET_CONTRACT);
 
     if (waitForTokens) {
-      waitForActions.push({ isFirstComplete: true, key: ACTION_KEYS.LOAD_NFTS });
+      waitForActions.push({
+        isFirstComplete: true,
+        key: ACTION_KEYS.LOAD_NFTS,
+      });
     }
   }
   if (isConnected) {
@@ -49,7 +52,7 @@ const Page = ({
 
   const contentReady = useWaitFor({ images, videos, actions: waitForActions });
   const canAccessDD = useCanAccessDD();
-  const isCollectorReady = useCollectorReady()
+  const isCollectorReady = useCollectorReady();
   const navigate = useNavigate();
   const pageReady = assetReadyPages[pageName] && isCollectorReady;
 

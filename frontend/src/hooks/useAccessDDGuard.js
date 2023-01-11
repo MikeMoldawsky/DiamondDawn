@@ -7,7 +7,7 @@ import useCollectorReady from "hooks/useCollectorReady";
 const useAccessDDGuard = (requireAccess = true) => {
   const canAccessDD = useCanAccessDD();
   const navigate = useNavigate();
-  const isCollectorReady = useCollectorReady()
+  const isCollectorReady = useCollectorReady();
 
   // navigate out if doesn't have access
   useEffect(() => {
