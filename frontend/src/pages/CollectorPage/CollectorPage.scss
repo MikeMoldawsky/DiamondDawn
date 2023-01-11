@@ -101,6 +101,7 @@
 
     .inner-page {
       padding-bottom: 5vw;
+      overflow: hidden;
     }
 
     .main-box {
@@ -118,9 +119,23 @@
         }
       }
 
+      .icons-menu {
+        right: 0;
+        top: -2.9em;
+      }
+
       .close {
         display: none;
       }
+
+      &.nfts-gallery, &.nft-selected {
+        margin-top: 3.5em;
+      }
+    }
+
+    .nft-selected {
+      padding: 0;
+      height: unset;
     }
   }
 }
@@ -128,29 +143,5 @@
 @media only screen and (max-width: 768px) {
   .page.collector-page {
     font-size: 3.5vw;
-  }
-}
-
-@media only screen and (max-width: 480px) {
-  .page.collector-page {
-    .inner-page {
-      overflow: hidden;
-    }
-
-    .nft-selected {
-      padding: 0;
-      height: unset;
-    }
-
-    .main-box {
-      .icons-menu {
-        right: 0em;
-        top: -2.9em;
-      }
-    }
-
-    .main-box.nfts-gallery, .main-box.nft-selected {
-      margin-top: 3.5em;
-    }
   }
 }
