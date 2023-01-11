@@ -47,8 +47,8 @@
           content: "";
           position: absolute;
           right: -1.5em;
-          top: .1em;
-          bottom: .1em;
+          top: 0.1em;
+          bottom: 0.1em;
           width: 1px;
           background-color: white;
         }
@@ -63,7 +63,7 @@
         &.fa-twitter {
           opacity: 1;
           font-size: 1.6em !important;
-          margin-top: .1em;
+          margin-top: 0.1em;
         }
 
         &.gallery-icon {
@@ -129,7 +129,8 @@
         display: none;
       }
 
-      &.nfts-gallery, &.nft-selected {
+      &.nfts-gallery,
+      &.nft-selected {
         margin-top: 3.5em;
       }
     }

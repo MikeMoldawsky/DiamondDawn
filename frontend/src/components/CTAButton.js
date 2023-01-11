@@ -34,14 +34,15 @@ const CTAButton = ({ className, onClick }) => {
   if (!collector) return renderButton({ text: "APPLY FOR DIAMOND DAWN" });
 
   if (collector.approved) {
-    if (collector.minted) return renderButton({ text: "COLLECTOR'S ROOM", sfx: "explore"})
+    if (collector.minted)
+      return renderButton({ text: "COLLECTOR'S ROOM", sfx: "explore" });
 
     return canMint && !collector.mintClosed
       ? renderButton({ text: "MINT NOW" })
       : renderButton({
-        text: "INVITE A FRIEND",
-        customCTAClick: goToInvites,
-      });
+          text: "INVITE A FRIEND",
+          customCTAClick: goToInvites,
+        });
   }
 
   return renderButton({ text: "APPLICATION STATUS", sfx: "explore" });

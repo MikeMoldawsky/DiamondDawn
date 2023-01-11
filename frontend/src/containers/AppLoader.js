@@ -4,10 +4,7 @@ import { useProvider } from "wagmi";
 import { useDispatch } from "react-redux";
 import useActionDispatch from "hooks/useActionDispatch";
 import useDDContract from "hooks/useDDContract";
-import {
-  loadConfig,
-  loadSystemStage,
-} from "store/systemReducer";
+import { loadConfig, loadSystemStage } from "store/systemReducer";
 import { ACTION_KEYS, EVENTS } from "consts";
 import useOnConnect from "hooks/useOnConnect";
 import { readAndWatchAccountTokens, clearTokens } from "store/tokensReducer";

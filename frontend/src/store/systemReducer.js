@@ -9,7 +9,8 @@ import {
   getMaxEntranceApi,
   getMintPriceApi,
   getMintPriceMarriageApi,
-  getSystemStageApi, getTotalSupplyApi,
+  getSystemStageApi,
+  getTotalSupplyApi,
 } from "api/contractApi";
 import { CONTRACTS, SYSTEM_STAGE } from "consts";
 import { isNoContractMode } from "utils";

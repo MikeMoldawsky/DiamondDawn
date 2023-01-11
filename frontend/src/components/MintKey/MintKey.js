@@ -5,7 +5,8 @@ import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loadMaxEntrance,
-  loadMintPrice, loadTotalSupply,
+  loadMintPrice,
+  loadTotalSupply,
   systemSelector,
 } from "store/systemReducer";
 import {
@@ -62,7 +63,7 @@ const MintKey = () => {
     volume: 1,
     interrupt: false,
   });
-  const [canMintOnMount] = useState(canMint)
+  const [canMintOnMount] = useState(canMint);
 
   const mint = async (numNfts) => {
     if (geoLocation?.blocked || !canMint) return;
@@ -113,13 +114,13 @@ const MintKey = () => {
 
   useEffect(() => {
     if (canMint && !canMintOnMount) {
-      playMintOpenSFX()
+      playMintOpenSFX();
     }
-  }, [canMint, canMintOnMount])
+  }, [canMint, canMintOnMount]);
 
   usePollingEffect(
     () => {
-      dispatch(loadTotalSupply(contract))
+      dispatch(loadTotalSupply(contract));
     },
     [],
     {
