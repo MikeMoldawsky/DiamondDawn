@@ -14,6 +14,19 @@ async function updateStageTime(timestamp) {
   }
 }
 
+async function toggleIsMintOpen(timestamp) {
+  try {
+    let config = await ConfigModel.findOne({});
+    const update = { mintOpen: !config.mintOpen }
+    if (timestamp) {
+      update.stageTime = new Date(timestamp)
+    }
+    return await ConfigModel.findOneAndUpdate({}, update);
+  } catch (e) {
+    console.log(`Failed to toggleIsMintOpen`, e);
+  }
+}
+
 async function logEruptionTx(txHash) {
   try {
     let config = await ConfigModel.findOne({});
@@ -51,4 +64,5 @@ module.exports = {
   logEruptionTx,
   clearEruptionTxs,
   getConfig,
+  toggleIsMintOpen,
 };

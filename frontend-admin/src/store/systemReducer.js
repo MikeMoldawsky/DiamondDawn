@@ -9,7 +9,7 @@ import {
 } from "api/contractApi";
 import {
   getConfigApi,
-  getContractDataApi,
+  getContractDataApi, toggleIsMintOpenApi,
   updateStageTimeApi,
 } from "api/serverApi";
 import { constants as ethersConsts } from "ethers";
@@ -107,6 +107,11 @@ export const loadConfig = () => async (dispatch) => {
 
 export const updateStageTime = (timestamp) => async (dispatch) => {
   await updateStageTimeApi(timestamp);
+  dispatch(loadConfig());
+};
+
+export const toggleIsMintOpen = (timestamp) => async (dispatch) => {
+  await toggleIsMintOpenApi(timestamp);
   dispatch(loadConfig());
 };
 

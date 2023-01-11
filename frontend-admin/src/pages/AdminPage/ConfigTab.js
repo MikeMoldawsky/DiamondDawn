@@ -11,24 +11,39 @@ import {
   loadSystemPaused,
   systemSelector,
   updateStageTime,
+  toggleIsMintOpen,
 } from "store/systemReducer";
 import classNames from "classnames";
 import { pauseApi, unpauseApi } from "api/contractApi";
 import useDDContract from "hooks/useDDContract";
 import { isNoContractMode } from "utils";
+import add from "date-fns/add";
 
 const ContractConfig = () => {
   const dispatch = useDispatch();
   const contract = useDDContract();
-  const { paused } = useSelector(systemSelector);
+  const { paused, config } = useSelector(systemSelector);
 
   const togglePause = async () => {
     await (paused ? unpauseApi(contract) : pauseApi(contract));
     dispatch(loadSystemPaused(contract));
   };
 
+  const toggleMint = async () => {
+    const timestamp = config.mintOpen ? null : add(new Date(), { weeks: 1 });
+    dispatch(toggleIsMintOpen(timestamp));
+  };
+
   return (
     <>
+      <div className="separator" />
+      <div className="title">IS MINT OPEN</div>
+      <div className="center-aligned-row input-row">
+        <div className="stage">{config.mintOpen?.toString()}</div>
+        <ActionButton actionKey="toggleIsMintOpen" onClick={toggleMint}>
+          {config.mintOpen ? "CLOSE MINT" : "OPEN MINT"}
+        </ActionButton>
+      </div>
       <div className="separator" />
       <div className="title">IS PAUSED</div>
       <div className="center-aligned-row input-row">
