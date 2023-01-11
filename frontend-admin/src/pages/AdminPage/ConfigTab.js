@@ -48,7 +48,6 @@ const ConfigTab = () => {
   const { config } = useSelector(systemSelector);
   const { stageTime } = config;
   const [displayStageTime, setDisplayStageTime] = useState(null);
-  const [offset, setOffset] = useState(0);
 
   useEffect(() => {
     dispatch(loadConfig());
@@ -60,7 +59,7 @@ const ConfigTab = () => {
 
   const toggleMint = async () => {
     const timestamp = config.mintOpen ? null : add(new Date(), { weeks: 1 });
-    dispatch(toggleIsMintOpen(timestamp, offset));
+    dispatch(toggleIsMintOpen(timestamp));
   };
 
   return (
@@ -98,13 +97,6 @@ const ConfigTab = () => {
       <div className="title">IS MINT OPEN</div>
       <div className="center-aligned-row input-row">
         <div className="stage">{config.mintOpen?.toString()}</div>
-        <div className="center-aligned-row">
-          <input
-            type="number"
-            value={offset}
-            onChange={(e) => setOffset(e.target.value)}
-          />
-        </div>
         <ActionButton actionKey="toggleIsMintOpen" onClick={toggleMint}>
           {config.mintOpen ? "CLOSE MINT" : "OPEN MINT"}
         </ActionButton>
