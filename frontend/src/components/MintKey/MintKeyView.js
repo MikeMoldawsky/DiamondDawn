@@ -22,6 +22,8 @@ import {
   SystemCountdown,
 } from "components/Countdown/Countdown";
 import { BLOCKED_COUNTRY_TEXT } from "consts";
+import useSound from "use-sound";
+import mintOpenSFX from "assets/audio/mint-open.mp3";
 
 const RadioButtons = ({ values, selectedValue, setSelectedValue }) => {
   return (
@@ -74,7 +76,7 @@ const MintKeyView = ({
   const renderHandAndKeyVideo = useCallback(() => {
     return (
       <div className="image-box">
-        <InlineVideo src={createVideoSources("hand-key-particles")} />
+        <InlineVideo src={createVideoSources("hand-2-keys")} />
       </div>
     );
   }, []);
@@ -130,23 +132,22 @@ const MintKeyView = ({
   );
 
   const renderCountdown = () => {
-    return <SystemCountdown className="timer-box" />;
-    // return canMint ? (
-    //   <CountdownWithText
-    //     className="timer-box"
-    //     date={expiresAt}
-    //     defaultParts={{
-    //       days: 3,
-    //       hours: 3,
-    //       minutes: 3,
-    //       seconds: 0,
-    //     }}
-    //     text="Your opportunity to mint expires in"
-    //     onComplete={onMintWindowClose}
-    //   />
-    // ) : (
-    //   <SystemCountdown className="timer-box" />
-    // );
+    return canMint ? (
+      <CountdownWithText
+        className="timer-box"
+        date={expiresAt}
+        defaultParts={{
+          days: 3,
+          hours: 3,
+          minutes: 3,
+          seconds: 0,
+        }}
+        text="Your opportunity to mint expires in"
+        onComplete={onMintWindowClose}
+      />
+    ) : (
+      <SystemCountdown className="timer-box" />
+    );
   };
 
   return (
@@ -180,15 +181,17 @@ const MintKeyView = ({
             <>
               <Desktop>{renderTitle()}</Desktop>
               <div className="left-center-aligned-row mint-box">
-                <MobileOrTablet>
-                  <div className="center-aligned-row">
-                    {renderHandAndKeyVideo()}
-                    {renderMintButton()}
+                <div className="spaced-bottom-row">
+                  <MobileOrTablet>
+                    <div className="center-aligned-row">
+                      {renderHandAndKeyVideo()}
+                      {renderMintButton()}
+                    </div>
+                  </MobileOrTablet>
+                  <Desktop>{renderMintButton()}</Desktop>
+                  <div className="center-aligned-column open-soon">
+                    {renderCountdown()}
                   </div>
-                </MobileOrTablet>
-                <Desktop>{renderMintButton()}</Desktop>
-                <div className="center-aligned-column open-soon">
-                  {renderCountdown()}
                 </div>
               </div>
               <div className="center-aligned-row invites-box">

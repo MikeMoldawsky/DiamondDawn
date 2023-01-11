@@ -304,16 +304,6 @@
       .token-id {
         font-size: $font20px;
       }
-
-      &.active {
-        transition: all 0.5s ease-out;
-        position: absolute;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: auto;
-      }
     }
   }
 
@@ -388,7 +378,7 @@
   }
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 1199px) {
   .page.collector-page .nfts {
     .goto-opensea {
       padding: 10vw 5vw;
@@ -409,7 +399,7 @@
         flex-direction: column;
         width: calc(100% + 4px);
         height: unset;
-        top: -1px;
+        top: 1px;
 
         .diamond-box {
           height: 90vw;

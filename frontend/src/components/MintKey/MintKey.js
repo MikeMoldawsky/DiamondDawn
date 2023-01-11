@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   loadMaxEntrance,
   loadMintPrice,
+  loadTotalSupply,
   systemSelector,
 } from "store/systemReducer";
 import {
@@ -16,9 +17,9 @@ import {
 import { useAccount, useProvider } from "wagmi";
 import { forgeApi, getTokenUriApi } from "api/contractApi";
 import { signMintApi } from "api/serverApi";
-import { calcTokensMinted, isNoContractMode, showError } from "utils";
+import { isNoContractMode, showError } from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
-import { ACTION_KEYS, CONTRACTS, SYSTEM_STAGE } from "consts";
+import { ACTION_KEYS, SYSTEM_STAGE } from "consts";
 import {
   collectorSelector,
   loadCollectorByAddress,
@@ -33,6 +34,8 @@ import {
 } from "store/uiReducer";
 import Loading from "components/Loading";
 import usePollingEffect from "hooks/usePollingEffect";
+import useSound from "use-sound";
+import mintOpenSFX from "assets/audio/mint-open.mp3";
 
 const MintKey = () => {
   const {
@@ -42,7 +45,6 @@ const MintKey = () => {
     systemStage,
     isActive,
     isMintOpen,
-    config,
   } = useSelector(systemSelector);
   const account = useAccount();
   const contract = useDDContract();
@@ -57,6 +59,11 @@ const MintKey = () => {
 
   const maxTokenId = max(map(tokens, "id"));
   const canMint = systemStage === SYSTEM_STAGE.KEY && isActive && isMintOpen;
+  const [playMintOpenSFX] = useSound(mintOpenSFX, {
+    volume: 1,
+    interrupt: false,
+  });
+  const [canMintOnMount] = useState(canMint);
 
   const mint = async (numNfts) => {
     if (geoLocation?.blocked || !canMint) return;
@@ -105,18 +112,22 @@ const MintKey = () => {
     };
   }, []);
 
-  const [offset, setOffset] = useState(config.offset);
+  useEffect(() => {
+    if (canMint && !canMintOnMount) {
+      playMintOpenSFX();
+    }
+  }, [canMint, canMintOnMount]);
+
   usePollingEffect(
     () => {
-      setOffset(calcTokensMinted(tokensMinted, config));
+      dispatch(loadTotalSupply(contract));
     },
     [],
     {
-      interval: 10_000,
+      interval: 3_000,
       stopPolling: !canMint,
     }
   );
-  console.log({ offset, canMint });
 
   useEffect(() => {
     if (canMint && collector?.approved && !collector?.mintWindowStart) {
@@ -139,7 +150,7 @@ const MintKey = () => {
     <MintKeyView
       mintPrice={mintPrice}
       maxEntrance={maxEntrance}
-      tokensMinted={canMint ? offset : 0}
+      tokensMinted={canMint ? tokensMinted : 0}
       canMint={canMint}
       mint={mint}
       expiresAt={collector.mintWindowClose}

@@ -4,8 +4,6 @@ const ConfigSchema = new mongoose.Schema({
   stageTime: { type: Date },
   eruptionTxs: { type: [String], default: [] },
   mintOpen: { type: Boolean, default: false },
-  mintOpenTime: { type: Date },
-  offset: { type: Number, default: 0 },
 });
 
 const ConfigModel = mongoose.model("Config", ConfigSchema);

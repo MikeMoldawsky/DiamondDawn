@@ -34,25 +34,47 @@
     margin: 0 auto;
     transition: all 0.4s ease-out;
 
-    .close {
+    .icons-menu {
       position: absolute;
-      font-size: 1.75em;
-      right: 0.75em;
-      top: 1.5rem;
-      color: white;
-      opacity: 0.7;
-    }
+      right: 1.5em;
+      top: 1.5em;
 
-    .back-to-gallery {
-      cursor: pointer;
-      position: absolute;
-      right: 4em;
-      top: 1.5rem;
-      color: white;
-      opacity: 0.7;
+      .icon-twitter {
+        position: relative;
+        margin-right: 2em;
+
+        &:after {
+          content: "";
+          position: absolute;
+          right: -1.5em;
+          top: 0.1em;
+          bottom: 0.1em;
+          width: 1px;
+          background-color: white;
+        }
+      }
 
       svg {
+        cursor: pointer;
+        color: white;
         font-size: 1.7em !important;
+        position: relative;
+
+        &.fa-twitter {
+          opacity: 1;
+          font-size: 1.6em !important;
+          margin-top: 0.1em;
+        }
+
+        &.gallery-icon {
+          opacity: 0.7;
+          margin-left: 0.3em;
+        }
+
+        &.close {
+          opacity: 0.7;
+          margin-left: 0.5em;
+        }
       }
     }
   }
@@ -79,6 +101,7 @@
 
     .inner-page {
       padding-bottom: 5vw;
+      overflow: hidden;
     }
 
     .main-box {
@@ -88,6 +111,7 @@
       max-height: unset;
       aspect-ratio: unset;
       padding: 0.5em;
+      transition: unset;
 
       .box-content.opaque {
         &:before {
@@ -96,9 +120,24 @@
         }
       }
 
+      .icons-menu {
+        right: 0;
+        top: -2.9em;
+      }
+
       .close {
         display: none;
       }
+
+      &.nfts-gallery,
+      &.nft-selected {
+        margin-top: 3.5em;
+      }
+    }
+
+    .nft-selected {
+      padding: 0;
+      height: 180vw;
     }
   }
 }
@@ -106,25 +145,5 @@
 @media only screen and (max-width: 768px) {
   .page.collector-page {
     font-size: 3.5vw;
-  }
-}
-
-@media only screen and (max-width: 480px) {
-  .page.collector-page {
-    .inner-page {
-      overflow: hidden;
-    }
-
-    .nft-selected {
-      padding: 0;
-      height: unset;
-    }
-
-    .main-box {
-      .back-to-gallery {
-        right: 1em;
-        top: 1em;
-      }
-    }
   }
 }

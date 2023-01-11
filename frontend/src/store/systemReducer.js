@@ -10,12 +10,10 @@ import {
   getMintPriceApi,
   getMintPriceMarriageApi,
   getSystemStageApi,
+  getTotalSupplyApi,
 } from "api/contractApi";
-import { CONTRACTS, EVENTS, SYSTEM_STAGE } from "consts";
+import { CONTRACTS, SYSTEM_STAGE } from "consts";
 import { isNoContractMode } from "utils";
-import get from "lodash/get";
-import debounce from "lodash/debounce";
-import _ from "lodash";
 
 const INITIAL_STATE = {
   ddContractInfo: null,
@@ -49,35 +47,14 @@ export const loadMaxEntrance = (contract) => async (dispatch) => {
   dispatch(updateState({ maxEntrance }));
 };
 
-const updateTokensMinted = (addMinted) => ({
-  type: "SYSTEM.TOKENS_MINTED",
-  payload: { count: addMinted },
-});
-
-export const watchTokensMinted = (mineContract) => async (dispatch) => {
-  let addMinted = 0;
-
-  const updateStore = debounce(() => {
-    console.log("Forge adding", addMinted);
-    dispatch(updateTokensMinted(addMinted));
-    addMinted = 0;
-  }, 100);
-
-  // read past transfers
-  const forgeEvents = await mineContract.queryFilter(EVENTS.Forge);
-  dispatch(updateTokensMinted(forgeEvents.length));
-
-  // listen to future events
-  mineContract.on(EVENTS.Forge, (event) => {
-    console.log("Forge raised", event);
-    addMinted++;
-    updateStore();
-  });
-};
-
 export const loadConfig = () => async (dispatch) => {
   const config = await getConfigApi();
   dispatch(updateState({ config }));
+};
+
+export const loadTotalSupply = (contract) => async (dispatch) => {
+  const tokensMinted = await getTotalSupplyApi(contract);
+  dispatch(updateState({ tokensMinted }));
 };
 
 export const loadIsMintOpen = (address) => async (dispatch) => {
@@ -136,10 +113,6 @@ export const systemReducer = makeReducer(
         },
       };
     },
-    "SYSTEM.TOKENS_MINTED": (state, action) => ({
-      ...state,
-      tokensMinted: state.tokensMinted + get(action, "payload.count", 0),
-    }),
   },
   INITIAL_STATE,
   false
