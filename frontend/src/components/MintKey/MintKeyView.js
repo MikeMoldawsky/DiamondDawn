@@ -181,15 +181,17 @@ const MintKeyView = ({
             <>
               <Desktop>{renderTitle()}</Desktop>
               <div className="left-center-aligned-row mint-box">
-                <MobileOrTablet>
-                  <div className="center-aligned-row">
-                    {renderHandAndKeyVideo()}
-                    {renderMintButton()}
+                <div className="spaced-bottom-row">
+                  <MobileOrTablet>
+                    <div className="center-aligned-row">
+                      {renderHandAndKeyVideo()}
+                      {renderMintButton()}
+                    </div>
+                  </MobileOrTablet>
+                  <Desktop>{renderMintButton()}</Desktop>
+                  <div className="center-aligned-column open-soon">
+                    {renderCountdown()}
                   </div>
-                </MobileOrTablet>
-                <Desktop>{renderMintButton()}</Desktop>
-                <div className="center-aligned-column open-soon">
-                  {renderCountdown()}
                 </div>
               </div>
               <div className="center-aligned-row invites-box">

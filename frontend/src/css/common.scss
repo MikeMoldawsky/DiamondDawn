@@ -463,6 +463,12 @@ a:not(.no-hover) {
   justify-content: center;
 }
 
+.spaced-bottom-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
 .right-center-aligned-row {
   display: flex;
   align-items: center;
