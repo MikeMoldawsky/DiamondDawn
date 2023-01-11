@@ -34,25 +34,48 @@
     margin: 0 auto;
     transition: all 0.4s ease-out;
 
-    .close {
+    .icons-menu {
       position: absolute;
-      font-size: 1.75em;
-      right: 0.75em;
-      top: 1.5rem;
-      color: white;
+      right: 1.5em;
+      top: 1.5em;
       opacity: 0.7;
-    }
 
-    .back-to-gallery {
-      cursor: pointer;
-      position: absolute;
-      right: 4em;
-      top: 1.5rem;
-      color: white;
-      opacity: 0.7;
+      .icon-twitter {
+        position: relative;
+
+        &:after {
+          content: "";
+          position: absolute;
+          right: .5em;
+          top: .1em;
+          bottom: .1em;
+          width: 1px;
+          background-color: white;
+        }
+      }
 
       svg {
+        cursor: pointer;
+        color: white;
         font-size: 1.7em !important;
+        position: relative;
+
+        &.fa-twitter {
+          color: $gold;
+          opacity: 1;
+          font-size: 1.6em !important;
+          margin-top: .1em;
+          margin-right: .5em;
+          padding-right: .5em;
+        }
+
+        &.gallery-icon {
+          margin-left: 0.3em;
+        }
+
+        &.close {
+          margin-left: 0.5em;
+        }
       }
     }
   }
@@ -121,10 +144,14 @@
     }
 
     .main-box {
-      .back-to-gallery {
-        right: 1em;
-        top: 1em;
+      .icons-menu {
+        right: 0em;
+        top: -2.5em;
       }
+    }
+
+    .main-box.nfts-gallery, .main-box.nft-selected {
+      margin-top: 2em;
     }
   }
 }

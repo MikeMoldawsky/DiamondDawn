@@ -7,6 +7,8 @@ import {
 } from "consts";
 import { collectorDisplayName, isNoContractMode } from "utils";
 import classNames from "classnames";
+import {useSelector} from "react-redux";
+import {systemSelector} from "store/systemReducer";
 
 export const Link = ({ href, className, disabled, title = "", children }) => {
   const aProps = {};
@@ -35,6 +37,24 @@ export const TwitterLink = ({ className, children }) => (
     {children}
   </Link>
 );
+
+export const TwitterShareNFTLink = ({ className, tokenId, children }) => {
+  const { ddContractInfo } = useSelector(systemSelector);
+  if (!ddContractInfo) return null
+
+  const text = encodeURIComponent(`Starting my @DiamondDawnNFT journey with Mine Key #${tokenId}/333`)
+  const url = encodeURIComponent(`https://opensea.io/assets/ethereum/${ddContractInfo.address}/${tokenId}`)
+  const link = `http://twitter.com/share?text=${text}&url=${url}`
+
+  return (
+    <Link
+      href={link}
+      className={classNames(className)}
+    >
+      {children}
+    </Link>
+  )
+};
 
 export const GetPasswordLink = ({ className }) => (
   <Link href={PRIVATE_TWITTER_MESSAGE_URL} className={className}>

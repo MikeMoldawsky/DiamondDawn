@@ -8,7 +8,7 @@ import { SYSTEM_STAGE } from "consts";
 import Box from "components/Box";
 import Invite from "components/Invite";
 import NFTs from "components/NFTs";
-import { getCDNImageUrl, shortenEthAddress } from "utils";
+import {getCDNImageUrl, shortenEthAddress} from "utils";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import useNoScrollView from "hooks/useNoScrollView";
@@ -23,6 +23,9 @@ import { tokensSelector } from "store/tokensReducer";
 import size from "lodash/size";
 import useSound from "use-sound";
 import mintCompleteSFX from "assets/audio/mint-complete.mp3";
+import {TwitterShareNFTLink} from "components/Links";
+import {faTwitter} from "@fortawesome/free-brands-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
@@ -94,18 +97,20 @@ const CollectorPage = () => {
           >
             <CollectorLoader />
             {renderContent()}
-            {selectedTokenId > -1 && (
-              <div
-                className="back-to-gallery"
-                onClick={() => dispatch(setSelectedTokenId(-1))}
-              >
-                <CollectionsOutlinedIcon />
-              </div>
-            )}
-            <HighlightOffIcon
-              className="close"
-              onClick={() => navigate("/explore")}
-            />
+            <div className="right-center-aligned-row icons-menu">
+              {selectedTokenId > -1 && (
+                <>
+                  <TwitterShareNFTLink className="icon-twitter" tokenId={selectedTokenId}>
+                    <FontAwesomeIcon icon={faTwitter} />
+                  </TwitterShareNFTLink>
+                  <CollectionsOutlinedIcon className="gallery-icon" onClick={() => dispatch(setSelectedTokenId(-1))} />
+                </>
+              )}
+              <HighlightOffIcon
+                className="close"
+                onClick={() => navigate("/explore")}
+              />
+            </div>
           </Box>
         </div>
       </div>
