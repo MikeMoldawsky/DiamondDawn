@@ -33,12 +33,12 @@ library Phases {
     }
 
 
-    function evolve(Phase storage phase, Metadata storage currentMetadata) internal {
+    function evolve(Phase storage phase, uint tokenId, Metadata storage currentMetadata) internal {
         require(phase._isOpen, "phase is closed");
         require(phase._evolved < phase._maxSupply, "max evolved");
         require(phase._supportedPhases[currentMetadata._phaseName], "not supported phase");
         phase._evolved += 1;
-        currentMetadata._metadata = phase._phase.evolve(currentMetadata._metadata);
+        currentMetadata._metadata = phase._phase.evolve(tokenId, currentMetadata._metadata);
         currentMetadata._phaseName = phase._name;
     }
 

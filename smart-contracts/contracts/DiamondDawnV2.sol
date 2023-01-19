@@ -287,7 +287,7 @@ contract DiamondDawnV2 is
         require(!_mintedHonorary[_msgSender()], "Already minted");
         _mintedHonorary[_msgSender()] = true;
         _safeMint(_msgSender(), ++_numTokens);
-        _phases[_currentPhase].evolve(_metadata[_numTokens]);
+        _phases[_currentPhase].evolve(_numTokens, _metadata[_numTokens]);
     }
 
     function _mint(bytes calldata signature, uint256 quantity) private  isNotFull(quantity) {
