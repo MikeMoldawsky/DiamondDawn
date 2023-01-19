@@ -32,6 +32,7 @@
     "@nomiclabs/hardhat-etherscan": "^3.1.0",
     "chai": "^4.3.6",
     "dotenv": "^10.0.0",
+    "erc721a": "^4.2.3",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^16.0.3",
