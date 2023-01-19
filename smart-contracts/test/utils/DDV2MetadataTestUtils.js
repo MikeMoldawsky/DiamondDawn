@@ -23,10 +23,8 @@ async function getParsedMetadata(ddUser, ddContract, tokenId) {
 }
 
 async function assertBase64AndGetParsed(actualMetadata) {
-  console.log(">>>>> MIKE 1", { actualMetadata });
   const actualParsedUrlData = parseDataUrl(actualMetadata); // parse data-url (data:[<mediatype>][;base64],<data>)
   // validate data-url format
-  console.log(">>>>> MIKE 2", { actualParsedUrlData });
   expect(actualParsedUrlData.base64).to.be.true;
   expect(actualParsedUrlData.mediaType).to.equal("application/json");
   expect(actualParsedUrlData.contentType).to.equal("application/json");

@@ -9,6 +9,15 @@ async function deployRevealPhase() {
   };
 }
 
+async function deployKeyPhase() {
+  const KeyPhase = await ethers.getContractFactory("KeyPhase");
+  const keyPhase = await KeyPhase.deploy();
+  await keyPhase.deployed();
+  return {
+    keyPhase,
+  };
+}
+
 async function deployDDV2() {
   const users = await ethers.getSigners();
   const owner = users.shift();
@@ -32,4 +41,5 @@ async function deployDDV2() {
 module.exports = {
   deployDDV2,
   deployRevealPhase,
+  deployKeyPhase,
 };

@@ -7,7 +7,6 @@ import "../objects/Mine.sol";
 
 import "../interface/IDiamondDawnPhase.sol";
 
-
 library Phases {
     struct Phase {
         IDiamondDawnPhase _phase;
@@ -20,11 +19,18 @@ library Phases {
     }
 
     struct TokenMetadata {
-        string _phaseName;
-        uint _metadata;
+        string phaseName;
+        uint attributes;
     }
 
-    function initialize(Phase storage phase, address ddPhase, string memory name, uint16 maxSupply, uint price, string memory supportedPhase) internal {
+    function initialize(
+        Phase storage phase,
+        address ddPhase,
+        string memory name,
+        uint16 maxSupply,
+        uint price,
+        string memory supportedPhase
+    ) internal {
         phase._phase = IDiamondDawnPhase(ddPhase);
         phase._name = name;
         phase._maxSupply = maxSupply;
@@ -32,14 +38,17 @@ library Phases {
         phase._supportedPhases[supportedPhase] = true;
     }
 
-
-    function evolve(Phase storage phase, uint tokenId, TokenMetadata storage currentMetadata) internal {
+    function evolve(
+        TokenMetadata storage metadata,
+        Phase storage phase,
+        uint tokenId
+    ) internal {
         require(phase._isOpen, "phase is closed");
         require(phase._evolved < phase._maxSupply, "max evolved");
-        require(phase._supportedPhases[currentMetadata._phaseName], "not supported phase");
+        require(phase._supportedPhases[metadata.phaseName], "not supported phase");
         phase._evolved += 1;
-        currentMetadata._metadata = phase._phase.evolve(tokenId, currentMetadata._metadata);
-        currentMetadata._phaseName = phase._name;
+        metadata.attributes = phase._phase.evolve(tokenId, metadata.attributes);
+        metadata.phaseName = phase._name;
     }
 
     function open(Phase storage phase) internal {
@@ -50,9 +59,13 @@ library Phases {
         phase._isOpen = false;
     }
 
-    function getMetadata(Phase storage phase, uint tokenId, TokenMetadata memory metadata) internal view returns (string memory) {
-        require( keccak256(bytes(phase._name)) == keccak256(bytes(metadata._phaseName)), "Wrong token phase");
-        return phase._phase.getMetadata(tokenId, metadata._metadata);
+    function getMetadata(
+        Phase storage phase,
+        uint tokenId,
+        TokenMetadata memory metadata
+    ) internal view returns (string memory) {
+        require(keccak256(bytes(phase._name)) == keccak256(bytes(metadata.phaseName)), "Wrong token phase");
+        return phase._phase.getMetadata(tokenId, metadata.attributes);
     }
 
     function isOpen(Phase storage phase) internal view returns (bool) {
@@ -63,7 +76,15 @@ library Phases {
         return phase._price;
     }
 
-    function isPrice(Phase storage phase, uint price) internal view returns (bool) {
-        return phase._price == price;
+    function exists(Phase storage phase) internal view returns (bool) {
+        return phase._maxSupply > 0;
+    }
+
+    function supportsPhase(Phase storage phase, string memory phaseName) internal view returns (bool) {
+        return phase._supportedPhases[phaseName];
+    }
+
+    function getEvolved(Phase storage phase) internal view returns (uint16) {
+        return phase._evolved;
     }
 }

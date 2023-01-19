@@ -8,14 +8,12 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-
 import "operator-filter-registry/src/DefaultOperatorFilterer.sol";
-import "./interface/IDiamondDawn.sol";
-import "./interface/IDiamondDawnAdmin.sol";
-import "./interface/IDiamondDawnMine.sol";
+import "./interface/IDiamondDawnV2.sol";
+import "./interface/IDiamondDawnAdminV2.sol";
 import "./utils/Phases.sol";
 
 /**
@@ -42,23 +40,25 @@ contract DiamondDawnV2 is
     DefaultOperatorFilterer,
     AccessControl,
     Ownable,
-    Pausable
+    Pausable,
+    IDiamondDawnV2,
+    IDiamondDawnAdminV2
 {
-    using EnumerableSet for EnumerableSet.AddressSet;
-    using Phases for Phases.Phase;
-    using ECDSA for bytes32;
     using Counters for Counters.Counter;
+    using EnumerableSet for EnumerableSet.AddressSet;
+    using ECDSA for bytes32;
+    using Phases for Phases.Phase;
+    using Phases for Phases.TokenMetadata;
 
-    uint8 public constant PRICE = 0;
     uint8 public constant MAX_MINT = 10;
-    uint16 public constant MAX_ENTRANCE = 5555;
+    uint16 public constant MAX_TOKENS = 5555;
 
     bool public isLocked; // immutable
     bool public isActive;
 
+    string private _currentPhase;
     uint16 private _numTokens;
     address private _signer;
-    string private _currentPhase;
     mapping(address => bool) private _minted;
     mapping(address => bool) private _mintedHonorary;
     mapping(string => Phases.Phase) private _phases;
@@ -69,7 +69,7 @@ contract DiamondDawnV2 is
         _setDefaultRoyalty(_msgSender(), 1000);
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _currentPhase = "reveal";
-        _phases[_currentPhase].initialize(ddPhase, _currentPhase, MAX_ENTRANCE, 0, "");
+        _phases[_currentPhase].initialize(ddPhase, _currentPhase, MAX_TOKENS, 0, "");
     }
 
     /**********************          Modifiers          ************************/
@@ -79,20 +79,26 @@ contract DiamondDawnV2 is
         _;
     }
 
-    modifier isNotFull(uint256 quantity) {
-        require((_numTokens + quantity) <= MAX_ENTRANCE, "Max capacity");
+    modifier canMint(uint256 quantity) {
+        require((_numTokens + quantity) <= MAX_TOKENS, "Max capacity");
         _;
     }
 
     modifier canEvolve(string memory name) {
         require(isActive, "Stage is inactive");
-        require(_phases[name].isPrice(msg.value), string.concat("Cost is: ", Strings.toString(_phases[name].getPrice())));
+        require(
+            msg.value == _phases[name].getPrice(),
+            string.concat("Cost is: ", Strings.toString(_phases[name].getPrice()))
+        );
         _;
     }
 
-
-    modifier costs(uint price, uint quantity) {
-        require(msg.value == (price * quantity), string.concat("Cost is: ", Strings.toString(price * quantity)));
+    modifier canEvolveMany(string memory name, uint quantity) {
+        require(isActive, "Stage is inactive");
+        require(
+            msg.value == (_phases[name].getPrice() * quantity),
+            string.concat("Cost is: ", Strings.toString(_phases[name].getPrice() * quantity))
+        );
         _;
     }
 
@@ -103,80 +109,89 @@ contract DiamondDawnV2 is
 
     /**********************     External Functions     ************************/
 
-
-    function mint(bytes calldata signature, uint256 quantity) external payable isNotFull(quantity) costs(PRICE, quantity) {
+    function mint(bytes calldata signature, uint256 quantity)
+        external
+        payable
+        canMint(quantity)
+        canEvolve(_currentPhase)
+    {
         _mint(signature, quantity);
     }
 
-    function mintHonorary(bytes calldata signature) external payable isNotFull(1) costs(PRICE, 1) {
+    function mintHonorary(bytes calldata signature) external payable canMint(1) canEvolve(_currentPhase) {
         _mintHonorary(signature);
     }
 
-    function safeEvolveCurrentPhase(uint tokenId) external payable isNotLocked isOwner(tokenId) canEvolve(_currentPhase) {
-        // TODO: add costs etc
-        // TODO: increase supply;
-        _phases[_currentPhase].evolve(_numTokens, _metadata[_numTokens]);
+    function safeEvolveCurrentPhase(uint tokenId)
+        external
+        payable
+        isNotLocked
+        isOwner(tokenId)
+        canEvolve(_currentPhase)
+    {
+        require(isActive, "DD isn't active");
+        _metadata[tokenId].evolve(_phases[_currentPhase], tokenId);
     }
-//
-//    function safeAddCurrentPhase(address ddPhase, uint maxSupply, uint price) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked isValidNextPhase(ddPhase) {
-//        require(!currentPhase.ddPhase.isOpen(), "current phase is open");
-////        currentPhase = addPhase(ddPhase, maxSupply, price);
-//    }
-//
-    function safeOpenCurrentPhase() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+
+    function safeOpenPhase() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        require(_phases[_currentPhase].exists(), "Phase doesn't exist exists");
         _phases[_currentPhase].open();
+        isActive = true;
+        emit PhaseOpen(_currentPhase);
     }
-//
-//    function safeCloseCurrentPhase() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-//        closePhase(currentPhase.ddPhase.getName());
-//    }
-//
-//    function evolve(uint tokenId, string name) public isOwner(tokenId) {
-////        ddMine.mine(tokenId);
-//    }
-//
-//    function closePhase(string name) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-////        Phase memory phase = phases[name];
-////        require(phases, "Phase doesn't exist");
-////        phase.ddPhase.close();
-//    }
-//
-    function openPhase(string memory name) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-        _phases[name].open(); // TODO: check if it is ok to do it in one call
+
+    function safeClosePhase() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        require(_phases[_currentPhase].exists(), "Phase doesn't exist exists");
+        _phases[_currentPhase].close();
+        isActive = false;
+        emit PhaseClose(_currentPhase);
     }
-//
-//    function safeAddPhase(address ddPhase, uint maxSupply, uint price) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-//        string name = ddPhase.getName();
-//        require(!phases[name], "Phase already exists");
-//        return _setPhase(name, ddPhase, maxSupply, price);
-//    }
-//
-//
-//    function safeReplacePhase(string name, address ddPhase_, uint maxSupply, uint price) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-//        require(!phases[name], "Phase doesn't exist");
-//        IDiamondDawnPhase memory ddPhase = IDiamondDawnPhase(ddPhase_);
-//        require(ddPhase.getName() == name, "Wrong name");
-////        Phase memory oldPhase = phases[name];
-////        require(!oldPhase.ddPhase.open(), "Phase is open");
-////        require(phasesAddress.remove(address(oldPhase.ddPhase)), "phase not in address map");
-////        return _setPhase(name, ddPhase_, maxSupply, price);
-//    }
-//
-//
-//    function _setPhase(string name, address ddPhase, uint maxSupply, uint price) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-////        Phase memory phase = Phase({ddPhase: IDiamondDawnPhase(ddPhase), maxSupply: maxSupply, price: price});
-////        phases[name] = phase;
-////        phasesAddress.add(ddPhase);
-////        return phase;
-//    }
 
+    function safeSetNextPhase(
+        address ddPhase,
+        string memory name,
+        uint16 maxSupply,
+        uint price,
+        string memory supportedPhase
+    ) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        require(!isActive, "Current phase is open");
+        require(!_phases[_currentPhase].isOpen(), "Current phase is open");
+        require(!_phases[name].exists(), "Phase already exists");
+        _phases[name].initialize(ddPhase, name, maxSupply, price, supportedPhase);
+        require(_phases[name].supportsPhase(_currentPhase), "Next phase doesn't support previous");
+        emit PhaseChange(_currentPhase, name);
+        _currentPhase = name;
+    }
 
+    //
+    //
+    //    function safeReplacePhase(string name, address ddPhase_, uint maxSupply, uint price) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+    //        require(!phases[name], "Phase doesn't exist");
+    //        IDiamondDawnPhase memory ddPhase = IDiamondDawnPhase(ddPhase_);
+    //        require(ddPhase.getName() == name, "Wrong name");
+    ////        Phase memory oldPhase = phases[name];
+    ////        require(!oldPhase.ddPhase.open(), "Phase is open");
+    ////        require(phasesAddress.remove(address(oldPhase.ddPhase)), "phase not in address map");
+    ////        return _setPhase(name, ddPhase_, maxSupply, price);
+    //    }
+    //
+    //
+    //    function _setPhase(string name, address ddPhase, uint maxSupply, uint price) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+    ////        Phase memory phase = Phase({ddPhase: IDiamondDawnPhase(ddPhase), maxSupply: maxSupply, price: price});
+    ////        phases[name] = phase;
+    ////        phasesAddress.add(ddPhase);
+    ////        return phase;
+    //    }
+
+    function setActive(bool boolean) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        isActive = boolean;
+    }
 
     function lockDiamondDawn() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
         // TODO: iterate over diamond dawn and lock all phases.
-//        require(stage == Stage.COMPLETED, "Not Completed");
-//        ddMine.lockMine();
-//        isLocked = true;
+        //        require(stage == Stage.COMPLETED, "Not Completed");
+        //        ddMine.lockMine();
+        //        isLocked = true;
     }
 
     function pause() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
@@ -187,9 +202,9 @@ contract DiamondDawnV2 is
         _unpause();
     }
 
-//    function setRoyaltyInfo(address receiver, uint96 feeNumerator) external onlyRole(DEFAULT_ADMIN_ROLE) {
-//        _setDefaultRoyalty(receiver, feeNumerator);
-//    }
+    function setRoyaltyInfo(address receiver, uint96 feeNumerator) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _setDefaultRoyalty(receiver, feeNumerator);
+    }
 
     function withdraw() external onlyRole(DEFAULT_ADMIN_ROLE) {
         (bool success, ) = _msgSender().call{value: address(this).balance}("");
@@ -240,7 +255,8 @@ contract DiamondDawnV2 is
     }
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        return _phases[_currentPhase].getMetadata(tokenId, _metadata[tokenId]);
+        Phases.TokenMetadata memory tokenMetadata = _metadata[tokenId];
+        return _phases[tokenMetadata.phaseName].getMetadata(tokenId, tokenMetadata);
     }
 
     function supportsInterface(bytes4 interfaceId)
@@ -266,30 +282,27 @@ contract DiamondDawnV2 is
     function _burn(uint256 tokenId) internal virtual override(ERC721, ERC721Royalty) {
         super._burn(tokenId);
     }
+
     /**********************     Private Functions     ************************/
 
-
-    function _mintHonorary(bytes calldata signature) private  isNotFull(1) {
+    function _mintHonorary(bytes calldata signature) private {
         require(_isValid(signature, bytes32(uint256(uint160(_msgSender())))), "Not allowed to mint");
         require(!_mintedHonorary[_msgSender()], "Already minted");
         _mintedHonorary[_msgSender()] = true;
         _safeMint(_msgSender(), ++_numTokens);
-        _phases[_currentPhase].evolve(_numTokens, _metadata[_numTokens]);
+        _metadata[_numTokens].attributes = 1; // honorary
+        _metadata[_numTokens].evolve(_phases[_currentPhase], _numTokens);
     }
 
-    function _mint(bytes calldata signature, uint256 quantity) private  isNotFull(quantity) {
-        require(
-            _isValid(signature, bytes32(abi.encodePacked(_msgSender(), uint96(quantity)))),
-            "Not allowed to mint"
-        );
-
+    function _mint(bytes calldata signature, uint256 quantity) private {
+        require(_isValid(signature, bytes32(abi.encodePacked(_msgSender(), uint96(quantity)))), "Not allowed to mint");
         require(quantity <= MAX_MINT, "Exceeds max quantity");
         require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
         uint16 newNumTokens = _numTokens;
         for (uint i = 0; i < quantity; i++) {
             _safeMint(_msgSender(), ++newNumTokens);
-            _metadata[newNumTokens]._phaseName = "reveal";
+            _metadata[newNumTokens].evolve(_phases[_currentPhase], newNumTokens);
         }
         _numTokens = newNumTokens;
     }
