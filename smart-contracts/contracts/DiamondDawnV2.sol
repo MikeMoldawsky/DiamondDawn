@@ -62,14 +62,14 @@ contract DiamondDawnV2 is
     mapping(address => bool) private _minted;
     mapping(address => bool) private _mintedHonorary;
     mapping(string => Phases.Phase) private _phases;
-    mapping(uint => Phases.Metadata) private _metadata;
+    mapping(uint => Phases.TokenMetadata) private _metadata;
 
     constructor(address signer, address ddPhase) ERC721("DiamondDawn", "DD") {
         _signer = signer;
         _setDefaultRoyalty(_msgSender(), 1000);
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _phases["reveal"].initialize(ddPhase, "reveal", MAX_ENTRANCE, 0, "");
         _currentPhase = "reveal";
+        _phases[_currentPhase].initialize(ddPhase, _currentPhase, MAX_ENTRANCE, 0, "");
     }
 
     /**********************          Modifiers          ************************/
@@ -84,21 +84,12 @@ contract DiamondDawnV2 is
         _;
     }
 
-    modifier canEvolve(uint tokenId) {
-//        require(!nextPhase.isOpen(), "Stage is not closed");
-//        require(nextPhase.canEvolve(currentPhase.ddPhase.getName()), "Mine not ready");
-//        require(stage == stage_, "Wrong stage");
+    modifier canEvolve(string memory name) {
         require(isActive, "Stage is inactive");
-//        require(ddMine.isReady(stage_), "Stage not ready");
+        require(_phases[name].isPrice(msg.value), string.concat("Cost is: ", Strings.toString(_phases[name].getPrice())));
         _;
     }
 
-    modifier isValidNextPhase(address nextPhase_) {
-        IDiamondDawnPhase nextPhase = IDiamondDawnPhase(nextPhase_);
-//        require(!nextPhase.isOpen(), "Stage is not closed");
-//        require(nextPhase.canEvolve(currentPhase.ddPhase.getName()), "Mine not ready");
-        _;
-    }
 
     modifier costs(uint price, uint quantity) {
         require(msg.value == (price * quantity), string.concat("Cost is: ", Strings.toString(price * quantity)));
@@ -113,29 +104,28 @@ contract DiamondDawnV2 is
     /**********************     External Functions     ************************/
 
 
-    function mint(bytes calldata signature, uint256 quantity) external payable costs(PRICE, quantity) {
-
-        _mint(_msgSender(), quantity);
+    function mint(bytes calldata signature, uint256 quantity) external payable isNotFull(quantity) costs(PRICE, quantity) {
+        _mint(signature, quantity);
     }
 
-    function mintHonorary(bytes calldata signature) external payable costs(PRICE, 1) {
+    function mintHonorary(bytes calldata signature) external payable isNotFull(1) costs(PRICE, 1) {
         _mintHonorary(signature);
     }
 
-//    function safeEvolveCurrentPhase(uint tokenId) external isOwner(tokenId) {
-//        // TODO: add costs etc
-//        // TODO: increase supply;
-//        evolve(tokenId, currentPhase.ddPhase.getName());
-//    }
+    function safeEvolveCurrentPhase(uint tokenId) external payable isNotLocked isOwner(tokenId) canEvolve(_currentPhase) {
+        // TODO: add costs etc
+        // TODO: increase supply;
+        _phases[_currentPhase].evolve(_numTokens, _metadata[_numTokens]);
+    }
 //
 //    function safeAddCurrentPhase(address ddPhase, uint maxSupply, uint price) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked isValidNextPhase(ddPhase) {
 //        require(!currentPhase.ddPhase.isOpen(), "current phase is open");
 ////        currentPhase = addPhase(ddPhase, maxSupply, price);
 //    }
 //
-//    function safeOpenCurrentPhase() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-//        openPhase(currentPhase.ddPhase.getName());
-//    }
+    function safeOpenCurrentPhase() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        _phases[_currentPhase].open();
+    }
 //
 //    function safeCloseCurrentPhase() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
 //        closePhase(currentPhase.ddPhase.getName());
@@ -151,11 +141,9 @@ contract DiamondDawnV2 is
 ////        phase.ddPhase.close();
 //    }
 //
-//    function openPhase(string name) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-////        Phase memory phase = phases[name];
-////        require(phases, "Phase doesn't exist");
-////        phase.ddPhase.open();
-//    }
+    function openPhase(string memory name) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        _phases[name].open(); // TODO: check if it is ok to do it in one call
+    }
 //
 //    function safeAddPhase(address ddPhase, uint maxSupply, uint price) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
 //        string name = ddPhase.getName();
@@ -252,8 +240,7 @@ contract DiamondDawnV2 is
     }
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        return "";
-//        return ddMine.getMetadata(tokenId);
+        return _phases[_currentPhase].getMetadata(tokenId, _metadata[tokenId]);
     }
 
     function supportsInterface(bytes4 interfaceId)
@@ -302,6 +289,7 @@ contract DiamondDawnV2 is
         uint16 newNumTokens = _numTokens;
         for (uint i = 0; i < quantity; i++) {
             _safeMint(_msgSender(), ++newNumTokens);
+            _metadata[newNumTokens]._phaseName = "reveal";
         }
         _numTokens = newNumTokens;
     }

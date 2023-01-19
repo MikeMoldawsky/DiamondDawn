@@ -19,7 +19,7 @@ library Phases {
         mapping(string => bool) _supportedPhases;
     }
 
-    struct Metadata {
+    struct TokenMetadata {
         string _phaseName;
         uint _metadata;
     }
@@ -33,7 +33,7 @@ library Phases {
     }
 
 
-    function evolve(Phase storage phase, uint tokenId, Metadata storage currentMetadata) internal {
+    function evolve(Phase storage phase, uint tokenId, TokenMetadata storage currentMetadata) internal {
         require(phase._isOpen, "phase is closed");
         require(phase._evolved < phase._maxSupply, "max evolved");
         require(phase._supportedPhases[currentMetadata._phaseName], "not supported phase");
@@ -50,7 +50,20 @@ library Phases {
         phase._isOpen = false;
     }
 
+    function getMetadata(Phase storage phase, uint tokenId, TokenMetadata memory metadata) internal view returns (string memory) {
+        require( keccak256(bytes(phase._name)) == keccak256(bytes(metadata._phaseName)), "Wrong token phase");
+        return phase._phase.getMetadata(tokenId, metadata._metadata);
+    }
+
     function isOpen(Phase storage phase) internal view returns (bool) {
         return phase._isOpen;
+    }
+
+    function getPrice(Phase storage phase) internal view returns (uint) {
+        return phase._price;
+    }
+
+    function isPrice(Phase storage phase, uint price) internal view returns (bool) {
+        return phase._price == price;
     }
 }
