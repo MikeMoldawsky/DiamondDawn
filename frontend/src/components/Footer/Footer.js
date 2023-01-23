@@ -37,10 +37,6 @@ const Footer = ({ withFAQs }) => {
               <span className="sitemap-link">Homepage</span>
             </NavLink>
             <SVG src={star} />
-            <NavLink to="/the-journey">
-              <span className="sitemap-link">The Journey</span>
-            </NavLink>
-            <SVG src={star} />
             <NavLink to="/about-us">
               <span className="sitemap-link">About Us</span>
             </NavLink>
