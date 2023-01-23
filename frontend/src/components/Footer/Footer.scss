@@ -121,7 +121,6 @@ footer.footer {
   }
 
   .featured-in {
-    margin-top: 10em;
     padding: 2em 0 3em;
     z-index: 1;
 
@@ -133,10 +132,6 @@ footer.footer {
   &.with-faqs {
     .footer-inner {
       padding-top: 15rem;
-    }
-
-    .featured-in {
-      margin-top: 6em;
     }
   }
 }

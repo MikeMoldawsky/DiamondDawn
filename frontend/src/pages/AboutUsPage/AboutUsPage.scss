@@ -119,6 +119,19 @@
       }
     }
   }
+
+  .teaser-video {
+    .cta-and-trailers {
+      top: unset;
+      bottom: -3%;
+    }
+  }
+
+  footer {
+    .featured-in {
+      margin-top: 10em;
+    }
+  }
 }
 
 @media only screen and (max-width: 1199px) {

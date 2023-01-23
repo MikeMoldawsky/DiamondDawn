@@ -8,24 +8,18 @@ import Footer from "components/Footer";
 import HomepageContentBackground from "components/HomepageContentBackground";
 import AnimatedLogo from "components/AnimatedLogo";
 import useWindowDimensions from "hooks/useWindowDimensions";
-import {
-  EternalTreasuresText,
-  ScarcityText,
-  TeaserText,
-  ValueText,
-} from "pages/Homepage/HompageContent";
+import { DiamondDawnText } from "./HompageContent";
 import AnimatedText from "components/AnimatedText";
 import useShowLogoOnScroll from "hooks/useShowLogoOnScroll";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
 import VideoBackground from "components/VideoBackground";
-import CTAButton from "components/CTAButton";
-import PlayButton from "components/PlayButton";
-import { getEarthAndMoonVideo, getTrailerVideos } from "assets/videos";
+import { getEarthAndMoonVideo } from "assets/videos";
 import useScrollTop from "hooks/useScrollTop";
-import { SystemCountdown } from "components/Countdown/Countdown";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
 import { NavHashLink } from "react-router-hash-link";
+import JourneyPhases from "components/JourneyPhases";
+import CTAAndTrailers from "components/CTAAndTrailers";
 
 const HomeTopContent = () => {
   const scroll = useScrollTop();
@@ -52,8 +46,6 @@ const HomeTopContent = () => {
     };
   }, [topViewEffectScrollLimit, isMobileOrTablet]);
 
-  const trailerSources = getTrailerVideos(width, height);
-
   return (
     <div
       className="top-content center-aligned-column"
@@ -67,18 +59,8 @@ const HomeTopContent = () => {
         <div className="tagline-text">
           The first ever virtual diamond mining experience
         </div>
-        <div>
-          <CTAButton className="lg" />
-        </div>
-        <div className="center-center-aligned-row buttons-row">
-          <PlayButton className="element" videos={trailerSources} index={0} />
-          <PlayButton
-            className="element second"
-            videos={trailerSources}
-            index={1}
-          />
-        </div>
-        <SystemCountdown />
+        <CTAAndTrailers />
+        {/*<SystemCountdown />*/}
       </div>
     </div>
   );
@@ -124,29 +106,14 @@ const Homepage = () => {
           <HomepageContentBackground />
           <div className="eternal-treasures">
             <AnimatedText className="text-section">
-              <EternalTreasuresText />
+              <DiamondDawnText />
             </AnimatedText>
           </div>
-          <div className="scarcity">
-            <AnimatedText className="text-section">
-              <ScarcityText />
-            </AnimatedText>
-          </div>
-          <div className="value-section">
-            <AnimatedText className="text-section">
-              <ValueText />
-            </AnimatedText>
-          </div>
-          <div className="the-experiment">
-            <AnimatedText className="text-section">
-              <TeaserText />
-            </AnimatedText>
+          <div className="center-center-aligned-row journey-section">
+            <JourneyPhases />
           </div>
         </div>
-        <VideoBackground
-          src={getEarthAndMoonVideo(width, height)}
-          overlap="-25%"
-        />
+        <VideoBackground src={getEarthAndMoonVideo(width, height)} />
         <Footer withFAQs />
       </div>
     </Page>
