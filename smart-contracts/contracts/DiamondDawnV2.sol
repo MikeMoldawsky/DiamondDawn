@@ -43,7 +43,7 @@ contract DiamondDawnV2 is
     Ownable,
     Pausable,
     IDiamondDawnV2,
-IDiamondDawnV2Admin
+    IDiamondDawnV2Admin
 {
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.AddressSet;
