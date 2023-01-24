@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "../interface/IDiamondDawnPhase.sol";
 import "../interface/IDiamondDawnPhaseAdmin.sol";
 import "../utils/NFTs.sol";
+import "../objects/Mint.sol";
+import "../objects/Mint.sol";
 
 /**
  * @title MintPhase
@@ -64,9 +66,9 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPh
         _baseTokenURI = baseTokenURI;
     }
 
-    function evolve(uint tokenId, uint prevAttributes) external view onlyDiamondDawn returns (uint) {
-        require(prevAttributes == 0 || prevAttributes == 1);
-        return prevAttributes; // Reveal is the recursion base condition
+    function evolve(uint tokenId, bytes calldata prevAttributes) external view onlyDiamondDawn returns (bytes memory) {
+        MintAttributes memory attributes = abi.decode(prevAttributes, (MintAttributes));
+        return abi.encode(attributes); // Mint is the recursion base condition
     }
 
     function getName() external view returns (string memory) {
@@ -77,28 +79,28 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPh
         return _supportedPhases[address(from)] || _supportedNames[from.getName()];
     }
 
-    function getMetadata(uint tokenId, uint attributes) external view returns (string memory) {
-        string memory noExtensionURI = _getNoExtensionURI(attributes);
-        string memory base64Json = Base64.encode(bytes(_getMetadataJson(tokenId, attributes, noExtensionURI)));
+    function getMetadata(uint tokenId, bytes memory attributes) external view returns (string memory) {
+        MintAttributes memory mintAttributes = abi.decode(attributes, (MintAttributes));
+        string memory noExtensionURI = _getNoExtensionURI(mintAttributes);
+        string memory base64Json = Base64.encode(bytes(_getMetadataJson(tokenId, mintAttributes, noExtensionURI)));
         return string(abi.encodePacked("data:application/json;base64,", base64Json));
     }
 
     /**********************     Private Functions     ************************/
 
-    function _getNoExtensionURI(uint metadata) private view returns (string memory) {
-        string memory name = _getResourceName(metadata);
+    function _getNoExtensionURI(MintAttributes memory attributes) private view returns (string memory) {
+        string memory name = _getResourceName(attributes);
         return string.concat(_baseTokenURI, _manifest, "/", name);
     }
 
-    function _getResourceName(uint metadata) private pure returns (string memory) {
-        if (metadata == 0) return "logo";
-        else if (metadata == 1) return "logo-honorary";
-        revert();
+    function _getResourceName(MintAttributes memory attributes) private pure returns (string memory) {
+        if (attributes.honorary) return "logo-honorary";
+        return "logo";
     }
 
     function _getMetadataJson(
         uint tokenId,
-        uint attributes,
+        MintAttributes memory attributes,
         string memory noExtensionURI
     ) private view returns (string memory) {
         NFTs.Metadata memory nftMetadata = NFTs.Metadata({
@@ -110,13 +112,12 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPh
         return nftMetadata.serialize();
     }
 
-    function _getJsonAttributes(uint metadata) private view returns (NFTs.Attribute[] memory) {
-        if (metadata == 0) return new NFTs.Attribute[](0);
-        else if (metadata == 1) {
+    function _getJsonAttributes(MintAttributes memory attributes) private view returns (NFTs.Attribute[] memory) {
+        if (attributes.honorary) {
             NFTs.Attribute[] memory attributes = new NFTs.Attribute[](1);
             attributes[0] = NFTs.toStrAttribute("Attribute", "Honorary");
             return attributes;
         }
-        revert("wrong metadata");
+        return new NFTs.Attribute[](0);
     }
 }

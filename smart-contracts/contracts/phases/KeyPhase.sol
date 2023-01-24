@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "../interface/IDiamondDawnPhase.sol";
 import "../interface/IDiamondDawnPhaseAdmin.sol";
 import "../utils/NFTs.sol";
+import "../objects/Mint.sol";
+import "../objects/Key.sol";
 
 /**
  * @title KeyPhase
@@ -64,11 +66,12 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPha
         _baseTokenURI = baseTokenURI;
     }
 
-    function evolve(uint tokenId, uint prevAttributes) external view returns (uint) {
+    function evolve(uint tokenId, bytes memory prevAttributes) external view returns (bytes memory) {
         // TODO: add randomization
-        if (prevAttributes == 0) return 2;
-        else if (prevAttributes == 1) return 3;
-        revert("Wrong prev metadata");
+        MintAttributes memory mintAttributes = abi.decode(prevAttributes, (MintAttributes));
+        if (mintAttributes.honorary)
+            return abi.encode(KeyAttributes({honorary: mintAttributes.honorary, material: "pearl"}));
+        return abi.encode(KeyAttributes({honorary: mintAttributes.honorary, material: "iron"}));
     }
 
     function getName() external view returns (string memory) {
@@ -80,49 +83,47 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPha
         return _supportedNames[from.getName()] || _supportedPhases[address(from)];
     }
 
-    function getMetadata(uint tokenId, uint attributes) external view returns (string memory) {
-        string memory noExtensionURI = _getNoExtensionURI(attributes);
-        string memory base64Json = Base64.encode(bytes(_getMetadataJson(tokenId, attributes, noExtensionURI)));
+    function getMetadata(uint tokenId, bytes memory attributes) external view returns (string memory) {
+        KeyAttributes memory mintAttributes = abi.decode(attributes, (KeyAttributes));
+        string memory noExtensionURI = _getNoExtensionURI(mintAttributes);
+        string memory base64Json = Base64.encode(bytes(_getMetadataJson(tokenId, mintAttributes, noExtensionURI)));
         return string(abi.encodePacked("data:application/json;base64,", base64Json));
     }
 
     /**********************     Private Functions     ************************/
-    function _getNoExtensionURI(uint metadata) private view returns (string memory) {
-        string memory name = _getResourceName(metadata);
+    function _getNoExtensionURI(KeyAttributes memory attributes) private view returns (string memory) {
+        string memory name = _getResourceName(attributes);
         return string.concat(_baseTokenURI, _manifest, "/", name);
     }
 
-    function _getResourceName(uint metadata) private pure returns (string memory) {
-        if (metadata == 2) return "key";
-        else if (metadata == 3) return "key-honorary";
-        revert();
+    function _getResourceName(KeyAttributes memory attributes) private pure returns (string memory) {
+        if (attributes.honorary) return "key-honorary";
+        return "key";
     }
 
     function _getMetadataJson(
         uint tokenId,
-        uint metadata,
+        KeyAttributes memory attributes,
         string memory noExtensionURI
     ) private view returns (string memory) {
         NFTs.Metadata memory nftMetadata = NFTs.Metadata({
             name: string.concat("Mine Key #", Strings.toString(tokenId)),
             image: string.concat(noExtensionURI, ".jpeg"),
             animationUrl: string.concat(noExtensionURI, ".mp4"),
-            attributes: _getJsonAttributes(metadata)
+            attributes: _getJsonAttributes(attributes)
         });
         return nftMetadata.serialize();
     }
 
-    function _getJsonAttributes(uint metadata) private view returns (NFTs.Attribute[] memory) {
-        if (metadata == 2) {
-            NFTs.Attribute[] memory attributes = new NFTs.Attribute[](1);
-            attributes[0] = NFTs.toStrAttribute("Material", "Gold");
-            return attributes;
-        } else if (metadata == 3) {
+    function _getJsonAttributes(KeyAttributes memory attributes) private view returns (NFTs.Attribute[] memory) {
+        if (attributes.honorary) {
             NFTs.Attribute[] memory attributes = new NFTs.Attribute[](2);
             attributes[0] = NFTs.toStrAttribute("Attribute", "Honorary");
             attributes[1] = NFTs.toStrAttribute("Material", "Diamonds");
             return attributes;
         }
-        revert("wrong metadata");
+        NFTs.Attribute[] memory attributes = new NFTs.Attribute[](1);
+        attributes[0] = NFTs.toStrAttribute("Material", "Gold");
+        return attributes;
     }
 }

@@ -15,6 +15,7 @@ import "operator-filter-registry/src/DefaultOperatorFilterer.sol";
 import "./interface/IDiamondDawnV2.sol";
 import "./interface/IDiamondDawnAdminV2.sol";
 import "./utils/Phases.sol";
+import "./objects/Mint.sol";
 
 /**
  *    ________    .__                                           .___
@@ -61,7 +62,7 @@ contract DiamondDawnV2 is
     mapping(string => Phases.Phase) private _phases;
     mapping(uint => Phases.TokenMetadata) private _metadata;
     address private _signer;
-    uint16 private _numTokens;
+    uint16 private _tokenId;
     string private _mintPhaseName;
     string private _currPhaseName;
 
@@ -84,7 +85,7 @@ contract DiamondDawnV2 is
         bytes calldata signature,
         bytes32 message
     ) {
-        require((_numTokens + quantity) <= MAX_TOKENS, "Max capacity");
+        require((_tokenId + quantity) <= MAX_TOKENS, "Max capacity");
         require(quantity <= MAX_MINT, "Exceeds max quantity");
         require(_isValid(signature, message), "Not allowed to mint");
         _;
@@ -336,20 +337,26 @@ contract DiamondDawnV2 is
     function _mintHonorary(bytes calldata signature) private {
         require(!_mintedHonorary[_msgSender()], "Already minted");
         _mintedHonorary[_msgSender()] = true;
-        _safeMint(_msgSender(), ++_numTokens);
-        _metadata[_numTokens].attributes = 1; // honorary
-        _metadata[_numTokens].evolve(_phases[_mintPhaseName], _numTokens);
+        uint16 tokenId = ++_tokenId;
+        _safeMint(_msgSender(), tokenId);
+        _evolveMint(tokenId, true);
     }
 
     function _mint(bytes calldata signature, uint256 quantity) private {
         require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
-        uint16 newNumTokens = _numTokens;
+        uint16 tokenId = _tokenId;
         for (uint i = 0; i < quantity; i++) {
-            _safeMint(_msgSender(), ++newNumTokens);
-            _metadata[newNumTokens].evolve(_phases[_mintPhaseName], newNumTokens);
+            _safeMint(_msgSender(), ++tokenId);
+            _evolveMint(tokenId, false);
         }
-        _numTokens = newNumTokens;
+        _tokenId = tokenId;
+    }
+
+    function _evolveMint(uint16 tokenId, bool isHonorary) private {
+        Phases.TokenMetadata storage tokenMetadata = _metadata[tokenId];
+        tokenMetadata.attributes = abi.encode(MintAttributes({honorary: isHonorary})); // set metadata base condition
+        tokenMetadata.evolve(_phases[_mintPhaseName], tokenId);
     }
 
     function _isValid(bytes calldata signature, bytes32 message) private view returns (bool) {

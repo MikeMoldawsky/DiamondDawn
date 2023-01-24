@@ -19,7 +19,7 @@ library Phases {
 
     struct TokenMetadata {
         IDiamondDawnPhase phase;
-        uint attributes;
+        bytes attributes;
     }
 
     function initialize(Phase memory phase) internal {
