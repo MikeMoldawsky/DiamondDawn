@@ -56,20 +56,20 @@ contract DiamondDawnV2 is
     bool public isLocked; // immutable
     bool public isActive;
 
-    string private _currentPhase;
-    uint16 private _numTokens;
-    address private _signer;
     mapping(address => bool) private _minted;
     mapping(address => bool) private _mintedHonorary;
     mapping(string => Phases.Phase) private _phases;
     mapping(uint => Phases.TokenMetadata) private _metadata;
+    address private _signer;
+    uint16 private _numTokens;
+    string private _mintPhaseName;
+    string private _currPhaseName;
 
-    constructor(address signer, address ddPhase) ERC721("DiamondDawn", "DD") {
+    constructor(address signer, address mintPhase) ERC721("DiamondDawn", "DD") {
         _signer = signer;
         _setDefaultRoyalty(_msgSender(), 1000);
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _currentPhase = "reveal";
-        _phases[_currentPhase].initialize(ddPhase, _currentPhase, MAX_TOKENS, 0, "");
+        _mintPhaseName = _safeSetCurrentPhase(mintPhase, MAX_TOKENS, 0);
     }
 
     /**********************          Modifiers          ************************/
@@ -79,26 +79,24 @@ contract DiamondDawnV2 is
         _;
     }
 
-    modifier canMint(uint256 quantity) {
+    modifier canMint(
+        uint256 quantity,
+        bytes calldata signature,
+        bytes32 message
+    ) {
         require((_numTokens + quantity) <= MAX_TOKENS, "Max capacity");
+        require(quantity <= MAX_MINT, "Exceeds max quantity");
+        require(_isValid(signature, message), "Not allowed to mint");
         _;
     }
 
     modifier canEvolve(string memory name) {
-        require(isActive, "Stage is inactive");
+        require(isActive, "Phase is inactive");
         require(
             msg.value == _phases[name].getPrice(),
             string.concat("Cost is: ", Strings.toString(_phases[name].getPrice()))
         );
-        _;
-    }
-
-    modifier canEvolveMany(string memory name, uint quantity) {
-        require(isActive, "Stage is inactive");
-        require(
-            msg.value == (_phases[name].getPrice() * quantity),
-            string.concat("Cost is: ", Strings.toString(_phases[name].getPrice() * quantity))
-        );
+        require(_phases[name].isOpen(), "Phase is closed");
         _;
     }
 
@@ -112,13 +110,18 @@ contract DiamondDawnV2 is
     function mint(bytes calldata signature, uint256 quantity)
         external
         payable
-        canMint(quantity)
-        canEvolve(_currentPhase)
+        canMint(quantity, signature, bytes32(abi.encodePacked(_msgSender(), uint96(quantity))))
+        canEvolve(_mintPhaseName)
     {
         _mint(signature, quantity);
     }
 
-    function mintHonorary(bytes calldata signature) external payable canMint(1) canEvolve(_currentPhase) {
+    function mintHonorary(bytes calldata signature)
+        external
+        payable
+        canMint(1, signature, bytes32(uint256(uint160(_msgSender()))))
+        canEvolve(_mintPhaseName)
+    {
         _mintHonorary(signature);
     }
 
@@ -127,53 +130,98 @@ contract DiamondDawnV2 is
         payable
         isNotLocked
         isOwner(tokenId)
-        canEvolve(_currentPhase)
+        canEvolve(_currPhaseName)
     {
-        require(isActive, "DD isn't active");
-        _metadata[tokenId].evolve(_phases[_currentPhase], tokenId);
+        _metadata[tokenId].evolve(_phases[_currPhaseName], tokenId);
     }
 
     function safeOpenPhase() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-        require(_phases[_currentPhase].exists(), "Phase doesn't exist exists");
-        _phases[_currentPhase].open();
         isActive = true;
-        emit PhaseOpen(_currentPhase);
+        _openPhase(_currPhaseName);
     }
 
     function safeClosePhase() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-        require(_phases[_currentPhase].exists(), "Phase doesn't exist exists");
-        _phases[_currentPhase].close();
         isActive = false;
-        emit PhaseClose(_currentPhase);
+        _closePhase(_currPhaseName);
     }
 
     function safeSetNextPhase(
         address ddPhase,
-        string memory name,
         uint16 maxSupply,
-        uint price,
-        string memory supportedPhase
-    ) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-        require(!isActive, "Current phase is open");
-        require(!_phases[_currentPhase].isOpen(), "Current phase is open");
-        require(!_phases[name].exists(), "Phase already exists");
-        _phases[name].initialize(ddPhase, name, maxSupply, price, supportedPhase);
-        require(_phases[name].supportsPhase(_currentPhase), "Next phase doesn't support previous");
-        emit PhaseChange(_currentPhase, name);
-        _currentPhase = name;
+        uint price
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        _safeSetCurrentPhase(ddPhase, maxSupply, price);
     }
 
-    //
-    //
-    //    function safeReplacePhase(string name, address ddPhase_, uint maxSupply, uint price) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-    //        require(!phases[name], "Phase doesn't exist");
-    //        IDiamondDawnPhase memory ddPhase = IDiamondDawnPhase(ddPhase_);
-    //        require(ddPhase.getName() == name, "Wrong name");
-    ////        Phase memory oldPhase = phases[name];
-    ////        require(!oldPhase.ddPhase.open(), "Phase is open");
-    ////        require(phasesAddress.remove(address(oldPhase.ddPhase)), "phase not in address map");
-    ////        return _setPhase(name, ddPhase_, maxSupply, price);
+    function closePhase(string memory name) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        _closePhase(name);
+    }
+
+    function openPhase(string memory name) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+        _openPhase(name);
+    }
+
+    function _closePhase(string memory name) internal {
+        require(_phases[name].isConfigured(), "Phase doesn't exist");
+        _phases[name].close();
+        emit Phase(name, _phases[name].getPhaseAddress(), PhaseAction.Close);
+    }
+
+    function _openPhase(string memory name) internal {
+        require(_phases[name].isConfigured(), "Phase doesn't exist");
+        _phases[name].open();
+        emit Phase(name, _phases[name].getPhaseAddress(), PhaseAction.Open);
+    }
+
+    function _safeSetCurrentPhase(
+        address ddPhase,
+        uint16 maxSupply,
+        uint price
+    ) internal returns (string memory) {
+        require(!isActive, "Diamond Dawn is active");
+        require(!_phases[_currPhaseName].isOpen(), "Current phase is open");
+        Phases.Phase memory nextPhase = _addPhase(ddPhase, maxSupply, price);
+        require(nextPhase.canEvolveFrom(_phases[_currPhaseName]), "Next phase should support current");
+        _currPhaseName = nextPhase.getName();
+        return _currPhaseName;
+    }
+
+    //    function _setCurrentPhase(
+    //        address ddPhase,
+    //        uint16 maxSupply,
+    //        uint price
+    //    ) internal {
+    //        require(!isActive, "Diamond Dawn is active");
+    //        require(!_phases[_currentPhase].isOpen(), "Current phase is open");
+    //        string memory nextPhase = _addPhase(ddPhase, maxSupply, price);
+    //        require(_phases[nextPhase].canEvolveFrom(_phases[_currentPhase]), "Next phase should support current");
+    //        _currentPhase = nextPhase;
     //    }
+
+    function _addPhase(
+        address ddPhase,
+        uint16 maxSupply,
+        uint price
+    ) internal returns (Phases.Phase memory) {
+        Phases.Phase memory phase = Phases.toPhase(ddPhase, maxSupply, price);
+        string memory name = phase.getName();
+        require(!_phases[name].isConfigured(), "Phase already exist");
+        phase.initialize();
+        _phases[name] = phase;
+        emit Phase(name, phase.getPhaseAddress(), PhaseAction.Add);
+        return phase;
+    }
+
+    //        function replacePhase(string name, address ddPhase_, uint maxSupply, uint price) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+    //            require(phases[name].exists(), "Phase doesn't exist");
+    //            IDiamondDawnPhase memory ddPhase = IDiamondDawnPhase(ddPhase_);
+    //            require(ddPhase.getName() == name, "Wrong name");
+    //        Phase memory oldPhase = phases[name];
+    //        require(!oldPhase.ddPhase.open(), "Phase is open");
+    //        require(phasesAddress.remove(address(oldPhase.ddPhase)), "phase not in address map");
+    //        return _setPhase(name, ddPhase_, maxSupply, price);
+    //        }
+
     //
     //
     //    function _setPhase(string name, address ddPhase, uint maxSupply, uint price) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
@@ -256,7 +304,7 @@ contract DiamondDawnV2 is
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         Phases.TokenMetadata memory tokenMetadata = _metadata[tokenId];
-        return _phases[tokenMetadata.phaseName].getMetadata(tokenId, tokenMetadata);
+        return tokenMetadata.getMetadata(tokenId);
     }
 
     function supportsInterface(bytes4 interfaceId)
@@ -286,23 +334,20 @@ contract DiamondDawnV2 is
     /**********************     Private Functions     ************************/
 
     function _mintHonorary(bytes calldata signature) private {
-        require(_isValid(signature, bytes32(uint256(uint160(_msgSender())))), "Not allowed to mint");
         require(!_mintedHonorary[_msgSender()], "Already minted");
         _mintedHonorary[_msgSender()] = true;
         _safeMint(_msgSender(), ++_numTokens);
         _metadata[_numTokens].attributes = 1; // honorary
-        _metadata[_numTokens].evolve(_phases[_currentPhase], _numTokens);
+        _metadata[_numTokens].evolve(_phases[_mintPhaseName], _numTokens);
     }
 
     function _mint(bytes calldata signature, uint256 quantity) private {
-        require(_isValid(signature, bytes32(abi.encodePacked(_msgSender(), uint96(quantity)))), "Not allowed to mint");
-        require(quantity <= MAX_MINT, "Exceeds max quantity");
         require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
         uint16 newNumTokens = _numTokens;
         for (uint i = 0; i < quantity; i++) {
             _safeMint(_msgSender(), ++newNumTokens);
-            _metadata[newNumTokens].evolve(_phases[_currentPhase], newNumTokens);
+            _metadata[newNumTokens].evolve(_phases[_mintPhaseName], newNumTokens);
         }
         _numTokens = newNumTokens;
     }

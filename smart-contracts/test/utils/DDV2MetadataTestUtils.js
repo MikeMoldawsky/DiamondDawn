@@ -1,18 +1,9 @@
 const parseDataUrl = require("parse-data-url");
 const { expect } = require("chai");
+const { BASE_URI, MINT_MANIFEST } = require("./ConstsV2");
 
-// constants from contract
-const BASE_URI = "ar://";
-
-// constants for tests
-const KEY_MANIFEST = "key-manifest";
-const MINE_MANIFEST = "mine-manifest";
-const CUT_MANIFEST = "cut-manifest";
-const POLISH_MANIFEST = "polish-manifest";
-const REBORN_MANIFEST = "reborn-manifest";
-
-async function assertRevealMetadata(ddUser, ddContract, tokenId) {
-  const expectedMetadata = _getExpectedMetadataEnterMine(tokenId);
+async function assertMintMetadata(ddUser, ddContract, tokenId, isHonorary) {
+  const expectedMetadata = _getExpectedMetadataMint(tokenId, isHonorary);
   const parsedMetadata = await getParsedMetadata(ddUser, ddContract, tokenId);
   expect(parsedMetadata).to.deep.equal(expectedMetadata);
 }
@@ -31,27 +22,23 @@ async function assertBase64AndGetParsed(actualMetadata) {
   return JSON.parse(atob(actualParsedUrlData.data));
 }
 
-function _getExpectedMetadataEnterMine(tokenId) {
+function _getExpectedMetadataMint(tokenId, isHonorary) {
   return {
-    name: `Mine Key #${tokenId}`,
-    image: `${BASE_URI}${KEY_MANIFEST}/resource.jpeg`,
-    animation_url: `${BASE_URI}${KEY_MANIFEST}/resource.mp4`,
-    attributes: [
-      { trait_type: "Origin", value: "Metaverse" },
-      { trait_type: "Type", value: "Key" },
-      { trait_type: "Metal", value: "Gold" },
-    ],
+    name: `Diamond Dawn #${tokenId}`,
+    image: `${BASE_URI}${MINT_MANIFEST}/${
+      isHonorary ? "logo-honorary.jpeg" : "logo.jpeg"
+    }`,
+    animation_url: `${BASE_URI}${MINT_MANIFEST}/${
+      isHonorary ? "logo-honorary.mp4" : "logo.mp4"
+    }`,
+    attributes: isHonorary
+      ? [{ trait_type: "Attribute", value: "Honorary" }]
+      : [],
   };
 }
 
 module.exports = {
-  BASE_URI,
-  KEY_MANIFEST,
-  MINE_MANIFEST,
-  CUT_MANIFEST,
-  POLISH_MANIFEST,
-  REBORN_MANIFEST,
   assertBase64AndGetParsed,
-  assertRevealMetadata,
+  assertMintMetadata,
   getParsedMetadata,
 };

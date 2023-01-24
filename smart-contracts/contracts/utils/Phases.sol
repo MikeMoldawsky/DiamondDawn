@@ -11,44 +11,32 @@ library Phases {
     struct Phase {
         IDiamondDawnPhase _phase;
         string _name;
-        bool _isOpen;
         uint16 _maxSupply;
-        uint16 _evolved;
         uint _price;
-        mapping(string => bool) _supportedPhases;
+        uint16 _evolved;
+        bool _isOpen;
     }
 
     struct TokenMetadata {
-        string phaseName;
+        IDiamondDawnPhase phase;
         uint attributes;
     }
 
-    function initialize(
-        Phase storage phase,
-        address ddPhase,
-        string memory name,
-        uint16 maxSupply,
-        uint price,
-        string memory supportedPhase
-    ) internal {
-        phase._phase = IDiamondDawnPhase(ddPhase);
-        phase._name = name;
-        phase._maxSupply = maxSupply;
-        phase._price = price;
-        phase._supportedPhases[supportedPhase] = true;
+    function initialize(Phase memory phase) internal {
+        return phase._phase.initialize();
     }
 
     function evolve(
         TokenMetadata storage metadata,
-        Phase storage phase,
+        Phase memory toPhase,
         uint tokenId
     ) internal {
-        require(phase._isOpen, "phase is closed");
-        require(phase._evolved < phase._maxSupply, "max evolved");
-        require(phase._supportedPhases[metadata.phaseName], "not supported phase");
-        phase._evolved += 1;
-        metadata.attributes = phase._phase.evolve(tokenId, metadata.attributes);
-        metadata.phaseName = phase._name;
+        require(toPhase._isOpen, "phase is closed");
+        require(toPhase._evolved < toPhase._maxSupply, "max evolved");
+        require(canEvolveFrom(toPhase, metadata.phase), "not supported phase");
+        toPhase._evolved += 1;
+        metadata.attributes = toPhase._phase.evolve(tokenId, metadata.attributes);
+        metadata.phase = toPhase._phase;
     }
 
     function open(Phase storage phase) internal {
@@ -59,32 +47,56 @@ library Phases {
         phase._isOpen = false;
     }
 
-    function getMetadata(
-        Phase storage phase,
-        uint tokenId,
-        TokenMetadata memory metadata
-    ) internal view returns (string memory) {
-        require(keccak256(bytes(phase._name)) == keccak256(bytes(metadata.phaseName)), "Wrong token phase");
-        return phase._phase.getMetadata(tokenId, metadata.attributes);
+    function getMetadata(TokenMetadata memory metadata, uint tokenId) internal view returns (string memory) {
+        return metadata.phase.getMetadata(tokenId, metadata.attributes);
     }
 
-    function isOpen(Phase storage phase) internal view returns (bool) {
+    function isOpen(Phase memory phase) internal view returns (bool) {
         return phase._isOpen;
     }
 
-    function getPrice(Phase storage phase) internal view returns (uint) {
+    function toPhase(
+        address ddPhase,
+        uint16 maxSupply,
+        uint price
+    ) internal view returns (Phase memory) {
+        IDiamondDawnPhase phase = IDiamondDawnPhase(ddPhase);
+        return
+            Phase({
+                _phase: phase,
+                _name: phase.getName(),
+                _maxSupply: maxSupply,
+                _price: price,
+                _evolved: 0,
+                _isOpen: false
+            });
+    }
+
+    function getPrice(Phase memory phase) internal view returns (uint) {
         return phase._price;
     }
 
-    function exists(Phase storage phase) internal view returns (bool) {
-        return phase._maxSupply > 0;
+    function isConfigured(Phase memory phase) internal view returns (bool) {
+        return phase._maxSupply > 0 && bytes(phase._name).length > 0;
     }
 
-    function supportsPhase(Phase storage phase, string memory phaseName) internal view returns (bool) {
-        return phase._supportedPhases[phaseName];
+    function canEvolveFrom(Phase memory to, Phase memory from) internal view returns (bool) {
+        return canEvolveFrom(to, from._phase);
     }
 
-    function getEvolved(Phase storage phase) internal view returns (uint16) {
+    function canEvolveFrom(Phase memory to, IDiamondDawnPhase from) internal view returns (bool) {
+        return to._phase.canEvolveFrom(from);
+    }
+
+    function getEvolved(Phase memory phase) internal view returns (uint16) {
         return phase._evolved;
+    }
+
+    function getName(Phase memory phase) internal view returns (string memory) {
+        return phase._name;
+    }
+
+    function getPhaseAddress(Phase memory phase) internal view returns (address) {
+        return address(phase._phase);
     }
 }

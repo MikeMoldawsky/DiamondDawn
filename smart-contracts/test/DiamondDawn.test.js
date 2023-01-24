@@ -26,7 +26,7 @@ const {
 } = require("./utils/SignatureUtils");
 const _ = require("lodash");
 const { ethers } = require("hardhat");
-const { PRICE, PRICE_MARRIAGE } = require("./utils/Consts");
+const { PRICE, PRICE_MARRIAGE } = require("./utils/ConstsV1");
 const { completeAndSetStage } = require("./utils/DDTestUtils");
 const { DIAMOND_TO_COLOR, DIAMOND } = require("./utils/Diamonds");
 

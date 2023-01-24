@@ -8,10 +8,10 @@ import "../interface/IDiamondDawnPhaseAdmin.sol";
 import "../utils/NFTs.sol";
 
 /**
- * @title KeyPhase
+ * @title MintPhase
  * @author Mike Moldawsky (Tweezers)
  */
-contract KeyPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPhaseAdmin {
+contract MintPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPhaseAdmin {
     using NFTs for NFTs.Metadata;
 
     bool public isLocked; // phase is locked forever.
@@ -24,7 +24,7 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPha
 
     constructor(string memory manifest) {
         _manifest = manifest;
-        _supportedNames["mint"] = true;
+        _supportedPhases[address(0)] = true; // base condition
     }
 
     /**********************     Modifiers     ************************/
@@ -64,20 +64,17 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPha
         _baseTokenURI = baseTokenURI;
     }
 
-    function evolve(uint tokenId, uint prevAttributes) external view returns (uint) {
-        // TODO: add randomization
-        if (prevAttributes == 0) return 2;
-        else if (prevAttributes == 1) return 3;
-        revert("Wrong prev metadata");
+    function evolve(uint tokenId, uint prevAttributes) external view onlyDiamondDawn returns (uint) {
+        require(prevAttributes == 0 || prevAttributes == 1);
+        return prevAttributes; // Reveal is the recursion base condition
     }
 
     function getName() external view returns (string memory) {
-        return "key";
+        return "mint";
     }
 
     function canEvolveFrom(IDiamondDawnPhase from) external view returns (bool) {
-        require(address(from) != address(0), "From phase doesn't exist");
-        return _supportedNames[from.getName()] || _supportedPhases[address(from)];
+        return _supportedPhases[address(from)] || _supportedNames[from.getName()];
     }
 
     function getMetadata(uint tokenId, uint attributes) external view returns (string memory) {
@@ -87,40 +84,37 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPha
     }
 
     /**********************     Private Functions     ************************/
+
     function _getNoExtensionURI(uint metadata) private view returns (string memory) {
         string memory name = _getResourceName(metadata);
         return string.concat(_baseTokenURI, _manifest, "/", name);
     }
 
     function _getResourceName(uint metadata) private pure returns (string memory) {
-        if (metadata == 2) return "key";
-        else if (metadata == 3) return "key-honorary";
+        if (metadata == 0) return "logo";
+        else if (metadata == 1) return "logo-honorary";
         revert();
     }
 
     function _getMetadataJson(
         uint tokenId,
-        uint metadata,
+        uint attributes,
         string memory noExtensionURI
     ) private view returns (string memory) {
         NFTs.Metadata memory nftMetadata = NFTs.Metadata({
-            name: string.concat("Mine Key #", Strings.toString(tokenId)),
+            name: string.concat("Diamond Dawn #", Strings.toString(tokenId)),
             image: string.concat(noExtensionURI, ".jpeg"),
             animationUrl: string.concat(noExtensionURI, ".mp4"),
-            attributes: _getJsonAttributes(metadata)
+            attributes: _getJsonAttributes(attributes)
         });
         return nftMetadata.serialize();
     }
 
     function _getJsonAttributes(uint metadata) private view returns (NFTs.Attribute[] memory) {
-        if (metadata == 2) {
+        if (metadata == 0) return new NFTs.Attribute[](0);
+        else if (metadata == 1) {
             NFTs.Attribute[] memory attributes = new NFTs.Attribute[](1);
-            attributes[0] = NFTs.toStrAttribute("Material", "Gold");
-            return attributes;
-        } else if (metadata == 3) {
-            NFTs.Attribute[] memory attributes = new NFTs.Attribute[](2);
             attributes[0] = NFTs.toStrAttribute("Attribute", "Honorary");
-            attributes[1] = NFTs.toStrAttribute("Material", "Diamonds");
             return attributes;
         }
         revert("wrong metadata");

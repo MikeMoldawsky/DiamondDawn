@@ -1,17 +1,18 @@
 const { ethers } = require("hardhat");
+const { MINT_MANIFEST, KEY_MANIFEST } = require("./ConstsV2");
 
-async function deployRevealPhase() {
-  const RevealPhase = await ethers.getContractFactory("RevealPhase");
-  const revealPhase = await RevealPhase.deploy();
-  await revealPhase.deployed();
+async function deployMintPhase() {
+  const MintPhase = await ethers.getContractFactory("MintPhase");
+  const mintPhase = await MintPhase.deploy(MINT_MANIFEST);
+  await mintPhase.deployed();
   return {
-    revealPhase,
+    mintPhase,
   };
 }
 
 async function deployKeyPhase() {
   const KeyPhase = await ethers.getContractFactory("KeyPhase");
-  const keyPhase = await KeyPhase.deploy();
+  const keyPhase = await KeyPhase.deploy(KEY_MANIFEST);
   await keyPhase.deployed();
   return {
     keyPhase,
@@ -23,10 +24,28 @@ async function deployDDV2() {
   const owner = users.shift();
   const signer = users.pop();
   const DiamondDawnV2 = await ethers.getContractFactory("DiamondDawnV2");
-  const { revealPhase } = await deployRevealPhase();
+  const { mintPhase } = await deployMintPhase();
   const diamondDawnV2 = await DiamondDawnV2.deploy(
     signer.address,
-    revealPhase.address
+    mintPhase.address
+  );
+  await diamondDawnV2.deployed();
+  return {
+    diamondDawnV2,
+    owner,
+    signer,
+    users,
+  };
+}
+
+async function deployDDV2WithPhase(initialPhase) {
+  const users = await ethers.getSigners();
+  const owner = users.shift();
+  const signer = users.pop();
+  const DiamondDawnV2 = await ethers.getContractFactory("DiamondDawnV2");
+  const diamondDawnV2 = await DiamondDawnV2.deploy(
+    signer.address,
+    initialPhase.address
   );
 
   await diamondDawnV2.deployed();
@@ -40,6 +59,7 @@ async function deployDDV2() {
 
 module.exports = {
   deployDDV2,
-  deployRevealPhase,
+  deployMintPhase,
   deployKeyPhase,
+  deployDDV2WithPhase,
 };

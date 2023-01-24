@@ -9,7 +9,7 @@ const {
 } = require("./utils/DeployDDUtils");
 const { signMessage } = require("./utils/SignatureUtils");
 const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
-const { PRICE_MARRIAGE, PRICE } = require("./utils/Consts");
+const { PRICE_MARRIAGE, PRICE } = require("./utils/ConstsV1");
 const { STAGE, ALL_STAGES } = require("./utils/EnumConverterUtils");
 const { ethers } = require("hardhat");
 const { completeAndSetStage } = require("./utils/DDTestUtils");

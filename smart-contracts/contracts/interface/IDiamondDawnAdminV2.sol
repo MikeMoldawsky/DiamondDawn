@@ -4,9 +4,14 @@ pragma solidity ^0.8.15;
 import "../objects/System.sol";
 
 interface IDiamondDawnAdminV2 {
-    event PhaseOpen(string name);
-    event PhaseClose(string name);
-    event PhaseChange(string from, string to);
+    enum PhaseAction {
+        Add,
+        Replace,
+        Remove,
+        Open,
+        Close
+    }
+    event Phase(string name, address phase, PhaseAction action);
 
     function safeOpenPhase() external;
 
@@ -14,10 +19,8 @@ interface IDiamondDawnAdminV2 {
 
     function safeSetNextPhase(
         address ddPhase,
-        string memory name,
         uint16 maxSupply,
-        uint price,
-        string memory supportedPhase
+        uint price
     ) external;
 
     function setActive(bool boolean) external;
