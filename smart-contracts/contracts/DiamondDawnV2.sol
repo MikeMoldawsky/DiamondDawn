@@ -187,18 +187,6 @@ contract DiamondDawnV2 is
         return _currPhaseName;
     }
 
-    //    function _setCurrentPhase(
-    //        address ddPhase,
-    //        uint16 maxSupply,
-    //        uint price
-    //    ) internal {
-    //        require(!isActive, "Diamond Dawn is active");
-    //        require(!_phases[_currentPhase].isOpen(), "Current phase is open");
-    //        string memory nextPhase = _addPhase(ddPhase, maxSupply, price);
-    //        require(_phases[nextPhase].canEvolveFrom(_phases[_currentPhase]), "Next phase should support current");
-    //        _currentPhase = nextPhase;
-    //    }
-
     function _addPhase(
         address ddPhase,
         uint16 maxSupply,
@@ -222,15 +210,6 @@ contract DiamondDawnV2 is
     //        require(phasesAddress.remove(address(oldPhase.ddPhase)), "phase not in address map");
     //        return _setPhase(name, ddPhase_, maxSupply, price);
     //        }
-
-    //
-    //
-    //    function _setPhase(string name, address ddPhase, uint maxSupply, uint price) public onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
-    ////        Phase memory phase = Phase({ddPhase: IDiamondDawnPhase(ddPhase), maxSupply: maxSupply, price: price});
-    ////        phases[name] = phase;
-    ////        phasesAddress.add(ddPhase);
-    ////        return phase;
-    //    }
 
     function setActive(bool boolean) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
         isActive = boolean;
