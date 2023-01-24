@@ -18,13 +18,15 @@ describe("Diamond Dawn Mine Admin", () => {
   describe("Deployed", () => {
     it("should grant admin permissions to deployer and set correct public defaults", async () => {
       const [owner, user1, user2] = await ethers.getSigners();
-      const SerializerLib = await ethers.getContractFactory("Serializer");
+      const SerializerLib = await ethers.getContractFactory(
+        "DiamondSerializer"
+      );
       const serializer = await SerializerLib.deploy();
       const DiamondDawnMine = await ethers.getContractFactory(
         "DiamondDawnMine",
         {
           libraries: {
-            Serializer: serializer.address,
+            DiamondSerializer: serializer.address,
           },
         }
       );

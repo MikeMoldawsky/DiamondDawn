@@ -96,9 +96,11 @@ async function main() {
   const [deployer] = await hre.ethers.getSigners();
   // Diamond Dawn Mine
   const mineArgs = [];
-  const SerializerLib = await hre.ethers.getContractFactory("Serializer");
+  const SerializerLib = await hre.ethers.getContractFactory(
+    "DiamondSerializer"
+  );
   const serializer = await SerializerLib.deploy();
-  const libraries = { Serializer: serializer.address };
+  const libraries = { DiamondSerializer: serializer.address };
   const mine = await deployContract(
     deployer,
     "DiamondDawnMine",
