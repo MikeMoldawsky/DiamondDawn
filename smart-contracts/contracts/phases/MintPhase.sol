@@ -3,8 +3,8 @@ pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
-import "../interface/IDiamondDawnPhase.sol";
-import "../interface/IDiamondDawnPhaseAdmin.sol";
+import "../interface/IDiamondDawnV2Phase.sol";
+import "../interface/IDiamondDawnV2PhaseAdmin.sol";
 import "../utils/NFTs.sol";
 import "../objects/Mint.sol";
 import "../objects/Mint.sol";
@@ -13,7 +13,7 @@ import "../objects/Mint.sol";
  * @title MintPhase
  * @author Mike Moldawsky (Tweezers)
  */
-contract MintPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPhaseAdmin {
+contract MintPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawnV2PhaseAdmin {
     using NFTs for NFTs.Metadata;
 
     bool public isLocked; // phase is locked forever.
@@ -75,7 +75,7 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPh
         return "mint";
     }
 
-    function canEvolveFrom(IDiamondDawnPhase from) external view returns (bool) {
+    function canEvolveFrom(IDiamondDawnV2Phase from) external view returns (bool) {
         return _supportedPhases[address(from)] || _supportedNames[from.getName()];
     }
 
@@ -112,8 +112,8 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPh
         return nftMetadata.serialize();
     }
 
-    function _getJsonAttributes(MintAttributes memory attributes) private view returns (NFTs.Attribute[] memory) {
-        if (attributes.honorary) {
+    function _getJsonAttributes(MintAttributes memory mintAttributes) private view returns (NFTs.Attribute[] memory) {
+        if (mintAttributes.honorary) {
             NFTs.Attribute[] memory attributes = new NFTs.Attribute[](1);
             attributes[0] = NFTs.toStrAttribute("Attribute", "Honorary");
             return attributes;

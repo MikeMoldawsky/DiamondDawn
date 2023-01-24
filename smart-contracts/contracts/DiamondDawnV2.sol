@@ -13,7 +13,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "operator-filter-registry/src/DefaultOperatorFilterer.sol";
 import "./interface/IDiamondDawnV2.sol";
-import "./interface/IDiamondDawnAdminV2.sol";
+import "./interface/IDiamondDawnV2Admin.sol";
 import "./utils/Phases.sol";
 import "./objects/Mint.sol";
 
@@ -43,7 +43,7 @@ contract DiamondDawnV2 is
     Ownable,
     Pausable,
     IDiamondDawnV2,
-    IDiamondDawnAdminV2
+IDiamondDawnV2Admin
 {
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.AddressSet;
@@ -114,7 +114,7 @@ contract DiamondDawnV2 is
         canMint(quantity, signature, bytes32(abi.encodePacked(_msgSender(), uint96(quantity))))
         canEvolve(_mintPhaseName)
     {
-        _mint(signature, quantity);
+        _mint(quantity);
     }
 
     function mintHonorary(bytes calldata signature)
@@ -123,7 +123,7 @@ contract DiamondDawnV2 is
         canMint(1, signature, bytes32(uint256(uint160(_msgSender()))))
         canEvolve(_mintPhaseName)
     {
-        _mintHonorary(signature);
+        _mintHonorary();
     }
 
     function safeEvolveCurrentPhase(uint tokenId)
@@ -215,7 +215,7 @@ contract DiamondDawnV2 is
         isActive = boolean;
     }
 
-    function lockDiamondDawn() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
+    function lock() external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
         // TODO: iterate over diamond dawn and lock all phases.
         //        require(stage == Stage.COMPLETED, "Not Completed");
         //        ddMine.lockMine();
@@ -313,7 +313,7 @@ contract DiamondDawnV2 is
 
     /**********************     Private Functions     ************************/
 
-    function _mintHonorary(bytes calldata signature) private {
+    function _mintHonorary() private {
         require(!_mintedHonorary[_msgSender()], "Already minted");
         _mintedHonorary[_msgSender()] = true;
         uint16 tokenId = ++_tokenId;
@@ -321,7 +321,7 @@ contract DiamondDawnV2 is
         _evolveMint(tokenId, true);
     }
 
-    function _mint(bytes calldata signature, uint256 quantity) private {
+    function _mint(uint256 quantity) private {
         require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
         uint16 tokenId = _tokenId;

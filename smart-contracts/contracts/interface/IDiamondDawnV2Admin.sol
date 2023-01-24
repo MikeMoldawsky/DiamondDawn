@@ -3,7 +3,7 @@ pragma solidity ^0.8.15;
 
 import "../objects/System.sol";
 
-interface IDiamondDawnAdminV2 {
+interface IDiamondDawnV2Admin {
     enum PhaseAction {
         Add,
         Replace,
@@ -25,7 +25,7 @@ interface IDiamondDawnAdminV2 {
 
     function setActive(bool boolean) external;
 
-    function lockDiamondDawn() external;
+    function lock() external;
 
     function pause() external;
 
