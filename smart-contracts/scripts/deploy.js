@@ -96,9 +96,11 @@ async function main() {
   const [deployer] = await hre.ethers.getSigners();
   // Diamond Dawn Mine
   const mineArgs = [];
-  const SerializerLib = await hre.ethers.getContractFactory("Serializer");
+  const SerializerLib = await hre.ethers.getContractFactory(
+    "DiamondSerializer"
+  );
   const serializer = await SerializerLib.deploy();
-  const libraries = { Serializer: serializer.address };
+  const libraries = { DiamondSerializer: serializer.address };
   const mine = await deployContract(
     deployer,
     "DiamondDawnMine",
@@ -109,11 +111,11 @@ async function main() {
   let dd;
   const ddArgs = [mine.address, process.env.DEV_DEPLOYMENT_SIGNER_PUBLIC_KEY];
   if (hre.network.name === "goerli") {
-    dd = await deployContract(deployer, "DiamondDawn", ddArgs);
+    dd = await deployContract(deployer, "DiamondDawnV1", ddArgs);
     // await populateDiamonds(mine);
   } else if (hre.network.name === "localhost") {
     await setVideos(mine);
-    dd = await deployContract(deployer, "DiamondDawn", ddArgs);
+    dd = await deployContract(deployer, "DiamondDawnV1", ddArgs);
     // await populateDiamonds(mine);
   }
 

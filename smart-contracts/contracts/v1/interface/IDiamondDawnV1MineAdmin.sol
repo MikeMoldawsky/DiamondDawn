@@ -4,7 +4,7 @@ pragma solidity ^0.8.15;
 import "../objects/Diamond.sol";
 import "../objects/System.sol";
 
-interface IDiamondDawnMineAdmin {
+interface IDiamondDawnV1MineAdmin {
     function eruption(Certificate[] calldata diamonds) external;
 
     function lostShipment(uint tokenId, Certificate calldata diamond) external;

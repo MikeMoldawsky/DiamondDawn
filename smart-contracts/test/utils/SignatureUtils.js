@@ -1,6 +1,6 @@
 const { ethers } = require("hardhat");
 
-async function signForgeMessage(signer, user) {
+async function signMessage(signer, user) {
   try {
     // Convert provided `ethAddress` to correct checksum address format.
     // This step is critical as signing an incorrectly formatted wallet address
@@ -18,16 +18,16 @@ async function signForgeMessage(signer, user) {
   }
 }
 
-async function signDawnMessage(signer, user, tokenId) {
+async function signMessageWithNumber(signer, user, number) {
   try {
     // Convert provided `ethAddress` to correct checksum address format.
     // This step is critical as signing an incorrectly formatted wallet address
     // can result in invalid signatures when it comes to minting.
     const addressNoHex = ethers.utils.getAddress(user.address).slice(2);
-    const tokenIdStr = tokenId
+    const numberStr = number
       .toString(16)
       .padStart(64 - addressNoHex.length, "0");
-    const message = ethers.utils.arrayify(`0x${addressNoHex}${tokenIdStr}`);
+    const message = ethers.utils.arrayify(`0x${addressNoHex}${numberStr}`);
     // Sign the message using `signer`.
     return await signer.signMessage(message);
   } catch (e) {
@@ -37,6 +37,6 @@ async function signDawnMessage(signer, user, tokenId) {
 }
 
 module.exports = {
-  signForgeMessage,
-  signDawnMessage,
+  signMessage,
+  signMessageWithNumber,
 };
