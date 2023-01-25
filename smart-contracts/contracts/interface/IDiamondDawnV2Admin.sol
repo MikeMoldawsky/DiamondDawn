@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "../objects/System.sol";
-
 interface IDiamondDawnV2Admin {
     enum PhaseAction {
         Add,
