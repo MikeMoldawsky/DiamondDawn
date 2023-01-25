@@ -3,20 +3,20 @@ require("@nomicfoundation/hardhat-chai-matchers");
 const { expect } = require("chai");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const _ = require("lodash");
-const { STAGE, ALL_STAGES } = require("../utils/EnumConverterUtils");
+const { STAGE, ALL_STAGES } = require("./utils/EnumConverterUtils");
 const {
   assertEnterMineMetadata,
   assertRoughMetadata,
   assertCutMetadata,
   assertPolishedMetadata,
   assertRebornMetadata,
-} = require("../utils/MineTestUtils");
-const { DIAMOND } = require("../utils/Diamonds");
-const { assertOnlyAdmin } = require("../utils/AdminTestUtils");
+} = require("./utils/MineTestUtils");
+const { DIAMOND } = require("./utils/Diamonds");
+const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
 const {
   deployMine,
   deployInitializedMine10WithVideos,
-} = require("../utils/DeployMineUtils");
+} = require("./utils/DeployMineUtils");
 
 describe("Diamond Dawn Mine", () => {
   describe("initialized", () => {
