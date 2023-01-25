@@ -1,0 +1,57 @@
+@import "css/varsNEW";
+
+.cta-and-trailers {
+  .play-buttons {
+    margin-top: 2.5em;
+    justify-content: space-between;
+    width: 27.5em;
+
+    .play-button {
+      width: calc(50% - 0.5px);
+
+      &:first-child {
+        justify-content: flex-start;
+      }
+
+      &:last-child {
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  .separator {
+    width: 1px;
+    height: 2em;
+    background-color: white;
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  .cta-and-trailers {
+    flex-direction: column;
+    font-size: 1.125em;
+    top: calc(100% - 11em);
+
+    .play-buttons {
+      margin-top: 3rem;
+    }
+
+    .play-button:not(:last-child) {
+      margin-right: 3em;
+    }
+
+    .separator {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .cta-and-trailers {
+    font-size: 1em;
+
+    .play-button:not(:last-child) {
+      margin-right: 2em;
+    }
+  }
+}

@@ -22,7 +22,7 @@ const TechPage = () => {
   return (
     <InfoPage
       className="tech-page"
-      teaser={{ src: getEarthAndMoonVideo(width, height), overlap: "-35%" }}
+      teaser={{ src: getEarthAndMoonVideo(width, height) }}
     >
       <div className="left-aligned-column general">
         <div className="leading-text">Timeless Technology</div>

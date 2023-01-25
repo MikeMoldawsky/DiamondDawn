@@ -1,0 +1,358 @@
+@import "css/varsNEW";
+@import "css/functions";
+
+.journey-phases {
+  position: relative;
+
+  .scale {
+    position: absolute;
+    top: 1.3em;
+    width: 3em;
+    left: 14.75em;
+    background: url($CDN_URL + "/images/about/scale.svg") no-repeat center top;
+    height: 87%;
+    background-size: auto 100%;
+
+    .marker {
+      position: absolute;
+      left: -2.2em;
+      top: 0;
+      font-size: 1.6em;
+      color: $gray_blur;
+      transform: translateY(-50%);
+
+      &.marker30 {
+        top: 25%;
+      }
+
+      &.marker60 {
+        top: 50%;
+      }
+
+      &.marker90 {
+        top: 75%;
+      }
+    }
+  }
+
+  .tagline-text {
+    margin: 0;
+  }
+
+  .journey-row {
+    .image-side {
+      width: 20em;
+      min-width: 20em;
+      text-align: left;
+
+      .image {
+        width: 10em;
+        height: 10em;
+        text-align: center;
+      }
+    }
+
+    .text-side {
+      flex-grow: 2;
+      position: relative;
+      padding: 0 0 4em 4em;
+      min-height: 12em;
+    }
+
+    .meter {
+      position: absolute;
+      top: 2.25em;
+      bottom: -0.3em;
+      left: 0;
+      width: 1px;
+      background-color: $border_gray;
+
+      &:before {
+        content: "";
+        position: absolute;
+        top: -0.8em;
+        left: 50%;
+        transform: translate(-50%, -65%);
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+        background-color: $border_gray;
+      }
+
+      &.active {
+        background-color: white;
+        top: 2.75em;
+        bottom: -0.25em;
+
+        &:before {
+          background-color: white;
+          top: -1.3em;
+        }
+
+        &:after {
+          content: "";
+          position: absolute;
+          top: -1.3em;
+          left: 50%;
+          transform: translate(-50%, -60%);
+          width: 1.5em;
+          height: 1.5em;
+          border-radius: 50%;
+          border: solid 2px white;
+        }
+      }
+    }
+
+    &.journey-desc {
+      .text-side {
+        padding-bottom: 6em;
+        padding-left: 0;
+      }
+    }
+
+    &.phase-0 {
+      .key-image {
+        height: 10em;
+        transform: rotate(145deg) rotateY(180deg) rotateZ(180deg)
+          translate(-20%, -20%);
+      }
+
+      .button {
+        margin-top: 1em;
+      }
+    }
+
+    &.phase-1 {
+      .image-side {
+        .image {
+          img,
+          .react-player {
+            height: 10em;
+            transform: translateY(-45%) rotate(75deg);
+          }
+        }
+      }
+    }
+
+    &.phase-2,
+    &.phase-3 {
+      .image-side {
+        .image {
+          img,
+          .react-player {
+            max-width: 60%;
+            transform: translateY(-40%);
+            margin: 0 auto;
+            opacity: 0.9;
+          }
+        }
+      }
+    }
+
+    &.phase-4 {
+      position: relative;
+
+      .image-side {
+        align-self: flex-start;
+
+        .image {
+          img,
+          .react-player {
+            max-width: 80%;
+            margin: 0 auto;
+          }
+        }
+      }
+
+      .text {
+        width: 80%;
+        position: relative;
+      }
+    }
+
+    &.phase-5 {
+      .image-side {
+        .image {
+          .react-player {
+            max-width: 80%;
+            transform: translateY(-40%);
+            margin: 0 auto;
+          }
+        }
+      }
+    }
+
+    &:last-child {
+      .meter {
+        bottom: unset;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1366px) {
+  .journey-phases {
+    .scale {
+      left: 11em;
+    }
+
+    .journey-row {
+      .text-side {
+        padding-bottom: 2em;
+        min-height: 10em;
+      }
+
+      .image-side {
+        width: 16em;
+        min-width: 16em;
+
+        .image {
+          width: 8em;
+          height: 8em;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  .journey-phases {
+    .scale {
+      display: none;
+    }
+
+    .journey-row {
+      flex-direction: column;
+
+      .cta-row {
+        text-align: center;
+      }
+
+      .meter {
+        left: 50%;
+        top: -12.5em;
+        bottom: 6.5em;
+        z-index: -1;
+
+        &.active {
+          top: -10em;
+          bottom: 6.5em;
+        }
+      }
+
+      .image-side {
+        background-color: black;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .image {
+          width: 10em;
+        }
+      }
+
+      .text-side {
+        padding: 0 0 10em 0;
+        width: 80%;
+        margin: 0 auto;
+
+        & > div:not(.meter) {
+          background-color: black;
+          z-index: 1;
+        }
+
+        .animated-text {
+          padding-bottom: 1em;
+        }
+      }
+
+      &.journey-desc {
+        .text-side {
+          width: 100%;
+          padding-bottom: 8em;
+        }
+      }
+
+      &.phase-0 {
+        .key-image {
+          transform: rotate(35deg) translate(-7.5%, -7.5%);
+        }
+      }
+
+      &.phase-1 {
+        .image-side {
+          .image {
+            .react-player {
+              transform: translate(2.5%, -25%) rotate(75deg);
+            }
+          }
+        }
+      }
+
+      &.phase-2,
+      &.phase-3 {
+        .image-side {
+          .image {
+            .react-player {
+              transform: translateY(15%);
+            }
+          }
+        }
+
+        .text-side {
+          text-align: center;
+        }
+      }
+
+      &.phase-4 {
+        .image-side {
+          align-self: unset;
+        }
+
+        .text-side {
+          .text {
+            width: 100%;
+          }
+        }
+      }
+
+      &.phase-5 {
+        .image-side {
+          .image {
+            transform: translateY(25%);
+            width: 12em;
+          }
+        }
+
+        .text-side {
+          text-align: center;
+        }
+      }
+
+      &:last-child {
+        .text-side {
+          padding-bottom: 0;
+
+          .meter {
+            bottom: 19em;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .journey-phases {
+    .text-section {
+      width: unset !important;
+    }
+
+    .journey-row {
+      .text-side {
+        width: 100%;
+      }
+    }
+  }
+}

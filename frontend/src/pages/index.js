@@ -92,14 +92,6 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="the-journey"
-        element={
-          <Suspense fallback={<SuspenseFallback />}>
-            <TheJourneyPage />
-          </Suspense>
-        }
-      />
-      <Route
         path="about-us"
         element={
           <Suspense fallback={<SuspenseFallback />}>

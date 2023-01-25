@@ -37,6 +37,7 @@
       transform: translateY(-23%);
     }
     &.mine-wall-left {
+      display: none;
       background: url($CDN_URL + "/images/homepage/mine-wall-left.png")
         no-repeat 0 0;
       background-size: auto 40%;
@@ -49,7 +50,7 @@
     }
     &.bg-left-hand {
       background: url($CDN_URL + "/images/homepage/homepage-left-hand.png")
-        no-repeat left 41%;
+        no-repeat left 90%;
       background-size: auto 27%;
       z-index: 1;
       transform: translateX(var(--edge-offset));

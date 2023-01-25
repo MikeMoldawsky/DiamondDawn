@@ -1,14 +1,9 @@
 import React, { useCallback } from "react";
 import "./VideoBackground.scss";
 import ReactPlayer from "react-player";
-import PlayButton from "components/PlayButton";
-import CTAButton from "components/CTAButton";
-import { getTrailerVideos } from "assets/videos";
-import useWindowDimensions from "hooks/useWindowDimensions";
+import CTAAndTrailers from "components/CTAAndTrailers";
 
 const VideoBackground = ({ src, overlap = 0 }) => {
-  const { width, height } = useWindowDimensions();
-
   const renderTeaserBg = useCallback(
     () => (
       <ReactPlayer
@@ -26,26 +21,10 @@ const VideoBackground = ({ src, overlap = 0 }) => {
     []
   );
 
-  const trailerSources = getTrailerVideos(width, height);
-
   return (
     <div className="teaser-video" style={{ marginTop: overlap }}>
       {renderTeaserBg()}
-      <div className="center-center-aligned-row buttons-row">
-        <div className="element">
-          <CTAButton />
-        </div>
-        <div className="center-aligned-row play-buttons">
-          <div className="separator" />
-          <PlayButton className="element" videos={trailerSources} index={0} />
-          <div className="separator" />
-          <PlayButton
-            className="element second"
-            videos={trailerSources}
-            index={1}
-          />
-        </div>
-      </div>
+      <CTAAndTrailers />
     </div>
   );
 };

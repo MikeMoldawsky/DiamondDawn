@@ -59,14 +59,9 @@
         margin-top: 3em;
       }
 
-      .buttons-row {
+      .cta-and-trailers {
         margin-top: 3.5rem;
-        justify-content: space-between;
         font-size: $font20px;
-
-        .play-button:not(:last-child) {
-          margin-right: 6em;
-        }
       }
     }
 
@@ -120,6 +115,10 @@
       letter-spacing: 0.04em;
       border-bottom: solid 2px $gold;
     }
+  }
+
+  .journey-section {
+    margin-top: 15em;
   }
 
   .eternal-treasures,
@@ -199,7 +198,7 @@
           width: 15em;
         }
 
-        .buttons-row .play-button:not(:last-child) {
+        .cta-and-trailers .play-button:not(:last-child) {
           margin-right: 4em;
         }
 

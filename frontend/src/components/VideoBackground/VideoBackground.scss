@@ -18,18 +18,12 @@
     z-index: 0;
   }
 
-  .buttons-row {
+  .cta-and-trailers {
     position: absolute;
-    top: calc(100% - 8em);
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-
-    .separator {
-      width: 1px;
-      height: 2em;
-      background-color: white;
-      margin: 0 4em;
-    }
+    transform: translate(-50%, -50%);
+    font-size: $font20px;
   }
 }
 
@@ -39,36 +33,6 @@
 
     .react-player {
       opacity: 1;
-    }
-
-    .buttons-row {
-      flex-direction: column;
-      font-size: 1.125em;
-      top: calc(100% - 11em);
-
-      .play-buttons {
-        margin-top: 3rem;
-      }
-
-      .play-button:not(:last-child) {
-        margin-right: 3em;
-      }
-
-      .separator {
-        display: none;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 480px) {
-  .teaser-video {
-    .buttons-row {
-      font-size: 1em;
-
-      .play-button:not(:last-child) {
-        margin-right: 2em;
-      }
     }
   }
 }

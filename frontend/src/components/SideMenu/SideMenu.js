@@ -46,9 +46,6 @@ const SideMenu = () => {
           <NavLink to={"/explore"} onClick={closeMenu}>
             <div className="menu-item">HOMEPAGE</div>
           </NavLink>
-          <NavLink to={"/the-journey"} onClick={closeMenu}>
-            <div className="menu-item">THE JOURNEY</div>
-          </NavLink>
           <NavLink to={"/about-us"} onClick={closeMenu}>
             <div className="menu-item">ABOUT US</div>
           </NavLink>
