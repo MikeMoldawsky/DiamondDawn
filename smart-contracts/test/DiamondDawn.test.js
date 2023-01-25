@@ -2,22 +2,16 @@ require("dotenv").config();
 require("@nomicfoundation/hardhat-chai-matchers");
 const { expect } = require("chai");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
-const {
-  signMessage,
-  signMessageWithNumber,
-} = require("./utils/SignatureUtils");
+const { signMessage, signMessageWithNumber } = require("./utils/signature");
 
 const {
   deployDDV2,
   deployKeyPhase,
   deployDDV2WithPhase,
-} = require("./utils/DeployDDV2Utils");
-const {
-  getParsedMetadata,
-  assertMintMetadata,
-} = require("./utils/DDV2MetadataTestUtils");
+} = require("./utils/deploy");
+const { getParsedMetadata, assertMintMetadata } = require("./utils/metadata");
 const { parseEther } = require("ethers/lib/utils");
-const { PRICE_MINT, MAX_TOKENS } = require("./utils/ConstsV2");
+const { PRICE_MINT, MAX_TOKENS } = require("./utils/consts");
 const _ = require("lodash");
 
 describe("DiamondDawnV2", () => {

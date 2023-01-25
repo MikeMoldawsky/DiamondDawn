@@ -3,7 +3,7 @@ require("@nomicfoundation/hardhat-chai-matchers");
 const { expect } = require("chai");
 const { parseEther } = require("ethers/lib/utils");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
-const { STAGE, ALL_STAGES } = require("../utils/EnumConverterUtils");
+const { STAGE, ALL_STAGES } = require("./utils/EnumConverterUtils");
 const {
   setCutManifest,
   setPolishManifest,
@@ -11,7 +11,7 @@ const {
   assertBase64AndGetParsed,
   BASE_URI,
   KEY_MANIFEST,
-} = require("../utils/MineTestUtils");
+} = require("./utils/MineTestUtils");
 const {
   deployDD,
   deployDDWithMineReady,
@@ -19,16 +19,13 @@ const {
   deployDDWithPolishReady,
   NUM_TOKENS,
   deployDDWithRebirthReady,
-} = require("../utils/DeployDDUtils");
-const {
-  signMessage,
-  signMessageWithNumber,
-} = require("../utils/SignatureUtils");
+} = require("./utils/DeployDDUtils");
+const { signMessage, signMessageWithNumber } = require("../utils/signature");
 const _ = require("lodash");
 const { ethers } = require("hardhat");
-const { PRICE, PRICE_MARRIAGE } = require("../utils/ConstsV1");
-const { completeAndSetStage } = require("../utils/DDTestUtils");
-const { DIAMOND_TO_COLOR, DIAMOND } = require("../utils/Diamonds");
+const { PRICE, PRICE_MARRIAGE } = require("./utils/ConstsV1");
+const { completeAndSetStage } = require("./utils/DDTestUtils");
+const { DIAMOND_TO_COLOR, DIAMOND } = require("./utils/Diamonds");
 
 describe("DiamondDawnV1", () => {
   describe("forge and forgeWithPartner", () => {

@@ -1,6 +1,6 @@
 const parseDataUrl = require("parse-data-url");
 const { expect } = require("chai");
-const { BASE_URI, MINT_MANIFEST } = require("./ConstsV2");
+const { BASE_URI, MINT_MANIFEST } = require("./consts");
 
 async function assertMintMetadata(ddUser, ddContract, tokenId, isHonorary) {
   const expectedMetadata = _getExpectedMetadataMint(tokenId, isHonorary);

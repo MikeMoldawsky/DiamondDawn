@@ -1,5 +1,5 @@
 const { ethers } = require("hardhat");
-const { MINT_MANIFEST, KEY_MANIFEST } = require("./ConstsV2");
+const { MINT_MANIFEST, KEY_MANIFEST } = require("./consts");
 
 async function deployMintPhase() {
   const MintPhase = await ethers.getContractFactory("MintPhase");
