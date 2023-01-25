@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-interface IDiamondDawnV2Admin {
+interface IDiamondDawnAdmin {
     enum PhaseAction {
         Add,
         Replace,

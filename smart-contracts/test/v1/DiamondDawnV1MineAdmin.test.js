@@ -4,15 +4,15 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const _ = require("lodash");
-const { STAGE, ALL_STAGES } = require("./utils/EnumConverterUtils");
+const { STAGE, ALL_STAGES } = require("../utils/EnumConverterUtils");
 const {
   assertPolishedMetadata,
   assertRebornMetadata,
   setAllManifests,
-} = require("./utils/MineTestUtils");
-const { DIAMOND } = require("./utils/Diamonds");
-const { assertOnlyAdmin } = require("./utils/AdminTestUtils");
-const { deployMine } = require("./utils/DeployMineUtils");
+} = require("../utils/MineTestUtils");
+const { DIAMOND } = require("../utils/Diamonds");
+const { assertOnlyAdmin } = require("../utils/AdminTestUtils");
+const { deployMine } = require("../utils/DeployMineUtils");
 
 describe("Diamond Dawn Mine Admin", () => {
   describe("Deployed", () => {
@@ -23,7 +23,7 @@ describe("Diamond Dawn Mine Admin", () => {
       );
       const serializer = await SerializerLib.deploy();
       const DiamondDawnMine = await ethers.getContractFactory(
-        "DiamondDawnMine",
+        "DiamondDawnV1Mine",
         {
           libraries: {
             DiamondSerializer: serializer.address,

@@ -4,8 +4,8 @@ pragma solidity ^0.8.15;
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "./interface/IDiamondDawnMine.sol";
-import "./interface/IDiamondDawnMineAdmin.sol";
+import "./interface/IDiamondDawnV1Mine.sol";
+import "./interface/IDiamondDawnV1MineAdmin.sol";
 import "./objects/Diamond.sol";
 import "./objects/Mine.sol";
 import "./utils/MathUtils.sol";
@@ -34,7 +34,7 @@ import "./utils/DiamondSerializer.sol";
  * @title DiamondDawnMine
  * @author Mike Moldawsky (Tweezers)
  */
-contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondDawnMineAdmin {
+contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiamondDawnV1MineAdmin {
     bool public isLocked; // mine is locked forever.
     bool public isInitialized;
     uint16 public maxDiamonds;

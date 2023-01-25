@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "../interface/IDiamondDawnV2Phase.sol";
+import "../interface/IDiamondDawnPhase.sol";
 
 library Phases {
     struct Phase {
-        IDiamondDawnV2Phase _phase;
+        IDiamondDawnPhase _phase;
         string _name;
         uint16 _maxSupply;
         uint _price;
@@ -14,7 +14,7 @@ library Phases {
     }
 
     struct TokenMetadata {
-        IDiamondDawnV2Phase phase;
+        IDiamondDawnPhase phase;
         bytes attributes;
     }
 
@@ -44,7 +44,7 @@ library Phases {
     }
 
     function toPhase(address ddPhase, uint16 maxSupply, uint price) internal view returns (Phase memory) {
-        IDiamondDawnV2Phase phase = IDiamondDawnV2Phase(ddPhase);
+        IDiamondDawnPhase phase = IDiamondDawnPhase(ddPhase);
         return
             Phase({
                 _phase: phase,
@@ -60,7 +60,7 @@ library Phases {
         return canEvolveFrom(to, from._phase);
     }
 
-    function canEvolveFrom(Phase memory to, IDiamondDawnV2Phase from) internal view returns (bool) {
+    function canEvolveFrom(Phase memory to, IDiamondDawnPhase from) internal view returns (bool) {
         return to._phase.canEvolveFrom(from);
     }
 

@@ -111,11 +111,11 @@ async function main() {
   let dd;
   const ddArgs = [mine.address, process.env.DEV_DEPLOYMENT_SIGNER_PUBLIC_KEY];
   if (hre.network.name === "goerli") {
-    dd = await deployContract(deployer, "DiamondDawn", ddArgs);
+    dd = await deployContract(deployer, "DiamondDawnV1", ddArgs);
     // await populateDiamonds(mine);
   } else if (hre.network.name === "localhost") {
     await setVideos(mine);
-    dd = await deployContract(deployer, "DiamondDawn", ddArgs);
+    dd = await deployContract(deployer, "DiamondDawnV1", ddArgs);
     // await populateDiamonds(mine);
   }
 

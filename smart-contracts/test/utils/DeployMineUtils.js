@@ -6,7 +6,7 @@ async function deployMine() {
   const owner = users.shift();
   const SerializerLib = await ethers.getContractFactory("DiamondSerializer");
   const serializer = await SerializerLib.deploy();
-  const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine", {
+  const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnV1Mine", {
     libraries: {
       DiamondSerializer: serializer.address,
     },

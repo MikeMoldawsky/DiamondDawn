@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-interface IDiamondDawn {
+interface IDiamondDawnV1 {
     function forge(bytes calldata signature, uint256 quantity) external payable;
 
     function forgeWithPartner(bytes calldata signature, uint256 quantity) external payable;

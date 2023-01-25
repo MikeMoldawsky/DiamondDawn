@@ -3,7 +3,7 @@ pragma solidity ^0.8.15;
 
 import "../objects/System.sol";
 
-interface IDiamondDawnAdmin {
+interface IDiamondDawnV1Admin {
     event StageChanged(Stage stage);
 
     function setStage(Stage stage) external;

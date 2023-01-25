@@ -3,9 +3,9 @@ pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
-import "../interface/IDiamondDawnV2Phase.sol";
-import "../interface/IDiamondDawnV2PhaseAdmin.sol";
-import "../utils/NFTs.sol";
+import "../interface/IDiamondDawnPhase.sol";
+import "../interface/IDiamondDawnPhaseAdmin.sol";
+import "../libraries/NFTs.sol";
 import "../objects/Mint.sol";
 import "../objects/Mint.sol";
 
@@ -13,7 +13,7 @@ import "../objects/Mint.sol";
  * @title MintPhase
  * @author Mike Moldawsky (Tweezers)
  */
-contract MintPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawnV2PhaseAdmin {
+contract MintPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPhaseAdmin {
     using NFTs for NFTs.Metadata;
 
     bool public isLocked; // phase is locked forever.
@@ -76,7 +76,7 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawn
         return phaseName;
     }
 
-    function canEvolveFrom(IDiamondDawnV2Phase from) external view returns (bool) {
+    function canEvolveFrom(IDiamondDawnPhase from) external view returns (bool) {
         return _supportedPhases[address(from)] || _supportedNames[from.getName()];
     }
 

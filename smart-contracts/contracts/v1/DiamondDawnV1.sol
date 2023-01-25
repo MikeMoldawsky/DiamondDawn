@@ -12,9 +12,9 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "operator-filter-registry/src/DefaultOperatorFilterer.sol";
-import "./interface/IDiamondDawn.sol";
-import "./interface/IDiamondDawnAdmin.sol";
-import "./interface/IDiamondDawnMine.sol";
+import "./interface/IDiamondDawnV1.sol";
+import "./interface/IDiamondDawnV1Admin.sol";
+import "./interface/IDiamondDawnV1Mine.sol";
 
 /**
  *    ________    .__                                           .___
@@ -33,7 +33,7 @@ import "./interface/IDiamondDawnMine.sol";
  * @title DiamondDawn
  * @author Mike Moldawsky (Tweezers)
  */
-contract DiamondDawn is
+contract DiamondDawnV1 is
     ERC721,
     ERC721Burnable,
     ERC721Enumerable,
@@ -42,8 +42,8 @@ contract DiamondDawn is
     AccessControl,
     Ownable,
     Pausable,
-    IDiamondDawn,
-    IDiamondDawnAdmin
+    IDiamondDawnV1,
+    IDiamondDawnV1Admin
 {
     using EnumerableSet for EnumerableSet.UintSet;
     using ECDSA for bytes32;
@@ -56,7 +56,7 @@ contract DiamondDawn is
     bool public isLocked; // immutable
     bool public isActive;
     Stage public stage;
-    IDiamondDawnMine public ddMine;
+    IDiamondDawnV1Mine public ddMine;
 
     uint16 private _numTokens;
     mapping(address => EnumerableSet.UintSet) private _shipped;
@@ -64,7 +64,7 @@ contract DiamondDawn is
     address private _signer;
 
     constructor(address mine_, address signer) ERC721("DiamondDawn", "DD") {
-        ddMine = IDiamondDawnMine(mine_);
+        ddMine = IDiamondDawnV1Mine(mine_);
         _signer = signer;
         _setDefaultRoyalty(_msgSender(), 1000);
         _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());

@@ -23,7 +23,7 @@ async function deployDDV2() {
   const users = await ethers.getSigners();
   const owner = users.shift();
   const signer = users.pop();
-  const DiamondDawnV2 = await ethers.getContractFactory("DiamondDawnV2");
+  const DiamondDawnV2 = await ethers.getContractFactory("DiamondDawn");
   const { mintPhase } = await deployMintPhase();
   const diamondDawnV2 = await DiamondDawnV2.deploy(
     signer.address,
@@ -42,7 +42,7 @@ async function deployDDV2WithPhase(initialPhase) {
   const users = await ethers.getSigners();
   const owner = users.shift();
   const signer = users.pop();
-  const DiamondDawnV2 = await ethers.getContractFactory("DiamondDawnV2");
+  const DiamondDawnV2 = await ethers.getContractFactory("DiamondDawn");
   const diamondDawnV2 = await DiamondDawnV2.deploy(
     signer.address,
     initialPhase.address

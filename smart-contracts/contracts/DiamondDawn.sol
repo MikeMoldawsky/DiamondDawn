@@ -12,9 +12,9 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "operator-filter-registry/src/DefaultOperatorFilterer.sol";
-import "./interface/IDiamondDawnV2.sol";
-import "./interface/IDiamondDawnV2Admin.sol";
-import "./utils/Phases.sol";
+import "./interface/IDiamondDawn.sol";
+import "./interface/IDiamondDawnAdmin.sol";
+import "./libraries/Phases.sol";
 import "./objects/Mint.sol";
 
 /**
@@ -34,7 +34,7 @@ import "./objects/Mint.sol";
  * @title DiamondDawn
  * @author Mike Moldawsky (Tweezers)
  */
-contract DiamondDawnV2 is
+contract DiamondDawn is
     ERC721,
     ERC721Enumerable,
     ERC721Royalty,
@@ -42,8 +42,8 @@ contract DiamondDawnV2 is
     AccessControl,
     Ownable,
     Pausable,
-    IDiamondDawnV2,
-    IDiamondDawnV2Admin
+    IDiamondDawn,
+    IDiamondDawnAdmin
 {
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.AddressSet;

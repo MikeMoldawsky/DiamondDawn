@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-interface IDiamondDawnV2 {
+interface IDiamondDawn {
     function mint(bytes calldata signature, uint256 quantity) external payable;
 
     function mintHonorary(bytes calldata signature) external payable;
