@@ -17,11 +17,7 @@ interface IDiamondDawnV2Admin {
 
     function safeClosePhase() external;
 
-    function safeSetNextPhase(
-        address ddPhase,
-        uint16 maxSupply,
-        uint price
-    ) external;
+    function safeSetNextPhase(address ddPhase, uint16 maxSupply, uint price) external;
 
     function setActive(bool boolean) external;
 

@@ -19,6 +19,7 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawnV
     bool public isLocked; // phase is locked forever.
     address public diamondDawn;
 
+    string public phaseName = "key";
     string private _baseTokenURI = "ar://";
     string private _manifest;
     mapping(string => bool) private _supportedNames; // TODO add setter
@@ -66,7 +67,7 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawnV
         _baseTokenURI = baseTokenURI;
     }
 
-    function evolve(uint tokenId, bytes memory prevAttributes) external view returns (bytes memory) {
+    function evolve(uint _tokenId, bytes memory prevAttributes) external view returns (bytes memory) {
         // TODO: add randomization
         MintAttributes memory mintAttributes = abi.decode(prevAttributes, (MintAttributes));
         if (mintAttributes.honorary)
@@ -75,7 +76,7 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawnV
     }
 
     function getName() external view returns (string memory) {
-        return "key";
+        return phaseName;
     }
 
     function canEvolveFrom(IDiamondDawnV2Phase from) external view returns (bool) {
@@ -105,7 +106,7 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawnV
         uint tokenId,
         KeyAttributes memory attributes,
         string memory noExtensionURI
-    ) private view returns (string memory) {
+    ) private pure returns (string memory) {
         NFTs.Metadata memory nftMetadata = NFTs.Metadata({
             name: string.concat("Mine Key #", Strings.toString(tokenId)),
             image: string.concat(noExtensionURI, ".jpeg"),
@@ -115,7 +116,7 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawnV
         return nftMetadata.serialize();
     }
 
-    function _getJsonAttributes(KeyAttributes memory keyAttributes) private view returns (NFTs.Attribute[] memory) {
+    function _getJsonAttributes(KeyAttributes memory keyAttributes) private pure returns (NFTs.Attribute[] memory) {
         NFTs.Attribute[] memory attributes;
         if (keyAttributes.honorary) {
             attributes = new NFTs.Attribute[](2);

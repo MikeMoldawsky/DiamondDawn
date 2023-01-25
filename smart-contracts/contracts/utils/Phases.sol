@@ -26,11 +26,7 @@ library Phases {
         return phase._phase.initialize();
     }
 
-    function evolve(
-        TokenMetadata storage metadata,
-        Phase memory newPhase,
-        uint tokenId
-    ) internal {
+    function evolve(TokenMetadata storage metadata, Phase memory newPhase, uint tokenId) internal {
         require(newPhase._isOpen, "phase is closed");
         require(newPhase._evolved < newPhase._maxSupply, "max evolved");
         require(canEvolveFrom(newPhase, metadata.phase), "not supported phase");
@@ -51,11 +47,7 @@ library Phases {
         return metadata.phase.getMetadata(tokenId, metadata.attributes);
     }
 
-    function toPhase(
-        address ddPhase,
-        uint16 maxSupply,
-        uint price
-    ) internal view returns (Phase memory) {
+    function toPhase(address ddPhase, uint16 maxSupply, uint price) internal view returns (Phase memory) {
         IDiamondDawnV2Phase phase = IDiamondDawnV2Phase(ddPhase);
         return
             Phase({

@@ -108,7 +108,10 @@ contract DiamondDawnV2 is
 
     /**********************     External Functions     ************************/
 
-    function mint(bytes calldata signature, uint256 quantity)
+    function mint(
+        bytes calldata signature,
+        uint256 quantity
+    )
         external
         payable
         canMint(quantity, signature, bytes32(abi.encodePacked(_msgSender(), uint96(quantity))))
@@ -117,22 +120,15 @@ contract DiamondDawnV2 is
         _mint(quantity);
     }
 
-    function mintHonorary(bytes calldata signature)
-        external
-        payable
-        canMint(1, signature, bytes32(uint256(uint160(_msgSender()))))
-        canEvolve(_mintPhaseName)
-    {
+    function mintHonorary(
+        bytes calldata signature
+    ) external payable canMint(1, signature, bytes32(uint256(uint160(_msgSender())))) canEvolve(_mintPhaseName) {
         _mintHonorary();
     }
 
-    function safeEvolveCurrentPhase(uint tokenId)
-        external
-        payable
-        isNotLocked
-        isOwner(tokenId)
-        canEvolve(_currPhaseName)
-    {
+    function safeEvolveCurrentPhase(
+        uint tokenId
+    ) external payable isNotLocked isOwner(tokenId) canEvolve(_currPhaseName) {
         _metadata[tokenId].evolve(_phases[_currPhaseName], tokenId);
     }
 
@@ -174,11 +170,7 @@ contract DiamondDawnV2 is
         emit Phase(name, _phases[name].getPhaseAddress(), PhaseAction.Open);
     }
 
-    function _safeSetCurrentPhase(
-        address ddPhase,
-        uint16 maxSupply,
-        uint price
-    ) internal returns (string memory) {
+    function _safeSetCurrentPhase(address ddPhase, uint16 maxSupply, uint price) internal returns (string memory) {
         require(!isActive, "Diamond Dawn is active");
         require(!_phases[_currPhaseName].isOpen(), "Current phase is open");
         Phases.Phase memory nextPhase = _addPhase(ddPhase, maxSupply, price);
@@ -187,11 +179,7 @@ contract DiamondDawnV2 is
         return _currPhaseName;
     }
 
-    function _addPhase(
-        address ddPhase,
-        uint16 maxSupply,
-        uint price
-    ) internal returns (Phases.Phase memory) {
+    function _addPhase(address ddPhase, uint16 maxSupply, uint price) internal returns (Phases.Phase memory) {
         Phases.Phase memory phase = Phases.toPhase(ddPhase, maxSupply, price);
         string memory name = phase.getName();
         require(!_phases[name].isConfigured(), "Phase already exist");
@@ -241,19 +229,17 @@ contract DiamondDawnV2 is
 
     /**********************     Public Functions     ************************/
 
-    function setApprovalForAll(address operator, bool approved)
-        public
-        override(ERC721, IERC721)
-        onlyAllowedOperatorApproval(operator)
-    {
+    function setApprovalForAll(
+        address operator,
+        bool approved
+    ) public override(ERC721, IERC721) onlyAllowedOperatorApproval(operator) {
         super.setApprovalForAll(operator, approved);
     }
 
-    function approve(address operator, uint256 tokenId)
-        public
-        override(ERC721, IERC721)
-        onlyAllowedOperatorApproval(operator)
-    {
+    function approve(
+        address operator,
+        uint256 tokenId
+    ) public override(ERC721, IERC721) onlyAllowedOperatorApproval(operator) {
         super.approve(operator, tokenId);
     }
 
@@ -287,12 +273,9 @@ contract DiamondDawnV2 is
         return tokenMetadata.getMetadata(tokenId);
     }
 
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl)
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 

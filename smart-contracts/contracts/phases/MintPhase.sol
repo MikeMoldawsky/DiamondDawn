@@ -18,6 +18,7 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawn
 
     bool public isLocked; // phase is locked forever.
     address public diamondDawn;
+    string public phaseName = "mint";
 
     string private _baseTokenURI = "ar://";
     string private _manifest;
@@ -66,13 +67,13 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawn
         _baseTokenURI = baseTokenURI;
     }
 
-    function evolve(uint tokenId, bytes calldata prevAttributes) external view onlyDiamondDawn returns (bytes memory) {
+    function evolve(uint _tokenId, bytes calldata prevAttributes) external view onlyDiamondDawn returns (bytes memory) {
         MintAttributes memory attributes = abi.decode(prevAttributes, (MintAttributes));
         return abi.encode(attributes); // Mint is the recursion base condition
     }
 
     function getName() external view returns (string memory) {
-        return "mint";
+        return phaseName;
     }
 
     function canEvolveFrom(IDiamondDawnV2Phase from) external view returns (bool) {
@@ -102,7 +103,7 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawn
         uint tokenId,
         MintAttributes memory attributes,
         string memory noExtensionURI
-    ) private view returns (string memory) {
+    ) private pure returns (string memory) {
         NFTs.Metadata memory nftMetadata = NFTs.Metadata({
             name: string.concat("Diamond Dawn #", Strings.toString(tokenId)),
             image: string.concat(noExtensionURI, ".jpeg"),
@@ -112,7 +113,7 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnV2Phase, IDiamondDawn
         return nftMetadata.serialize();
     }
 
-    function _getJsonAttributes(MintAttributes memory mintAttributes) private view returns (NFTs.Attribute[] memory) {
+    function _getJsonAttributes(MintAttributes memory mintAttributes) private pure returns (NFTs.Attribute[] memory) {
         if (mintAttributes.honorary) {
             NFTs.Attribute[] memory attributes = new NFTs.Attribute[](1);
             attributes[0] = NFTs.toStrAttribute("Attribute", "Honorary");

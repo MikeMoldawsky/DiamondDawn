@@ -119,11 +119,10 @@ contract DiamondDawn is
         _forge(signature, quantity);
     }
 
-    function forgeWithPartner(bytes calldata signature, uint256 quantity)
-        external
-        payable
-        costs(PRICE_MARRIAGE, quantity)
-    {
+    function forgeWithPartner(
+        bytes calldata signature,
+        uint256 quantity
+    ) external payable costs(PRICE_MARRIAGE, quantity) {
         _forge(signature, quantity);
     }
 
@@ -191,19 +190,17 @@ contract DiamondDawn is
 
     /**********************     Public Functions     ************************/
 
-    function setApprovalForAll(address operator, bool approved)
-        public
-        override(ERC721, IERC721)
-        onlyAllowedOperatorApproval(operator)
-    {
+    function setApprovalForAll(
+        address operator,
+        bool approved
+    ) public override(ERC721, IERC721) onlyAllowedOperatorApproval(operator) {
         super.setApprovalForAll(operator, approved);
     }
 
-    function approve(address operator, uint256 tokenId)
-        public
-        override(ERC721, IERC721)
-        onlyAllowedOperatorApproval(operator)
-    {
+    function approve(
+        address operator,
+        uint256 tokenId
+    ) public override(ERC721, IERC721) onlyAllowedOperatorApproval(operator) {
         super.approve(operator, tokenId);
     }
 
@@ -236,12 +233,9 @@ contract DiamondDawn is
         return ddMine.getMetadata(tokenId);
     }
 
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl)
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 
