@@ -68,7 +68,9 @@ const JourneyPhases = () => {
         artName="question-mark"
         title="Next Phases"
         Text={PhaseToBeRevealedText}
-        active={systemStage >= SYSTEM_STAGE.MINE && systemStage < SYSTEM_STAGE.DAWN}
+        active={
+          systemStage >= SYSTEM_STAGE.MINE && systemStage < SYSTEM_STAGE.DAWN
+        }
       />
       <Phase
         className="phase-5"

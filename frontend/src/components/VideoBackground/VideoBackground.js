@@ -4,7 +4,6 @@ import ReactPlayer from "react-player";
 import CTAAndTrailers from "components/CTAAndTrailers";
 
 const VideoBackground = ({ src, overlap = 0 }) => {
-
   const renderTeaserBg = useCallback(
     () => (
       <ReactPlayer

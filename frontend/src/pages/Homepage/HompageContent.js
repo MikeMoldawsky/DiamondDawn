@@ -6,11 +6,27 @@ export const DiamondDawnText = () => (
   <>
     <div className="subtitle-text">DIAMOND DAWN</div>
     <div className="text">
-      <p>Diamond Dawn is an art NFT project featuring 5555 limited edition NFTs that can evolve on-chain.</p>
-      <p>Each NFT can evolve its digital form until it reaches an NFT that is backed by a physical artwork that contains a real diamond.</p>
-      <p>The natural diamonds are stored at the world's largest diamond exchange, the Israel Diamond Exchange, in the Moldawsky Diamonds' vault.</p>
-      <p>The NFTs are designed by David Ariew, a prominent NFT artist who has sold an NFT artwork at Sotheby's for $224K and designed 2 out of the 3 Beeple X Madonna NFTs (one of which sold for $346K).</p>
-      <p>Diamond Dawn's scarcity model expands between the physical and digital realms.</p>
+      <p>
+        Diamond Dawn is an art NFT project featuring 5555 limited edition NFTs
+        that can evolve on-chain.
+      </p>
+      <p>
+        Each NFT can evolve its digital form until it reaches an NFT that is
+        backed by a physical artwork that contains a real diamond.
+      </p>
+      <p>
+        The natural diamonds are stored at the world's largest diamond exchange,
+        the Israel Diamond Exchange, in the Moldawsky Diamonds' vault.
+      </p>
+      <p>
+        The NFTs are designed by David Ariew, a prominent NFT artist who has
+        sold an NFT artwork at Sotheby's for $224K and designed 2 out of the 3
+        Beeple X Madonna NFTs (one of which sold for $346K).
+      </p>
+      <p>
+        Diamond Dawn's scarcity model expands between the physical and digital
+        realms.
+      </p>
     </div>
   </>
 );
