@@ -4,7 +4,7 @@ pragma solidity ^0.8.15;
 import "../objects/Mine.sol";
 import "../objects/System.sol";
 
-interface IDiamondDawnMine {
+interface IDiamondDawnV1Mine {
     event Forge(uint tokenId);
     event Mine(uint tokenId);
     event Cut(uint tokenId);

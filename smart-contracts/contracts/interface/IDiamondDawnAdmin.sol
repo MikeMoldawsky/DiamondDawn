@@ -1,16 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "../objects/System.sol";
-
 interface IDiamondDawnAdmin {
-    event StageChanged(Stage stage);
+    enum PhaseAction {
+        Add,
+        Replace,
+        Remove,
+        Open,
+        Close
+    }
+    event Phase(string name, address phase, PhaseAction action);
 
-    function setStage(Stage stage) external;
+    function safeOpenPhase() external;
 
-    function completeStage(Stage stage) external;
+    function safeClosePhase() external;
 
-    function lockDiamondDawn() external;
+    function safeSetNextPhase(address ddPhase, uint16 maxSupply, uint price) external;
+
+    function setActive(bool boolean) external;
+
+    function lock() external;
 
     function pause() external;
 

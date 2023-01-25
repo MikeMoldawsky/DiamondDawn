@@ -4,12 +4,12 @@ pragma solidity ^0.8.15;
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "./interface/IDiamondDawnMine.sol";
-import "./interface/IDiamondDawnMineAdmin.sol";
+import "./interface/IDiamondDawnV1Mine.sol";
+import "./interface/IDiamondDawnV1MineAdmin.sol";
 import "./objects/Diamond.sol";
 import "./objects/Mine.sol";
 import "./utils/MathUtils.sol";
-import "./utils/Serializer.sol";
+import "./utils/DiamondSerializer.sol";
 
 /**
  *    ________    .__                                           .___
@@ -34,7 +34,7 @@ import "./utils/Serializer.sol";
  * @title DiamondDawnMine
  * @author Mike Moldawsky (Tweezers)
  */
-contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondDawnMineAdmin {
+contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiamondDawnV1MineAdmin {
     bool public isLocked; // mine is locked forever.
     bool public isInitialized;
     uint16 public maxDiamonds;
@@ -154,11 +154,9 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         isLocked = true;
     }
 
-    function eruption(Certificate[] calldata diamonds)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-        mineOverflow(diamonds.length)
-    {
+    function eruption(
+        Certificate[] calldata diamonds
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) mineOverflow(diamonds.length) {
         for (uint i = 0; i < diamonds.length; i++) {
             _mine.push(diamonds[i]);
         }
@@ -221,71 +219,79 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
         Metadata memory metadata,
         string memory noExtensionURI
     ) private view returns (string memory) {
-        Serializer.NFTMetadata memory nftMetadata = Serializer.NFTMetadata({
-            name: Serializer.getName(metadata, tokenId),
+        DiamondSerializer.NFTMetadata memory nftMetadata = DiamondSerializer.NFTMetadata({
+            name: DiamondSerializer.getName(metadata, tokenId),
             image: string.concat(noExtensionURI, ".jpeg"), // TODO: change to jpg
             animationUrl: string.concat(noExtensionURI, ".mp4"),
             attributes: _getJsonAttributes(metadata)
         });
-        return Serializer.serialize(nftMetadata);
+        return DiamondSerializer.serialize(nftMetadata);
     }
 
-    function _getJsonAttributes(Metadata memory metadata) private view returns (Serializer.Attribute[] memory) {
+    function _getJsonAttributes(Metadata memory metadata) private view returns (DiamondSerializer.Attribute[] memory) {
         uint8 i = 0;
         bool isRound = metadata.certificate.shape == Shape.ROUND;
         Stage state_ = metadata.state_;
-        Serializer.Attribute[] memory attributes = new Serializer.Attribute[](_getStateAttrsNum(state_, isRound));
-        attributes[i] = Serializer.toStrAttribute("Origin", "Metaverse");
-        attributes[++i] = Serializer.toStrAttribute("Type", Serializer.toTypeStr(state_));
+        DiamondSerializer.Attribute[] memory attributes = new DiamondSerializer.Attribute[](
+            _getStateAttrsNum(state_, isRound)
+        );
+        attributes[i] = DiamondSerializer.toStrAttribute("Origin", "Metaverse");
+        attributes[++i] = DiamondSerializer.toStrAttribute("Type", DiamondSerializer.toTypeStr(state_));
         if (Stage.KEY == state_) {
-            attributes[++i] = Serializer.toStrAttribute("Metal", "Gold");
+            attributes[++i] = DiamondSerializer.toStrAttribute("Metal", "Gold");
             return attributes;
         }
         if (uint(Stage.MINE) <= uint(state_)) {
-            attributes[++i] = Serializer.toStrAttribute("Stage", Serializer.toStageStr(state_));
-            attributes[++i] = Serializer.toStrAttribute("Identification", "Natural");
-            attributes[++i] = Serializer.toAttribute(
+            attributes[++i] = DiamondSerializer.toStrAttribute("Stage", DiamondSerializer.toStageStr(state_));
+            attributes[++i] = DiamondSerializer.toStrAttribute("Identification", "Natural");
+            attributes[++i] = DiamondSerializer.toAttribute(
                 "Carat",
-                Serializer.toDecimalStr(_getPoints(metadata, metadata.state_)),
+                DiamondSerializer.toDecimalStr(_getPoints(metadata, metadata.state_)),
                 ""
             );
-            attributes[++i] = Serializer.toMaxValueAttribute(
+            attributes[++i] = DiamondSerializer.toMaxValueAttribute(
                 "Mined",
                 Strings.toString(metadata.rough.id),
                 Strings.toString(_mineCounter),
                 "number"
             );
             bool wasProcessed = uint(state_) > uint(Stage.MINE);
-            attributes[++i] = Serializer.toStrAttribute(wasProcessed ? "Color Rough Stone" : "Color", "Cape");
-            attributes[++i] = Serializer.toStrAttribute(
+            attributes[++i] = DiamondSerializer.toStrAttribute(wasProcessed ? "Color Rough Stone" : "Color", "Cape");
+            attributes[++i] = DiamondSerializer.toStrAttribute(
                 wasProcessed ? "Shape Rough Stone" : "Shape",
-                Serializer.toRoughShapeStr(metadata.rough.shape)
+                DiamondSerializer.toRoughShapeStr(metadata.rough.shape)
             );
         }
         Certificate memory certificate = metadata.certificate;
         if (uint(Stage.CUT) <= uint(state_)) {
-            attributes[++i] = Serializer.toAttribute(
+            attributes[++i] = DiamondSerializer.toAttribute(
                 "Carat Rough Stone",
-                Serializer.toDecimalStr(_getPoints(metadata, Stage.MINE)),
+                DiamondSerializer.toDecimalStr(_getPoints(metadata, Stage.MINE)),
                 ""
             );
-            attributes[++i] = Serializer.toStrAttribute(
+            attributes[++i] = DiamondSerializer.toStrAttribute(
                 "Color",
-                Serializer.toColorStr(certificate.color, certificate.toColor)
+                DiamondSerializer.toColorStr(certificate.color, certificate.toColor)
             );
             if (isRound) {
-                attributes[++i] = Serializer.toStrAttribute("Cut", Serializer.toGradeStr(certificate.cut));
+                attributes[++i] = DiamondSerializer.toStrAttribute(
+                    "Cut",
+                    DiamondSerializer.toGradeStr(certificate.cut)
+                );
             }
-            attributes[++i] = Serializer.toStrAttribute(
+            attributes[++i] = DiamondSerializer.toStrAttribute(
                 "Fluorescence",
-                Serializer.toFluorescenceStr(certificate.fluorescence)
+                DiamondSerializer.toFluorescenceStr(certificate.fluorescence)
             );
-            attributes[++i] = Serializer.toStrAttribute(
+            attributes[++i] = DiamondSerializer.toStrAttribute(
                 "Measurements",
-                Serializer.toMeasurementsStr(isRound, certificate.length, certificate.width, certificate.depth)
+                DiamondSerializer.toMeasurementsStr(isRound, certificate.length, certificate.width, certificate.depth)
             );
-            attributes[++i] = Serializer.toStrAttribute("Shape", Serializer.toShapeStr(certificate.shape));
-            attributes[++i] = Serializer.toMaxValueAttribute(
+            attributes[++i] = DiamondSerializer.toStrAttribute(
+                "Shape",
+                DiamondSerializer.toShapeStr(certificate.shape)
+            );
+            attributes[++i] = DiamondSerializer.toMaxValueAttribute(
                 "Cut",
                 Strings.toString(metadata.cut.id),
                 Strings.toString(_cutCounter),
@@ -293,15 +299,24 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
         }
         if (uint(Stage.POLISH) <= uint(state_)) {
-            attributes[++i] = Serializer.toAttribute(
+            attributes[++i] = DiamondSerializer.toAttribute(
                 "Carat Pre Polish",
-                Serializer.toDecimalStr(_getPoints(metadata, Stage.CUT)),
+                DiamondSerializer.toDecimalStr(_getPoints(metadata, Stage.CUT)),
                 ""
             );
-            attributes[++i] = Serializer.toStrAttribute("Clarity", Serializer.toClarityStr(certificate.clarity));
-            attributes[++i] = Serializer.toStrAttribute("Polish", Serializer.toGradeStr(certificate.polish));
-            attributes[++i] = Serializer.toStrAttribute("Symmetry", Serializer.toGradeStr(certificate.symmetry));
-            attributes[++i] = Serializer.toMaxValueAttribute(
+            attributes[++i] = DiamondSerializer.toStrAttribute(
+                "Clarity",
+                DiamondSerializer.toClarityStr(certificate.clarity)
+            );
+            attributes[++i] = DiamondSerializer.toStrAttribute(
+                "Polish",
+                DiamondSerializer.toGradeStr(certificate.polish)
+            );
+            attributes[++i] = DiamondSerializer.toStrAttribute(
+                "Symmetry",
+                DiamondSerializer.toGradeStr(certificate.symmetry)
+            );
+            attributes[++i] = DiamondSerializer.toMaxValueAttribute(
                 "Polished",
                 Strings.toString(metadata.polished.id),
                 Strings.toString(_polishedCounter),
@@ -309,10 +324,10 @@ contract DiamondDawnMine is AccessControlEnumerable, IDiamondDawnMine, IDiamondD
             );
         }
         if (uint(Stage.DAWN) <= uint(state_)) {
-            attributes[++i] = Serializer.toStrAttribute("Laboratory", "GIA");
-            attributes[++i] = Serializer.toAttribute("Report Date", Strings.toString(certificate.date), "date");
-            attributes[++i] = Serializer.toStrAttribute("Report Number", Strings.toString(certificate.number));
-            attributes[++i] = Serializer.toMaxValueAttribute(
+            attributes[++i] = DiamondSerializer.toStrAttribute("Laboratory", "GIA");
+            attributes[++i] = DiamondSerializer.toAttribute("Report Date", Strings.toString(certificate.date), "date");
+            attributes[++i] = DiamondSerializer.toStrAttribute("Report Number", Strings.toString(certificate.number));
+            attributes[++i] = DiamondSerializer.toMaxValueAttribute(
                 "Physical",
                 Strings.toString(metadata.reborn.id),
                 Strings.toString(_rebornCounter),

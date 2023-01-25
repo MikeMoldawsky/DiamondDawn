@@ -4,11 +4,11 @@ const { setAllManifests } = require("./MineTestUtils");
 async function deployMine() {
   const users = await ethers.getSigners();
   const owner = users.shift();
-  const SerializerLib = await ethers.getContractFactory("Serializer");
+  const SerializerLib = await ethers.getContractFactory("DiamondSerializer");
   const serializer = await SerializerLib.deploy();
-  const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnMine", {
+  const DiamondDawnMine = await ethers.getContractFactory("DiamondDawnV1Mine", {
     libraries: {
-      Serializer: serializer.address,
+      DiamondSerializer: serializer.address,
     },
   });
   const diamondDawnMine = await DiamondDawnMine.deploy();

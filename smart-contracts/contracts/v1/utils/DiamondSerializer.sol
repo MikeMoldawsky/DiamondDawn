@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "../objects/Diamond.sol";
 import "../objects/Mine.sol";
 
-library Serializer {
+library DiamondSerializer {
     struct NFTMetadata {
         string name;
         string image;

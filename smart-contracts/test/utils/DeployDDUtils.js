@@ -13,7 +13,7 @@ const NUM_TOKENS = 333;
 async function deployDD() {
   const { diamondDawnMine, owner, users } = await deployMineWithVideos();
   const signer = users.pop();
-  const DiamondDawn = await ethers.getContractFactory("DiamondDawn");
+  const DiamondDawn = await ethers.getContractFactory("DiamondDawnV1");
   const diamondDawn = await DiamondDawn.deploy(
     diamondDawnMine.address,
     signer.address
