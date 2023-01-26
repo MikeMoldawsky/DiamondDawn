@@ -1,0 +1,53 @@
+.checkbox,
+.radio {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  cursor: pointer;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.cbx-inline {
+    width: unset;
+    margin: 0 0 0 1em;
+
+    input[type="checkbox"] {
+      margin-right: 0.2px;
+    }
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5em;
+    visibility: hidden;
+  }
+
+  .cbx {
+    width: 1em;
+    height: 1em;
+    position: absolute;
+    border: solid 1px white;
+    border-radius: calc(1em / 2);
+
+    &.checked:after {
+      content: "";
+      background-color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 0.2em;
+      width: 0.4em;
+      height: 0.4em;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+.radio {
+  margin-left: 0.8em;
+}

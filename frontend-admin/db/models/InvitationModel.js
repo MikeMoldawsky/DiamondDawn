@@ -4,12 +4,15 @@ require("./CollectorModel"); // required because of ref
 
 const InvitationSchema = new mongoose.Schema({
   createdAt: { type: Date, required: true, default: Date.now },
-  createdBy: { type: ObjectId, ref: "Collector" },
-  inviter: { type: String },
+  inviter: { type: ObjectId, ref: "Collector" },
+  inviterName: { type: String },
+  honoraryInvitee: { type: Boolean },
+  trustedInvitee: { type: Boolean },
+  numNFTs: { type: Number, min: 1, max: 5 },
   note: { type: String },
-  sent: { type: Boolean, default: true },
+  sent: { type: Boolean },
   viewed: { type: Boolean },
-  usedBy: { type: ObjectId, ref: "Collector" },
+  collector: { type: ObjectId, ref: "Collector" },
   revoked: { type: Boolean },
 });
 

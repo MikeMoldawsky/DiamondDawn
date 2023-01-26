@@ -4,14 +4,15 @@ const add = require("date-fns/add");
 async function getCollectorObjectById(collectorId) {
   try {
     const collector = (
-      await Collector.findById(collectorId).populate({
-        path: "invitedBy",
-        populate: {
-          path: "createdBy",
-          model: "Collector",
-        },
-      })
-    ).toObject();
+      await Collector.findById(collectorId)
+        .populate({
+          path: "invitedBy",
+          populate: {
+            path: "createdBy",
+            model: "Collector",
+          },
+        })
+      ).toObject();
     if (!collector) return null;
 
     collector.invitedBy =
@@ -47,9 +48,10 @@ async function getOrCreateDDCollector() {
         address: "0xffff",
         twitter: "@DiamondDawnNFT",
         approved: true,
+        trusted: true,
       });
     }
-    return await getCollectorObjectById(ddCollector._id);
+    return ddCollector
   } catch (e) {
     console.log(`Failed to get DD collector`, e);
   }

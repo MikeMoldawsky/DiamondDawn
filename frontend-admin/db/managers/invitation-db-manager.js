@@ -3,12 +3,10 @@ const Invitation = require("../models/InvitationModel");
 const Collector = require("../models/CollectorModel");
 const _ = require("lodash");
 
-async function createInvitations(createdBy, note, overrideInviter, count = 1) {
+async function createInvitations(invitation, inviter, count = 1) {
   const invitations = _.map(Array(count), () => ({
-    createdBy,
-    note,
-    inviter: overrideInviter,
-    sent: false,
+    ...invitation,
+    inviter,
   }));
 
   return await Invitation.insertMany(invitations);

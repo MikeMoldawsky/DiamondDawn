@@ -36,11 +36,32 @@ const INVITATION_COLUMNS = [
       format(new Date(params.value), "dd/MM/yy hh:mm"),
   },
   {
-    field: "inviter",
-    headerName: "Inviter Twitter",
+    field: "inviterName",
+    headerName: "Inviter",
     width: 150,
     editable: true,
-    renderCell: (params) => <TwitterLink handle={params.row.inviter} />,
+    renderCell: (params) => <TwitterLink handle={params.row.inviterName} />,
+  },
+  {
+    field: "honoraryInvitee",
+    headerName: "Honorary",
+    type: "boolean",
+    width: 70,
+    editable: true,
+  },
+  {
+    field: "trustedInvitee",
+    headerName: "Trusted",
+    type: "boolean",
+    width: 70,
+    editable: true,
+  },
+  {
+    field: "numNFTs",
+    headerName: "# NFTs",
+    type: "number",
+    width: 70,
+    editable: true,
   },
   {
     field: "note",
@@ -64,10 +85,10 @@ const INVITATION_COLUMNS = [
     width: 80,
   },
   {
-    field: "usedBy",
+    field: "collector",
     headerName: "Used",
     type: "boolean",
-    width: 80,
+    width: 70,
     valueFormatter: (params) => !_.isEmpty(params.value),
   },
   {
@@ -112,7 +133,7 @@ const InvitationsTab = () => {
 
   const invitations = showPrivateInvites
     ? _invitations
-    : _.filter(_invitations, ({ createdBy }) => createdBy === ddCollector._id);
+    : _.filter(_invitations, ({ inviter }) => inviter === ddCollector._id);
 
   const fetchInvites = () => {
     actionDispatch(
@@ -145,7 +166,7 @@ const InvitationsTab = () => {
   };
 
   const renderActions = ({ id, row }) => {
-    return row.sent || row.createdBy !== ddCollector._id
+    return row.sent || row.inviter !== ddCollector._id
       ? []
       : [<SendButton inviteId={id} onSent={() => setInviteSent(id)} />];
   };

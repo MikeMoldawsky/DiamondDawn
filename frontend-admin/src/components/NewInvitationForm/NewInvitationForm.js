@@ -7,6 +7,7 @@ import classNames from "classnames";
 import ActionButton from "components/ActionButton";
 import "./NewInvitationForm.scss";
 import { createInvitationApi } from "api/serverApi";
+import Checkbox from "components/Checkbox";
 
 const NewInvitationForm = ({ ddCollector, onSuccess }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
@@ -16,6 +17,7 @@ const NewInvitationForm = ({ ddCollector, onSuccess }) => {
     formState: { errors },
     watch,
     reset,
+    setValue,
   } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -45,37 +47,70 @@ const NewInvitationForm = ({ ddCollector, onSuccess }) => {
     );
   };
 
-  const createInvitation = async ({ note, inviter, count }) => {
-    await createInvitationApi(ddCollector._id, note, inviter, count);
+  const createInvitation = async ({ count, ...invitation }) => {
+    await createInvitationApi(
+      {...invitation, inviter: ddCollector._id},
+      count
+    );
     setIsSubmitSuccess(true);
     onSuccess && (await onSuccess());
   };
 
   return (
-    <div className="request-form">
-      <div className="secondary-text">CREATE INVITATION</div>
+    <div className="create-invites-form">
+      <div className="secondary-text">CREATE INVITATIONS</div>
       <form>
         {renderInput("note", "Note", {
           required: false,
         })}
-        {renderInput("inviter", "Override inviter twitter handle", {
+        {renderInput("inviterName", "Override inviter twitter handle", {
           required: false,
           pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
         })}
-        <input
-          type="number"
-          placeholder="Invitation Count"
-          {...register("count", {
-            valueAsNumber: true,
-          })}
-        />
-        <ActionButton
-          actionKey="Create Invitation"
-          onClick={handleSubmit(createInvitation)}
-          disabled={!isEmpty(errors)}
-        >
-          CREATE
-        </ActionButton>
+        <div className="center-aligned-row input-container cbx-row">
+          <Checkbox
+            register={register}
+            watch={watch}
+            setValue={setValue}
+            name="honoraryInvitee"
+          >
+            Honorary
+          </Checkbox>
+          <Checkbox
+            register={register}
+            watch={watch}
+            setValue={setValue}
+            name="trustedInvitee"
+          >
+            Trusted
+          </Checkbox>
+          <input
+            type="number"
+            placeholder="# NFTs"
+            {...register("numNFTs", {
+              valueAsNumber: true,
+            })}
+          />
+        </div>
+        <div className="center-aligned-row input-container button-row">
+          <div className="center-aligned-row invite-num">
+            X
+            <input
+              type="number"
+              placeholder="Invitation Count"
+              {...register("count", {
+                valueAsNumber: true,
+              })}
+            />
+          </div>
+          <ActionButton
+            actionKey="Create Invitation"
+            onClick={handleSubmit(createInvitation)}
+            disabled={!isEmpty(errors)}
+          >
+            CREATE
+          </ActionButton>
+        </div>
       </form>
     </div>
   );
