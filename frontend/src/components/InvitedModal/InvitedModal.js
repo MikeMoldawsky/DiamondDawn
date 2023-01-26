@@ -32,9 +32,9 @@ const InvitedModalContent = ({ close, onCopy, invite }) => {
       </>
     );
 
-  const { createdBy, inviter, usedBy, revoked } = invite;
+  const { inviter, inviterName, collector, revoked } = invite;
 
-  if (usedBy || revoked)
+  if (collector || revoked)
     return (
       <>
         <div className="leading-text">INVITATION USED</div>
@@ -67,7 +67,7 @@ const InvitedModalContent = ({ close, onCopy, invite }) => {
       <div className="leading-text">CONGRATULATIONS</div>
       <div className="text">
         You’ve been invited by{" "}
-        <CollectorLink collector={createdBy} twitter={inviter} /> to participate
+        <CollectorLink collector={inviter} twitter={inviterName} /> to participate
         in Diamond Dawn’s journey.
       </div>
       <div className="text">

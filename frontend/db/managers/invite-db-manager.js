@@ -13,14 +13,14 @@ async function createInvitation(createdBy, note) {
 }
 
 async function getInviteById(inviteId) {
-  return Invitation.findById(inviteId).populate("createdBy");
+  return Invitation.findById(inviteId).populate("inviter");
 }
 
 function validateInvite(invite) {
   if (!invite) {
     throw new Error("Invitation not found");
   }
-  if (invite.usedBy) {
+  if (invite.collector) {
     throw new Error("Invitation already used");
   }
   if (invite.revoked) {
