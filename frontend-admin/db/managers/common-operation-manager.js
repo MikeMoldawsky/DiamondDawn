@@ -3,38 +3,40 @@ const add = require("date-fns/add");
 
 async function getCollectorObjectById(collectorId) {
   try {
-    const collector = (
-      await Collector.findById(collectorId)
-        .populate({
-          path: "invitedBy",
-          populate: {
-            path: "createdBy",
-            model: "Collector",
-          },
-        })
-      ).toObject();
-    if (!collector) return null;
-
-    collector.invitedBy =
-      collector.invitedBy?.inviter ||
-      collector.invitedBy?.createdBy?.twitter ||
-      collector.invitedBy?.createdBy?.email ||
-      "";
-
-    if (
-      collector.mintWindowStart &&
-      process.env.REACT_APP_INVITE_TTL_SECONDS > 0
-    ) {
-      collector.mintWindowClose = add(collector.mintWindowStart, {
-        seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
-      });
-
-      if (collector.mintWindowClose < new Date()) {
-        collector.mintClosed = true;
-      }
-    }
-
-    return collector;
+    return await Collector.findById(collectorId)
+      .populate("invitedBy")
+    // const collector = (
+    //   await Collector.findById(collectorId)
+    //     .populate({
+    //       path: "invitedBy",
+    //       populate: {
+    //         path: "createdBy",
+    //         model: "Collector",
+    //       },
+    //     })
+    //   ).toObject();
+    // if (!collector) return null;
+    //
+    // collector.invitedBy =
+    //   collector.invitedBy?.inviter ||
+    //   collector.invitedBy?.createdBy?.twitter ||
+    //   collector.invitedBy?.createdBy?.email ||
+    //   "";
+    //
+    // if (
+    //   collector.mintWindowStart &&
+    //   process.env.REACT_APP_INVITE_TTL_SECONDS > 0
+    // ) {
+    //   collector.mintWindowClose = add(collector.mintWindowStart, {
+    //     seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
+    //   });
+    //
+    //   if (collector.mintWindowClose < new Date()) {
+    //     collector.mintClosed = true;
+    //   }
+    // }
+    //
+    // return collector;
   } catch (e) {
     console.log(`Failed to get Collector ${collectorId}`, e);
   }
