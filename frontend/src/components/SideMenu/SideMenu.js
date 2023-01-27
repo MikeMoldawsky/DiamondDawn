@@ -22,7 +22,7 @@ const SideMenu = () => {
   let invitedBy = invite;
   if (collector) {
     invitedBy = collector.invitedBy || {
-      createdBy: { twitter: "@DiamondDawnNFT" },
+      inviter: { twitter: "@DiamondDawnNFT" },
     };
   }
 
@@ -74,7 +74,7 @@ const SideMenu = () => {
           </div>
           <InvitationsStatus />
         </div>
-        {invitedBy?.createdBy && (
+        {collector?.invitedBy && (
           <div className="invited-by">
             <div className="image">
               <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
@@ -83,8 +83,8 @@ const SideMenu = () => {
               <div>
                 INVITED BY{" "}
                 <CollectorLink
-                  collector={invitedBy?.createdBy}
-                  twitter={invitedBy?.inviter}
+                  collector={invitedBy?.inviter}
+                  twitter={invitedBy?.inviterName}
                 />
               </div>
             </div>

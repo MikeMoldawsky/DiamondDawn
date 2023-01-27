@@ -1,5 +1,5 @@
 import { makeReducer, reduceSetFull, reduceUpdateFull } from "./reduxUtils";
-import { getCollectorByAddressApi, openMintWindowApi } from "api/serverApi";
+import { getCollectorByAddressApi } from "api/serverApi";
 import isEmpty from "lodash/isEmpty";
 import { getAddressMintedApi } from "api/contractApi";
 import { isNoContractMode } from "utils";
@@ -30,11 +30,6 @@ export const loadCollectorByAddress =
       dispatch(clearCollector());
     }
   };
-
-export const openMintWindow = (collectorId, address) => async (dispatch) => {
-  const collector = await openMintWindowApi(collectorId, address);
-  dispatch(setCollector(collector));
-};
 
 export const clearCollector = () => ({
   type: "COLLECTOR.CLEAR",

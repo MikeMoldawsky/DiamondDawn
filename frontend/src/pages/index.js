@@ -7,7 +7,8 @@ const Homepage = lazy(() => import("pages/Homepage"));
 const ProcessPage = lazy(() => import("pages/ProcessPage"));
 const RebirthPage = lazy(() => import("pages/RebirthPage"));
 const CollectorPage = lazy(() => import("pages/CollectorPage"));
-const MintPage = lazy(() => import("pages/CollectorPage/MintPage"));
+const TeamMintPage = lazy(() => import("pages/CollectorPage/MintPage"));
+const MintPage = lazy(() => import("pages/MintPage"));
 const NFTPage = lazy(() => import("pages/NFTPage"));
 const TheJourneyPage = lazy(() => import("pages/TheJourneyPage"));
 const AboutUsPage = lazy(() => import("pages/AboutUsPage"));
@@ -72,11 +73,21 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="teamint"
+        path="mint"
         element={
           <TokensProvider goThrough>
             <Suspense fallback={<SuspenseFallback />}>
               <MintPage />
+            </Suspense>
+          </TokensProvider>
+        }
+      />
+      <Route
+        path="teamint"
+        element={
+          <TokensProvider goThrough>
+            <Suspense fallback={<SuspenseFallback />}>
+              <TeamMintPage />
             </Suspense>
           </TokensProvider>
         }

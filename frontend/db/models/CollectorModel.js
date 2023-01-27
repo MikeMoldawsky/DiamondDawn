@@ -22,17 +22,12 @@ const CollectorSchema = new mongoose.Schema({
   trusted: { type: Boolean },
   numNFTs: { type: Number, min: 1, max: 5 },
   note: { type: String },
-
-  inviter: { type: ObjectId, ref: "Collector" },
-  // invitedBy: { type: ObjectId, ref: "Invitation" },
-
+  invitedBy: { type: ObjectId, ref: "Invitation" },
   status: { type: String, enum: COLLECTOR_STATUS, default: "Applied" },
   statusInfo: { type: String },
-  // buyProbability: { type: Number, min: 1, max: 5 },
   approved: { type: Boolean, required: true, default: false },
-  // mintWindowStart: { type: Date },
   isDao: { type: Boolean, default: false },
-  // invitations: { type: [{ type: ObjectId, ref: "Invitation" }], default: [] },
+  invitations: { type: [{ type: ObjectId, ref: "Invitation" }], default: [] },
 });
 
 const CollectorModel = mongoose.model("Collector", CollectorSchema);

@@ -16,7 +16,7 @@ const CTAButton = ({ className, onClick }) => {
 
   const renderButton = ({
     text,
-    customCTAClick = () => navigate("/collector"),
+    customCTAClick = () => navigate("/mint"),
     sfx = "action",
   }) => (
     <Button

@@ -1,37 +1,12 @@
 const Collector = require("../models/CollectorModel");
-const add = require("date-fns/add");
 const ethers = require("ethers");
 const signer = require("../../helpers/signer");
 
-async function getCollectorObjectById(collectorId) {
+async function getCollectorById(collectorId) {
   try {
-    const collector = (
-      await Collector.findById(collectorId)
-        .populate({
-          path: "invitations",
-          populate: "usedBy",
-        })
-        .populate({
-          path: "invitedBy",
-          populate: "createdBy",
-        })
-    ).toObject();
-    if (!collector) return null;
-
-    if (
-      collector.mintWindowStart &&
-      process.env.REACT_APP_INVITE_TTL_SECONDS > 0
-    ) {
-      collector.mintWindowClose = add(collector.mintWindowStart, {
-        seconds: process.env.REACT_APP_INVITE_TTL_SECONDS,
-      });
-
-      if (collector.mintWindowClose < new Date()) {
-        collector.mintClosed = true;
-      }
-    }
-
-    return collector;
+    return await Collector.findById(collectorId)
+      .populate("invitedBy")
+      .populate("invitations")
   } catch (e) {
     console.log(`Failed to get Collector ${collectorId}`, e);
   }
@@ -39,7 +14,7 @@ async function getCollectorObjectById(collectorId) {
 
 async function getCollectorByAddress(address) {
   const invite = await Collector.findOne({ address });
-  return invite ? getCollectorObjectById(invite._id) : null;
+  return invite ? getCollectorById(invite._id) : null;
 }
 
 function validateAddress(address) {
@@ -79,30 +54,15 @@ async function updateCollector(update) {
     await Collector.findOneAndUpdate({ _id: update._id }, update, {
       new: true,
     });
-    return getCollectorObjectById(update._id);
+    return getCollectorById(update._id);
   } catch (e) {
     console.log(`Failed to UPDATE Invite`, e);
   }
 }
 
-async function openMintWindow(collectorId, address) {
-  validateAddress(address);
-  const collector = await getCollectorObjectById(collectorId);
-  validateCollector(collector, address);
-
-  await Collector.findOneAndUpdate(
-    { _id: collectorId },
-    {
-      mintWindowStart: collector.mintWindowStart || Date.now(),
-    }
-  );
-
-  return await getCollectorObjectById(collectorId);
-}
-
 async function signMint(collectorId, address) {
   validateAddress(address);
-  const collector = await getCollectorObjectById(collectorId);
+  const collector = await getCollectorById(collectorId);
   validateCollector(collector, address);
 
   const signature = await signer.signAddress(address);
@@ -112,7 +72,7 @@ async function signMint(collectorId, address) {
 
 async function changeMintAddress(collectorId, address, newAddress) {
   validateAddress(address);
-  const collector = await getCollectorObjectById(collectorId);
+  const collector = await getCollectorById(collectorId);
   validateCollector(collector, address, false);
   const newAddressCollector = await Collector.findOne({ address: newAddress });
   if (newAddressCollector) {
@@ -126,15 +86,14 @@ async function changeMintAddress(collectorId, address, newAddress) {
     }
   );
 
-  return await getCollectorObjectById(collectorId);
+  return await getCollectorById(collectorId);
 }
 
 module.exports = {
-  getCollectorById: getCollectorObjectById,
+  getCollectorById,
   getCollectorByAddress,
   createCollector,
   updateCollector,
-  openMintWindow,
   signMint,
   changeMintAddress,
 };

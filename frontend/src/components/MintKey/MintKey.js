@@ -23,7 +23,6 @@ import { ACTION_KEYS, SYSTEM_STAGE } from "consts";
 import {
   collectorSelector,
   loadCollectorByAddress,
-  openMintWindow,
   updateCollector,
 } from "store/collectorReducer";
 import useActionDispatch from "hooks/useActionDispatch";
@@ -34,7 +33,6 @@ import {
   updateUiState,
 } from "store/uiReducer";
 import Loading from "components/Loading";
-import usePollingEffect from "hooks/usePollingEffect";
 import useSound from "use-sound";
 import mintOpenSFX from "assets/audio/mint-open.mp3";
 
@@ -127,12 +125,6 @@ const MintKey = () => {
       playMintOpenSFX();
     }
   }, [canMint, canMintOnMount]);
-
-  useEffect(() => {
-    if (canMint && collector?.approved && !collector?.mintWindowStart) {
-      dispatch(openMintWindow(collector._id, account.address));
-    }
-  }, [canMint, collector?.approved, collector?.mintWindowStart]);
 
   const onMintWindowClose = () => {
     actionDispatch(

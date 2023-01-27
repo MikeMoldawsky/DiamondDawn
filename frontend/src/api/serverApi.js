@@ -109,14 +109,6 @@ export const viewInviteApi = async (inviteId) => {
   } catch (e) {}
 };
 
-export const openMintWindowApi = async (collectorId, address) => {
-  const { data: collector } = await axios.post(`/api/open_mint_window`, {
-    collectorId,
-    address,
-  });
-  return collector;
-};
-
 export const signMintApi = async (collectorId, address) => {
   const res = await axios.post(`/api/sign_mint`, { collectorId, address });
   return res.data;
@@ -142,7 +134,7 @@ export const signDawnApi = async (address, tokenId) => {
 };
 
 // Demo
-export const privateSaleAuthApi = async (pwd, inviteId) => {
-  const res = await axios.post(`/api/demo_auth`, { pwd, inviteId });
+export const canEnterDDApi = async (inviteId) => {
+  const res = await axios.post(`/api/is_auth`, { inviteId });
   return res.data?.auth;
 };

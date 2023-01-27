@@ -3,11 +3,10 @@ import Modal from "components/Modal";
 import { getCDNImageUrl } from "utils";
 import "./InvitedModal.scss";
 import { CollectorLink, TwitterLink } from "components/Links";
-import CopyButton from "components/CopyButton";
 import WaitFor from "containers/WaitFor";
 import Button from "components/Button";
 
-const InvitedModalContent = ({ close, onCopy, invite }) => {
+const InvitedModalContent = ({ close, invite }) => {
   if (!invite)
     return (
       <>
@@ -54,13 +53,6 @@ const InvitedModalContent = ({ close, onCopy, invite }) => {
         </div>
       </>
     );
-
-  const copyContent = invite._id.substring(invite._id.length - 8);
-
-  const onCopyClick = () => {
-    onCopy && onCopy(copyContent);
-    close();
-  };
 
   return (
     <>

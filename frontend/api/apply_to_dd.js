@@ -1,11 +1,8 @@
 const clientDBPromise = require("../db/client/connection");
+const { createCollector } = require("../db/managers/collector-db-manager");
 const {
-  createCollector,
-  updateCollector,
-} = require("../db/managers/collector-db-manager");
-const {
-  useInvite,
-  validateInviteById,
+   validateInviteById,
+  updateInvite,
 } = require("../db/managers/invite-db-manager");
 const { onApplicationSubmitted } = require("../db/managers/marketing-manager");
 
@@ -13,22 +10,23 @@ module.exports = async function (req, res) {
   try {
     const start = Date.now();
     await clientDBPromise;
-    const { inviteId, ...payload } = req.body;
+    let { inviteId, ...payload } = req.body;
 
-    if (inviteId) {
-      await validateInviteById(inviteId);
-    }
 
-    let collector = await createCollector(payload);
+    let invite = await validateInviteById(inviteId);
+    const { honoraryInvitee, trustedInvitee, numNFTs, note } = invite
 
-    let invite = null;
-    if (inviteId) {
-      invite = await useInvite(inviteId, collector.id);
-      collector = await updateCollector({
-        _id: collector._id,
-        invitedBy: invite,
-      });
-    }
+
+    let collector = await createCollector({
+      ...payload,
+      invitedBy: invite,
+      honorary: honoraryInvitee,
+      trusted: trustedInvitee,
+      numNFTs,
+      note,
+    });
+
+    invite = await updateInvite(inviteId, { collector })
 
     await onApplicationSubmitted(collector);
     res.send({ collector, invite });
