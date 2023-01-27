@@ -24,8 +24,8 @@ const Invite = () => {
 
   if (
     systemStage > SYSTEM_STAGE.KEY ||
-    collector?.minted ||
-    collector?.mintClosed
+    collector?.minted
+    // || collector?.mintClosed
   )
     return null;
 

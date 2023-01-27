@@ -37,7 +37,7 @@ const CTAButton = ({ className, onClick }) => {
     if (collector.minted)
       return renderButton({ text: "COLLECTOR'S ROOM", sfx: "explore" });
 
-    return canMint && !collector.mintClosed
+    return canMint
       ? renderButton({ text: "MINT NOW" })
       : renderButton({
           text: "INVITE A FRIEND",

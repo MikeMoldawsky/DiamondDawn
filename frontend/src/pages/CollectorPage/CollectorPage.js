@@ -60,15 +60,15 @@ const CollectorPage = () => {
     dispatch(loadIsMintOpen());
   }, []);
 
-  const renderContent = () => {
-    if (
-      collector?.minted ||
-      collector?.mintClosed ||
-      systemStage > SYSTEM_STAGE.KEY
-    )
-      return <NFTs />;
-    return <Invite />;
-  };
+  // const renderContent = () => {
+  //   if (
+  //     collector?.minted ||
+  //     collector?.mintClosed ||
+  //     systemStage > SYSTEM_STAGE.KEY
+  //   )
+  //     return <NFTs />;
+  //   return <Invite />;
+  // };
 
   const getGalleryVWHeight = () => galleryRows * (isMobile ? 90 : 30);
 
@@ -113,7 +113,7 @@ const CollectorPage = () => {
               </div>
             )}
             <CollectorLoader />
-            {renderContent()}
+            <NFTs />
             <div className="right-center-aligned-row icons-menu">
               {selectedTokenId > -1 && (
                 <>

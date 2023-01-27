@@ -133,7 +133,7 @@ const MintKey = () => {
     );
   };
 
-  if (!collector || collector.minted || collector.mintClosed) return null;
+  if (!collector || collector.minted) return null;
 
   if (isForging) return <Loading />;
 

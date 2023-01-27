@@ -12,7 +12,7 @@ const useGoToInvites = () => {
   return () => {
     if (!collector) return;
 
-    if (collector.minted || collector.mintClosed) {
+    if (collector.minted) {
       dispatch(setSideMenuOpen(true));
       return;
     }
