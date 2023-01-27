@@ -39,8 +39,8 @@ async function approveCollector(collectorId) {
   };
   if (collector.invitations.length === 0) {
     const noteName = collector.twitter || collector.address;
-    const [i1] = await createInvitations(collector, `${noteName} - Invite 1`);
-    const [i2] = await createInvitations(collector, `${noteName} - Invite 2`);
+    const [i1] = await createInvitations({ note: `${noteName} - Invite 1` }, collector);
+    const [i2] = await createInvitations({ note: `${noteName} - Invite 2` }, collector);
     update.invitations = [i1, i2];
   }
   return updateCollector(update);

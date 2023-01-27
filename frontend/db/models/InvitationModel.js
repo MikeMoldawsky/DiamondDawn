@@ -8,7 +8,7 @@ const InvitationSchema = new mongoose.Schema({
   inviterName: { type: String },
   honoraryInvitee: { type: Boolean },
   trustedInvitee: { type: Boolean },
-  numNFTs: { type: Number, min: 1, max: 5 },
+  numNFTs: { type: Number, min: 1, max: 5, default: 1 },
   note: { type: String },
   sent: { type: Boolean },
   viewed: { type: Boolean },

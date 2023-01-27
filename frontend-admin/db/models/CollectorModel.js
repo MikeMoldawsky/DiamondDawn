@@ -20,7 +20,7 @@ const CollectorSchema = new mongoose.Schema({
   location: { type: String },
   honorary: { type: Boolean },
   trusted: { type: Boolean },
-  numNFTs: { type: Number, min: 1, max: 5 },
+  numNFTs: { type: Number, min: 1, max: 5, default: 1 },
   note: { type: String },
   invitedBy: { type: ObjectId, ref: "Invitation" },
   status: { type: String, enum: COLLECTOR_STATUS, default: "Applied" },
