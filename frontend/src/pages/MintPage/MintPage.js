@@ -4,7 +4,7 @@ import "./MintPage.scss";
 import { useSelector } from "react-redux";
 import { useAccount, useEnsName } from "wagmi";
 import Box from "components/Box";
-import Invite from "components/Invite";
+import Join from "components/Join";
 import { getCDNImageUrl, shortenEthAddress } from "utils";
 import useMusic from "hooks/useMusic";
 import Page from "containers/Page";
@@ -12,19 +12,29 @@ import useNoScrollView from "hooks/useNoScrollView";
 import { collectorSelector } from "store/collectorReducer";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
 import CollectorLoader from "containers/CollectorLoader";
+import MintKey from "components/MintKey";
+import useSound from "use-sound";
+import sparklesSFX from "assets/audio/end-sparkles.mp3";
 
 const MintPage = () => {
   const isMobile = useMobileOrTablet();
   const account = useAccount();
   const ensName = useEnsName({ address: account?.address });
   const collector = useSelector(collectorSelector);
+  // const [playSparklesSFX] = useSound(sparklesSFX);
 
   useNoScrollView(isMobile);
 
   useMusic("collector.mp3");
 
   const renderContent = () => {
-    return <Invite />;
+    if (collector?.approved) return (
+      <div className="box-content approved">
+        <MintKey />
+      </div>
+    );
+
+    return <Join />;
   };
 
   return (
@@ -32,7 +42,6 @@ const MintPage = () => {
       pageName="mint"
       images={[getCDNImageUrl("/collector/collector-bg.png")]}
       collectorLoader={!!collector}
-      // waitForTokens
     >
       <div className={classNames("page mint-page")}>
         <div className="bg collector-bg" />

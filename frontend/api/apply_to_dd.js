@@ -1,8 +1,9 @@
 const clientDBPromise = require("../db/client/connection");
-const { createCollector } = require("../db/managers/collector-db-manager");
+const { createCollector, updateCollector } = require("../db/managers/collector-db-manager");
 const {
-   validateInviteById,
+  validateInviteById,
   updateInvite,
+  createInvitations,
 } = require("../db/managers/invite-db-manager");
 const { onApplicationSubmitted } = require("../db/managers/marketing-manager");
 
@@ -14,8 +15,9 @@ module.exports = async function (req, res) {
 
 
     let invite = await validateInviteById(inviteId);
-    const { honoraryInvitee, trustedInvitee, numNFTs, note } = invite
+    const { inviter, honoraryInvitee, trustedInvitee, numNFTs, note } = invite
 
+    const approved = inviter.trusted
 
     let collector = await createCollector({
       ...payload,
@@ -24,12 +26,21 @@ module.exports = async function (req, res) {
       trusted: trustedInvitee,
       numNFTs,
       note,
+      approved,
+      status: approved ? "Approved" : "Applied",
     });
 
-    invite = await updateInvite(inviteId, { collector })
+    if (approved) {
+      const noteName = collector.twitter || collector.address;
+      const [i1] = await createInvitations({ note: `${noteName} - Invite 1` }, collector);
+      const [i2] = await createInvitations({ note: `${noteName} - Invite 2` }, collector);
+      collector = await updateCollector({ _id: collector._id, invitations: [i1, i2]});
+    }
+
+    await updateInvite(inviteId, { collector })
 
     await onApplicationSubmitted(collector);
-    res.send({ collector, invite });
+    res.send(collector);
     console.log(`Execution time: ${Date.now() - start} ms`);
   } catch (e) {
     res.status(500).send(e.message);

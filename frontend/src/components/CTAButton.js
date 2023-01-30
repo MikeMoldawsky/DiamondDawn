@@ -5,19 +5,18 @@ import useGoToInvites from "hooks/useGoToInvites";
 import { useNavigate } from "react-router-dom";
 import Button from "components/Button";
 import classNames from "classnames";
-import { isMintOpenSelector, systemSelector } from "store/systemReducer";
-import { SYSTEM_STAGE } from "consts";
+import useCanAccessDD from "hooks/useCanAccessDD";
 
 const CTAButton = ({ className, onClick }) => {
   const collector = useSelector(collectorSelector);
   const goToInvites = useGoToInvites();
   const navigate = useNavigate();
-  const canMint = useSelector(isMintOpenSelector);
+  const canAccessDD = useCanAccessDD()
 
   const renderButton = ({
     text,
     customCTAClick = () => navigate("/mint"),
-    sfx = "action",
+    sfx = "explore",
   }) => (
     <Button
       className={classNames("gold", className)}
@@ -31,21 +30,12 @@ const CTAButton = ({ className, onClick }) => {
     </Button>
   );
 
-  if (!collector) return renderButton({ text: "APPLY FOR DIAMOND DAWN" });
+  if (!canAccessDD) return null;
 
-  if (collector.approved) {
-    if (collector.minted)
-      return renderButton({ text: "COLLECTOR'S ROOM", sfx: "explore" });
+  if (!collector?.minted)
+    return renderButton({ text: "MINT NOW" });
 
-    return canMint
-      ? renderButton({ text: "MINT NOW" })
-      : renderButton({
-          text: "INVITE A FRIEND",
-          customCTAClick: goToInvites,
-        });
-  }
-
-  return renderButton({ text: "APPLICATION STATUS", sfx: "explore" });
+  return renderButton({ text: "INVITE A FRIEND", customCTAClick: goToInvites });
 };
 
 export default CTAButton;

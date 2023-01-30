@@ -2,11 +2,9 @@ import React, { useEffect } from "react";
 import classNames from "classnames";
 import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { loadIsMintOpen, systemSelector } from "store/systemReducer";
+import { loadIsMintOpen } from "store/systemReducer";
 import { useAccount, useEnsName } from "wagmi";
-import { SYSTEM_STAGE } from "consts";
 import Box from "components/Box";
-import Invite from "components/Invite";
 import NFTs from "components/NFTs";
 import { getCDNImageUrl, shortenEthAddress } from "utils";
 import useMusic from "hooks/useMusic";
@@ -29,7 +27,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
-  const { systemStage } = useSelector(systemSelector);
   const tokens = useSelector(tokensSelector);
   const { selectedTokenId, collectorBoxAnimation } = useSelector(uiSelector);
   const account = useAccount();
@@ -59,16 +56,6 @@ const CollectorPage = () => {
   useEffect(() => {
     dispatch(loadIsMintOpen());
   }, []);
-
-  // const renderContent = () => {
-  //   if (
-  //     collector?.minted ||
-  //     collector?.mintClosed ||
-  //     systemStage > SYSTEM_STAGE.KEY
-  //   )
-  //     return <NFTs />;
-  //   return <Invite />;
-  // };
 
   const getGalleryVWHeight = () => galleryRows * (isMobile ? 90 : 30);
 

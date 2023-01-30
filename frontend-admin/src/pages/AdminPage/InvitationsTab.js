@@ -100,7 +100,7 @@ const INVITATION_COLUMNS = [
   },
   {
     field: "link",
-    headerName: "Invite Link",
+    headerName: "Join Link",
     width: 250,
     valueGetter: ({ id }) => getInviteLink(id),
   },

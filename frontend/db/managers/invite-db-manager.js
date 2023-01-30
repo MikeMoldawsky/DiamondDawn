@@ -1,7 +1,17 @@
 const Invitation = require("../models/InvitationModel");
+const _ = require("lodash")
+
+async function createInvitations(invitation, inviter, count = 1) {
+  const invitations = _.map(Array(count), () => ({
+    ...invitation,
+    inviter,
+  }));
+
+  return await Invitation.insertMany(invitations);
+}
 
 async function getInviteById(inviteId) {
-  return Invitation.findById(inviteId) //.populate("inviter");
+  return Invitation.findById(inviteId).populate("inviter");
 }
 
 async function validateInviteById(inviteId, checkAvailable = true) {
@@ -33,6 +43,7 @@ async function updateInvite(inviteId, update) {
 }
 
 module.exports = {
+  createInvitations,
   validateInviteById,
   getInviteById,
   viewInvite,

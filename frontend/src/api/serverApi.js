@@ -94,13 +94,13 @@ export const applyToDDApi = async (
   const location = geoLocation
     ? `${geoLocation.city},${geoLocation.region}/${geoLocation.country}`
     : "Unknown";
-  const { data: invite } = await axios.post(`/api/apply_to_dd`, {
+  const { data: collector } = await axios.post(`/api/apply_to_dd`, {
     inviteId,
     address,
     ...requestData,
     location,
   });
-  return invite;
+  return collector;
 };
 
 export const viewInviteApi = async (inviteId) => {
