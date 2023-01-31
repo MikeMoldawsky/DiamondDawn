@@ -135,7 +135,6 @@ const reduceToken = (state, tokenId, tokenUri) => ({
   [tokenId]: {
     ...tokenUri,
     id: tokenId,
-    stage: getTokenStageByTypeTrait(tokenUri),
   },
 });
 

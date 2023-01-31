@@ -1,29 +1,20 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
-import { BigNumber } from "ethers";
 import {
   getConfigApi,
   getContractInfoApi,
-  getIsMintOpenApi,
 } from "api/serverApi";
-import {
-  getMaxEntranceApi,
-  getMintPriceApi,
-  getMintPriceMarriageApi,
-  getSystemStageApi,
-  getTotalSupplyApi,
-} from "api/contractApi";
-import { CONTRACTS, SYSTEM_STAGE } from "consts";
+import { getPhasesApi } from "api/contractApi";
+import { CONTRACTS } from "consts";
 import { isNoContractMode } from "utils";
+import get from "lodash/get"
 
 const INITIAL_STATE = {
   ddContractInfo: null,
-  systemStage: -1,
+  currentPhaseName: "mint",
+  phases: {},
+  isActive: false,
   paused: false,
   config: {},
-  mintPrice: BigNumber.from(0),
-  maxEntrance: 333,
-  tokensMinted: 0,
-  isMintOpen: false,
 };
 
 const updateState = (payload) => ({
@@ -31,38 +22,14 @@ const updateState = (payload) => ({
   payload,
 });
 
-export const loadMintPrice = (contract, geoLocation) => async (dispatch) => {
-  const getPrice = geoLocation?.vat ? getMintPriceMarriageApi : getMintPriceApi;
-  const mintPrice = await getPrice(contract);
-  dispatch(updateState({ mintPrice }));
-};
-
-export const loadSystemStage = (contract) => async (dispatch) => {
-  const { systemStage, isActive } = await getSystemStageApi(contract);
-  dispatch(updateState({ systemStage, isActive }));
-};
-
-export const loadMaxEntrance = (contract) => async (dispatch) => {
-  const maxEntrance = await getMaxEntranceApi(contract);
-  dispatch(updateState({ maxEntrance }));
+export const loadPhases = (contract) => async (dispatch) => {
+  const { phases, isActive } = await getPhasesApi(contract);
+  dispatch(updateState({ phases, isActive }));
 };
 
 export const loadConfig = () => async (dispatch) => {
   const config = await getConfigApi();
   dispatch(updateState({ config }));
-};
-
-export const loadTotalSupply = (contract) => async (dispatch) => {
-  const tokensMinted = await getTotalSupplyApi(contract);
-  dispatch(updateState({ tokensMinted }));
-};
-
-export const loadIsMintOpen = (address) => async (dispatch) => {
-  const { isMintOpen, stageTime } = await getIsMintOpenApi(address);
-  dispatch({
-    type: "SYSTEM.SET_IS_MINT_OPEN",
-    payload: { isMintOpen, stageTime },
-  });
 };
 
 export const loadContractInfo = () => async (dispatch) => {
@@ -79,16 +46,12 @@ export const loadContractInfo = () => async (dispatch) => {
 
 export const systemSelector = (state) => state.system;
 
-export const isStageActiveSelector = (stage) => (state) => {
-  const { systemStage, isActive } = systemSelector(state);
-  return systemStage === stage && isActive;
-};
+export const phaseSelector = phaseName => state => get(systemSelector(state).phases, phaseName, {})
 
-export const isMintOpenSelector = (state) => {
-  return (
-    isStageActiveSelector(SYSTEM_STAGE.KEY)(state) &&
-    systemSelector(state).isMintOpen
-  );
+export const isPhaseActiveSelector = (phaseName) => (state) => {
+  const { isActive } = systemSelector(state);
+  const { isOpen } = phaseSelector(phaseName)(state);
+  return isActive && isOpen;
 };
 
 export const contractSelector =

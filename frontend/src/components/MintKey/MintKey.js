@@ -4,10 +4,8 @@ import max from "lodash/max";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  loadMaxEntrance,
-  loadMintPrice,
-  loadTotalSupply,
-  systemSelector,
+  isPhaseActiveSelector,
+  phaseSelector,
 } from "store/systemReducer";
 import {
   setTokenUri,
@@ -15,17 +13,14 @@ import {
   watchTokenMinedBy,
 } from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
-import { forgeApi, getTokenUriApi } from "api/contractApi";
+import { mintApi, getTokenUriApi } from "api/contractApi";
 import { signMintApi } from "api/serverApi";
 import { isNoContractMode, showError } from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
-import { ACTION_KEYS, SYSTEM_STAGE } from "consts";
 import {
   collectorSelector,
-  loadCollectorByAddress,
   updateCollector,
 } from "store/collectorReducer";
-import useActionDispatch from "hooks/useActionDispatch";
 import {
   setSelectedTokenId,
   setShouldIgnoreTokenTransferWatch,
@@ -35,29 +30,28 @@ import {
 import Loading from "components/Loading";
 import useSound from "use-sound";
 import mintOpenSFX from "assets/audio/mint-open.mp3";
+import {BigNumber} from "ethers";
+import { useNavigate } from "react-router-dom"
 
-const MintKey = () => {
+const MintKey = ({ isHonorary }) => {
   const {
-    mintPrice,
-    maxEntrance,
-    tokensMinted,
-    systemStage,
-    isActive,
-    isMintOpen,
-  } = useSelector(systemSelector);
+    maxSupply,
+    price,
+    evolved,
+  } = useSelector(phaseSelector("mint"))
+  const canMint = useSelector(isPhaseActiveSelector("mint"))
   const account = useAccount();
   const contract = useDDContract();
   const dispatch = useDispatch();
-  const actionDispatch = useActionDispatch();
   const tokens = useSelector(tokensSelector);
   const collector = useSelector(collectorSelector);
   const provider = useProvider();
   const [isMinting, setIsMinting] = useState(false);
   const [isForging, setIsForging] = useState(false);
   const { geoLocation } = useSelector(uiSelector);
+  const navigate = useNavigate()
 
   const maxTokenId = max(map(tokens, "id"));
-  const canMint = systemStage === SYSTEM_STAGE.KEY && isActive && isMintOpen;
   const [playMintOpenSFX] = useSound(mintOpenSFX, {
     volume: 1,
     interrupt: false,
@@ -70,11 +64,11 @@ const MintKey = () => {
     setIsMinting(true);
     const { signature } = await signMintApi(collector._id, account.address);
     dispatch(setShouldIgnoreTokenTransferWatch(true));
-    const tx = await forgeApi(
+    const tx = await mintApi(
       contract,
-      geoLocation?.vat,
+      isHonorary,
       numNfts,
-      mintPrice.mul(numNfts),
+      price.mul(numNfts),
       signature
     );
     dispatch(updateUiState({ collectorBoxAnimation: "close" }));
@@ -92,6 +86,7 @@ const MintKey = () => {
       dispatch(setSelectedTokenId(tokenId, true));
       setIsMinting(false);
       dispatch(updateCollector({ minted: true }));
+      navigate("/collector")
     } catch (e) {
       showError(e);
     }
@@ -104,9 +99,6 @@ const MintKey = () => {
   }, [isForging]);
 
   useEffect(() => {
-    dispatch(loadMintPrice(contract, geoLocation));
-    dispatch(loadMaxEntrance(contract));
-
     const unwatch = watchTokenMinedBy(
       contract,
       provider,
@@ -126,26 +118,17 @@ const MintKey = () => {
     }
   }, [canMint, canMintOnMount]);
 
-  const onMintWindowClose = () => {
-    actionDispatch(
-      loadCollectorByAddress(account.address, contract),
-      ACTION_KEYS.GET_COLLECTOR_BY_ADDRESS
-    );
-  };
-
   if (!collector || collector.minted) return null;
 
   if (isForging) return <Loading />;
 
   return (
     <MintKeyView
-      mintPrice={mintPrice}
-      maxEntrance={maxEntrance}
-      tokensMinted={canMint ? tokensMinted : 0}
+      mintPrice={price || BigNumber.from(0)}
+      maxEntrance={maxSupply || 0}
+      tokensMinted={evolved || 0}
       canMint={canMint}
       mint={mint}
-      expiresAt={collector.mintWindowClose}
-      onMintWindowClose={onMintWindowClose}
       forceButtonLoading={isMinting}
       onMintError={() => {
         setIsMinting(false);

@@ -59,7 +59,7 @@ contract DiamondDawn is
 
     mapping(address => bool) private _minted;
     mapping(address => bool) private _mintedHonorary;
-    mapping(string => Phases.Phase) private _phases;
+    mapping(string => Phases.Phase) public _phases;
     mapping(uint => Phases.TokenMetadata) private _metadata;
     address private _signer;
     uint16 private _tokenId;

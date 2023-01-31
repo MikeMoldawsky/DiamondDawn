@@ -11,9 +11,8 @@ const NFTGallery = ({ goToProcess, selectToken }) => {
   return (
     <div className={classNames("center-aligned-row gallery")}>
       {map(tokens, (token) => (
-        <div className="gallery-item">
+        <div key={`token-gallery-${token.id}`} className="gallery-item">
           <DiamondThumbnail
-            key={`token-gallery-${token.id}`}
             diamond={token}
             onClick={() => selectToken(token.id)}
           />

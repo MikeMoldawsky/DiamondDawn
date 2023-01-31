@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import classNames from "classnames";
 import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { loadIsMintOpen } from "store/systemReducer";
 import { useAccount, useEnsName } from "wagmi";
 import Box from "components/Box";
 import NFTs from "components/NFTs";
@@ -52,10 +51,6 @@ const CollectorPage = () => {
       }, 500);
     }
   }, [collector?.minted]);
-
-  useEffect(() => {
-    dispatch(loadIsMintOpen());
-  }, []);
 
   const getGalleryVWHeight = () => galleryRows * (isMobile ? 90 : 30);
 

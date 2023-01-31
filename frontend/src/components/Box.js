@@ -4,7 +4,6 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import {useNavigate} from "react-router-dom";
 import map from "lodash/map"
 import isEmpty from "lodash/isEmpty"
-import identity from "lodash/identity"
 
 const CloseBoxIcon = () => {
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ const Box = ({ className, style, icons = [<CloseBoxIcon/>], children }) => (
     {children}
     {!isEmpty(icons) && (
       <div className="right-center-aligned-row icons-menu">
-        {map(icons, identity)}
+        {map(icons, (icon, i) => React.cloneElement(icon, { key: `box-icon-${i}`}))}
       </div>
     )}
   </div>

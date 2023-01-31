@@ -1,82 +1,56 @@
 import { logApiError } from "utils";
-import { MINT_GAS_LIMIT, PROCESS_GAS_LIMIT } from "consts";
+import { MINT_GAS_LIMIT } from "consts";
 import { constants as ethersConsts } from "ethers";
 import size from "lodash/size";
 
 // STATE/STORAGE
-export const getSystemStageApi = async (contract) => {
+const parsePhase = phase => {
   try {
-    const [systemStage, isActive] = await Promise.all([
-      contract.stage(),
+    return {
+      address: phase[0],
+      name: phase[1],
+      maxSupply: phase[2],
+      price: phase[3],
+      evolved: phase[4],
+      isOpen: phase[5],
+    }
+  }
+  catch (e) {
+    console.error("Failed to parse phase", phase)
+    return null
+  }
+}
+
+export const getPhasesApi = async (contract) => {
+  try {
+    const [phase, isActive] = await Promise.all([
+      contract._phases("mint"),
       contract.isActive(),
     ]);
-    return { systemStage, isActive };
-  } catch (e) {
-    logApiError(e, "getSystemStageApi");
-    return { systemStage: -1, isActive: false };
-  }
-};
 
-export const getMintPriceApi = async (contract) => {
-  try {
-    return await contract.PRICE();
+    return { phases: { mint: parsePhase(phase) }, isActive }
   } catch (e) {
-    logApiError(e, "getMintPriceApi");
-    return undefined;
+    logApiError(e, "getPhasesApi");
+    return { phases: {}, isActive: false };
   }
-};
-
-export const getMintPriceMarriageApi = async (contract) => {
-  try {
-    return await contract.PRICE_MARRIAGE();
-  } catch (e) {
-    logApiError(e, "getMintPriceMarriageApi");
-    return undefined;
-  }
-};
-
-export const getMaxEntranceApi = async (contract) => {
-  return await contract.MAX_ENTRANCE();
 };
 
 // PROCESS
-export const forgeApi = async (
+export const mintApi = async (
   contract,
-  withPartner,
+  honorary,
   numNfts,
-  mintPrice,
+  value,
   signature
 ) => {
-  return (withPartner ? contract.forgeWithPartner : contract.forge)(
+  return (honorary ? contract.mintHonorary : contract.mint)(
     signature,
     numNfts,
     {
-      value: mintPrice,
+      value,
       gasLimit: MINT_GAS_LIMIT,
     }
   );
-};
-
-export const mineApi = async (contract, tokenId) => {
-  return contract.mine(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
-};
-
-export const cutApi = async (contract, tokenId) => {
-  return contract.cut(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
-};
-
-export const polishApi = async (contract, tokenId) => {
-  return contract.polish(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
-};
-
-export const shipApi = async (contract, tokenId) => {
-  return contract.ship(tokenId, { gasLimit: PROCESS_GAS_LIMIT });
-};
-
-export const dawnApi = async (contract, tokenId, signature) => {
-  return contract.dawn(tokenId, signature, {
-    gasLimit: PROCESS_GAS_LIMIT,
-  });
 };
 
 // TOKEN

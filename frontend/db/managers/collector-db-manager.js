@@ -65,7 +65,7 @@ async function signMint(collectorId, address) {
   const collector = await getCollectorById(collectorId);
   validateCollector(collector, address);
 
-  const signature = await signer.signAddress(address);
+  const signature = await signer.signAddressAndNumNFTs(address, collector.numNFTs);
 
   return { collector, signature };
 }
