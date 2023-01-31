@@ -60,12 +60,14 @@ async function updateCollector(update) {
   }
 }
 
-async function signMint(collectorId, address) {
+async function signMint(collectorId, address, isHonorary) {
   validateAddress(address);
   const collector = await getCollectorById(collectorId);
   validateCollector(collector, address);
 
-  const signature = await signer.signAddressAndNumNFTs(address, collector.numNFTs);
+  const signature = await (isHonorary
+    ? signer.signAddress(address)
+    : signer.signAddressAndNumNFTs(address, collector.numNFTs));
 
   return { collector, signature };
 }

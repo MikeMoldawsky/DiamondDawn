@@ -21,8 +21,8 @@ library Phases {
     function initialize(Phase memory phase) internal {
         return phase._phase.initialize();
     }
-
-    function evolve(TokenMetadata storage metadata, Phase memory newPhase, uint tokenId) internal {
+    
+    function evolve(TokenMetadata storage metadata, Phase storage newPhase, uint tokenId) internal {
         require(newPhase._isOpen, "phase is closed");
         require(newPhase._evolved < newPhase._maxSupply, "max evolved");
         require(canEvolveFrom(newPhase, metadata.phase), "not supported phase");

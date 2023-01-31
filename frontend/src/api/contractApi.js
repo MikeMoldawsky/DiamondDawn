@@ -43,14 +43,9 @@ export const mintApi = async (
   value,
   signature
 ) => {
-  return (honorary ? contract.mintHonorary : contract.mint)(
-    signature,
-    numNfts,
-    {
-      value,
-      gasLimit: MINT_GAS_LIMIT,
-    }
-  );
+  return honorary
+    ? contract.mintHonorary(signature, { value, gasLimit: MINT_GAS_LIMIT })
+    : contract.mint(signature, numNfts, { value, gasLimit: MINT_GAS_LIMIT });
 };
 
 // TOKEN

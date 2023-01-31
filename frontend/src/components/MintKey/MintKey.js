@@ -62,7 +62,7 @@ const MintKey = ({ isHonorary }) => {
     if (geoLocation?.blocked || !canMint) return;
 
     setIsMinting(true);
-    const { signature } = await signMintApi(collector._id, account.address);
+    const { signature } = await signMintApi(collector._id, account.address, isHonorary);
     dispatch(setShouldIgnoreTokenTransferWatch(true));
     const tx = await mintApi(
       contract,

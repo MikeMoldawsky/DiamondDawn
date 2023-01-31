@@ -109,8 +109,8 @@ export const viewInviteApi = async (inviteId) => {
   } catch (e) {}
 };
 
-export const signMintApi = async (collectorId, address) => {
-  const res = await axios.post(`/api/sign_mint`, { collectorId, address });
+export const signMintApi = async (collectorId, address, isHonorary) => {
+  const res = await axios.post(`/api/sign_mint`, { collectorId, address, isHonorary });
   return res.data;
 };
 

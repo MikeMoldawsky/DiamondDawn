@@ -30,7 +30,7 @@ const MintPage = () => {
   const renderContent = () => {
     if (collector?.approved) return (
       <div className="box-content approved">
-        <MintKey />
+        <MintKey isHonorary />
       </div>
     );
 
