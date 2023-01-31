@@ -1,10 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import "./MintKey.scss";
 import ActionButton from "components/ActionButton";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEthereum } from "@fortawesome/free-brands-svg-icons/faEthereum";
 import isFunction from "lodash/isFunction";
-import { BigNumber, utils as ethersUtils } from "ethers";
 import InvitationsStatus from "components/InvitationsStatus";
 import { useDispatch, useSelector } from "react-redux";
 import { createVideoSources, getCDNImageUrl } from "utils";
@@ -17,40 +14,14 @@ import useMusic from "hooks/useMusic";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 import { useSearchParams } from "react-router-dom";
 import classNames from "classnames";
-import {
-  CountdownWithText,
-  SystemCountdown,
-} from "components/Countdown/Countdown";
 import { BLOCKED_COUNTRY_TEXT } from "consts";
-import useSound from "use-sound";
-import mintOpenSFX from "assets/audio/mint-open.mp3";
-
-const RadioButtons = ({ values, selectedValue, setSelectedValue }) => {
-  return (
-    <div className="radio-buttons">
-      {values.map((value) => (
-        <div
-          key={`radio-button-${value}`}
-          className={classNames("radio-button", {
-            selected: selectedValue === value,
-          })}
-          onClick={() => setSelectedValue(value)}
-        >
-          {value}
-        </div>
-      ))}
-    </div>
-  );
-};
+import {collectorSelector} from "store/collectorReducer";
 
 const MintKeyView = ({
-  mintPrice = 4.44,
-  maxEntrance = 333,
-  tokensMinted = 0,
+  maxSupply,
+  tokensMinted,
   canMint,
   mint,
-  expiresAt,
-  onMintWindowClose,
   forceButtonLoading,
   onMintError,
 }) => {
@@ -59,7 +30,7 @@ const MintKeyView = ({
   const dispatch = useDispatch();
   const { mintViewShowInvites: showInvites, geoLocation } =
     useSelector(uiSelector);
-  const [numNfts, setNumNfts] = useState(1);
+  const { numNFTs } = useSelector(collectorSelector)
 
   const toggleInvites = (show) => {
     dispatch(updateUiState({ mintViewShowInvites: show }));
@@ -81,10 +52,6 @@ const MintKeyView = ({
     );
   }, []);
 
-  const mintPriceText = BigNumber.isBigNumber(mintPrice)
-    ? ethersUtils.formatUnits(mintPrice)
-    : "4.44";
-
   const renderTitle = () => (
     <div className="congrats-box">
       <div className="left-top-aligned-column">
@@ -103,13 +70,7 @@ const MintKeyView = ({
   const renderMintButton = () => (
     <div className="center-aligned-column button-column">
       <div className="left-center-aligned-row price-text">
-        ACTIVATE{" "}
-        <RadioButtons
-          values={[1, 2]}
-          selectedValue={numNfts}
-          setSelectedValue={setNumNfts}
-        />{" "}
-        KEY{numNfts > 1 ? "S" : ""}
+        ACTIVATE {numNFTs} KEY{numNFTs > 1 ? "S" : ""}
       </div>
       <div>
         <ActionButton
@@ -119,10 +80,10 @@ const MintKeyView = ({
           disabled={!canMint || !isFunction(mint) || geoLocation?.blocked}
           title={geoLocation?.blocked ? BLOCKED_COUNTRY_TEXT : ""}
           isLoading={forceButtonLoading}
-          onClick={() => isFunction(mint) && mint(numNfts)}
+          onClick={mint}
           onError={onMintError}
         >
-          {mintPriceText * numNfts} <FontAwesomeIcon icon={faEthereum} /> MINT
+          MINT FOR FREE
         </ActionButton>
       </div>
       {geoLocation?.vat && (
@@ -130,25 +91,6 @@ const MintKeyView = ({
       )}
     </div>
   );
-
-  const renderCountdown = () => {
-    return canMint ? (
-      <CountdownWithText
-        className="timer-box"
-        date={expiresAt}
-        defaultParts={{
-          days: 3,
-          hours: 3,
-          minutes: 3,
-          seconds: 0,
-        }}
-        text="Your opportunity to mint expires in"
-        onComplete={onMintWindowClose}
-      />
-    ) : (
-      <SystemCountdown className="timer-box" />
-    );
-  };
 
   return (
     <div className={classNames("action-view enter", { minting: canMint })}>
@@ -190,7 +132,7 @@ const MintKeyView = ({
                   </MobileOrTablet>
                   <Desktop>{renderMintButton()}</Desktop>
                   <div className="center-aligned-column open-soon">
-                    {renderCountdown()}
+                    {/*{renderCountdown()}*/}
                   </div>
                 </div>
               </div>
@@ -214,7 +156,7 @@ const MintKeyView = ({
       </div>
       {!showInvites && (
         <div className="status-box">
-          {tokensMinted} / {maxEntrance} MINTED
+          {tokensMinted} / {maxSupply} EVOLVED
         </div>
       )}
     </div>

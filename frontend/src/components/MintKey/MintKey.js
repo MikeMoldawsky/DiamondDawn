@@ -30,7 +30,6 @@ import {
 import Loading from "components/Loading";
 import useSound from "use-sound";
 import mintOpenSFX from "assets/audio/mint-open.mp3";
-import {BigNumber} from "ethers";
 import { useNavigate } from "react-router-dom"
 
 const MintKey = ({ isHonorary }) => {
@@ -58,7 +57,7 @@ const MintKey = ({ isHonorary }) => {
   });
   const [canMintOnMount] = useState(canMint);
 
-  const mint = async (numNfts) => {
+  const mint = async () => {
     if (geoLocation?.blocked || !canMint) return;
 
     setIsMinting(true);
@@ -67,8 +66,8 @@ const MintKey = ({ isHonorary }) => {
     const tx = await mintApi(
       contract,
       isHonorary,
-      numNfts,
-      price.mul(numNfts),
+      collector.numNFTs,
+      price.mul(collector.numNFTs),
       signature
     );
     dispatch(updateUiState({ collectorBoxAnimation: "close" }));
@@ -124,8 +123,7 @@ const MintKey = ({ isHonorary }) => {
 
   return (
     <MintKeyView
-      mintPrice={price || BigNumber.from(0)}
-      maxEntrance={maxSupply || 0}
+      maxSupply={maxSupply || 0}
       tokensMinted={evolved || 0}
       canMint={canMint}
       mint={mint}
