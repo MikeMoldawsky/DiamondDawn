@@ -5,7 +5,7 @@ import { isActionFirstCompleteSelector } from "store/actionStatusReducer";
 import Loading from "components/Loading";
 import ContractProvider from "containers/ContractProvider";
 import { useAccount } from "wagmi";
-import { tokensSelector } from "store/tokensReducer";
+import { ownedTokensSelector } from "store/tokensReducer";
 import { useNavigate } from "react-router-dom";
 import { ACTION_KEYS } from "consts";
 
@@ -14,7 +14,7 @@ const TokensProvider = ({ children, withLoader, isGated, goThrough }) => {
   const isReady = useSelector(
     isActionFirstCompleteSelector(ACTION_KEYS.LOAD_NFTS)
   );
-  const tokens = useSelector(tokensSelector);
+  const tokens = useSelector(ownedTokensSelector);
   const navigate = useNavigate();
 
   useEffect(() => {

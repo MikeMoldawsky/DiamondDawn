@@ -7,7 +7,7 @@ import { dawnApi } from "api/contractApi";
 import { SYSTEM_STAGE } from "consts";
 import ActionView from "components/ActionView";
 import { useDispatch, useSelector } from "react-redux";
-import { tokensSelector } from "store/tokensReducer";
+import { ownedTokensSelector } from "store/tokensReducer";
 import { setSelectedTokenId } from "store/uiReducer";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
 import { signDawnApi } from "api/serverApi";
@@ -19,7 +19,7 @@ function RebirthPage() {
   const { tokenId } = useParams();
   const navigate = useNavigate();
   const contract = useDDContract();
-  const tokens = useSelector(tokensSelector);
+  const tokens = useSelector(ownedTokensSelector);
   const [isReady, setIsReady] = useState(false);
   const dispatch = useDispatch();
   const navigateToDefault = useNavigateToDefault();

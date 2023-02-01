@@ -47,6 +47,10 @@ export const readAndWatchAccountTokens =
       const minted = some(mintedTokenUris, ({tokenUri}) => getTokenTrait(tokenUri, TRAIT.Attribute) !== "Honorary")
       const mintedHonorary = some(mintedTokenUris, ({tokenUri}) => getTokenTrait(tokenUri, TRAIT.Attribute) === "Honorary")
 
+      // console.log("SAVING TOKENS TO STORE")
+      // console.log({ tokens, mintedTokenUris, minted, mintedHonorary })
+      // console.log("--------------------------------------------")
+
       actionDispatch(
         {
           type: "TOKENS.SET",
@@ -130,10 +134,12 @@ export const setTokenUri = (tokenId, tokenUri) => ({
 export const clearTokens = () => ({ type: "TOKENS.CLEAR" });
 
 // selectors
-export const tokensSelector = (state) => state.tokens.owned;
+export const tokensSelector = (state) => state.tokens;
+
+export const ownedTokensSelector = (state) => state.tokens.owned;
 
 export const tokenByIdSelector = (tokenId) => (state) =>
-  get(tokensSelector(state), tokenId);
+  get(ownedTokensSelector(state), tokenId);
 
 // reducer
 const getTokenStageByTypeTrait = (token) => {

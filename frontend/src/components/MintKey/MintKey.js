@@ -9,7 +9,7 @@ import {
 } from "store/systemReducer";
 import {
   setTokenUri,
-  tokensSelector,
+  ownedTokensSelector,
   watchTokenMinedBy,
 } from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
@@ -42,7 +42,7 @@ const MintKey = ({ isHonorary }) => {
   const account = useAccount();
   const contract = useDDContract();
   const dispatch = useDispatch();
-  const tokens = useSelector(tokensSelector);
+  const tokens = useSelector(ownedTokensSelector);
   const collector = useSelector(collectorSelector);
   const provider = useProvider();
   const [isMinting, setIsMinting] = useState(false);
@@ -84,7 +84,6 @@ const MintKey = ({ isHonorary }) => {
       dispatch(setTokenUri(tokenId, tokenUri));
       dispatch(setSelectedTokenId(tokenId, true));
       setIsMinting(false);
-      dispatch(updateCollector({ minted: true }));
       navigate("/collector")
     } catch (e) {
       showError(e);

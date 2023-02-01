@@ -1,14 +1,14 @@
 @import "css/varsNEW";
 @import "css/functions";
 
-.page.mint-page {
+.page.collector-layout {
   font-size: calc-font-size(1px);
   height: unset;
   min-height: 100%;
 
   .bg.collector-bg {
     background: url($CDN_URL + "/images/collector/collector-bg.png") no-repeat
-    75% -20%;
+      75% -20%;
     background-size: auto 120%;
     opacity: 0.66;
     background-attachment: fixed;
@@ -181,24 +181,20 @@
       }
     }
   }
-
-  .tagline-text {
-    font-size: $font25px;
-  }
 }
 
 @media only screen and (orientation: portrait) {
-  .page.mint-page {
+  .page.collector-page {
     .bg.collector-bg {
       background: url($CDN_URL + "/images/collector/collector-bg-portrait.jpg")
-      no-repeat center bottom;
+        no-repeat center bottom;
       background-size: auto 120%;
     }
   }
 }
 
 @media only screen and (max-width: 1199px) {
-  .page.mint-page {
+  .page.collector-page {
     font-size: 3vw;
     height: unset;
 
@@ -226,22 +222,12 @@
       .close {
         display: none;
       }
-
-      &.nfts-gallery,
-      &.nft-selected {
-        margin-top: 3.5em;
-      }
-    }
-
-    .nft-selected {
-      padding: 0;
-      height: 180vw;
     }
   }
 }
 
 @media only screen and (max-width: 768px) {
-  .page.mint-page {
+  .page.collector-page {
     font-size: 3.5vw;
   }
 }

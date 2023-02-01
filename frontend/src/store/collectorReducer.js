@@ -1,6 +1,8 @@
 import { makeReducer, reduceSetFull, reduceUpdateFull } from "./reduxUtils";
 import { getCollectorByAddressApi } from "api/serverApi";
 import isEmpty from "lodash/isEmpty";
+import { createSelector } from 'reselect'
+import {tokensSelector} from "store/tokensReducer";
 
 const INITIAL_STATE = null;
 
@@ -28,15 +30,18 @@ export const clearCollector = () => ({
   type: "COLLECTOR.CLEAR",
 });
 
-export const collectorSelector = (state) => {
-  const { collector, tokens } = state
-  return collector ? {
-    ...collector,
-    minted: tokens.minted,
-    mintedHonorary: tokens.mintedHonorary,
-    mintedAll: collector?.minted && (!collector?.honorary || collector?.mintedHonorary)
-  } : null
-};
+export const collectorSelector = createSelector(
+  state => state.collector,
+  tokensSelector,
+  (collector, { minted, mintedHonorary }) => {
+    return collector ? {
+      ...collector,
+      minted,
+      mintedHonorary,
+      mintedAll: minted && (!collector.honorary || mintedHonorary)
+    } : null
+  }
+)
 
 export const collectorReducer = makeReducer(
   {

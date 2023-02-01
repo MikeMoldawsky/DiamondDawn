@@ -68,32 +68,33 @@ const MintKeyView = ({
     </div>
   );
 
-  const resolvedNumNFTs = isHonorary ? 1 : numNFTs
-
-  const renderMintButton = () => (
-    <div className="center-aligned-column button-column">
-      <div className="left-center-aligned-row price-text">
-        ACTIVATE {resolvedNumNFTs} KEY{resolvedNumNFTs > 1 ? "S" : ""}
+  const renderMintButton = () => {
+    const text = isHonorary
+      ? "ACTIVATE HONORARY KEY"
+      : `ACTIVATE ${numNFTs} KEY${numNFTs > 1 ? "S" : ""}`
+    return (
+      <div className="center-aligned-column button-column">
+        <div className="left-center-aligned-row price-text">{text}</div>
+        <div>
+          <ActionButton
+            actionKey="MintKey"
+            className="gold lg mint-button"
+            sfx="action"
+            disabled={!canMint || !isFunction(mint) || geoLocation?.blocked}
+            title={geoLocation?.blocked ? BLOCKED_COUNTRY_TEXT : ""}
+            isLoading={forceButtonLoading}
+            onClick={mint}
+            onError={onMintError}
+          >
+            MINT FOR FREE
+          </ActionButton>
+        </div>
+        {geoLocation?.vat && (
+          <div className="vat-text">* VAT included in Price</div>
+        )}
       </div>
-      <div>
-        <ActionButton
-          actionKey="MintKey"
-          className="gold lg mint-button"
-          sfx="action"
-          disabled={!canMint || !isFunction(mint) || geoLocation?.blocked}
-          title={geoLocation?.blocked ? BLOCKED_COUNTRY_TEXT : ""}
-          isLoading={forceButtonLoading}
-          onClick={mint}
-          onError={onMintError}
-        >
-          MINT FOR FREE
-        </ActionButton>
-      </div>
-      {geoLocation?.vat && (
-        <div className="vat-text">* VAT included in Price</div>
-      )}
-    </div>
-  );
+    )
+  };
 
   return (
     <div className={classNames("action-view enter", { minting: canMint })}>
