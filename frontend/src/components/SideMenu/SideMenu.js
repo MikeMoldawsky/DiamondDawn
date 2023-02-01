@@ -47,14 +47,13 @@ const SideMenu = () => {
           <NavLink to={"/faq"} onClick={closeMenu}>
             <div className="menu-item">FAQs</div>
           </NavLink>
-          {collector ? (
+          {collector && (collector.minted || collector.mintedHonorary) && (
             <NavLink to={"/collector"} onClick={closeMenu}>
               <div className="menu-item">COLLECTOR'S ROOM</div>
             </NavLink>
-          ) : (
-            <CTAButton className="md" onClick={closeMenu}>
-              APPLY FOR DIAMOND DAWN
-            </CTAButton>
+          )}
+          {(!collector || !collector.mintedAll) && (
+            <CTAButton className="md" onClick={closeMenu} />
           )}
         </div>
         <div className="invitations-menu">
