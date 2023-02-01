@@ -1,5 +1,5 @@
 const Invitation = require("../models/InvitationModel");
-const _ = require("lodash")
+const _ = require("lodash");
 
 async function createInvitations(invitation, inviter, count = 1) {
   const invitations = _.map(Array(count), () => ({

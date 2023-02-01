@@ -56,7 +56,12 @@ const ApplyForm = ({ isPreApproved, onSuccess, onError }) => {
       const data = getValues();
       const inviteId =
         invite && !invite.used && !invite.revoked ? invite._id : null;
-      const collector = await applyToDDApi(inviteId, account.address, data, geoLocation);
+      const collector = await applyToDDApi(
+        inviteId,
+        account.address,
+        data,
+        geoLocation
+      );
       setIsSubmitSuccess(true);
       onSuccess && (await onSuccess(collector));
     } catch (e) {
@@ -195,9 +200,7 @@ const ApplyForm = ({ isPreApproved, onSuccess, onError }) => {
             SUBMIT
           </ActionButton>
         </div>
-        {!isPreApproved && (
-          <IncreaseChances />
-        )}
+        {!isPreApproved && <IncreaseChances />}
       </form>
     </div>
   );

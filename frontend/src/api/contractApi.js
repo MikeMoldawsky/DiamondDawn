@@ -4,7 +4,7 @@ import { constants as ethersConsts } from "ethers";
 import size from "lodash/size";
 
 // STATE/STORAGE
-const parsePhase = phase => {
+const parsePhase = (phase) => {
   try {
     return {
       address: phase[0],
@@ -13,13 +13,12 @@ const parsePhase = phase => {
       price: phase[3],
       evolved: phase[4],
       isOpen: phase[5],
-    }
+    };
+  } catch (e) {
+    console.error("Failed to parse phase", phase);
+    return null;
   }
-  catch (e) {
-    console.error("Failed to parse phase", phase)
-    return null
-  }
-}
+};
 
 export const getPhasesApi = async (contract) => {
   try {
@@ -28,7 +27,7 @@ export const getPhasesApi = async (contract) => {
       contract.isActive(),
     ]);
 
-    return { phases: { mint: parsePhase(phase) }, isActive }
+    return { phases: { mint: parsePhase(phase) }, isActive };
   } catch (e) {
     logApiError(e, "getPhasesApi");
     return { phases: {}, isActive: false };

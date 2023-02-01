@@ -48,7 +48,7 @@ const CollectorPage = () => {
   const boxClassName = classNames({
     "nft-selected": selectedTokenId > -1,
     "nfts-gallery": isNftGallery,
-  })
+  });
 
   const renderBoxIcons = () => {
     return selectedTokenId > -1 ? (
@@ -64,19 +64,21 @@ const CollectorPage = () => {
           onClick={() => dispatch(setSelectedTokenId(-1))}
         />
       </>
-    ) : null
-  }
+    ) : null;
+  };
 
   return (
-    <CollectorLayout waitForTokens
-                     boxClassName={boxClassName}
-                     boxStyles={boxStyles}
-                     boxAnimation={collectorBoxAnimation}
-                     disableNoScroll={isNftGallery && galleryRows > 1}
-                     renderBoxIcons={renderBoxIcons}>
+    <CollectorLayout
+      waitForTokens
+      boxClassName={boxClassName}
+      boxStyles={boxStyles}
+      boxAnimation={collectorBoxAnimation}
+      disableNoScroll={isNftGallery && galleryRows > 1}
+      renderBoxIcons={renderBoxIcons}
+    >
       <NFTs />
     </CollectorLayout>
-  )
+  );
 };
 
 export default CollectorPage;

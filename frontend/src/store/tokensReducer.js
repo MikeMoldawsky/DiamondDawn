@@ -1,13 +1,13 @@
 import { makeReducer } from "./reduxUtils";
-import uniq from "lodash/uniq"
-import debounce from "lodash/debounce"
-import reduce from "lodash/reduce"
-import size from "lodash/size"
-import forEach from "lodash/forEach"
-import get from "lodash/get"
-import filter from "lodash/filter"
-import includes from "lodash/includes"
-import some from "lodash/some"
+import uniq from "lodash/uniq";
+import debounce from "lodash/debounce";
+import reduce from "lodash/reduce";
+import size from "lodash/size";
+import forEach from "lodash/forEach";
+import get from "lodash/get";
+import filter from "lodash/filter";
+import includes from "lodash/includes";
+import some from "lodash/some";
 import { tokenIdToURI } from "api/contractApi";
 import { constants as ethersConsts } from "ethers";
 import { getTokenTrait } from "utils";
@@ -23,7 +23,7 @@ export const readAndWatchAccountTokens =
   (actionDispatch, contract, provider, address) =>
   async (dispatch, getState) => {
     let displayedTokens = {};
-    let mintedTokenIds = []
+    let mintedTokenIds = [];
 
     const saveToStore = debounce(async () => {
       let displayedTokenIds = reduce(
@@ -34,7 +34,7 @@ export const readAndWatchAccountTokens =
         []
       );
 
-      const tokenIdsToFetch = uniq([...displayedTokenIds, ...mintedTokenIds])
+      const tokenIdsToFetch = uniq([...displayedTokenIds, ...mintedTokenIds]);
 
       const tokenUris = await Promise.all(
         tokenIdsToFetch.map((tokenId) =>
@@ -42,10 +42,22 @@ export const readAndWatchAccountTokens =
         )
       );
 
-      const tokens = filter(tokenUris, ({tokenId}) => includes(displayedTokenIds, tokenId))
-      const mintedTokenUris = filter(tokenUris, ({tokenId}) => includes(mintedTokenIds, tokenId))
-      const minted = some(mintedTokenUris, ({tokenUri}) => getTokenTrait(tokenUri, TRAIT.Attribute) !== "Honorary")
-      const mintedHonorary = some(mintedTokenUris, ({tokenUri}) => getTokenTrait(tokenUri, TRAIT.Attribute) === "Honorary")
+      const tokens = filter(tokenUris, ({ tokenId }) =>
+        includes(displayedTokenIds, tokenId)
+      );
+      const mintedTokenUris = filter(tokenUris, ({ tokenId }) =>
+        includes(mintedTokenIds, tokenId)
+      );
+      const minted = some(
+        mintedTokenUris,
+        ({ tokenUri }) =>
+          getTokenTrait(tokenUri, TRAIT.Attribute) !== "Honorary"
+      );
+      const mintedHonorary = some(
+        mintedTokenUris,
+        ({ tokenUri }) =>
+          getTokenTrait(tokenUri, TRAIT.Attribute) === "Honorary"
+      );
 
       // console.log("SAVING TOKENS TO STORE")
       // console.log({ tokens, mintedTokenUris, minted, mintedHonorary })
@@ -64,7 +76,7 @@ export const readAndWatchAccountTokens =
       );
 
       displayedTokens = {};
-      mintedTokenIds = []
+      mintedTokenIds = [];
     }, 100);
 
     const processEvent = (from, to, tokenId) => {
@@ -76,7 +88,7 @@ export const readAndWatchAccountTokens =
       } else if (to === address) {
         displayedTokens[tokenId] = { shouldFetch: true, isBurned: false };
         if (from === ethersConsts.AddressZero) {
-          mintedTokenIds.push(parseInt(tokenId))
+          mintedTokenIds.push(parseInt(tokenId));
         }
       }
       saveToStore();
@@ -176,7 +188,7 @@ const reduceToken = (stateTokens, tokenId, tokenUri) => ({
 export const tokensReducer = makeReducer(
   {
     "TOKENS.SET": (state, action) => {
-      const {tokens, minted, mintedHonorary} = action.payload;
+      const { tokens, minted, mintedHonorary } = action.payload;
       return {
         ...state,
         minted,
@@ -187,8 +199,8 @@ export const tokensReducer = makeReducer(
             return reduceToken(newState, tokenId, tokenUri);
           },
           state.owned
-        )
-      }
+        ),
+      };
     },
     "TOKENS.SET_TOKEN": (state, action) => {
       const { tokenId, tokenUri } = action.payload;

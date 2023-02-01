@@ -3,10 +3,7 @@ import map from "lodash/map";
 import max from "lodash/max";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  isPhaseActiveSelector,
-  phaseSelector,
-} from "store/systemReducer";
+import { isPhaseActiveSelector, phaseSelector } from "store/systemReducer";
 import {
   setTokenUri,
   ownedTokensSelector,
@@ -17,10 +14,7 @@ import { mintApi, getTokenUriApi } from "api/contractApi";
 import { signMintApi } from "api/serverApi";
 import { isNoContractMode, showError } from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
-import {
-  collectorSelector,
-  updateCollector,
-} from "store/collectorReducer";
+import { collectorSelector, updateCollector } from "store/collectorReducer";
 import {
   setSelectedTokenId,
   setShouldIgnoreTokenTransferWatch,
@@ -30,15 +24,11 @@ import {
 import Loading from "components/Loading";
 import useSound from "use-sound";
 import mintOpenSFX from "assets/audio/mint-open.mp3";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const MintKey = ({ isHonorary }) => {
-  const {
-    maxSupply,
-    price,
-    evolved,
-  } = useSelector(phaseSelector("mint"))
-  const canMint = useSelector(isPhaseActiveSelector("mint"))
+  const { maxSupply, price, evolved } = useSelector(phaseSelector("mint"));
+  const canMint = useSelector(isPhaseActiveSelector("mint"));
   const account = useAccount();
   const contract = useDDContract();
   const dispatch = useDispatch();
@@ -48,7 +38,7 @@ const MintKey = ({ isHonorary }) => {
   const [isMinting, setIsMinting] = useState(false);
   const [isForging, setIsForging] = useState(false);
   const { geoLocation } = useSelector(uiSelector);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const maxTokenId = max(map(tokens, "id"));
   const [playMintOpenSFX] = useSound(mintOpenSFX, {
@@ -61,7 +51,11 @@ const MintKey = ({ isHonorary }) => {
     if (geoLocation?.blocked || !canMint) return;
 
     setIsMinting(true);
-    const { signature } = await signMintApi(collector._id, account.address, isHonorary);
+    const { signature } = await signMintApi(
+      collector._id,
+      account.address,
+      isHonorary
+    );
     dispatch(setShouldIgnoreTokenTransferWatch(true));
     const tx = await mintApi(
       contract,
@@ -84,7 +78,7 @@ const MintKey = ({ isHonorary }) => {
       dispatch(setTokenUri(tokenId, tokenUri));
       dispatch(setSelectedTokenId(tokenId, true));
       setIsMinting(false);
-      navigate("/collector")
+      navigate("/collector");
     } catch (e) {
       showError(e);
     }

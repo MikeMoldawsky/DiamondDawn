@@ -23,4 +23,4 @@ const CollectorLoader = ({ onDisconnect }) => {
   }, onDisconnect);
 };
 
-export default CollectorLoader
+export default CollectorLoader;

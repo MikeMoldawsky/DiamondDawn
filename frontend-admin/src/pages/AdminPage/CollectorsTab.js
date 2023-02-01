@@ -17,7 +17,7 @@ import useActionDispatch from "hooks/useActionDispatch";
 import { COLLECTOR_STATUS } from "consts";
 import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
-import { shortenEthAddress } from "utils"
+import { shortenEthAddress } from "utils";
 
 const renderCellWithTooltip = (params) => (
   <span title={params.value}>{params.value}</span>
@@ -47,14 +47,16 @@ const numNFTsValidation = (params) => {
 };
 
 export const getInviterName = (collector) => {
-  if (!collector || !collector.invitedBy) return ""
+  if (!collector || !collector.invitedBy) return "";
 
-  const invite = collector.invitedBy
+  const invite = collector.invitedBy;
 
-  return invite.inviterName
-    || invite.inviter?.twitter
-    || shortenEthAddress(collector.address);
-}
+  return (
+    invite.inviterName ||
+    invite.inviter?.twitter ||
+    shortenEthAddress(collector.address)
+  );
+};
 
 const COLLECTOR_COLUMNS = [
   {

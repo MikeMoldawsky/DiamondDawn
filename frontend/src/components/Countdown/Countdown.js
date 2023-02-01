@@ -9,7 +9,7 @@ import mintOpenSFX from "assets/audio/mint-open.mp3";
 // import usePollingEffect from "hooks/usePollingEffect";
 import {
   // loadIsMintOpen,
-  systemSelector
+  systemSelector,
 } from "store/systemReducer";
 import { useDispatch, useSelector } from "react-redux";
 

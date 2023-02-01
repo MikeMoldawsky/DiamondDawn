@@ -1,14 +1,13 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import classNames from "classnames";
-import {Desktop} from "hooks/useMediaQueries";
+import { Desktop } from "hooks/useMediaQueries";
 import CollectorLayout from "pages/layouts/CollectorLayout";
-import {createVideoSources} from "utils";
+import { createVideoSources } from "utils";
 import InvitesView from "components/InvitationsStatus/InvitesView";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
-import "components/MintKey/MintKey.scss"
+import "components/MintKey/MintKey.scss";
 
 const InvitesPage = () => {
-
   const renderHandAndKeyVideo = useCallback(() => {
     return (
       <div className="image-box">
@@ -30,7 +29,7 @@ const InvitesPage = () => {
         </div>
       </div>
     </CollectorLayout>
-  )
+  );
 };
 
 export default InvitesPage;

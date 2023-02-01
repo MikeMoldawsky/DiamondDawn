@@ -9,7 +9,7 @@ import useCanAccessDD from "hooks/useCanAccessDD";
 const CTAButton = ({ className, onClick }) => {
   const collector = useSelector(collectorSelector);
   const navigate = useNavigate();
-  const canAccessDD = useCanAccessDD()
+  const canAccessDD = useCanAccessDD();
 
   const renderButton = ({
     text,
@@ -30,10 +30,12 @@ const CTAButton = ({ className, onClick }) => {
 
   if (!canAccessDD) return null;
 
-  if (!collector?.mintedAll)
-    return renderButton({ text: "MINT NOW" });
+  if (!collector?.mintedAll) return renderButton({ text: "MINT NOW" });
 
-  return renderButton({ text: "INVITE A FRIEND", customCTAClick: () => navigate("/invites") });
+  return renderButton({
+    text: "INVITE A FRIEND",
+    customCTAClick: () => navigate("/invites"),
+  });
 };
 
 export default CTAButton;

@@ -58,7 +58,9 @@ const SideMenu = () => {
         </div>
         <div className="invitations-menu">
           <Link to={"/invites"} onClick={closeMenu}>
-            <div className="menu-item sm link-hover text-gold">INVITE A FRIEND</div>
+            <div className="menu-item sm link-hover text-gold">
+              INVITE A FRIEND
+            </div>
           </Link>
           <InvitationsStatus />
         </div>

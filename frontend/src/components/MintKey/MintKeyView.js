@@ -13,7 +13,7 @@ import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 import { useSearchParams } from "react-router-dom";
 import classNames from "classnames";
 import { BLOCKED_COUNTRY_TEXT } from "consts";
-import {collectorSelector} from "store/collectorReducer";
+import { collectorSelector } from "store/collectorReducer";
 import InvitesView from "components/InvitationsStatus/InvitesView";
 
 const MintKeyView = ({
@@ -30,7 +30,7 @@ const MintKeyView = ({
   const dispatch = useDispatch();
   const { mintViewShowInvites: showInvites, geoLocation } =
     useSelector(uiSelector);
-  const { numNFTs } = useSelector(collectorSelector)
+  const { numNFTs } = useSelector(collectorSelector);
 
   const toggleInvites = (show) => {
     dispatch(updateUiState({ mintViewShowInvites: show }));
@@ -70,7 +70,7 @@ const MintKeyView = ({
   const renderMintButton = () => {
     const text = isHonorary
       ? "ACTIVATE HONORARY KEY"
-      : `ACTIVATE ${numNFTs} KEY${numNFTs > 1 ? "S" : ""}`
+      : `ACTIVATE ${numNFTs} KEY${numNFTs > 1 ? "S" : ""}`;
     return (
       <div className="center-aligned-column button-column">
         <div className="left-center-aligned-row price-text">{text}</div>
@@ -92,7 +92,7 @@ const MintKeyView = ({
           <div className="vat-text">* VAT included in Price</div>
         )}
       </div>
-    )
+    );
   };
 
   return (
@@ -102,7 +102,10 @@ const MintKeyView = ({
         <Desktop>{renderHandAndKeyVideo()}</Desktop>
         <div className="content-box">
           {showInvites ? (
-            <InvitesView withBackButton backButtonClick={() => toggleInvites(false)} />
+            <InvitesView
+              withBackButton
+              backButtonClick={() => toggleInvites(false)}
+            />
           ) : (
             <>
               <Desktop>{renderTitle()}</Desktop>

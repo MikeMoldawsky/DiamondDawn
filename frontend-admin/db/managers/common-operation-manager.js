@@ -3,8 +3,7 @@ const add = require("date-fns/add");
 
 async function getCollectorObjectById(collectorId) {
   try {
-    return await Collector.findById(collectorId)
-      .populate("invitedBy")
+    return await Collector.findById(collectorId).populate("invitedBy");
     // const collector = (
     //   await Collector.findById(collectorId)
     //     .populate({
@@ -53,7 +52,7 @@ async function getOrCreateDDCollector() {
         trusted: true,
       });
     }
-    return ddCollector
+    return ddCollector;
   } catch (e) {
     console.log(`Failed to get DD collector`, e);
   }

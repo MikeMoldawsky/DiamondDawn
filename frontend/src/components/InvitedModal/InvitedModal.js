@@ -59,8 +59,8 @@ const InvitedModalContent = ({ close, invite }) => {
       <div className="leading-text">CONGRATULATIONS</div>
       <div className="text">
         You’ve been invited by{" "}
-        <CollectorLink collector={inviter} twitter={inviterName} /> to participate
-        in Diamond Dawn’s journey.
+        <CollectorLink collector={inviter} twitter={inviterName} /> to
+        participate in Diamond Dawn’s journey.
       </div>
       <div className="text">
         Your invitation means you're a top candidate for the project, and you'll

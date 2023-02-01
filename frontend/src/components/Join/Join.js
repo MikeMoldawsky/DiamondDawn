@@ -1,12 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./Join.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "wagmi";
-import {clearInvite} from "store/inviteReducer";
-import {
-  collectorSelector,
-  setCollector,
-} from "store/collectorReducer";
+import { clearInvite } from "store/inviteReducer";
+import { collectorSelector, setCollector } from "store/collectorReducer";
 import PendingApproval from "./PendingApproval";
 import RequestToJoin from "components/Join/RequestToJoin";
 import useSound from "use-sound";
@@ -19,7 +16,7 @@ const Join = () => {
   const [playSparklesSFX] = useSound(sparklesSFX);
 
   const onSubmitSuccess = (collector) => {
-    dispatch(setCollector(collector))
+    dispatch(setCollector(collector));
     playSparklesSFX();
     if (!collector.approved) {
       setShowSubmittedModal(true);

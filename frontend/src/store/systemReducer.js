@@ -1,12 +1,9 @@
 import { makeReducer, reduceUpdateFull } from "./reduxUtils";
-import {
-  getConfigApi,
-  getContractInfoApi,
-} from "api/serverApi";
+import { getConfigApi, getContractInfoApi } from "api/serverApi";
 import { getPhasesApi } from "api/contractApi";
 import { CONTRACTS } from "consts";
 import { isNoContractMode } from "utils";
-import get from "lodash/get"
+import get from "lodash/get";
 
 const INITIAL_STATE = {
   ddContractInfo: null,
@@ -46,7 +43,8 @@ export const loadContractInfo = () => async (dispatch) => {
 
 export const systemSelector = (state) => state.system;
 
-export const phaseSelector = phaseName => state => get(systemSelector(state).phases, phaseName, {})
+export const phaseSelector = (phaseName) => (state) =>
+  get(systemSelector(state).phases, phaseName, {});
 
 export const isPhaseActiveSelector = (phaseName) => (state) => {
   const { isActive } = systemSelector(state);

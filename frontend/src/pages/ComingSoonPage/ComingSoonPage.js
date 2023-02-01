@@ -3,7 +3,7 @@ import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch, useSelector } from "react-redux";
-import {getCDNImageUrl, getCDNVideoUrl, isInviteOnly, showError} from "utils";
+import { getCDNImageUrl, getCDNVideoUrl, isInviteOnly, showError } from "utils";
 import classNames from "classnames";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useMusic from "hooks/useMusic";
@@ -21,7 +21,7 @@ import {
   getPSDateVideo,
 } from "assets/videos";
 import { GetPasswordLink } from "components/Links";
-import {canEnterDDApi, viewInviteApi} from "api/serverApi";
+import { canEnterDDApi, viewInviteApi } from "api/serverApi";
 import FeaturedIn from "components/FeaturedIn";
 import useCollectorReady from "hooks/useCollectorReady";
 import ActionButton from "components/ActionButton";
@@ -104,7 +104,7 @@ const ComingSoonPage = () => {
       dispatch(updateUiState({ privateSaleAuth: true }));
       navigate("/explore");
     } else {
-      showError("Invalid invite")
+      showError("Invalid invite");
     }
   };
 
@@ -132,7 +132,11 @@ const ComingSoonPage = () => {
               Which diamond will you choose?
             </div>
           </div>
-          <div className={classNames("cs-section password-box", { "with-invite": !!inviteId })}>
+          <div
+            className={classNames("cs-section password-box", {
+              "with-invite": !!inviteId,
+            })}
+          >
             <ActionButton
               actionKey="Enter Diamond Dawn"
               className="transparent"

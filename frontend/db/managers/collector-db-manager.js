@@ -6,7 +6,7 @@ async function getCollectorById(collectorId) {
   try {
     return await Collector.findById(collectorId)
       .populate("invitedBy")
-      .populate("invitations")
+      .populate("invitations");
   } catch (e) {
     console.log(`Failed to get Collector ${collectorId}`, e);
   }

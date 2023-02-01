@@ -49,7 +49,7 @@ const NewInvitationForm = ({ ddCollector, onSuccess }) => {
 
   const createInvitation = async ({ count, ...invitation }) => {
     await createInvitationApi(
-      {...invitation, inviter: ddCollector._id},
+      { ...invitation, inviter: ddCollector._id },
       count
     );
     setIsSubmitSuccess(true);
