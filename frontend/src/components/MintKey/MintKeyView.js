@@ -2,11 +2,9 @@ import React, { useCallback, useEffect } from "react";
 import "./MintKey.scss";
 import ActionButton from "components/ActionButton";
 import isFunction from "lodash/isFunction";
-import InvitationsStatus from "components/InvitationsStatus";
 import { useDispatch, useSelector } from "react-redux";
 import { createVideoSources, getCDNImageUrl } from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
 import MintAddressRow from "components/MintAddressRow";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
@@ -16,6 +14,7 @@ import { useSearchParams } from "react-router-dom";
 import classNames from "classnames";
 import { BLOCKED_COUNTRY_TEXT } from "consts";
 import {collectorSelector} from "store/collectorReducer";
+import InvitesView from "components/InvitationsStatus/InvitesView";
 
 const MintKeyView = ({
   maxSupply,
@@ -103,26 +102,7 @@ const MintKeyView = ({
         <Desktop>{renderHandAndKeyVideo()}</Desktop>
         <div className="content-box">
           {showInvites ? (
-            <div className="center-aligned-column invites-view">
-              <div className="back-button" onClick={() => toggleInvites(false)}>
-                <ArrowBackIosNewIcon />
-              </div>
-              <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
-              <div className="text">
-                Diamond Dawn's invitation system is designed to ensure fairness
-                by granting you the power to choose who should join the project.
-                <br />
-                <br />
-                <b>These invitations are extremely valuable.</b>
-                <br />
-                <br />
-                Why?
-                <br />
-                Because your invited friends will get priority in the review
-                process over other collectors.
-              </div>
-              <InvitationsStatus />
-            </div>
+            <InvitesView withBackButton backButtonClick={() => toggleInvites(false)} />
           ) : (
             <>
               <Desktop>{renderTitle()}</Desktop>

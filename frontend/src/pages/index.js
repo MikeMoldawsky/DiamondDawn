@@ -12,6 +12,7 @@ const PrivacyPage = lazy(() => import("pages/Legal/PrivacyPage"));
 const TNCPage = lazy(() => import("pages/Legal/TNCPage"));
 const CreditsPage = lazy(() => import("pages/CreditsPage"));
 const FAQsPage = lazy(() => import("pages/FAQsPage"));
+const InvitesPage = lazy(() => import("pages/InvitesPage"));
 
 const SuspenseFallback = ({ requireAccess = true }) => {
   useAccessDDGuard(requireAccess);
@@ -63,6 +64,16 @@ const AppRoutes = () => {
           <TokensProvider goThrough>
             <Suspense fallback={<SuspenseFallback />}>
               <MintPage isHonorary />
+            </Suspense>
+          </TokensProvider>
+        }
+      />
+      <Route
+        path="invites"
+        element={
+          <TokensProvider goThrough>
+            <Suspense fallback={<SuspenseFallback />}>
+              <InvitesPage />
             </Suspense>
           </TokensProvider>
         }

@@ -1,13 +1,12 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import InvitationsStatus from "components/InvitationsStatus";
 import { getCDNImageUrl } from "utils";
 import "./SideMenu.scss";
 import { inviteSelector } from "store/inviteReducer";
-import useGoToInvites from "hooks/useGoToInvites";
 import { CollectorLink } from "components/Links";
 import CTAButton from "components/CTAButton";
 import SocialIcons from "components/SocialIcons";
@@ -26,14 +25,7 @@ const SideMenu = () => {
     };
   }
 
-  const goToInvites = useGoToInvites();
-
   const closeMenu = () => dispatch(setSideMenuOpen(false));
-
-  const onInvitesTitleClick = () => {
-    goToInvites();
-    closeMenu();
-  };
 
   return (
     <Drawer
@@ -66,12 +58,9 @@ const SideMenu = () => {
           )}
         </div>
         <div className="invitations-menu">
-          <div
-            className="menu-item sm link-hover text-gold"
-            onClick={onInvitesTitleClick}
-          >
-            INVITE A FRIEND
-          </div>
+          <Link to={"/invites"} onClick={closeMenu}>
+            <div className="menu-item sm link-hover text-gold">INVITE A FRIEND</div>
+          </Link>
           <InvitationsStatus />
         </div>
         {collector?.invitedBy && (
