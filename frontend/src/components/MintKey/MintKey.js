@@ -117,7 +117,7 @@ const MintKey = ({ isHonorary }) => {
     }
   }, [canMint, canMintOnMount]);
 
-  if (!collector || collector.minted) return null;
+  if (!collector || collector.mintedAll) return null;
 
   if (isForging) return <Loading />;
 
@@ -126,6 +126,7 @@ const MintKey = ({ isHonorary }) => {
       maxSupply={maxSupply || 0}
       tokensMinted={evolved || 0}
       canMint={canMint}
+      isHonorary={isHonorary}
       mint={mint}
       forceButtonLoading={isMinting}
       onMintError={() => {

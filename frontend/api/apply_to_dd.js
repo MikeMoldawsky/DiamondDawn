@@ -23,7 +23,7 @@ module.exports = async function (req, res) {
       ...payload,
       invitedBy: invite,
       honorary: honoraryInvitee,
-      trusted: trustedInvitee,
+      trusted: honoraryInvitee || trustedInvitee,
       numNFTs,
       note,
       approved,

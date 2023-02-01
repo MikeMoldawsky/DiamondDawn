@@ -4,11 +4,8 @@ import TokensProvider from "containers/TokensProvider";
 import useAccessDDGuard from "hooks/useAccessDDGuard";
 const ComingSoonPage = lazy(() => import("pages/ComingSoonPage"));
 const Homepage = lazy(() => import("pages/Homepage"));
-// const ProcessPage = lazy(() => import("pages/ProcessPage"));
-// const RebirthPage = lazy(() => import("pages/RebirthPage"));
 const CollectorPage = lazy(() => import("pages/CollectorPage"));
 const MintPage = lazy(() => import("pages/MintPage"));
-// const NFTPage = lazy(() => import("pages/NFTPage"));
 const AboutUsPage = lazy(() => import("pages/AboutUsPage"));
 const TechPage = lazy(() => import("pages/TechPage"));
 const PrivacyPage = lazy(() => import("pages/Legal/PrivacyPage"));
@@ -40,26 +37,6 @@ const AppRoutes = () => {
           </Suspense>
         }
       />
-      {/*<Route*/}
-      {/*  path="process"*/}
-      {/*  element={*/}
-      {/*    <TokensProvider withLoader isGated>*/}
-      {/*      <Suspense fallback={<SuspenseFallback />}>*/}
-      {/*        <ProcessPage />*/}
-      {/*      </Suspense>*/}
-      {/*    </TokensProvider>*/}
-      {/*  }*/}
-      {/*/>*/}
-      {/*<Route*/}
-      {/*  path="rebirth/:tokenId"*/}
-      {/*  element={*/}
-      {/*    <TokensProvider withLoader isGated>*/}
-      {/*      <Suspense fallback={<SuspenseFallback />}>*/}
-      {/*        <RebirthPage />*/}
-      {/*      </Suspense>*/}
-      {/*    </TokensProvider>*/}
-      {/*  }*/}
-      {/*/>*/}
       <Route
         path="collector"
         element={
@@ -80,16 +57,16 @@ const AppRoutes = () => {
           </TokensProvider>
         }
       />
-      {/*<Route*/}
-      {/*  path="nft/:tokenId"*/}
-      {/*  element={*/}
-      {/*    <TokensProvider withLoader isGated>*/}
-      {/*      <Suspense fallback={<SuspenseFallback />}>*/}
-      {/*        <NFTPage />*/}
-      {/*      </Suspense>*/}
-      {/*    </TokensProvider>*/}
-      {/*  }*/}
-      {/*/>*/}
+      <Route
+        path="mint-honorary"
+        element={
+          <TokensProvider goThrough>
+            <Suspense fallback={<SuspenseFallback />}>
+              <MintPage isHonorary />
+            </Suspense>
+          </TokensProvider>
+        }
+      />
       <Route
         path="about-us"
         element={

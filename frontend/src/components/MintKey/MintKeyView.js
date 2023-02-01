@@ -21,6 +21,7 @@ const MintKeyView = ({
   maxSupply,
   tokensMinted,
   canMint,
+  isHonorary,
   mint,
   forceButtonLoading,
   onMintError,
@@ -67,10 +68,12 @@ const MintKeyView = ({
     </div>
   );
 
+  const resolvedNumNFTs = isHonorary ? 1 : numNFTs
+
   const renderMintButton = () => (
     <div className="center-aligned-column button-column">
       <div className="left-center-aligned-row price-text">
-        ACTIVATE {numNFTs} KEY{numNFTs > 1 ? "S" : ""}
+        ACTIVATE {resolvedNumNFTs} KEY{resolvedNumNFTs > 1 ? "S" : ""}
       </div>
       <div>
         <ActionButton
@@ -156,7 +159,7 @@ const MintKeyView = ({
       </div>
       {!showInvites && (
         <div className="status-box">
-          {tokensMinted} / {maxSupply} EVOLVED
+          {tokensMinted} / {maxSupply} MINTED
         </div>
       )}
     </div>

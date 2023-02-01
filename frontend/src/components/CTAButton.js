@@ -32,7 +32,7 @@ const CTAButton = ({ className, onClick }) => {
 
   if (!canAccessDD) return null;
 
-  if (!collector?.minted)
+  if (!collector?.mintedAll)
     return renderButton({ text: "MINT NOW" });
 
   return renderButton({ text: "INVITE A FRIEND", customCTAClick: goToInvites });

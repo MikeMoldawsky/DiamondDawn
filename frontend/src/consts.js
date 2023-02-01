@@ -75,6 +75,8 @@ export const TRAIT = {
   width: "Width",
   type: "Type",
   stage: "Stage",
+
+  Attribute: "Attribute",
 };
 
 export const ROUGH_SHAPE_NAME = {
@@ -120,7 +122,7 @@ export const DIAMOND_ANIMATION_MAPPING = {
 };
 
 export const PROCESS_GAS_LIMIT = 220000;
-export const MINT_GAS_LIMIT = 400000;
+export const MINT_GAS_LIMIT = 1100000;
 
 export const CONTRACTS = {
   DiamondDawn: "DiamondDawn",

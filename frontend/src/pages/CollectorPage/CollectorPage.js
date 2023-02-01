@@ -36,21 +36,21 @@ const CollectorPage = () => {
   const sizeTokens = size(tokens);
   const isNftGallery = sizeTokens > 0 && selectedTokenId === -1;
   const galleryRows = isMobile ? sizeTokens : Math.ceil(sizeTokens / 3);
-  const [playMintCompleteSFX] = useSound(mintCompleteSFX);
+  // const [playMintCompleteSFX] = useSound(mintCompleteSFX);
 
   useNoScrollView(isMobile || (isNftGallery && galleryRows > 1));
 
   useMusic("collector.mp3");
 
-  useEffect(() => {
-    if (collector?.minted) {
-      playMintCompleteSFX();
-      dispatch(updateUiState({ collectorBoxAnimation: "open" }));
-      setTimeout(() => {
-        dispatch(updateUiState({ collectorBoxAnimation: "" }));
-      }, 500);
-    }
-  }, [collector?.minted]);
+  // useEffect(() => {
+  //   if (collector?.minted) {
+  //     playMintCompleteSFX();
+  //     dispatch(updateUiState({ collectorBoxAnimation: "open" }));
+  //     setTimeout(() => {
+  //       dispatch(updateUiState({ collectorBoxAnimation: "" }));
+  //     }, 500);
+  //   }
+  // }, [collector?.minted]);
 
   const getGalleryVWHeight = () => galleryRows * (isMobile ? 90 : 30);
 
@@ -64,8 +64,8 @@ const CollectorPage = () => {
     <Page
       pageName="collector"
       images={[getCDNImageUrl("/collector/collector-bg.png")]}
-      collectorLoader={!!collector}
-      waitForTokens
+      // collectorLoader={!!collector}
+      // waitForTokens
     >
       <div className={classNames("page collector-page")}>
         <div className="bg collector-bg" />
@@ -94,7 +94,7 @@ const CollectorPage = () => {
                 <div className="anim-part left-bottom" />
               </div>
             )}
-            <CollectorLoader />
+            {/*<CollectorLoader />*/}
             <NFTs />
             <div className="right-center-aligned-row icons-menu">
               {selectedTokenId > -1 && (
