@@ -7,7 +7,7 @@ import "../objects/System.sol";
 interface IDiamondDawnV1MineAdmin {
     function eruption(Certificate[] calldata diamonds) external;
 
-    function lostShipment(uint tokenId, Certificate calldata diamond) external;
+    function lostShipment(uint256 tokenId, Certificate calldata diamond) external;
 
     function setManifest(Stage stage_, string calldata manifest) external;
 

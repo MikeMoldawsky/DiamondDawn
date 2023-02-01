@@ -48,8 +48,8 @@ contract DiamondDawnV1 is
     using EnumerableSet for EnumerableSet.UintSet;
     using ECDSA for bytes32;
 
-    uint public constant PRICE = 4.44 ether;
-    uint public constant PRICE_MARRIAGE = 4.99 ether;
+    uint256 public constant PRICE = 4.44 ether;
+    uint256 public constant PRICE_MARRIAGE = 4.99 ether;
     uint8 public constant MAX_MINT = 2;
     uint16 public constant MAX_ENTRANCE = 333;
 
@@ -96,19 +96,19 @@ contract DiamondDawnV1 is
         _;
     }
 
-    modifier isDawnAllowed(uint tokenId) {
+    modifier isDawnAllowed(uint256 tokenId) {
         require(stage == Stage.DAWN || stage == Stage.COMPLETED, "Wrong stage");
         require(_shipped[_msgSender()].contains(tokenId), "No shipment");
         require(ddMine.isReady(Stage.DAWN), "Dawn not ready");
         _;
     }
 
-    modifier costs(uint price, uint quantity) {
+    modifier costs(uint256 price, uint256 quantity) {
         require(msg.value == (price * quantity), string.concat("Cost is: ", Strings.toString(price * quantity)));
         _;
     }
 
-    modifier isOwner(uint tokenId) {
+    modifier isOwner(uint256 tokenId) {
         require(_msgSender() == ERC721.ownerOf(tokenId), "Not owner");
         _;
     }
@@ -119,32 +119,33 @@ contract DiamondDawnV1 is
         _forge(signature, quantity);
     }
 
-    function forgeWithPartner(
-        bytes calldata signature,
-        uint256 quantity
-    ) external payable costs(PRICE_MARRIAGE, quantity) {
+    function forgeWithPartner(bytes calldata signature, uint256 quantity)
+        external
+        payable
+        costs(PRICE_MARRIAGE, quantity)
+    {
         _forge(signature, quantity);
     }
 
-    function mine(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.MINE) {
+    function mine(uint256 tokenId) external isOwner(tokenId) isActiveStage(Stage.MINE) {
         ddMine.mine(tokenId);
     }
 
-    function cut(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.CUT) {
+    function cut(uint256 tokenId) external isOwner(tokenId) isActiveStage(Stage.CUT) {
         ddMine.cut(tokenId);
     }
 
-    function polish(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.POLISH) {
+    function polish(uint256 tokenId) external isOwner(tokenId) isActiveStage(Stage.POLISH) {
         ddMine.polish(tokenId);
     }
 
-    function ship(uint tokenId) external isOwner(tokenId) isActiveStage(Stage.DAWN) {
+    function ship(uint256 tokenId) external isOwner(tokenId) isActiveStage(Stage.DAWN) {
         _burn(tokenId);
         ddMine.ship(tokenId);
         _shipped[_msgSender()].add(tokenId);
     }
 
-    function dawn(uint tokenId, bytes calldata signature) external isDawnAllowed(tokenId) {
+    function dawn(uint256 tokenId, bytes calldata signature) external isDawnAllowed(tokenId) {
         require(
             _isValid(signature, bytes32(abi.encodePacked(_msgSender(), uint96(tokenId)))),
             "Not allowed to rebirth"
@@ -190,17 +191,19 @@ contract DiamondDawnV1 is
 
     /**********************     Public Functions     ************************/
 
-    function setApprovalForAll(
-        address operator,
-        bool approved
-    ) public override(ERC721, IERC721) onlyAllowedOperatorApproval(operator) {
+    function setApprovalForAll(address operator, bool approved)
+        public
+        override(ERC721, IERC721)
+        onlyAllowedOperatorApproval(operator)
+    {
         super.setApprovalForAll(operator, approved);
     }
 
-    function approve(
-        address operator,
-        uint256 tokenId
-    ) public override(ERC721, IERC721) onlyAllowedOperatorApproval(operator) {
+    function approve(address operator, uint256 tokenId)
+        public
+        override(ERC721, IERC721)
+        onlyAllowedOperatorApproval(operator)
+    {
         super.approve(operator, tokenId);
     }
 
@@ -233,9 +236,12 @@ contract DiamondDawnV1 is
         return ddMine.getMetadata(tokenId);
     }
 
-    function supportsInterface(
-        bytes4 interfaceId
-    ) public view override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl)
+        returns (bool)
+    {
         return super.supportsInterface(interfaceId);
     }
 
@@ -261,7 +267,7 @@ contract DiamondDawnV1 is
         require(quantity <= MAX_MINT, "Exceeds max quantity");
         require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
-        for (uint i = 0; i < quantity; i++) {
+        for (uint256 i = 0; i < quantity; i++) {
             _forgeOne();
         }
     }

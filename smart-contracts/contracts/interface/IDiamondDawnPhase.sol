@@ -8,9 +8,9 @@ interface IDiamondDawnPhase {
 
     function canEvolveFrom(IDiamondDawnPhase from) external view returns (bool);
 
-    function evolve(uint tokenId, bytes calldata prevAttributes) external view returns (bytes calldata);
+    function evolve(uint256 tokenId, bytes calldata prevAttributes) external view returns (bytes calldata);
 
-    function getMetadata(uint tokenId, bytes memory attributes) external view returns (string memory);
+    function getMetadata(uint256 tokenId, bytes memory attributes) external view returns (string memory);
 
     function lock() external;
 }

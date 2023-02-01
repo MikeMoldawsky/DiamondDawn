@@ -6,7 +6,7 @@
 const hre = require("hardhat");
 const mongoose = require("mongoose");
 const { updateDiamondDawnContract } = require("../db/contract-db-manager");
-const ethers = hre.ethers
+const ethers = hre.ethers;
 
 async function deployMintPhase() {
   const MintPhase = await ethers.getContractFactory("MintPhase");

@@ -61,7 +61,7 @@ library NFTs {
     function _serializeAttrs(Attribute[] memory attributes) private pure returns (string memory) {
         bytes memory bytes_;
         bytes_ = abi.encodePacked(bytes_, _openArray());
-        for (uint i = 0; i < attributes.length; i++) {
+        for (uint256 i = 0; i < attributes.length; i++) {
             Attribute memory attribute = attributes[i];
             bytes_ = abi.encodePacked(bytes_, _pushArray(_serializeAttr(attribute), i == attributes.length - 1));
         }
