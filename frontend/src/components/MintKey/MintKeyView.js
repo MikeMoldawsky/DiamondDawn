@@ -1,15 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import "./MintKey.scss";
 import ActionButton from "components/ActionButton";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEthereum } from "@fortawesome/free-brands-svg-icons/faEthereum";
 import isFunction from "lodash/isFunction";
-import { BigNumber, utils as ethersUtils } from "ethers";
-import InvitationsStatus from "components/InvitationsStatus";
 import { useDispatch, useSelector } from "react-redux";
 import { createVideoSources, getCDNImageUrl } from "utils";
 import { uiSelector, updateUiState } from "store/uiReducer";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Button from "components/Button";
 import MintAddressRow from "components/MintAddressRow";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
@@ -17,40 +12,16 @@ import useMusic from "hooks/useMusic";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
 import { useSearchParams } from "react-router-dom";
 import classNames from "classnames";
-import {
-  CountdownWithText,
-  SystemCountdown,
-} from "components/Countdown/Countdown";
 import { BLOCKED_COUNTRY_TEXT } from "consts";
-import useSound from "use-sound";
-import mintOpenSFX from "assets/audio/mint-open.mp3";
-
-const RadioButtons = ({ values, selectedValue, setSelectedValue }) => {
-  return (
-    <div className="radio-buttons">
-      {values.map((value) => (
-        <div
-          key={`radio-button-${value}`}
-          className={classNames("radio-button", {
-            selected: selectedValue === value,
-          })}
-          onClick={() => setSelectedValue(value)}
-        >
-          {value}
-        </div>
-      ))}
-    </div>
-  );
-};
+import { collectorSelector } from "store/collectorReducer";
+import InvitesView from "components/InvitationsStatus/InvitesView";
 
 const MintKeyView = ({
-  mintPrice = 4.44,
-  maxEntrance = 333,
-  tokensMinted = 0,
+  maxSupply,
+  tokensMinted,
   canMint,
+  isHonorary,
   mint,
-  expiresAt,
-  onMintWindowClose,
   forceButtonLoading,
   onMintError,
 }) => {
@@ -59,7 +30,7 @@ const MintKeyView = ({
   const dispatch = useDispatch();
   const { mintViewShowInvites: showInvites, geoLocation } =
     useSelector(uiSelector);
-  const [numNfts, setNumNfts] = useState(1);
+  const { numNFTs } = useSelector(collectorSelector);
 
   const toggleInvites = (show) => {
     dispatch(updateUiState({ mintViewShowInvites: show }));
@@ -81,10 +52,6 @@ const MintKeyView = ({
     );
   }, []);
 
-  const mintPriceText = BigNumber.isBigNumber(mintPrice)
-    ? ethersUtils.formatUnits(mintPrice)
-    : "4.44";
-
   const renderTitle = () => (
     <div className="congrats-box">
       <div className="left-top-aligned-column">
@@ -100,53 +67,31 @@ const MintKeyView = ({
     </div>
   );
 
-  const renderMintButton = () => (
-    <div className="center-aligned-column button-column">
-      <div className="left-center-aligned-row price-text">
-        ACTIVATE{" "}
-        <RadioButtons
-          values={[1, 2]}
-          selectedValue={numNfts}
-          setSelectedValue={setNumNfts}
-        />{" "}
-        KEY{numNfts > 1 ? "S" : ""}
+  const renderMintButton = () => {
+    const text = isHonorary
+      ? "ACTIVATE HONORARY KEY"
+      : `ACTIVATE ${numNFTs} KEY${numNFTs > 1 ? "S" : ""}`;
+    return (
+      <div className="center-aligned-column button-column">
+        <div className="left-center-aligned-row price-text">{text}</div>
+        <div>
+          <ActionButton
+            actionKey="MintKey"
+            className="gold lg mint-button"
+            sfx="action"
+            disabled={!canMint || !isFunction(mint) || geoLocation?.blocked}
+            title={geoLocation?.blocked ? BLOCKED_COUNTRY_TEXT : ""}
+            isLoading={forceButtonLoading}
+            onClick={mint}
+            onError={onMintError}
+          >
+            MINT FOR FREE
+          </ActionButton>
+        </div>
+        {geoLocation?.vat && (
+          <div className="vat-text">* VAT included in Price</div>
+        )}
       </div>
-      <div>
-        <ActionButton
-          actionKey="MintKey"
-          className="gold lg mint-button"
-          sfx="action"
-          disabled={!canMint || !isFunction(mint) || geoLocation?.blocked}
-          title={geoLocation?.blocked ? BLOCKED_COUNTRY_TEXT : ""}
-          isLoading={forceButtonLoading}
-          onClick={() => isFunction(mint) && mint(numNfts)}
-          onError={onMintError}
-        >
-          {mintPriceText * numNfts} <FontAwesomeIcon icon={faEthereum} /> MINT
-        </ActionButton>
-      </div>
-      {geoLocation?.vat && (
-        <div className="vat-text">* VAT included in Price</div>
-      )}
-    </div>
-  );
-
-  const renderCountdown = () => {
-    return canMint ? (
-      <CountdownWithText
-        className="timer-box"
-        date={expiresAt}
-        defaultParts={{
-          days: 3,
-          hours: 3,
-          minutes: 3,
-          seconds: 0,
-        }}
-        text="Your opportunity to mint expires in"
-        onComplete={onMintWindowClose}
-      />
-    ) : (
-      <SystemCountdown className="timer-box" />
     );
   };
 
@@ -157,26 +102,10 @@ const MintKeyView = ({
         <Desktop>{renderHandAndKeyVideo()}</Desktop>
         <div className="content-box">
           {showInvites ? (
-            <div className="center-aligned-column invites-view">
-              <div className="back-button" onClick={() => toggleInvites(false)}>
-                <ArrowBackIosNewIcon />
-              </div>
-              <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
-              <div className="text">
-                Diamond Dawn's invitation system is designed to ensure fairness
-                by granting you the power to choose who should join the project.
-                <br />
-                <br />
-                <b>These invitations are extremely valuable.</b>
-                <br />
-                <br />
-                Why?
-                <br />
-                Because your invited friends will get priority in the review
-                process over other collectors.
-              </div>
-              <InvitationsStatus />
-            </div>
+            <InvitesView
+              withBackButton
+              backButtonClick={() => toggleInvites(false)}
+            />
           ) : (
             <>
               <Desktop>{renderTitle()}</Desktop>
@@ -190,7 +119,7 @@ const MintKeyView = ({
                   </MobileOrTablet>
                   <Desktop>{renderMintButton()}</Desktop>
                   <div className="center-aligned-column open-soon">
-                    {renderCountdown()}
+                    {/*{renderCountdown()}*/}
                   </div>
                 </div>
               </div>
@@ -214,7 +143,7 @@ const MintKeyView = ({
       </div>
       {!showInvites && (
         <div className="status-box">
-          {tokensMinted} / {maxEntrance} MINTED
+          {tokensMinted} / {maxSupply} MINTED
         </div>
       )}
     </div>

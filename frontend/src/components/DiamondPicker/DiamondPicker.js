@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import _ from "lodash";
 import { getActionableTokens } from "utils";
-import { tokensSelector } from "store/tokensReducer";
+import { ownedTokensSelector } from "store/tokensReducer";
 import { systemSelector } from "store/systemReducer";
 import { isActionPendingSelector } from "store/actionStatusReducer";
 import useTimeout from "hooks/useTimeout";
@@ -16,7 +16,7 @@ const DiamondPicker = ({ actionKey, disabled }) => {
   const dispatch = useDispatch();
   const { selectedTokenId } = useSelector(uiSelector);
   const [actionableTokens, setActionableTokens] = useState([]);
-  const tokens = useSelector(tokensSelector);
+  const tokens = useSelector(ownedTokensSelector);
   const { systemStage, isActive } = useSelector(systemSelector);
   const isActionPending = useSelector(isActionPendingSelector(actionKey));
   const canSelect = !disabled && !isActionPending;

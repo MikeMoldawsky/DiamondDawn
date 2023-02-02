@@ -6,8 +6,11 @@ import useSystemCountdown, { COUNTDOWN_PHASES } from "hooks/useSystemCountdown";
 import padStart from "lodash/padStart";
 import useSound from "use-sound";
 import mintOpenSFX from "assets/audio/mint-open.mp3";
-import usePollingEffect from "hooks/usePollingEffect";
-import { loadIsMintOpen, systemSelector } from "store/systemReducer";
+// import usePollingEffect from "hooks/usePollingEffect";
+import {
+  // loadIsMintOpen,
+  systemSelector,
+} from "store/systemReducer";
 import { useDispatch, useSelector } from "react-redux";
 
 const CountdownComp = forwardRef(
@@ -81,18 +84,18 @@ export const SystemCountdown = ({ className, text, onComplete, ...props }) => {
   const { isMintOpen } = useSelector(systemSelector);
   const countdown = useRef(null);
 
-  usePollingEffect(
-    () => {
-      if (countdownPhase === COUNTDOWN_PHASES.BEFORE_MINT) {
-        dispatch(loadIsMintOpen());
-      }
-    },
-    [countdownPhase],
-    {
-      interval: 3_000,
-      stopPolling: !isComplete,
-    }
-  );
+  // usePollingEffect(
+  //   () => {
+  //     if (countdownPhase === COUNTDOWN_PHASES.BEFORE_MINT) {
+  //       dispatch(loadIsMintOpen());
+  //     }
+  //   },
+  //   [countdownPhase],
+  //   {
+  //     interval: 3_000,
+  //     stopPolling: !isComplete,
+  //   }
+  // );
 
   useEffect(() => {
     if (isComplete && isMintOpen) {

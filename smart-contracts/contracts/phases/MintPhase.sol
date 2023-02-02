@@ -67,7 +67,12 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPh
         _baseTokenURI = baseTokenURI;
     }
 
-    function evolve(uint _tokenId, bytes calldata prevAttributes) external view onlyDiamondDawn returns (bytes memory) {
+    function evolve(uint256 _tokenId, bytes calldata prevAttributes)
+        external
+        view
+        onlyDiamondDawn
+        returns (bytes memory)
+    {
         MintAttributes memory attributes = abi.decode(prevAttributes, (MintAttributes));
         return abi.encode(attributes); // Mint is the recursion base condition
     }
@@ -80,7 +85,7 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPh
         return _supportedPhases[address(from)] || _supportedNames[from.getName()];
     }
 
-    function getMetadata(uint tokenId, bytes memory attributes) external view returns (string memory) {
+    function getMetadata(uint256 tokenId, bytes memory attributes) external view returns (string memory) {
         MintAttributes memory mintAttributes = abi.decode(attributes, (MintAttributes));
         string memory noExtensionURI = _getNoExtensionURI(mintAttributes);
         string memory base64Json = Base64.encode(bytes(_getMetadataJson(tokenId, mintAttributes, noExtensionURI)));
@@ -100,7 +105,7 @@ contract MintPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPh
     }
 
     function _getMetadataJson(
-        uint tokenId,
+        uint256 tokenId,
         MintAttributes memory attributes,
         string memory noExtensionURI
     ) private pure returns (string memory) {

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import "./DiamondList.scss";
 import { systemSelector } from "store/systemReducer";
-import { tokensSelector } from "store/tokensReducer";
+import { ownedTokensSelector } from "store/tokensReducer";
 import useOnClickOutside from "hooks/useClickOutside";
 import { getStageName, getTokenTrait, isTokenActionable } from "utils";
 import { useNavigate } from "react-router-dom";
@@ -70,7 +70,7 @@ const DiamondItem = ({ diamond }) => {
 };
 
 const DiamondList = () => {
-  const accountTokens = useSelector(tokensSelector);
+  const accountTokens = useSelector(ownedTokensSelector);
   const hasDiamonds = size(accountTokens) > 0;
   return (
     <div className="diamond-list">

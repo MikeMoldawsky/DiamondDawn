@@ -59,8 +59,8 @@ contract DiamondDawn is
 
     mapping(address => bool) private _minted;
     mapping(address => bool) private _mintedHonorary;
-    mapping(string => Phases.Phase) private _phases;
-    mapping(uint => Phases.TokenMetadata) private _metadata;
+    mapping(string => Phases.Phase) public _phases;
+    mapping(uint256 => Phases.TokenMetadata) private _metadata;
     address private _signer;
     uint16 private _tokenId;
     string private _mintPhaseName;
@@ -101,17 +101,14 @@ contract DiamondDawn is
         _;
     }
 
-    modifier isOwner(uint tokenId) {
+    modifier isOwner(uint256 tokenId) {
         require(_msgSender() == ERC721.ownerOf(tokenId), "Not owner");
         _;
     }
 
     /**********************     External Functions     ************************/
 
-    function mint(
-        bytes calldata signature,
-        uint256 quantity
-    )
+    function mint(bytes calldata signature, uint256 quantity)
         external
         payable
         canMint(quantity, signature, bytes32(abi.encodePacked(_msgSender(), uint96(quantity))))
@@ -120,15 +117,22 @@ contract DiamondDawn is
         _mint(quantity);
     }
 
-    function mintHonorary(
-        bytes calldata signature
-    ) external payable canMint(1, signature, bytes32(uint256(uint160(_msgSender())))) canEvolve(_mintPhaseName) {
+    function mintHonorary(bytes calldata signature)
+        external
+        payable
+        canMint(1, signature, bytes32(uint256(uint160(_msgSender()))))
+        canEvolve(_mintPhaseName)
+    {
         _mintHonorary();
     }
 
-    function safeEvolveCurrentPhase(
-        uint tokenId
-    ) external payable isNotLocked isOwner(tokenId) canEvolve(_currPhaseName) {
+    function safeEvolveCurrentPhase(uint256 tokenId)
+        external
+        payable
+        isNotLocked
+        isOwner(tokenId)
+        canEvolve(_currPhaseName)
+    {
         _metadata[tokenId].evolve(_phases[_currPhaseName], tokenId);
     }
 
@@ -145,7 +149,7 @@ contract DiamondDawn is
     function safeSetNextPhase(
         address ddPhase,
         uint16 maxSupply,
-        uint price
+        uint256 price
     ) external onlyRole(DEFAULT_ADMIN_ROLE) isNotLocked {
         _safeSetCurrentPhase(ddPhase, maxSupply, price);
     }
@@ -170,7 +174,11 @@ contract DiamondDawn is
         emit Phase(name, _phases[name].getPhaseAddress(), PhaseAction.Open);
     }
 
-    function _safeSetCurrentPhase(address ddPhase, uint16 maxSupply, uint price) internal returns (string memory) {
+    function _safeSetCurrentPhase(
+        address ddPhase,
+        uint16 maxSupply,
+        uint256 price
+    ) internal returns (string memory) {
         require(!isActive, "Diamond Dawn is active");
         require(!_phases[_currPhaseName].isOpen(), "Current phase is open");
         Phases.Phase memory nextPhase = _addPhase(ddPhase, maxSupply, price);
@@ -179,7 +187,11 @@ contract DiamondDawn is
         return _currPhaseName;
     }
 
-    function _addPhase(address ddPhase, uint16 maxSupply, uint price) internal returns (Phases.Phase memory) {
+    function _addPhase(
+        address ddPhase,
+        uint16 maxSupply,
+        uint256 price
+    ) internal returns (Phases.Phase memory) {
         Phases.Phase memory phase = Phases.toPhase(ddPhase, maxSupply, price);
         string memory name = phase.getName();
         require(!_phases[name].isConfigured(), "Phase already exist");
@@ -229,17 +241,19 @@ contract DiamondDawn is
 
     /**********************     Public Functions     ************************/
 
-    function setApprovalForAll(
-        address operator,
-        bool approved
-    ) public override(ERC721, IERC721) onlyAllowedOperatorApproval(operator) {
+    function setApprovalForAll(address operator, bool approved)
+        public
+        override(ERC721, IERC721)
+        onlyAllowedOperatorApproval(operator)
+    {
         super.setApprovalForAll(operator, approved);
     }
 
-    function approve(
-        address operator,
-        uint256 tokenId
-    ) public override(ERC721, IERC721) onlyAllowedOperatorApproval(operator) {
+    function approve(address operator, uint256 tokenId)
+        public
+        override(ERC721, IERC721)
+        onlyAllowedOperatorApproval(operator)
+    {
         super.approve(operator, tokenId);
     }
 
@@ -273,9 +287,12 @@ contract DiamondDawn is
         return tokenMetadata.getMetadata(tokenId);
     }
 
-    function supportsInterface(
-        bytes4 interfaceId
-    ) public view override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl)
+        returns (bool)
+    {
         return super.supportsInterface(interfaceId);
     }
 
@@ -308,7 +325,7 @@ contract DiamondDawn is
         require(!_minted[_msgSender()], "Already minted");
         _minted[_msgSender()] = true;
         uint16 tokenId = _tokenId;
-        for (uint i = 0; i < quantity; i++) {
+        for (uint256 i = 0; i < quantity; i++) {
             _safeMint(_msgSender(), ++tokenId);
             _evolveMint(tokenId, false);
         }

@@ -3,11 +3,10 @@ import Modal from "components/Modal";
 import { getCDNImageUrl } from "utils";
 import "./InvitedModal.scss";
 import { CollectorLink, TwitterLink } from "components/Links";
-import CopyButton from "components/CopyButton";
 import WaitFor from "containers/WaitFor";
 import Button from "components/Button";
 
-const InvitedModalContent = ({ close, onCopy, invite }) => {
+const InvitedModalContent = ({ close, invite }) => {
   if (!invite)
     return (
       <>
@@ -32,9 +31,9 @@ const InvitedModalContent = ({ close, onCopy, invite }) => {
       </>
     );
 
-  const { createdBy, inviter, usedBy, revoked } = invite;
+  const { inviter, inviterName, collector, revoked } = invite;
 
-  if (usedBy || revoked)
+  if (collector || revoked)
     return (
       <>
         <div className="leading-text">INVITATION USED</div>
@@ -55,20 +54,13 @@ const InvitedModalContent = ({ close, onCopy, invite }) => {
       </>
     );
 
-  const copyContent = invite._id.substring(invite._id.length - 8);
-
-  const onCopyClick = () => {
-    onCopy && onCopy(copyContent);
-    close();
-  };
-
   return (
     <>
       <div className="leading-text">CONGRATULATIONS</div>
       <div className="text">
         You’ve been invited by{" "}
-        <CollectorLink collector={createdBy} twitter={inviter} /> to participate
-        in Diamond Dawn’s journey.
+        <CollectorLink collector={inviter} twitter={inviterName} /> to
+        participate in Diamond Dawn’s journey.
       </div>
       <div className="text">
         Your invitation means you're a top candidate for the project, and you'll

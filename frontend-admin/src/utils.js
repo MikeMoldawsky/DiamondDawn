@@ -88,3 +88,8 @@ const getCDNObjectUrl = (objectPath) =>
 
 export const getCDNContractUrl = (objectPath) =>
   getCDNObjectUrl(`/contracts${prependBackslash(objectPath)}`);
+
+export const shortenEthAddress = (address) =>
+  address
+    ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
+    : "";

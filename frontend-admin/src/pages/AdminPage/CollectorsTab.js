@@ -17,6 +17,7 @@ import useActionDispatch from "hooks/useActionDispatch";
 import { COLLECTOR_STATUS } from "consts";
 import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
+import { shortenEthAddress } from "utils";
 
 const renderCellWithTooltip = (params) => (
   <span title={params.value}>{params.value}</span>
@@ -45,7 +46,19 @@ const numNFTsValidation = (params) => {
   return { ...params.props, error: !value || value < 1 || value > 2 };
 };
 
-const INVITATION_COLUMNS = [
+export const getInviterName = (collector) => {
+  if (!collector || !collector.invitedBy) return "";
+
+  const invite = collector.invitedBy;
+
+  return (
+    invite.inviterName ||
+    invite.inviter?.twitter ||
+    shortenEthAddress(collector.address)
+  );
+};
+
+const COLLECTOR_COLUMNS = [
   {
     field: "createdAt",
     headerName: "Created At",
@@ -58,7 +71,7 @@ const INVITATION_COLUMNS = [
     field: "invitedBy",
     headerName: "Invited By",
     width: 150,
-    renderCell: (params) => <TwitterLink handle={params.row.invitedBy} />,
+    renderCell: (params) => <TwitterLink handle={getInviterName(params.row)} />,
   },
   {
     field: "twitter",
@@ -89,6 +102,20 @@ const INVITATION_COLUMNS = [
     headerName: "Location",
     width: 180,
     renderCell: renderCellWithTooltip,
+  },
+  {
+    field: "honorary",
+    headerName: "Honorary",
+    type: "boolean",
+    width: 70,
+    editable: true,
+  },
+  {
+    field: "trusted",
+    headerName: "Trusted",
+    type: "boolean",
+    width: 70,
+    editable: true,
   },
   {
     field: "numNFTs",
@@ -240,7 +267,7 @@ const CollectorsTab = ({ approved }) => {
   };
 
   const columns = _.filter(
-    INVITATION_COLUMNS,
+    COLLECTOR_COLUMNS,
     ({ hideIfPending, hideIfApproved }) =>
       approved ? !hideIfApproved : !hideIfPending
   );

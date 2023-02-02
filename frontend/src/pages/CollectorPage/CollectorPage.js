@@ -1,143 +1,83 @@
-import React, { useEffect } from "react";
+import React from "react";
 import classNames from "classnames";
 import "./CollectorPage.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { loadIsMintOpen, systemSelector } from "store/systemReducer";
-import { useAccount, useEnsName } from "wagmi";
-import { SYSTEM_STAGE } from "consts";
-import Box from "components/Box";
-import Invite from "components/Invite";
 import NFTs from "components/NFTs";
-import { getCDNImageUrl, shortenEthAddress } from "utils";
-import useMusic from "hooks/useMusic";
-import Page from "containers/Page";
-import useNoScrollView from "hooks/useNoScrollView";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { useNavigate } from "react-router-dom";
-import { collectorSelector } from "store/collectorReducer";
+// import useMusic from "hooks/useMusic";
+// import useNoScrollView from "hooks/useNoScrollView";
 import { useMobileOrTablet } from "hooks/useMediaQueries";
 import { setSelectedTokenId, uiSelector, updateUiState } from "store/uiReducer";
 import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
-import CollectorLoader from "containers/CollectorLoader";
-import { tokensSelector } from "store/tokensReducer";
+import { ownedTokensSelector } from "store/tokensReducer";
 import size from "lodash/size";
 import useSound from "use-sound";
 import mintCompleteSFX from "assets/audio/mint-complete.mp3";
 import { TwitterShareNFTLink } from "components/Links";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CollectorLayout from "pages/layouts/CollectorLayout";
 
 const CollectorPage = () => {
   const isMobile = useMobileOrTablet();
-  const { systemStage } = useSelector(systemSelector);
-  const tokens = useSelector(tokensSelector);
+  const tokens = useSelector(ownedTokensSelector);
   const { selectedTokenId, collectorBoxAnimation } = useSelector(uiSelector);
-  const account = useAccount();
-  const ensName = useEnsName({ address: account?.address });
-  const navigate = useNavigate();
-  const collector = useSelector(collectorSelector);
   const dispatch = useDispatch();
   const sizeTokens = size(tokens);
   const isNftGallery = sizeTokens > 0 && selectedTokenId === -1;
   const galleryRows = isMobile ? sizeTokens : Math.ceil(sizeTokens / 3);
-  const [playMintCompleteSFX] = useSound(mintCompleteSFX);
+  // const [playMintCompleteSFX] = useSound(mintCompleteSFX);
 
-  useNoScrollView(isMobile || (isNftGallery && galleryRows > 1));
-
-  useMusic("collector.mp3");
-
-  useEffect(() => {
-    if (collector?.minted) {
-      playMintCompleteSFX();
-      dispatch(updateUiState({ collectorBoxAnimation: "open" }));
-      setTimeout(() => {
-        dispatch(updateUiState({ collectorBoxAnimation: "" }));
-      }, 500);
-    }
-  }, [collector?.minted]);
-
-  useEffect(() => {
-    dispatch(loadIsMintOpen());
-  }, []);
-
-  const renderContent = () => {
-    if (
-      collector?.minted ||
-      collector?.mintClosed ||
-      systemStage > SYSTEM_STAGE.KEY
-    )
-      return <NFTs />;
-    return <Invite />;
-  };
+  // useEffect(() => {
+  //   if (collector?.minted) {
+  //     playMintCompleteSFX();
+  //     dispatch(updateUiState({ collectorBoxAnimation: "open" }));
+  //     setTimeout(() => {
+  //       dispatch(updateUiState({ collectorBoxAnimation: "" }));
+  //     }, 500);
+  //   }
+  // }, [collector?.minted]);
 
   const getGalleryVWHeight = () => galleryRows * (isMobile ? 90 : 30);
 
-  const mainBoxStyles = isNftGallery
+  const boxStyles = isNftGallery
     ? {
         height: `${getGalleryVWHeight()}vw`,
       }
     : {};
 
+  const boxClassName = classNames({
+    "nft-selected": selectedTokenId > -1,
+    "nfts-gallery": isNftGallery,
+  });
+
+  const renderBoxIcons = () => {
+    return selectedTokenId > -1 ? (
+      <>
+        <TwitterShareNFTLink
+          className="icon-twitter button gold sm icon-after"
+          tokenId={selectedTokenId}
+        >
+          SHARE <FontAwesomeIcon icon={faTwitter} />
+        </TwitterShareNFTLink>
+        <CollectionsOutlinedIcon
+          className="gallery-icon"
+          onClick={() => dispatch(setSelectedTokenId(-1))}
+        />
+      </>
+    ) : null;
+  };
+
   return (
-    <Page
-      pageName="collector"
-      images={[getCDNImageUrl("/collector/collector-bg.png")]}
-      collectorLoader={!!collector}
+    <CollectorLayout
       waitForTokens
+      boxClassName={boxClassName}
+      boxStyles={boxStyles}
+      boxAnimation={collectorBoxAnimation}
+      disableNoScroll={isNftGallery && galleryRows > 1}
+      renderBoxIcons={renderBoxIcons}
     >
-      <div className={classNames("page collector-page")}>
-        <div className="bg collector-bg" />
-        <div className="inner-page">
-          <h1>The Collector's Room</h1>
-          <div className="center-center-aligned-row account">
-            {ensName?.data || shortenEthAddress(account?.address)}
-          </div>
-          <Box
-            className={classNames("main-box", {
-              "nft-selected": selectedTokenId > -1,
-              "nfts-gallery": isNftGallery,
-            })}
-            style={mainBoxStyles}
-          >
-            {collectorBoxAnimation && (
-              <div
-                className={classNames("bg box-animation", {
-                  close: collectorBoxAnimation === "close",
-                  open: collectorBoxAnimation === "open",
-                })}
-              >
-                <div className="anim-part left-top" />
-                <div className="anim-part right-top" />
-                <div className="anim-part right-bottom" />
-                <div className="anim-part left-bottom" />
-              </div>
-            )}
-            <CollectorLoader />
-            {renderContent()}
-            <div className="right-center-aligned-row icons-menu">
-              {selectedTokenId > -1 && (
-                <>
-                  <TwitterShareNFTLink
-                    className="icon-twitter button gold sm icon-after"
-                    tokenId={selectedTokenId}
-                  >
-                    SHARE <FontAwesomeIcon icon={faTwitter} />
-                  </TwitterShareNFTLink>
-                  <CollectionsOutlinedIcon
-                    className="gallery-icon"
-                    onClick={() => dispatch(setSelectedTokenId(-1))}
-                  />
-                </>
-              )}
-              <HighlightOffIcon
-                className="close"
-                onClick={() => navigate("/explore")}
-              />
-            </div>
-          </Box>
-        </div>
-      </div>
-    </Page>
+      <NFTs />
+    </CollectorLayout>
   );
 };
 

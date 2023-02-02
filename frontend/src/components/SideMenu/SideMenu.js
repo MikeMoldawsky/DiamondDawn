@@ -1,13 +1,12 @@
 import React from "react";
 import Drawer from "@mui/material/Drawer";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import InvitationsStatus from "components/InvitationsStatus";
 import { getCDNImageUrl } from "utils";
 import "./SideMenu.scss";
 import { inviteSelector } from "store/inviteReducer";
-import useGoToInvites from "hooks/useGoToInvites";
 import { CollectorLink } from "components/Links";
 import CTAButton from "components/CTAButton";
 import SocialIcons from "components/SocialIcons";
@@ -22,18 +21,11 @@ const SideMenu = () => {
   let invitedBy = invite;
   if (collector) {
     invitedBy = collector.invitedBy || {
-      createdBy: { twitter: "@DiamondDawnNFT" },
+      inviter: { twitter: "@DiamondDawnNFT" },
     };
   }
 
-  const goToInvites = useGoToInvites();
-
   const closeMenu = () => dispatch(setSideMenuOpen(false));
-
-  const onInvitesTitleClick = () => {
-    goToInvites();
-    closeMenu();
-  };
 
   return (
     <Drawer
@@ -55,26 +47,24 @@ const SideMenu = () => {
           <NavLink to={"/faq"} onClick={closeMenu}>
             <div className="menu-item">FAQs</div>
           </NavLink>
-          {collector ? (
+          {collector && (collector.minted || collector.mintedHonorary) && (
             <NavLink to={"/collector"} onClick={closeMenu}>
               <div className="menu-item">COLLECTOR'S ROOM</div>
             </NavLink>
-          ) : (
-            <CTAButton className="md" onClick={closeMenu}>
-              APPLY FOR DIAMOND DAWN
-            </CTAButton>
+          )}
+          {(!collector || !collector.mintedAll) && (
+            <CTAButton className="md" onClick={closeMenu} />
           )}
         </div>
         <div className="invitations-menu">
-          <div
-            className="menu-item sm link-hover text-gold"
-            onClick={onInvitesTitleClick}
-          >
-            INVITE A FRIEND
-          </div>
+          <Link to={"/invites"} onClick={closeMenu}>
+            <div className="menu-item sm link-hover text-gold">
+              INVITE A FRIEND
+            </div>
+          </Link>
           <InvitationsStatus />
         </div>
-        {invitedBy?.createdBy && (
+        {collector?.invitedBy && (
           <div className="invited-by">
             <div className="image">
               <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
@@ -83,8 +73,8 @@ const SideMenu = () => {
               <div>
                 INVITED BY{" "}
                 <CollectorLink
-                  collector={invitedBy?.createdBy}
-                  twitter={invitedBy?.inviter}
+                  collector={invitedBy?.inviter}
+                  twitter={invitedBy?.inviterName}
                 />
               </div>
             </div>

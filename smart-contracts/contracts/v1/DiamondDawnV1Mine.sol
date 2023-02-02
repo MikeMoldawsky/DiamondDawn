@@ -40,7 +40,7 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
     uint16 public maxDiamonds;
     uint16 public diamondCount;
     address public diamondDawn;
-    mapping(uint => string) public manifests;
+    mapping(uint256 => string) public manifests;
 
     // Carat loss of ~35% to ~65% from rough stone to the polished diamond.
     uint8 private constant MIN_EXTRA_ROUGH_POINTS = 37;
@@ -55,7 +55,7 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
     uint16 private _rebornCounter;
     uint16 private _randNonce = 0;
     Certificate[] private _mine;
-    mapping(uint => Metadata) private _metadata;
+    mapping(uint256 => Metadata) private _metadata;
     string private _baseTokenURI = "ar://";
 
     constructor() {
@@ -73,18 +73,18 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
         _;
     }
 
-    modifier exists(uint tokenId) {
+    modifier exists(uint256 tokenId) {
         require(_metadata[tokenId].state_ != Stage.NO_STAGE, "Don't exist");
         _;
     }
 
-    modifier canProcess(uint tokenId, Stage state_) {
+    modifier canProcess(uint256 tokenId, Stage state_) {
         require(!isLocked, "Locked");
         require(state_ == _metadata[tokenId].state_, "Can't process");
         _;
     }
 
-    modifier mineOverflow(uint cnt) {
+    modifier mineOverflow(uint256 cnt) {
         require((diamondCount + cnt) <= maxDiamonds, "Mine overflow");
         _;
     }
@@ -101,13 +101,13 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
         isInitialized = true;
     }
 
-    function forge(uint tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.NO_STAGE) {
+    function forge(uint256 tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.NO_STAGE) {
         _metadata[tokenId].state_ = Stage.KEY;
         emit Forge(tokenId);
     }
 
-    function mine(uint tokenId) external onlyDiamondDawn mineNotDry canProcess(tokenId, Stage.KEY) {
-        uint extraPoints = _getRandomBetween(MIN_EXTRA_ROUGH_POINTS, MAX_EXTRA_ROUGH_POINTS);
+    function mine(uint256 tokenId) external onlyDiamondDawn mineNotDry canProcess(tokenId, Stage.KEY) {
+        uint256 extraPoints = _getRandomBetween(MIN_EXTRA_ROUGH_POINTS, MAX_EXTRA_ROUGH_POINTS);
         Metadata storage metadata = _metadata[tokenId];
         metadata.state_ = Stage.MINE;
         metadata.rough.id = ++_mineCounter;
@@ -117,8 +117,8 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
         emit Mine(tokenId);
     }
 
-    function cut(uint tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.MINE) {
-        uint extraPoints = _getRandomBetween(MIN_EXTRA_POLISH_POINTS, MAX_EXTRA_POLISH_POINTS);
+    function cut(uint256 tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.MINE) {
+        uint256 extraPoints = _getRandomBetween(MIN_EXTRA_POLISH_POINTS, MAX_EXTRA_POLISH_POINTS);
         Metadata storage metadata = _metadata[tokenId];
         metadata.state_ = Stage.CUT;
         metadata.cut.id = ++_cutCounter;
@@ -126,21 +126,21 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
         emit Cut(tokenId);
     }
 
-    function polish(uint tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.CUT) {
+    function polish(uint256 tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.CUT) {
         Metadata storage metadata = _metadata[tokenId];
         metadata.state_ = Stage.POLISH;
         metadata.polished.id = ++_polishedCounter;
         emit Polish(tokenId);
     }
 
-    function ship(uint tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.POLISH) {
+    function ship(uint256 tokenId) external onlyDiamondDawn canProcess(tokenId, Stage.POLISH) {
         Metadata storage metadata = _metadata[tokenId];
         require(metadata.reborn.id == 0, "Shipped");
         metadata.reborn.id = ++_rebornCounter;
         emit Ship(tokenId, metadata.reborn.id, metadata.certificate.number);
     }
 
-    function dawn(uint tokenId) external onlyDiamondDawn {
+    function dawn(uint256 tokenId) external onlyDiamondDawn {
         require(_metadata[tokenId].reborn.id > 0, "Not shipped");
         require(_metadata[tokenId].state_ == Stage.POLISH, "Wrong state");
         _metadata[tokenId].state_ = Stage.DAWN;
@@ -154,16 +154,18 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
         isLocked = true;
     }
 
-    function eruption(
-        Certificate[] calldata diamonds
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) mineOverflow(diamonds.length) {
-        for (uint i = 0; i < diamonds.length; i++) {
+    function eruption(Certificate[] calldata diamonds)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        mineOverflow(diamonds.length)
+    {
+        for (uint256 i = 0; i < diamonds.length; i++) {
             _mine.push(diamonds[i]);
         }
         diamondCount += uint16(diamonds.length);
     }
 
-    function lostShipment(uint tokenId, Certificate calldata diamond) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    function lostShipment(uint256 tokenId, Certificate calldata diamond) external onlyRole(DEFAULT_ADMIN_ROLE) {
         Metadata storage metadata = _metadata[tokenId];
         require(metadata.state_ == Stage.POLISH || metadata.state_ == Stage.DAWN, "Wrong shipment state");
         metadata.certificate = diamond;
@@ -171,14 +173,14 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
 
     function setManifest(Stage stage_, string calldata manifest) external onlyRole(DEFAULT_ADMIN_ROLE) {
         require(stage_ != Stage.NO_STAGE);
-        manifests[uint(stage_)] = manifest;
+        manifests[uint256(stage_)] = manifest;
     }
 
     function setBaseTokenURI(string calldata baseTokenURI) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _baseTokenURI = baseTokenURI;
     }
 
-    function getMetadata(uint tokenId) external view onlyDiamondDawn exists(tokenId) returns (string memory) {
+    function getMetadata(uint256 tokenId) external view onlyDiamondDawn exists(tokenId) returns (string memory) {
         Metadata memory metadata = _metadata[tokenId];
         string memory noExtensionURI = _getNoExtensionURI(metadata);
         string memory base64Json = Base64.encode(bytes(_getMetadataJson(tokenId, metadata, noExtensionURI)));
@@ -189,33 +191,33 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
         if (stage_ == Stage.NO_STAGE) return true;
         if (stage_ == Stage.COMPLETED) return true;
         if (stage_ == Stage.MINE && diamondCount != maxDiamonds) return false;
-        return bytes(manifests[uint(stage_)]).length > 0;
+        return bytes(manifests[uint256(stage_)]).length > 0;
     }
 
     /**********************     Private Functions     ************************/
 
     function _mineDiamond() private returns (Certificate memory) {
         assert(_mine.length > 0);
-        uint index = _getRandomBetween(0, _mine.length - 1);
+        uint256 index = _getRandomBetween(0, _mine.length - 1);
         Certificate memory diamond = _mine[index];
         _mine[index] = _mine[_mine.length - 1]; // swap last diamond with mined diamond
         _mine.pop();
         return diamond;
     }
 
-    function _getRandomBetween(uint min, uint max) private returns (uint) {
+    function _getRandomBetween(uint256 min, uint256 max) private returns (uint256) {
         _randNonce++;
         return getRandomInRange(min, max, _randNonce);
     }
 
     function _getNoExtensionURI(Metadata memory metadata) private view returns (string memory) {
-        string memory manifest = manifests[uint(metadata.state_)];
+        string memory manifest = manifests[uint256(metadata.state_)];
         string memory name = _getResourceName(metadata);
         return string.concat(_baseTokenURI, manifest, "/", name);
     }
 
     function _getMetadataJson(
-        uint tokenId,
+        uint256 tokenId,
         Metadata memory metadata,
         string memory noExtensionURI
     ) private view returns (string memory) {
@@ -241,7 +243,7 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
             attributes[++i] = DiamondSerializer.toStrAttribute("Metal", "Gold");
             return attributes;
         }
-        if (uint(Stage.MINE) <= uint(state_)) {
+        if (uint256(Stage.MINE) <= uint256(state_)) {
             attributes[++i] = DiamondSerializer.toStrAttribute("Stage", DiamondSerializer.toStageStr(state_));
             attributes[++i] = DiamondSerializer.toStrAttribute("Identification", "Natural");
             attributes[++i] = DiamondSerializer.toAttribute(
@@ -255,7 +257,7 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
                 Strings.toString(_mineCounter),
                 "number"
             );
-            bool wasProcessed = uint(state_) > uint(Stage.MINE);
+            bool wasProcessed = uint256(state_) > uint256(Stage.MINE);
             attributes[++i] = DiamondSerializer.toStrAttribute(wasProcessed ? "Color Rough Stone" : "Color", "Cape");
             attributes[++i] = DiamondSerializer.toStrAttribute(
                 wasProcessed ? "Shape Rough Stone" : "Shape",
@@ -263,7 +265,7 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
             );
         }
         Certificate memory certificate = metadata.certificate;
-        if (uint(Stage.CUT) <= uint(state_)) {
+        if (uint256(Stage.CUT) <= uint256(state_)) {
             attributes[++i] = DiamondSerializer.toAttribute(
                 "Carat Rough Stone",
                 DiamondSerializer.toDecimalStr(_getPoints(metadata, Stage.MINE)),
@@ -298,7 +300,7 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
                 "number"
             );
         }
-        if (uint(Stage.POLISH) <= uint(state_)) {
+        if (uint256(Stage.POLISH) <= uint256(state_)) {
             attributes[++i] = DiamondSerializer.toAttribute(
                 "Carat Pre Polish",
                 DiamondSerializer.toDecimalStr(_getPoints(metadata, Stage.CUT)),
@@ -323,7 +325,7 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
                 "number"
             );
         }
-        if (uint(Stage.DAWN) <= uint(state_)) {
+        if (uint256(Stage.DAWN) <= uint256(state_)) {
             attributes[++i] = DiamondSerializer.toStrAttribute("Laboratory", "GIA");
             attributes[++i] = DiamondSerializer.toAttribute("Report Date", Strings.toString(certificate.date), "date");
             attributes[++i] = DiamondSerializer.toStrAttribute("Report Number", Strings.toString(certificate.number));
@@ -337,7 +339,7 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
         return attributes;
     }
 
-    function _getStateAttrsNum(Stage state_, bool isRound) private pure returns (uint) {
+    function _getStateAttrsNum(Stage state_, bool isRound) private pure returns (uint256) {
         if (state_ == Stage.KEY) return 3;
         if (state_ == Stage.MINE) return 8;
         if (state_ == Stage.CUT) return isRound ? 15 : 14;
@@ -346,7 +348,7 @@ contract DiamondDawnV1Mine is AccessControlEnumerable, IDiamondDawnV1Mine, IDiam
         revert("Attributes number");
     }
 
-    function _getPoints(Metadata memory metadata, Stage state_) private pure returns (uint) {
+    function _getPoints(Metadata memory metadata, Stage state_) private pure returns (uint256) {
         assert(metadata.certificate.points > 0);
         if (state_ == Stage.MINE) {
             assert(metadata.rough.extraPoints > 0);

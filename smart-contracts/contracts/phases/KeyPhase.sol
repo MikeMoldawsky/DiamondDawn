@@ -67,7 +67,7 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPha
         _baseTokenURI = baseTokenURI;
     }
 
-    function evolve(uint _tokenId, bytes memory prevAttributes) external view returns (bytes memory) {
+    function evolve(uint256 _tokenId, bytes memory prevAttributes) external view returns (bytes memory) {
         // TODO: add randomization
         MintAttributes memory mintAttributes = abi.decode(prevAttributes, (MintAttributes));
         if (mintAttributes.honorary)
@@ -84,7 +84,7 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPha
         return _supportedNames[from.getName()] || _supportedPhases[address(from)];
     }
 
-    function getMetadata(uint tokenId, bytes memory attributes) external view returns (string memory) {
+    function getMetadata(uint256 tokenId, bytes memory attributes) external view returns (string memory) {
         KeyAttributes memory mintAttributes = abi.decode(attributes, (KeyAttributes));
         string memory noExtensionURI = _getNoExtensionURI(mintAttributes);
         string memory base64Json = Base64.encode(bytes(_getMetadataJson(tokenId, mintAttributes, noExtensionURI)));
@@ -103,7 +103,7 @@ contract KeyPhase is AccessControlEnumerable, IDiamondDawnPhase, IDiamondDawnPha
     }
 
     function _getMetadataJson(
-        uint tokenId,
+        uint256 tokenId,
         KeyAttributes memory attributes,
         string memory noExtensionURI
     ) private pure returns (string memory) {

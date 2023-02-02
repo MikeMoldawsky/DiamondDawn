@@ -63,7 +63,7 @@ library DiamondSerializer {
     function _serializeAttrs(Attribute[] memory attributes) public pure returns (string memory) {
         bytes memory bytes_;
         bytes_ = abi.encodePacked(bytes_, _openArray());
-        for (uint i = 0; i < attributes.length; i++) {
+        for (uint256 i = 0; i < attributes.length; i++) {
             Attribute memory attribute = attributes[i];
             bytes_ = abi.encodePacked(bytes_, _pushArray(_serializeAttr(attribute), i == attributes.length - 1));
         }
@@ -172,7 +172,7 @@ library DiamondSerializer {
         revert();
     }
 
-    function getName(Metadata memory metadata, uint tokenId) public pure returns (string memory) {
+    function getName(Metadata memory metadata, uint256 tokenId) public pure returns (string memory) {
         if (metadata.state_ == Stage.KEY) return string.concat("Mine Key #", Strings.toString(tokenId));
         if (metadata.state_ == Stage.MINE) return string.concat("Rough Stone #", Strings.toString(metadata.rough.id));
         if (metadata.state_ == Stage.CUT) return string.concat("Formation #", Strings.toString(metadata.cut.id));
@@ -181,8 +181,8 @@ library DiamondSerializer {
         revert();
     }
 
-    function toDecimalStr(uint percentage) public pure returns (string memory) {
-        uint remainder = percentage % 100;
+    function toDecimalStr(uint256 percentage) public pure returns (string memory) {
+        uint256 remainder = percentage % 100;
         string memory quotient = Strings.toString(percentage / 100);
         if (remainder < 10) return string.concat(quotient, ".0", Strings.toString(remainder));
         return string.concat(quotient, ".", Strings.toString(remainder));

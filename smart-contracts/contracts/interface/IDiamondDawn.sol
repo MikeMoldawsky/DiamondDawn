@@ -6,5 +6,5 @@ interface IDiamondDawn {
 
     function mintHonorary(bytes calldata signature) external payable;
 
-    function safeEvolveCurrentPhase(uint tokenId) external payable;
+    function safeEvolveCurrentPhase(uint256 tokenId) external payable;
 }

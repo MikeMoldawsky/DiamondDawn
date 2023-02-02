@@ -6,13 +6,13 @@ interface IDiamondDawnV1 {
 
     function forgeWithPartner(bytes calldata signature, uint256 quantity) external payable;
 
-    function mine(uint tokenId) external;
+    function mine(uint256 tokenId) external;
 
-    function cut(uint tokenId) external;
+    function cut(uint256 tokenId) external;
 
-    function polish(uint tokenId) external;
+    function polish(uint256 tokenId) external;
 
-    function ship(uint tokenId) external;
+    function ship(uint256 tokenId) external;
 
-    function dawn(uint tokenId, bytes calldata signature) external;
+    function dawn(uint256 tokenId, bytes calldata signature) external;
 }

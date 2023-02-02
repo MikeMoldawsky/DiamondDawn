@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./NFTs.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { tokenByIdSelector, tokensSelector } from "store/tokensReducer";
+import { tokenByIdSelector, ownedTokensSelector } from "store/tokensReducer";
 import { safeParseInt } from "utils";
 import { setSelectedTokenId, uiSelector } from "store/uiReducer";
 import NFT from "./NFT";
@@ -14,7 +14,7 @@ import GoToOpensea from "./GoToOpensea";
 import classNames from "classnames";
 
 const NFTs = () => {
-  const tokens = useSelector(tokensSelector);
+  const tokens = useSelector(ownedTokensSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

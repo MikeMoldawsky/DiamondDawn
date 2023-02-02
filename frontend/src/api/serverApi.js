@@ -94,13 +94,13 @@ export const applyToDDApi = async (
   const location = geoLocation
     ? `${geoLocation.city},${geoLocation.region}/${geoLocation.country}`
     : "Unknown";
-  const { data: invite } = await axios.post(`/api/apply_to_dd`, {
+  const { data: collector } = await axios.post(`/api/apply_to_dd`, {
     inviteId,
     address,
     ...requestData,
     location,
   });
-  return invite;
+  return collector;
 };
 
 export const viewInviteApi = async (inviteId) => {
@@ -109,16 +109,12 @@ export const viewInviteApi = async (inviteId) => {
   } catch (e) {}
 };
 
-export const openMintWindowApi = async (collectorId, address) => {
-  const { data: collector } = await axios.post(`/api/open_mint_window`, {
+export const signMintApi = async (collectorId, address, isHonorary) => {
+  const res = await axios.post(`/api/sign_mint`, {
     collectorId,
     address,
+    isHonorary,
   });
-  return collector;
-};
-
-export const signMintApi = async (collectorId, address) => {
-  const res = await axios.post(`/api/sign_mint`, { collectorId, address });
   return res.data;
 };
 
@@ -142,7 +138,7 @@ export const signDawnApi = async (address, tokenId) => {
 };
 
 // Demo
-export const privateSaleAuthApi = async (pwd, inviteId) => {
-  const res = await axios.post(`/api/demo_auth`, { pwd, inviteId });
+export const canEnterDDApi = async (inviteId) => {
+  const res = await axios.post(`/api/is_auth`, { inviteId });
   return res.data?.auth;
 };

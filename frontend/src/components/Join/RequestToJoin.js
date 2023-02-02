@@ -4,8 +4,13 @@ import { useAccount } from "wagmi";
 import { createVideoSources } from "utils";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import { Desktop, MobileOrTablet } from "hooks/useMediaQueries";
+import { useSelector } from "react-redux";
+import { inviteSelector } from "store/inviteReducer";
 
-const Apply = ({ onSubmitSuccess }) => {
+const RequestToJoin = ({ onSubmitSuccess }) => {
+  const invite = useSelector(inviteSelector);
+  const isPreApproved = invite?.inviter?.trusted;
+
   const videoSrc = createVideoSources("diamond-evolution");
 
   const renderInlineVideo = useCallback(
@@ -15,7 +20,9 @@ const Apply = ({ onSubmitSuccess }) => {
 
   const renderTitle = () => (
     <>
-      <div className="leading-text">APPLY FOR DIAMOND DAWN</div>
+      <div className="leading-text">
+        {isPreApproved ? "JOIN" : "APPLY FOR"} DIAMOND DAWN
+      </div>
       <div className="text">Please fill the details below</div>
     </>
   );
@@ -27,11 +34,14 @@ const Apply = ({ onSubmitSuccess }) => {
         <div className="video-box">{renderInlineVideo()}</div>
         <div className="content-box">
           <Desktop>{renderTitle()}</Desktop>
-          <ApplyForm onSuccess={onSubmitSuccess} />
+          <ApplyForm
+            isPreApproved={isPreApproved}
+            onSuccess={onSubmitSuccess}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-export default Apply;
+export default RequestToJoin;

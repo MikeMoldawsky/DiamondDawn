@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { tokensSelector } from "store/tokensReducer";
+import { ownedTokensSelector } from "store/tokensReducer";
 import { setSelectedTokenId } from "store/uiReducer";
 import { useParams } from "react-router-dom";
 import useNavigateToDefault from "hooks/useNavigateToDefault";
@@ -11,7 +11,7 @@ function useSelectTokenFromRoute() {
   const navigateToDefault = useNavigateToDefault();
 
   const dispatch = useDispatch();
-  const tokens = useSelector(tokensSelector);
+  const tokens = useSelector(ownedTokensSelector);
 
   useEffect(() => {
     if (!_.isEmpty(tokenIdString)) {

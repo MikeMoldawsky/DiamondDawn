@@ -8,7 +8,7 @@ library Phases {
         IDiamondDawnPhase _phase;
         string _name;
         uint16 _maxSupply;
-        uint _price;
+        uint256 _price;
         uint16 _evolved;
         bool _isOpen;
     }
@@ -22,7 +22,11 @@ library Phases {
         return phase._phase.initialize();
     }
 
-    function evolve(TokenMetadata storage metadata, Phase memory newPhase, uint tokenId) internal {
+    function evolve(
+        TokenMetadata storage metadata,
+        Phase storage newPhase,
+        uint256 tokenId
+    ) internal {
         require(newPhase._isOpen, "phase is closed");
         require(newPhase._evolved < newPhase._maxSupply, "max evolved");
         require(canEvolveFrom(newPhase, metadata.phase), "not supported phase");
@@ -39,11 +43,15 @@ library Phases {
         phase._isOpen = false;
     }
 
-    function getMetadata(TokenMetadata memory metadata, uint tokenId) internal view returns (string memory) {
+    function getMetadata(TokenMetadata memory metadata, uint256 tokenId) internal view returns (string memory) {
         return metadata.phase.getMetadata(tokenId, metadata.attributes);
     }
 
-    function toPhase(address ddPhase, uint16 maxSupply, uint price) internal view returns (Phase memory) {
+    function toPhase(
+        address ddPhase,
+        uint16 maxSupply,
+        uint256 price
+    ) internal view returns (Phase memory) {
         IDiamondDawnPhase phase = IDiamondDawnPhase(ddPhase);
         return
             Phase({
@@ -68,7 +76,7 @@ library Phases {
         return phase._isOpen;
     }
 
-    function getPrice(Phase memory phase) internal pure returns (uint) {
+    function getPrice(Phase memory phase) internal pure returns (uint256) {
         return phase._price;
     }
 

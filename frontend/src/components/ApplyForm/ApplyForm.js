@@ -13,10 +13,7 @@ import Checkbox from "components/Checkbox";
 import { showError } from "utils";
 import Wallet from "components/Wallet";
 import { uiSelector } from "store/uiReducer";
-import { SystemCountdown } from "components/Countdown/Countdown";
 import IncreaseChances from "components/IncreaseChances";
-import { Radio } from "components/Checkbox/Checkbox";
-import { BLOCKED_COUNTRY_TEXT } from "consts";
 
 const getValidationError = (name, value) => {
   switch (name) {
@@ -35,7 +32,7 @@ const getValidationError = (name, value) => {
   }
 };
 
-const ApplyForm = ({ onSuccess, onError }) => {
+const ApplyForm = ({ isPreApproved, onSuccess, onError }) => {
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const {
@@ -59,11 +56,16 @@ const ApplyForm = ({ onSuccess, onError }) => {
       const data = getValues();
       const inviteId =
         invite && !invite.used && !invite.revoked ? invite._id : null;
-      await applyToDDApi(inviteId, account.address, data, geoLocation);
+      const collector = await applyToDDApi(
+        inviteId,
+        account.address,
+        data,
+        geoLocation
+      );
       setIsSubmitSuccess(true);
-      onSuccess && (await onSuccess(account.address));
+      onSuccess && (await onSuccess(collector));
     } catch (e) {
-      showError(e, "Apply Failed");
+      showError(e, "RequestToJoin Failed");
       onError && onError();
     }
   };
@@ -144,27 +146,6 @@ const ApplyForm = ({ onSuccess, onError }) => {
           </div>
         </div>
         <div className="center-aligned-row inputs-row row-2">
-          <div className="left-center-aligned-row input-container radio-input-container">
-            I would like to mint
-            <Radio
-              register={register}
-              watch={watch}
-              setValue={setValue}
-              name="numNFTs"
-              value={1}
-            >
-              1 NFT
-            </Radio>
-            <Radio
-              register={register}
-              watch={watch}
-              setValue={setValue}
-              name="numNFTs"
-              value={2}
-            >
-              2 NFTs
-            </Radio>
-          </div>
           <div className="input-container">
             <Checkbox
               register={register}
@@ -176,18 +157,20 @@ const ApplyForm = ({ onSuccess, onError }) => {
             </Checkbox>
           </div>
         </div>
-        <div className="input-container textarea-container">
-          <div className="label">Reason</div>
-          <textarea
-            {...register("note", { required: true })}
-            disabled={disabled}
-            className={classNames("input", {
-              "with-error": !isNil(get(errors, "note")),
-            })}
-            placeholder="Why are you a good fit for Diamond Dawn?"
-          />
-          {renderErrorMessage("note")}
-        </div>
+        {!isPreApproved && (
+          <div className="input-container textarea-container">
+            <div className="label">Reason</div>
+            <textarea
+              {...register("note", { required: true })}
+              disabled={disabled}
+              className={classNames("input", {
+                "with-error": !isNil(get(errors, "note")),
+              })}
+              placeholder="Why are you a good fit for Diamond Dawn?"
+            />
+            {renderErrorMessage("note")}
+          </div>
+        )}
         <div className="center-aligned-row address-row">
           <div className="input-container">
             <div className="label">Minting Address</div>
@@ -216,9 +199,8 @@ const ApplyForm = ({ onSuccess, onError }) => {
           >
             SUBMIT
           </ActionButton>
-          <SystemCountdown />
         </div>
-        <IncreaseChances />
+        {!isPreApproved && <IncreaseChances />}
       </form>
     </div>
   );

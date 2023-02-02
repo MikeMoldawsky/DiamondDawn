@@ -1,8 +1,8 @@
 import { makeReducer, reduceSetFull, reduceUpdateFull } from "./reduxUtils";
-import { getCollectorByAddressApi, openMintWindowApi } from "api/serverApi";
+import { getCollectorByAddressApi } from "api/serverApi";
 import isEmpty from "lodash/isEmpty";
-import { getAddressMintedApi } from "api/contractApi";
-import { isNoContractMode } from "utils";
+import { createSelector } from "reselect";
+import { tokensSelector } from "store/tokensReducer";
 
 const INITIAL_STATE = null;
 
@@ -16,31 +16,33 @@ export const updateCollector = (update) => ({
   payload: update,
 });
 
-export const loadCollectorByAddress =
-  (address, contract) => async (dispatch) => {
-    const [collector, minted] = await Promise.all([
-      getCollectorByAddressApi(address),
-      !isNoContractMode() && contract
-        ? getAddressMintedApi(contract, address)
-        : false,
-    ]);
-    if (!isEmpty(collector)) {
-      dispatch(setCollector({ ...collector, minted }));
-    } else {
-      dispatch(clearCollector());
-    }
-  };
-
-export const openMintWindow = (collectorId, address) => async (dispatch) => {
-  const collector = await openMintWindowApi(collectorId, address);
-  dispatch(setCollector(collector));
+export const loadCollectorByAddress = (address) => async (dispatch) => {
+  const collector = await getCollectorByAddressApi(address);
+  if (!isEmpty(collector)) {
+    dispatch(setCollector(collector));
+  } else {
+    dispatch(clearCollector());
+  }
 };
 
 export const clearCollector = () => ({
   type: "COLLECTOR.CLEAR",
 });
 
-export const collectorSelector = (state) => state.collector;
+export const collectorSelector = createSelector(
+  (state) => state.collector,
+  tokensSelector,
+  (collector, { minted, mintedHonorary }) => {
+    return collector
+      ? {
+          ...collector,
+          minted,
+          mintedHonorary,
+          mintedAll: minted && (!collector.honorary || mintedHonorary),
+        }
+      : null;
+  }
+);
 
 export const collectorReducer = makeReducer(
   {

@@ -4,18 +4,15 @@ import TokensProvider from "containers/TokensProvider";
 import useAccessDDGuard from "hooks/useAccessDDGuard";
 const ComingSoonPage = lazy(() => import("pages/ComingSoonPage"));
 const Homepage = lazy(() => import("pages/Homepage"));
-const ProcessPage = lazy(() => import("pages/ProcessPage"));
-const RebirthPage = lazy(() => import("pages/RebirthPage"));
 const CollectorPage = lazy(() => import("pages/CollectorPage"));
-const MintPage = lazy(() => import("pages/CollectorPage/MintPage"));
-const NFTPage = lazy(() => import("pages/NFTPage"));
-const TheJourneyPage = lazy(() => import("pages/TheJourneyPage"));
+const MintPage = lazy(() => import("pages/MintPage"));
 const AboutUsPage = lazy(() => import("pages/AboutUsPage"));
 const TechPage = lazy(() => import("pages/TechPage"));
 const PrivacyPage = lazy(() => import("pages/Legal/PrivacyPage"));
 const TNCPage = lazy(() => import("pages/Legal/TNCPage"));
 const CreditsPage = lazy(() => import("pages/CreditsPage"));
 const FAQsPage = lazy(() => import("pages/FAQsPage"));
+const InvitesPage = lazy(() => import("pages/InvitesPage"));
 
 const SuspenseFallback = ({ requireAccess = true }) => {
   useAccessDDGuard(requireAccess);
@@ -42,26 +39,6 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="process"
-        element={
-          <TokensProvider withLoader isGated>
-            <Suspense fallback={<SuspenseFallback />}>
-              <ProcessPage />
-            </Suspense>
-          </TokensProvider>
-        }
-      />
-      <Route
-        path="rebirth/:tokenId"
-        element={
-          <TokensProvider withLoader isGated>
-            <Suspense fallback={<SuspenseFallback />}>
-              <RebirthPage />
-            </Suspense>
-          </TokensProvider>
-        }
-      />
-      <Route
         path="collector"
         element={
           <TokensProvider goThrough>
@@ -72,7 +49,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="teamint"
+        path="mint"
         element={
           <TokensProvider goThrough>
             <Suspense fallback={<SuspenseFallback />}>
@@ -82,11 +59,21 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="nft/:tokenId"
+        path="mint-honorary"
         element={
-          <TokensProvider withLoader isGated>
+          <TokensProvider goThrough>
             <Suspense fallback={<SuspenseFallback />}>
-              <NFTPage />
+              <MintPage isHonorary />
+            </Suspense>
+          </TokensProvider>
+        }
+      />
+      <Route
+        path="invites"
+        element={
+          <TokensProvider goThrough>
+            <Suspense fallback={<SuspenseFallback />}>
+              <InvitesPage />
             </Suspense>
           </TokensProvider>
         }

@@ -40,6 +40,50 @@
       }
     }
   }
+
+  .icons-menu {
+    position: absolute;
+    right: 1.5em;
+    top: 1.5em;
+
+    .icon-twitter {
+      position: relative;
+      margin-right: 2em;
+
+      &:after {
+        content: "";
+        position: absolute;
+        right: -1.5em;
+        top: 0.1em;
+        bottom: 0.1em;
+        width: 1px;
+        background-color: white;
+      }
+    }
+
+    svg {
+      cursor: pointer;
+      color: white;
+      font-size: 1.7em !important;
+      position: relative;
+
+      &.fa-twitter {
+        opacity: 1;
+        font-size: 1.6em !important;
+        margin-top: 0.1em;
+      }
+
+      &.gallery-icon {
+        opacity: 0.7;
+        margin-left: 0.3em;
+      }
+
+      &.close {
+        opacity: 0.7;
+        margin-left: 0.5em;
+      }
+    }
+  }
 }
 
 .input {
@@ -104,6 +148,15 @@ textarea.input {
       border-color: $gold;
       color: $gold;
       cursor: default;
+    }
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  .box {
+    .icons-menu {
+      right: 0;
+      top: -2.9em;
     }
   }
 }

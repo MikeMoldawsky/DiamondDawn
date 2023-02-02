@@ -12,7 +12,7 @@ import NFTTraits from "./NFTTraits";
 import NFTPlate from "./NFTPlate";
 import classNames from "classnames";
 import CarouselBox from "components/CarouselBox";
-import { tokensSelector } from "store/tokensReducer";
+import { ownedTokensSelector } from "store/tokensReducer";
 import { uiSelector } from "store/uiReducer";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 
@@ -24,7 +24,7 @@ const NFT = ({
   onChangeNFT,
 }) => {
   const { systemStage, isActive } = useSelector(systemSelector);
-  const tokens = useSelector(tokensSelector);
+  const tokens = useSelector(ownedTokensSelector);
   const { selectedTokenId } = useSelector(uiSelector);
 
   return (

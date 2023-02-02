@@ -38,7 +38,27 @@ async function signAddressAndTokenId(address, tokenId) {
   }
 }
 
+async function signAddressAndNumNFTs(address, numNFTs) {
+  try {
+    const signer = new ethers.Wallet(process.env.SIGNER_PRIVATE_KEY);
+    // Convert provided `ethAddress` to correct checksum address format.
+    // This step is critical as signing an incorrectly formatted wallet address
+    // can result in invalid signatures when it comes to minting.
+    const addressNoHex = ethers.utils.getAddress(address).slice(2);
+    const numNFTsStr = numNFTs
+      .toString(16)
+      .padStart(64 - addressNoHex.length, "0");
+    const message = ethers.utils.arrayify(`0x${addressNoHex}${numNFTsStr}`);
+    // Sign the message using `signer`.
+    return await signer.signMessage(message);
+  } catch (e) {
+    console.log("Failed to get dawn signature");
+    throw e;
+  }
+}
+
 module.exports = {
   signAddress,
   signAddressAndTokenId,
+  signAddressAndNumNFTs,
 };

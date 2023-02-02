@@ -3,30 +3,18 @@ import map from "lodash/map";
 import max from "lodash/max";
 import useDDContract from "hooks/useDDContract";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  loadMaxEntrance,
-  loadMintPrice,
-  loadTotalSupply,
-  systemSelector,
-} from "store/systemReducer";
+import { isPhaseActiveSelector, phaseSelector } from "store/systemReducer";
 import {
   setTokenUri,
-  tokensSelector,
+  ownedTokensSelector,
   watchTokenMinedBy,
 } from "store/tokensReducer";
 import { useAccount, useProvider } from "wagmi";
-import { forgeApi, getTokenUriApi } from "api/contractApi";
+import { mintApi, getTokenUriApi } from "api/contractApi";
 import { signMintApi } from "api/serverApi";
 import { isNoContractMode, showError } from "utils";
 import MintKeyView from "components/MintKey/MintKeyView";
-import { ACTION_KEYS, SYSTEM_STAGE } from "consts";
-import {
-  collectorSelector,
-  loadCollectorByAddress,
-  openMintWindow,
-  updateCollector,
-} from "store/collectorReducer";
-import useActionDispatch from "hooks/useActionDispatch";
+import { collectorSelector, updateCollector } from "store/collectorReducer";
 import {
   setSelectedTokenId,
   setShouldIgnoreTokenTransferWatch,
@@ -34,49 +22,46 @@ import {
   updateUiState,
 } from "store/uiReducer";
 import Loading from "components/Loading";
-import usePollingEffect from "hooks/usePollingEffect";
 import useSound from "use-sound";
 import mintOpenSFX from "assets/audio/mint-open.mp3";
+import { useNavigate } from "react-router-dom";
 
-const MintKey = () => {
-  const {
-    mintPrice,
-    maxEntrance,
-    tokensMinted,
-    systemStage,
-    isActive,
-    isMintOpen,
-  } = useSelector(systemSelector);
+const MintKey = ({ isHonorary }) => {
+  const { maxSupply, price, evolved } = useSelector(phaseSelector("mint"));
+  const canMint = useSelector(isPhaseActiveSelector("mint"));
   const account = useAccount();
   const contract = useDDContract();
   const dispatch = useDispatch();
-  const actionDispatch = useActionDispatch();
-  const tokens = useSelector(tokensSelector);
+  const tokens = useSelector(ownedTokensSelector);
   const collector = useSelector(collectorSelector);
   const provider = useProvider();
   const [isMinting, setIsMinting] = useState(false);
   const [isForging, setIsForging] = useState(false);
   const { geoLocation } = useSelector(uiSelector);
+  const navigate = useNavigate();
 
   const maxTokenId = max(map(tokens, "id"));
-  const canMint = systemStage === SYSTEM_STAGE.KEY && isActive && isMintOpen;
   const [playMintOpenSFX] = useSound(mintOpenSFX, {
     volume: 1,
     interrupt: false,
   });
   const [canMintOnMount] = useState(canMint);
 
-  const mint = async (numNfts) => {
+  const mint = async () => {
     if (geoLocation?.blocked || !canMint) return;
 
     setIsMinting(true);
-    const { signature } = await signMintApi(collector._id, account.address);
+    const { signature } = await signMintApi(
+      collector._id,
+      account.address,
+      isHonorary
+    );
     dispatch(setShouldIgnoreTokenTransferWatch(true));
-    const tx = await forgeApi(
+    const tx = await mintApi(
       contract,
-      geoLocation?.vat,
-      numNfts,
-      mintPrice.mul(numNfts),
+      isHonorary,
+      collector.numNFTs,
+      price.mul(collector.numNFTs),
       signature
     );
     dispatch(updateUiState({ collectorBoxAnimation: "close" }));
@@ -93,7 +78,7 @@ const MintKey = () => {
       dispatch(setTokenUri(tokenId, tokenUri));
       dispatch(setSelectedTokenId(tokenId, true));
       setIsMinting(false);
-      dispatch(updateCollector({ minted: true }));
+      navigate("/collector");
     } catch (e) {
       showError(e);
     }
@@ -106,9 +91,6 @@ const MintKey = () => {
   }, [isForging]);
 
   useEffect(() => {
-    dispatch(loadMintPrice(contract, geoLocation));
-    dispatch(loadMaxEntrance(contract));
-
     const unwatch = watchTokenMinedBy(
       contract,
       provider,
@@ -128,32 +110,17 @@ const MintKey = () => {
     }
   }, [canMint, canMintOnMount]);
 
-  useEffect(() => {
-    if (canMint && collector?.approved && !collector?.mintWindowStart) {
-      dispatch(openMintWindow(collector._id, account.address));
-    }
-  }, [canMint, collector?.approved, collector?.mintWindowStart]);
-
-  const onMintWindowClose = () => {
-    actionDispatch(
-      loadCollectorByAddress(account.address, contract),
-      ACTION_KEYS.GET_COLLECTOR_BY_ADDRESS
-    );
-  };
-
-  if (!collector || collector.minted || collector.mintClosed) return null;
+  if (!collector || collector.mintedAll) return null;
 
   if (isForging) return <Loading />;
 
   return (
     <MintKeyView
-      mintPrice={mintPrice}
-      maxEntrance={maxEntrance}
-      tokensMinted={canMint ? tokensMinted : 0}
+      maxSupply={maxSupply || 0}
+      tokensMinted={evolved || 0}
       canMint={canMint}
+      isHonorary={isHonorary}
       mint={mint}
-      expiresAt={collector.mintWindowClose}
-      onMintWindowClose={onMintWindowClose}
       forceButtonLoading={isMinting}
       onMintError={() => {
         setIsMinting(false);
