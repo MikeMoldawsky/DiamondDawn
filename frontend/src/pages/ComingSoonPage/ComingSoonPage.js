@@ -14,12 +14,7 @@ import InvitedModal from "components/InvitedModal/InvitedModal";
 import useActionDispatch from "hooks/useActionDispatch";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useButtonSFX from "hooks/useButtonSFX";
-import {
-  getDDTextVideo,
-  getPSTextVideo,
-  getMobileBGVideo,
-  getPSDateVideo,
-} from "assets/videos";
+import { getDDTextVideo, getMobileBGVideo } from "assets/videos";
 import { GetPasswordLink } from "components/Links";
 import { canEnterDDApi, viewInviteApi } from "api/serverApi";
 import FeaturedIn from "components/FeaturedIn";
@@ -121,15 +116,13 @@ const ComingSoonPage = () => {
         <div className="center-aligned-column content-column">
           <div className="cs-section project-title">
             <InlineVideo className="dd-text" src={getDDTextVideo(width)} />
-            <div className="center-center-aligned-row ps-row">
-              <InlineVideo className="ps-text" src={getPSTextVideo(width)} />
-              <InlineVideo className="ps-date" src={getPSDateVideo(width)} />
+            <div className="center-center-aligned-row tagline-text ps-row">
+              FREE Mint. Invite ONLY. Starting Soon...
             </div>
           </div>
           <div className="center-aligned-column cs-section text-column">
-            <div className="tagline-text">
-              <div className="secondary-lg">Physical or Digital</div>
-              Which diamond will you choose?
+            <div className="tagline-text text-white">
+              Evolve your NFT into a physical diamond
             </div>
           </div>
           <div
@@ -139,7 +132,7 @@ const ComingSoonPage = () => {
           >
             <ActionButton
               actionKey="Enter Diamond Dawn"
-              className="transparent"
+              className="transparent lg"
               disabled={!inviteId}
               onClick={enter}
               sfx="explore"
@@ -163,7 +156,7 @@ const ComingSoonPage = () => {
             isInviteOnly() && <GetPasswordLink />
           )}
         </div>
-        <FeaturedIn />
+        {/*<FeaturedIn />*/}
       </div>
       {showInvitedModal && (
         <InvitedModal

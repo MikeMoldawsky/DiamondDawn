@@ -60,30 +60,19 @@
   }
 
   .text-column {
-    top: 2%;
+    top: 21.5%;
 
     .tagline-text {
-      color: $gold;
-      font-weight: 400;
-      font-size: $font28px;
-      line-height: 1.4em;
-
-      .secondary-lg {
-        color: white;
-        font-size: 1.25em;
-      }
+      font-weight: 500;
+      font-size: $font24px;
     }
   }
 
   .password-box {
-    bottom: 17%;
+    bottom: 14%;
 
     .input-container {
       margin: 0 auto 1.5em;
-    }
-
-    &.with-invite {
-      bottom: 14%;
     }
   }
 
@@ -92,7 +81,7 @@
     position: absolute;
     width: 16em;
     left: 2%;
-    bottom: 13.5%;
+    bottom: 12.5%;
     animation: growShrinkLoop 2.5s ease-out infinite;
 
     img {
@@ -111,7 +100,7 @@
       width: unset;
       font-size: $font16px;
       left: 50%;
-      bottom: 12%;
+      bottom: 9%;
       transform: translateX(-50%);
       text-decoration: underline;
     }
