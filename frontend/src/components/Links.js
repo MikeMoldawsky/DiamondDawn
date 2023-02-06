@@ -59,7 +59,7 @@ export const TwitterShareNFTLink = ({ className, tokenId, children }) => {
 
 export const GetPasswordLink = ({ className }) => (
   <Link href={PRIVATE_TWITTER_MESSAGE_URL} className={className}>
-    Request a password
+    Request an Invite
   </Link>
 );
 
