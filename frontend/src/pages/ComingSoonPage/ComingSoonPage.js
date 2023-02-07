@@ -3,7 +3,7 @@ import "./ComingSoonPage.scss";
 import ReactPlayer from "react-player";
 import { updateUiState } from "store/uiReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { getCDNImageUrl, getCDNVideoUrl, isInviteOnly, showError } from "utils";
+import { getCDNImageUrl, getCDNVideoUrl, showError } from "utils";
 import classNames from "classnames";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useMusic from "hooks/useMusic";
@@ -15,9 +15,7 @@ import useActionDispatch from "hooks/useActionDispatch";
 import InlineVideo from "components/VideoPlayer/InlineVideo";
 import useButtonSFX from "hooks/useButtonSFX";
 import { getDDTextVideo, getMobileBGVideo } from "assets/videos";
-import { GetPasswordLink } from "components/Links";
 import { canEnterDDApi, viewInviteApi } from "api/serverApi";
-import FeaturedIn from "components/FeaturedIn";
 import useCollectorReady from "hooks/useCollectorReady";
 import ActionButton from "components/ActionButton";
 
@@ -33,8 +31,6 @@ const ComingSoonPage = () => {
   const [showInvitedModal, setShowInvitedModal] = useState(false);
   const [videoProgress, setVideoProgress] = useState({});
   const { width, height } = useWindowDimensions();
-  const isPortrait = height > width;
-  const usePortraitAsset = isPortrait && width <= 768;
 
   useMusic("homepage.mp3");
 
@@ -70,7 +66,7 @@ const ComingSoonPage = () => {
     }
   }, [inviteId, pageReady, isCollectorReady, invite?._id]);
 
-  const bgVideoUrl = usePortraitAsset
+  const bgVideoUrl = height > width
     ? getMobileBGVideo(width)
     : getCDNVideoUrl("coming-soon-2-loops.mp4");
 
@@ -113,50 +109,34 @@ const ComingSoonPage = () => {
     >
       <div className={classNames("page coming-soon")}>
         {renderBgPlayer()}
-        <div className="center-aligned-column content-column">
-          <div className="cs-section project-title">
-            <InlineVideo className="dd-text" src={getDDTextVideo(width)} />
-            <div className="center-center-aligned-row tagline-text ps-row">
-              FREE Mint. Invite ONLY. Starting Soon...
-            </div>
+        <div className="project-title">
+          <InlineVideo className="dd-text" src={getDDTextVideo(width)} />
+          <div className="center-center-aligned-row tagline-text ps-row">
+            Invite Only
           </div>
-          <div className="center-aligned-column cs-section text-column">
-            <div className="tagline-text text-white">
-              Evolve your NFT into a physical diamond
-            </div>
+        </div>
+
+        <div className="center-aligned-column bottom-section">
+          <div className="tagline-text text-white">
+            Evolve your NFT into a physical diamond
           </div>
-          <div
-            className={classNames("cs-section password-box", {
-              "with-invite": !!inviteId,
-            })}
+          <ActionButton
+            actionKey="Enter Diamond Dawn"
+            className="transparent lg"
+            disabled={!inviteId}
+            onClick={enter}
+            sfx="explore"
           >
-            <ActionButton
-              actionKey="Enter Diamond Dawn"
-              className="transparent lg"
-              disabled={!inviteId}
-              onClick={enter}
-              sfx="explore"
-            >
-              ENTER
-            </ActionButton>
+            ENTER
+          </ActionButton>
+          <div
+            className={"invite-image"}
+            onClick={(e) => !!inviteId && clickWithSFX(e)}
+          >
+            <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+            <div className="text-center your-invite-text">{!!inviteId ? "YOUR INVITE" : "JOIN DIAMOND DAWN"}</div>
           </div>
         </div>
-        <div
-          className={classNames("cs-section invite-image", {
-            "no-invite": !inviteId,
-          })}
-          onClick={(e) => !!inviteId && clickWithSFX(e)}
-        >
-          {!!inviteId ? (
-            <>
-              <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
-              <div className="text-center your-invite-text">YOUR INVITE</div>
-            </>
-          ) : (
-            isInviteOnly() && <GetPasswordLink />
-          )}
-        </div>
-        {/*<FeaturedIn />*/}
       </div>
       {showInvitedModal && (
         <InvitedModal

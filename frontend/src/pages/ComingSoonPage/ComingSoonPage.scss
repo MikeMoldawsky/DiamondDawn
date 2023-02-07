@@ -1,18 +1,16 @@
 @import "css/varsNEW";
 @import "css/animations";
-@import "css/functions";
 
 .page.coming-soon {
   position: relative;
   text-align: center;
   overflow: hidden;
-  font-size: calc-font-size(11px);
   min-height: 40em;
 
   .react-player.bg-video {
     min-width: 102%;
     min-height: 104%;
-    opacity: 0.65;
+    opacity: 0.85;
     z-index: -2;
     position: fixed;
     background-color: black;
@@ -21,193 +19,87 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
       object-fit: cover;
     }
   }
 
-  .cs-section {
+  .project-title {
     position: relative;
+    top: 15vh;
+
+    .react-player.dd-text {
+      margin: 0 auto;
+      height: 7.5vh;
+    }
+
+    .tagline-text {
+      line-height: 1em;
+    }
   }
 
-  .content-column {
-    height: 100%;
+  .bottom-section {
+    position: absolute;
+    bottom: 2.5vh;
+    height: 26vh;
+    width: 100%;
     justify-content: space-between;
-  }
-
-  .project-title {
-    top: 15%;
-
-    .react-player {
-      opacity: 1;
-      position: relative;
-      background-color: transparent;
-
-      &.ps-text {
-        width: 12.5vw;
-        max-width: 480px;
-        transform: translateY(-50%);
-        margin-right: 0.4em;
-      }
-
-      &.ps-date {
-        width: 6.9vw;
-        max-width: 480px;
-        transform: translateY(-32%);
-      }
-    }
-  }
-
-  .text-column {
-    top: 21.5%;
 
     .tagline-text {
       font-weight: 500;
-      font-size: $font24px;
-    }
-  }
-
-  .password-box {
-    bottom: 14%;
-
-    .input-container {
-      margin: 0 auto 1.5em;
-    }
-  }
-
-  .invite-image {
-    cursor: pointer;
-    position: absolute;
-    width: 16em;
-    left: 2%;
-    bottom: 12.5%;
-    animation: growShrinkLoop 2.5s ease-out infinite;
-
-    img {
-      width: 100%;
     }
 
-    .your-invite-text {
-      color: $gold;
-      font-weight: 500;
-      margin-top: -2.2em;
-      letter-spacing: 0.1em;
-    }
-
-    &.no-invite {
-      animation: unset;
-      width: unset;
-      font-size: $font16px;
-      left: 50%;
-      bottom: 9%;
-      transform: translateX(-50%);
+    .invite-image {
+      cursor: pointer;
+      width: 16em;
       text-decoration: underline;
-    }
-  }
+      animation: growShrinkLoop 2.5s ease-out infinite;
 
-  .featured-in {
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    font-size: $font14px;
-  }
-}
-
-@mixin coming-soon-portrait {
-  --base-font-size: 45;
-  overflow: unset;
-
-  .react-player.bg-video {
-    min-width: 100%;
-    min-height: 100%;
-    width: 100vw;
-    height: 100vh;
-  }
-
-  .project-title {
-    top: 21%;
-
-    .react-player {
-      &.ps-text {
-        width: 25.5vw;
-        transform: translateY(-45%);
+      img {
+        width: 100%;
       }
 
-      &.ps-date {
-        width: 13.8vw;
+      .your-invite-text {
+        color: $gold;
+        font-weight: 500;
+        margin-top: -2.2em;
+        letter-spacing: 0.1em;
+        text-decoration: underline;
+        font-size: .9em;
       }
     }
   }
-
-  .text-column {
-    top: 4vh;
-
-    .tagline-text {
-      font-size: $font22px;
-    }
-  }
-
-  .password-box {
-    bottom: 17.5%;
-    margin-top: 5vh;
-
-    &.with-invite {
-      bottom: 21%;
-    }
-  }
-
-  .invite-image {
-    bottom: 9%;
-    width: 80%;
-    left: 10%;
-
-    img {
-      width: 40%;
-    }
-
-    &.no-invite {
-      font-size: $font18px;
-      bottom: 11%;
-    }
-  }
-
-  .featured-in {
-    bottom: 0;
-    transform: translate(-50%, 5em);
-  }
 }
 
-@media only screen and (max-width: 1024px) and (max-aspect-ratio: 1/1) {
+@media only screen and (max-aspect-ratio: 1/1) {
   .page.coming-soon {
-    @include coming-soon-portrait;
+    overflow: unset;
+
+    .react-player.bg-video {
+      min-width: 100%;
+      min-height: 100%;
+      width: 100vw;
+      height: 100vh;
+    }
   }
 }
 
 @media only screen and (max-width: 480px) {
   .page.coming-soon {
-    .project-title {
-      .react-player {
-        &.ps-text {
-          width: 36vw;
-          transform: translateY(-35%);
-        }
+    .bg-video {
+      transform: translateY(-5vh);
+    }
 
-        &.ps-date {
-          width: 20vw;
-          transform: translateY(-20%);
-        }
+    .tagline-text {
+      font-size: $font25px;
+    }
+
+    .bottom-section {
+      height: 30vh;
+      font-size: .85em;
+
+      .tagline-text {
+        width: 60%;
       }
-    }
-
-    .text-column {
-      top: 9vh;
-    }
-
-    .invite-image {
-      width: 100%;
-      left: 0;
     }
   }
 }
