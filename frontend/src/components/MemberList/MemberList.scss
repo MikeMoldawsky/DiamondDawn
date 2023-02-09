@@ -1,0 +1,60 @@
+@import "css/varsNEW";
+
+.member-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  a {
+    font-weight: 700;
+  }
+
+  .member {
+    margin: 1em 1.2em;
+    width: 18em;
+    border: solid 1px $border_opaque;
+    background-color: $box_bg;
+    padding: 0.8em 1em;
+    line-height: 1em;
+
+    .member-title {
+      opacity: 0.8;
+      font-size: $font12px;
+      margin-bottom: 0.5em;
+      color: $gold;
+      font-weight: 500;
+    }
+
+    .member-name {
+      &:not(:first-child) {
+        margin-top: 0.6em;
+      }
+    }
+
+    .profile-image {
+      width: 3em;
+      height: 3em;
+      margin-right: 1.2em;
+    }
+  }
+}
+
+.grouped-member-list {
+  .member-group {
+    margin-top: 2em;
+
+    .group-name {
+      font-size: $font20px;
+      color: $gold;
+      margin-bottom: .8em;
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .member-list {
+    .member {
+      margin: 1em 0;
+    }
+  }
+}

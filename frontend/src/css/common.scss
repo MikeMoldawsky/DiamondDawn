@@ -572,6 +572,13 @@ a:not(.no-hover) {
   justify-content: flex-start;
 }
 
+.stretched-column {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
 .bg {
   position: absolute;
   top: 0;

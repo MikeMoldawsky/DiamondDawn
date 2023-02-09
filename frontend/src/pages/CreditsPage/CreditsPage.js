@@ -1,12 +1,10 @@
 import React from "react";
 import "./CreditsPage.scss";
 import Footer from "components/Footer";
-import map from "lodash/map";
-import Link from "components/Links";
-import classNames from "classnames";
 import Page from "containers/Page";
+import MemberList from "components/MemberList";
 
-const CREDITS = [
+export const CREDITS = [
   {
     id: "mike",
     title: "Project Creator",
@@ -94,24 +92,7 @@ const CreditsPage = () => (
     <div className="page credits-page">
       <div className="inner-page">
         <h1>CREDITS</h1>
-        <div className="credits">
-          {map(CREDITS, ({ id, title, name, link }) => (
-            <div
-              key={`credits-category-${name}`}
-              className="start-start-aligned-row credits-category"
-            >
-              <div className={classNames("profile-image", id)} />
-              <div className="left-top-aligned-column">
-                <div className="category-name">{title}</div>
-                <div className="right-spaced-column">
-                  <div key={`credit-to-${name}`} className="credit-to">
-                    <Link href={link}>{name}</Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <MemberList members={CREDITS} />
       </div>
       <Footer />
     </div>

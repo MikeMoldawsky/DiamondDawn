@@ -40,9 +40,6 @@ const ComingSoonPage = () => {
   };
 
   const onInviteClick = () => {
-    if (!invite) {
-      loadInvite();
-    }
     setShowInvitedModal(true);
   };
 
@@ -131,7 +128,7 @@ const ComingSoonPage = () => {
           </ActionButton>
           <div
             className={"invite-image"}
-            onClick={(e) => !!inviteId && clickWithSFX(e)}
+            onClick={clickWithSFX}
           >
             <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
             <div className="text-center your-invite-text">{!!inviteId ? "YOUR INVITE" : "JOIN DIAMOND DAWN"}</div>

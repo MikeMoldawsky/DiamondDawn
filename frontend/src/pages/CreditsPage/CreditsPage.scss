@@ -17,45 +17,6 @@
     line-height: 1.4em;
   }
 
-  .credits {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    a {
-      font-weight: 700;
-    }
-  }
-
-  .credits-category {
-    margin: 1em 1.2em;
-    width: 18em;
-    border: solid 1px $border_opaque;
-    background-color: $box_bg;
-    padding: 0.8em 1em;
-    line-height: 1em;
-
-    .category-name {
-      opacity: 0.8;
-      font-size: $font12px;
-      margin-bottom: 0.5em;
-      color: $gold;
-      font-weight: 500;
-    }
-
-    .credit-to {
-      &:not(:first-child) {
-        margin-top: 0.6em;
-      }
-    }
-
-    .profile-image {
-      width: 3em;
-      height: 3em;
-      margin-right: 1.2em;
-    }
-  }
-
   footer {
     margin-top: 2em;
   }
@@ -65,10 +26,6 @@
   .page.credits-page {
     .inner-page {
       font-size: $font20px;
-    }
-
-    .credits-category {
-      margin: 1em 0;
     }
 
     footer.footer {

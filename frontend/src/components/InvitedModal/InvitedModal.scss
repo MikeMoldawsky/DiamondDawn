@@ -7,13 +7,19 @@
   width: 49em;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: calc-font-size(11px);
+  text-align: left;
 
   .modal-inner {
+    height: 100%;
     padding: 4em 4em 3.5em;
 
     &:before {
       transform: translate(-50%, -4em);
+    }
+
+    .modal-content {
+      height: 100%;
+      justify-content: stretch;
     }
   }
 
@@ -33,10 +39,8 @@
   }
 
   .text {
-    margin-bottom: 1.5rem;
-    line-height: 1.5em;
-    text-align: left;
-    width: 100%;
+    margin-bottom: 1em;
+    align-self: flex-start;
   }
 
   .button {
@@ -44,6 +48,100 @@
 
     svg {
       font-size: $font20px;
+    }
+  }
+
+  .modal-title {
+    width: 100%;
+    justify-content: center;
+    font-size: .8em;
+    margin: -.5em 0 1em;
+  }
+
+  &.no-invite {
+    width: 70em;
+    height: 90vh;
+
+    .invite-options {
+      text-align: left;
+      width: 100%;
+      flex-grow: 2;
+
+      .invite-option {
+        margin-bottom: 1em;
+
+        .option-num {
+          width: 1.2em;
+          text-align: left;
+        }
+
+        .option-content {
+          flex-grow: 2;
+          height: 100%;
+        }
+
+        &:last-child {
+          flex-grow: 2;
+        }
+      }
+    }
+
+    .members-wrapper {
+      width: 100%;
+      flex-grow: 2;
+    }
+
+    .ScrollbarsCustom {
+      width: 100%;
+      height: 100%;
+
+      .ScrollbarsCustom-Wrapper {
+        width: 100%;
+        height: 100%;
+      }
+
+      .ScrollbarsCustom-Track {
+        position: absolute;
+        border-radius: 0.25rem;
+        opacity: .5;
+      }
+
+      .ScrollbarsCustom-TrackY {
+        width: .5rem;
+        height: 100%;
+        top: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .ScrollbarsCustom-Thumb {
+        background: rgba(255, 255, 255, 0.12);
+        cursor: pointer;
+        border-radius: 0.25rem;
+      }
+
+      .ScrollbarsCustom-ThumbY {
+        width: 100%;
+      }
+
+      &:hover {
+        .ScrollbarsCustom-Track {
+          opacity: 1;
+        }
+      }
+    }
+
+    .member-list {
+      justify-content: flex-start;
+
+      .member {
+        font-size: .75em;
+        margin: 0 2.4em 0 0;
+        background-color: transparent;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+      }
     }
   }
 }

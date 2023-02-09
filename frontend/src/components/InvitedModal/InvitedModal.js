@@ -5,28 +5,47 @@ import "./InvitedModal.scss";
 import { CollectorLink, TwitterLink } from "components/Links";
 import WaitFor from "containers/WaitFor";
 import Button from "components/Button";
+import classNames from "classnames";
+import {useSelector} from "react-redux";
+import {isActionPendingSelector} from "store/actionStatusReducer";
+import Scrollbar from "react-scrollbars-custom";
+import {GroupedMemberList} from "components/MemberList/MemberList";
 
 const InvitedModalContent = ({ close, invite }) => {
   if (!invite)
     return (
       <>
-        <div className="leading-text">INVITATION NOT FOUND</div>
-        <div className="text">
-          We couldn't find your invitation.
-          <br />
-          Please make sure you copied the invitation link correctly and try to
-          refresh the page.
-          <br />
-          <br />
-          If it doesn't work, please contact{" "}
-          <TwitterLink className="text-gold">
-            <b>@DiamondDawnNFT</b>
-          </TwitterLink>
+        <div className="center-aligned-row modal-title">
+          <div className="image">
+            <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+          </div>
+          <div className="leading-text">JOIN DIAMOND DAWN</div>
         </div>
-        <div className="text-center">
-          <Button className="gold" onClick={close} sfx="explore">
-            CLOSE
-          </Button>
+        <div className="text">
+          Diamond Dawn is an invite-only project. There are only 2 ways to join:
+        </div>
+        <div className="stretched-column invite-options">
+          <div className="left-center-aligned-row invite-option">
+            <div className="option-num">1.</div>
+            <div className="option-content">
+              Twitter DM{" "}
+              <TwitterLink className="text-gold">
+                <b>@DiamondDawnNFT</b>
+              </TwitterLink>
+            </div>
+          </div>
+          <div className="start-start-aligned-row invite-option">
+            <div className="option-num">2.</div>
+            <div className="stretched-column option-content">
+              <div>Get an invite from a community member<span className="text-sm"> (recommended)</span></div>
+              <div className="members-wrapper">
+                <Scrollbar noDefaultStyles disableTracksWidthCompensation removeTracksWhenNotUsed>
+                  <GroupedMemberList />
+                  {/*<MemberList members={CREDITS} />*/}
+                </Scrollbar>
+              </div>
+            </div>
+          </div>
         </div>
       </>
     );
@@ -36,6 +55,9 @@ const InvitedModalContent = ({ close, invite }) => {
   if (collector || revoked)
     return (
       <>
+        <div className="image">
+          <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+        </div>
         <div className="leading-text">INVITATION USED</div>
         <div className="text">
           This invitation has already been used.
@@ -56,6 +78,9 @@ const InvitedModalContent = ({ close, invite }) => {
 
   return (
     <>
+      <div className="image">
+        <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
+      </div>
       <div className="leading-text">CONGRATULATIONS</div>
       <div className="text">
         You’ve been invited by{" "}
@@ -76,20 +101,21 @@ const InvitedModalContent = ({ close, invite }) => {
 };
 
 const InvitedModal = ({ close, onCopy, invite }) => {
+
+  const isGetInvitePending = useSelector(isActionPendingSelector("get-invite-by-id"))
+  const isNoInvite = !isGetInvitePending && !invite
+
   return (
     <Modal
-      className="invited-modal"
+      className={classNames("invited-modal", { "no-invite": isNoInvite })}
       close={close}
-      backdropClose={false}
+      backdropClose={!invite}
       withCloseBtn
     >
       <div className="center-aligned-column modal-content">
-        <WaitFor actions={["get-invite-by-id"]}>
-          <div className="image">
-            <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
-          </div>
-          <InvitedModalContent close={close} onCopy={onCopy} invite={invite} />
-        </WaitFor>
+        {/*<WaitFor actions={["get-invite-by-id"]}>*/}
+        <InvitedModalContent close={close} onCopy={onCopy} invite={invite} />
+        {/*</WaitFor>*/}
       </div>
     </Modal>
   );
