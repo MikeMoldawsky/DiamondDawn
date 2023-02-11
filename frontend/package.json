@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.267.0",
+    "@aws-sdk/s3-presigned-post": "^3.267.0",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",

@@ -9,12 +9,13 @@ const {
   createInvitations,
 } = require("../db/managers/invite-db-manager");
 const { onApplicationSubmitted } = require("../db/managers/marketing-manager");
+const isEmpty = require("lodash/isEmpty")
 
 module.exports = async function (req, res) {
   try {
     const start = Date.now();
     await clientDBPromise;
-    let { inviteId, ...payload } = req.body;
+    let { inviteId, imageExt, ...payload } = req.body;
 
     let invite = await validateInviteById(inviteId);
     const { inviter, honoraryInvitee, trustedInvitee, numNFTs, note } = invite;
@@ -32,6 +33,12 @@ module.exports = async function (req, res) {
       status: approved ? "Approved" : "Applied",
     });
 
+    const update = {}
+
+    if (imageExt) {
+      update.image = `${collector._id}.${imageExt}`
+    }
+
     if (approved) {
       const noteName = collector.twitter || collector.address;
       const [i1] = await createInvitations(
@@ -42,9 +49,13 @@ module.exports = async function (req, res) {
         { note: `${noteName} - Invite 2` },
         collector
       );
+      update.invitations = [i1, i2]
+    }
+
+    if (!isEmpty(update)) {
       collector = await updateCollector({
         _id: collector._id,
-        invitations: [i1, i2],
+        ...update,
       });
     }
 

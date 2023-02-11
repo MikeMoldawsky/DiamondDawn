@@ -28,6 +28,7 @@ const CollectorSchema = new mongoose.Schema({
   approved: { type: Boolean, required: true, default: false },
   isDao: { type: Boolean, default: false },
   invitations: { type: [{ type: ObjectId, ref: "Invitation" }], default: [] },
+  image: { type: String },
 });
 
 const CollectorModel = mongoose.model("Collector", CollectorSchema);

@@ -99,7 +99,7 @@ const collectorToMember = collector => {
     name: collector.twitter,
     link: `https://twitter.com/${getCollectorTwitterName(collector)}`,
     labels,
-    hasImage: false,
+    image: collector.image,
   }
 }
 

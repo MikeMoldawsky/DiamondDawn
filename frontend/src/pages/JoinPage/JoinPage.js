@@ -11,7 +11,7 @@ const JoinPage = () => {
   return (
     <CollectorLayout requireAccess={false} pageTitle="JOIN DIAMOND DAWN">
       <div className={classNames("page join-page")}>
-        <Join />
+        <Join successRedirect="/community" />
       </div>
     </CollectorLayout>
   )

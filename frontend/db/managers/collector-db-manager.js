@@ -10,9 +10,9 @@ async function getCommunityMembers() {
         address: { $ne: "0xffff" },
         twitter: { $exists: true }
       })
-      .sort({
-        createdAt: -1,
-      });
+      // .sort({
+      //   createdAt: -1,
+      // });
   } catch (e) {
     console.log(
       `Failed to get collectors`,

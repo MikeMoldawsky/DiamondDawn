@@ -139,6 +139,9 @@ export const getCDNAudioUrl = (objectPath) =>
 export const getCDNContractUrl = (objectPath) =>
   getCDNObjectUrl(`/contracts${prependBackslash(objectPath)}`);
 
+export const getCommunityCDNUrl = (objectPath) =>
+  `${process.env.REACT_APP_COMMUNITY_CDN_URL}${prependBackslash(objectPath)}`;
+
 export const createVideoSources = (fileName) => [
   { src: getCDNVideoUrl(`${fileName}.webm`), type: "video/webm" },
   { src: getCDNVideoUrl(`${fileName}.mp4`), type: "video/mp4" },

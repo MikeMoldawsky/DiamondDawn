@@ -3,7 +3,7 @@ import "./MemberList.scss";
 import map from "lodash/map";
 import Link from "components/Links";
 import classNames from "classnames";
-import Button from "components/Button";
+import {getCDNImageUrl, getCommunityCDNUrl} from "utils";
 
 const GROUPS = {
   "Core Members": [
@@ -98,12 +98,14 @@ const GROUPS = {
 
 const MemberList = ({ members }) => (
   <div className="member-list">
-    {map(members, ({ id, title, name, labels, link }) => (
+    {map(members, ({ id, title, name, labels, link, image }) => (
       <div
         key={`member-${name}`}
         className="start-start-aligned-row member"
       >
-        <div className={classNames("profile-image", id)} />
+        <div className={classNames("member-image")}>
+          <img src={image ? getCommunityCDNUrl(image) : getCDNImageUrl("avatar.png")} alt="" />
+        </div>
         <div className="left-top-aligned-column">
           {title && <div className="member-title">{title}</div>}
           <div className="right-spaced-column">

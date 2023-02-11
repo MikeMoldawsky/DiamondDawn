@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import isNil from "lodash/isNil";
 import get from "lodash/get";
+import omit from "lodash/omit";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import ActionButton from "components/ActionButton";
@@ -50,18 +51,53 @@ const ApplyForm = ({ isPreApproved, onSuccess, onError }) => {
   const account = useAccount();
   const invite = useSelector(inviteSelector);
   const { geoLocation } = useSelector(uiSelector);
+  // const [image, setImage] = useState(null)
+
+  const uploadPhoto = async (file, overrideFileName) => {
+    const filename = encodeURIComponent(overrideFileName)
+    const fileType = encodeURIComponent(file.type)
+
+    const res = await fetch(
+      `/api/upload_profile_image?file=${filename}&fileType=${fileType}`
+    )
+    const { url, fields } = await res.json()
+    const formData = new FormData()
+
+    Object.entries({ ...fields, file }).forEach(([key, value]) => {
+      formData.append(key, value)
+    })
+
+    await fetch(url, {
+      method: 'POST',
+      body: formData,
+    })
+  }
 
   const applyToDD = async () => {
     try {
       const data = getValues();
+      const withImage = data.image.length > 0
+      if (withImage) {
+        const { type } = data.image[0]
+        data.imageExt = type.substring(type.indexOf("/") + 1)
+      }
       const inviteId =
         invite && !invite.used && !invite.revoked ? invite._id : null;
       const collector = await applyToDDApi(
         inviteId,
         account.address,
-        data,
+        omit(data, "image"),
         geoLocation
       );
+      if (withImage) {
+        try {
+          await uploadPhoto(data.image[0], collector.image)
+        }
+        catch (e) {
+          console.error("Failed to upload image to s3")
+          // do not fail the process
+        }
+      }
       setIsSubmitSuccess(true);
       onSuccess && (await onSuccess(collector));
     } catch (e) {
@@ -130,6 +166,14 @@ const ApplyForm = ({ isPreApproved, onSuccess, onError }) => {
     <div className="request-form">
       <form>
         <div className="center-aligned-row inputs-row">
+          <div className="input-container">
+            <input
+              // onChange={uploadPhoto}
+              type="file"
+              accept="image/png, image/jpeg"
+              {...register("image")}
+            />
+          </div>
           <div className="input-container">
             <div className="label">Email</div>
             {renderInput("email", "diamond@gmail.com", {
