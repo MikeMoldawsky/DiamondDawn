@@ -18,7 +18,7 @@ const Footer = ({ withFAQs }) => {
     >
       <div className="bg bg-footer" />
       <div className="top-mask" />
-      <FeaturedIn />
+      {/*<FeaturedIn />*/}
       {withFAQs && (
         <div className="faq-section">
           <div className="subtitle-text">FAQs</div>

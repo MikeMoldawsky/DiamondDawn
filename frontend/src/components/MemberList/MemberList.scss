@@ -11,11 +11,12 @@
 
   .member {
     margin: 1em 1.2em;
-    width: 18em;
+    width: 20em;
     border: solid 1px $border_opaque;
     background-color: $box_bg;
-    padding: 0.8em 1em;
+    padding: 0.625em .75em;
     line-height: 1em;
+    position: relative;
 
     .member-title {
       opacity: 0.8;
@@ -26,15 +27,57 @@
     }
 
     .member-name {
-      &:not(:first-child) {
-        margin-top: 0.6em;
-      }
+      margin: .5em 0 .25em;
     }
 
     .profile-image {
-      width: 3em;
-      height: 3em;
-      margin-right: 1.2em;
+      width: 6em;
+      height: 6em;
+      margin-right: 1.25em;
+    }
+
+    .labels {
+      .label {
+        font-size: $font10px;
+        padding: .25em .75em .25em 1.125em;
+        position: relative;
+
+        &:not(:last-child) {
+          margin-right: .5em;
+        }
+
+        &:before {
+          content: '';
+          position: absolute;
+          background-color: #c0c0c0;
+          width: .75em;
+          height: .75em;
+          border-radius: 50%;
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
+        }
+
+        &.label-team {
+          &:before {
+            background-color: #228B22;
+          }
+        }
+
+        &.label-honorary {
+          &:before {
+            background-color: #800080;
+          }
+        }
+      }
+    }
+
+    .request-invite {
+      font-size: .55em;
+      position: absolute;
+      bottom: 1.75em;
+      right: 2em;
+      line-height: 1em;
     }
   }
 }

@@ -1,0 +1,43 @@
+@import "css/varsNEW";
+
+.page.community-page {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: unset;
+
+  .inner-page {
+    width: 80%;
+    font-size: 1.1em;
+  }
+
+  h1 {
+    margin: 0.8em 0;
+    line-height: 1.4em;
+  }
+
+  footer {
+    margin-top: 2em;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .page.community-page {
+    .inner-page {
+      font-size: $font20px;
+    }
+
+    footer.footer {
+      margin-top: 8em;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .page.community-page {
+    .inner-page {
+      font-size: $font22px;
+    }
+  }
+}

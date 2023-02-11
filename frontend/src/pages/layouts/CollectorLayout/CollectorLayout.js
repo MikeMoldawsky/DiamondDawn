@@ -17,6 +17,7 @@ const CollectorLayout = ({
   boxAnimation,
   renderBoxIcons,
   disableNoScroll,
+  pageTitle = "The Collector's Room",
   children,
   ...pageProps
 }) => {
@@ -38,7 +39,7 @@ const CollectorLayout = ({
       <div className={classNames("page collector-layout collector-page")}>
         <div className="bg collector-bg" />
         <div className="inner-page">
-          <h1>The Collector's Room</h1>
+          <h1>{pageTitle}</h1>
           <div className="center-center-aligned-row account">
             {ensName?.data || shortenEthAddress(account?.address)}
           </div>

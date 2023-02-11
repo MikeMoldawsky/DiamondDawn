@@ -2,6 +2,25 @@ const Collector = require("../models/CollectorModel");
 const ethers = require("ethers");
 const signer = require("../../helpers/signer");
 
+async function getCommunityMembers() {
+  try {
+    return await Collector
+      .find({
+        approved: true,
+        address: { $ne: "0xffff" },
+        twitter: { $exists: true }
+      })
+      .sort({
+        createdAt: -1,
+      });
+  } catch (e) {
+    console.log(
+      `Failed to get collectors`,
+      e
+    );
+  }
+}
+
 async function getCollectorById(collectorId) {
   try {
     return await Collector.findById(collectorId)
@@ -92,6 +111,7 @@ async function changeMintAddress(collectorId, address, newAddress) {
 }
 
 module.exports = {
+  getCommunityMembers,
   getCollectorById,
   getCollectorByAddress,
   createCollector,

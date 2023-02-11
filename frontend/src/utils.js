@@ -190,3 +190,7 @@ export const isBlockedCountry = isCountryInList(
 );
 
 export const isVATCountry = isCountryInList(process.env.REACT_APP_VAT_COUNTRY);
+
+export const getCollectorTwitterName = ({ twitter }) => {
+  return twitter.startsWith("@") ? twitter.substring(1) : twitter;
+}

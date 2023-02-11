@@ -5,7 +5,7 @@ import {
   DIAMOND_DAWN_OPENSEA,
   DIAMOND_DAWN_SUBSTACK,
 } from "consts";
-import { collectorDisplayName, isNoContractMode } from "utils";
+import {collectorDisplayName, getCollectorTwitterName, isNoContractMode} from "utils";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { systemSelector } from "store/systemReducer";
@@ -65,8 +65,7 @@ export const GetPasswordLink = ({ className }) => (
 
 export const CollectorLink = ({ className, collector, twitter }) => {
   if (!twitter && !collector?.twitter) return collectorDisplayName(collector);
-  const handle = twitter || collector.twitter;
-  const username = handle.startsWith("@") ? handle.substring(1) : handle;
+  const username = getCollectorTwitterName({ twitter: twitter || collector.twitter });
   return (
     <Link
       href={`https://twitter.com/${username}`}

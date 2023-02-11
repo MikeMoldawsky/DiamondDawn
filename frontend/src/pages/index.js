@@ -13,6 +13,8 @@ const TNCPage = lazy(() => import("pages/Legal/TNCPage"));
 const CreditsPage = lazy(() => import("pages/CreditsPage"));
 const FAQsPage = lazy(() => import("pages/FAQsPage"));
 const InvitesPage = lazy(() => import("pages/InvitesPage"));
+const JoinPage = lazy(() => import("pages/JoinPage"));
+const CommunityPage = lazy(() => import("pages/CommunityPage"));
 
 const SuspenseFallback = ({ requireAccess = true }) => {
   useAccessDDGuard(requireAccess);
@@ -27,6 +29,22 @@ const AppRoutes = () => {
         element={
           <Suspense fallback={<SuspenseFallback requireAccess={false} />}>
             <ComingSoonPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/join"
+        element={
+          <Suspense fallback={<SuspenseFallback />}>
+            <JoinPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/community"
+        element={
+          <Suspense fallback={<SuspenseFallback />}>
+            <CommunityPage />
           </Suspense>
         }
       />

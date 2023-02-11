@@ -64,6 +64,11 @@ export const getInviteApi = async (inviteId) => {
   return res.data;
 };
 
+export const getCommunityMembersApi = async () => {
+  const res = await axios.post(`/api/get_community_members`);
+  return res.data;
+};
+
 export const getCollectorByAddressApi = async (address) => {
   try {
     const { data: collector } = await axios.post(

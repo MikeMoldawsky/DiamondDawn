@@ -3,6 +3,7 @@ import "./MemberList.scss";
 import map from "lodash/map";
 import Link from "components/Links";
 import classNames from "classnames";
+import Button from "components/Button";
 
 const GROUPS = {
   "Core Members": [
@@ -97,7 +98,7 @@ const GROUPS = {
 
 const MemberList = ({ members }) => (
   <div className="member-list">
-    {map(members, ({ id, title, name, link }) => (
+    {map(members, ({ id, title, name, labels, link }) => (
       <div
         key={`member-${name}`}
         className="start-start-aligned-row member"
@@ -110,6 +111,18 @@ const MemberList = ({ members }) => (
               <Link href={link}>{name}</Link>
             </div>
           </div>
+          {labels && (
+            <div className="center-aligned-row labels">
+              {map(labels, label => (
+                <div key={`member-${name}-label-${label}`} className={classNames("label", `label-${label.toLowerCase()}`)}>{label}</div>
+              ))}
+            </div>
+          )}
+          {link && (
+            <Link className="request-invite button gold sm no-hover" href={link}>
+              REQUEST INVITE
+            </Link>
+          )}
         </div>
       </div>
     ))}
