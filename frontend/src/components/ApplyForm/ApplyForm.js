@@ -11,10 +11,12 @@ import { useAccount, useSignMessage } from "wagmi";
 import { useSelector } from "react-redux";
 import { inviteSelector } from "store/inviteReducer";
 import Checkbox from "components/Checkbox";
-import { showError } from "utils";
+import {getCDNImageUrl, showError} from "utils";
 import Wallet from "components/Wallet";
 import { uiSelector } from "store/uiReducer";
 import IncreaseChances from "components/IncreaseChances";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPenToSquare, faArrowUpFromBracket} from "@fortawesome/free-solid-svg-icons";
 
 const getValidationError = (name, value) => {
   switch (name) {
@@ -51,7 +53,11 @@ const ApplyForm = ({ isPreApproved, onSuccess, onError }) => {
   const account = useAccount();
   const invite = useSelector(inviteSelector);
   const { geoLocation } = useSelector(uiSelector);
-  // const [image, setImage] = useState(null)
+  const [image, setImage] = useState(null)
+
+  const onImageChange = e => {
+    setImage(URL.createObjectURL(e.target.files[0]))
+  }
 
   const uploadPhoto = async (file, overrideFileName) => {
     const filename = encodeURIComponent(overrideFileName)
@@ -166,27 +172,35 @@ const ApplyForm = ({ isPreApproved, onSuccess, onError }) => {
     <div className="request-form">
       <form>
         <div className="center-aligned-row inputs-row">
-          <div className="input-container">
+          <div className="left-centered-aligned-column info-inputs">
+            <div className="input-container">
+              <div className="label">Email</div>
+              {renderInput("email", "diamond@gmail.com", {
+                required: true,
+                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              })}
+            </div>
+            <div className="input-container">
+              <div className="label">Twitter Handle</div>
+              {renderInput("twitter", "@diamond", {
+                required: false,
+                pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
+              })}
+            </div>
+          </div>
+          <div className="image-input">
+            <div className="image-container">
+              <img src={image || getCDNImageUrl("avatar.png")} alt="" />
+            </div>
+            <FontAwesomeIcon icon={image ? faPenToSquare : faArrowUpFromBracket} />
             <input
-              // onChange={uploadPhoto}
+              className="hidden-input"
               type="file"
               accept="image/png, image/jpeg"
-              {...register("image")}
+              {...register("image", {
+                onChange: onImageChange,
+              })}
             />
-          </div>
-          <div className="input-container">
-            <div className="label">Email</div>
-            {renderInput("email", "diamond@gmail.com", {
-              required: true,
-              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            })}
-          </div>
-          <div className="input-container">
-            <div className="label">Twitter Handle</div>
-            {renderInput("twitter", "@diamond", {
-              required: false,
-              pattern: /^@[a-zA-Z0-9_]{4,15}$/i,
-            })}
           </div>
         </div>
         <div className="center-aligned-row inputs-row row-2">

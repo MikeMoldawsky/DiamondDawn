@@ -13,7 +13,7 @@
     margin: 1em 1.2em;
     width: 20em;
     border: solid 1px $border_opaque;
-    background-color: $box_bg;
+    background-color: #c0c0c039;
     padding: 0.625em .75em;
     line-height: 1em;
     position: relative;
@@ -35,20 +35,21 @@
       height: 6em;
       margin-right: 1.25em;
       border-radius: 50%;
-      filter: grayscale(1);
       overflow: hidden;
+      box-shadow: 0 0 4px -2px $gold;
 
       img {
         width: 100%;
+        filter: grayscale(1);
       }
     }
 
     .labels {
       .label {
-        font-size: $font10px;
+        font-size: $font11px;
         padding: .25em .75em .25em 1.125em;
         position: relative;
-
+        
         &:not(:last-child) {
           margin-right: .5em;
         }
@@ -80,10 +81,10 @@
     }
 
     .request-invite {
-      font-size: .55em;
+      font-size: $font9px;
       position: absolute;
-      bottom: 1.75em;
-      right: 2em;
+      bottom: 1.5em;
+      right: 1.75em;
       line-height: 1em;
     }
   }
