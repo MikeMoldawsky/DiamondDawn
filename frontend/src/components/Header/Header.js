@@ -89,24 +89,10 @@ const Header = () => {
             <CTAButton className="md collector-btn" />
           )}
           <div className="center-aligned-row social-links">
-            <TwitterLink className="social-link no-hover">
+            <TwitterLink className="social-link text-gold no-hover">
               <FontAwesomeIcon className="menu-icon" icon={faTwitter} />
             </TwitterLink>
-            {collector?.approved && (
-              <TelegramLink
-                className="social-link no-hover private-tg"
-                href={DIAMOND_DAWN_COLLECTORS_TELEGRAM}
-              >
-                <TelegramIcon />
-              </TelegramLink>
-            )}
-            <TelegramLink
-              className="social-link no-hover"
-              href={DIAMOND_DAWN_PUBLIC_TELEGRAM}
-            >
-              <TelegramIcon />
-            </TelegramLink>
-            <SubstackLink className="social-link text-gold no-hover">
+            <SubstackLink className="social-link no-hover">
               <FontAwesomeIcon icon={faBookOpen} />
             </SubstackLink>
           </div>

@@ -41,13 +41,14 @@ const ServerAppLoader = () => {
     dispatch(loadConfig());
   }, []);
 
-  return (
-    <CollectorLoader
-      onDisconnect={() => {
-        dispatch({ type: "RESET_STATE" });
-      }}
-    />
-  );
+  return null;
+  // return (
+  //   <CollectorLoader
+  //     onDisconnect={() => {
+  //       dispatch({ type: "RESET_STATE" });
+  //     }}
+  //   />
+  // );
 };
 
 const ChainAppLoader = () => {
