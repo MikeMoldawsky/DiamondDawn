@@ -35,7 +35,7 @@ const AppRoutes = () => {
       <Route
         path="/join"
         element={
-          <Suspense fallback={<SuspenseFallback />}>
+          <Suspense fallback={<SuspenseFallback requireAccess={false} />}>
             <JoinPage />
           </Suspense>
         }
@@ -43,7 +43,7 @@ const AppRoutes = () => {
       <Route
         path="/community"
         element={
-          <Suspense fallback={<SuspenseFallback />}>
+          <Suspense fallback={<SuspenseFallback requireAccess={false} />}>
             <CommunityPage />
           </Suspense>
         }

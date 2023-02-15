@@ -34,7 +34,7 @@ footer.footer {
 
   .footer-inner {
     margin: 0 auto 0;
-    padding: 17rem 0 2.5rem;
+    padding: 15rem 0 2.5rem;
     min-width: 40em;
     z-index: 1;
 
@@ -132,6 +132,16 @@ footer.footer {
   &.with-faqs {
     .footer-inner {
       padding-top: 15rem;
+    }
+  }
+
+  &.logo-only {
+    .bg.bg-footer {
+      height: 15em;
+    }
+
+    .footer-inner {
+      min-width: unset;
     }
   }
 }

@@ -85,16 +85,11 @@ export const TelegramLink = ({ className, href, children }) => {
 };
 
 export const OpenseaLink = ({ className, children }) => {
-  const disabled = isNoContractMode();
-  const title = disabled
-    ? "Opensea link will be available once mint starts"
-    : "";
+  if (isNoContractMode() || DIAMOND_DAWN_OPENSEA === "") return null
   return (
     <Link
       href={DIAMOND_DAWN_OPENSEA}
       className={classNames("opensea", className)}
-      disabled={disabled}
-      title={title}
     >
       {children}
     </Link>

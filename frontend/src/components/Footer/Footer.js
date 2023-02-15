@@ -9,11 +9,12 @@ import FAQs from "components/FAQs";
 import classNames from "classnames";
 import FeaturedIn from "components/FeaturedIn";
 
-const Footer = ({ withFAQs }) => {
+const Footer = ({ withMenu = true, withFAQs }) => {
   return (
     <footer
       className={classNames("footer", {
         "with-faqs": withFAQs,
+        "logo-only": !withMenu,
       })}
     >
       <div className="bg bg-footer" />
@@ -30,38 +31,42 @@ const Footer = ({ withFAQs }) => {
           <Logo withText />
           <SocialIcons />
         </div>
-        <div className="separator" />
-        <div className="left-bottom-aligned-column footer-menu">
-          <div className="left-center-aligned-row top-menu">
-            <NavLink to="/explore">
-              <span className="sitemap-link">Homepage</span>
-            </NavLink>
-            <SVG src={star} />
-            <NavLink to="/about-us">
-              <span className="sitemap-link">About Us</span>
-            </NavLink>
-            <SVG src={star} />
-            <NavLink to="/technology">
-              <span className="sitemap-link">Timeless Technology</span>
-            </NavLink>
-            <SVG src={star} />
-            <NavLink to="/faq">
-              <span className="sitemap-link">FAQs</span>
-            </NavLink>
-            <SVG className="last-star" src={star} />
-          </div>
-          <div className="left-center-aligned-row bottom-menu">
-            <NavLink to="/privacy" className="inverted">
-              <span className="link">Privacy Policy</span>
-            </NavLink>
-            <NavLink to="/tnc" className="inverted">
-              <span className="link">Terms & Conditions</span>
-            </NavLink>
-            <NavLink to="/credits" className="inverted">
-              <span className="link">Credits</span>
-            </NavLink>
-          </div>
-        </div>
+        {withMenu && (
+          <>
+            <div className="separator" />
+            <div className="left-bottom-aligned-column footer-menu">
+              <div className="left-center-aligned-row top-menu">
+                <NavLink to="/explore">
+                  <span className="sitemap-link">Homepage</span>
+                </NavLink>
+                <SVG src={star} />
+                <NavLink to="/about-us">
+                  <span className="sitemap-link">About Us</span>
+                </NavLink>
+                <SVG src={star} />
+                <NavLink to="/technology">
+                  <span className="sitemap-link">Timeless Technology</span>
+                </NavLink>
+                <SVG src={star} />
+                <NavLink to="/faq">
+                  <span className="sitemap-link">FAQs</span>
+                </NavLink>
+                <SVG className="last-star" src={star} />
+              </div>
+              <div className="left-center-aligned-row bottom-menu">
+                <NavLink to="/privacy" className="inverted">
+                  <span className="link">Privacy Policy</span>
+                </NavLink>
+                <NavLink to="/tnc" className="inverted">
+                  <span className="link">Terms & Conditions</span>
+                </NavLink>
+                <NavLink to="/credits" className="inverted">
+                  <span className="link">Credits</span>
+                </NavLink>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </footer>
   );

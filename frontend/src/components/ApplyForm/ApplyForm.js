@@ -203,18 +203,6 @@ const ApplyForm = ({ isPreApproved, onSuccess, onError }) => {
             />
           </div>
         </div>
-        <div className="center-aligned-row inputs-row row-2">
-          <div className="input-container">
-            <Checkbox
-              register={register}
-              watch={watch}
-              setValue={setValue}
-              name="isDao"
-            >
-              We are a DAO
-            </Checkbox>
-          </div>
-        </div>
         {!isPreApproved && (
           <div className="input-container textarea-container">
             <div className="label">Reason</div>

@@ -4,6 +4,9 @@ import map from "lodash/map";
 import Link from "components/Links";
 import classNames from "classnames";
 import {getCDNImageUrl, getCommunityCDNUrl} from "utils";
+import { EmojiConvertor } from "emoji-js"
+
+const emoji = new EmojiConvertor();
 
 const GROUPS = {
   "Core Members": [
@@ -98,33 +101,28 @@ const GROUPS = {
 
 const MemberList = ({ members }) => (
   <div className="member-list">
-    {map(members, ({ id, title, name, labels, link, image }) => (
+    {map(members, ({ id, title, name, label, link, image }) => (
       <div
         key={`member-${name}`}
-        className="start-start-aligned-row member"
+        className={classNames("start-start-aligned-row member", `${label.toLowerCase()}-member`)}
       >
         <div className={classNames("member-image")}>
           <img src={image ? getCommunityCDNUrl(image) : getCDNImageUrl("avatar.png")} alt="" />
         </div>
-        <div className="left-top-aligned-column">
+        <div className="left-top-aligned-column member-info">
           {title && <div className="member-title">{title}</div>}
-          <div className="right-spaced-column">
-            <div className="member-name">
-              <Link href={link}>{name}</Link>
-            </div>
+          <div className="member-name">
+            <Link href={link}>{name}</Link>
+            <span dangerouslySetInnerHTML={{ __html: emoji.replace_colons(label === "Honorary" ? ":gem:💎" : ":fleur_de_lis:️") }} />
           </div>
-          {labels && (
-            <div className="center-aligned-row labels">
-              {map(labels, label => (
-                <div key={`member-${name}-label-${label}`} className={classNames("label", `label-${label.toLowerCase()}`)}>{label}</div>
-              ))}
-            </div>
-          )}
-          {link && (
-            <Link className="request-invite button gold sm no-hover" href={link}>
-              REQUEST INVITE
-            </Link>
-          )}
+          <div className="top-spaced-row">
+            <div key={`member-${name}-label-${label}`} className={classNames("label", `label-${label.toLowerCase()}`)}>{label}</div>
+            {link && (
+              <Link className="request-invite button gold sm no-hover" href={link}>
+                REQUEST INVITE
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     ))}

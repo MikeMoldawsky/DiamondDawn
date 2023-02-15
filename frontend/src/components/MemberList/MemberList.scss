@@ -10,6 +10,7 @@
   }
 
   .member {
+    font-size: 1.1em;
     margin: 1em 1.2em;
     width: 20em;
     border: solid 1px $border_opaque;
@@ -17,6 +18,7 @@
     padding: 0.625em .75em;
     line-height: 1em;
     position: relative;
+    align-items: stretch;
 
     .member-title {
       opacity: 0.8;
@@ -27,12 +29,17 @@
     }
 
     .member-name {
+      color: silver;
       margin: .5em 0 .25em;
+
+      a {
+        margin-right: .25em;
+      }
     }
 
     .member-image {
-      width: 6em;
-      height: 6em;
+      width: 3.7em;
+      height: 3.7em;
       margin-right: 1.25em;
       border-radius: 50%;
       overflow: hidden;
@@ -40,51 +47,40 @@
 
       img {
         width: 100%;
-        filter: grayscale(1);
       }
     }
 
-    .labels {
-      .label {
-        font-size: $font11px;
-        padding: .25em .75em .25em 1.125em;
-        position: relative;
-        
-        &:not(:last-child) {
-          margin-right: .5em;
-        }
+    .member-info {
+      flex-grow: 2;
+      align-items: stretch;
+      justify-content: space-between;
+    }
 
-        &:before {
-          content: '';
-          position: absolute;
-          background-color: #c0c0c0;
-          width: .75em;
-          height: .75em;
-          border-radius: 50%;
-          top: 50%;
-          left: 0;
-          transform: translateY(-50%);
-        }
+    .label {
+      font-size: $font11px;
+      position: relative;
+      font-weight: 500;
+      line-height: 1em;
 
-        &.label-team {
-          &:before {
-            background-color: #228B22;
-          }
-        }
+      &:not(:last-child) {
+        margin-right: .5em;
+      }
+    }
 
-        &.label-honorary {
-          &:before {
-            background-color: #800080;
-          }
-        }
+    &.team-member {
+      .member-name {
+        color: #228B22;
+      }
+    }
+
+    &.honorary-member {
+      .member-name {
+        color: $gold;
       }
     }
 
     .request-invite {
       font-size: $font9px;
-      position: absolute;
-      bottom: 1.5em;
-      right: 1.75em;
       line-height: 1em;
     }
   }

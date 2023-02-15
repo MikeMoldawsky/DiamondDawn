@@ -8,6 +8,7 @@ import { actionStatusReducer } from "./actionStatusReducer";
 import { inviteReducer } from "./inviteReducer";
 import { collectorReducer } from "./collectorReducer";
 import { videoReducer } from "./videoReducer";
+import { communityReducer } from "./communityReducer";
 
 const rootReducer = combineReducers({
   system: systemReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   ui: uiReducer,
   actionStatus: actionStatusReducer,
   video: videoReducer,
+  community: communityReducer,
 });
 
 export const makeStore = () => {
