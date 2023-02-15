@@ -14,8 +14,11 @@ const collectorToMember = collector => {
   if (includes(TEAM_TWITTERS, collector.twitter)) {
     label = "Team"
   }
-  if (collector.honorary) {
+  else if (collector.honorary) {
     label = "Honorary"
+  }
+  else if (collector.seed) {
+    label = "Seed"
   }
 
   return {

@@ -33,7 +33,7 @@
       margin: .5em 0 .25em;
 
       a {
-        margin-right: .25em;
+        margin-right: .4em;
       }
     }
 
@@ -69,13 +69,19 @@
 
     &.team-member {
       .member-name {
-        color: #228B22;
+        color: darken(#d35400, 5%);
       }
     }
 
     &.honorary-member {
       .member-name {
         color: $gold;
+      }
+    }
+
+    &.seed-member {
+      .member-name {
+        color: $silvergold;
       }
     }
 

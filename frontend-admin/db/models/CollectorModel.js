@@ -19,6 +19,7 @@ const CollectorSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   location: { type: String },
   honorary: { type: Boolean },
+  seed: { type: Boolean },
   trusted: { type: Boolean },
   numNFTs: { type: Number, min: 1, max: 5, default: 1 },
   note: { type: String },

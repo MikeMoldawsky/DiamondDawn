@@ -4,9 +4,7 @@ import map from "lodash/map";
 import Link from "components/Links";
 import classNames from "classnames";
 import {getCDNImageUrl, getCommunityCDNUrl} from "utils";
-import { EmojiConvertor } from "emoji-js"
-
-const emoji = new EmojiConvertor();
+import Emoji from "components/Emoji";
 
 const GROUPS = {
   "Core Members": [
@@ -99,6 +97,19 @@ const GROUPS = {
   ],
 }
 
+const renderMemberEmoji = label => {
+  switch (label) {
+    case "Team":
+      return (<Emoji symbol="🛠️" label="hammer_and_wrench" />)
+    case "Honorary":
+      return (<Emoji symbol="💎" label="gem" />)
+    case "Seed":
+      return (<Emoji symbol="🏆️" label="trophy" />)
+    default:
+      return null
+  }
+}
+
 const MemberList = ({ members }) => (
   <div className="member-list">
     {map(members, ({ id, title, name, label, link, image }) => (
@@ -113,7 +124,7 @@ const MemberList = ({ members }) => (
           {title && <div className="member-title">{title}</div>}
           <div className="member-name">
             <Link href={link}>{name}</Link>
-            <span dangerouslySetInnerHTML={{ __html: emoji.replace_colons(label === "Honorary" ? ":gem:💎" : ":fleur_de_lis:️") }} />
+            {renderMemberEmoji(label)}
           </div>
           <div className="top-spaced-row">
             <div key={`member-${name}-label-${label}`} className={classNames("label", `label-${label.toLowerCase()}`)}>{label}</div>
