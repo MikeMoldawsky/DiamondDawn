@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Modal from "components/Modal";
 import { getCDNImageUrl } from "utils";
 import "./InvitedModal.scss";
@@ -9,17 +9,31 @@ import classNames from "classnames";
 import {useSelector} from "react-redux";
 import {isActionPendingSelector} from "store/actionStatusReducer";
 import Scrollbar from "react-scrollbars-custom";
-import {GroupedMemberList} from "components/MemberList/MemberList";
+import useActionDispatch from "hooks/useActionDispatch";
+import {communitySelector, loadCommunityMembers} from "store/communityReducer";
+import {ACTION_KEYS} from "consts";
+import MemberList from "components/MemberList";
+import { NavLink } from "react-router-dom"
 
 const InvitedModalContent = ({ close, invite }) => {
+  const actionDispatch = useActionDispatch();
+  const {members} = useSelector(communitySelector)
+
+  useEffect(() => {
+    actionDispatch(
+      loadCommunityMembers(),
+      ACTION_KEYS.GET_COMMUNITY_MEMBERS
+    );
+  }, [])
+
   if (!invite)
     return (
       <>
         <div className="center-aligned-row modal-title">
+          <div className="leading-text">JOIN WAITING LIST</div>
           <div className="image">
             <img src={getCDNImageUrl("envelop-wings.png")} alt="" />
           </div>
-          <div className="leading-text">JOIN DIAMOND DAWN</div>
         </div>
         <div className="text">
           Diamond Dawn is an invite-only project. There are only 2 ways to join:
@@ -28,10 +42,7 @@ const InvitedModalContent = ({ close, invite }) => {
           <div className="left-center-aligned-row invite-option">
             <div className="option-num">1.</div>
             <div className="option-content">
-              Twitter DM{" "}
-              <TwitterLink className="text-gold">
-                <b>@DiamondDawnNFT</b>
-              </TwitterLink>
+              Request to <NavLink to="/join" className="text-gold">Join</NavLink> without an invite
             </div>
           </div>
           <div className="start-start-aligned-row invite-option">
@@ -39,10 +50,11 @@ const InvitedModalContent = ({ close, invite }) => {
             <div className="stretched-column option-content">
               <div>Get an invite from a community member<span className="text-sm"> (recommended)</span></div>
               <div className="members-wrapper">
-                <Scrollbar noDefaultStyles disableTracksWidthCompensation removeTracksWhenNotUsed>
-                  <GroupedMemberList />
-                  {/*<MemberList members={CREDITS} />*/}
-                </Scrollbar>
+                <WaitFor actions={[{ key: ACTION_KEYS.GET_COMMUNITY_MEMBERS, isFirstComplete: true }]} loaderText="Loading Members...">
+                  <Scrollbar noDefaultStyles disableTracksWidthCompensation removeTracksWhenNotUsed>
+                    <MemberList members={members} />
+                  </Scrollbar>
+                </WaitFor>
               </div>
             </div>
           </div>

@@ -29,8 +29,8 @@
   }
 
   .image {
-    margin: -1em 0 0em;
-    height: 8em;
+    margin: -2em 0 0em;
+    height: 6em;
     aspect-ratio: 2.15;
 
     img {
@@ -53,9 +53,9 @@
 
   .modal-title {
     width: 100%;
-    justify-content: center;
-    font-size: .8em;
-    margin: -.5em 0 1em;
+    justify-content: space-between;
+    font-size: 0.9em;
+    margin-bottom: 1em;
   }
 
   &.no-invite {
@@ -78,6 +78,10 @@
         .option-content {
           flex-grow: 2;
           height: 100%;
+
+          a.text-gold {
+            text-decoration: underline;
+          }
         }
 
         &:last-child {
@@ -89,6 +93,23 @@
     .members-wrapper {
       width: 100%;
       flex-grow: 2;
+      position: relative;
+
+      .loader-container {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: .75em;
+
+        .loader {
+          margin: -5.5em 0;
+        }
+
+        .tagline-text {
+          color: white;
+        }
+      }
     }
 
     .ScrollbarsCustom {

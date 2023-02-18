@@ -10,7 +10,8 @@ export const WaitFor = ({
   minWait = 0,
   onReady,
   withLoader = true,
-  Loader = () => <Loading />,
+  loaderText,
+  Loader = () => <Loading text={loaderText} />,
   containerClassName,
   children,
 }) => {
