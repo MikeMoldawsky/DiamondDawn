@@ -7,10 +7,13 @@ import useActionDispatch from "hooks/useActionDispatch";
 import {ACTION_KEYS} from "consts";
 import {communitySelector, loadCommunityMembers} from "store/communityReducer";
 import {useSelector} from "react-redux";
+import {collectorSelector} from "store/collectorReducer";
+import {NavLink} from "react-router-dom";
 
 const CommunityPage = () => {
   const actionDispatch = useActionDispatch();
   const {members} = useSelector(communitySelector)
+  const collector = useSelector(collectorSelector)
 
   useEffect(() => {
     actionDispatch(
@@ -24,6 +27,11 @@ const CommunityPage = () => {
       <div className="page community-page">
         <div className="inner-page">
           <h1>DIAMOND DAWN MEMBERS</h1>
+          {!collector && (
+            <div className="join-text">
+              Don't know anyone? Request to <NavLink to="/join" className="text-gold">Join</NavLink> without an invite
+            </div>
+          )}
           <MemberList members={members} />
         </div>
         <Footer withMenu={false} />

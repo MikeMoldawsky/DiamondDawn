@@ -69,7 +69,7 @@ const SideMenu = () => {
           </Link>
           <InvitationsStatus />
         </div>
-        {collector?.invitedBy && (
+        {invitedBy && (
           <div className="invited-by">
             <div className="image">
               <img src={getCDNImageUrl("envelop-wings.png")} alt="" />

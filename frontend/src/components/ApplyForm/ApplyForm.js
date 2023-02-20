@@ -203,20 +203,18 @@ const ApplyForm = ({ isPreApproved, onSuccess, onError }) => {
             />
           </div>
         </div>
-        {!isPreApproved && (
-          <div className="input-container textarea-container">
-            <div className="label">Reason</div>
-            <textarea
-              {...register("note", { required: true })}
-              disabled={disabled}
-              className={classNames("input", {
-                "with-error": !isNil(get(errors, "note")),
-              })}
-              placeholder="Why are you a good fit for Diamond Dawn?"
-            />
-            {renderErrorMessage("note")}
-          </div>
-        )}
+        <div className="input-container textarea-container">
+          <div className="label">Reason</div>
+          <textarea
+            {...register("note", { required: !isPreApproved })}
+            disabled={disabled}
+            className={classNames("input", {
+              "with-error": !isNil(get(errors, "note")),
+            })}
+            placeholder="Why are you a good fit for Diamond Dawn?"
+          />
+          {renderErrorMessage("note")}
+        </div>
         <div className="center-aligned-row address-row">
           <div className="input-container">
             <div className="label">Minting Address</div>

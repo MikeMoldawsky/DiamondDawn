@@ -52,12 +52,15 @@ const InvitedModalContent = ({ close, invite }) => {
               <div className="members-wrapper">
                 <WaitFor actions={[{ key: ACTION_KEYS.GET_COMMUNITY_MEMBERS, isFirstComplete: true }]} loaderText="Loading Members...">
                   <Scrollbar noDefaultStyles disableTracksWidthCompensation removeTracksWhenNotUsed>
-                    <MemberList members={members} />
+                    <MemberList members={members} limit={15} />
                   </Scrollbar>
                 </WaitFor>
               </div>
             </div>
           </div>
+        </div>
+        <div className="modal-footer">
+          <NavLink to="/community" className="text-gold">All Community Members >></NavLink>
         </div>
       </>
     );

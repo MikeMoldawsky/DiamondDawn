@@ -11,7 +11,7 @@
 
   .modal-inner {
     height: 100%;
-    padding: 4em 4em 3.5em;
+    padding: 4em 4em 2em;
 
     &:before {
       transform: translate(-50%, -4em);
@@ -44,8 +44,6 @@
   }
 
   .button {
-    margin-top: 2rem;
-
     svg {
       font-size: $font20px;
     }
@@ -154,16 +152,23 @@
 
     .member-list {
       justify-content: flex-start;
+      margin: 0.5em 0;
+      width: 103%;
+      transform: translateX(-3%);
 
       .member {
-        font-size: .75em;
-        margin: 0 2.4em 0 0;
-        background-color: transparent;
-        border-top: none;
-        border-left: none;
-        border-right: none;
+        background-color: $box_bg;
+        font-size: .8em;
       }
     }
+  }
+
+  .modal-footer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 1.5em;
   }
 }
 

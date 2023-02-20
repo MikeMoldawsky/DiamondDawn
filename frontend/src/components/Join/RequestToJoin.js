@@ -18,14 +18,21 @@ const RequestToJoin = ({ onSubmitSuccess }) => {
     [videoSrc]
   );
 
-  const renderTitle = () => (
-    <>
-      <div className="leading-text">
-        {isPreApproved ? "JOIN" : "APPLY FOR"} DIAMOND DAWN
-      </div>
-      <div className="text">Please fill the details below</div>
-    </>
-  );
+  const renderTitle = () => {
+    let titlePrefix = "APPLY FOR"
+    if (isPreApproved) {
+      titlePrefix = invite?.honoraryInvitee ? "HONORARY" : "JOIN"
+    }
+
+    return (
+      <>
+        <div className="leading-text">
+          {titlePrefix} DIAMOND DAWN
+        </div>
+        <div className="text">Please fill the details below</div>
+      </>
+    )
+  };
 
   return (
     <div className="box-content opaque invite-view">
