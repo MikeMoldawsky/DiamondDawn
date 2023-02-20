@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { useAccount } from "wagmi";
 import RequestSubmittedModal from "components/RequestSubmittedModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,17 +12,20 @@ import {
   MobileOrTablet,
   useMobileOrTablet,
 } from "hooks/useMediaQueries";
-import { SystemCountdown } from "components/Countdown/Countdown";
 import classNames from "classnames";
 import IncreaseChances from "components/IncreaseChances";
 
 const PendingApproval = ({ showModal }) => {
-  const [showSubmittedModal, setShowSubmittedModal] = useState(showModal);
+  const [showSubmittedModal, setShowSubmittedModal] = useState(false);
   const isMobileOrTablet = useMobileOrTablet();
 
   const videoSrc = createVideoSources(
     isMobileOrTablet ? "embedded-diamonds-wide" : "embedded-diamonds"
   );
+
+  useEffect(() => {
+    setShowSubmittedModal(showModal)
+  }, [showModal])
 
   const renderInlineVideo = useCallback(
     () => <InlineVideo src={videoSrc} withLoader />,
@@ -75,7 +78,6 @@ const PendingApproval = ({ showModal }) => {
                   </div>
                   <Desktop>{renderTwitterButton("lg")}</Desktop>
                 </div>
-                <SystemCountdown />
               </div>
               <MintAddressRow />
             </div>

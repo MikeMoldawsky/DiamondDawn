@@ -20,6 +20,10 @@
   }
 
   .menu {
+    padding-bottom: 1.5em;
+    margin-bottom: 1.5em;
+    border-bottom: solid 1px #707070;
+
     .button {
       margin-top: 1em;
     }
@@ -56,10 +60,6 @@
   }
 
   .invitations-menu {
-    padding-top: 1.5em;
-    margin-top: 1.5em;
-    border-top: solid 1px #707070;
-
     .menu-item {
       font-weight: 500;
     }

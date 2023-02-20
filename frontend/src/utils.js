@@ -118,6 +118,8 @@ export const isInviteOnly = () =>
 export const isPrivateSale = () =>
   process.env.REACT_APP_IS_PRIVATE_SALE === "true";
 
+export const isWebsiteOpen = () => process.env.REACT_APP_IS_WEBSITE_OPEN === "true"
+
 const prependBackslash = (objectPath) =>
   `${objectPath[0] !== "/" ? "/" : ""}${objectPath}`;
 

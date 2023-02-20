@@ -17,10 +17,11 @@ module.exports = async function (req, res) {
     await clientDBPromise;
     let { inviteId, imageExt, ...payload } = req.body;
 
-    let invite = await validateInviteById(inviteId);
-    const { inviter, honoraryInvitee, trustedInvitee, numNFTs, note } = invite;
+    let invite = inviteId ? await validateInviteById(inviteId) : null;
 
-    const approved = inviter.trusted;
+    const { inviter, honoraryInvitee, trustedInvitee, numNFTs = 1 } = invite || {};
+
+    const approved = inviter?.trusted;
 
     let collector = await createCollector({
       ...payload,
@@ -28,7 +29,6 @@ module.exports = async function (req, res) {
       honorary: honoraryInvitee,
       trusted: honoraryInvitee || trustedInvitee,
       numNFTs,
-      note,
       approved,
       status: approved ? "Approved" : "Applied",
     });

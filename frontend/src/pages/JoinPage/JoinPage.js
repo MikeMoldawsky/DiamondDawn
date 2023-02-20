@@ -6,7 +6,7 @@ import CollectorLayout from "pages/layouts/CollectorLayout";
 
 const JoinPage = () => {
 
-  useInviteResolver(true)
+  useInviteResolver(false)
 
   return (
     <CollectorLayout requireAccess={false} pageTitle="JOIN DIAMOND DAWN">

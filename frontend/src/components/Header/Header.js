@@ -102,7 +102,7 @@ const Header = () => {
             icon={muted ? faVolumeMute : faVolumeUp}
             onClick={onVolumeClick}
           />
-          {canAccessDD && (
+          {canAccessDD && collector?.approved && (
             <FontAwesomeIcon
               className="menu-icon"
               icon={getMenuIcon()}

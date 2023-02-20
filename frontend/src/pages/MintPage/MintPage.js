@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import MintKey from "components/MintKey";
 import { inviteSelector } from "store/inviteReducer";
 import CollectorLayout from "pages/layouts/CollectorLayout";
+import {isNoContractMode} from "utils";
 
 const MintView = ({ isHonorary }) => {
   const collector = useSelector(collectorSelector);
@@ -17,20 +18,21 @@ const MintView = ({ isHonorary }) => {
 
   useEffect(() => {
     console.log("MintPage useEffect", collector);
-    if (collector?.mintedAll) navigate("/collector");
+    if (isNoContractMode()) return navigate("/")
+    if (collector?.mintedAll) return navigate("/collector");
 
     if (
       !isHonorary &&
       inviteOrCollectorHonorary &&
       !collector?.mintedHonorary
     ) {
-      navigate("/mint-honorary");
+      return navigate("/mint-honorary");
     }
     if (
       isHonorary &&
       (!inviteOrCollectorHonorary || collector?.mintedHonorary)
     ) {
-      navigate("/mint");
+      return navigate("/mint");
     }
   }, [
     isHonorary,

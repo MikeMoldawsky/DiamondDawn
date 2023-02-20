@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./Join.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"
@@ -10,12 +10,18 @@ import RequestToJoin from "components/Join/RequestToJoin";
 import useSound from "use-sound";
 import sparklesSFX from "assets/audio/end-sparkles.mp3";
 
-const Join = ({ successRedirect }) => {
+const Join = ({ successRedirect = "/community" }) => {
   const dispatch = useDispatch();
   const collector = useSelector(collectorSelector);
   const [showSubmittedModal, setShowSubmittedModal] = useState(false);
   const [playSparklesSFX] = useSound(sparklesSFX);
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (collector?._id && collector.approved) {
+      navigate(successRedirect)
+    }
+  }, [collector?._id])
 
   const onSubmitSuccess = (collector) => {
     dispatch(setCollector(collector));
@@ -24,7 +30,7 @@ const Join = ({ successRedirect }) => {
       setShowSubmittedModal(true);
     }
     dispatch(clearInvite());
-    if (successRedirect) {
+    if (collector.approved) {
       navigate(successRedirect)
     }
   };

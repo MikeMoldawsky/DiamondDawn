@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import TokensProvider from "containers/TokensProvider";
 import useAccessDDGuard from "hooks/useAccessDDGuard";
+import {isWebsiteOpen} from "utils";
 const ComingSoonPage = lazy(() => import("pages/ComingSoonPage"));
 const Homepage = lazy(() => import("pages/Homepage"));
 const CollectorPage = lazy(() => import("pages/CollectorPage"));
@@ -49,44 +50,6 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/explore"
-        element={
-          <Suspense fallback={<SuspenseFallback />}>
-            <Homepage />
-          </Suspense>
-        }
-      />
-      <Route
-        path="collector"
-        element={
-          <TokensProvider goThrough>
-            <Suspense fallback={<SuspenseFallback />}>
-              <CollectorPage />
-            </Suspense>
-          </TokensProvider>
-        }
-      />
-      <Route
-        path="mint"
-        element={
-          <TokensProvider goThrough>
-            <Suspense fallback={<SuspenseFallback />}>
-              <MintPage />
-            </Suspense>
-          </TokensProvider>
-        }
-      />
-      <Route
-        path="mint-honorary"
-        element={
-          <TokensProvider goThrough>
-            <Suspense fallback={<SuspenseFallback />}>
-              <MintPage isHonorary />
-            </Suspense>
-          </TokensProvider>
-        }
-      />
-      <Route
         path="invites"
         element={
           <TokensProvider goThrough>
@@ -96,54 +59,96 @@ const AppRoutes = () => {
           </TokensProvider>
         }
       />
-      <Route
-        path="about-us"
-        element={
-          <Suspense fallback={<SuspenseFallback />}>
-            <AboutUsPage />
-          </Suspense>
-        }
-      />
-      <Route
-        path="technology"
-        element={
-          <Suspense fallback={<SuspenseFallback />}>
-            <TechPage />
-          </Suspense>
-        }
-      />
-      <Route
-        path="privacy"
-        element={
-          <Suspense fallback={<SuspenseFallback />}>
-            <PrivacyPage />
-          </Suspense>
-        }
-      />
-      <Route
-        path="tnc"
-        element={
-          <Suspense fallback={<SuspenseFallback />}>
-            <TNCPage />
-          </Suspense>
-        }
-      />
-      <Route
-        path="credits"
-        element={
-          <Suspense fallback={<SuspenseFallback />}>
-            <CreditsPage />
-          </Suspense>
-        }
-      />
-      <Route
-        path="faq"
-        element={
-          <Suspense fallback={<SuspenseFallback />}>
-            <FAQsPage />
-          </Suspense>
-        }
-      />
+      {isWebsiteOpen() && (
+        <>
+          <Route
+            path="/explore"
+            element={
+              <Suspense fallback={<SuspenseFallback />}>
+                <Homepage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="collector"
+            element={
+              <TokensProvider goThrough>
+                <Suspense fallback={<SuspenseFallback />}>
+                  <CollectorPage />
+                </Suspense>
+              </TokensProvider>
+            }
+          />
+          <Route
+            path="mint"
+            element={
+              <TokensProvider goThrough>
+                <Suspense fallback={<SuspenseFallback />}>
+                  <MintPage />
+                </Suspense>
+              </TokensProvider>
+            }
+          />
+          <Route
+            path="mint-honorary"
+            element={
+              <TokensProvider goThrough>
+                <Suspense fallback={<SuspenseFallback />}>
+                  <MintPage isHonorary />
+                </Suspense>
+              </TokensProvider>
+            }
+          />
+          <Route
+            path="about-us"
+            element={
+              <Suspense fallback={<SuspenseFallback />}>
+                <AboutUsPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="technology"
+            element={
+              <Suspense fallback={<SuspenseFallback />}>
+                <TechPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="privacy"
+            element={
+              <Suspense fallback={<SuspenseFallback />}>
+                <PrivacyPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tnc"
+            element={
+              <Suspense fallback={<SuspenseFallback />}>
+                <TNCPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="credits"
+            element={
+              <Suspense fallback={<SuspenseFallback />}>
+                <CreditsPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="faq"
+            element={
+              <Suspense fallback={<SuspenseFallback />}>
+                <FAQsPage />
+              </Suspense>
+            }
+          />
+        </>
+      )}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

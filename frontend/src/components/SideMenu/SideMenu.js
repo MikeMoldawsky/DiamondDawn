@@ -4,7 +4,7 @@ import { NavLink, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { collectorSelector } from "store/collectorReducer";
 import InvitationsStatus from "components/InvitationsStatus";
-import { getCDNImageUrl } from "utils";
+import {getCDNImageUrl, isWebsiteOpen} from "utils";
 import "./SideMenu.scss";
 import { inviteSelector } from "store/inviteReducer";
 import { CollectorLink } from "components/Links";
@@ -20,7 +20,10 @@ const SideMenu = () => {
 
   let invitedBy = invite;
   if (collector) {
-    invitedBy = collector.invitedBy || {
+    invitedBy = collector.invitedBy;
+  }
+  if (!invitedBy && collector?.approved) {
+    invitedBy = {
       inviter: { twitter: "@DiamondDawnNFT" },
     };
   }
@@ -34,28 +37,30 @@ const SideMenu = () => {
       ModalProps={{ onBackdropClick: closeMenu }}
     >
       <div className="stretch-top-aligned-column">
-        <div className="menu">
-          <NavLink to={"/explore"} onClick={closeMenu}>
-            <div className="menu-item">HOMEPAGE</div>
-          </NavLink>
-          <NavLink to={"/about-us"} onClick={closeMenu}>
-            <div className="menu-item">ABOUT US</div>
-          </NavLink>
-          <NavLink to={"/technology"} onClick={closeMenu}>
-            <div className="menu-item">TIMELESS TECHNOLOGY</div>
-          </NavLink>
-          <NavLink to={"/faq"} onClick={closeMenu}>
-            <div className="menu-item">FAQs</div>
-          </NavLink>
-          {collector && (collector.minted || collector.mintedHonorary) && (
-            <NavLink to={"/collector"} onClick={closeMenu}>
-              <div className="menu-item">COLLECTOR'S ROOM</div>
+        {isWebsiteOpen() && (
+          <div className="menu">
+            <NavLink to={"/explore"} onClick={closeMenu}>
+              <div className="menu-item">HOMEPAGE</div>
             </NavLink>
-          )}
-          {(!collector || !collector.mintedAll) && (
-            <CTAButton className="md" onClick={closeMenu} />
-          )}
-        </div>
+            <NavLink to={"/about-us"} onClick={closeMenu}>
+              <div className="menu-item">ABOUT US</div>
+            </NavLink>
+            <NavLink to={"/technology"} onClick={closeMenu}>
+              <div className="menu-item">TIMELESS TECHNOLOGY</div>
+            </NavLink>
+            <NavLink to={"/faq"} onClick={closeMenu}>
+              <div className="menu-item">FAQs</div>
+            </NavLink>
+            {collector && (collector.minted || collector.mintedHonorary) && (
+              <NavLink to={"/collector"} onClick={closeMenu}>
+                <div className="menu-item">COLLECTOR'S ROOM</div>
+              </NavLink>
+            )}
+            {(!collector || !collector.mintedAll) && (
+              <CTAButton className="md" onClick={closeMenu} />
+            )}
+          </div>
+        )}
         <div className="invitations-menu">
           <Link to={"/invites"} onClick={closeMenu}>
             <div className="menu-item sm link-hover text-gold">

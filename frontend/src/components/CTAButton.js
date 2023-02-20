@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "components/Button";
 import classNames from "classnames";
 import useCanAccessDD from "hooks/useCanAccessDD";
+import {isNoContractMode} from "utils";
 
 const CTAButton = ({ className, onClick }) => {
   const collector = useSelector(collectorSelector);
@@ -28,7 +29,7 @@ const CTAButton = ({ className, onClick }) => {
     </Button>
   );
 
-  if (!canAccessDD) return null;
+  if (!canAccessDD || isNoContractMode()) return null;
 
   if (!collector?.mintedAll) return renderButton({ text: "MINT NOW" });
 
