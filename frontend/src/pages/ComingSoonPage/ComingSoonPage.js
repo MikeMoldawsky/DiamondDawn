@@ -53,12 +53,12 @@ const ComingSoonPage = () => {
         <div className="project-title">
           <InlineVideo className="dd-text" src={getDDTextVideo(width)} />
           <div className="center-center-aligned-row tagline-text ps-row">
-            Invite Only. Coming Soon.
+            Invite Only.
           </div>
         </div>
         <div className="center-aligned-column bottom-section">
           <div className="tagline-text text-white">
-            Evolve your NFT into a physical diamond
+            Evolve digital art into a physical diamond
           </div>
           <ActionButton
             actionKey="Enter Diamond Dawn"
